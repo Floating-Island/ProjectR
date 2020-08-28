@@ -3,10 +3,3 @@
 
 #include "JetTest.h"
 
-JetTest::JetTest()
-{
-}
-
-JetTest::~JetTest()
-{
-}

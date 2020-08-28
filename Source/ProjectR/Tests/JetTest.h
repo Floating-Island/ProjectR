@@ -9,7 +9,5 @@
  */
 class PROJECTR_API JetTest
 {
-public:
-	JetTest();
-	~JetTest();
+
 };
