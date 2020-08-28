@@ -107,7 +107,12 @@ def formatUnitTests() {
 }
 
 def convertTestsReport() {
-    def jsonReport = readFile file: "${testReportFolder}\\index.json", encoding: "UTF-8"
+    try{
+      def jsonReport = readFile file: "${testReportFolder}\\index.json", encoding: "UTF-8"
+    }
+    catch(Exception NoSuchFileException){
+      echo "no test report file found..."
+    }
     // Needed because the JSON is encoded in UTF-8 with BOM
 
     jsonReport = jsonReport.replace( "\uFEFF", "" );
