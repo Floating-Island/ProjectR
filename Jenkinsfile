@@ -20,7 +20,7 @@ pipeline {
       steps {
         echo 'Build Stage Started.'
         echo 'sending notification to Slack.'
-        slackSend channel: '#testing-ci', 
+        slackSend channel: '#builds', 
           color: '#4A90E2',
           message: "Build ${env.BUILD_NUMBER} has started at node ${env.NODE_NAME}..."
 
@@ -61,7 +61,7 @@ pipeline {
       echo 'Formatting TestsReport from JSon to JUnit XML'
       formatUnitTests()
 
-        slackSend channel: "#testing-ci",
+        slackSend channel: "#builds",
           color: '#c2f2d0',
           message: "\n *Tests Report Summary* - Total Tests: ${testReportSummary.totalCount}, Failures: ${testReportSummary.failCount}, Skipped: ${testReportSummary.skipCount}, Passed: ${testReportSummary.passCount}"
 
@@ -79,17 +79,17 @@ pipeline {
       echo 'Sending build status notification to Slack:'
     }
     success{
-        slackSend channel: '#testing-ci',
+        slackSend channel: '#builds',
           color: 'good', 
           message: "*${currentBuild.currentResult}:* Build ${env.BUILD_NUMBER} has *succeded!* :innocent:"
     }
     unstable{
-        slackSend channel: '#testing-ci',
+        slackSend channel: '#builds',
           color: '#E2A52E', 
           message: "*${currentBuild.currentResult}:* Build ${env.BUILD_NUMBER} it's *unstable!* :grimacing:"
     }
     failure{
-        slackSend channel: '#testing-ci',
+        slackSend channel: '#builds',
           color: 'danger', 
           message: "*${currentBuild.currentResult}:* Build ${env.BUILD_NUMBER} has *failed* :astonished:"
     }
