@@ -102,17 +102,17 @@ import groovy.xml.MarkupBuilder
 def testReportSummary = 'to be populated...'
 
 def formatUnitTests() {
-        convertTestsReport()
-        testReportSummary = junit "${testReportFolder}\\junit.xml"
+        try {
+          convertTestsReport()
+          testReportSummary = junit "${testReportFolder}\\junit.xml"
+        }
+        catch (exception e){
+          echo "couldn't generate JUnit Test Report..."
+        }
 }
 
 def convertTestsReport() {
-    try{
-      def jsonReport = readFile file: "${testReportFolder}\\index.json", encoding: "UTF-8"
-    }
-    catch(Exception e){
-      echo "no test report file found..."
-    }
+    def jsonReport = readFile file: "${testReportFolder}\\index.json", encoding: "UTF-8"
     // Needed because the JSON is encoded in UTF-8 with BOM
 
     jsonReport = jsonReport.replace( "\uFEFF", "" );
