@@ -106,7 +106,7 @@ def formatUnitTests() {
           convertTestsReport()
           testReportSummary = junit "${testReportFolder}\\junit.xml"
         }
-        catch (exception e){
+        catch (Exception e){
           echo "couldn't generate JUnit Test Report..."
         }
 }
