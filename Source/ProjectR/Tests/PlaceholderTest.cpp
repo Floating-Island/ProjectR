@@ -3,10 +3,3 @@
 
 #include "PlaceholderTest.h"
 
-PlaceholderTest::PlaceholderTest()
-{
-}
-
-PlaceholderTest::~PlaceholderTest()
-{
-}

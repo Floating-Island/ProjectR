@@ -9,7 +9,4 @@
  */
 class PROJECTR_API PlaceholderTest
 {
-public:
-	PlaceholderTest();
-	~PlaceholderTest();
 };
