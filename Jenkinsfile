@@ -110,7 +110,7 @@ def convertTestsReport() {
     try{
       def jsonReport = readFile file: "${testReportFolder}\\index.json", encoding: "UTF-8"
     }
-    catch(Exception NoSuchFileException){
+    catch(Exception e){
       echo "no test report file found..."
     }
     // Needed because the JSON is encoded in UTF-8 with BOM
