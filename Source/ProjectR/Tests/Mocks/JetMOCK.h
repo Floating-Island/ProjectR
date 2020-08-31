@@ -13,5 +13,7 @@ UCLASS()
 class PROJECTR_API AJetMOCK : public AJet
 {
 	GENERATED_BODY()
-	
+
+public:
+	void setCurrentSpeedTo(float aDesiredSpeed);
 };

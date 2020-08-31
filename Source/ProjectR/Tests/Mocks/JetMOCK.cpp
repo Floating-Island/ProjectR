@@ -3,3 +3,7 @@
 
 #include "JetMOCK.h"
 
+void AJetMOCK::setCurrentSpeedTo(float aDesiredSpeed)
+{
+	speed = aDesiredSpeed;
+}
