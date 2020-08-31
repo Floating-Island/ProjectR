@@ -32,3 +32,13 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+float AJet::currentSpeed()
+{
+	return speed;
+}
+
+void AJet::accelerate()
+{
+	speed++;
+}
+

@@ -34,6 +34,21 @@ bool FAJetShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpeedIsZeroWhenInstantiatedTest, "ProjectR.Unit.JetTests.SpeedIsZeroWhenInstantiated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+bool FAJetSpeedIsZeroWhenInstantiatedTest::RunTest(const FString& Parameters)
+{
+	//One should be one.
+	{
+		AJet* testJet = NewObject<AJet>();
+		
+		TestTrue(TEXT("Jet speed should be zero when instantiated."), testJet->currentSpeed() == 0);
+	}
+
+	return true;
+}
+
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpeedIncreasesWhenAcceleratesTest, "ProjectR.Unit.JetTests.SpeedIncreasesWhenAccelerates", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
