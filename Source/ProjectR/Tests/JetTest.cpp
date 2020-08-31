@@ -4,6 +4,7 @@
 #include "JetTest.h"
 
 #include "Jet.h"
+#include "Mocks/JetMOCK.h"
 
 #include "Misc/AutomationTest.h"
 
@@ -82,6 +83,31 @@ bool FAJetBrakeMakesItGoReverseWhenSpeedIsZeroTest::RunTest(const FString& Param
 		testJet->brake();
 		
 		TestTrue(TEXT("Brake becomes Reverse when speed is zero or negative"), testJet->currentSpeed() < 0 );
+	}
+
+	return true;
+}
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetBrakeDecreasesCurrentSpeedTest, "ProjectR.Unit.JetTests.BrakeDecreasesCurrentSpeed", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetBrakeDecreasesCurrentSpeedTest::RunTest(const FString& Parameters)
+{
+	{
+		AJetMOCK* testJet = NewObject<AJetMOCK>();
+
+		float aDesiredSpeed = 25.0f;
+		
+		testJet->setCurrentSpeedTo(aDesiredSpeed);
+
+		float currentSpeed = testJet->currentSpeed();
+
+		testJet->brake();
+
+		float brakedSpeed = testJet->currentSpeed();
+		
+		TestTrue(TEXT("Brake decreases currentSpeed"), brakedSpeed < currentSpeed );
 	}
 
 	return true;
