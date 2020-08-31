@@ -42,3 +42,8 @@ void AJet::accelerate()
 	speed++;
 }
 
+void AJet::brake()
+{
+	speed--;
+}
+

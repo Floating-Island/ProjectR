@@ -32,4 +32,6 @@ public:
 
 	void accelerate();
 
+	void brake();
+
 };
