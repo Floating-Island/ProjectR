@@ -46,7 +46,7 @@ bool FJetMockSettingSpeedChangesSpeedToDesiredTest::RunTest(const FString& Param
 	{
 		AJetMOCK* testMockJet = NewObject<AJetMOCK>();
 
-		float aDesiredSpeed = 30.0f;
+		const float aDesiredSpeed = 30.0f;
 		
 		testMockJet->setCurrentSpeedTo(aDesiredSpeed);
 		

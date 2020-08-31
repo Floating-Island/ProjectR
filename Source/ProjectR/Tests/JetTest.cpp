@@ -57,11 +57,11 @@ bool FAJetSpeedIncreasesWhenAcceleratesTest::RunTest(const FString& Parameters)
 	{
 		AJet* testJet = NewObject<AJet>();
 
-		float currentSpeed = testJet->currentSpeed();
+		const float currentSpeed = testJet->currentSpeed();
 
 		testJet->accelerate();
 
-		float acceleratedSpeed = testJet->currentSpeed();
+		const float acceleratedSpeed = testJet->currentSpeed();
 		
 		TestTrue(TEXT("Speed increases when accelerates."), acceleratedSpeed > currentSpeed);
 	}
@@ -97,15 +97,15 @@ bool FAJetBrakeDecreasesCurrentSpeedTest::RunTest(const FString& Parameters)
 	{
 		AJetMOCK* testJet = NewObject<AJetMOCK>();
 
-		float aDesiredSpeed = 25.0f;
+		const float aDesiredSpeed = 25.0f;
 		
 		testJet->setCurrentSpeedTo(aDesiredSpeed);
 
-		float currentSpeed = testJet->currentSpeed();
+		const float currentSpeed = testJet->currentSpeed();
 
 		testJet->brake();
 
-		float brakedSpeed = testJet->currentSpeed();
+		const float brakedSpeed = testJet->currentSpeed();
 		
 		TestTrue(TEXT("Brake decreases currentSpeed."), brakedSpeed < currentSpeed );
 	}
@@ -129,7 +129,7 @@ bool FAJetSettingATopSpeedMakesItTheTopSpeedTest::RunTest(const FString& Paramet
 
 		float aSettedMaxSpeed = testJet->settedTopSpeed();
 		
-		TestTrue(TEXT("Setting a max speed should be reflected on the top speed variable."), testJet->settedTopSpeed() == aMaximumSpeed );
+		TestTrue(TEXT("Setting a max speed should be reflected on the top speed variable."), aSettedMaxSpeed == aMaximumSpeed );
 	}
 
 	return true;
