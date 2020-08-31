@@ -82,7 +82,7 @@ bool FAJetBrakeMakesItGoReverseWhenSpeedIsZeroTest::RunTest(const FString& Param
 
 		testJet->brake();
 		
-		TestTrue(TEXT("Brake becomes Reverse when speed is zero or negative"), testJet->currentSpeed() < 0 );
+		TestTrue(TEXT("Brake is Reverse when speed is zero or negative."), testJet->currentSpeed() < 0 );
 	}
 
 	return true;
@@ -107,7 +107,29 @@ bool FAJetBrakeDecreasesCurrentSpeedTest::RunTest(const FString& Parameters)
 
 		float brakedSpeed = testJet->currentSpeed();
 		
-		TestTrue(TEXT("Brake decreases currentSpeed"), brakedSpeed < currentSpeed );
+		TestTrue(TEXT("Brake decreases currentSpeed."), brakedSpeed < currentSpeed );
+	}
+
+	return true;
+}
+
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSettingATopSpeedMakesItTheTopSpeedTest, "ProjectR.Unit.JetTests.SettingATopSpeedMakesItTheTopSpeed", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetSettingATopSpeedMakesItTheTopSpeedTest::RunTest(const FString& Parameters)
+{
+	{
+		AJet* testJet = NewObject<AJet>();
+
+		//another test checks that the current speed is zero when instantiated
+		float aMaximumSpeed = 40.0f;
+
+		testJet->setTopSpeed(aMaximumSpeed);
+
+		float aSettedMaxSpeed = testJet->settedTopSpeed();
+		
+		TestTrue(TEXT("Setting a max speed should be reflected on the top speed variable."), testJet->settedTopSpeed() == aMaximumSpeed );
 	}
 
 	return true;

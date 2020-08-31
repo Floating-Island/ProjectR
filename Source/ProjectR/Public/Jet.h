@@ -21,6 +21,8 @@ protected:
 
 	float speed;
 
+	float topSpeed;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -33,5 +35,10 @@ public:
 	void accelerate();
 
 	void brake();
+
+	void setTopSpeed(float aMaximumSpeed);
+
+	float settedTopSpeed();
+	
 
 };

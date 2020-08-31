@@ -47,3 +47,13 @@ void AJet::brake()
 	speed--;
 }
 
+void AJet::setTopSpeed(float aMaximumSpeed)
+{
+	topSpeed = aMaximumSpeed;
+}
+
+float AJet::settedTopSpeed()
+{
+	return topSpeed;
+}
+
