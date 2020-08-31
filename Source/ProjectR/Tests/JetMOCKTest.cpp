@@ -3,7 +3,7 @@
 
 #include "JetMOCKTest.h"
 
-#include "JetMOCK.h"
+#include "Mocks/JetMOCK.h"
 
 #include "Misc/AutomationTest.h"
 
@@ -27,7 +27,7 @@ bool FJetMockShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Paramete
 {
 	
 	{
-		AJetMock* testMockJet = NewObject<AJetMock>();
+		AJetMOCK* testMockJet = NewObject<AJetMOCK>();
 		
 		TestNotNull(TEXT("The Jet shouldn't be null after instantiating it."), testMockJet);
 	}
