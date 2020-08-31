@@ -3,10 +3,3 @@
 
 #include "TrackTest.h"
 
-TrackTest::TrackTest()
-{
-}
-
-TrackTest::~TrackTest()
-{
-}

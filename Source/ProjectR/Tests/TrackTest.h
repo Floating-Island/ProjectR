@@ -9,7 +9,4 @@
  */
 class PROJECTR_API TrackTest
 {
-public:
-	TrackTest();
-	~TrackTest();
 };
