@@ -12,6 +12,7 @@ AJet::AJet()
 	PrimaryActorTick.bCanEverTick = true;
 
 	meshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh Component"));
+	RootComponent = meshComponent;
 
 	speed = 0.0f;
 
