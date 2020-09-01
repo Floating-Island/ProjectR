@@ -148,4 +148,17 @@ bool FAJetShouldHaveAStaticMeshTest::RunTest(const FString& Parameters)
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMeshShouldBeTheRootComponentTest, "ProjectR.Unit.JetTests.MeshShouldBeTheRootComponent", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetMeshShouldBeTheRootComponentTest::RunTest(const FString& Parameters)
+{
+	{
+		AJet* testJet = NewObject<AJet>();
+		
+		TestTrue(TEXT("The Jet static mesh shouldn't be null if it has one."), testJet->isMeshTheRootComponent());
+	}
+
+	return true;
+}
+
 #endif //WITH_DEV_AUTOMATION_TESTS
