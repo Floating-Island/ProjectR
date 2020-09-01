@@ -14,6 +14,8 @@ AJet::AJet()
 	meshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh Component"));
 	RootComponent = meshComponent;
 
+	meshComponent->SetSimulatePhysics(true);
+
 	speed = 0.0f;
 }
 
