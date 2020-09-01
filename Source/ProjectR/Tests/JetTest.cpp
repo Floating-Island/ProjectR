@@ -173,6 +173,8 @@ bool FAJetShouldSimulatePhysicsTest::RunTest(const FString& Parameters)
 {
 	{
 		AJet* testJet = NewObject<AJet>();
+
+		testJet->Tick(0.1f);
 		
 		TestTrue(TEXT("The Jet should be simulating physics."), testJet->isSimulatingPhysics());
 	}
@@ -182,17 +184,17 @@ bool FAJetShouldSimulatePhysicsTest::RunTest(const FString& Parameters)
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldAffectNavigationVolumeTest, "ProjectR.Unit.JetTests.ShouldAffectNavigationVolume", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FAJetShouldAffectNavigationVolumeTest::RunTest(const FString& Parameters)
-{
-	{
-		AJet* testJet = NewObject<AJet>();
-		
-		TestTrue(TEXT("The Jet should affect the navigation volume."), testJet->isSimulatingPhysics());
-	}
-
-	return true;
-}
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldAffectNavigationVolumeTest, "ProjectR.Unit.JetTests.ShouldAffectNavigationVolume", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//bool FAJetShouldAffectNavigationVolumeTest::RunTest(const FString& Parameters)
+//{
+//	{
+//		AJet* testJet = NewObject<AJet>();
+//		
+//		TestTrue(TEXT("The Jet should affect the navigation volume."), testJet->isSimulatingPhysics());
+//	}
+//
+//	return true;
+//}
 
 #endif //WITH_DEV_AUTOMATION_TESTS
