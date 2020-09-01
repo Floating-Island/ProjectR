@@ -172,9 +172,8 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveGravityEnabledTest, "ProjectR.Un
 bool FAJetShouldHaveGravityEnabledTest::RunTest(const FString& Parameters)
 {
 	{
-		AJet* testJet = NewObject<AJet>();
-
-		testJet->Tick(0.1f);
+		UWorld* testWorld = UWorld::CreateWorld(EWorldType::None, true);
+		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
 		
 		TestTrue(TEXT("The Jet should have gravity enabled."), testJet->hasGravityEnabled());
 	}
