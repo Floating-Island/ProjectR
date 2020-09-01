@@ -28,7 +28,7 @@ bool FATrackShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Parameter
 	{
 		TestNotNull(TEXT("The track shouldn't be null when instantiated"), testTrack);
 	}
-
+	
 	return true;
 }
 
