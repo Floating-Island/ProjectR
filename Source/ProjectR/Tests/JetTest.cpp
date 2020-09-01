@@ -190,7 +190,7 @@ bool FAJetShouldntAffectNavigationVolumeTest::RunTest(const FString& Parameters)
 	{
 		AJet* testJet = NewObject<AJet>();
 		
-		TestTrue(TEXT("The Jet shouldn't affect the navigation volume."), testJet->isAffectingNavigation());
+		TestFalse(TEXT("The Jet shouldn't affect the navigation volume."), testJet->isAffectingNavigation());
 	}
 
 	return true;

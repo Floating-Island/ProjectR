@@ -16,6 +16,7 @@ AJet::AJet()
 
 	meshComponent->SetSimulatePhysics(true);
 	meshComponent->SetEnableGravity(true);
+	meshComponent->SetCanEverAffectNavigation(false);
 
 	speed = 0.0f;
 }
