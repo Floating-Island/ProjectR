@@ -76,6 +76,11 @@ bool AJet::isMeshTheRootComponent()
 	return (RootComponent == meshComponent)? true : false;
 }
 
+bool AJet::hasPhysicsEnabled()
+{
+	return RootComponent->IsAnySimulatingPhysics();
+}
+
 bool AJet::hasGravityEnabled()
 {
 	return meshComponent->IsGravityEnabled();

@@ -167,6 +167,22 @@ bool FAJetMeshShouldBeTheRootComponentTest::RunTest(const FString& Parameters)
 
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHavePhysicsEnabledTest, "ProjectR.Unit.JetTests.ShouldHavePhysicsEnabled", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetShouldHavePhysicsEnabledTest::RunTest(const FString& Parameters)
+{
+	{
+		UWorld* testWorld = UWorld::CreateWorld(EWorldType::None, true);
+		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
+		
+		TestTrue(TEXT("The Jet should have physics enabled."), testJet->hasPhysicsEnabled());
+	}
+
+	return true;
+}
+
+
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveGravityEnabledTest, "ProjectR.Unit.JetTests.ShouldHaveGravityEnabled", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetShouldHaveGravityEnabledTest::RunTest(const FString& Parameters)
