@@ -15,7 +15,6 @@ AJet::AJet()
 	RootComponent = meshComponent;
 
 	speed = 0.0f;
-
 }
 
 // Called when the game starts or when spawned

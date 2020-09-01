@@ -135,6 +135,8 @@ bool FAJetSettingATopSpeedMakesItTheTopSpeedTest::RunTest(const FString& Paramet
 	return true;
 }
 
+
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveAStaticMeshTest, "ProjectR.Unit.JetTests.ShouldHaveAStaticMesh", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetShouldHaveAStaticMeshTest::RunTest(const FString& Parameters)
@@ -148,6 +150,8 @@ bool FAJetShouldHaveAStaticMeshTest::RunTest(const FString& Parameters)
 	return true;
 }
 
+
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMeshShouldBeTheRootComponentTest, "ProjectR.Unit.JetTests.MeshShouldBeTheRootComponent", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetMeshShouldBeTheRootComponentTest::RunTest(const FString& Parameters)
@@ -155,7 +159,22 @@ bool FAJetMeshShouldBeTheRootComponentTest::RunTest(const FString& Parameters)
 	{
 		AJet* testJet = NewObject<AJet>();
 		
-		TestTrue(TEXT("The Jet static mesh shouldn't be null if it has one."), testJet->isMeshTheRootComponent());
+		TestTrue(TEXT("The Jet static mesh should be the root component."), testJet->isMeshTheRootComponent());
+	}
+
+	return true;
+}
+
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldSimulatePhysicsTest, "ProjectR.Unit.JetTests.ShouldSimulatePhysics", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetShouldSimulatePhysicsTest::RunTest(const FString& Parameters)
+{
+	{
+		AJet* testJet = NewObject<AJet>();
+		
+		TestTrue(TEXT("The Jet should be simulating physics."), testJet->isSimulatingPhysics());
 	}
 
 	return true;
