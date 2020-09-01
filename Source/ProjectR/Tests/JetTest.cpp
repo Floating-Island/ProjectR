@@ -180,4 +180,19 @@ bool FAJetShouldSimulatePhysicsTest::RunTest(const FString& Parameters)
 	return true;
 }
 
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldAffectNavigationVolumeTest, "ProjectR.Unit.JetTests.ShouldAffectNavigationVolume", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetShouldAffectNavigationVolumeTest::RunTest(const FString& Parameters)
+{
+	{
+		AJet* testJet = NewObject<AJet>();
+		
+		TestTrue(TEXT("The Jet should affect the navigation volume."), testJet->isSimulatingPhysics());
+	}
+
+	return true;
+}
+
 #endif //WITH_DEV_AUTOMATION_TESTS

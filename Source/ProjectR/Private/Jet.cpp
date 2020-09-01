@@ -77,6 +77,6 @@ bool AJet::isMeshTheRootComponent()
 
 bool AJet::isSimulatingPhysics()
 {
-	return RootComponent->IsSimulatingPhysics();
+	return RootComponent->IsAnySimulatingPhysics();
 }
 
