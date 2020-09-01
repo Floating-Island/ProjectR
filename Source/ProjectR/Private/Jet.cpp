@@ -59,3 +59,8 @@ float AJet::settedTopSpeed()
 	return topSpeed;
 }
 
+bool AJet::hasAStaticMesh()
+{
+	return (meshComponent)? true : false;
+}
+

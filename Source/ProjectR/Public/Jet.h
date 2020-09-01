@@ -23,6 +23,9 @@ protected:
 
 	float topSpeed;
 
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		UStaticMeshComponent* meshComponent;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -40,5 +43,5 @@ public:
 
 	float settedTopSpeed();
 	
-
+	bool hasAStaticMesh();
 };
