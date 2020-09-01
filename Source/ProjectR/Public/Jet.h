@@ -46,8 +46,6 @@ public:
 	bool hasAStaticMesh();
 
 	bool isMeshTheRootComponent();
-
-	bool hasPhysicsEnabled();
 	
 	bool hasGravityEnabled();
 };
