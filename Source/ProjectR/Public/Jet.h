@@ -46,4 +46,6 @@ public:
 	bool hasAStaticMesh();
 
 	bool isMeshTheRootComponent();
+
+	bool isSimulatingPhysics();
 };
