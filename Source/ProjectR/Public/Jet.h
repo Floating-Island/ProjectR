@@ -47,5 +47,5 @@ public:
 
 	bool isMeshTheRootComponent();
 
-	bool isSimulatingPhysics();
+	bool hasGravityEnabled();
 };

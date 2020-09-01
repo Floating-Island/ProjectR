@@ -15,6 +15,7 @@ AJet::AJet()
 	RootComponent = meshComponent;
 
 	meshComponent->SetSimulatePhysics(true);
+	meshComponent->SetEnableGravity(true);
 
 	speed = 0.0f;
 }
@@ -75,8 +76,8 @@ bool AJet::isMeshTheRootComponent()
 	return (RootComponent == meshComponent)? true : false;
 }
 
-bool AJet::isSimulatingPhysics()
+bool AJet::hasGravityEnabled()
 {
-	return RootComponent->IsAnySimulatingPhysics();
+	return meshComponent->IsGravityEnabled();
 }
 

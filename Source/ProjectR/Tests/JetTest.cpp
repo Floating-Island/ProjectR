@@ -167,16 +167,16 @@ bool FAJetMeshShouldBeTheRootComponentTest::RunTest(const FString& Parameters)
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldSimulatePhysicsTest, "ProjectR.Unit.JetTests.ShouldSimulatePhysics", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveGravityEnabledTest, "ProjectR.Unit.JetTests.ShouldHaveGravityEnabled", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FAJetShouldSimulatePhysicsTest::RunTest(const FString& Parameters)
+bool FAJetShouldHaveGravityEnabledTest::RunTest(const FString& Parameters)
 {
 	{
 		AJet* testJet = NewObject<AJet>();
 
 		testJet->Tick(0.1f);
 		
-		TestTrue(TEXT("The Jet should be simulating physics."), testJet->isSimulatingPhysics());
+		TestTrue(TEXT("The Jet should have gravity enabled."), testJet->hasGravityEnabled());
 	}
 
 	return true;
