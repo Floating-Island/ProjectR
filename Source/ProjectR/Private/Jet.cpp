@@ -68,3 +68,8 @@ bool AJet::hasAStaticMesh()
 	return (meshComponent)? true : false;
 }
 
+bool AJet::isMeshTheRootComponent()
+{
+	return (RootComponent == meshComponent)? true : false;
+}
+

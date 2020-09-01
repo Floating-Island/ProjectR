@@ -44,4 +44,6 @@ public:
 	float settedTopSpeed();
 	
 	bool hasAStaticMesh();
+
+	bool isMeshTheRootComponent();
 };
