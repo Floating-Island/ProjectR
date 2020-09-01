@@ -81,3 +81,8 @@ bool AJet::hasGravityEnabled()
 	return meshComponent->IsGravityEnabled();
 }
 
+bool AJet::isAffectingNavigation()
+{
+	return meshComponent->CanEverAffectNavigation();
+}
+
