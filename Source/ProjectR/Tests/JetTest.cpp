@@ -235,7 +235,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldMoveWhenForceAddedTest, "ProjectR.Un
 bool FAJetShouldMoveWhenForceAddedTest::RunTest(const FString& Parameters)
 {
 	{
-		UWorld* testWorld = UWorld::CreateWorld(EWorldType::PIE, true);
+		UWorld* testWorld = UWorld::CreateWorld(EWorldType::Game, true);
 
 		testWorld->BeginPlay();
 
@@ -245,6 +245,8 @@ bool FAJetShouldMoveWhenForceAddedTest::RunTest(const FString& Parameters)
 
 		FVector currentLocation = testJet->GetActorLocation();
 
+		testJet->Tick(1.0f);
+		
 		testJet->addForce(forceToApply);
 
 		testJet->Tick(1.0f);
