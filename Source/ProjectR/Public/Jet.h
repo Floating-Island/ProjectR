@@ -50,4 +50,6 @@ public:
 	bool hasGravityEnabled();
 
 	bool isAffectingNavigation();
+
+	void addForce(FVector forceToApply);
 };
