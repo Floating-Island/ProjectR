@@ -89,6 +89,6 @@ bool AJet::isAffectingNavigation()
 
 void AJet::addForce(FVector forceToApply)
 {
-	meshComponent->MoveComponent(forceToApply,FQuat(), false);
+	meshComponent->AddForce(forceToApply,NAME_None, true);
 }
 
