@@ -198,6 +198,22 @@ bool FAJetShouldntAffectNavigationVolumeTest::RunTest(const FString& Parameters)
 
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldBeMovableTest, "ProjectR.Unit.JetTests.ShouldBeMovable", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetShouldBeMovableTest::RunTest(const FString& Parameters)
+{
+	{
+		UWorld* testWorld = UWorld::CreateWorld(EWorldType::None, true);
+		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
+		
+		TestTrue(TEXT("The Jet should be movable when spawned into the world."), testJet->IsRootComponentMovable());
+	}
+
+	return true;
+}
+
+
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldMoveWhenForceAddedTest, "ProjectR.Unit.JetTests.ShouldMoveWhenForceAdded", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetShouldMoveWhenForceAddedTest::RunTest(const FString& Parameters)
@@ -219,7 +235,7 @@ bool FAJetShouldMoveWhenForceAddedTest::RunTest(const FString& Parameters)
 
 		FVector movedLocation = testJet->GetActorLocation();
 		
-		TestFalse(TEXT("The Jet location should change after a force is added (after ticking)."), movedLocation.Equals(currentLocation));
+		TestFalse(TEXT("The Jet location should change after a force is added (after ticking)."), testJet->IsRootComponentMovable());
 	}
 
 	return true;
