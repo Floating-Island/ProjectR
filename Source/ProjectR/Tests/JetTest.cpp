@@ -241,6 +241,7 @@ bool FAJetShouldMoveWhenForceAddedTest::RunTest(const FString& Parameters)
 
 		testWorld->SetupPhysicsTickFunctions(0.01);
 		
+		testWorld->StartPhysicsSim();
 
 		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
 
