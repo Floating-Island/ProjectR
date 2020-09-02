@@ -213,11 +213,11 @@ bool FAJetShouldMoveWhenForceAddedTest::RunTest(const FString& Parameters)
 		
 		testJet->addForce(forceToApply);
 
-		testJet->Tick(0.01f);
+		testJet->Tick(1.0f);
 
 		FVector movedLocation = testJet->GetActorLocation();
 		
-		TestNotEqual(TEXT("The Jet location should change after a force is added (after ticking)."), movedLocation.X, currentLocation.X);
+		TestNotEqual(TEXT("The Jet location should change after a force is added (after ticking)."), movedLocation, currentLocation);
 	}
 
 	return true;
