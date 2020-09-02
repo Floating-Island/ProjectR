@@ -210,12 +210,16 @@ bool FAJetShouldMoveWhenForceAddedTest::RunTest(const FString& Parameters)
 		FVector forceToApply {1000.0, 0, 0};
 
 		FVector currentLocation = testJet->GetActorLocation();
+
+		testWorld->StartPhysicsSim();
 		
 		testJet->addForce(forceToApply);
 
-		testWorld->Tick(ELevelTick::LEVELTICK_All,1.0f);
+		testJet->Tick(1.0f);
 
 		FVector movedLocation = testJet->GetActorLocation();
+
+		testWorld->FinishPhysicsSim();
 		
 		TestFalse(TEXT("The Jet location should change after a force is added (after ticking)."), movedLocation.Equals(currentLocation));
 	}
