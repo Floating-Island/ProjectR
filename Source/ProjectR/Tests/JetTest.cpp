@@ -203,9 +203,8 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldMoveWhenForceAddedTest, "ProjectR.Un
 bool FAJetShouldMoveWhenForceAddedTest::RunTest(const FString& Parameters)
 {
 	{
-		UWorld* testWorld = UWorld::CreateWorld(EWorldType::Editor, true);
+		UWorld* testWorld = UWorld::CreateWorld(EWorldType::Game, true);
 
-		testWorld->InitWorld();
 
 		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
 
