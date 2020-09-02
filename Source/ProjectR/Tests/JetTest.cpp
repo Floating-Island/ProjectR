@@ -239,7 +239,7 @@ bool FAJetShouldMoveWhenForceAddedTest::RunTest(const FString& Parameters)
 
 		testWorld->bShouldSimulatePhysics = true;
 		
-		testWorld->BeginPlay();
+		testWorld->StartPhysicsSim();
 
 		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
 
@@ -254,6 +254,8 @@ bool FAJetShouldMoveWhenForceAddedTest::RunTest(const FString& Parameters)
 		testJet->Tick(1.0f);
 
 		FVector movedLocation = testJet->GetActorLocation();
+
+		testWorld->FinishPhysicsSim();
 		
 		TestFalse(TEXT("The Jet location should change after a force is added (after ticking)."), movedLocation.Equals(currentLocation));
 	}
