@@ -205,6 +205,7 @@ bool FAJetShouldMoveWhenForceAddedTest::RunTest(const FString& Parameters)
 	{
 		UWorld* testWorld = UWorld::CreateWorld(EWorldType::Game, true);
 
+		testWorld->BeginPlay();
 
 		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
 
