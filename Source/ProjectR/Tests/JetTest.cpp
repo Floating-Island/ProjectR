@@ -196,4 +196,29 @@ bool FAJetShouldntAffectNavigationVolumeTest::RunTest(const FString& Parameters)
 	return true;
 }
 
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldMoveWhenForceAddedTest, "ProjectR.Unit.JetTests.ShouldMoveWhenForceAdded", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetShouldMoveWhenForceAddedTest::RunTest(const FString& Parameters)
+{
+	{
+		AJet* testJet = NewObject<AJet>();
+
+		FVector forceToApply {1.0, 0, 0};
+
+		FVector currentLocation = testJet->GetActorLocation();
+		
+		testJet->addForce(forceToApply);
+
+		testJet->Tick(0.1f);
+
+		FVector movedLocation = testJet->GetActorLocation();
+		
+		TestNotEqual(TEXT("The Jet location should change after a force is added (after ticking)."), movedLocation, currentLocation);
+	}
+
+	return true;
+}
+
 #endif //WITH_DEV_AUTOMATION_TESTS
