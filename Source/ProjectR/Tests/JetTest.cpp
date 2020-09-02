@@ -222,7 +222,7 @@ bool FAJetBeInAPhysicsSceneTest::RunTest(const FString& Parameters)
 		UWorld* testWorld = UWorld::CreateWorld(EWorldType::None, true);
 		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
 		
-		TestNotNull(TEXT("The Jet should be movable when spawned into the world."), testWorld->GetPhysicsScene());
+		TestNotNull(TEXT("The Jet should be spawned into a world with a physics scene."), testWorld->GetPhysicsScene());
 	}
 
 	return true;
