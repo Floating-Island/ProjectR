@@ -229,12 +229,13 @@ bool FAJetBeInAPhysicsSceneTest::RunTest(const FString& Parameters)
 }
 
 
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldMoveWhenForceAddedTest, "ProjectR.Unit.JetTests.ShouldMoveWhenForceAdded", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetShouldMoveWhenForceAddedTest::RunTest(const FString& Parameters)
 {
 	{
-		UWorld* testWorld = UWorld::CreateWorld(EWorldType::Game, true);
+		UWorld* testWorld = UWorld::CreateWorld(EWorldType::PIE, true);
 
 		testWorld->BeginPlay();
 
