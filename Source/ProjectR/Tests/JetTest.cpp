@@ -205,14 +205,14 @@ bool FAJetShouldMoveWhenForceAddedTest::RunTest(const FString& Parameters)
 	{
 		UWorld* testWorld = UWorld::CreateWorld(EWorldType::None, true);
 
+		testWorld->InitWorld();
+
 		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
 
 		FVector forceToApply {1000.0, 0, 0};
 
 		FVector currentLocation = testJet->GetActorLocation();
 
-		testWorld->StartPhysicsSim();
-		
 		testJet->addForce(forceToApply);
 
 		testJet->Tick(1.0f);
