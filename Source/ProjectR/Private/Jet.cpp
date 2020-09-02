@@ -32,6 +32,7 @@ void AJet::BeginPlay()
 void AJet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	addForce(FVector(1000,0,0));
 }
 
 // Called to bind functionality to input
