@@ -213,7 +213,7 @@ bool FAJetShouldMoveWhenForceAddedTest::RunTest(const FString& Parameters)
 		
 		testJet->addForce(forceToApply);
 
-		testWorld->Tick(ELevelTick::LEVELTICK_All, 1.0f);
+		testJet->Tick(1.0f);
 
 		FVector movedLocation = testJet->GetActorLocation();
 		
