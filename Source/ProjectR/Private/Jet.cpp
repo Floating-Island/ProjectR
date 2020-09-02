@@ -89,6 +89,6 @@ bool AJet::isAffectingNavigation()
 
 void AJet::addForce(FVector forceToApply)
 {
-	meshComponent->SetPhysicsLinearVelocity(forceToApply, true, NAME_None);
+	meshComponent->AddForce(forceToApply,NAME_None, true);
 }
 
