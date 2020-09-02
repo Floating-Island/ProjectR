@@ -18,6 +18,9 @@ AJet::AJet()
 	meshComponent->SetEnableGravity(true);
 	meshComponent->SetCanEverAffectNavigation(false);
 
+	UStaticMesh* Mesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), NULL, TEXT("/Engine/EditorMeshes/EditorCube")));
+	meshComponent->SetStaticMesh(Mesh);
+
 	speed = 0.0f;
 }
 
