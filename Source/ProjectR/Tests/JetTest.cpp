@@ -207,13 +207,13 @@ bool FAJetShouldMoveWhenForceAddedTest::RunTest(const FString& Parameters)
 
 		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
 
-		FVector forceToApply {1.0, 0, 0};
+		FVector forceToApply {1000.0, 0, 0};
 
 		FVector currentLocation = testJet->GetActorLocation();
 		
 		testJet->addForce(forceToApply);
 
-		testJet->Tick(0.1f);
+		testJet->Tick(0.01f);
 
 		FVector movedLocation = testJet->GetActorLocation();
 		
