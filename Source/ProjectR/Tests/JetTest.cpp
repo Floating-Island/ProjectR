@@ -238,6 +238,8 @@ bool FAJetShouldMoveWhenForceAddedTest::RunTest(const FString& Parameters)
 		UWorld* testWorld = UWorld::CreateWorld(EWorldType::Game, true);
 
 		testWorld->bShouldSimulatePhysics = true;
+
+		testWorld->SetupPhysicsTickFunctions(0.01);
 		
 		testWorld->StartPhysicsSim();
 
