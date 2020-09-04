@@ -259,7 +259,7 @@ bool FAJetShouldMoveWhenForceAddedTest::RunTest(const FString& Parameters)
 
 		
 		
-		TestFalse(TEXT("The Jet location should change after a force is added (after ticking)."), movedLocation.Equals(currentLocation));
+		TestFalse(TEXT("The Jet location should change after an acceleration is added (after ticking)."), movedLocation.Equals(currentLocation));
 	}
 
 	return true;
