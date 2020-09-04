@@ -251,7 +251,7 @@ bool FAJetShouldMoveWhenForceAddedTest::RunTest(const FString& Parameters)
 
 		testJet->Tick(1.0f);
 		
-		testJet->addForce(forceToApply);
+		testJet->addAcceleration(forceToApply);
 
 		testJet->Tick(1.0f);
 

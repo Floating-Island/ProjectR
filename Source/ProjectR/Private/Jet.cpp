@@ -89,7 +89,7 @@ bool AJet::isAffectingNavigation()
 	return meshComponent->CanEverAffectNavigation();
 }
 
-void AJet::addForce(FVector forceToApply)
+void AJet::addAcceleration(FVector forceToApply)
 {
 	meshComponent->AddForce(forceToApply,NAME_None, true);
 }

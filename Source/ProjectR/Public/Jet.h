@@ -51,5 +51,5 @@ public:
 
 	bool isAffectingNavigation();
 
-	void addForce(FVector forceToApply);
+	void addAcceleration(FVector forceToApply);
 };
