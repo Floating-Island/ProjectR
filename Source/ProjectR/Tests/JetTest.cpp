@@ -7,6 +7,7 @@
 #include "Mocks/JetMOCK.h"
 
 #include "Misc/AutomationTest.h"
+#include "Physics/Tests/PhysicsTestHelpers.h"
 
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -235,15 +236,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldMoveWhenAccelerationAddedTest, "Proj
 bool FAJetShouldMoveWhenAccelerationAddedTest::RunTest(const FString& Parameters)
 {
 	{
-		UWorld* testWorld = UWorld::CreateWorld(EWorldType::Game, true);
-
-		testWorld->bShouldSimulatePhysics = true;
-
-		testWorld->SetupPhysicsTickFunctions(0.01);
-		
-		testWorld->StartPhysicsSim();
+		UWorld* testWorld = FPhysicsTestHelpers::GetWorld();
 
 		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
+
+		
 
 		FVector forceToApply {10000, 0, 0};
 
