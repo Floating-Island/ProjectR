@@ -8,6 +8,7 @@
 
 #include "Misc/AutomationTest.h"
 #include "Physics/Tests/PhysicsTestHelpers.h"
+#include "Tests/AutomationCommon.h"
 
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -184,6 +185,22 @@ bool FAJetShouldHaveGravityEnabledTest::RunTest(const FString& Parameters)
 
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpawnsIntoAGameWorldTest, "ProjectR.Unit.JetTests.SpawnsIntoAGameWorld", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetSpawnsIntoAGameWorldTest::RunTest(const FString& Parameters)
+{
+	{
+		UWorld* testWorld = FPhysicsTestHelpers::GetWorld();
+
+		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
+
+		TestNotNull(TEXT("the world is not null."), testJet);
+	}
+
+	return true;
+}
+
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldntAffectNavigationVolumeTest, "ProjectR.Unit.JetTests.ShouldntAffectNavigationVolume", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetShouldntAffectNavigationVolumeTest::RunTest(const FString& Parameters)
@@ -240,17 +257,14 @@ bool FAJetShouldMoveWhenAccelerationAddedTest::RunTest(const FString& Parameters
 
 		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
 
-		
+		AutomationOpenMap(testWorld->GetMapName());
 
 		FVector forceToApply {10000, 0, 0};
-
 		FVector currentLocation = testJet->GetActorLocation();
-
-		testJet->Tick(1.0f);
 		
 		testJet->addAcceleration(forceToApply);
 
-		testJet->Tick(1.0f);
+		testJet->Tick(0.1f);
 
 		FVector movedLocation = testJet->GetActorLocation();
 
