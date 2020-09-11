@@ -233,29 +233,98 @@ bool FAJetBeInAPhysicsSceneTest::RunTest(const FString& Parameters)
 
 
 
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawningAJetMakeItAccelerateCommand, FAutomationTestBase*, test);
+
+bool FSpawningAJetMakeItAccelerateCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	{
+		return false;
+	}
+
+	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+
+
+
+	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
+
+
+	/*UE_LOG(LogTemp, Log, TEXT("testJet spawning transform: %s"), *testJet->GetActorTransform().ToString());
+	GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Red, FString::Printf(TEXT("testJet spawning transform: %s"), *testJet->GetActorTransform().ToString()));
+
+	testJet->SetActorLocation(FVector(0));
+	testJet->SetActorRotation(testJet->GetGravityDirection().Rotation());
+	FVector currentLocation = testJet->GetActorLocation();
+
+
+	UE_LOG(LogTemp, Log, TEXT("testJet spawning transform aligned to gravity: %s"), *testJet->GetActorTransform().ToString());
+	GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Red, FString::Printf(TEXT("testJet spawning transform: %s"), *testJet->GetActorTransform().ToString()));*/
+
+
+
+	FVector forceToApply = FVector(10000);
+	testJet->addAcceleration(forceToApply);
+
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetLocationCommand, int*, tickCount, int*, tickLimit, FAutomationTestBase*, test);
+
+bool FCheckAJetLocationCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+		AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJet::StaticClass()));
+		if (testJet)
+		{
+			FVector currentLocation = testJet->GetActorLocation();
+
+
+			if (currentLocation.X > 0)//it would be better to align the ship first and then check against it's forward vector. Be have to be careful of gravity in this test.
+			{
+				check(test);
+				test->TestTrue(TEXT("The Jet X location should increase after an acceleration is added (after ticking)."), currentLocation.X > 0);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			else
+			{
+				*tickCount = *tickCount + 1;
+
+				if ( (*tickCount) > (*tickLimit))
+				{
+					test->TestFalse(TEXT("Tick limit reached for this test. The Jet Location never changed from (0,0,0)."), *tickCount > *tickLimit);
+					testWorld->bDebugFrameStepExecution = true;
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+
+
+
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldMoveWhenAccelerationAddedTest, "ProjectR.Unit.JetTests.ShouldMoveWhenAccelerationAdded", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetShouldMoveWhenAccelerationAddedTest::RunTest(const FString& Parameters)
 {
 	{
-		UWorld* testWorld = FPhysicsTestHelpers::GetWorld();
+		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");//cambiar a: "/Game/Tests/TestMaps/VoidWorld"
 
-		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
+		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
-		AutomationOpenMap(testWorld->GetMapName());
+		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-		FVector forceToApply {10000, 0, 0};
-		FVector currentLocation = testJet->GetActorLocation();
-		
-		testJet->addAcceleration(forceToApply);
+		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand(this));
+		int* tickCount = new int{0};
+		int* tickLimit = new int{3};
+		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocationCommand(tickCount, tickLimit, this));
 
-		testJet->Tick(0.1f);
-
-		FVector movedLocation = testJet->GetActorLocation();
-
-		
-		
-		TestFalse(TEXT("The Jet location should change after an acceleration is added (after ticking)."), movedLocation.Equals(currentLocation));
+		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	}
 
 	return true;
