@@ -7,8 +7,9 @@
 #include "Mocks/JetMOCK.h"
 
 #include "Misc/AutomationTest.h"
-#include "Physics/Tests/PhysicsTestHelpers.h"
-#include "Tests/AutomationCommon.h"
+#include "Tests/AutomationEditorCommon.h"
+#include "Editor.h"
+#include "Kismet/GameplayStatics.h"
 
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -183,22 +184,6 @@ bool FAJetShouldHaveGravityEnabledTest::RunTest(const FString& Parameters)
 	return true;
 }
 
-
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpawnsIntoAGameWorldTest, "ProjectR.Unit.JetTests.SpawnsIntoAGameWorld", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FAJetSpawnsIntoAGameWorldTest::RunTest(const FString& Parameters)
-{
-	{
-		UWorld* testWorld = FPhysicsTestHelpers::GetWorld();
-
-		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
-
-		TestNotNull(TEXT("the world is not null."), testJet);
-	}
-
-	return true;
-}
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldntAffectNavigationVolumeTest, "ProjectR.Unit.JetTests.ShouldntAffectNavigationVolume", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
