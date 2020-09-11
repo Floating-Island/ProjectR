@@ -324,7 +324,7 @@ bool FAJetShouldMoveWhenAccelerationAddedTest::RunTest(const FString& Parameters
 		int* tickLimit = new int{3};
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocationCommand(tickCount, tickLimit, this));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+		//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	}
 
 	return true;
