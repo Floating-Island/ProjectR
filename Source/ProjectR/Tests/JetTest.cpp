@@ -162,7 +162,7 @@ bool FAJetMeshShouldBeTheRootComponentTest::RunTest(const FString& Parameters)
 	{
 		AJet* testJet = NewObject<AJet>();
 		
-		TestTrue(TEXT("The Jet static mesh should be the root component."), !testJet->isMeshTheRootComponent());
+		TestTrue(TEXT("The Jet static mesh should be the root component."), testJet->isMeshTheRootComponent());
 	}
 
 	return true;
