@@ -68,13 +68,13 @@ pipeline {
       echo "Publish Code Coverage Report."
       cobertura(coberturaReportFile:"${codeCoverageReportName}")
 
-      echo 'Cleaning up workspace:'
-      echo '-checking current workspace.'
-      powershell label: 'show workspace', script: 'dir $WORKSPACE'
-      bat 'git reset --hard'//resets to HEAD, to the commit in the cloned repository.
-      bat 'git clean -dffx .'//removes untracked files.
-      echo '-checking clean workspace.'
-      powershell label: 'show workspace', script: 'dir $WORKSPACE'
+      // echo 'Cleaning up workspace:'
+      // echo '-checking current workspace.'
+      // powershell label: 'show workspace', script: 'dir $WORKSPACE'
+      // bat 'git reset --hard'//resets to HEAD, to the commit in the cloned repository.
+      // bat 'git clean -dffx .'//removes untracked files.
+      // echo '-checking clean workspace.'
+      // powershell label: 'show workspace', script: 'dir $WORKSPACE'
 
       echo 'Sending build status notification to Slack:'
     }
