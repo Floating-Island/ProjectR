@@ -314,8 +314,6 @@ bool FAJetShouldMoveWhenAccelerationAddedTest::RunTest(const FString& Parameters
 {
 	{
 		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");//cambiar a: "/Game/Tests/TestMaps/VoidWorld"
-
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//ask the editor to shut down the current PIE session
 		
 		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
@@ -326,7 +324,7 @@ bool FAJetShouldMoveWhenAccelerationAddedTest::RunTest(const FString& Parameters
 		int* tickLimit = new int{3};
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocationCommand(tickCount, tickLimit, this));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//no problem here.
+		//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//no problem here.
 	}
 
 	return true;
