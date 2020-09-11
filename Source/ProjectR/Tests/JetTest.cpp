@@ -169,7 +169,7 @@ bool FAJetMeshShouldBeTheRootComponentTest::RunTest(const FString& Parameters)
 }
 
 //
-//
+//creating a world and not saving it makes the editor crash when re-running the test.
 //IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveGravityEnabledTest, "ProjectR.Unit.JetTests.ShouldHaveGravityEnabled", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 //
 //bool FAJetShouldHaveGravityEnabledTest::RunTest(const FString& Parameters)
@@ -324,7 +324,7 @@ bool FAJetShouldMoveWhenAccelerationAddedTest::RunTest(const FString& Parameters
 		int* tickLimit = new int{3};
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocationCommand(tickCount, tickLimit, this));
 
-		//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//no problem here.
 	}
 
 	return true;
