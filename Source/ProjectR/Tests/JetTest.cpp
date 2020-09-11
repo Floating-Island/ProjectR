@@ -168,68 +168,68 @@ bool FAJetMeshShouldBeTheRootComponentTest::RunTest(const FString& Parameters)
 	return true;
 }
 
-
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveGravityEnabledTest, "ProjectR.Unit.JetTests.ShouldHaveGravityEnabled", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FAJetShouldHaveGravityEnabledTest::RunTest(const FString& Parameters)
-{
-	{
-		UWorld* testWorld = UWorld::CreateWorld(EWorldType::None, true);
-		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
-		
-		TestTrue(TEXT("The Jet should have gravity enabled."), testJet->hasGravityEnabled());
-	}
-
-	return true;
-}
-
-
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldntAffectNavigationVolumeTest, "ProjectR.Unit.JetTests.ShouldntAffectNavigationVolume", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FAJetShouldntAffectNavigationVolumeTest::RunTest(const FString& Parameters)
-{
-	{
-		AJet* testJet = NewObject<AJet>();
-		
-		TestFalse(TEXT("The Jet shouldn't affect the navigation volume."), testJet->isAffectingNavigation());
-	}
-
-	return true;
-}
-
-
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldBeMovableTest, "ProjectR.Unit.JetTests.ShouldBeMovable", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FAJetShouldBeMovableTest::RunTest(const FString& Parameters)
-{
-	{
-		UWorld* testWorld = UWorld::CreateWorld(EWorldType::None, true);
-		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
-		
-		TestTrue(TEXT("The Jet should be movable when spawned into the world."), testJet->IsRootComponentMovable());
-	}
-
-	return true;
-}
-
-
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetBeInAPhysicsSceneTest, "ProjectR.Unit.JetTests.BeInAPhysicsScene", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FAJetBeInAPhysicsSceneTest::RunTest(const FString& Parameters)
-{
-	{
-		UWorld* testWorld = UWorld::CreateWorld(EWorldType::None, true);
-		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
-		
-		TestNotNull(TEXT("The Jet should be spawned into a world with a physics scene."), testWorld->GetPhysicsScene());
-	}
-
-	return true;
-}
+//
+//
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveGravityEnabledTest, "ProjectR.Unit.JetTests.ShouldHaveGravityEnabled", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//bool FAJetShouldHaveGravityEnabledTest::RunTest(const FString& Parameters)
+//{
+//	{
+//		UWorld* testWorld = UWorld::CreateWorld(EWorldType::None, true);
+//		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
+//		
+//		TestTrue(TEXT("The Jet should have gravity enabled."), testJet->hasGravityEnabled());
+//	}
+//
+//	return true;
+//}
+//
+//
+//
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldntAffectNavigationVolumeTest, "ProjectR.Unit.JetTests.ShouldntAffectNavigationVolume", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//bool FAJetShouldntAffectNavigationVolumeTest::RunTest(const FString& Parameters)
+//{
+//	{
+//		AJet* testJet = NewObject<AJet>();
+//		
+//		TestFalse(TEXT("The Jet shouldn't affect the navigation volume."), testJet->isAffectingNavigation());
+//	}
+//
+//	return true;
+//}
+//
+//
+//
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldBeMovableTest, "ProjectR.Unit.JetTests.ShouldBeMovable", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//bool FAJetShouldBeMovableTest::RunTest(const FString& Parameters)
+//{
+//	{
+//		UWorld* testWorld = UWorld::CreateWorld(EWorldType::None, true);
+//		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
+//		
+//		TestTrue(TEXT("The Jet should be movable when spawned into the world."), testJet->IsRootComponentMovable());
+//	}
+//
+//	return true;
+//}
+//
+//
+//
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetBeInAPhysicsSceneTest, "ProjectR.Unit.JetTests.BeInAPhysicsScene", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//bool FAJetBeInAPhysicsSceneTest::RunTest(const FString& Parameters)
+//{
+//	{
+//		UWorld* testWorld = UWorld::CreateWorld(EWorldType::None, true);
+//		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
+//		
+//		TestNotNull(TEXT("The Jet should be spawned into a world with a physics scene."), testWorld->GetPhysicsScene());
+//	}
+//
+//	return true;
+//}
 
 
 
