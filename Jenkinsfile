@@ -9,7 +9,7 @@ pipeline {
     ue4Path = "C:\\Program Files\\Epic Games\\UE_4.25"
     ue4Project = "ProjectR"
     ueProjectFileName = "${ue4Project}.uproject"
-    testSuiteToRun = "ProjectR."//the '.' is used to run all tests inside the prettyname. The automation system searches for everything that has 'Game.' in it, so otherGame.'s tests would run too...
+    testSuiteToRun = "Shouldmo"//"ProjectR."//the '.' is used to run all tests inside the prettyname. The automation system searches for everything that has 'Game.' in it, so otherGame.'s tests would run too...
     testReportFolder = "TestsReport"
     testsLogName = "RunTests.log"
     pathToTestsLog = "${env.WORKSPACE}" + "\\Saved\\Logs\\" + "${testsLogName}"
