@@ -441,4 +441,18 @@ bool FAJetSpeedDecreasesWhenBrakesTest::RunTest(const FString& Parameters)
 	return true;
 }
 
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetDefaultTopSpeedIsGreaterThanZeroTest, "ProjectR.Unit.JetTests.DefaultTopSpeedIsGreaterThanZero", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetDefaultTopSpeedIsGreaterThanZeroTest::RunTest(const FString& Parameters)
+{
+	AJet* testJet = NewObject<AJet>(AJet::StaticClass());
+
+	TestTrue(TEXT("A Jet's default top speed should be bigger than zero."), testJet->settedTopSpeed() > 0);
+	
+	return true;
+}
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS

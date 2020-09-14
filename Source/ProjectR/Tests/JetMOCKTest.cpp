@@ -6,6 +6,9 @@
 #include "Mocks/JetMOCK.h"
 
 #include "Misc/AutomationTest.h"
+#include "Tests/AutomationEditorCommon.h"
+#include "Editor.h"
+#include "Kismet/GameplayStatics.h"
 
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -55,5 +58,10 @@ bool FJetMockShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Paramete
 //
 //	return true;
 //}
+
+
+
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
