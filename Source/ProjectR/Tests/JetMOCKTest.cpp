@@ -40,24 +40,8 @@ bool FJetMockShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Paramete
 
 
 
-//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FJetMockSettingSpeedChangesSpeedToDesiredTest, "ProjectR.Unit.JetMockTests.JetMockSettingSpeedChangesSpeedToDesired", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-//
-//
-//bool FJetMockSettingSpeedChangesSpeedToDesiredTest::RunTest(const FString& Parameters)
-//{
-//	
-//	{
-//		AJetMOCK* testMockJet = NewObject<AJetMOCK>();
-//
-//		const float aDesiredSpeed = 30.0f;
-//		
-//		testMockJet->setCurrentSpeedTo(aDesiredSpeed);
-//		
-//		TestTrue(TEXT("Setting speed should change the speed to a desired one."), testMockJet->currentSpeed() == aDesiredSpeed );
-//	}
-//
-//	return true;
-//}
+
+
 
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetMOCKSetVelocityToTopSpeedCommand);
 
