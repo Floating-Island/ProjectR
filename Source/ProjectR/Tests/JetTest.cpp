@@ -245,26 +245,9 @@ bool FSpawningAJetMakeItAccelerateCommand::Update()
 
 	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
 
-
-
 	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
 
-
-	/*UE_LOG(LogTemp, Log, TEXT("testJet spawning transform: %s"), *testJet->GetActorTransform().ToString());
-	GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Red, FString::Printf(TEXT("testJet spawning transform: %s"), *testJet->GetActorTransform().ToString()));
-
-	testJet->SetActorLocation(FVector(0));
-	testJet->SetActorRotation(testJet->GetGravityDirection().Rotation());
-	FVector currentLocation = testJet->GetActorLocation();
-
-
-	UE_LOG(LogTemp, Log, TEXT("testJet spawning transform aligned to gravity: %s"), *testJet->GetActorTransform().ToString());
-	GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Red, FString::Printf(TEXT("testJet spawning transform: %s"), *testJet->GetActorTransform().ToString()));*/
-
-
-
-	FVector forceToApply = FVector(10000);
-	testJet->addAcceleration(forceToApply);
+	testJet->addAcceleration();
 
 	return true;
 }

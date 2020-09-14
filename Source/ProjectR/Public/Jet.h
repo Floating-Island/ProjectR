@@ -53,7 +53,7 @@ public:
 
 	bool isAffectingNavigation();
 
-	void addAcceleration(FVector forceToApply);
+	void addAcceleration();
 
 	float acceleration();
 };
