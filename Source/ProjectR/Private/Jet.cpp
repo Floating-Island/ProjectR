@@ -78,8 +78,11 @@ bool AJet::isAffectingNavigation()
 
 void AJet::accelerate()
 {
-	FVector forceToApply = FVector(acceleration(), 0, 0);
-	meshComponent->AddForce(forceToApply,NAME_None, true);
+	if(currentSpeed() < settedTopSpeed())
+	{
+		FVector forceToApply = FVector(acceleration(), 0, 0);
+		meshComponent->AddForce(forceToApply,NAME_None, true);
+	}
 }
 
 float AJet::acceleration()
