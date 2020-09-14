@@ -425,16 +425,13 @@ bool FCheckAJetSpeedDecreaseCommand::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			else
-			{
-				*tickCount = *tickCount + 1;
+			*tickCount = *tickCount + 1;
 
-				if ( (*tickCount) > (*tickLimit))
-				{
-					test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from (0,0,0)."), *tickCount > *tickLimit);
-					testWorld->bDebugFrameStepExecution = true;
-					return true;
-				}
+			if ( (*tickCount) > (*tickLimit))
+			{
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from (0,0,0)."), *tickCount > *tickLimit);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
 			}
 		}
 	}
