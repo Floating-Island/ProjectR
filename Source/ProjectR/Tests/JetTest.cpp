@@ -53,24 +53,24 @@ bool FAJetSpeedIsZeroWhenInstantiatedTest::RunTest(const FString& Parameters)
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpeedIncreasesWhenAcceleratesTest, "ProjectR.Unit.JetTests.SpeedIncreasesWhenAccelerates", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FAJetSpeedIncreasesWhenAcceleratesTest::RunTest(const FString& Parameters)
-{
-	{
-		AJet* testJet = NewObject<AJet>();
-
-		const float currentSpeed = testJet->currentSpeed();
-
-		testJet->accelerate();
-
-		const float acceleratedSpeed = testJet->currentSpeed();
-		
-		TestTrue(TEXT("Speed increases when accelerates."), acceleratedSpeed > currentSpeed);
-	}
-
-	return true;
-}
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpeedIncreasesWhenAcceleratesTest, "ProjectR.Unit.JetTests.SpeedIncreasesWhenAccelerates", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//bool FAJetSpeedIncreasesWhenAcceleratesTest::RunTest(const FString& Parameters)
+//{
+//	{
+//		AJet* testJet = NewObject<AJet>();
+//
+//		const float currentSpeed = testJet->currentSpeed();
+//
+//		testJet->accelerate();
+//
+//		const float acceleratedSpeed = testJet->currentSpeed();
+//		
+//		TestTrue(TEXT("Speed increases when accelerates."), acceleratedSpeed > currentSpeed);
+//	}
+//
+//	return true;
+//}
 
 
 
@@ -232,6 +232,17 @@ bool FAJetMeshShouldBeTheRootComponentTest::RunTest(const FString& Parameters)
 //}
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetDefaultAccelerationIsGreaterThanZeroTest, "ProjectR.Unit.JetTests.DefaultAccelerationIsGreaterThanZero", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetDefaultAccelerationIsGreaterThanZeroTest::RunTest(const FString& Parameters)
+{
+	AJet* testJet = NewObject<AJet>(AJet::StaticClass());
+
+	TestTrue(TEXT("A Jet's default acceleration should be bigger than zero."), testJet->acceleration() > 0);
+	
+	return true;
+}
+
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawningAJetMakeItAccelerateCommand, FAutomationTestBase*, test);
@@ -316,14 +327,23 @@ bool FAJetShouldMoveForwardWhenAcceleratedTest::RunTest(const FString& Parameter
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetDefaultAccelerationIsGreaterThanZeroTest, "ProjectR.Unit.JetTests.DefaultAccelerationIsGreaterThanZero", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FAJetDefaultAccelerationIsGreaterThanZeroTest::RunTest(const FString& Parameters)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpeedIncreasesWhenAcceleratesTest, "ProjectR.Unit.JetTests.SpeedIncreasesWhenAccelerates", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetSpeedIncreasesWhenAcceleratesTest::RunTest(const FString& Parameters)
 {
-	AJet* testJet = NewObject<AJet>(AJet::StaticClass());
+	{
+		AJet* testJet = NewObject<AJet>();
 
-	TestTrue(TEXT("A Jet's default acceleration force should bigger than zero."), testJet->acceleration() > 0);
-	
+		const float currentSpeed = testJet->currentSpeed();
+
+		testJet->accelerate();
+
+		const float acceleratedSpeed = testJet->currentSpeed();
+		
+		TestTrue(TEXT("Speed increases when accelerates."), acceleratedSpeed > currentSpeed);
+	}
+
 	return true;
 }
 
