@@ -38,18 +38,18 @@ bool FAJetShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpeedIsZeroWhenInstantiatedTest, "ProjectR.Unit.JetTests.SpeedIsZeroWhenInstantiated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FAJetSpeedIsZeroWhenInstantiatedTest::RunTest(const FString& Parameters)
-{
-	{
-		AJet* testJet = NewObject<AJet>();
-		
-		TestTrue(TEXT("Jet speed should be zero when instantiated."), testJet->currentSpeed() == 0);
-	}
-
-	return true;
-}
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpeedIsZeroWhenInstantiatedTest, "ProjectR.Unit.JetTests.SpeedIsZeroWhenInstantiated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//bool FAJetSpeedIsZeroWhenInstantiatedTest::RunTest(const FString& Parameters)
+//{
+//	{
+//		AJet* testJet = NewObject<AJet>();
+//		
+//		TestTrue(TEXT("Jet speed should be zero when instantiated."), testJet->currentSpeed() == 0);
+//	}
+//
+//	return true;
+//}
 
 
 
@@ -74,47 +74,47 @@ bool FAJetSpeedIsZeroWhenInstantiatedTest::RunTest(const FString& Parameters)
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetBrakeMakesItGoReverseWhenSpeedIsZeroTest, "ProjectR.Unit.JetTests.BrakeMakesItGoReverseWhenSpeedIsZero", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetBrakeMakesItGoReverseWhenSpeedIsZeroTest, "ProjectR.Unit.JetTests.BrakeMakesItGoReverseWhenSpeedIsZero", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//bool FAJetBrakeMakesItGoReverseWhenSpeedIsZeroTest::RunTest(const FString& Parameters)
+//{
+//	{
+//		AJet* testJet = NewObject<AJet>();
+//
+//		//another test checks that the current speed is zero when instantiated
+//
+//		testJet->brake();
+//		
+//		TestTrue(TEXT("Brake is Reverse when speed is zero or negative."), testJet->currentSpeed() < 0 );
+//	}
+//
+//	return true;
+//}
 
-bool FAJetBrakeMakesItGoReverseWhenSpeedIsZeroTest::RunTest(const FString& Parameters)
-{
-	{
-		AJet* testJet = NewObject<AJet>();
 
-		//another test checks that the current speed is zero when instantiated
-
-		testJet->brake();
-		
-		TestTrue(TEXT("Brake is Reverse when speed is zero or negative."), testJet->currentSpeed() < 0 );
-	}
-
-	return true;
-}
-
-
-//uses a mock
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetBrakeDecreasesCurrentSpeedTest, "ProjectR.Unit.JetTests.BrakeDecreasesCurrentSpeed", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FAJetBrakeDecreasesCurrentSpeedTest::RunTest(const FString& Parameters)
-{
-	{
-		AJetMOCK* testJet = NewObject<AJetMOCK>();
-
-		const float aDesiredSpeed = 25.0f;
-		
-		testJet->setCurrentSpeedTo(aDesiredSpeed);
-
-		const float currentSpeed = testJet->currentSpeed();
-
-		testJet->brake();
-
-		const float brakedSpeed = testJet->currentSpeed();
-		
-		TestTrue(TEXT("Brake decreases currentSpeed."), brakedSpeed < currentSpeed );
-	}
-
-	return true;
-}
+////uses a mock
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetBrakeDecreasesCurrentSpeedTest, "ProjectR.Unit.JetTests.BrakeDecreasesCurrentSpeed", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//bool FAJetBrakeDecreasesCurrentSpeedTest::RunTest(const FString& Parameters)
+//{
+//	{
+//		AJetMOCK* testJet = NewObject<AJetMOCK>();
+//
+//		const float aDesiredSpeed = 25.0f;
+//		
+//		testJet->setCurrentSpeedTo(aDesiredSpeed);
+//
+//		const float currentSpeed = testJet->currentSpeed();
+//
+//		testJet->brake();
+//
+//		const float brakedSpeed = testJet->currentSpeed();
+//		
+//		TestTrue(TEXT("Brake decreases currentSpeed."), brakedSpeed < currentSpeed );
+//	}
+//
+//	return true;
+//}
 
 
 
@@ -324,8 +324,41 @@ bool FAJetShouldMoveForwardWhenAcceleratedTest::RunTest(const FString& Parameter
 
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedCommand, int*, tickCount, int*, tickLimit, FAutomationTestBase*, test);
+
+bool FCheckAJetSpeedCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+		AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJet::StaticClass()));
+		if (testJet)
+		{
+			float currentSpeed = testJet->currentSpeed();
 
 
+			if (currentSpeed > 0)//it would be better to align the ship first and then check against it's forward vector. Be have to be careful of gravity in this test.
+			{
+				check(test);
+				test->TestTrue(TEXT("The Jet X location should increase after an acceleration is added (after ticking)."), currentSpeed > 0);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			else
+			{
+				*tickCount = *tickCount + 1;
+
+				if ( (*tickCount) > (*tickLimit))
+				{
+					test->TestFalse(TEXT("Tick limit reached for this test. The Jet Location never changed from (0,0,0)."), *tickCount > *tickLimit);
+					testWorld->bDebugFrameStepExecution = true;
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpeedIncreasesWhenAcceleratesTest, "ProjectR.Unit.JetTests.SpeedIncreasesWhenAccelerates", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
@@ -342,6 +375,20 @@ bool FAJetSpeedIncreasesWhenAcceleratesTest::RunTest(const FString& Parameters)
 		const float acceleratedSpeed = testJet->currentSpeed();
 		
 		TestTrue(TEXT("Speed increases when accelerates."), acceleratedSpeed > currentSpeed);
+
+
+		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");//cambiar a: "/Game/Tests/TestMaps/VoidWorld"
+		
+		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
+
+		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand(this));
+		int* tickCount = new int{0};
+		int* tickLimit = new int{3};
+		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedCommand(tickCount, tickLimit, this));
+
+		//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//no problem here.
 	}
 
 	return true;
