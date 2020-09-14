@@ -23,6 +23,7 @@ AJet::AJet()
 
 	accelerationValue = 500.0f;
 	speed = 0.0f;
+	brakeAbsoluteValue = 100.0f;
 }
 
 // Called when the game starts or when spawned
@@ -94,5 +95,10 @@ void AJet::accelerate()
 float AJet::acceleration()
 {
 	return accelerationValue;
+}
+
+float AJet::brakeValue()
+{
+	return brakeAbsoluteValue;
 }
 

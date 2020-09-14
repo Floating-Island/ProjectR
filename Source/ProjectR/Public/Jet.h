@@ -20,6 +20,8 @@ protected:
 	virtual void BeginPlay() override;
 
 	float accelerationValue;
+
+	float brakeAbsoluteValue;
 	
 	float speed;
 
@@ -54,4 +56,6 @@ public:
 	void accelerate();
 
 	float acceleration();
+
+	float brakeValue();
 };
