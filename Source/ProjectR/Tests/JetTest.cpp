@@ -475,7 +475,7 @@ bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
 
 			if ( (*tickCount) > tickLimit)
 			{
-				test->TestTrue(TEXT("If a jet is at top speed, it should never increase it after an acceleration is added (after ticking)."), FMath::IsNearlyEqual(currentSpeed, testJet->settedTopSpeed(), 0.5f));
+				test->TestTrue(TEXT("If a jet is at top speed, it should never increase it after an acceleration is added (after ticking)."), FMath::IsNearlyEqual(currentSpeed, testJet->settedTopSpeed(), 1.0f));
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
