@@ -51,11 +51,6 @@ float AJet::currentSpeed()
 	return meshComponent->GetComponentVelocity().X;
 }
 
-void AJet::setTopSpeed(float aMaximumSpeed)
-{
-	topSpeed = aMaximumSpeed;
-}
-
 float AJet::settedTopSpeed()
 {
 	return topSpeed;

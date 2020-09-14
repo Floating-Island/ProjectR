@@ -37,8 +37,6 @@ public:
 
 	float currentSpeed();
 
-	void setTopSpeed(float aMaximumSpeed);
-
 	float settedTopSpeed();
 	
 	bool hasAStaticMesh();
