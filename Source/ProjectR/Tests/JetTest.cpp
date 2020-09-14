@@ -487,7 +487,7 @@ bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMOCKShouldntAccelerateWhenAtTopSpeedTest, "ProjectR.Unit.JetMockTests.ShouldntAccelerateWhenAtTopSpeed", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMOCKShouldntAccelerateWhenAtTopSpeedTest, "ProjectR.Unit.JetTests.ShouldntAccelerateWhenAtTopSpeed", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetMOCKShouldntAccelerateWhenAtTopSpeedTest::RunTest(const FString& Parameters)
 {
