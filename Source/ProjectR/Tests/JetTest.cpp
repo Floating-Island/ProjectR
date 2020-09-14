@@ -306,11 +306,9 @@ bool FCheckAJetLocationCommand::Update()
 }
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldMoveForwardWhenAcceleratedTest, "ProjectR.Unit.JetTests.ShouldMoveForwardWhenAccelerated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldMoveWhenAccelerationAddedTest, "ProjectR.Unit.JetTests.ShouldMoveWhenAccelerationAdded", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FAJetShouldMoveWhenAccelerationAddedTest::RunTest(const FString& Parameters)
+bool FAJetShouldMoveForwardWhenAcceleratedTest::RunTest(const FString& Parameters)
 {
 	{
 		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");//cambiar a: "/Game/Tests/TestMaps/VoidWorld"
@@ -329,5 +327,7 @@ bool FAJetShouldMoveWhenAccelerationAddedTest::RunTest(const FString& Parameters
 
 	return true;
 }
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
