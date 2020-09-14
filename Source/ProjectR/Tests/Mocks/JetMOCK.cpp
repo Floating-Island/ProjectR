@@ -5,5 +5,6 @@
 
 void AJetMOCK::setCurrentSpeedTo(float aDesiredSpeed)
 {
-	//speed = aDesiredSpeed;
+	FVector newVelocity = FVector(aDesiredSpeed, 0, 0);
+	meshComponent->SetPhysicsLinearVelocity(newVelocity);
 }
