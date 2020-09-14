@@ -23,6 +23,7 @@ AJet::AJet()
 
 	accelerationValue = 500.0f;
 	brakeAbsoluteValue = 100.0f;
+	topSpeed = 1000.0f;
 }
 
 // Called when the game starts or when spawned
