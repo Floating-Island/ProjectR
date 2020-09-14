@@ -325,7 +325,7 @@ bool FCheckAJetSpeedIncreaseCommand::Update()
 			if (currentSpeed > 0)//it would be better to align the ship first and then check against it's forward vector. Be have to be careful of gravity in this test.
 			{
 				check(test);
-				test->TestTrue(TEXT("The Jet X location should increase after an acceleration is added (after ticking)."), currentSpeed > 0);
+				test->TestTrue(TEXT("The Jet speed should increase after an accelerating (after ticking)."), currentSpeed > 0);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -335,7 +335,7 @@ bool FCheckAJetSpeedIncreaseCommand::Update()
 
 				if ( (*tickCount) > (*tickLimit))
 				{
-					test->TestFalse(TEXT("Tick limit reached for this test. The Jet Location never changed from (0,0,0)."), *tickCount > *tickLimit);
+					test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from 0."), *tickCount > *tickLimit);
 					testWorld->bDebugFrameStepExecution = true;
 					return true;
 				}
@@ -386,6 +386,82 @@ bool FAJetDefaultBrakeValueIsGreaterThanZeroTest::RunTest(const FString& Paramet
 
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawningAJetMakeItBrakeCommand, FAutomationTestBase*, test);
 
+bool FSpawningAJetMakeItBrakeCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	{
+		return false;
+	}
+
+	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+
+	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
+
+	testJet->brake();
+
+	return true;
+}
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedDecreaseCommand, int*, tickCount, int*, tickLimit, FAutomationTestBase*, test);
+
+bool FCheckAJetSpeedDecreaseCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+		AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJet::StaticClass()));
+		if (testJet)
+		{
+			float currentSpeed = testJet->currentSpeed();
+
+
+			if (currentSpeed < 0)//it would be better to align the ship first and then check against it's forward vector. Be have to be careful of gravity in this test.
+			{
+				check(test);
+				test->TestTrue(TEXT("The Jet speed should decrease after a brake (after ticking)."), currentSpeed < 0);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			else
+			{
+				*tickCount = *tickCount + 1;
+
+				if ( (*tickCount) > (*tickLimit))
+				{
+					test->TestFalse(TEXT("Tick limit reached for this test. The Jet Location never changed from (0,0,0)."), *tickCount > *tickLimit);
+					testWorld->bDebugFrameStepExecution = true;
+					return true;
+				}
+			}
+		}
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpeedDecreasesWhenBrakesTest, "ProjectR.Unit.JetTests.SpeedDecreasesWhenBrakes", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetSpeedDecreasesWhenBrakesTest::RunTest(const FString& Parameters)
+{
+	{
+		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+		
+		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
+
+		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItBrakeCommand(this));
+		int* tickCount = new int{0};
+		int* tickLimit = new int{3};
+		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedDecreaseCommand(tickCount, tickLimit, this));
+
+		//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//no problem here.
+	}
+
+	return true;
+}
 
 #endif //WITH_DEV_AUTOMATION_TESTS
