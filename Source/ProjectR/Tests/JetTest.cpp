@@ -262,7 +262,7 @@ bool FAJetShouldMoveForwardWhenAcceleratedTest::RunTest(const FString& Parameter
 		int tickLimit = 3;
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocationCommand(tickCount, tickLimit, this));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//no problem here.
+		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	}
 
 	return true;
@@ -324,7 +324,7 @@ bool FAJetSpeedIncreasesWhenAcceleratesTest::RunTest(const FString& Parameters)
 		int tickLimit = 3;
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedIncreaseCommand(tickCount, tickLimit, this));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//no problem here.
+		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	}
 
 	return true;
@@ -417,7 +417,7 @@ bool FAJetSpeedDecreasesWhenBrakesTest::RunTest(const FString& Parameters)
 		int tickLimit = 3;
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedDecreaseCommand(tickCount, tickLimit, this));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//no problem here.
+		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	}
 
 	return true;
@@ -503,7 +503,7 @@ bool FAJetMOCKShouldntAccelerateWhenAtTopSpeedTest::RunTest(const FString& Param
 		int tickLimit = 3;
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedAgainstTopSpeedCommand(tickCount, tickLimit, this));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//no problem here.
+		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	}
 
 	return true;
