@@ -194,7 +194,7 @@ bool FAJetDefaultAccelerationIsGreaterThanZeroTest::RunTest(const FString& Param
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawningAJetMakeItAccelerateCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand);
 
 bool FSpawningAJetMakeItAccelerateCommand::Update()
 {
@@ -257,7 +257,7 @@ bool FAJetShouldMoveForwardWhenAcceleratedTest::RunTest(const FString& Parameter
 
 		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand(this));
+		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand);
 		int* tickCount = new int{0};
 		int tickLimit = 3;
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocationCommand(tickCount, &tickLimit, this));
@@ -289,7 +289,7 @@ bool FCheckAJetSpeedIncreaseCommand::Update()
 			if (currentSpeed > 0)//it would be better to align the ship first and then check against it's forward vector. Be have to be careful of gravity in this test.
 			{
 				check(test);
-				test->TestTrue(TEXT("The Jet speed should increase after an accelerating (after ticking)."), currentSpeed > 0);
+				test->TestTrue(TEXT("The Jet speed should increase after accelerating (after ticking)."), currentSpeed > 0);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -319,7 +319,7 @@ bool FAJetSpeedIncreasesWhenAcceleratesTest::RunTest(const FString& Parameters)
 
 		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand(this));
+		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand);
 		int* tickCount = new int{0};
 		int tickLimit = 3;
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedIncreaseCommand(tickCount, &tickLimit, this));
@@ -338,7 +338,7 @@ bool FAJetDefaultBrakeValueIsGreaterThanZeroTest::RunTest(const FString& Paramet
 {
 	AJet* testJet = NewObject<AJet>(AJet::StaticClass());
 
-	TestTrue(TEXT("A Jet's default acceleration should be bigger than zero."), testJet->brakeValue() > 0);
+	TestTrue(TEXT("A Jet's default brake value should be bigger than zero."), testJet->brakeValue() > 0);
 	
 	return true;
 }
@@ -348,7 +348,7 @@ bool FAJetDefaultBrakeValueIsGreaterThanZeroTest::RunTest(const FString& Paramet
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawningAJetMakeItBrakeCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItBrakeCommand);
 
 bool FSpawningAJetMakeItBrakeCommand::Update()
 {
@@ -412,7 +412,7 @@ bool FAJetSpeedDecreasesWhenBrakesTest::RunTest(const FString& Parameters)
 
 		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItBrakeCommand(this));
+		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItBrakeCommand);
 		int* tickCount = new int{0};
 		int tickLimit = 3;
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedDecreaseCommand(tickCount, &tickLimit, this));
