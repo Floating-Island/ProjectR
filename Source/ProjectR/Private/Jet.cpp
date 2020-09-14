@@ -47,7 +47,7 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 float AJet::currentSpeed()
 {
-	return speed;
+	return meshComponent->GetComponentVelocity().X;
 }
 
 void AJet::accelerate()

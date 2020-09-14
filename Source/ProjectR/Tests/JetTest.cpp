@@ -366,17 +366,6 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpeedIncreasesWhenAcceleratesTest, "Projec
 bool FAJetSpeedIncreasesWhenAcceleratesTest::RunTest(const FString& Parameters)
 {
 	{
-		AJet* testJet = NewObject<AJet>();
-
-		const float currentSpeed = testJet->currentSpeed();
-
-		testJet->accelerate();
-
-		const float acceleratedSpeed = testJet->currentSpeed();
-		
-		TestTrue(TEXT("Speed increases when accelerates."), acceleratedSpeed > currentSpeed);
-
-
 		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");//cambiar a: "/Game/Tests/TestMaps/VoidWorld"
 		
 		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
