@@ -51,11 +51,6 @@ float AJet::currentSpeed()
 	return meshComponent->GetComponentVelocity().X;
 }
 
-void AJet::brake()
-{
-	speed--;
-}
-
 void AJet::setTopSpeed(float aMaximumSpeed)
 {
 	topSpeed = aMaximumSpeed;
@@ -100,5 +95,11 @@ float AJet::acceleration()
 float AJet::brakeValue()
 {
 	return brakeAbsoluteValue;
+}
+
+void AJet::brake()
+{
+	FVector forceToApply = FVector(-brakeValue(), 0, 0);//notice the '-' next to brakeValue. Brake value's sign is positive.
+	meshComponent->AddForce(forceToApply,NAME_None, true);
 }
 
