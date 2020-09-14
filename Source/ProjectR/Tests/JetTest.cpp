@@ -474,10 +474,7 @@ bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
 			float currentSpeed = testJet->currentSpeed();
 
 			*tickCount = *tickCount + 1;
-			UE_LOG(LogTemp, Log, TEXT("currentSpeedValue: %f"), currentSpeed);
-			GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Red, FString::Printf(TEXT("currentSpeedValue: %f"), currentSpeed));
-			UE_LOG(LogTemp, Log, TEXT("top speed Value: %f"), testJet->settedTopSpeed());
-			GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Red, FString::Printf(TEXT("top speed Value: %f"), testJet->settedTopSpeed() ));
+
 			if ( (*tickCount) > tickLimit)
 			{
 				test->TestTrue(TEXT("If a jet is at top speed, it should never increase it after an acceleration is added (after ticking)."), FMath::IsNearlyEqual(currentSpeed, testJet->settedTopSpeed(), 1.0f));
