@@ -136,8 +136,7 @@ bool FAJetMeshShouldBeTheRootComponentTest::RunTest(const FString& Parameters)
 //bool FAJetShouldHaveGravityEnabledTest::RunTest(const FString& Parameters)
 //{
 //	{
-//		UWorld* testWorld = UWorld::CreateWorld(EWorldType::None, true);
-//		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
+//		AJet* testJet = NewObject<AJet>();
 //		
 //		TestTrue(TEXT("The Jet should have gravity enabled."), testJet->hasGravityEnabled());
 //	}
@@ -167,8 +166,7 @@ bool FAJetMeshShouldBeTheRootComponentTest::RunTest(const FString& Parameters)
 //bool FAJetShouldBeMovableTest::RunTest(const FString& Parameters)
 //{
 //	{
-//		UWorld* testWorld = UWorld::CreateWorld(EWorldType::None, true);
-//		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
+//		AJet* testJet = NewObject<AJet>();
 //		
 //		TestTrue(TEXT("The Jet should be movable when spawned into the world."), testJet->IsRootComponentMovable());
 //	}
