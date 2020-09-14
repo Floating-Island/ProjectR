@@ -277,8 +277,8 @@ bool FAJetShouldMoveForwardWhenAcceleratedTest::RunTest(const FString& Parameter
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand(this));
 		int* tickCount = new int{0};
-		int* tickLimit = new int{3};
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocationCommand(tickCount, tickLimit, this));
+		int tickLimit = 3;
+		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocationCommand(tickCount, &tickLimit, this));
 
 		//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//no problem here.
 	}
@@ -339,8 +339,8 @@ bool FAJetSpeedIncreasesWhenAcceleratesTest::RunTest(const FString& Parameters)
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand(this));
 		int* tickCount = new int{0};
-		int* tickLimit = new int{3};
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedIncreaseCommand(tickCount, tickLimit, this));
+		int tickLimit = 3;
+		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedIncreaseCommand(tickCount, &tickLimit, this));
 
 		//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//no problem here.
 	}
@@ -432,8 +432,8 @@ bool FAJetSpeedDecreasesWhenBrakesTest::RunTest(const FString& Parameters)
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItBrakeCommand(this));
 		int* tickCount = new int{0};
-		int* tickLimit = new int{3};
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedDecreaseCommand(tickCount, tickLimit, this));
+		int tickLimit = 3;
+		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedDecreaseCommand(tickCount, &tickLimit, this));
 
 		//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//no problem here.
 	}
