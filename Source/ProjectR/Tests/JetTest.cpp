@@ -53,27 +53,6 @@ bool FAJetShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 
 
 
-//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpeedIncreasesWhenAcceleratesTest, "ProjectR.Unit.JetTests.SpeedIncreasesWhenAccelerates", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-//
-//bool FAJetSpeedIncreasesWhenAcceleratesTest::RunTest(const FString& Parameters)
-//{
-//	{
-//		AJet* testJet = NewObject<AJet>();
-//
-//		const float currentSpeed = testJet->currentSpeed();
-//
-//		testJet->accelerate();
-//
-//		const float acceleratedSpeed = testJet->currentSpeed();
-//		
-//		TestTrue(TEXT("Speed increases when accelerates."), acceleratedSpeed > currentSpeed);
-//	}
-//
-//	return true;
-//}
-
-
-
 //IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetBrakeMakesItGoReverseWhenSpeedIsZeroTest, "ProjectR.Unit.JetTests.BrakeMakesItGoReverseWhenSpeedIsZero", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 //
 //bool FAJetBrakeMakesItGoReverseWhenSpeedIsZeroTest::RunTest(const FString& Parameters)
@@ -305,7 +284,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldMoveForwardWhenAcceleratedTest, "Pro
 bool FAJetShouldMoveForwardWhenAcceleratedTest::RunTest(const FString& Parameters)
 {
 	{
-		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");//cambiar a: "/Game/Tests/TestMaps/VoidWorld"
+		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 		
 		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
@@ -366,7 +345,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpeedIncreasesWhenAcceleratesTest, "Projec
 bool FAJetSpeedIncreasesWhenAcceleratesTest::RunTest(const FString& Parameters)
 {
 	{
-		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");//cambiar a: "/Game/Tests/TestMaps/VoidWorld"
+		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 		
 		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
