@@ -79,25 +79,25 @@ bool FAJetSpeedIsZeroWhenInstantiatedTest::RunTest(const FString& Parameters)
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSettingATopSpeedMakesItTheTopSpeedTest, "ProjectR.Unit.JetTests.SettingATopSpeedMakesItTheTopSpeed", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FAJetSettingATopSpeedMakesItTheTopSpeedTest::RunTest(const FString& Parameters)
-{
-	{
-		AJet* testJet = NewObject<AJet>();
-
-		//another test checks that the current speed is zero when instantiated
-		float aMaximumSpeed = 40.0f;
-
-		testJet->setTopSpeed(aMaximumSpeed);
-
-		float aSettedMaxSpeed = testJet->settedTopSpeed();
-		
-		TestTrue(TEXT("Setting a max speed should be reflected on the top speed variable."), aSettedMaxSpeed == aMaximumSpeed );
-	}
-
-	return true;
-}
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSettingATopSpeedMakesItTheTopSpeedTest, "ProjectR.Unit.JetTests.SettingATopSpeedMakesItTheTopSpeed", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//bool FAJetSettingATopSpeedMakesItTheTopSpeedTest::RunTest(const FString& Parameters)
+//{
+//	{
+//		AJet* testJet = NewObject<AJet>();
+//
+//		//another test checks that the current speed is zero when instantiated
+//		float aMaximumSpeed = 40.0f;
+//
+//		testJet->setTopSpeed(aMaximumSpeed);
+//
+//		float aSettedMaxSpeed = testJet->settedTopSpeed();
+//		
+//		TestTrue(TEXT("Setting a max speed should be reflected on the top speed variable."), aSettedMaxSpeed == aMaximumSpeed );
+//	}
+//
+//	return true;
+//}
 
 
 
