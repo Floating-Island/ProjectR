@@ -224,6 +224,9 @@ bool FAJetDefaultAccelerationIsGreaterThanZeroTest::RunTest(const FString& Param
 
 
 
+
+
+
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawningAJetMakeItAccelerateCommand, FAutomationTestBase*, test);
 
 bool FSpawningAJetMakeItAccelerateCommand::Update()
@@ -303,9 +306,12 @@ bool FAJetShouldMoveForwardWhenAcceleratedTest::RunTest(const FString& Parameter
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedCommand, int*, tickCount, int*, tickLimit, FAutomationTestBase*, test);
 
-bool FCheckAJetSpeedCommand::Update()
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedIncreaseCommand, int*, tickCount, int*, tickLimit, FAutomationTestBase*, test);
+
+bool FCheckAJetSpeedIncreaseCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -354,12 +360,32 @@ bool FAJetSpeedIncreasesWhenAcceleratesTest::RunTest(const FString& Parameters)
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand(this));
 		int* tickCount = new int{0};
 		int* tickLimit = new int{3};
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedCommand(tickCount, tickLimit, this));
+		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedIncreaseCommand(tickCount, tickLimit, this));
 
 		//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//no problem here.
 	}
 
 	return true;
 }
+
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetDefaultBrakeValueIsGreaterThanZeroTest, "ProjectR.Unit.JetTests.DefaultBrakeValueIsGreaterThanZero", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetDefaultBrakeValueIsGreaterThanZeroTest::RunTest(const FString& Parameters)
+{
+	AJet* testJet = NewObject<AJet>(AJet::StaticClass());
+
+	TestTrue(TEXT("A Jet's default acceleration should be bigger than zero."), testJet->brakeValue() > 0);
+	
+	return true;
+}
+
+
+
+
+
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
