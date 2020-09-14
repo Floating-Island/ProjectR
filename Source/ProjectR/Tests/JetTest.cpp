@@ -459,7 +459,7 @@ bool FSpawningAJetSetVelocityToTopSpeedCommand::Update()
 	return true;
 }
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedAgainstTopSpeedCommand, int*, tickCount, int, tickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedAgainstTopSpeedCommand, int&, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
 bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
 {
@@ -471,9 +471,16 @@ bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
 		{
 			float currentSpeed = testJet->currentSpeed();
 
-			*tickCount = *tickCount + 1;
+			tickCount = tickCount + 1;
 
-			if ( (*tickCount) > tickLimit)
+			UE_LOG(LogTemp, Log, TEXT("tickCount: %d"), tickCount);
+			GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Red, FString::Printf(TEXT("tickCount: %d"), tickCount));
+
+			UE_LOG(LogTemp, Log, TEXT("tickLimit: %d"), tickLimit);
+			GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Red, FString::Printf(TEXT("tickLimit: %d"), tickLimit));
+
+			
+			if ( tickCount > tickLimit)
 			{
 				test->TestTrue(TEXT("If a jet is at top speed, it should never increase it after an acceleration is added (after ticking)."), FMath::IsNearlyEqual(currentSpeed, testJet->settedTopSpeed(), 1.0f));
 				testWorld->bDebugFrameStepExecution = true;
@@ -497,7 +504,7 @@ bool FAJetMOCKShouldntAccelerateWhenAtTopSpeedTest::RunTest(const FString& Param
 		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetSetVelocityToTopSpeedCommand);
-		int* tickCount = new int{0};
+		int tickCount = 0;
 		int tickLimit = 3;
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedAgainstTopSpeedCommand(tickCount, tickLimit, this));
 
