@@ -22,8 +22,6 @@ protected:
 	float accelerationValue;
 
 	float brakeAbsoluteValue;
-	
-	float speed;
 
 	float topSpeed;
 
@@ -38,8 +36,6 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	float currentSpeed();
-
-	void brake();
 
 	void setTopSpeed(float aMaximumSpeed);
 
@@ -58,4 +54,6 @@ public:
 	float acceleration();
 
 	float brakeValue();
+
+	void brake();
 };

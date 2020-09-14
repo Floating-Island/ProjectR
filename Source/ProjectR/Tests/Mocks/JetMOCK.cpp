@@ -5,5 +5,5 @@
 
 void AJetMOCK::setCurrentSpeedTo(float aDesiredSpeed)
 {
-	speed = aDesiredSpeed;
+	//speed = aDesiredSpeed;
 }

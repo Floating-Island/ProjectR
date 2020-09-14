@@ -22,7 +22,6 @@ AJet::AJet()
 	meshComponent->SetStaticMesh(Mesh);
 
 	accelerationValue = 500.0f;
-	speed = 0.0f;
 	brakeAbsoluteValue = 100.0f;
 }
 
