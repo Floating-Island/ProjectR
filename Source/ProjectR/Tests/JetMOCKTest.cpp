@@ -29,7 +29,7 @@ bool FJetMockShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Paramete
 	{
 		AJetMOCK* testMockJet = NewObject<AJetMOCK>();
 		
-		TestNotNull(TEXT("The Jet shouldn't be null after instantiating it."), testMockJet);
+		TestNotNull(TEXT("The JetMOCK shouldn't be null after instantiating it."), testMockJet);
 	}
 
 	return true;
