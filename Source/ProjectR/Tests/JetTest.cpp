@@ -333,17 +333,13 @@ bool FAJetShouldMoveForwardWhenAcceleratedTest::RunTest(const FString& Parameter
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveAFixedAccelerationForceTest, "ProjectR.Unit.JetTests.ShouldMoveForwardWhenAccelerated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetDefaultAccelerationIsGreaterThanZeroTest, "ProjectR.Unit.JetTests.DefaultAccelerationIsGreaterThanZero", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FAJetShouldHaveAFixedAccelerationForceTest::RunTest(const FString& Parameters)
+bool FAJetDefaultAccelerationIsGreaterThanZeroTest::RunTest(const FString& Parameters)
 {
 	AJet* testJet = NewObject<AJet>(AJet::StaticClass());
 
-	FVector accelerationForce = FVector(10000);
-
-	testJet->setAccelerationForce(accelerationForce);
-
-	TestTrue(TEXT("A Jet's acceleration force should be the one assigned."), testJet->accelerationForce() == accelerationForce);
+	TestTrue(TEXT("A Jet's default acceleration force should bigger than zero."), testJet->acceleration() > 0);
 	
 	return true;
 }
