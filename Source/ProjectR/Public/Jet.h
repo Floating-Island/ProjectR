@@ -19,6 +19,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	float accelerationValue;
+	
 	float speed;
 
 	float topSpeed;
@@ -52,4 +54,6 @@ public:
 	bool isAffectingNavigation();
 
 	void addAcceleration(FVector forceToApply);
+
+	float acceleration();
 };

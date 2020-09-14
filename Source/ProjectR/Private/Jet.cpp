@@ -21,6 +21,7 @@ AJet::AJet()
 	UStaticMesh* Mesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), NULL, TEXT("/Engine/EditorMeshes/EditorCube")));
 	meshComponent->SetStaticMesh(Mesh);
 
+	accelerationValue = 50.0f;
 	speed = 0.0f;
 }
 
@@ -92,5 +93,10 @@ bool AJet::isAffectingNavigation()
 void AJet::addAcceleration(FVector forceToApply)
 {
 	meshComponent->AddForce(forceToApply,NAME_None, true);
+}
+
+float AJet::acceleration()
+{
+	return accelerationValue;
 }
 
