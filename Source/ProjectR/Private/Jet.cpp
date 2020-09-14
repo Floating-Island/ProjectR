@@ -50,11 +50,6 @@ float AJet::currentSpeed()
 	return meshComponent->GetComponentVelocity().X;
 }
 
-void AJet::accelerate()
-{
-	speed++;
-}
-
 void AJet::brake()
 {
 	speed--;
@@ -90,7 +85,7 @@ bool AJet::isAffectingNavigation()
 	return meshComponent->CanEverAffectNavigation();
 }
 
-void AJet::addAcceleration()
+void AJet::accelerate()
 {
 	FVector forceToApply = FVector(acceleration(), 0, 0);
 	meshComponent->AddForce(forceToApply,NAME_None, true);

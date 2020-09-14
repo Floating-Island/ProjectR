@@ -237,7 +237,7 @@ bool FSpawningAJetMakeItAccelerateCommand::Update()
 
 	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
 
-	testJet->addAcceleration();
+	testJet->accelerate();
 
 	return true;
 }

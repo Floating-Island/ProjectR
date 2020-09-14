@@ -37,8 +37,6 @@ public:
 
 	float currentSpeed();
 
-	void accelerate();
-
 	void brake();
 
 	void setTopSpeed(float aMaximumSpeed);
@@ -53,7 +51,7 @@ public:
 
 	bool isAffectingNavigation();
 
-	void addAcceleration();
+	void accelerate();
 
 	float acceleration();
 };
