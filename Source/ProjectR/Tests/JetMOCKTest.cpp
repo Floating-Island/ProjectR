@@ -59,7 +59,72 @@ bool FJetMockShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Paramete
 //	return true;
 //}
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetMOCKSetVelocityToTopSpeedCommand);
 
+bool FSpawningAJetMOCKSetVelocityToTopSpeedCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	{
+		return false;
+	}
+
+	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+
+	AJetMOCK* testJet = testWorld->SpawnActor<AJetMOCK>(AJetMOCK::StaticClass());
+
+	testJet->setCurrentSpeedTo(testJet->settedTopSpeed());
+	testJet->accelerate();
+
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetMOCKSpeedAgainstTopSpeedCommand, int*, tickCount, int*, tickLimit, FAutomationTestBase*, test);
+
+bool FCheckAJetMOCKSpeedAgainstTopSpeedCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+		AJetMOCK* testJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJetMOCK::StaticClass()));
+		if (testJet)
+		{
+			float currentSpeed = testJet->currentSpeed();
+
+			*tickCount = *tickCount + 1;
+
+			if ( (*tickCount) > (*tickLimit))
+			{
+				test->TestTrue(TEXT("If a jet is at top speed, it should never increase it after an acceleration is added (after ticking)."), currentSpeed <= testJet->settedTopSpeed());
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMOCKShouldMoveForwardWhenAcceleratedTest, "ProjectR.Unit.JetMockTests.ShouldMoveForwardWhenAccelerated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetMOCKShouldMoveForwardWhenAcceleratedTest::RunTest(const FString& Parameters)
+{
+	{
+		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+		
+		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
+
+		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMOCKSetVelocityToTopSpeedCommand);
+		int* tickCount = new int{0};
+		int tickLimit = 3;
+		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetMOCKSpeedAgainstTopSpeedCommand(tickCount, &tickLimit, this));
+
+		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//no problem here.
+	}
+
+	return true;
+}
 
 
 
