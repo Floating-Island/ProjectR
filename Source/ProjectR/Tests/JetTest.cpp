@@ -176,21 +176,6 @@ bool FAJetMeshShouldBeTheRootComponentTest::RunTest(const FString& Parameters)
 //	return true;
 //}
 //
-//
-//
-//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetBeInAPhysicsSceneTest, "ProjectR.Unit.JetTests.BeInAPhysicsScene", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-//
-//bool FAJetBeInAPhysicsSceneTest::RunTest(const FString& Parameters)
-//{
-//	{
-//		UWorld* testWorld = UWorld::CreateWorld(EWorldType::None, true);
-//		AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
-//		
-//		TestNotNull(TEXT("The Jet should be spawned into a world with a physics scene."), testWorld->GetPhysicsScene());
-//	}
-//
-//	return true;
-//}
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetDefaultAccelerationIsGreaterThanZeroTest, "ProjectR.Unit.JetTests.DefaultAccelerationIsGreaterThanZero", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
@@ -280,7 +265,7 @@ bool FAJetShouldMoveForwardWhenAcceleratedTest::RunTest(const FString& Parameter
 		int tickLimit = 3;
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocationCommand(tickCount, &tickLimit, this));
 
-		//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//no problem here.
+		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//no problem here.
 	}
 
 	return true;
@@ -342,7 +327,7 @@ bool FAJetSpeedIncreasesWhenAcceleratesTest::RunTest(const FString& Parameters)
 		int tickLimit = 3;
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedIncreaseCommand(tickCount, &tickLimit, this));
 
-		//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//no problem here.
+		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//no problem here.
 	}
 
 	return true;
@@ -435,7 +420,7 @@ bool FAJetSpeedDecreasesWhenBrakesTest::RunTest(const FString& Parameters)
 		int tickLimit = 3;
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedDecreaseCommand(tickCount, &tickLimit, this));
 
-		//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//no problem here.
+		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//no problem here.
 	}
 
 	return true;
