@@ -53,24 +53,6 @@ bool FAJetSpeedIsZeroWhenInstantiatedTest::RunTest(const FString& Parameters)
 
 
 
-//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetBrakeMakesItGoReverseWhenSpeedIsZeroTest, "ProjectR.Unit.JetTests.BrakeMakesItGoReverseWhenSpeedIsZero", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-//
-//bool FAJetBrakeMakesItGoReverseWhenSpeedIsZeroTest::RunTest(const FString& Parameters)
-//{
-//	{
-//		AJet* testJet = NewObject<AJet>();
-//
-//		//another test checks that the current speed is zero when instantiated
-//
-//		testJet->brake();
-//		
-//		TestTrue(TEXT("Brake is Reverse when speed is zero or negative."), testJet->currentSpeed() < 0 );
-//	}
-//
-//	return true;
-//}
-
-
 ////uses a mock
 //IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetBrakeDecreasesCurrentSpeedTest, "ProjectR.Unit.JetTests.BrakeDecreasesCurrentSpeed", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 //
