@@ -441,72 +441,72 @@ bool FAJetDefaultTopSpeedIsGreaterThanZeroTest::RunTest(const FString& Parameter
 
 
 
-//uses a jet mock
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetSetVelocityToTopSpeedCommand);
-
-bool FSpawningAJetSetVelocityToTopSpeedCommand::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
-	{
-		return false;
-	}
-
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-
-	AJetMOCK* testJet = testWorld->SpawnActor<AJetMOCK>(AJetMOCK::StaticClass());
-
-	testJet->setCurrentSpeedTo(testJet->settedTopSpeed());
-	testJet->accelerate();
-
-	return true;
-}
-
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedAgainstTopSpeedCommand, int*, tickCount, int*, tickLimit, FAutomationTestBase*, test);
-
-bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{
-		UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-		AJetMOCK* testJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJetMOCK::StaticClass()));
-		if (testJet)
-		{
-			float currentSpeed = testJet->currentSpeed();
-
-			*tickCount = *tickCount + 1;
-
-			if ( (*tickCount) > (*tickLimit))
-			{
-				test->TestTrue(TEXT("If a jet is at top speed, it should never increase it after an acceleration is added (after ticking)."), currentSpeed == testJet->settedTopSpeed());
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMOCKShouldntAccelerateWhenAtTopSpeedTest, "ProjectR.Unit.JetTests.ShouldntAccelerateWhenAtTopSpeed", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FAJetMOCKShouldntAccelerateWhenAtTopSpeedTest::RunTest(const FString& Parameters)
-{
-	{
-		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-		
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
-
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
-
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetSetVelocityToTopSpeedCommand);
-		int* tickCount = new int{0};
-		int tickLimit = 3;
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedAgainstTopSpeedCommand(tickCount, &tickLimit, this));
-
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//no problem here.
-	}
-
-	return true;
-}
+////uses a jet mock
+//DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetSetVelocityToTopSpeedCommand);
+//
+//bool FSpawningAJetSetVelocityToTopSpeedCommand::Update()
+//{
+//	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+//	{
+//		return false;
+//	}
+//
+//	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+//
+//	AJetMOCK* testJet = testWorld->SpawnActor<AJetMOCK>(AJetMOCK::StaticClass());
+//
+//	testJet->setCurrentSpeedTo(testJet->settedTopSpeed());
+//	testJet->accelerate();
+//
+//	return true;
+//}
+//
+//DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedAgainstTopSpeedCommand, int*, tickCount, int*, tickLimit, FAutomationTestBase*, test);
+//
+//bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
+//{
+//	if (GEditor->IsPlayingSessionInEditor())
+//	{
+//		UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+//		AJetMOCK* testJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJetMOCK::StaticClass()));
+//		if (testJet)
+//		{
+//			float currentSpeed = testJet->currentSpeed();
+//
+//			*tickCount = *tickCount + 1;
+//
+//			if ( (*tickCount) > (*tickLimit))
+//			{
+//				test->TestTrue(TEXT("If a jet is at top speed, it should never increase it after an acceleration is added (after ticking)."), currentSpeed == testJet->settedTopSpeed());
+//				testWorld->bDebugFrameStepExecution = true;
+//				return true;
+//			}
+//		}
+//	}
+//	return false;
+//}
+//
+//
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMOCKShouldntAccelerateWhenAtTopSpeedTest, "ProjectR.Unit.JetTests.ShouldntAccelerateWhenAtTopSpeed", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//bool FAJetMOCKShouldntAccelerateWhenAtTopSpeedTest::RunTest(const FString& Parameters)
+//{
+//	{
+//		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+//		
+//		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
+//
+//		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+//
+//		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetSetVelocityToTopSpeedCommand);
+//		int* tickCount = new int{0};
+//		int tickLimit = 3;
+//		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedAgainstTopSpeedCommand(tickCount, &tickLimit, this));
+//
+//		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);//no problem here.
+//	}
+//
+//	return true;
+//}
 
 #endif //WITH_DEV_AUTOMATION_TESTS
