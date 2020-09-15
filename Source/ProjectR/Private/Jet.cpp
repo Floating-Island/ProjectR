@@ -24,6 +24,7 @@ AJet::AJet()
 	accelerationValue = 500.0f;
 	brakeAbsoluteValue = 100.0f;
 	topSpeed = 1000.0f;
+	steerForceValue = 200.0f;
 }
 
 // Called when the game starts or when spawned
@@ -105,5 +106,10 @@ void AJet::steer(float directionMultiplier)
 {
 	FVector forceToApply = FVector(0, directionMultiplier*500, 0);//directionMultiplier is used to steer right or left and to have a range of steering.
 	meshComponent->AddForce(forceToApply,NAME_None, true);
+}
+
+float AJet::steerForce()
+{
+	return steerForceValue;
 }
 

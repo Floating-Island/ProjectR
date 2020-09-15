@@ -25,6 +25,8 @@ protected:
 
 	float topSpeed;
 
+	float steerForceValue;
+
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		UStaticMeshComponent* meshComponent;
 
@@ -56,4 +58,6 @@ public:
 	void brake();
 
 	void steer(float directionMultiplier);
+
+	float steerForce();
 };
