@@ -101,3 +101,9 @@ void AJet::brake()
 	meshComponent->AddForce(forceToApply,NAME_None, true);
 }
 
+void AJet::steer(float directionMultiplier)
+{
+	FVector forceToApply = FVector(0, directionMultiplier*500, 0);//directionMultiplier is used to steer right or left and to have a range of steering.
+	meshComponent->AddForce(forceToApply,NAME_None, true);
+}
+

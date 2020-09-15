@@ -523,9 +523,9 @@ bool FSpawningAJetMakeItSteerRightCommand::Update()
 
 	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
 
-	float multiplier = 1;
+	float direction = 1;//1 is right, -1 is left...
 	
-	testJet->steerRight(multiplier);
+	testJet->steer(direction);
 
 	return true;
 }
