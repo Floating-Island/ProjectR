@@ -16,4 +16,9 @@ class PROJECTR_API AJetMOCK : public AJet
 
 public:
 	void setCurrentSpeedTo(float aDesiredSpeed);
+
+		
+	bool hasGravityEnabled();
+
+	bool isAffectingNavigation();
 };

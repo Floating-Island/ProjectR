@@ -47,16 +47,6 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-float AJet::currentSpeed()
-{
-	return meshComponent->GetComponentVelocity().X;
-}
-
-float AJet::settedTopSpeed()
-{
-	return topSpeed;
-}
-
 bool AJet::hasAStaticMesh()
 {
 	return (meshComponent)? true : false;
@@ -67,14 +57,14 @@ bool AJet::isMeshTheRootComponent()
 	return (RootComponent == meshComponent)? true : false;
 }
 
-bool AJet::hasGravityEnabled()
+float AJet::currentSpeed()
 {
-	return meshComponent->IsGravityEnabled();
+	return meshComponent->GetComponentVelocity().X;
 }
 
-bool AJet::isAffectingNavigation()
+float AJet::settedTopSpeed()
 {
-	return meshComponent->CanEverAffectNavigation();
+	return topSpeed;
 }
 
 void AJet::accelerate()

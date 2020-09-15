@@ -37,17 +37,13 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	float currentSpeed();
-
-	float settedTopSpeed();
-	
 	bool hasAStaticMesh();
 
 	bool isMeshTheRootComponent();
 	
-	bool hasGravityEnabled();
+	float currentSpeed();
 
-	bool isAffectingNavigation();
+	float settedTopSpeed();
 
 	void accelerate();
 
