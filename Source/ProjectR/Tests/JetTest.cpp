@@ -587,4 +587,16 @@ bool FAJetShouldMoveRightWhenSteeringRightTest::RunTest(const FString& Parameter
 }
 
 
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetDefaultSteerForceIsGreaterThanZeroTest, "ProjectR.Unit.JetTests.DefaultSteerForceIsGreaterThanZero", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetDefaultSteerForceIsGreaterThanZeroTest::RunTest(const FString& Parameters)
+{
+	AJet* testJet = NewObject<AJet>(AJet::StaticClass());
+
+	TestTrue(TEXT("A Jet's default steer force should be bigger than zero."), testJet->steerForce() > 0);
+	
+	return true;
+}
+
 #endif //WITH_DEV_AUTOMATION_TESTS
