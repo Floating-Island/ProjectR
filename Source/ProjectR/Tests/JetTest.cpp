@@ -223,7 +223,7 @@ bool FCheckAJetLocationCommand::Update()
 			FVector currentLocation = testJet->GetActorLocation();
 
 
-			if (currentLocation.X > 0)//it would be better to align the ship first and then check against it's forward vector. Be have to be careful of gravity in this test.
+			if (currentLocation.X > 0)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
 			{
 				check(test);
 				test->TestTrue(TEXT("The Jet X location should increase after an acceleration is added (after ticking)."), currentLocation.X > 0);
@@ -284,7 +284,7 @@ bool FCheckAJetSpeedIncreaseCommand::Update()
 			float currentSpeed = testJet->currentSpeed();
 
 
-			if (currentSpeed > 0)//it would be better to align the ship first and then check against it's forward vector. Be have to be careful of gravity in this test.
+			if (currentSpeed > 0)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
 			{
 				check(test);
 				test->TestTrue(TEXT("The Jet speed should increase after accelerating (after ticking)."), currentSpeed > 0);
@@ -378,7 +378,7 @@ bool FCheckAJetSpeedDecreaseCommand::Update()
 			float currentSpeed = testJet->currentSpeed();
 
 
-			if (currentSpeed < 0)//it would be better to align the ship first and then check against it's forward vector. Be have to be careful of gravity in this test.
+			if (currentSpeed < 0)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
 			{
 				check(test);
 				test->TestTrue(TEXT("The Jet speed should decrease after a brake (after ticking)."), currentSpeed < 0);
@@ -510,6 +510,85 @@ bool FAJetShouldntAccelerateWhenAtTopSpeedTest::RunTest(const FString& Parameter
 
 
 
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItSteerRightCommand);
+
+bool FSpawningAJetMakeItSteerRightCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	{
+		return false;
+	}
+
+	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+
+	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
+
+	float multiplier = 1;
+	
+	testJet->steerRight(multiplier);
+
+	return true;
+}
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetMovedRightCommand, int*, tickCount, int, tickLimit, FAutomationTestBase*, test);
+
+bool FCheckAJetMovedRightCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+		AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJet::StaticClass()));
+		if (testJet)
+		{
+			float currentYLocation = testJet->GetActorLocation().Y;
+
+
+			if (currentYLocation > 0)//we should be careful of near zero floats. Maybe !NearEqual would be better...
+			{
+				check(test);
+				test->TestTrue(TEXT("The Jet Y location should be bigger than zero after steering right (after ticking)."), currentYLocation > 0);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			*tickCount = *tickCount + 1;
+
+			if ( (*tickCount) > tickLimit)
+			{
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet Y location never changed from zero."), *tickCount > tickLimit);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldMoveRightWhenSteeringRightTest, "ProjectR.Unit.JetTests.ShouldMoveRightWhenSteeringRight", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetShouldMoveRightWhenSteeringRightTest::RunTest(const FString& Parameters)
+{
+	{
+		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+		
+		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
+
+		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItSteerRightCommand);
+		int* tickCount = new int{0};
+		int tickLimit = 3;
+		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetMovedRightCommand(tickCount, tickLimit, this));
+
+		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	}
+
+	return true;
+}
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
