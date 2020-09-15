@@ -53,54 +53,6 @@ bool FAJetSpeedIsZeroWhenInstantiatedTest::RunTest(const FString& Parameters)
 
 
 
-////uses a mock
-//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetBrakeDecreasesCurrentSpeedTest, "ProjectR.Unit.JetTests.BrakeDecreasesCurrentSpeed", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-//
-//bool FAJetBrakeDecreasesCurrentSpeedTest::RunTest(const FString& Parameters)
-//{
-//	{
-//		AJetMOCK* testJet = NewObject<AJetMOCK>();
-//
-//		const float aDesiredSpeed = 25.0f;
-//		
-//		testJet->setCurrentSpeedTo(aDesiredSpeed);
-//
-//		const float currentSpeed = testJet->currentSpeed();
-//
-//		testJet->brake();
-//
-//		const float brakedSpeed = testJet->currentSpeed();
-//		
-//		TestTrue(TEXT("Brake decreases currentSpeed."), brakedSpeed < currentSpeed );
-//	}
-//
-//	return true;
-//}
-
-
-
-//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSettingATopSpeedMakesItTheTopSpeedTest, "ProjectR.Unit.JetTests.SettingATopSpeedMakesItTheTopSpeed", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-//
-//bool FAJetSettingATopSpeedMakesItTheTopSpeedTest::RunTest(const FString& Parameters)
-//{
-//	{
-//		AJet* testJet = NewObject<AJet>();
-//
-//		//another test checks that the current speed is zero when instantiated
-//		float aMaximumSpeed = 40.0f;
-//
-//		testJet->setTopSpeed(aMaximumSpeed);
-//
-//		float aSettedMaxSpeed = testJet->settedTopSpeed();
-//		
-//		TestTrue(TEXT("Setting a max speed should be reflected on the top speed variable."), aSettedMaxSpeed == aMaximumSpeed );
-//	}
-//
-//	return true;
-//}
-
-
-
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveAStaticMeshTest, "ProjectR.Unit.JetTests.ShouldHaveAStaticMesh", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetShouldHaveAStaticMeshTest::RunTest(const FString& Parameters)
@@ -129,51 +81,6 @@ bool FAJetMeshShouldBeTheRootComponentTest::RunTest(const FString& Parameters)
 	return true;
 }
 
-//
-//creating a world and not saving it makes the editor crash when re-running the test.
-//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveGravityEnabledTest, "ProjectR.Unit.JetTests.ShouldHaveGravityEnabled", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-//
-//bool FAJetShouldHaveGravityEnabledTest::RunTest(const FString& Parameters)
-//{
-//	{
-//		AJet* testJet = NewObject<AJet>();
-//		
-//		TestTrue(TEXT("The Jet should have gravity enabled."), testJet->hasGravityEnabled());
-//	}
-//
-//	return true;
-//}
-//
-//
-//
-//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldntAffectNavigationVolumeTest, "ProjectR.Unit.JetTests.ShouldntAffectNavigationVolume", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-//
-//bool FAJetShouldntAffectNavigationVolumeTest::RunTest(const FString& Parameters)
-//{
-//	{
-//		AJet* testJet = NewObject<AJet>();
-//		
-//		TestFalse(TEXT("The Jet shouldn't affect the navigation volume."), testJet->isAffectingNavigation());
-//	}
-//
-//	return true;
-//}
-//
-//
-//
-//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldBeMovableTest, "ProjectR.Unit.JetTests.ShouldBeMovable", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-//
-//bool FAJetShouldBeMovableTest::RunTest(const FString& Parameters)
-//{
-//	{
-//		AJet* testJet = NewObject<AJet>();
-//		
-//		TestTrue(TEXT("The Jet should be movable when spawned into the world."), testJet->IsRootComponentMovable());
-//	}
-//
-//	return true;
-//}
-//
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetDefaultAccelerationIsGreaterThanZeroTest, "ProjectR.Unit.JetTests.DefaultAccelerationIsGreaterThanZero", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
