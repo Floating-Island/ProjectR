@@ -225,7 +225,6 @@ bool FCheckAJetLocationCommand::Update()
 
 			if (currentXLocation > 0)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
 			{
-				check(test);
 				test->TestTrue(TEXT("The Jet X location should increase after an acceleration is added (after ticking)."), currentXLocation > 0);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
@@ -286,7 +285,6 @@ bool FCheckAJetSpeedIncreaseCommand::Update()
 
 			if (currentSpeed > 0)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
 			{
-				check(test);
 				test->TestTrue(TEXT("The Jet speed should increase after accelerating (after ticking)."), currentSpeed > 0);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
@@ -380,7 +378,6 @@ bool FCheckAJetSpeedDecreaseCommand::Update()
 
 			if (currentSpeed < 0)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
 			{
-				check(test);
 				test->TestTrue(TEXT("The Jet speed should decrease after a brake (after ticking)."), currentSpeed < 0);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
@@ -549,7 +546,6 @@ bool FCheckAJetMovedRightCommand::Update()
 
 			if (currentYLocation > 0)//we should be careful of near zero floats. Maybe !NearEqual would be better...
 			{
-				check(test);
 				test->TestTrue(TEXT("The Jet Y location should be greater than zero after steering right (after ticking)."), currentYLocation > 0);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
