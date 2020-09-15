@@ -220,13 +220,13 @@ bool FCheckAJetLocationCommand::Update()
 		AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJet::StaticClass()));
 		if (testJet)
 		{
-			FVector currentLocation = testJet->GetActorLocation();
+			float currentXLocation = testJet->GetActorLocation().X;
 
 
-			if (currentLocation.X > 0)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
+			if (currentXLocation > 0)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
 			{
 				check(test);
-				test->TestTrue(TEXT("The Jet X location should increase after an acceleration is added (after ticking)."), currentLocation.X > 0);
+				test->TestTrue(TEXT("The Jet X location should increase after an acceleration is added (after ticking)."), currentXLocation > 0);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -234,7 +234,7 @@ bool FCheckAJetLocationCommand::Update()
 
 			if ( (*tickCount) > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet Location never changed from (0,0,0)."), *tickCount > tickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet X Location never changed from zero."), *tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -296,7 +296,7 @@ bool FCheckAJetSpeedIncreaseCommand::Update()
 
 			if ( (*tickCount) > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from 0."), *tickCount > tickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from zero."), *tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -389,7 +389,7 @@ bool FCheckAJetSpeedDecreaseCommand::Update()
 
 			if ( (*tickCount) > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from (0,0,0)."), *tickCount > tickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from zero."), *tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
