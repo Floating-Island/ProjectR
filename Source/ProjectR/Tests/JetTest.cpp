@@ -550,7 +550,7 @@ bool FCheckAJetMovedRightCommand::Update()
 			if (currentYLocation > 0)//we should be careful of near zero floats. Maybe !NearEqual would be better...
 			{
 				check(test);
-				test->TestTrue(TEXT("The Jet Y location should be bigger than zero after steering right (after ticking)."), currentYLocation > 0);
+				test->TestTrue(TEXT("The Jet Y location should be greater than zero after steering right (after ticking)."), currentYLocation > 0);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
