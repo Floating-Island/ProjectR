@@ -486,9 +486,9 @@ bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMOCKShouldntAccelerateWhenAtTopSpeedTest, "ProjectR.Unit.JetTests.ShouldntAccelerateWhenAtTopSpeed", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldntAccelerateWhenAtTopSpeedTest, "ProjectR.Unit.JetTests.ShouldntAccelerateWhenAtTopSpeed", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FAJetMOCKShouldntAccelerateWhenAtTopSpeedTest::RunTest(const FString& Parameters)
+bool FAJetShouldntAccelerateWhenAtTopSpeedTest::RunTest(const FString& Parameters)
 {
 	{
 		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -507,6 +507,9 @@ bool FAJetMOCKShouldntAccelerateWhenAtTopSpeedTest::RunTest(const FString& Param
 
 	return true;
 }
+
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
