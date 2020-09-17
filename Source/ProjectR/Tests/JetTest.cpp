@@ -563,7 +563,7 @@ bool FAJetAcceleratesWhenPressingAccelerationKeyTest::RunTest(const FString& Par
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerationKeyCommand);
 		int* tickCount = new int{0};
-		int tickLimit = 5;
+		int tickLimit = 3;
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedIncreaseCommand(tickCount, tickLimit, this));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
