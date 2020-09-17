@@ -4,6 +4,7 @@
 #include "Jet.h"
 
 #include "Components/StaticMeshComponent.h"
+#include "Components/InputComponent.h"
 
 // Sets default values
 AJet::AJet()
@@ -44,7 +45,8 @@ void AJet::Tick(float DeltaTime)
 void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
+	PlayerInputComponent->BindAction("AccelerateAction", IE_Pressed,this,  &AJet::accelerate);
+	PlayerInputComponent->BindAction("AccelerateAction", IE_Repeat,this,  &AJet::accelerate);
 }
 
 bool AJet::hasAStaticMesh()
