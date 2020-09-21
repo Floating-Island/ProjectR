@@ -22,10 +22,10 @@ AJet::AJet()
 	UStaticMesh* Mesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), NULL, TEXT("/Engine/EditorMeshes/ArcadeEditorSphere")));
 	meshComponent->SetStaticMesh(Mesh);
 
-	accelerationValue = 500.0f;
-	brakeAbsoluteValue = 100.0f;
+	accelerationValue = 5000.0f;
+	brakeAbsoluteValue = 1000.0f;
 	topSpeed = 1000.0f;
-	steerForceValue = 200.0f;
+	steerForceValue = 2000.0f;
 
 	AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
 }
