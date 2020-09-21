@@ -41,49 +41,6 @@ bool FJetMOCKShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Paramete
 
 
 
-//creating a world and not saving it makes the editor crash when re-running the test.
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMOCKShouldHaveGravityEnabledTest, "ProjectR.Unit.JetMOCKTests.ShouldHaveGravityEnabled", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FAJetMOCKShouldHaveGravityEnabledTest::RunTest(const FString& Parameters)
-{
-	{
-		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
-		TestTrue(TEXT("The Jet should have gravity enabled."), testJet->hasGravityEnabled());
-	}
-
-	return true;
-}
-
-
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMOCKShouldntAffectNavigationVolumeTest, "ProjectR.Unit.JetMOCKTests.ShouldntAffectNavigationVolume", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FAJetMOCKShouldntAffectNavigationVolumeTest::RunTest(const FString& Parameters)
-{
-	{
-		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
-		TestFalse(TEXT("The Jet shouldn't affect the navigation volume."), testJet->isAffectingNavigation());
-	}
-
-	return true;
-}
-
-
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMOCKShouldBeMovableTest, "ProjectR.Unit.JetMOCKTests.ShouldBeMovable", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FAJetMOCKShouldBeMovableTest::RunTest(const FString& Parameters)
-{
-	{
-		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
-		TestTrue(TEXT("The Jet should be movable when spawned into the world."), testJet->IsRootComponentMovable());
-	}
-
-	return true;
-}
 
 
 

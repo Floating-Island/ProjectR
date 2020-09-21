@@ -86,6 +86,51 @@ bool FAJetMeshShouldBeTheRootComponentTest::RunTest(const FString& Parameters)
 }
 
 
+//uses a MOCK
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveGravityEnabledTest, "ProjectR.Unit.JetTests.ShouldHaveGravityEnabled", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetShouldHaveGravityEnabledTest::RunTest(const FString& Parameters)
+{
+	{
+		AJetMOCK* testJet = NewObject<AJetMOCK>();
+		
+		TestTrue(TEXT("The Jet should have gravity enabled."), testJet->hasGravityEnabled());
+	}
+
+	return true;
+}
+
+
+//uses a MOCK
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldntAffectNavigationVolumeTest, "ProjectR.Unit.JetTests.ShouldntAffectNavigationVolume", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetShouldntAffectNavigationVolumeTest::RunTest(const FString& Parameters)
+{
+	{
+		AJetMOCK* testJet = NewObject<AJetMOCK>();
+		
+		TestFalse(TEXT("The Jet shouldn't affect the navigation volume."), testJet->isAffectingNavigation());
+	}
+
+	return true;
+}
+
+
+//uses a MOCK
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldBeMovableTest, "ProjectR.Unit.JetTests.ShouldBeMovable", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetShouldBeMovableTest::RunTest(const FString& Parameters)
+{
+	{
+		AJetMOCK* testJet = NewObject<AJetMOCK>();
+		
+		TestTrue(TEXT("The Jet should be movable when spawned into the world."), testJet->IsRootComponentMovable());
+	}
+
+	return true;
+}
+
+
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetDefaultAccelerationIsGreaterThanZeroTest, "ProjectR.Unit.JetTests.DefaultAccelerationIsGreaterThanZero", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
@@ -686,5 +731,9 @@ bool FAJetBrakesWhenPressingBrakeKeyTest::RunTest(const FString& Parameters)
 
 	return true;
 }
+
+
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
