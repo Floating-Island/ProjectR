@@ -15,10 +15,14 @@ class PROJECTR_API AJetMOCK : public AJet
 	GENERATED_BODY()
 
 public:
-	void setCurrentSpeedTo(float aDesiredSpeed);
 
+	bool hasAStaticMesh();
+
+	bool isMeshTheRootComponent();
 		
 	bool hasGravityEnabled();
 
 	bool isAffectingNavigation();
+
+	void setCurrentSpeedTo(float aDesiredSpeed);
 };

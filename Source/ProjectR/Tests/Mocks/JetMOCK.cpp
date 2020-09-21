@@ -3,10 +3,14 @@
 
 #include "JetMOCK.h"
 
-void AJetMOCK::setCurrentSpeedTo(float aDesiredSpeed)
+bool AJetMOCK::hasAStaticMesh()
 {
-	FVector newVelocity = FVector(aDesiredSpeed, 0, 0);
-	meshComponent->SetPhysicsLinearVelocity(newVelocity);
+	return (meshComponent)? true : false;
+}
+
+bool AJetMOCK::isMeshTheRootComponent()
+{
+	return (RootComponent == meshComponent)? true : false;
 }
 
 bool AJetMOCK::hasGravityEnabled()
@@ -17,4 +21,10 @@ bool AJetMOCK::hasGravityEnabled()
 bool AJetMOCK::isAffectingNavigation()
 {
 	return meshComponent->CanEverAffectNavigation();
+}
+
+void AJetMOCK::setCurrentSpeedTo(float aDesiredSpeed)
+{
+	FVector newVelocity = FVector(aDesiredSpeed, 0, 0);
+	meshComponent->SetPhysicsLinearVelocity(newVelocity);
 }

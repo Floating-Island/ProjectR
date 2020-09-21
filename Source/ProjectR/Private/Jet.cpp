@@ -56,15 +56,6 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("BrakeAction", IE_Repeat,this,  &AJet::brake);
 }
 
-bool AJet::hasAStaticMesh()
-{
-	return (meshComponent)? true : false;
-}
-
-bool AJet::isMeshTheRootComponent()
-{
-	return (RootComponent == meshComponent)? true : false;
-}
 
 float AJet::currentSpeed()
 {

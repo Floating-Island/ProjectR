@@ -57,12 +57,13 @@ bool FAJetSpeedIsZeroWhenInstantiatedTest::RunTest(const FString& Parameters)
 
 
 
+//uses a MOCK
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveAStaticMeshTest, "ProjectR.Unit.JetTests.ShouldHaveAStaticMesh", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetShouldHaveAStaticMeshTest::RunTest(const FString& Parameters)
 {
 	{
-		AJet* testJet = NewObject<AJet>();
+		AJetMOCK* testJet = NewObject<AJetMOCK>();
 		
 		TestTrue(TEXT("The Jet static mesh shouldn't be null if it has one."), testJet->hasAStaticMesh());
 	}
@@ -72,18 +73,20 @@ bool FAJetShouldHaveAStaticMeshTest::RunTest(const FString& Parameters)
 
 
 
+//uses a MOCK
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMeshShouldBeTheRootComponentTest, "ProjectR.Unit.JetTests.MeshShouldBeTheRootComponent", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetMeshShouldBeTheRootComponentTest::RunTest(const FString& Parameters)
 {
 	{
-		AJet* testJet = NewObject<AJet>();
+		AJetMOCK* testJet = NewObject<AJetMOCK>();
 		
 		TestTrue(TEXT("The Jet static mesh should be the root component."), testJet->isMeshTheRootComponent());
 	}
 
 	return true;
 }
+
 
 
 //uses a MOCK
@@ -101,6 +104,7 @@ bool FAJetShouldHaveGravityEnabledTest::RunTest(const FString& Parameters)
 }
 
 
+
 //uses a MOCK
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldntAffectNavigationVolumeTest, "ProjectR.Unit.JetTests.ShouldntAffectNavigationVolume", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
@@ -114,6 +118,7 @@ bool FAJetShouldntAffectNavigationVolumeTest::RunTest(const FString& Parameters)
 
 	return true;
 }
+
 
 
 //uses a MOCK
