@@ -3,6 +3,7 @@
 
 #include "JetMOCK.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
 
 bool AJetMOCK::hasAStaticMesh()
 {
@@ -38,4 +39,9 @@ bool AJetMOCK::hasASprinArm()
 bool AJetMOCK::isSpringArmAttachedToRoot()
 {
 	return  springArm->GetAttachParent() == RootComponent? true : false;
+}
+
+bool AJetMOCK::isCameraAttachedToSpringArm()
+{
+	return camera->GetAttachParent() == springArm? true: false;
 }

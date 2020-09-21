@@ -29,4 +29,6 @@ public:
 	bool hasASprinArm();
 
 	bool isSpringArmAttachedToRoot();
+
+	bool isCameraAttachedToSpringArm();
 };
