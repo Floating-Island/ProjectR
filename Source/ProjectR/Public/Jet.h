@@ -6,6 +6,9 @@
 #include "GameFramework/Pawn.h"
 #include "Jet.generated.h"
 
+
+class USpringArmComponent;
+
 UCLASS()
 class PROJECTR_API AJet : public APawn
 {
@@ -29,6 +32,10 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		UStaticMeshComponent* meshComponent;
+
+	//spring arm component
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USpringArmComponent* springArm;
 
 public:	
 	// Called every frame
