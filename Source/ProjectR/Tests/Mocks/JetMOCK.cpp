@@ -50,3 +50,8 @@ bool AJetMOCK::isCameraAttachedToSpringArm()
 {
 	return camera->GetAttachParent() == springArm? true: false;
 }
+
+bool AJetMOCK::usesAbsoluteRotation()
+{
+	return springArm->IsUsingAbsoluteRotation();
+}

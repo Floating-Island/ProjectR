@@ -33,4 +33,6 @@ public:
 	bool HasCameraComponent();
 	
 	bool isCameraAttachedToSpringArm();
+
+	bool usesAbsoluteRotation();
 };
