@@ -584,12 +584,22 @@ bool FSpawningAJetPressAccelerationKeyCommand::Update()
 	
 	APlayerController* jetController = Cast<APlayerController,AActor>(testGameMode->GetGameInstance()->GetFirstLocalPlayerController(testWorld));
 
-	FName const accelerateActionName = FName(TEXT("AccelerateAction"));//in the editor, we are going to add a new action mapping inside Project settings -> Input
-	FKey accelerateKey = TArray<FInputActionKeyMapping>(jetController->PlayerInput->GetKeysForAction(accelerateActionName))[0].Key;//in the jet class, we are going to add a player input with:
-    //	PlayerInputComponent->BindAction("AccelerateAction", IE_Pressed,this,  &AJet::accelerate);
-	// PlayerInputComponent->BindAction("AccelerateAction", IE_Repeat,this,  &AJet::accelerate);
+	FName const accelerateActionName = FName(TEXT("AccelerateAction"));
+	TArray<FInputAxisKeyMapping> axisMappings = jetController->PlayerInput->GetKeysForAxis(accelerateActionName);//in the editor, we are going to add a new axis mapping inside Project settings -> Input
+	//in the jet class, we are going to add a player input binding with:
+	//	PlayerInputComponent->BindAxis("AccelerateAction",this, &AJet::accelerate);
 	//and in the constructor:
 	//AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
+	FKey accelerateKey;
+	for(auto axisMap: axisMappings)
+	{
+		if(axisMap.Scale > 0)
+		{
+			accelerateKey = axisMap.Key;
+			break;
+		}
+	}
+	
 	jetController->InputKey(accelerateKey,EInputEvent::IE_Repeat,5.0f,false);
 
 	return true;
