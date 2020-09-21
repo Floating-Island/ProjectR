@@ -34,6 +34,7 @@ AJet::AJet()
 
 	springArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm Component"));
 	springArm->SetupAttachment(RootComponent);
+	springArm->SetUsingAbsoluteRotation(true);
 
 	camera = CreateDefaultSubobject<UCameraComponent>(TEXT("camera"));
 	camera->SetupAttachment(springArm);
