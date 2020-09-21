@@ -540,7 +540,7 @@ bool FSpawningAJetPressAccelerationKeyCommand::Update()
 	// PlayerInputComponent->BindAction("AccelerateAction", IE_Repeat,this,  &AJet::accelerate);
 	//and in the constructor:
 	//AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
-	bool binput = jetController->InputKey(accelerateKey,EInputEvent::IE_Repeat,5.0f,false);
+	jetController->InputKey(accelerateKey,EInputEvent::IE_Repeat,5.0f,false);
 
 	return true;
 }
