@@ -787,6 +787,17 @@ bool FAJetShouldHaveACameraTest::RunTest(const FString& Parameters)
 
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveACameraAttachedToSpringArmTest, "ProjectR.Unit.JetTests.ShouldHaveACameraAttachedToSpringArm", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
+bool FAJetShouldHaveACameraAttachedToSpringArmTest::RunTest(const FString& Parameters)
+{
+	{
+		AJetMOCK* testJet = NewObject<AJetMOCK>();
+		
+		TestTrue(TEXT("The Jet should have a camera."), testJet->isCameraAttachedToSpringArm());
+	}
+
+	return true;
+}
 
 #endif //WITH_DEV_AUTOMATION_TESTS
