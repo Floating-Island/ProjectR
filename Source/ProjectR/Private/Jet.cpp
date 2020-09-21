@@ -57,8 +57,8 @@ void AJet::Tick(float DeltaTime)
 void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	PlayerInputComponent->BindAction("AccelerateAction", IE_Pressed,this,  &AJet::accelerate);
-	PlayerInputComponent->BindAction("AccelerateAction", IE_Repeat,this,  &AJet::accelerate);
+
+	PlayerInputComponent->BindAxis("AccelerateAction",this, &AJet::accelerate);
 
 	PlayerInputComponent->BindAxis("SteerAction",this, &AJet::steer);
 
