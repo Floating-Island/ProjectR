@@ -51,6 +51,9 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("AccelerateAction", IE_Repeat,this,  &AJet::accelerate);
 
 	PlayerInputComponent->BindAxis("SteerAction",this, &AJet::steer);
+
+	PlayerInputComponent->BindAction("BrakeAction", IE_Pressed,this,  &AJet::brake);
+	PlayerInputComponent->BindAction("BrakeAction", IE_Repeat,this,  &AJet::brake);
 }
 
 bool AJet::hasAStaticMesh()
