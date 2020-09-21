@@ -5,6 +5,7 @@
 
 #include "Components/StaticMeshComponent.h"
 #include "Components/InputComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
 AJet::AJet()
@@ -28,6 +29,10 @@ AJet::AJet()
 	steerForceValue = 2000.0f;
 
 	AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
+
+
+	springArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm Component"));
+	springArm->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
