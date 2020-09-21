@@ -2,6 +2,7 @@
 
 
 #include "JetMOCK.h"
+#include "GameFramework/SpringArmComponent.h"
 
 bool AJetMOCK::hasAStaticMesh()
 {
@@ -32,4 +33,9 @@ void AJetMOCK::setCurrentSpeedTo(float aDesiredSpeed)
 bool AJetMOCK::hasASprinArm()
 {
 	return springArm? true : false;
+}
+
+bool AJetMOCK::isSpringArmAttachedToRoot()
+{
+	return  springArm->GetAttachParent() == RootComponent? true : false;
 }

@@ -27,4 +27,6 @@ public:
 	void setCurrentSpeedTo(float aDesiredSpeed);
 
 	bool hasASprinArm();
+
+	bool isSpringArmAttachedToRoot();
 };
