@@ -77,7 +77,7 @@ float AJet::settedTopSpeed()
 	return topSpeed;
 }
 
-void AJet::accelerate()
+void AJet::accelerate(float accelerationMultiplier)
 {
 	if(currentSpeed() < settedTopSpeed() && !FMath::IsNearlyEqual(currentSpeed(), settedTopSpeed(), 0.5f))
 	{
