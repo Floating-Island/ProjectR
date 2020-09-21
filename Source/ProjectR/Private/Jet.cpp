@@ -95,10 +95,10 @@ float AJet::brakeValue()
 	return brakeAbsoluteValue;
 }
 
-void AJet::brake()
+void AJet::brake(float brakeMultiplier)
 {
 	FVector forceToApply = FVector(-brakeValue(), 0, 0);//notice the '-' next to brakeValue. Brake value's sign is positive.
-	meshComponent->AddForce(forceToApply,NAME_None, true);
+	meshComponent->AddForce(forceToApply*brakeMultiplier,NAME_None, true);
 }
 
 void AJet::steer(float directionMultiplier)

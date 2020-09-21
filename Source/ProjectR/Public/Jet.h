@@ -60,7 +60,7 @@ public:
 
 	float brakeValue();
 
-	void brake();
+	void brake(float brakeMultiplier = 1.0f);
 
 	void steer(float directionMultiplier);
 
