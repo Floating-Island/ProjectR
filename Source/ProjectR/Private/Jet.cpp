@@ -19,7 +19,7 @@ AJet::AJet()
 	meshComponent->SetEnableGravity(true);
 	meshComponent->SetCanEverAffectNavigation(false);
 
-	UStaticMesh* Mesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), NULL, TEXT("/Engine/EditorMeshes/EditorCube")));
+	UStaticMesh* Mesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), NULL, TEXT("/Engine/EditorMeshes/ArcadeEditorSphere")));
 	meshComponent->SetStaticMesh(Mesh);
 
 	accelerationValue = 500.0f;
