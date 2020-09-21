@@ -526,11 +526,7 @@ bool FSpawningAJetPressAccelerationKeyCommand::Update()
 
 	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
 
-
 	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
-
-
-	
 	AGameModeBase* testGameMode = testWorld->GetAuthGameMode();
 
 	testGameMode->SpawnPlayerFromSimulate(FVector(), FRotator());
@@ -559,12 +555,68 @@ bool FAJetAcceleratesWhenPressingAccelerationKeyTest::RunTest(const FString& Par
 		
 		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));//this time, we want to posses our jet.
+		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerationKeyCommand);
 		int* tickCount = new int{0};
 		int tickLimit = 3;
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedIncreaseCommand(tickCount, tickLimit, this));
+
+		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	}
+
+	return true;
+}
+
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKeyCommand);
+
+bool FSpawningAJetPressSteerRightKeyCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	{
+		return false;
+	}
+
+	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+
+	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
+	AGameModeBase* testGameMode = testWorld->GetAuthGameMode();
+
+	testGameMode->SpawnPlayerFromSimulate(FVector(), FRotator());
+
+	
+	APlayerController* jetController = Cast<APlayerController,AActor>(testGameMode->GetGameInstance()->GetFirstLocalPlayerController(testWorld));
+
+	FName const steerRightActionName = FName(TEXT("SteerAction"));//in the editor, we are going to add a new action mapping inside Project settings -> Input
+	FKey SteerRightKey = TArray<FInputActionKeyMapping>(jetController->PlayerInput->GetKeysForAction(steerRightActionName))[0].Key;//in the jet class, we are going to add a player input with:
+    //	PlayerInputComponent->BindAction("AccelerateAction", IE_Pressed,this,  &AJet::accelerate);
+	// PlayerInputComponent->BindAction("AccelerateAction", IE_Repeat,this,  &AJet::accelerate);
+	bool binput = jetController->InputKey(SteerRightKey,EInputEvent::IE_Repeat,5.0f,false);
+
+	return true;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldMoveRightWhenPressingSteerRightKeyTest, "ProjectR.Unit.JetTests.ShouldMoveRightWhenPressingSteerRightKey", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetShouldMoveRightWhenPressingSteerRightKeyTest::RunTest(const FString& Parameters)
+{
+	{
+		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+		
+		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
+
+		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKeyCommand);
+		int* tickCount = new int{0};
+		int tickLimit = 3;
+		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetMovedRightCommand(tickCount, tickLimit, this));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	}
