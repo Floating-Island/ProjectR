@@ -25,4 +25,6 @@ public:
 	bool isAffectingNavigation();
 
 	void setCurrentSpeedTo(float aDesiredSpeed);
+
+	bool hasASprinArm();
 };

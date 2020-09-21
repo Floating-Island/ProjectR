@@ -28,3 +28,8 @@ void AJetMOCK::setCurrentSpeedTo(float aDesiredSpeed)
 	FVector newVelocity = FVector(aDesiredSpeed, 0, 0);
 	meshComponent->SetPhysicsLinearVelocity(newVelocity);
 }
+
+bool AJetMOCK::hasASprinArm()
+{
+	return springArm? true : false;
+}
