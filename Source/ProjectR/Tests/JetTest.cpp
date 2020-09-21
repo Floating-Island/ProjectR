@@ -747,7 +747,7 @@ bool FAJetShouldHaveASpringArmTest::RunTest(const FString& Parameters)
 	{
 		AJetMOCK* testJet = NewObject<AJetMOCK>();
 		
-		TestTrue(TEXT("The Jet should be movable when spawned into the world."), testJet->hasASprinArm());
+		TestTrue(TEXT("The Jet should have a spring arm."), testJet->hasASprinArm());
 	}
 
 	return true;
@@ -763,7 +763,7 @@ bool FAJetShouldHaveASpringArmAttachedToRootComponentTest::RunTest(const FString
 	{
 		AJetMOCK* testJet = NewObject<AJetMOCK>();
 		
-		TestTrue(TEXT("The Jet should be movable when spawned into the world."), testJet->isSpringArmAttachedToRoot());
+		TestTrue(TEXT("The Jet should have a spring arm attached to the root component."), testJet->isSpringArmAttachedToRoot());
 	}
 
 	return true;
