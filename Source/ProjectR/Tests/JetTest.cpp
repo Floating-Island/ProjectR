@@ -754,4 +754,19 @@ bool FAJetShouldHaveASpringArmTest::RunTest(const FString& Parameters)
 }
 
 
+
+//uses a MOCK
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveASpringArmAttachedToRootComponentTest, "ProjectR.Unit.JetTests.ShouldHaveASpringArmAttachedToRootComponent", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetShouldHaveASpringArmAttachedToRootComponentTest::RunTest(const FString& Parameters)
+{
+	{
+		AJetMOCK* testJet = NewObject<AJetMOCK>();
+		
+		TestTrue(TEXT("The Jet should be movable when spawned into the world."), testJet->isSpringArmAttachedToRoot());
+	}
+
+	return true;
+}
+
 #endif //WITH_DEV_AUTOMATION_TESTS
