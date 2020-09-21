@@ -592,11 +592,19 @@ bool FSpawningAJetPressSteerRightKeyCommand::Update()
 	
 	APlayerController* jetController = Cast<APlayerController,AActor>(testGameMode->GetGameInstance()->GetFirstLocalPlayerController(testWorld));
 
-	FName const steerRightActionName = FName(TEXT("SteerAction"));//in the editor, we are going to add a new action mapping inside Project settings -> Input
-	FKey SteerRightKey = TArray<FInputActionKeyMapping>(jetController->PlayerInput->GetKeysForAction(steerRightActionName))[0].Key;//in the jet class, we are going to add a player input with:
-    //	PlayerInputComponent->BindAction("AccelerateAction", IE_Pressed,this,  &AJet::accelerate);
-	// PlayerInputComponent->BindAction("AccelerateAction", IE_Repeat,this,  &AJet::accelerate);
-	bool binput = jetController->InputKey(SteerRightKey,EInputEvent::IE_Repeat,5.0f,false);
+	FName const steerRightActionName = FName(TEXT("SteerAction"));
+	
+	TArray<FInputAxisKeyMapping> axisMappings = jetController->PlayerInput->GetKeysForAxis(steerRightActionName);
+	FKey SteerRightKey;
+	for(auto axisMap: axisMappings)
+	{
+		if(axisMap.Scale > 0)
+		{
+			SteerRightKey = axisMap.Key;
+			break;
+		}
+	}
+	jetController->InputKey(SteerRightKey,EInputEvent::IE_Repeat,5.0f,false);
 
 	return true;
 }
