@@ -777,9 +777,9 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveACameraTest, "ProjectR.Unit.JetT
 bool FAJetShouldHaveACameraTest::RunTest(const FString& Parameters)
 {
 	{
-		AJet* testJet = NewObject<AJet>();
+		AJetMOCK* testJet = NewObject<AJetMOCK>();
 		
-		TestTrue(TEXT("The Jet should have a camera."), testJet->HasActiveCameraComponent());
+		TestTrue(TEXT("The Jet should have a camera."), testJet->HasCameraComponent());
 	}
 
 	return true;

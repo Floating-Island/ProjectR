@@ -30,5 +30,7 @@ public:
 
 	bool isSpringArmAttachedToRoot();
 
+	bool HasCameraComponent();
+	
 	bool isCameraAttachedToSpringArm();
 };

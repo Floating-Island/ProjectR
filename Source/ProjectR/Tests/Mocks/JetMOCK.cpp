@@ -41,6 +41,11 @@ bool AJetMOCK::isSpringArmAttachedToRoot()
 	return  springArm->GetAttachParent() == RootComponent? true : false;
 }
 
+bool AJetMOCK::HasCameraComponent()
+{
+	return camera? true : false;
+}
+
 bool AJetMOCK::isCameraAttachedToSpringArm()
 {
 	return camera->GetAttachParent() == springArm? true: false;
