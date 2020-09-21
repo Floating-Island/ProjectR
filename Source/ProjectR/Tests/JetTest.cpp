@@ -717,8 +717,18 @@ bool FSpawningAJetPressBrakeKeyCommand::Update()
 	APlayerController* jetController = Cast<APlayerController,AActor>(testGameMode->GetGameInstance()->GetFirstLocalPlayerController(testWorld));
 
 	FName const brakeActionName = FName(TEXT("BrakeAction"));
-	FKey brakeKey = TArray<FInputActionKeyMapping>(jetController->PlayerInput->GetKeysForAction(brakeActionName))[0].Key;
-    
+
+	TArray<FInputAxisKeyMapping> axisMappings = jetController->PlayerInput->GetKeysForAxis(brakeActionName);
+	FKey brakeKey;
+	for(auto axisMap: axisMappings)
+	{
+		if(axisMap.Scale > 0)
+		{
+			brakeKey = axisMap.Key;
+			break;
+		}
+	}
+
 	jetController->InputKey(brakeKey,EInputEvent::IE_Repeat,5.0f,false);
 
 	return true;
