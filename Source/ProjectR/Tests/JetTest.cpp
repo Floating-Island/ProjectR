@@ -134,9 +134,9 @@ bool FCheckAJetLocationCommand::Update()
 			float currentXLocation = testJet->GetActorLocation().X;
 
 
-			if (currentXLocation > 0)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
+			if (currentXLocation > 0 && !FMath::IsNearlyZero(currentXLocation, 0.1f))//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
 			{
-				test->TestTrue(TEXT("The Jet X location should increase after an acceleration is added (after ticking)."), currentXLocation > 0);
+				test->TestTrue(TEXT("The Jet X location should increase after an acceleration is added (after ticking)."), currentXLocation > 0 && !FMath::IsNearlyZero(currentXLocation, 0.1f));
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -194,9 +194,9 @@ bool FCheckAJetSpeedIncreaseCommand::Update()
 			float currentSpeed = testJet->currentSpeed();
 
 
-			if (currentSpeed > 0)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
+			if (currentSpeed > 0 && !FMath::IsNearlyZero(currentSpeed, 0.1f))//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
 			{
-				test->TestTrue(TEXT("The Jet speed should increase after accelerating (after ticking)."), currentSpeed > 0);
+				test->TestTrue(TEXT("The Jet speed should increase after accelerating (after ticking)."), currentSpeed > 0 && !FMath::IsNearlyZero(currentSpeed, 0.1f));
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -287,9 +287,9 @@ bool FCheckAJetSpeedDecreaseCommand::Update()
 			float currentSpeed = testJet->currentSpeed();
 
 
-			if (currentSpeed < 0)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
+			if (currentSpeed < 0 && !FMath::IsNearlyZero(currentSpeed, 0.1f))//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
 			{
-				test->TestTrue(TEXT("The Jet speed should decrease after a brake (after ticking)."), currentSpeed < 0);
+				test->TestTrue(TEXT("The Jet speed should decrease after a brake (after ticking)."), currentSpeed < 0 && !FMath::IsNearlyZero(currentSpeed, 0.1f));
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -455,9 +455,9 @@ bool FCheckAJetMovedRightCommand::Update()
 			float currentYLocation = testJet->GetActorLocation().Y;
 
 
-			if (currentYLocation > 0)//we should be careful of near zero floats. Maybe !NearEqual would be better...
+			if (currentYLocation > 0  && !FMath::IsNearlyZero(currentYLocation, 0.1f))//we should be careful of near zero floats. Maybe !NearEqual would be better...
 			{
-				test->TestTrue(TEXT("The Jet Y location should be greater than zero after steering right (after ticking)."), currentYLocation > 0);
+				test->TestTrue(TEXT("The Jet Y location should be greater than zero after steering right (after ticking)."), currentYLocation > 0 && !FMath::IsNearlyZero(currentYLocation, 0.1f));
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
