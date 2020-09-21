@@ -739,6 +739,19 @@ bool FAJetBrakesWhenPressingBrakeKeyTest::RunTest(const FString& Parameters)
 
 
 
+//uses a MOCK
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveASpringArmTest, "ProjectR.Unit.JetTests.ShouldHaveASpringArm", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetShouldHaveASpringArmTest::RunTest(const FString& Parameters)
+{
+	{
+		AJetMOCK* testJet = NewObject<AJetMOCK>();
+		
+		TestTrue(TEXT("The Jet should be movable when spawned into the world."), testJet->hasASprinArm());
+	}
+
+	return true;
+}
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
