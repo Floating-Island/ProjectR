@@ -6,6 +6,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
 
 // Sets default values
 AJet::AJet()
@@ -35,7 +36,7 @@ AJet::AJet()
 	springArm->SetupAttachment(RootComponent);
 
 	camera = CreateDefaultSubobject<UCameraComponent>(TEXT("camera"));
-	
+	camera->SetupAttachment(springArm);
 }
 
 // Called when the game starts or when spawned
