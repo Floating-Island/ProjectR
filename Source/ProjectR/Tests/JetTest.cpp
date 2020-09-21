@@ -633,4 +633,58 @@ bool FAJetShouldMoveRightWhenPressingSteerRightKeyTest::RunTest(const FString& P
 }
 
 
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeKeyCommand);
+
+bool FSpawningAJetPressBrakeKeyCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+
+	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+
+	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
+	AGameModeBase* testGameMode = testWorld->GetAuthGameMode();
+
+	testGameMode->SpawnPlayerFromSimulate(FVector(), FRotator());
+
+	
+	APlayerController* jetController = Cast<APlayerController,AActor>(testGameMode->GetGameInstance()->GetFirstLocalPlayerController(testWorld));
+
+	FName const brakeActionName = FName(TEXT("BrakeAction"));
+	FKey brakeKey = TArray<FInputActionKeyMapping>(jetController->PlayerInput->GetKeysForAction(brakeActionName))[0].Key;
+    
+	jetController->InputKey(brakeKey,EInputEvent::IE_Repeat,5.0f,false);
+
+	return true;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetBrakesWhenPressingBrakeKeyTest, "ProjectR.Unit.JetTests.BrakesWhenPressingBrakeKey", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetBrakesWhenPressingBrakeKeyTest::RunTest(const FString& Parameters)
+{
+	{
+		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+		
+		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
+
+		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeKeyCommand);
+		int* tickCount = new int{0};
+		int tickLimit = 3;
+		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedDecreaseCommand(tickCount, tickLimit, this));
+
+		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	}
+
+	return true;
+}
+
 #endif //WITH_DEV_AUTOMATION_TESTS
