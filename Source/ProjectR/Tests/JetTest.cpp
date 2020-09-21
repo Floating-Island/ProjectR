@@ -769,4 +769,24 @@ bool FAJetShouldHaveASpringArmAttachedToRootComponentTest::RunTest(const FString
 	return true;
 }
 
+
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveACameraTest, "ProjectR.Unit.JetTests.ShouldHaveACamera", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetShouldHaveACameraTest::RunTest(const FString& Parameters)
+{
+	{
+		AJet* testJet = NewObject<AJet>();
+		
+		TestTrue(TEXT("The Jet should have a camera."), testJet->HasActiveCameraComponent());
+	}
+
+	return true;
+}
+
+
+
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS
