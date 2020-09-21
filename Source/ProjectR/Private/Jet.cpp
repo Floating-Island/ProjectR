@@ -33,6 +33,9 @@ AJet::AJet()
 
 	springArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm Component"));
 	springArm->SetupAttachment(RootComponent);
+
+	camera = CreateDefaultSubobject<UCameraComponent>(TEXT("camera"));
+	
 }
 
 // Called when the game starts or when spawned

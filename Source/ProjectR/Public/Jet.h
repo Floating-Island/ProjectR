@@ -8,6 +8,7 @@
 
 
 class USpringArmComponent;
+class UCameraComponent;
 
 UCLASS()
 class PROJECTR_API AJet : public APawn
@@ -35,15 +36,20 @@ protected:
 
 	//spring arm component
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	USpringArmComponent* springArm;
+		USpringArmComponent* springArm;
 
-public:	
+	//camera component
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+		UCameraComponent* camera;
+
+
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
+
 	float currentSpeed();
 
 	float settedTopSpeed();
