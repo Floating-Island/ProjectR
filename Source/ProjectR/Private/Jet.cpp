@@ -76,12 +76,12 @@ float AJet::settedTopSpeed()
 	return topSpeed;
 }
 
-void AJet::accelerate(float accelerationMultiplier)
+void AJet::accelerate(float anAccelerationMultiplier)
 {
 	if(currentSpeed() < settedTopSpeed() && !FMath::IsNearlyEqual(currentSpeed(), settedTopSpeed(), 0.5f))
 	{
 		FVector forceToApply = FVector(acceleration(), 0, 0);
-		meshComponent->AddForce(forceToApply*accelerationMultiplier,NAME_None, true);
+		meshComponent->AddForce(forceToApply*anAccelerationMultiplier,NAME_None, true);
 	}
 }
 
@@ -95,15 +95,15 @@ float AJet::brakeValue()
 	return brakeAbsoluteValue;
 }
 
-void AJet::brake(float brakeMultiplier)
+void AJet::brake(float aBrakeMultiplier)
 {
 	FVector forceToApply = FVector(-brakeValue(), 0, 0);//notice the '-' next to brakeValue. Brake value's sign is positive.
-	meshComponent->AddForce(forceToApply*brakeMultiplier,NAME_None, true);
+	meshComponent->AddForce(forceToApply*aBrakeMultiplier,NAME_None, true);
 }
 
-void AJet::steer(float directionMultiplier)
+void AJet::steer(float aDirectionMultiplier)
 {
-	FVector forceToApply = FVector(0, directionMultiplier*steerForce(), 0);//directionMultiplier is used to steer right or left and to have a range of steering.
+	FVector forceToApply = FVector(0, aDirectionMultiplier*steerForce(), 0);//directionMultiplier is used to steer right or left and to have a range of steering.
 	meshComponent->AddForce(forceToApply,NAME_None, true);
 }
 

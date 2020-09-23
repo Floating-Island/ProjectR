@@ -171,7 +171,7 @@ bool FSpawningAJetMakeItAccelerateCommand::Update()
 	return true;
 }
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetLocationCommand, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetLocationCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
 
 bool FCheckAJetLocationCommand::Update()
 {
@@ -190,11 +190,11 @@ bool FCheckAJetLocationCommand::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++tickCount;
+			++aTickCount;
 
-			if ( tickCount > tickLimit)
+			if ( aTickCount > aTickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet X Location never changed from zero."), tickCount > tickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet X Location never changed from zero."), aTickCount > aTickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -231,7 +231,7 @@ bool FAJetShouldMoveForwardWhenAcceleratedTest::RunTest(const FString& Parameter
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedIncreaseCommand, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedIncreaseCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
 
 bool FCheckAJetSpeedIncreaseCommand::Update()
 {
@@ -251,11 +251,11 @@ bool FCheckAJetSpeedIncreaseCommand::Update()
 				return true;
 			}
 
-			++tickCount;
+			++aTickCount;
 
-			if ( tickCount > tickLimit)
+			if ( aTickCount > aTickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from zero."), tickCount > tickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from zero."), aTickCount > aTickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -324,7 +324,7 @@ bool FSpawningAJetMakeItBrakeCommand::Update()
 }
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedDecreaseCommand, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedDecreaseCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
 
 bool FCheckAJetSpeedDecreaseCommand::Update()
 {
@@ -343,11 +343,11 @@ bool FCheckAJetSpeedDecreaseCommand::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++tickCount;
+			++aTickCount;
 
-			if ( tickCount > tickLimit)
+			if ( aTickCount > aTickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from zero."), tickCount > tickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from zero."), aTickCount > aTickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -417,7 +417,7 @@ bool FSpawningAJetSetVelocityToTopSpeedCommand::Update()
 	return true;
 }
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedAgainstTopSpeedCommand, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedAgainstTopSpeedCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
 
 bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
 {
@@ -429,10 +429,10 @@ bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
 		{
 			float currentSpeed = testJet->currentSpeed();
 
-			++tickCount;
+			++aTickCount;
 			
 
-			if ( tickCount > tickLimit)
+			if ( aTickCount > aTickLimit)
 			{
 				test->TestTrue(TEXT("If a jet is at top speed, it should never increase it after an acceleration is added (after ticking)."), FMath::IsNearlyEqual(currentSpeed, testJet->settedTopSpeed(), 1.0f));
 				testWorld->bDebugFrameStepExecution = true;
@@ -492,7 +492,7 @@ bool FSpawningAJetMakeItSteerRightCommand::Update()
 }
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetMovedRightCommand, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetMovedRightCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
 
 bool FCheckAJetMovedRightCommand::Update()
 {
@@ -511,11 +511,11 @@ bool FCheckAJetMovedRightCommand::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++tickCount;
+			++aTickCount;
 
-			if ( tickCount > tickLimit)
+			if ( aTickCount > aTickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet Y location never changed from zero."), tickCount > tickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet Y location never changed from zero."), aTickCount > aTickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}

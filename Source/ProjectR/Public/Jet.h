@@ -54,15 +54,15 @@ public:
 
 	float settedTopSpeed();
 
-	void accelerate(float accelerationMultiplier = 1.0f);
+	void accelerate(float anAccelerationMultiplier = 1.0f);
 
 	float acceleration();
 
 	float brakeValue();
 
-	void brake(float brakeMultiplier = 1.0f);
+	void brake(float aBrakeMultiplier = 1.0f);
 
-	void steer(float directionMultiplier);
+	void steer(float aDirectionMultiplier);
 
 	float steerForce();
 };
