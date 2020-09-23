@@ -814,7 +814,7 @@ bool FAJetShouldHaveACameraAttachedToSpringArmTest::RunTest(const FString& Param
 	{
 		AJetMOCK* testJet = NewObject<AJetMOCK>();
 		
-		TestTrue(TEXT("The Jet should have a camera."), testJet->isCameraAttachedToSpringArm());
+		TestTrue(TEXT("The Jet should have a camera attached to a springArm."), testJet->isCameraAttachedToSpringArm());
 	}
 
 	return true;
@@ -829,7 +829,7 @@ bool FAJetSpringArmShouldUseAbsoluteRotationTest::RunTest(const FString& Paramet
 	{
 		AJetMOCK* testJet = NewObject<AJetMOCK>();
 		
-		TestTrue(TEXT("The Jet should have a camera."), testJet->usesAbsoluteRotation());
+		TestTrue(TEXT("The Jet spring arm should use absolute rotation."), testJet->usesAbsoluteRotation());
 	}
 
 	return true;
