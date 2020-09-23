@@ -171,7 +171,7 @@ bool FSpawningAJetMakeItAccelerateCommand::Update()
 	return true;
 }
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetLocationCommand, int*, tickCount, int, tickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetLocationCommand, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
 bool FCheckAJetLocationCommand::Update()
 {
@@ -190,11 +190,11 @@ bool FCheckAJetLocationCommand::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			*tickCount = *tickCount + 1;
+			++tickCount;
 
-			if ( (*tickCount) > tickLimit)
+			if ( tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet X Location never changed from zero."), *tickCount > tickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet X Location never changed from zero."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -216,7 +216,7 @@ bool FAJetShouldMoveForwardWhenAcceleratedTest::RunTest(const FString& Parameter
 		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand);
-		int* tickCount = new int{0};
+		int tickCount = 0;
 		int tickLimit = 3;
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocationCommand(tickCount, tickLimit, this));
 
@@ -231,7 +231,7 @@ bool FAJetShouldMoveForwardWhenAcceleratedTest::RunTest(const FString& Parameter
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedIncreaseCommand, int*, tickCount, int, tickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedIncreaseCommand, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
 bool FCheckAJetSpeedIncreaseCommand::Update()
 {
@@ -251,11 +251,11 @@ bool FCheckAJetSpeedIncreaseCommand::Update()
 				return true;
 			}
 
-			*tickCount = *tickCount + 1;
+			++tickCount;
 
-			if ( (*tickCount) > tickLimit)
+			if ( tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from zero."), *tickCount > tickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from zero."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -277,7 +277,7 @@ bool FAJetSpeedIncreasesWhenAcceleratesTest::RunTest(const FString& Parameters)
 		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand);
-		int* tickCount = new int{0};
+		int tickCount = 0;
 		int tickLimit = 3;
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedIncreaseCommand(tickCount, tickLimit, this));
 
@@ -324,7 +324,7 @@ bool FSpawningAJetMakeItBrakeCommand::Update()
 }
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedDecreaseCommand, int*, tickCount, int, tickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedDecreaseCommand, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
 bool FCheckAJetSpeedDecreaseCommand::Update()
 {
@@ -343,11 +343,11 @@ bool FCheckAJetSpeedDecreaseCommand::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			*tickCount = *tickCount + 1;
+			++tickCount
 
-			if ( (*tickCount) > tickLimit)
+			if ( tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from zero."), *tickCount > tickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from zero."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -369,7 +369,7 @@ bool FAJetSpeedDecreasesWhenBrakesTest::RunTest(const FString& Parameters)
 		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItBrakeCommand);
-		int* tickCount = new int{0};
+		int tickCount = 0;
 		int tickLimit = 3;
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedDecreaseCommand(tickCount, tickLimit, this));
 
@@ -417,7 +417,7 @@ bool FSpawningAJetSetVelocityToTopSpeedCommand::Update()
 	return true;
 }
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedAgainstTopSpeedCommand, int*, tickCount, int, tickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedAgainstTopSpeedCommand, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
 bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
 {
@@ -429,10 +429,10 @@ bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
 		{
 			float currentSpeed = testJet->currentSpeed();
 
-			*tickCount = *tickCount + 1;
+			++tickCount;
 			
 
-			if ( (*tickCount) > tickLimit)
+			if ( tickCount > tickLimit)
 			{
 				test->TestTrue(TEXT("If a jet is at top speed, it should never increase it after an acceleration is added (after ticking)."), FMath::IsNearlyEqual(currentSpeed, testJet->settedTopSpeed(), 1.0f));
 				testWorld->bDebugFrameStepExecution = true;
@@ -456,7 +456,7 @@ bool FAJetShouldntAccelerateWhenAtTopSpeedTest::RunTest(const FString& Parameter
 		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetSetVelocityToTopSpeedCommand);
-		int* tickCount = new int{0};
+		int tickCount = 0;
 		int tickLimit = 3;
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedAgainstTopSpeedCommand(tickCount, tickLimit, this));
 
@@ -492,7 +492,7 @@ bool FSpawningAJetMakeItSteerRightCommand::Update()
 }
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetMovedRightCommand, int*, tickCount, int, tickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetMovedRightCommand, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
 bool FCheckAJetMovedRightCommand::Update()
 {
@@ -511,11 +511,11 @@ bool FCheckAJetMovedRightCommand::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			*tickCount = *tickCount + 1;
+			++tickCount;
 
-			if ( (*tickCount) > tickLimit)
+			if ( tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet Y location never changed from zero."), *tickCount > tickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet Y location never changed from zero."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -537,7 +537,7 @@ bool FAJetShouldMoveRightWhenSteeringRightTest::RunTest(const FString& Parameter
 		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItSteerRightCommand);
-		int* tickCount = new int{0};
+		int tickCount = 0;
 		int tickLimit = 3;
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetMovedRightCommand(tickCount, tickLimit, this));
 
@@ -618,7 +618,7 @@ bool FAJetAcceleratesWhenPressingAccelerationKeyTest::RunTest(const FString& Par
 		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerationKeyCommand);
-		int* tickCount = new int{0};
+		int tickCount = 0;
 		int tickLimit = 3;
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedIncreaseCommand(tickCount, tickLimit, this));
 
@@ -682,7 +682,7 @@ bool FAJetShouldMoveRightWhenPressingSteerRightKeyTest::RunTest(const FString& P
 		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKeyCommand);
-		int* tickCount = new int{0};
+		int tickCount = 0;
 		int tickLimit = 3;
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetMovedRightCommand(tickCount, tickLimit, this));
 
@@ -747,7 +747,7 @@ bool FAJetBrakesWhenPressingBrakeKeyTest::RunTest(const FString& Parameters)
 		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeKeyCommand);
-		int* tickCount = new int{0};
+		int tickCount = 0;
 		int tickLimit = 3;
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedDecreaseCommand(tickCount, tickLimit, this));
 
