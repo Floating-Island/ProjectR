@@ -343,7 +343,7 @@ bool FCheckAJetSpeedDecreaseCommand::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++tickCount
+			++tickCount;
 
 			if ( tickCount > tickLimit)
 			{
