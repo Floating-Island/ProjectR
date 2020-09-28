@@ -56,7 +56,7 @@ bool AJetMOCK::usesAbsoluteRotation()
 	return springArm->IsUsingAbsoluteRotation();
 }
 
-bool AJetMOCK::hasAnAntiGravitySystem()
-{
-	return antiGravitySystem? true : false;
-}
+//bool AJetMOCK::hasAnAntiGravitySystem()
+//{
+//	return antiGravitySystem? true : false;
+//}

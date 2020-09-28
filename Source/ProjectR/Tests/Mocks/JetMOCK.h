@@ -36,5 +36,5 @@ public:
 
 	bool usesAbsoluteRotation();
 
-	bool hasAnAntiGravitySystem();
+	/*bool hasAnAntiGravitySystem();*/
 };

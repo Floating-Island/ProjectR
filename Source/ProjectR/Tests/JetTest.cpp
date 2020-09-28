@@ -839,19 +839,19 @@ bool FAJetSpringArmShouldUseAbsoluteRotationTest::RunTest(const FString& Paramet
 
 
 
-//uses a MOCK
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveAnAntiGravitySystemTest, "ProjectR.Unit.JetTests.ShouldHaveAnAntiGravitySystem", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FAJetShouldHaveAnAntiGravitySystemTest::RunTest(const FString& Parameters)
-{
-	{
-		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
-		TestTrue(TEXT("The Jet should have."), testJet->hasAnAntiGravitySystem());
-	}
-
-	return true;
-}
+////uses a MOCK
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveAnAntiGravitySystemTest, "ProjectR.Unit.JetTests.ShouldHaveAnAntiGravitySystem", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//bool FAJetShouldHaveAnAntiGravitySystemTest::RunTest(const FString& Parameters)
+//{
+//	{
+//		AJetMOCK* testJet = NewObject<AJetMOCK>();
+//		
+//		TestTrue(TEXT("The Jet should have."), testJet->hasAnAntiGravitySystem());
+//	}
+//
+//	return true;
+//}
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
