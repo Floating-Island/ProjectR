@@ -791,7 +791,7 @@ bool FAJetShouldHaveASpringArmAttachedToRootComponentTest::RunTest(const FString
 
 
 
-
+//uses a MOCK
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveACameraTest, "ProjectR.Unit.JetTests.ShouldHaveACamera", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetShouldHaveACameraTest::RunTest(const FString& Parameters)
@@ -807,6 +807,7 @@ bool FAJetShouldHaveACameraTest::RunTest(const FString& Parameters)
 
 
 
+//uses a MOCK
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveACameraAttachedToSpringArmTest, "ProjectR.Unit.JetTests.ShouldHaveACameraAttachedToSpringArm", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetShouldHaveACameraAttachedToSpringArmTest::RunTest(const FString& Parameters)
@@ -822,6 +823,7 @@ bool FAJetShouldHaveACameraAttachedToSpringArmTest::RunTest(const FString& Param
 
 
 
+//uses a MOCK
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpringArmShouldUseAbsoluteRotationTest, "ProjectR.Unit.JetTests.SpringArmShouldUseAbsoluteRotation", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetSpringArmShouldUseAbsoluteRotationTest::RunTest(const FString& Parameters)
@@ -834,5 +836,22 @@ bool FAJetSpringArmShouldUseAbsoluteRotationTest::RunTest(const FString& Paramet
 
 	return true;
 }
+
+
+
+//uses a MOCK
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveAnAntiGravitySystemTest, "ProjectR.Unit.JetTests.ShouldHaveAnAntiGravitySystem", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetShouldHaveAnAntiGravitySystemTest::RunTest(const FString& Parameters)
+{
+	{
+		AJetMOCK* testJet = NewObject<AJetMOCK>();
+		
+		TestTrue(TEXT("The Jet should have."), testJet->hasAnAntiGravitySystem());
+	}
+
+	return true;
+}
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
