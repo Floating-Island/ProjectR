@@ -35,4 +35,6 @@ public:
 	bool isCameraAttachedToSpringArm();
 
 	bool usesAbsoluteRotation();
+
+	bool hasAnAntiGravitySystem();
 };
