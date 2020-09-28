@@ -42,6 +42,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 		UCameraComponent* camera;
 
+	//camera component
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+		USceneComponent* antiGravitySystem;
+
 
 public:
 	// Called every frame

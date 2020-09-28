@@ -38,6 +38,9 @@ AJet::AJet()
 
 	camera = CreateDefaultSubobject<UCameraComponent>(TEXT("camera"));
 	camera->SetupAttachment(springArm);
+
+	antiGravitySystem = CreateDefaultSubobject<USceneComponent>(TEXT("AntiGravity System"));
+	antiGravitySystem->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
