@@ -14,7 +14,8 @@
 //to be able to process inputs:
 #include "GameFramework/PlayerInput.h"
 #include "GameFramework/GameModeBase.h"
-
+//used for floors:
+#include "Engine/StaticMeshActor.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -852,6 +853,89 @@ bool FAJetSpringArmShouldUseAbsoluteRotationTest::RunTest(const FString& Paramet
 //
 //	return true;
 //}
+
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetSnapedToFloorCommand);
+
+bool FSpawningAJetSnapedToFloorCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	{
+		return false;
+	}
+
+	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+
+	AStaticMeshActor* meshActor = testWorld->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass());
+	meshActor->GetStaticMeshComponent()->SetStaticMesh(Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Engine/EditorMeshes/PhAT_FloorBox"))));
+	
+	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
+
+	GEditor->SnapObjectTo(FActorOrComponent(testJet),true,true,true,true,FActorOrComponent(meshActor));
+
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetZLocationCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+
+bool FCheckAJetZLocationCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+		AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJet::StaticClass()));
+		if (testJet)
+		{
+			float currentZLocation = testJet->GetActorLocation().Z;
+
+
+			if (currentZLocation > 0 && !FMath::IsNearlyZero(currentZLocation, 0.1f))
+			{
+				test->TestTrue(TEXT("The Jet Z location should increase due to anti-gravity activation near floor."), currentZLocation > 0 && !FMath::IsNearlyZero(currentZLocation, 0.1f));
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			++aTickCount;
+
+			if ( aTickCount > aTickLimit)
+			{
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet never lifted from the ground."), aTickCount > aTickLimit);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetGetsUpwardsImpulseFromAntiGravityOnFloorTest, "ProjectR.Unit.JetTests.GetsUpwardsImpulseFromAntiGravityOnFloor", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetGetsUpwardsImpulseFromAntiGravityOnFloorTest::RunTest(const FString& Parameters)
+{
+	{
+		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+		
+		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
+
+		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetSnapedToFloorCommand);
+		int tickCount = 0;
+		int tickLimit = 3;
+		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetZLocationCommand(tickCount, tickLimit, this));
+
+		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	}
+
+	return true;
+}
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
