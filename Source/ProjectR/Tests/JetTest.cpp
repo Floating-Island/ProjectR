@@ -932,7 +932,7 @@ bool FAJetGetsUpwardsImpulseFromAntiGravityOnFloorTest::RunTest(const FString& P
 		int tickLimit = 3;
 		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetZLocationCommand(tickCount, tickLimit, this));
 
-		//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	}
 
 	return true;
