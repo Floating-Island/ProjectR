@@ -56,6 +56,11 @@ bool AJetMOCK::usesAbsoluteRotation()
 	return springArm->IsUsingAbsoluteRotation();
 }
 
+float AJetMOCK::getZVelocity()
+{
+	return meshComponent->GetComponentVelocity().Z;
+}
+
 //bool AJetMOCK::hasAnAntiGravitySystem()
 //{
 //	return antiGravitySystem? true : false;

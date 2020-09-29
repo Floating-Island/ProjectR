@@ -878,14 +878,7 @@ bool FSpawningAJetSnapedToFloorCommand::Update()
 
 	AJetMOCK* testJet = testWorld->SpawnActor<AJetMOCK>(AJetMOCK::StaticClass(), spawnLocation, FRotator(), spawnParams);
 	
-	if(GEditor->SnapObjectTo(FActorOrComponent(testJet),true,true,true,false,FActorOrComponent(meshActor)))
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("snaped")));//mmemmm
-	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("couldn't snap...")));
-	}
+	GEditor->SnapObjectTo(FActorOrComponent(testJet),true,true,true,false,FActorOrComponent(meshActor));
 
 	return true;
 }

@@ -37,4 +37,6 @@ public:
 	bool usesAbsoluteRotation();
 
 	/*bool hasAnAntiGravitySystem();*/
+
+	float getZVelocity();
 };
