@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "floorMeshActor.h"
+#include "FloorMeshActor.h"
 
 // Sets default values
-AfloorMeshActor::AfloorMeshActor()
+AFloorMeshActor::AFloorMeshActor()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
@@ -21,7 +21,7 @@ AfloorMeshActor::AfloorMeshActor()
 }
 
 // Called when the game starts or when spawned
-void AfloorMeshActor::BeginPlay()
+void AFloorMeshActor::BeginPlay()
 {
 	Super::BeginPlay();
 	

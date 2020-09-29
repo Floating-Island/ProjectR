@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "floorMeshActor.generated.h"
+#include "FloorMeshActor.generated.h"
 
 UCLASS()
-class PROJECTR_API AfloorMeshActor : public AActor
+class PROJECTR_API AFloorMeshActor : public AActor
 {
 	GENERATED_BODY()
 
@@ -16,7 +16,7 @@ class PROJECTR_API AfloorMeshActor : public AActor
 	
 public:	
 	// Sets default values for this actor's properties
-	AfloorMeshActor();
+	AFloorMeshActor();
 
 protected:
 	// Called when the game starts or when spawned
