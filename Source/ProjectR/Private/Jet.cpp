@@ -66,7 +66,6 @@ void AJet::antiGravityLifting()
 
 	if(hitBlocked)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("applyingAntiGravity...")));
 		float antiGravityIntensity = hit.Distance / traceLength;
 		float antiGravityForceValue = 10000;
 		float effectiveAntiGravityForceValue = FMath::Lerp(antiGravityForceValue,0.0f,antiGravityIntensity);
