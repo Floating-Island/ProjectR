@@ -898,7 +898,7 @@ bool FCheckAJetZLocationCommand::Update()
 
 			if (currentZVelocity > 0 && !FMath::IsNearlyZero(currentZVelocity, 0.1f))
 			{
-				test->TestTrue(TEXT("The Jet Z veocity should increase due to anti-gravity activation near floor."), currentZVelocity > 0 && !FMath::IsNearlyZero(currentZLocation, 0.1f));
+				test->TestTrue(TEXT("The Jet Z veocity should increase due to anti-gravity activation near floor."), currentZVelocity > 0 && !FMath::IsNearlyZero(currentZVelocity, 0.1f));
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
