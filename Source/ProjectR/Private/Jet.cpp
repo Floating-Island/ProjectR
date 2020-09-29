@@ -67,12 +67,11 @@ void AJet::antiGravityLifting()
 	if(hitBlocked)
 	{
 		float antiGravityIntensity = hit.Distance / traceLength;
-		float antiGravityForceValue = 10000;
+		float antiGravityForceValue = 10000;//should be editable and account for object mass and gravity force.
 		float effectiveAntiGravityForceValue = FMath::Lerp(antiGravityForceValue,0.0f,antiGravityIntensity);
 		FVector impulse = effectiveAntiGravityForceValue*hit.ImpactNormal;
 		meshComponent->AddImpulse(impulse);
 	}
-	
 }
 
 // Called every frame
