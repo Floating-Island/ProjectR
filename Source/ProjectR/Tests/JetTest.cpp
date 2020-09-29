@@ -871,10 +871,21 @@ bool FSpawningAJetSnapedToFloorCommand::Update()
 	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
 
 	AFloorMeshActor* meshActor = testWorld->SpawnActor<AFloorMeshActor>(AFloorMeshActor::StaticClass());
-	
-	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
 
-	GEditor->SnapObjectTo(FActorOrComponent(testJet),true,true,true,true,FActorOrComponent(meshActor));
+	FActorSpawnParameters spawnParams;
+	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	FVector spawnLocation = meshActor->GetActorLocation() + FVector(0,0, 1000);
+
+	AJetMOCK* testJet = testWorld->SpawnActor<AJetMOCK>(AJetMOCK::StaticClass(), spawnLocation, FRotator(), spawnParams);
+	
+	if(GEditor->SnapObjectTo(FActorOrComponent(testJet),true,true,true,false,FActorOrComponent(meshActor)))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("snaped")));//mmemmm
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("couldn't snap...")));
+	}
 
 	return true;
 }
@@ -886,15 +897,15 @@ bool FCheckAJetZLocationCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-		AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJet::StaticClass()));
+		AJetMOCK* testJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJetMOCK::StaticClass()));
 		if (testJet)
 		{
-			float currentZLocation = testJet->GetActorLocation().Z;
+			float currentZVelocity = testJet->getZVelocity();
 
 
-			if (currentZLocation > 0 && !FMath::IsNearlyZero(currentZLocation, 0.1f))
+			if (currentZVelocity > 0 && !FMath::IsNearlyZero(currentZVelocity, 0.1f))
 			{
-				test->TestTrue(TEXT("The Jet Z location should increase due to anti-gravity activation near floor."), currentZLocation > 0 && !FMath::IsNearlyZero(currentZLocation, 0.1f));
+				test->TestTrue(TEXT("The Jet Z veocity should increase due to anti-gravity activation near floor."), currentZVelocity > 0 && !FMath::IsNearlyZero(currentZLocation, 0.1f));
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}

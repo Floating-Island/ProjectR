@@ -23,12 +23,12 @@ AJet::AJet()
 
 	UStaticMesh* Mesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), NULL, TEXT("/Engine/EditorMeshes/ArcadeEditorSphere")));
 	meshComponent->SetStaticMesh(Mesh);
-
+	
 	accelerationValue = 5000.0f;
 	brakeAbsoluteValue = 1000.0f;
 	topSpeed = 1000.0f;
 	steerForceValue = 2000.0f;
-
+	
 	AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
 
 
@@ -41,6 +41,7 @@ AJet::AJet()
 
 	//antiGravitySystem = CreateDefaultSubobject<USceneComponent>(TEXT("AntiGravity System"));
 	//antiGravitySystem->SetupAttachment(RootComponent);
+	meshComponent->SetMassOverrideInKg(NAME_None, 100, true);
 }
 
 // Called when the game starts or when spawned
@@ -53,7 +54,7 @@ void AJet::BeginPlay()
 void AJet::antiGravityLifting()
 {
 	FVector traceStart = GetActorLocation();
-	float traceLength = 150.0f;
+	float traceLength = 600.0f;//shold be distance from center to actor bounds...
 	FVector traceEnd = GetActorLocation() - FVector(0,0,traceLength);
 
 	FHitResult hit;//struct containing hit information
