@@ -50,10 +50,36 @@ void AJet::BeginPlay()
 	
 }
 
+void AJet::antiGravityLifting()
+{
+	FVector traceStart = GetActorLocation();
+	float traceLength = 150.0f;
+	FVector traceEnd = GetActorLocation() - FVector(0,0,traceLength);
+
+	FHitResult hit;//struct containing hit information
+	FCollisionQueryParams collisionParameters;
+	collisionParameters.AddIgnoredActor(this);//owner is ignored when tracing
+	collisionParameters.bTraceComplex = false;
+	collisionParameters.bReturnPhysicalMaterial = false;
+	bool hitBlocked = GetWorld()->LineTraceSingleByChannel(hit, traceStart, traceEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
+
+	if(hitBlocked)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("applyingAntiGravity...")));
+		float antiGravityIntensity = hit.Distance / traceLength;
+		float antiGravityForceValue = 10000;
+		float effectiveAntiGravityForceValue = FMath::Lerp(antiGravityForceValue,0.0f,antiGravityIntensity);
+		FVector impulse = effectiveAntiGravityForceValue*hit.ImpactNormal;
+		meshComponent->AddImpulse(impulse);
+	}
+	
+}
+
 // Called every frame
 void AJet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	antiGravityLifting();
 }
 
 // Called to bind functionality to input

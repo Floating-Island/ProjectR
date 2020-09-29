@@ -45,6 +45,7 @@ protected:
 	////anti-gravity system component
 	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	//	USceneComponent* antiGravitySystem;
+	void antiGravityLifting();
 
 
 public:
