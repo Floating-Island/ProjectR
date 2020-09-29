@@ -15,7 +15,7 @@
 #include "GameFramework/PlayerInput.h"
 #include "GameFramework/GameModeBase.h"
 //used for floors:
-#include "Engine/StaticMeshActor.h"
+#include "Utilities/FloorMeshActor.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -870,9 +870,7 @@ bool FSpawningAJetSnapedToFloorCommand::Update()
 
 	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
 
-	AStaticMeshActor* meshActor = testWorld->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass());
-	UStaticMesh* floorMesh= Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Engine/EditorMeshes/PhAT_FloorBox")));
-	meshActor->GetStaticMeshComponent()->SetStaticMesh(floorMesh);
+	AFloorMeshActor* meshActor = testWorld->SpawnActor<AFloorMeshActor>(AFloorMeshActor::StaticClass());
 	
 	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
 
