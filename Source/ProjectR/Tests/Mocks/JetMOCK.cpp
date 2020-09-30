@@ -7,12 +7,12 @@
 
 bool AJetMOCK::hasAStaticMesh()
 {
-	return (meshComponent)? true : false;
+	return (meshComponent) ? true : false;
 }
 
 bool AJetMOCK::isMeshTheRootComponent()
 {
-	return (RootComponent == meshComponent)? true : false;
+	return (RootComponent == meshComponent) ? true : false;
 }
 
 bool AJetMOCK::hasGravityEnabled()
@@ -33,22 +33,22 @@ void AJetMOCK::setCurrentSpeedTo(float aDesiredSpeed)
 
 bool AJetMOCK::hasASprinArm()
 {
-	return springArm? true : false;
+	return springArm ? true : false;
 }
 
 bool AJetMOCK::isSpringArmAttachedToRoot()
 {
-	return  springArm->GetAttachParent() == RootComponent? true : false;
+	return  springArm->GetAttachParent() == RootComponent ? true : false;
 }
 
 bool AJetMOCK::HasCameraComponent()
 {
-	return camera? true : false;
+	return camera ? true : false;
 }
 
 bool AJetMOCK::isCameraAttachedToSpringArm()
 {
-	return camera->GetAttachParent() == springArm? true: false;
+	return camera->GetAttachParent() == springArm ? true : false;
 }
 
 bool AJetMOCK::usesAbsoluteRotation()

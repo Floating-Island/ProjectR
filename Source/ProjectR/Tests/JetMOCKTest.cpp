@@ -28,12 +28,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FJetMOCKShouldntBeNullWhenInstantiatedTest, "Pr
 
 bool FJetMOCKShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
-	
-	{
-		AJetMOCK* testMockJet = NewObject<AJetMOCK>();
-		
-		TestNotNull(TEXT("The JetMOCK shouldn't be null after instantiating it."), testMockJet);
-	}
+
+
+	AJetMOCK* testMockJet = NewObject<AJetMOCK>();
+
+	TestNotNull(TEXT("The JetMOCK shouldn't be null after instantiating it."), testMockJet);
 
 	return true;
 }

@@ -229,7 +229,6 @@ bool FAJetShouldMoveForwardWhenAcceleratedTest::RunTest(const FString& Parameter
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
-
 	return true;
 }
 
@@ -290,7 +289,6 @@ bool FAJetSpeedIncreasesWhenAcceleratesTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedIncreaseCommand(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-
 
 	return true;
 }
@@ -385,7 +383,6 @@ bool FAJetSpeedDecreasesWhenBrakesTest::RunTest(const FString& Parameters)
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
-
 	return true;
 }
 
@@ -474,7 +471,6 @@ bool FAJetShouldntAccelerateWhenAtTopSpeedTest::RunTest(const FString& Parameter
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
-
 	return true;
 }
 
@@ -557,7 +553,6 @@ bool FAJetShouldMoveRightWhenSteeringRightTest::RunTest(const FString& Parameter
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
-
 	return true;
 }
 
@@ -617,7 +612,6 @@ bool FAJetAcceleratesWhenPressingAccelerationKeyTest::RunTest(const FString& Par
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
-
 	return true;
 }
 
@@ -664,7 +658,6 @@ bool FAJetShouldMoveRightWhenPressingSteerRightKeyTest::RunTest(const FString& P
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
-
 	return true;
 }
 
@@ -710,7 +703,6 @@ bool FAJetBrakesWhenPressingBrakeKeyTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedDecreaseCommand(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-
 
 	return true;
 }
@@ -891,9 +883,12 @@ bool FAJetGetsUpwardsImpulseFromAntiGravityOnFloorTest::RunTest(const FString& P
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
-
 	return true;
 }
+
+
+
+
 
 
 
