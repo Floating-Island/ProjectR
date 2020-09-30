@@ -36,7 +36,7 @@ bool FAJetShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
 	{
 		AJet* testJet = NewObject<AJet>();
-		
+
 		TestNotNull(TEXT("The Jet shouldn't be null after instantiating it."), testJet);
 	}
 
@@ -51,7 +51,7 @@ bool FAJetSpeedIsZeroWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
 	{
 		AJet* testJet = NewObject<AJet>();
-		
+
 		TestTrue(TEXT("Jet speed should be zero when instantiated."), testJet->currentSpeed() == 0);
 	}
 
@@ -67,7 +67,7 @@ bool FAJetShouldHaveAStaticMeshTest::RunTest(const FString& Parameters)
 {
 	{
 		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
+
 		TestTrue(TEXT("The Jet static mesh shouldn't be null if it has one."), testJet->hasAStaticMesh());
 	}
 
@@ -83,7 +83,7 @@ bool FAJetMeshShouldBeTheRootComponentTest::RunTest(const FString& Parameters)
 {
 	{
 		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
+
 		TestTrue(TEXT("The Jet static mesh should be the root component."), testJet->isMeshTheRootComponent());
 	}
 
@@ -99,7 +99,7 @@ bool FAJetShouldHaveGravityEnabledTest::RunTest(const FString& Parameters)
 {
 	{
 		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
+
 		TestTrue(TEXT("The Jet should have gravity enabled."), testJet->hasGravityEnabled());
 	}
 
@@ -115,7 +115,7 @@ bool FAJetShouldntAffectNavigationVolumeTest::RunTest(const FString& Parameters)
 {
 	{
 		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
+
 		TestFalse(TEXT("The Jet shouldn't affect the navigation volume."), testJet->isAffectingNavigation());
 	}
 
@@ -131,7 +131,7 @@ bool FAJetShouldBeMovableTest::RunTest(const FString& Parameters)
 {
 	{
 		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
+
 		TestTrue(TEXT("The Jet should be movable when spawned into the world."), testJet->IsRootComponentMovable());
 	}
 
@@ -147,7 +147,7 @@ bool FAJetDefaultAccelerationIsGreaterThanZeroTest::RunTest(const FString& Param
 	AJet* testJet = NewObject<AJet>(AJet::StaticClass());
 
 	TestTrue(TEXT("A Jet's default acceleration should be bigger than zero."), testJet->acceleration() > 0);
-	
+
 	return true;
 }
 
@@ -166,8 +166,8 @@ bool FSpawningAJetMakeItAccelerateCommand::Update()
 	}
 
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	
-	
+
+
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
 	AJet* testJet = sessionUtilities.spawnJetInPIE();
@@ -199,7 +199,7 @@ bool FCheckAJetLocationCommand::Update()
 			}
 			++aTickCount;
 
-			if ( aTickCount > aTickLimit)
+			if (aTickCount > aTickLimit)
 			{
 				test->TestFalse(TEXT("Tick limit reached for this test. The Jet X Location never changed from zero."), aTickCount > aTickLimit);
 				testWorld->bDebugFrameStepExecution = true;
@@ -217,10 +217,10 @@ bool FAJetShouldMoveForwardWhenAcceleratedTest::RunTest(const FString& Parameter
 {
 	{
 		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-		
+
 		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+			ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand);
 		int tickCount = 0;
@@ -261,7 +261,7 @@ bool FCheckAJetSpeedIncreaseCommand::Update()
 
 			++aTickCount;
 
-			if ( aTickCount > aTickLimit)
+			if (aTickCount > aTickLimit)
 			{
 				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from zero."), aTickCount > aTickLimit);
 				testWorld->bDebugFrameStepExecution = true;
@@ -279,10 +279,10 @@ bool FAJetSpeedIncreasesWhenAcceleratesTest::RunTest(const FString& Parameters)
 {
 	{
 		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-		
+
 		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+			ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand);
 		int tickCount = 0;
@@ -304,7 +304,7 @@ bool FAJetDefaultBrakeValueIsGreaterThanZeroTest::RunTest(const FString& Paramet
 	AJet* testJet = NewObject<AJet>(AJet::StaticClass());
 
 	TestTrue(TEXT("A Jet's default brake value should be bigger than zero."), testJet->brakeValue() > 0);
-	
+
 	return true;
 }
 
@@ -322,7 +322,7 @@ bool FSpawningAJetMakeItBrakeCommand::Update()
 		return false;
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	
+
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
 	AJet* testJet = sessionUtilities.spawnJetInPIE();
@@ -355,7 +355,7 @@ bool FCheckAJetSpeedDecreaseCommand::Update()
 			}
 			++aTickCount;
 
-			if ( aTickCount > aTickLimit)
+			if (aTickCount > aTickLimit)
 			{
 				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from zero."), aTickCount > aTickLimit);
 				testWorld->bDebugFrameStepExecution = true;
@@ -373,10 +373,10 @@ bool FAJetSpeedDecreasesWhenBrakesTest::RunTest(const FString& Parameters)
 {
 	{
 		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-		
+
 		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+			ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItBrakeCommand);
 		int tickCount = 0;
@@ -398,7 +398,7 @@ bool FAJetDefaultTopSpeedIsGreaterThanZeroTest::RunTest(const FString& Parameter
 	AJet* testJet = NewObject<AJet>(AJet::StaticClass());
 
 	TestTrue(TEXT("A Jet's default top speed should be bigger than zero."), testJet->settedTopSpeed() > 0);
-	
+
 	return true;
 }
 
@@ -417,7 +417,7 @@ bool FSpawningAJetSetVelocityToTopSpeedCommand::Update()
 		return false;
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	
+
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
 	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE();
@@ -442,9 +442,9 @@ bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
 			float currentSpeed = testJet->currentSpeed();
 
 			++aTickCount;
-			
 
-			if ( aTickCount > aTickLimit)
+
+			if (aTickCount > aTickLimit)
 			{
 				test->TestTrue(TEXT("If a jet is at top speed, it should never increase it after an acceleration is added (after ticking)."), FMath::IsNearlyEqual(currentSpeed, testJet->settedTopSpeed(), 1.0f));
 				testWorld->bDebugFrameStepExecution = true;
@@ -462,10 +462,10 @@ bool FAJetShouldntAccelerateWhenAtTopSpeedTest::RunTest(const FString& Parameter
 {
 	{
 		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-		
+
 		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+			ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetSetVelocityToTopSpeedCommand);
 		int tickCount = 0;
@@ -498,7 +498,7 @@ bool FSpawningAJetMakeItSteerRightCommand::Update()
 	AJet* testJet = sessionUtilities.spawnJetInPIE();
 
 	float direction = 1;//1 is right, -1 is left...
-	
+
 	testJet->steer(direction);
 
 	return true;
@@ -519,7 +519,7 @@ bool FCheckAJetMovedRightCommand::Update()
 			float currentYLocation = testJet->GetActorLocation().Y;
 
 
-			if (currentYLocation > 0  && !FMath::IsNearlyZero(currentYLocation, 0.1f))//we should be careful of near zero floats. Maybe !NearEqual would be better...
+			if (currentYLocation > 0 && !FMath::IsNearlyZero(currentYLocation, 0.1f))//we should be careful of near zero floats. Maybe !NearEqual would be better...
 			{
 				test->TestTrue(TEXT("The Jet Y location should be greater than zero after steering right (after ticking)."), currentYLocation > 0 && !FMath::IsNearlyZero(currentYLocation, 0.1f));
 				testWorld->bDebugFrameStepExecution = true;
@@ -527,7 +527,7 @@ bool FCheckAJetMovedRightCommand::Update()
 			}
 			++aTickCount;
 
-			if ( aTickCount > aTickLimit)
+			if (aTickCount > aTickLimit)
 			{
 				test->TestFalse(TEXT("Tick limit reached for this test. The Jet Y location never changed from zero."), aTickCount > aTickLimit);
 				testWorld->bDebugFrameStepExecution = true;
@@ -545,10 +545,10 @@ bool FAJetShouldMoveRightWhenSteeringRightTest::RunTest(const FString& Parameter
 {
 	{
 		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-		
+
 		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+			ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItSteerRightCommand);
 		int tickCount = 0;
@@ -570,7 +570,7 @@ bool FAJetDefaultSteerForceIsGreaterThanZeroTest::RunTest(const FString& Paramet
 	AJet* testJet = NewObject<AJet>(AJet::StaticClass());
 
 	TestTrue(TEXT("A Jet's default steer force should be bigger than zero."), testJet->steerForce() > 0);
-	
+
 	return true;
 }
 
@@ -605,10 +605,10 @@ bool FAJetAcceleratesWhenPressingAccelerationKeyTest::RunTest(const FString& Par
 {
 	{
 		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-		
+
 		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+			ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerationKeyCommand);
 		int tickCount = 0;
@@ -652,10 +652,10 @@ bool FAJetShouldMoveRightWhenPressingSteerRightKeyTest::RunTest(const FString& P
 {
 	{
 		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-		
+
 		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+			ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKeyCommand);
 		int tickCount = 0;
@@ -699,10 +699,10 @@ bool FAJetBrakesWhenPressingBrakeKeyTest::RunTest(const FString& Parameters)
 {
 	{
 		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-		
+
 		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+			ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeKeyCommand);
 		int tickCount = 0;
@@ -724,7 +724,7 @@ bool FAJetShouldHaveASpringArmTest::RunTest(const FString& Parameters)
 {
 	{
 		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
+
 		TestTrue(TEXT("The Jet should have a spring arm."), testJet->hasASprinArm());
 	}
 
@@ -740,7 +740,7 @@ bool FAJetShouldHaveASpringArmAttachedToRootComponentTest::RunTest(const FString
 {
 	{
 		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
+
 		TestTrue(TEXT("The Jet should have a spring arm attached to the root component."), testJet->isSpringArmAttachedToRoot());
 	}
 
@@ -756,7 +756,7 @@ bool FAJetShouldHaveACameraTest::RunTest(const FString& Parameters)
 {
 	{
 		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
+
 		TestTrue(TEXT("The Jet should have a camera."), testJet->HasCameraComponent());
 	}
 
@@ -772,7 +772,7 @@ bool FAJetShouldHaveACameraAttachedToSpringArmTest::RunTest(const FString& Param
 {
 	{
 		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
+
 		TestTrue(TEXT("The Jet should have a camera attached to a springArm."), testJet->isCameraAttachedToSpringArm());
 	}
 
@@ -788,7 +788,7 @@ bool FAJetSpringArmShouldUseAbsoluteRotationTest::RunTest(const FString& Paramet
 {
 	{
 		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
+
 		TestTrue(TEXT("The Jet spring arm should use absolute rotation."), testJet->usesAbsoluteRotation());
 	}
 
@@ -829,12 +829,12 @@ bool FSpawningAJetSnapedToFloorCommand::Update()
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
 	AFloorMeshActor* meshActor = sessionUtilities.spawnFloorMeshActorInPIE();
-	
-	FVector spawnLocation = meshActor->GetActorLocation() + FVector(0,0, 1000);
+
+	FVector spawnLocation = meshActor->GetActorLocation() + FVector(0, 0, 1000);
 
 	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE(spawnLocation);
-	
-	GEditor->SnapObjectTo(FActorOrComponent(testJet),true,true,true,false,FActorOrComponent(meshActor));
+
+	GEditor->SnapObjectTo(FActorOrComponent(testJet), true, true, true, false, FActorOrComponent(meshActor));
 
 	return true;
 }
@@ -861,7 +861,7 @@ bool FCheckAJetZLocationCommand::Update()
 			}
 			++aTickCount;
 
-			if ( aTickCount > aTickLimit)
+			if (aTickCount > aTickLimit)
 			{
 				test->TestFalse(TEXT("Tick limit reached for this test. The Jet never lifted from the ground."), aTickCount > aTickLimit);
 				testWorld->bDebugFrameStepExecution = true;
@@ -879,10 +879,10 @@ bool FAJetGetsUpwardsImpulseFromAntiGravityOnFloorTest::RunTest(const FString& P
 {
 	{
 		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-		
+
 		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+			ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetSnapedToFloorCommand);
 		int tickCount = 0;

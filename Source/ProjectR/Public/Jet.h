@@ -22,7 +22,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
+
 
 	float accelerationValue;
 
@@ -48,7 +48,7 @@ protected:
 	//	USceneComponent* antiGravitySystem;
 
 	void activateAntiGravityAlong(float aTraceLength, FHitResult aHit);
-	
+
 	void antiGravityLifting();
 
 
