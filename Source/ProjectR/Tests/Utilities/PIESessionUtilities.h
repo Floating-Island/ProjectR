@@ -21,9 +21,9 @@ public:
 	PIESessionUtilities();
 	~PIESessionUtilities();
 	UWorld* currentPIEWorld();
-	AJet* spawnJetInPIE(FVector atLocation = FVector());
-	AJetMOCK* spawnJetMOCKInPIE(FVector atLocation = FVector());
-	AFloorMeshActor* spawnFloorMeshActorInPIE(FVector atLocation = FVector());
+	AJet* spawnJetInPIE(FVector atALocation = FVector());
+	AJetMOCK* spawnJetMOCKInPIE(FVector atALocation = FVector());
+	AFloorMeshActor* spawnFloorMeshActorInPIE(FVector atALocation = FVector());
 	AJet* retrieveJetFromPIE();
 	AJetMOCK* retrieveJetMOCKFromPIE();
 	void processLocalPlayerInputFrom(FName anAxisMappingName);

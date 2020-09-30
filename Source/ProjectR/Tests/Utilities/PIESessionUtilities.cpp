@@ -28,19 +28,19 @@ UWorld* PIESessionUtilities::currentPIEWorld()
 	return pieWorld;
 }
 
-AJet* PIESessionUtilities::spawnJetInPIE(FVector atLocation)
+AJet* PIESessionUtilities::spawnJetInPIE(FVector atALocation)
 {
-	return pieWorld->SpawnActor<AJet>(AJet::StaticClass(), atLocation, FRotator(), spawnParams);
+	return pieWorld->SpawnActor<AJet>(AJet::StaticClass(), atALocation, FRotator(), spawnParams);
 }
 
-AJetMOCK* PIESessionUtilities::spawnJetMOCKInPIE(FVector atLocation)
+AJetMOCK* PIESessionUtilities::spawnJetMOCKInPIE(FVector atALocation)
 {
-	return pieWorld->SpawnActor<AJetMOCK>(AJetMOCK::StaticClass(), atLocation, FRotator(), spawnParams);
+	return pieWorld->SpawnActor<AJetMOCK>(AJetMOCK::StaticClass(), atALocation, FRotator(), spawnParams);
 }
 
-AFloorMeshActor* PIESessionUtilities::spawnFloorMeshActorInPIE(FVector atLocation)
+AFloorMeshActor* PIESessionUtilities::spawnFloorMeshActorInPIE(FVector atALocation)
 {
-	return pieWorld->SpawnActor<AFloorMeshActor>(AFloorMeshActor::StaticClass(), atLocation, FRotator(), spawnParams);
+	return pieWorld->SpawnActor<AFloorMeshActor>(AFloorMeshActor::StaticClass(), atALocation, FRotator(), spawnParams);
 }
 
 AJet* PIESessionUtilities::retrieveJetFromPIE()
