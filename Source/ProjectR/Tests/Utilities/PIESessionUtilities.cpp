@@ -57,7 +57,7 @@ void PIESessionUtilities::processLocalPlayerInputFrom(FName axisMappingName)
 {
 	AGameModeBase* testGameMode = pieWorld->GetAuthGameMode();
 
-	testGameMode->SpawnPlayerFromSimulate(FVector(), FRotator());
+	testGameMode->SpawnPlayerFromSimulate(FVector(), FRotator());//spawns a player controller.
 
 	
 	APlayerController* controller = Cast<APlayerController,AActor>(testGameMode->GetGameInstance()->GetFirstLocalPlayerController(pieWorld));
