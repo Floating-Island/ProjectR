@@ -46,5 +46,5 @@ AFloorMeshActor* PIESessionUtilities::spawnFloorMeshActorInPIE(FVector atLocatio
 AJet* PIESessionUtilities::retrieveJetFromPIE()
 {
 	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-		return Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJet::StaticClass()));
+	return Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJet::StaticClass()));
 }
