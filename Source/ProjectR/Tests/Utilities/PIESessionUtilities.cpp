@@ -64,8 +64,8 @@ void PIESessionUtilities::processLocalPlayerInputFrom(FName anAxisMappingName)
 
 	FName const actionName = anAxisMappingName;
 	TArray<FInputAxisKeyMapping> axisMappings = controller->PlayerInput->GetKeysForAxis(actionName);//in the editor, we are going to add a new axis mapping inside Project settings -> Input
-	//in the jet class, we are going to add a player input binding with:
-	//	PlayerInputComponent->BindAxis("AccelerateAction",this, &AJet::accelerate);
+	//in the pawn class, we are going to add a player input binding with:
+	//	PlayerInputComponent->BindAxis("AxisMappingName",this, &YourPawn::actionToBind);
 	//and in the constructor:
 	//AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
 	FKey actionKey;
