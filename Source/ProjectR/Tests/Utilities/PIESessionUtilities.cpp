@@ -4,6 +4,7 @@
 #include "PIESessionUtilities.h"
 #include "../Mocks/JetMOCK.h"
 #include "floorMeshActor.h"
+#include "Kismet/GameplayStatics.h"
 
 PIESessionUtilities::PIESessionUtilities()
 {
@@ -40,4 +41,10 @@ AFloorMeshActor* PIESessionUtilities::spawnFloorMeshActorInPIE(FVector atLocatio
 	FActorSpawnParameters spawnParams;
 	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	return testWorld->SpawnActor<AFloorMeshActor>(AFloorMeshActor::StaticClass(), atLocation, FRotator(), spawnParams);
+}
+
+AJet* PIESessionUtilities::retrieveJetFromPIE()
+{
+	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+		return Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJet::StaticClass()));
 }
