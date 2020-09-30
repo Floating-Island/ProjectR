@@ -48,3 +48,9 @@ AJet* PIESessionUtilities::retrieveJetFromPIE()
 	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
 	return Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJet::StaticClass()));
 }
+
+AJetMOCK* PIESessionUtilities::retrieveJetMOCKFromPIE()
+{
+	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+	return Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJetMOCK::StaticClass()));
+}

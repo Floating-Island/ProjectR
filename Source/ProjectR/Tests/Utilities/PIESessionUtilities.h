@@ -22,4 +22,5 @@ public:
 	static AJetMOCK* spawnJetMOCKInPIE(FVector atLocation = FVector());
 	static AFloorMeshActor* spawnFloorMeshActorInPIE(FVector atLocation = FVector());
 	static AJet* retrieveJetFromPIE();
+	static AJetMOCK* retrieveJetMOCKFromPIE();
 };
