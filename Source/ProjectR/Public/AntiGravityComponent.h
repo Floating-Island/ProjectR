@@ -12,6 +12,9 @@ class PROJECTR_API UAntiGravityComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
+private:
+	AActor* owner;
+	UPrimitiveComponent* ownerPrimitiveComponent;
 public:	
 	// Sets default values for this component's properties
 	UAntiGravityComponent();
@@ -21,8 +24,10 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
+	void activateAntiGravityAlong(float aTraceLength, FHitResult aHit);
+	void antiGravityLifting();
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-		
+	
 };

@@ -9,7 +9,13 @@ UAntiGravityComponent::UAntiGravityComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
+	owner = GetOwner();
+	ownerPrimitiveComponent = Cast<UPrimitiveComponent, UActorComponent>(owner->GetComponentByClass(TSubclassOf<UPrimitiveComponent>()));
 
+	if (!ownerPrimitiveComponent || !ownerPrimitiveComponent->IsSimulatingPhysics())
+	{
+		throw "Can't use this component on actors that don't have physics enabled nor primitive components!!!";
+	}
 	// ...
 }
 
@@ -18,9 +24,7 @@ UAntiGravityComponent::UAntiGravityComponent()
 void UAntiGravityComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
 	// ...
-	
 }
 
 
@@ -28,7 +32,35 @@ void UAntiGravityComponent::BeginPlay()
 void UAntiGravityComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
+	antiGravityLifting();
 	// ...
+}
+
+void UAntiGravityComponent::activateAntiGravityAlong(float aTraceLength, FHitResult aHit)
+{
+	float antiGravityIntensity = aHit.Distance / aTraceLength;
+	float antiGravityForceValue = 500000;//should be editable and account for object mass and gravity force.
+	float effectiveAntiGravityForceValue = FMath::Lerp(antiGravityForceValue, 0.0f, antiGravityIntensity);
+	FVector impulse = effectiveAntiGravityForceValue * aHit.ImpactNormal;
+	ownerPrimitiveComponent->AddForce(impulse, NAME_None, true);
+}
+
+void UAntiGravityComponent::antiGravityLifting()
+{
+	FVector traceStart = owner->GetActorLocation();//should take consideration the actor bounds...
+	float traceLength = 600.0f;
+	FVector traceEnd = traceStart - FVector(0, 0, traceLength);
+
+	FHitResult hit;
+	FCollisionQueryParams collisionParameters;
+	collisionParameters.AddIgnoredActor(owner);
+	collisionParameters.bTraceComplex = false;
+	collisionParameters.bReturnPhysicalMaterial = false;
+	bool hitBlocked = owner->GetWorld()->LineTraceSingleByChannel(hit, traceStart, traceEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
+
+	if (hitBlocked)
+	{
+		activateAntiGravityAlong(traceLength, hit);
+	}
 }
 
