@@ -218,9 +218,9 @@ bool FAJetShouldMoveForwardWhenAcceleratedTest::RunTest(const FString& Parameter
 	{
 		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
+		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-			ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand);
 		int tickCount = 0;
@@ -280,9 +280,9 @@ bool FAJetSpeedIncreasesWhenAcceleratesTest::RunTest(const FString& Parameters)
 	{
 		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
+		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-			ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand);
 		int tickCount = 0;
@@ -374,9 +374,9 @@ bool FAJetSpeedDecreasesWhenBrakesTest::RunTest(const FString& Parameters)
 	{
 		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
+		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-			ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItBrakeCommand);
 		int tickCount = 0;
@@ -463,9 +463,9 @@ bool FAJetShouldntAccelerateWhenAtTopSpeedTest::RunTest(const FString& Parameter
 	{
 		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
+		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-			ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetSetVelocityToTopSpeedCommand);
 		int tickCount = 0;
@@ -546,9 +546,9 @@ bool FAJetShouldMoveRightWhenSteeringRightTest::RunTest(const FString& Parameter
 	{
 		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
+		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-			ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItSteerRightCommand);
 		int tickCount = 0;
@@ -606,9 +606,9 @@ bool FAJetAcceleratesWhenPressingAccelerationKeyTest::RunTest(const FString& Par
 	{
 		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
+		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-			ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerationKeyCommand);
 		int tickCount = 0;
@@ -653,9 +653,9 @@ bool FAJetShouldMoveRightWhenPressingSteerRightKeyTest::RunTest(const FString& P
 	{
 		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
+		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-			ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKeyCommand);
 		int tickCount = 0;
@@ -700,9 +700,9 @@ bool FAJetBrakesWhenPressingBrakeKeyTest::RunTest(const FString& Parameters)
 	{
 		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
+		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-			ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeKeyCommand);
 		int tickCount = 0;
@@ -880,9 +880,9 @@ bool FAJetGetsUpwardsImpulseFromAntiGravityOnFloorTest::RunTest(const FString& P
 	{
 		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
+		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-			ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetSnapedToFloorCommand);
 		int tickCount = 0;
