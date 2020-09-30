@@ -14,13 +14,16 @@ class AFloorMeshActor;
  */
 class PROJECTR_API PIESessionUtilities
 {
+private:
+	UWorld* pieWorld;
+	FActorSpawnParameters spawnParams;
 public:
 	PIESessionUtilities();
 	~PIESessionUtilities();
-	static UWorld* currentPIEWorld();
-	static AJet* spawnJetInPIE(FVector atLocation = FVector());
-	static AJetMOCK* spawnJetMOCKInPIE(FVector atLocation = FVector());
-	static AFloorMeshActor* spawnFloorMeshActorInPIE(FVector atLocation = FVector());
-	static AJet* retrieveJetFromPIE();
-	static AJetMOCK* retrieveJetMOCKFromPIE();
+	UWorld* currentPIEWorld();
+	AJet* spawnJetInPIE(FVector atLocation = FVector());
+	AJetMOCK* spawnJetMOCKInPIE(FVector atLocation = FVector());
+	AFloorMeshActor* spawnFloorMeshActorInPIE(FVector atLocation = FVector());
+	AJet* retrieveJetFromPIE();
+	AJetMOCK* retrieveJetMOCKFromPIE();
 };

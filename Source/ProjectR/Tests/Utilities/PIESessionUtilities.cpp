@@ -12,7 +12,8 @@ PIESessionUtilities::PIESessionUtilities()
 	{
 		throw "Can't use this class when no PIE session is in progress!!";
 	}
-	
+	pieWorld = GEditor->GetPIEWorldContext()->World();
+	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 }
 
 PIESessionUtilities::~PIESessionUtilities()
@@ -26,36 +27,25 @@ UWorld* PIESessionUtilities::currentPIEWorld()
 
 AJet* PIESessionUtilities::spawnJetInPIE(FVector atLocation)
 {
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-	FActorSpawnParameters spawnParams;
-	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	return testWorld->SpawnActor<AJet>(AJet::StaticClass(), atLocation, FRotator(), spawnParams);
+	return pieWorld->SpawnActor<AJet>(AJet::StaticClass(), atLocation, FRotator(), spawnParams);
 }
 
 AJetMOCK* PIESessionUtilities::spawnJetMOCKInPIE(FVector atLocation)
 {
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-	FActorSpawnParameters spawnParams;
-	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	return testWorld->SpawnActor<AJetMOCK>(AJetMOCK::StaticClass(), atLocation, FRotator(), spawnParams);
+	return pieWorld->SpawnActor<AJetMOCK>(AJetMOCK::StaticClass(), atLocation, FRotator(), spawnParams);
 }
 
 AFloorMeshActor* PIESessionUtilities::spawnFloorMeshActorInPIE(FVector atLocation)
 {
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-	FActorSpawnParameters spawnParams;
-	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	return testWorld->SpawnActor<AFloorMeshActor>(AFloorMeshActor::StaticClass(), atLocation, FRotator(), spawnParams);
+	return pieWorld->SpawnActor<AFloorMeshActor>(AFloorMeshActor::StaticClass(), atLocation, FRotator(), spawnParams);
 }
 
 AJet* PIESessionUtilities::retrieveJetFromPIE()
 {
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-	return Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJet::StaticClass()));
+	return Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, AJet::StaticClass()));
 }
 
 AJetMOCK* PIESessionUtilities::retrieveJetMOCKFromPIE()
 {
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-	return Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJetMOCK::StaticClass()));
+	return Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, AJetMOCK::StaticClass()));
 }
