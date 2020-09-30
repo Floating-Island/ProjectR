@@ -9,16 +9,10 @@ UAntiGravityComponent::UAntiGravityComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-	owner = GetOwner();
-	ownerPrimitiveComponent = Cast<UPrimitiveComponent, UActorComponent>(owner->GetComponentByClass(TSubclassOf<UPrimitiveComponent>()));
 
-	if (!ownerPrimitiveComponent || !ownerPrimitiveComponent->IsSimulatingPhysics())
-	{
-		throw "Can't use this component on actors that don't have physics enabled nor primitive components!!!";
-	}
 	levitationHeight = 600.0f;
-	antiGravityForceValue = 500000;
-	
+	antiGravityForceValue = 5000;
+	owner = GetOwner();
 }
 
 
@@ -27,6 +21,8 @@ void UAntiGravityComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	// ...
+	ownerPrimitiveComponent = Cast<UPrimitiveComponent, UActorComponent>(owner->GetComponentByClass(UPrimitiveComponent::StaticClass()));
+
 }
 
 
@@ -50,7 +46,6 @@ void UAntiGravityComponent::antiGravityLifting()
 {
 	FVector ownerLowerBound = owner->GetActorLocation();//should take consideration the actor bounds...
 	FVector antiGravityExtensionLimit = ownerLowerBound - FVector(0, 0, levitationHeight);
-
 	FHitResult obstacle;
 	FCollisionQueryParams collisionParameters;
 	collisionParameters.AddIgnoredActor(owner);

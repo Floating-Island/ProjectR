@@ -7,6 +7,7 @@
 #include "Components/InputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "AntiGravityComponent.h"
 
 // Sets default values
 AJet::AJet()
@@ -39,9 +40,13 @@ AJet::AJet()
 	camera = CreateDefaultSubobject<UCameraComponent>(TEXT("camera"));
 	camera->SetupAttachment(springArm);
 
-	//antiGravitySystem = CreateDefaultSubobject<USceneComponent>(TEXT("AntiGravity System"));
-	//antiGravitySystem->SetupAttachment(RootComponent);
 	meshComponent->SetMassOverrideInKg(NAME_None, 100, true);
+
+	antiGravitySystem = CreateDefaultSubobject<UAntiGravityComponent>(TEXT("Anti-Gravity System"));
+	if(this != antiGravitySystem->GetOwner())
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("A Player Controller has been spawned from simulate.")));
+	}
 }
 
 // Called when the game starts or when spawned
@@ -83,7 +88,6 @@ void AJet::antiGravityLifting()
 void AJet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	antiGravityLifting();
 }
 
 // Called to bind functionality to input

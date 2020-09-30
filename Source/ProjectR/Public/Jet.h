@@ -7,8 +7,10 @@
 #include "Jet.generated.h"
 
 
+
 class USpringArmComponent;
 class UCameraComponent;
+class UAntiGravityComponent;
 
 UCLASS()
 class PROJECTR_API AJet : public APawn
@@ -44,9 +46,9 @@ protected:
 		UCameraComponent* camera;
 
 	////anti-gravity system component
-	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	//	USceneComponent* antiGravitySystem;
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+		UAntiGravityComponent* antiGravitySystem;
+	
 	void activateAntiGravityAlong(float aTraceLength, FHitResult aHit);
 
 	void antiGravityLifting();
