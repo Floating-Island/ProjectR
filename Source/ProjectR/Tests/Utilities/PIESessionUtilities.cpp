@@ -8,6 +8,11 @@
 
 PIESessionUtilities::PIESessionUtilities()
 {
+	if(!GEditor->IsPlayingSessionInEditor())
+	{
+		throw "Can't use this class when no PIE session is in progress!!";
+	}
+	
 }
 
 PIESessionUtilities::~PIESessionUtilities()
