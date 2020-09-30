@@ -17,6 +17,8 @@
 //used for floors:
 #include "Utilities/FloorMeshActor.h"
 
+#include "Utilities/PIESessionUtilities.h"
+
 #if WITH_DEV_AUTOMATION_TESTS
 
 
@@ -163,9 +165,12 @@ bool FSpawningAJetMakeItAccelerateCommand::Update()
 		return false;
 	}
 
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	
+	
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
+	AJet* testJet = sessionUtilities.spawnJetInPIE();
 
 	testJet->accelerate();
 
@@ -178,8 +183,9 @@ bool FCheckAJetLocationCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-		UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-		AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJet::StaticClass()));
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
 		if (testJet)
 		{
 			float currentXLocation = testJet->GetActorLocation().X;
@@ -238,8 +244,9 @@ bool FCheckAJetSpeedIncreaseCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-		UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-		AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJet::StaticClass()));
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
 		if (testJet)
 		{
 			float currentSpeed = testJet->currentSpeed();
@@ -314,10 +321,11 @@ bool FSpawningAJetMakeItBrakeCommand::Update()
 	{
 		return false;
 	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-
-	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
+	AJet* testJet = sessionUtilities.spawnJetInPIE();
 
 	testJet->brake();
 
@@ -331,8 +339,9 @@ bool FCheckAJetSpeedDecreaseCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-		UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-		AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJet::StaticClass()));
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
 		if (testJet)
 		{
 			float currentSpeed = testJet->currentSpeed();
@@ -407,10 +416,11 @@ bool FSpawningAJetSetVelocityToTopSpeedCommand::Update()
 	{
 		return false;
 	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-
-	AJetMOCK* testJet = testWorld->SpawnActor<AJetMOCK>(AJetMOCK::StaticClass());
+	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE();
 
 	testJet->setCurrentSpeedTo(testJet->settedTopSpeed());
 	testJet->accelerate();
@@ -424,8 +434,9 @@ bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-		UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-		AJetMOCK* testJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJetMOCK::StaticClass()));
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJetMOCK* testJet = sessionUtilities.retrieveJetMOCKFromPIE();
 		if (testJet)
 		{
 			float currentSpeed = testJet->currentSpeed();
@@ -480,10 +491,11 @@ bool FSpawningAJetMakeItSteerRightCommand::Update()
 	{
 		return false;
 	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
+	AJet* testJet = sessionUtilities.spawnJetInPIE();
 
 	float direction = 1;//1 is right, -1 is left...
 	
@@ -499,8 +511,9 @@ bool FCheckAJetMovedRightCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-		UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-		AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJet::StaticClass()));
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
 		if (testJet)
 		{
 			float currentYLocation = testJet->GetActorLocation().Y;
@@ -574,34 +587,13 @@ bool FSpawningAJetPressAccelerationKeyCommand::Update()
 	{
 		return false;
 	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
-	AGameModeBase* testGameMode = testWorld->GetAuthGameMode();
+	AJet* testJet = sessionUtilities.spawnJetInPIE();
 
-	testGameMode->SpawnPlayerFromSimulate(FVector(), FRotator());
-
-	
-	APlayerController* jetController = Cast<APlayerController,AActor>(testGameMode->GetGameInstance()->GetFirstLocalPlayerController(testWorld));
-
-	FName const accelerateActionName = FName(TEXT("AccelerateAction"));
-	TArray<FInputAxisKeyMapping> axisMappings = jetController->PlayerInput->GetKeysForAxis(accelerateActionName);//in the editor, we are going to add a new axis mapping inside Project settings -> Input
-	//in the jet class, we are going to add a player input binding with:
-	//	PlayerInputComponent->BindAxis("AccelerateAction",this, &AJet::accelerate);
-	//and in the constructor:
-	//AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
-	FKey accelerateKey;
-	for(auto axisMap: axisMappings)
-	{
-		if(axisMap.Scale > 0)
-		{
-			accelerateKey = axisMap.Key;
-			break;
-		}
-	}
-	
-	jetController->InputKey(accelerateKey,EInputEvent::IE_Repeat,5.0f,false);
+	sessionUtilities.processLocalPlayerInputFrom(FName(TEXT("AccelerateAction")));
 
 	return true;
 }
@@ -642,30 +634,13 @@ bool FSpawningAJetPressSteerRightKeyCommand::Update()
 	{
 		return false;
 	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
-	AGameModeBase* testGameMode = testWorld->GetAuthGameMode();
+	AJet* testJet = sessionUtilities.spawnJetInPIE();
 
-	testGameMode->SpawnPlayerFromSimulate(FVector(), FRotator());
-
-	
-	APlayerController* jetController = Cast<APlayerController,AActor>(testGameMode->GetGameInstance()->GetFirstLocalPlayerController(testWorld));
-
-	FName const steerRightActionName = FName(TEXT("SteerAction"));
-	
-	TArray<FInputAxisKeyMapping> axisMappings = jetController->PlayerInput->GetKeysForAxis(steerRightActionName);
-	FKey SteerRightKey;
-	for(auto axisMap: axisMappings)
-	{
-		if(axisMap.Scale > 0)
-		{
-			SteerRightKey = axisMap.Key;
-			break;
-		}
-	}
-	jetController->InputKey(SteerRightKey,EInputEvent::IE_Repeat,5.0f,false);
+	sessionUtilities.processLocalPlayerInputFrom(FName(TEXT("SteerAction")));
 
 	return true;
 }
@@ -706,31 +681,13 @@ bool FSpawningAJetPressBrakeKeyCommand::Update()
 	{
 		return false;
 	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
-	AGameModeBase* testGameMode = testWorld->GetAuthGameMode();
+	AJet* testJet = sessionUtilities.spawnJetInPIE();
 
-	testGameMode->SpawnPlayerFromSimulate(FVector(), FRotator());
-
-	
-	APlayerController* jetController = Cast<APlayerController,AActor>(testGameMode->GetGameInstance()->GetFirstLocalPlayerController(testWorld));
-
-	FName const brakeActionName = FName(TEXT("BrakeAction"));
-
-	TArray<FInputAxisKeyMapping> axisMappings = jetController->PlayerInput->GetKeysForAxis(brakeActionName);
-	FKey brakeKey;
-	for(auto axisMap: axisMappings)
-	{
-		if(axisMap.Scale > 0)
-		{
-			brakeKey = axisMap.Key;
-			break;
-		}
-	}
-
-	jetController->InputKey(brakeKey,EInputEvent::IE_Repeat,5.0f,false);
+	sessionUtilities.processLocalPlayerInputFrom(FName(TEXT("BrakeAction")));
 
 	return true;
 }
@@ -867,16 +824,15 @@ bool FSpawningAJetSnapedToFloorCommand::Update()
 	{
 		return false;
 	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AFloorMeshActor* meshActor = testWorld->SpawnActor<AFloorMeshActor>(AFloorMeshActor::StaticClass());
-
-	FActorSpawnParameters spawnParams;
-	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	AFloorMeshActor* meshActor = sessionUtilities.spawnFloorMeshActorInPIE();
+	
 	FVector spawnLocation = meshActor->GetActorLocation() + FVector(0,0, 1000);
 
-	AJetMOCK* testJet = testWorld->SpawnActor<AJetMOCK>(AJetMOCK::StaticClass(), spawnLocation, FRotator(), spawnParams);
+	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE(spawnLocation);
 	
 	GEditor->SnapObjectTo(FActorOrComponent(testJet),true,true,true,false,FActorOrComponent(meshActor));
 
@@ -889,8 +845,9 @@ bool FCheckAJetZLocationCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-		UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-		AJetMOCK* testJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJetMOCK::StaticClass()));
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJetMOCK* testJet = sessionUtilities.retrieveJetMOCKFromPIE();
 		if (testJet)
 		{
 			float currentZVelocity = testJet->getZVelocity();
