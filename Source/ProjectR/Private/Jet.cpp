@@ -70,7 +70,7 @@ void AJet::antiGravityLifting()
 		float antiGravityForceValue = 500000;//should be editable and account for object mass and gravity force.
 		float effectiveAntiGravityForceValue = FMath::Lerp(antiGravityForceValue,0.0f,antiGravityIntensity);
 		FVector impulse = effectiveAntiGravityForceValue*hit.ImpactNormal;
-		meshComponent->AddForce(impulse);
+		meshComponent->AddForce(impulse,NAME_None, true);
 	}
 }
 
