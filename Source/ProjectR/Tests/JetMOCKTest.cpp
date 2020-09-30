@@ -6,6 +6,9 @@
 #include "Mocks/JetMOCK.h"
 
 #include "Misc/AutomationTest.h"
+#include "Tests/AutomationEditorCommon.h"
+#include "Editor.h"
+#include "Kismet/GameplayStatics.h"
 
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -20,16 +23,16 @@
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FJetMockShouldntBeNullWhenInstantiatedTest, "ProjectR.Unit.JetMockTests.JetMockShouldntBeNullWhenInstantiated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FJetMOCKShouldntBeNullWhenInstantiatedTest, "ProjectR.Unit.JetMOCKTests.ShouldntBeNullWhenInstantiated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-bool FJetMockShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Parameters)
+bool FJetMOCKShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
 	
 	{
 		AJetMOCK* testMockJet = NewObject<AJetMOCK>();
 		
-		TestNotNull(TEXT("The Jet shouldn't be null after instantiating it."), testMockJet);
+		TestNotNull(TEXT("The JetMOCK shouldn't be null after instantiating it."), testMockJet);
 	}
 
 	return true;
@@ -37,23 +40,10 @@ bool FJetMockShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Paramete
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FJetMockSettingSpeedChangesSpeedToDesiredTest, "ProjectR.Unit.JetMockTests.JetMockSettingSpeedChangesSpeedToDesired", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-bool FJetMockSettingSpeedChangesSpeedToDesiredTest::RunTest(const FString& Parameters)
-{
-	
-	{
-		AJetMOCK* testMockJet = NewObject<AJetMOCK>();
 
-		const float aDesiredSpeed = 30.0f;
-		
-		testMockJet->setCurrentSpeedTo(aDesiredSpeed);
-		
-		TestTrue(TEXT("Setting speed should change the speed to a desired one."), testMockJet->currentSpeed() == aDesiredSpeed );
-	}
 
-	return true;
-}
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS

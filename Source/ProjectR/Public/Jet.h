@@ -6,6 +6,10 @@
 #include "GameFramework/Pawn.h"
 #include "Jet.generated.h"
 
+
+class USpringArmComponent;
+class UCameraComponent;
+
 UCLASS()
 class PROJECTR_API AJet : public APawn
 {
@@ -19,11 +23,32 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	float speed;
+	float accelerationValue;
+
+	float brakeAbsoluteValue;
 
 	float topSpeed;
 
-public:	
+	float steerForceValue;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		UStaticMeshComponent* meshComponent;
+
+	//spring arm component
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+		USpringArmComponent* springArm;
+
+	//camera component
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+		UCameraComponent* camera;
+
+	////anti-gravity system component
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	//	USceneComponent* antiGravitySystem;
+	void antiGravityLifting();
+
+
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -32,13 +57,17 @@ public:
 
 	float currentSpeed();
 
-	void accelerate();
-
-	void brake();
-
-	void setTopSpeed(float aMaximumSpeed);
-
 	float settedTopSpeed();
-	
 
+	void accelerate(float anAccelerationMultiplier = 1.0f);
+
+	float acceleration();
+
+	float brakeValue();
+
+	void brake(float aBrakeMultiplier = 1.0f);
+
+	void steer(float aDirectionMultiplier);
+
+	float steerForce();
 };
