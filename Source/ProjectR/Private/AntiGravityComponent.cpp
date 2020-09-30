@@ -16,7 +16,9 @@ UAntiGravityComponent::UAntiGravityComponent()
 	{
 		throw "Can't use this component on actors that don't have physics enabled nor primitive components!!!";
 	}
-	// ...
+	levitationHeight = 600.0f;
+	antiGravityForceValue = 500000;
+	
 }
 
 
@@ -39,7 +41,6 @@ void UAntiGravityComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 void UAntiGravityComponent::activateAntiGravityAlong(float aTraceLength, FHitResult aHit)
 {
 	float antiGravityIntensity = aHit.Distance / aTraceLength;
-	float antiGravityForceValue = 500000;//should be editable and account for object mass and gravity force.
 	float effectiveAntiGravityForceValue = FMath::Lerp(antiGravityForceValue, 0.0f, antiGravityIntensity);
 	FVector impulse = effectiveAntiGravityForceValue * aHit.ImpactNormal;
 	ownerPrimitiveComponent->AddForce(impulse, NAME_None, true);
@@ -48,8 +49,7 @@ void UAntiGravityComponent::activateAntiGravityAlong(float aTraceLength, FHitRes
 void UAntiGravityComponent::antiGravityLifting()
 {
 	FVector traceStart = owner->GetActorLocation();//should take consideration the actor bounds...
-	float traceLength = 600.0f;
-	FVector traceEnd = traceStart - FVector(0, 0, traceLength);
+	FVector traceEnd = traceStart - FVector(0, 0, levitationHeight);
 
 	FHitResult hit;
 	FCollisionQueryParams collisionParameters;
@@ -60,7 +60,7 @@ void UAntiGravityComponent::antiGravityLifting()
 
 	if (hitBlocked)
 	{
-		activateAntiGravityAlong(traceLength, hit);
+		activateAntiGravityAlong(levitationHeight, hit);
 	}
 }
 

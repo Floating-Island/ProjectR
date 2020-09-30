@@ -23,6 +23,12 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Settings")
+		float levitationHeight;
+	UPROPERTY(EditDefaultsOnly, Category = "Settings")
+		float antiGravityForceValue;
+	
+
 public:	
 	void activateAntiGravityAlong(float aTraceLength, FHitResult aHit);
 	void antiGravityLifting();
