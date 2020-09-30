@@ -54,7 +54,7 @@ void AJet::BeginPlay()
 void AJet::antiGravityLifting()
 {
 	FVector traceStart = GetActorLocation();
-	float traceLength = 600.0f;//should be distance from center to actor bounds...
+	float traceLength = 600.0f;//should take consideration of distance from center to actor bounds...
 	FVector traceEnd = GetActorLocation() - FVector(0,0,traceLength);
 
 	FHitResult hit;//struct containing hit information
