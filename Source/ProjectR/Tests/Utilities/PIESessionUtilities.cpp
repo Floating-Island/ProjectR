@@ -53,7 +53,7 @@ AJetMOCK* PIESessionUtilities::retrieveJetMOCKFromPIE()
 	return Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, AJetMOCK::StaticClass()));
 }
 
-void PIESessionUtilities::processLocalPlayerInputFrom(FName axisMappingName)
+void PIESessionUtilities::processLocalPlayerInputFrom(FName anAxisMappingName)
 {
 	AGameModeBase* testGameMode = pieWorld->GetAuthGameMode();
 
@@ -62,7 +62,7 @@ void PIESessionUtilities::processLocalPlayerInputFrom(FName axisMappingName)
 	
 	APlayerController* controller = Cast<APlayerController,AActor>(testGameMode->GetGameInstance()->GetFirstLocalPlayerController(pieWorld));
 
-	FName const actionName = axisMappingName;
+	FName const actionName = anAxisMappingName;
 	TArray<FInputAxisKeyMapping> axisMappings = controller->PlayerInput->GetKeysForAxis(actionName);//in the editor, we are going to add a new axis mapping inside Project settings -> Input
 	//in the jet class, we are going to add a player input binding with:
 	//	PlayerInputComponent->BindAxis("AccelerateAction",this, &AJet::accelerate);
