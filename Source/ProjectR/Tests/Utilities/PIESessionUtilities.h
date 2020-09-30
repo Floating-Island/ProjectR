@@ -7,6 +7,7 @@
 
 class AJet;
 class AJetMOCK;
+class AFloorMeshActor;
 
 /**
  * This class is intended to use in tests only and when the editor is playing a PIE session.
@@ -19,4 +20,5 @@ public:
 	static UWorld* currentPIEWorld();
 	static AJet* spawnJetInPIE(FVector atLocation = FVector());
 	static AJetMOCK* spawnJetMOCKInPIE(FVector atLocation = FVector());
+	static AFloorMeshActor* spawnFloorMeshActorInPIE(FVector atLocation = FVector());
 };

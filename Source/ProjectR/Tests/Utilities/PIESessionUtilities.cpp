@@ -3,6 +3,7 @@
 
 #include "PIESessionUtilities.h"
 #include "../Mocks/JetMOCK.h"
+#include "floorMeshActor.h"
 
 PIESessionUtilities::PIESessionUtilities()
 {
@@ -22,7 +23,7 @@ AJet* PIESessionUtilities::spawnJetInPIE(FVector atLocation)
 	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
 	FActorSpawnParameters spawnParams;
 	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	return testWorld->SpawnActor<AJet>(AJet::StaticClass(), atLocation, FRotator(), spawnParams);;
+	return testWorld->SpawnActor<AJet>(AJet::StaticClass(), atLocation, FRotator(), spawnParams);
 }
 
 AJetMOCK* PIESessionUtilities::spawnJetMOCKInPIE(FVector atLocation)
@@ -30,5 +31,13 @@ AJetMOCK* PIESessionUtilities::spawnJetMOCKInPIE(FVector atLocation)
 	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
 	FActorSpawnParameters spawnParams;
 	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	return testWorld->SpawnActor<AJetMOCK>(AJetMOCK::StaticClass(), atLocation, FRotator(), spawnParams);;
+	return testWorld->SpawnActor<AJetMOCK>(AJetMOCK::StaticClass(), atLocation, FRotator(), spawnParams);
+}
+
+AFloorMeshActor* PIESessionUtilities::spawnFloorMeshActorInPIE(FVector atLocation)
+{
+	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+	FActorSpawnParameters spawnParams;
+	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	return testWorld->SpawnActor<AFloorMeshActor>(AFloorMeshActor::StaticClass(), atLocation, FRotator(), spawnParams);
 }
