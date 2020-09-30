@@ -53,7 +53,6 @@ AJet::AJet()
 void AJet::BeginPlay()
 {
 	Super::BeginPlay();
-
 }
 
 void AJet::activateAntiGravityAlong(float aTraceLength, FHitResult aHit)

@@ -25,14 +25,17 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+		float accelerationValue;
 
-	float accelerationValue;
+	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+		float brakeAbsoluteValue;
 
-	float brakeAbsoluteValue;
+	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+		float topSpeed;
 
-	float topSpeed;
-
-	float steerForceValue;
+	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+		float steerForceValue;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		UStaticMeshComponent* meshComponent;
