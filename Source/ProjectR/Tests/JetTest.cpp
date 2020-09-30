@@ -34,11 +34,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldntBeNullWhenInstantiatedTest, "Proje
 
 bool FAJetShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
-	{
-		AJet* testJet = NewObject<AJet>();
 
-		TestNotNull(TEXT("The Jet shouldn't be null after instantiating it."), testJet);
-	}
+	AJet* testJet = NewObject<AJet>();
+
+	TestNotNull(TEXT("The Jet shouldn't be null after instantiating it."), testJet);
+
 
 	return true;
 }
@@ -49,11 +49,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpeedIsZeroWhenInstantiatedTest, "ProjectR
 
 bool FAJetSpeedIsZeroWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
-	{
-		AJet* testJet = NewObject<AJet>();
 
-		TestTrue(TEXT("Jet speed should be zero when instantiated."), testJet->currentSpeed() == 0);
-	}
+	AJet* testJet = NewObject<AJet>();
+
+	TestTrue(TEXT("Jet speed should be zero when instantiated."), testJet->currentSpeed() == 0);
+
 
 	return true;
 }
@@ -65,11 +65,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveAStaticMeshTest, "ProjectR.Unit.
 
 bool FAJetShouldHaveAStaticMeshTest::RunTest(const FString& Parameters)
 {
-	{
-		AJetMOCK* testJet = NewObject<AJetMOCK>();
 
-		TestTrue(TEXT("The Jet static mesh shouldn't be null if it has one."), testJet->hasAStaticMesh());
-	}
+	AJetMOCK* testJet = NewObject<AJetMOCK>();
+
+	TestTrue(TEXT("The Jet static mesh shouldn't be null if it has one."), testJet->hasAStaticMesh());
+
 
 	return true;
 }
@@ -81,11 +81,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMeshShouldBeTheRootComponentTest, "Project
 
 bool FAJetMeshShouldBeTheRootComponentTest::RunTest(const FString& Parameters)
 {
-	{
-		AJetMOCK* testJet = NewObject<AJetMOCK>();
 
-		TestTrue(TEXT("The Jet static mesh should be the root component."), testJet->isMeshTheRootComponent());
-	}
+	AJetMOCK* testJet = NewObject<AJetMOCK>();
+
+	TestTrue(TEXT("The Jet static mesh should be the root component."), testJet->isMeshTheRootComponent());
+
 
 	return true;
 }
@@ -97,11 +97,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveGravityEnabledTest, "ProjectR.Un
 
 bool FAJetShouldHaveGravityEnabledTest::RunTest(const FString& Parameters)
 {
-	{
-		AJetMOCK* testJet = NewObject<AJetMOCK>();
 
-		TestTrue(TEXT("The Jet should have gravity enabled."), testJet->hasGravityEnabled());
-	}
+	AJetMOCK* testJet = NewObject<AJetMOCK>();
+
+	TestTrue(TEXT("The Jet should have gravity enabled."), testJet->hasGravityEnabled());
+
 
 	return true;
 }
@@ -113,11 +113,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldntAffectNavigationVolumeTest, "Proje
 
 bool FAJetShouldntAffectNavigationVolumeTest::RunTest(const FString& Parameters)
 {
-	{
-		AJetMOCK* testJet = NewObject<AJetMOCK>();
 
-		TestFalse(TEXT("The Jet shouldn't affect the navigation volume."), testJet->isAffectingNavigation());
-	}
+	AJetMOCK* testJet = NewObject<AJetMOCK>();
+
+	TestFalse(TEXT("The Jet shouldn't affect the navigation volume."), testJet->isAffectingNavigation());
+
 
 	return true;
 }
@@ -129,11 +129,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldBeMovableTest, "ProjectR.Unit.JetTes
 
 bool FAJetShouldBeMovableTest::RunTest(const FString& Parameters)
 {
-	{
-		AJetMOCK* testJet = NewObject<AJetMOCK>();
 
-		TestTrue(TEXT("The Jet should be movable when spawned into the world."), testJet->IsRootComponentMovable());
-	}
+	AJetMOCK* testJet = NewObject<AJetMOCK>();
+
+	TestTrue(TEXT("The Jet should be movable when spawned into the world."), testJet->IsRootComponentMovable());
+
 
 	return true;
 }
@@ -215,20 +215,20 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldMoveForwardWhenAcceleratedTest, "Pro
 
 bool FAJetShouldMoveForwardWhenAcceleratedTest::RunTest(const FString& Parameters)
 {
-	{
-		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand);
-		int tickCount = 0;
-		int tickLimit = 3;
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocationCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	}
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocationCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
 
 	return true;
 }
@@ -277,20 +277,20 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpeedIncreasesWhenAcceleratesTest, "Projec
 
 bool FAJetSpeedIncreasesWhenAcceleratesTest::RunTest(const FString& Parameters)
 {
-	{
-		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand);
-		int tickCount = 0;
-		int tickLimit = 3;
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedIncreaseCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	}
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedIncreaseCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
 
 	return true;
 }
@@ -371,20 +371,20 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpeedDecreasesWhenBrakesTest, "ProjectR.Un
 
 bool FAJetSpeedDecreasesWhenBrakesTest::RunTest(const FString& Parameters)
 {
-	{
-		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItBrakeCommand);
-		int tickCount = 0;
-		int tickLimit = 3;
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedDecreaseCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	}
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItBrakeCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedDecreaseCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
 
 	return true;
 }
@@ -460,20 +460,20 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldntAccelerateWhenAtTopSpeedTest, "Pro
 
 bool FAJetShouldntAccelerateWhenAtTopSpeedTest::RunTest(const FString& Parameters)
 {
-	{
-		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetSetVelocityToTopSpeedCommand);
-		int tickCount = 0;
-		int tickLimit = 3;
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedAgainstTopSpeedCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	}
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetSetVelocityToTopSpeedCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedAgainstTopSpeedCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
 
 	return true;
 }
@@ -543,20 +543,20 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldMoveRightWhenSteeringRightTest, "Pro
 
 bool FAJetShouldMoveRightWhenSteeringRightTest::RunTest(const FString& Parameters)
 {
-	{
-		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItSteerRightCommand);
-		int tickCount = 0;
-		int tickLimit = 3;
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetMovedRightCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	}
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItSteerRightCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetMovedRightCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
 
 	return true;
 }
@@ -603,20 +603,20 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetAcceleratesWhenPressingAccelerationKeyTest
 
 bool FAJetAcceleratesWhenPressingAccelerationKeyTest::RunTest(const FString& Parameters)
 {
-	{
-		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerationKeyCommand);
-		int tickCount = 0;
-		int tickLimit = 3;
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedIncreaseCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	}
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerationKeyCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedIncreaseCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
 
 	return true;
 }
@@ -650,20 +650,20 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldMoveRightWhenPressingSteerRightKeyTe
 
 bool FAJetShouldMoveRightWhenPressingSteerRightKeyTest::RunTest(const FString& Parameters)
 {
-	{
-		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKeyCommand);
-		int tickCount = 0;
-		int tickLimit = 3;
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetMovedRightCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	}
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKeyCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetMovedRightCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
 
 	return true;
 }
@@ -697,20 +697,20 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetBrakesWhenPressingBrakeKeyTest, "ProjectR.
 
 bool FAJetBrakesWhenPressingBrakeKeyTest::RunTest(const FString& Parameters)
 {
-	{
-		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeKeyCommand);
-		int tickCount = 0;
-		int tickLimit = 3;
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedDecreaseCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	}
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeKeyCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedDecreaseCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
 
 	return true;
 }
@@ -877,20 +877,20 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetGetsUpwardsImpulseFromAntiGravityOnFloorTe
 
 bool FAJetGetsUpwardsImpulseFromAntiGravityOnFloorTest::RunTest(const FString& Parameters)
 {
-	{
-		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetSnapedToFloorCommand);
-		int tickCount = 0;
-		int tickLimit = 3;
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetZLocationCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	}
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetSnapedToFloorCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetZLocationCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
 
 	return true;
 }
