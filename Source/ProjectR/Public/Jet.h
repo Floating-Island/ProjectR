@@ -48,13 +48,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 		UCameraComponent* camera;
 
-	////anti-gravity system component
+	//anti-gravity system component
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 		UAntiGravityComponent* antiGravitySystem;
-	
-	void activateAntiGravityAlong(float aTraceLength, FHitResult aHit);
 
-	void antiGravityLifting();
 
 
 public:

@@ -43,44 +43,12 @@ AJet::AJet()
 	meshComponent->SetMassOverrideInKg(NAME_None, 100, true);
 
 	antiGravitySystem = CreateDefaultSubobject<UAntiGravityComponent>(TEXT("Anti-Gravity System"));
-	if(this != antiGravitySystem->GetOwner())
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("A Player Controller has been spawned from simulate.")));
-	}
 }
 
 // Called when the game starts or when spawned
 void AJet::BeginPlay()
 {
 	Super::BeginPlay();
-}
-
-void AJet::activateAntiGravityAlong(float aTraceLength, FHitResult aHit)
-{
-	float antiGravityIntensity = aHit.Distance / aTraceLength;
-	float antiGravityForceValue = 500000;//should be editable and account for object mass and gravity force.
-	float effectiveAntiGravityForceValue = FMath::Lerp(antiGravityForceValue, 0.0f, antiGravityIntensity);
-	FVector impulse = effectiveAntiGravityForceValue * aHit.ImpactNormal;
-	meshComponent->AddForce(impulse, NAME_None, true);
-}
-
-void AJet::antiGravityLifting()
-{
-	FVector traceStart = GetActorLocation();
-	float traceLength = 600.0f;//should take consideration of distance from center to actor bounds...
-	FVector traceEnd = GetActorLocation() - FVector(0, 0, traceLength);
-
-	FHitResult hit;//struct containing hit information
-	FCollisionQueryParams collisionParameters;
-	collisionParameters.AddIgnoredActor(this);//owner is ignored when tracing
-	collisionParameters.bTraceComplex = false;
-	collisionParameters.bReturnPhysicalMaterial = false;
-	bool hitBlocked = GetWorld()->LineTraceSingleByChannel(hit, traceStart, traceEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
-
-	if (hitBlocked)
-	{
-		activateAntiGravityAlong(traceLength, hit);
-	}
 }
 
 // Called every frame
@@ -134,7 +102,7 @@ float AJet::brakeValue()
 void AJet::brake(float aBrakeMultiplier)
 {
 	FVector forceToApply = FVector(-brakeValue(), 0, 0);//notice the '-' next to brakeValue. Brake value's sign is positive.
-	meshComponent->AddForce(forceToApply * aBrakeMultiplier, NAME_None, true);
+	meshComponent->AddForce(forceToApply * aBrakeMultiplier, NAME_None, true);//should be changed to torque.
 }
 
 void AJet::steer(float aDirectionMultiplier)
