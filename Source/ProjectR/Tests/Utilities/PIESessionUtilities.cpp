@@ -5,6 +5,9 @@
 #include "../Mocks/JetMOCK.h"
 #include "floorMeshActor.h"
 #include "Kismet/GameplayStatics.h"
+//to be able to process inputs:
+#include "GameFramework/PlayerInput.h"
+#include "GameFramework/GameModeBase.h"
 
 PIESessionUtilities::PIESessionUtilities()
 {
@@ -22,7 +25,7 @@ PIESessionUtilities::~PIESessionUtilities()
 
 UWorld* PIESessionUtilities::currentPIEWorld()
 {
-	return GEditor->GetPIEWorldContext()->World();
+	return pieWorld;
 }
 
 AJet* PIESessionUtilities::spawnJetInPIE(FVector atLocation)
@@ -48,4 +51,32 @@ AJet* PIESessionUtilities::retrieveJetFromPIE()
 AJetMOCK* PIESessionUtilities::retrieveJetMOCKFromPIE()
 {
 	return Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, AJetMOCK::StaticClass()));
+}
+
+void PIESessionUtilities::processLocalPlayerInputFrom(FName axisMappingName)
+{
+	AGameModeBase* testGameMode = pieWorld->GetAuthGameMode();
+
+	testGameMode->SpawnPlayerFromSimulate(FVector(), FRotator());
+
+	
+	APlayerController* controller = Cast<APlayerController,AActor>(testGameMode->GetGameInstance()->GetFirstLocalPlayerController(pieWorld));
+
+	FName const actionName = axisMappingName;
+	TArray<FInputAxisKeyMapping> axisMappings = controller->PlayerInput->GetKeysForAxis(actionName);//in the editor, we are going to add a new axis mapping inside Project settings -> Input
+	//in the jet class, we are going to add a player input binding with:
+	//	PlayerInputComponent->BindAxis("AccelerateAction",this, &AJet::accelerate);
+	//and in the constructor:
+	//AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
+	FKey actionKey;
+	for(auto axisMap: axisMappings)
+	{
+		if(axisMap.Scale > 0)
+		{
+			actionKey = axisMap.Key;
+			break;
+		}
+	}
+	
+	controller->InputKey(actionKey,EInputEvent::IE_Repeat,5.0f,false);
 }

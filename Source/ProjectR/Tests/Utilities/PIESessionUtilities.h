@@ -26,4 +26,5 @@ public:
 	AFloorMeshActor* spawnFloorMeshActorInPIE(FVector atLocation = FVector());
 	AJet* retrieveJetFromPIE();
 	AJetMOCK* retrieveJetMOCKFromPIE();
+	void processLocalPlayerInputFrom(FName axisMappingName);
 };
