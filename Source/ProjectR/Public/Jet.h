@@ -22,6 +22,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
 
 	float accelerationValue;
 
@@ -45,6 +46,9 @@ protected:
 	////anti-gravity system component
 	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	//	USceneComponent* antiGravitySystem;
+
+	void activateAntiGravityAlong(float aTraceLength, FHitResult aHit);
+	
 	void antiGravityLifting();
 
 

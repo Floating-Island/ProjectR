@@ -11,7 +11,7 @@
 // Sets default values
 AJet::AJet()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	meshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh Component"));
@@ -23,12 +23,12 @@ AJet::AJet()
 
 	UStaticMesh* Mesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), NULL, TEXT("/Engine/EditorMeshes/ArcadeEditorSphere")));
 	meshComponent->SetStaticMesh(Mesh);
-	
+
 	accelerationValue = 5000.0f;
 	brakeAbsoluteValue = 1000.0f;
 	topSpeed = 1000.0f;
 	steerForceValue = 2000.0f;
-	
+
 	AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
 
 
@@ -48,14 +48,23 @@ AJet::AJet()
 void AJet::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+}
+
+void AJet::activateAntiGravityAlong(float aTraceLength, FHitResult aHit)
+{
+	float antiGravityIntensity = aHit.Distance / aTraceLength;
+	float antiGravityForceValue = 500000;//should be editable and account for object mass and gravity force.
+	float effectiveAntiGravityForceValue = FMath::Lerp(antiGravityForceValue, 0.0f, antiGravityIntensity);
+	FVector impulse = effectiveAntiGravityForceValue * aHit.ImpactNormal;
+	meshComponent->AddForce(impulse, NAME_None, true);
 }
 
 void AJet::antiGravityLifting()
 {
 	FVector traceStart = GetActorLocation();
 	float traceLength = 600.0f;//should take consideration of distance from center to actor bounds...
-	FVector traceEnd = GetActorLocation() - FVector(0,0,traceLength);
+	FVector traceEnd = GetActorLocation() - FVector(0, 0, traceLength);
 
 	FHitResult hit;//struct containing hit information
 	FCollisionQueryParams collisionParameters;
@@ -64,13 +73,9 @@ void AJet::antiGravityLifting()
 	collisionParameters.bReturnPhysicalMaterial = false;
 	bool hitBlocked = GetWorld()->LineTraceSingleByChannel(hit, traceStart, traceEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
 
-	if(hitBlocked)
+	if (hitBlocked)
 	{
-		float antiGravityIntensity = hit.Distance / traceLength;
-		float antiGravityForceValue = 500000;//should be editable and account for object mass and gravity force.
-		float effectiveAntiGravityForceValue = FMath::Lerp(antiGravityForceValue,0.0f,antiGravityIntensity);
-		FVector impulse = effectiveAntiGravityForceValue*hit.ImpactNormal;
-		meshComponent->AddForce(impulse,NAME_None, true);
+		activateAntiGravityAlong(traceLength, hit);
 	}
 }
 
@@ -86,11 +91,11 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis("AccelerateAction",this, &AJet::accelerate);
+	PlayerInputComponent->BindAxis("AccelerateAction", this, &AJet::accelerate);
 
-	PlayerInputComponent->BindAxis("SteerAction",this, &AJet::steer);
+	PlayerInputComponent->BindAxis("SteerAction", this, &AJet::steer);
 
-	PlayerInputComponent->BindAxis("BrakeAction",this, &AJet::brake);
+	PlayerInputComponent->BindAxis("BrakeAction", this, &AJet::brake);
 }
 
 
@@ -106,10 +111,10 @@ float AJet::settedTopSpeed()
 
 void AJet::accelerate(float anAccelerationMultiplier)
 {
-	if(currentSpeed() < settedTopSpeed() && !FMath::IsNearlyEqual(currentSpeed(), settedTopSpeed(), 0.5f))
+	if (currentSpeed() < settedTopSpeed() && !FMath::IsNearlyEqual(currentSpeed(), settedTopSpeed(), 0.5f))
 	{
 		FVector forceToApply = FVector(acceleration(), 0, 0);
-		meshComponent->AddForce(forceToApply*anAccelerationMultiplier,NAME_None, true);
+		meshComponent->AddForce(forceToApply * anAccelerationMultiplier, NAME_None, true);
 	}
 }
 
@@ -126,13 +131,13 @@ float AJet::brakeValue()
 void AJet::brake(float aBrakeMultiplier)
 {
 	FVector forceToApply = FVector(-brakeValue(), 0, 0);//notice the '-' next to brakeValue. Brake value's sign is positive.
-	meshComponent->AddForce(forceToApply*aBrakeMultiplier,NAME_None, true);
+	meshComponent->AddForce(forceToApply * aBrakeMultiplier, NAME_None, true);
 }
 
 void AJet::steer(float aDirectionMultiplier)
 {
-	FVector forceToApply = FVector(0, aDirectionMultiplier*steerForce(), 0);//directionMultiplier is used to steer right or left and to have a range of steering.
-	meshComponent->AddForce(forceToApply,NAME_None, true);
+	FVector forceToApply = FVector(0, aDirectionMultiplier * steerForce(), 0);//directionMultiplier is used to steer right or left and to have a range of steering.
+	meshComponent->AddForce(forceToApply, NAME_None, true);
 }
 
 float AJet::steerForce()
