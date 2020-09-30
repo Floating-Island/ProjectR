@@ -38,29 +38,29 @@ void UAntiGravityComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 	// ...
 }
 
-void UAntiGravityComponent::activateAntiGravityAlong(float aTraceLength, FHitResult aHit)
+void UAntiGravityComponent::activateAvoidanceTo(FHitResult anObstacle)
 {
-	float antiGravityIntensity = aHit.Distance / aTraceLength;
+	float antiGravityIntensity = anObstacle.Distance / levitationHeight;
 	float effectiveAntiGravityForceValue = FMath::Lerp(antiGravityForceValue, 0.0f, antiGravityIntensity);
-	FVector impulse = effectiveAntiGravityForceValue * aHit.ImpactNormal;
+	FVector impulse = effectiveAntiGravityForceValue * anObstacle.ImpactNormal;
 	ownerPrimitiveComponent->AddForce(impulse, NAME_None, true);
 }
 
 void UAntiGravityComponent::antiGravityLifting()
 {
-	FVector traceStart = owner->GetActorLocation();//should take consideration the actor bounds...
-	FVector traceEnd = traceStart - FVector(0, 0, levitationHeight);
+	FVector ownerLowerBound = owner->GetActorLocation();//should take consideration the actor bounds...
+	FVector antiGravityExtensionLimit = ownerLowerBound - FVector(0, 0, levitationHeight);
 
-	FHitResult hit;
+	FHitResult obstacle;
 	FCollisionQueryParams collisionParameters;
 	collisionParameters.AddIgnoredActor(owner);
 	collisionParameters.bTraceComplex = false;
 	collisionParameters.bReturnPhysicalMaterial = false;
-	bool hitBlocked = owner->GetWorld()->LineTraceSingleByChannel(hit, traceStart, traceEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
+	bool inAntiGravityRange = owner->GetWorld()->LineTraceSingleByChannel(obstacle, ownerLowerBound, antiGravityExtensionLimit, ECollisionChannel::ECC_Visibility, collisionParameters);
 
-	if (hitBlocked)
+	if (inAntiGravityRange)
 	{
-		activateAntiGravityAlong(levitationHeight, hit);
+		activateAvoidanceTo(obstacle);
 	}
 }
 

@@ -30,7 +30,7 @@ protected:
 	
 
 public:	
-	void activateAntiGravityAlong(float aTraceLength, FHitResult aHit);
+	void activateAvoidanceTo(FHitResult anObstacle);
 	void antiGravityLifting();
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
