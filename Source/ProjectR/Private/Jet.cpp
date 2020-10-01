@@ -49,8 +49,6 @@ AJet::AJet()
 void AJet::BeginPlay()
 {
 	Super::BeginPlay();
-	float yawValue = 50;
-	SetActorRotation(FRotator(0, yawValue, 0));
 }
 
 // Called every frame
@@ -74,7 +72,7 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 float AJet::currentSpeed()
 {
-	return meshComponent->GetComponentVelocity().X;
+	return meshComponent->GetComponentVelocity().X;//this is wrong...
 }
 
 float AJet::settedTopSpeed()
@@ -117,8 +115,15 @@ void AJet::brake(float aBrakeMultiplier)
 //to get drift, the velocity update should be disabled by a moment (as long as the drifting lasts), maintaining the acceleration of the jet.
 void AJet::steer(float aDirectionMultiplier)
 {
-	FVector torqueToApply = FVector(0, 0, aDirectionMultiplier * steerForce());//directionMultiplier is used to steer right or left and to have a range of steering.
-	meshComponent->AddTorqueInDegrees(torqueToApply, NAME_None, true);
+	if(aDirectionMultiplier != 0)
+	{
+		FVector torqueToApply = FVector(0, 0, aDirectionMultiplier * steerForce());//directionMultiplier is used to steer right or left and to have a range of steering.
+		meshComponent->AddTorqueInDegrees(torqueToApply, NAME_None, true);
+
+		FVector alignedVelocity = GetActorForwardVector()*meshComponent->GetComponentVelocity().Size() ;//currentSpeed isn't calculated correctly.//it should take into consideration the speed gained by antigravitySystemlifting.
+		
+		meshComponent->AddForce(alignedVelocity,NAME_None,true);	
+	}
 }
 
 float AJet::steerForce()
