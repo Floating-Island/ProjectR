@@ -909,7 +909,6 @@ bool FCheckAJetLocationAgainstForwardVectorCommand::Update()
 		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
 		if (testJet)
 		{
-			float currentXLocation = testJet->GetActorLocation().X;
 			FVector currentLocation = testJet->GetActorLocation();
 			FVector jetForwardVector = testJet->GetActorForwardVector();
 
