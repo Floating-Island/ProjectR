@@ -1058,7 +1058,76 @@ bool FAJetShouldBrakeAlongItsBackwardsVectorWhileRotatedTest::RunTest(const FStr
 
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetAccelerateAndSteerRightCommand);
 
+bool FSpawningAJetAccelerateAndSteerRightCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+	AJet* testJet = sessionUtilities.spawnJetInPIE();
+
+	float direction = 1;//1 is right, -1 is left...
+	testJet->accelerate();
+	testJet->steer(direction);
+
+	return true;
+}
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetUpdatedVelocityWhenAfterSteeringCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+
+bool FCheckAJetUpdatedVelocityWhenAfterSteeringCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
+		if (testJet)
+		{
+			++aTickCount;
+
+			if (aTickCount > aTickLimit)
+			{
+				bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
+				bool velocityAlignedToForwardVector = FVector::Coincident(testJet->GetVelocity().GetSafeNormal2D(), testJet->GetActorForwardVector().GetSafeNormal2D());
+				
+				test->TestTrue(TEXT("The Jet should update it's velocity to match the direction of the forward vector after steering."), !speedNearlyZero && velocityAlignedToForwardVector);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldntSteerWhenIdleTest, "ProjectR.Unit.JetTests.ShouldntSteerWhenIdle", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetShouldntSteerWhenIdleTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetAccelerateAndSteerRightCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetUpdatedVelocityWhenAfterSteeringCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
 
 
 

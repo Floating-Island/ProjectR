@@ -111,8 +111,10 @@ void AJet::brake(float aBrakeMultiplier)
 }
 
 //like this, it drifts if the steer action is made for too long.
-//If you need to change it to something more like an arcade, then jet velocity should update with steering.
-//get velocity, get forward vector, get velocity speed and set new velocity multiplying the speed with the forward vector.
+//It also drifts if you don't accelerate. That's a problem.
+//The jet velocity should update with steering.
+//get velocity, get forward vector, get velocity speed and set new velocity multiplying the speed with the forward vector. This will nullify the drifting. If it's needed, now we now how it's done.
+//to get drift, the velocity update should be disabled by a moment (as long as the drifting lasts), maintaining the acceleration of the jet.
 void AJet::steer(float aDirectionMultiplier)
 {
 	FVector torqueToApply = FVector(0, 0, aDirectionMultiplier * steerForce());//directionMultiplier is used to steer right or left and to have a range of steering.
