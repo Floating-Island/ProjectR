@@ -1108,9 +1108,9 @@ bool FCheckAJetUpdatedVelocityWhenAfterSteeringCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldntSteerWhenIdleTest, "ProjectR.Unit.JetTests.ShouldntSteerWhenIdle", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldUpdateVelocityDirectionAfterSteeringTest, "ProjectR.Unit.JetTests.ShouldUpdateVelocityDirectionAfterSteering", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FAJetShouldntSteerWhenIdleTest::RunTest(const FString& Parameters)
+bool FAJetShouldUpdateVelocityDirectionAfterSteeringTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
