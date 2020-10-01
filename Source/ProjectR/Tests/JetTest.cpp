@@ -190,10 +190,12 @@ bool FCheckAJetLocationCommand::Update()
 		{
 			float currentXLocation = testJet->GetActorLocation().X;
 
+			bool hasMoved = currentXLocation > 0;
+			bool isAtOrigin = FMath::IsNearlyZero(currentXLocation, 0.1f);
 
-			if (currentXLocation > 0 && !FMath::IsNearlyZero(currentXLocation, 0.1f))//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
+			if (hasMoved && !isAtOrigin)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
 			{
-				test->TestTrue(TEXT("The Jet X location should increase after an acceleration is added (after ticking)."), currentXLocation > 0 && !FMath::IsNearlyZero(currentXLocation, 0.1f));
+				test->TestTrue(TEXT("The Jet X location should increase after an acceleration is added (after ticking)."), hasMoved && !isAtOrigin);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
