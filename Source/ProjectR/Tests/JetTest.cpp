@@ -512,12 +512,12 @@ bool FCheckAJetMovedRightCommand::Update()
 		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
 		if (testJet)
 		{
-			float currentYLocation = testJet->GetActorLocation().Y;
+			float currentZRotation = testJet->GetActorRotation().Yaw;
 
 
-			if (currentYLocation > 0 && !FMath::IsNearlyZero(currentYLocation, 0.1f))//we should be careful of near zero floats. Maybe !NearEqual would be better...
+			if (currentZRotation > 0 && !FMath::IsNearlyZero(currentZRotation, 0.1f))//we should be careful of near zero floats. Maybe !NearEqual would be better...
 			{
-				test->TestTrue(TEXT("The Jet Y location should be greater than zero after steering right (after ticking)."), currentYLocation > 0 && !FMath::IsNearlyZero(currentYLocation, 0.1f));
+				test->TestTrue(TEXT("The Jet yaw rotation (around Z axis) should be greater than zero after steering right (after ticking)."), currentZRotation > 0 && !FMath::IsNearlyZero(currentZRotation, 0.1f));
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -525,7 +525,7 @@ bool FCheckAJetMovedRightCommand::Update()
 
 			if (aTickCount > aTickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet Y location never changed from zero."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet yaw rotation (around Z axis) never changed from zero."), aTickCount > aTickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
