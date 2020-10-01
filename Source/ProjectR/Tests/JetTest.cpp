@@ -1002,16 +1002,6 @@ bool FCheckAJetLocationParallelToForwardVectorCommand::Update()
 			bool hasMoved = !FMath::IsNearlyZero(FVector::Distance(currentLocation, jetBackwardsVector), 0.1f);
 			bool locationIsAlignedToBackwardsVector = FVector::Coincident(currentLocation.GetSafeNormal2D(), jetBackwardsVector.GetSafeNormal2D());
 
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("the jet location is: %s."), *currentLocation.ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("the jet forward vector is: %s."), *jetBackwardsVector.ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("the jet normalized location is: %s."), *currentLocation.GetUnsafeNormal2D().ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("the jet normalized forward vector is: %s."), *jetBackwardsVector.GetUnsafeNormal2D().ToString()));
-		
-		
-		
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("the jet %s moved"), *FString(hasMoved? "has":"hasn't")));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("the jet %s aligned to it's forward vector"), *FString(locationIsAlignedToBackwardsVector? "is":"isn't")));
-
 			if (hasMoved && locationIsAlignedToBackwardsVector)
 			{
 				test->TestTrue(TEXT("The Jet should brake contrary to the direction of it's forward vector after being rotated."), hasMoved && locationIsAlignedToBackwardsVector);
@@ -1054,5 +1044,9 @@ bool FAJetShouldBrakeAlongItsBackwardsVectorWhileRotatedTest::RunTest(const FStr
 	return true;
 }
 
+
+
+
+//jet velocity should update with steering. get velocity, get forward vector, get velocity speed and set new velocity multiplying the speed with the forward vector.
 
 #endif //WITH_DEV_AUTOMATION_TESTS
