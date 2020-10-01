@@ -211,6 +211,7 @@ bool FCheckAJetLocationCommand::Update()
 }
 
 
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldMoveForwardWhenAcceleratedTest, "ProjectR.Unit.JetTests.ShouldMoveForwardWhenAccelerated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetShouldMoveForwardWhenAcceleratedTest::RunTest(const FString& Parameters)
@@ -514,7 +515,6 @@ bool FCheckAJetRotatedYawCommand::Update()
 		{
 			float currentZRotation = testJet->GetActorRotation().Yaw;
 
-
 			if (currentZRotation > 0 && !FMath::IsNearlyZero(currentZRotation, 0.1f))
 			{
 				test->TestTrue(TEXT("The Jet yaw rotation (around Z axis) should be greater than zero after steering right (after ticking)."), currentZRotation > 0 && !FMath::IsNearlyZero(currentZRotation, 0.1f));
@@ -535,9 +535,9 @@ bool FCheckAJetRotatedYawCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldMoveRightWhenSteeringRightTest, "ProjectR.Unit.JetTests.ShouldMoveRightWhenSteeringRight", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldRotateYawRightWhenSteeringRightTest, "ProjectR.Unit.JetTests.ShouldRotateYawRightWhenSteeringRight", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FAJetShouldMoveRightWhenSteeringRightTest::RunTest(const FString& Parameters)
+bool FAJetShouldRotateYawRightWhenSteeringRightTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -874,6 +874,91 @@ bool FAJetGetsUpwardsImpulseFromAntiGravityOnFloorTest::RunTest(const FString& P
 
 
 
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotateAndAccelerateCommand);
+
+bool FSpawningAJetRotateAndAccelerateCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	{
+		return false;
+	}
+
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+	AJet* testJet = sessionUtilities.spawnJetInPIE();
+
+	float yawValue = 50;
+	testJet->SetActorRotation(FRotator(0, yawValue, 0));
+	testJet->accelerate();
+
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetLocationAgainstForwardVectorCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+
+bool FCheckAJetLocationAgainstForwardVectorCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
+		if (testJet)
+		{
+			float currentXLocation = testJet->GetActorLocation().X;
+			FVector currentLocation = testJet->GetActorLocation();
+			FVector jetForwardVector = testJet->GetActorForwardVector();
+
+			bool hasMoved = !FMath::IsNearlyZero(FVector::Distance(currentLocation, jetForwardVector), 0.1f);
+			bool locationIsAlignedToForwardVector = FVector::Parallel(currentLocation.GetUnsafeNormal(), jetForwardVector.GetUnsafeNormal());
+
+
+
+			if (hasMoved && locationIsAlignedToForwardVector)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
+			{
+				test->TestTrue(TEXT("The Jet should accelerate in the direction of it's forward vector after being rotated."), hasMoved && locationIsAlignedToForwardVector);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			++aTickCount;
+
+			if (aTickCount > aTickLimit)
+			{
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet acceleration wasn't aligned to it's forward vector."), aTickCount > aTickLimit);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldAccelerateAlongItsForwardVectorWhenAcceleratedAfterRotationTest, "ProjectR.Unit.JetTests.ShouldAccelerateAlongItsForwardVectorWhenAcceleratedAfterRotation", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetShouldAccelerateAlongItsForwardVectorWhenAcceleratedAfterRotationTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotateAndAccelerateCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocationAgainstForwardVectorCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
 
 
 
