@@ -110,7 +110,10 @@ void AJet::brake(float aBrakeMultiplier)
 	}
 }
 
-void AJet::steer(float aDirectionMultiplier)//like this, it's more like drifting
+//like this, it drifts if the steer action is made for too long.
+//If you need to change it to something more like an arcade, then jet velocity should update with steering.
+//get velocity, get forward vector, get velocity speed and set new velocity multiplying the speed with the forward vector.
+void AJet::steer(float aDirectionMultiplier)
 {
 	FVector torqueToApply = FVector(0, 0, aDirectionMultiplier * steerForce());//directionMultiplier is used to steer right or left and to have a range of steering.
 	meshComponent->AddTorqueInDegrees(torqueToApply, NAME_None, true);
