@@ -1049,78 +1049,7 @@ bool FAJetShouldBrakeAlongItsBackwardsVectorWhileRotatedTest::RunTest(const FStr
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetAndSteerRightCommand);
 
-bool FSpawningAJetAndSteerRightCommand::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
-
-	AJet* testJet = sessionUtilities.spawnJetInPIE();
-
-	float direction = 1;//1 is right, -1 is left...
-
-	testJet->steer(direction);
-
-	return true;
-}
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetDidntSteerWhenIdleCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
-
-bool FCheckAJetDidntSteerWhenIdleCommand::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
-		if (testJet)
-		{
-			++aTickCount;
-
-			if (aTickCount > aTickLimit)
-			{
-				bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
-				float currentZRotation = testJet->GetActorRotation().Yaw;
-				bool rotationNearlyZero = FMath::IsNearlyZero(currentZRotation, 0.1f);
-				test->TestFalse(TEXT("The Jet shouldn't steer when speed is zero, yaw rotation (around Z axis) doesn't change from zero."), speedNearlyZero && rotationNearlyZero);
-
-				
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldntSteerWhenIdleTest, "ProjectR.Unit.JetTests.ShouldntSteerWhenIdle", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FAJetShouldntSteerWhenIdleTest::RunTest(const FString& Parameters)
-{
-
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetAndSteerRightCommand);
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetDidntSteerWhenIdleCommand(tickCount, tickLimit, this));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-
-	return true;
-}
 
 
 
