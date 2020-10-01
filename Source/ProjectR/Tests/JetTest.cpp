@@ -773,19 +773,19 @@ bool FAJetShouldHaveACameraAttachedToSpringArmTest::RunTest(const FString& Param
 
 
 
-//uses a MOCK
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpringArmShouldUseAbsoluteRotationTest, "ProjectR.Unit.JetTests.SpringArmShouldUseAbsoluteRotation", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FAJetSpringArmShouldUseAbsoluteRotationTest::RunTest(const FString& Parameters)
-{
-	{
-		AJetMOCK* testJet = NewObject<AJetMOCK>();
-
-		TestTrue(TEXT("The Jet spring arm should use absolute rotation."), testJet->usesAbsoluteRotation());
-	}
-
-	return true;
-}
+////uses a MOCK
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpringArmShouldUseAbsoluteRotationTest, "ProjectR.Unit.JetTests.SpringArmShouldUseAbsoluteRotation", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//bool FAJetSpringArmShouldUseAbsoluteRotationTest::RunTest(const FString& Parameters)
+//{
+//	{
+//		AJetMOCK* testJet = NewObject<AJetMOCK>();
+//
+//		TestTrue(TEXT("The Jet spring arm should use absolute rotation."), testJet->usesAbsoluteRotation());//change to use the relative yaw
+//	}
+//
+//	return true;
+//}
 
 
 
