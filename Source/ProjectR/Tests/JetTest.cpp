@@ -501,9 +501,9 @@ bool FSpawningAJetMakeItSteerRightCommand::Update()
 }
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetMovedRightCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetRotatedYawCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
 
-bool FCheckAJetMovedRightCommand::Update()
+bool FCheckAJetRotatedYawCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -515,7 +515,7 @@ bool FCheckAJetMovedRightCommand::Update()
 			float currentZRotation = testJet->GetActorRotation().Yaw;
 
 
-			if (currentZRotation > 0 && !FMath::IsNearlyZero(currentZRotation, 0.1f))//we should be careful of near zero floats. Maybe !NearEqual would be better...
+			if (currentZRotation > 0 && !FMath::IsNearlyZero(currentZRotation, 0.1f))
 			{
 				test->TestTrue(TEXT("The Jet yaw rotation (around Z axis) should be greater than zero after steering right (after ticking)."), currentZRotation > 0 && !FMath::IsNearlyZero(currentZRotation, 0.1f));
 				testWorld->bDebugFrameStepExecution = true;
@@ -549,7 +549,7 @@ bool FAJetShouldMoveRightWhenSteeringRightTest::RunTest(const FString& Parameter
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItSteerRightCommand);
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetMovedRightCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetRotatedYawCommand(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
@@ -654,7 +654,7 @@ bool FAJetShouldMoveRightWhenPressingSteerRightKeyTest::RunTest(const FString& P
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKeyCommand);
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetMovedRightCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetRotatedYawCommand(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
