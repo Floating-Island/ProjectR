@@ -913,9 +913,7 @@ bool FCheckAJetLocationAgainstForwardVectorCommand::Update()
 			FVector jetForwardVector = testJet->GetActorForwardVector();
 
 			bool hasMoved = !FMath::IsNearlyZero(FVector::Distance(currentLocation, jetForwardVector), 0.1f);
-			bool locationIsAlignedToForwardVector = FVector::Parallel(currentLocation.GetUnsafeNormal(), jetForwardVector.GetUnsafeNormal());
-
-
+			bool locationIsAlignedToForwardVector = FVector::Coincident(currentLocation.GetSafeNormal2D(), jetForwardVector.GetSafeNormal2D());
 
 			if (hasMoved && locationIsAlignedToForwardVector)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
 			{
