@@ -1033,9 +1033,9 @@ bool FCheckAJetLocationParallelToForwardVectorCommand::Update()
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldAccelerateAlongItsForwardVectorWhenAcceleratedAfterRotationTest, "ProjectR.Unit.JetTests.ShouldAccelerateAlongItsForwardVectorWhenAcceleratedAfterRotation", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldBrakeAlongItsBackwardsVectorWhileRotatedTest, "ProjectR.Unit.JetTests.ShouldBrakeAlongItsBackwardsVectorWhileRotated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FAJetShouldAccelerateAlongItsForwardVectorWhenAcceleratedAfterRotationTest::RunTest(const FString& Parameters)
+bool FAJetShouldBrakeAlongItsBackwardsVectorWhileRotatedTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
