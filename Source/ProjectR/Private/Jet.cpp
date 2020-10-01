@@ -49,6 +49,8 @@ AJet::AJet()
 void AJet::BeginPlay()
 {
 	Super::BeginPlay();
+	float yawValue = 50;
+	SetActorRotation(FRotator(0, yawValue, 0));
 }
 
 // Called every frame
@@ -82,10 +84,10 @@ float AJet::settedTopSpeed()
 
 void AJet::accelerate(float anAccelerationMultiplier)
 {
-	if (currentSpeed() < settedTopSpeed() && !FMath::IsNearlyEqual(currentSpeed(), settedTopSpeed(), 0.5f))
+	if (anAccelerationMultiplier > 0 && currentSpeed() < settedTopSpeed() && !FMath::IsNearlyEqual(currentSpeed(), settedTopSpeed(), 0.5f))
 	{
-		FVector forceToApply = FVector(acceleration(), 0, 0);
-		meshComponent->AddForce(forceToApply * anAccelerationMultiplier, NAME_None, true);
+		FVector forceToApply = GetActorForwardVector()*acceleration();
+		meshComponent->AddForce(forceToApply*anAccelerationMultiplier, NAME_None, true);
 	}
 }
 
