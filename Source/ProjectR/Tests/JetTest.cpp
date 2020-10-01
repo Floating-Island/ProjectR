@@ -253,10 +253,12 @@ bool FCheckAJetSpeedIncreaseCommand::Update()
 		{
 			float currentSpeed = testJet->currentSpeed();
 
+			bool isMovingForwards = currentSpeed > 0;
+			bool isIdle = FMath::IsNearlyZero(currentSpeed, 0.1f);
 
-			if (currentSpeed > 0 && !FMath::IsNearlyZero(currentSpeed, 0.1f))//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
+			if (isMovingForwards && !isIdle)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
 			{
-				test->TestTrue(TEXT("The Jet speed should increase after accelerating (after ticking)."), currentSpeed > 0 && !FMath::IsNearlyZero(currentSpeed, 0.1f));
+				test->TestTrue(TEXT("The Jet speed should increase after accelerating (after ticking)."), isMovingForwards && !isIdle);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -346,11 +348,12 @@ bool FCheckAJetSpeedDecreaseCommand::Update()
 		if (testJet)
 		{
 			float currentSpeed = testJet->currentSpeed();
+			bool isMovingBackwards = currentSpeed < 0;
+			bool isIdle = FMath::IsNearlyZero(currentSpeed, 0.1f);
 
-
-			if (currentSpeed < 0 && !FMath::IsNearlyZero(currentSpeed, 0.1f))//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
+			if (isMovingBackwards && !isIdle)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
 			{
-				test->TestTrue(TEXT("The Jet speed should decrease after a brake (after ticking)."), currentSpeed < 0 && !FMath::IsNearlyZero(currentSpeed, 0.1f));
+				test->TestTrue(TEXT("The Jet speed should decrease after a brake (after ticking)."), isMovingBackwards && !isIdle);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -440,13 +443,13 @@ bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
 		if (testJet)
 		{
 			float currentSpeed = testJet->currentSpeed();
+			bool isAtTopSpeed = FMath::IsNearlyEqual(currentSpeed, testJet->settedTopSpeed(), 1.0f);
 
 			++aTickCount;
 
-
 			if (aTickCount > aTickLimit)
 			{
-				test->TestTrue(TEXT("If a jet is at top speed, it should never increase it after an acceleration is added (after ticking)."), FMath::IsNearlyEqual(currentSpeed, testJet->settedTopSpeed(), 1.0f));
+				test->TestTrue(TEXT("If a jet is at top speed, it should never increase it after an acceleration is added (after ticking)."), isAtTopSpeed);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -516,10 +519,12 @@ bool FCheckAJetRotatedYawCommand::Update()
 		if (testJet)
 		{
 			float currentZRotation = testJet->GetActorRotation().Yaw;
+			bool hasSteered = currentZRotation > 0;
+			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotation, 0.1f);
 
-			if (currentZRotation > 0 && !FMath::IsNearlyZero(currentZRotation, 0.1f))
+			if (hasSteered && !isMinimalSteering)
 			{
-				test->TestTrue(TEXT("The Jet yaw rotation (around Z axis) should be greater than zero after steering right (after ticking)."), currentZRotation > 0 && !FMath::IsNearlyZero(currentZRotation, 0.1f));
+				test->TestTrue(TEXT("The Jet yaw rotation (around Z axis) should be greater than zero after steering right (after ticking)."), hasSteered && !isMinimalSteering);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -830,10 +835,12 @@ bool FCheckAJetZLocationCommand::Update()
 		{
 			float currentZVelocity = testJet->getZVelocity();
 
+			bool isBeingLifted = currentZVelocity > 0;
+			bool isMinimalLifting = FMath::IsNearlyZero(currentZVelocity, 0.1f);
 
-			if (currentZVelocity > 0 && !FMath::IsNearlyZero(currentZVelocity, 0.1f))
+			if (isBeingLifted && !isMinimalLifting)
 			{
-				test->TestTrue(TEXT("The Jet Z veocity should increase due to anti-gravity activation near floor."), currentZVelocity > 0 && !FMath::IsNearlyZero(currentZVelocity, 0.1f));
+				test->TestTrue(TEXT("The Jet Z veocity should increase due to anti-gravity activation near floor."), isBeingLifted && !isMinimalLifting);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
