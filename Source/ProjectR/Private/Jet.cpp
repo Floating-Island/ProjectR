@@ -103,8 +103,11 @@ float AJet::brakeValue()
 
 void AJet::brake(float aBrakeMultiplier)
 {
-	FVector forceToApply = FVector(-brakeValue(), 0, 0);//notice the '-' next to brakeValue. Brake value's sign is positive.
-	meshComponent->AddForce(forceToApply * aBrakeMultiplier, NAME_None, true);//should be changed to torque.
+	if (aBrakeMultiplier > 0)
+	{
+		FVector forceToApply = GetActorForwardVector()*(-brakeValue());//notice the '-' next to brakeValue. Brake value's sign is positive.
+		meshComponent->AddForce(forceToApply * aBrakeMultiplier, NAME_None, true);
+	}
 }
 
 void AJet::steer(float aDirectionMultiplier)
