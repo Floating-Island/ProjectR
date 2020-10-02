@@ -28,7 +28,7 @@ AJet::AJet()
 	accelerationValue = 5000.0f;
 	brakeAbsoluteValue = 1000.0f;
 	topSpeed = 1000.0f;
-	steerForceValue = 2000.0f;
+	steerForceValue = 200.0f;
 
 	AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
 
@@ -58,16 +58,16 @@ void AJet::BeginPlay()
 void AJet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if(velocityAlignmentNeeded)
+	if (velocityAlignmentNeeded)
 	{
-		FVector alignedVelocity = GetActorForwardVector().GetSafeNormal()*currentSpeed() ;
-		if(meshComponent->GetComponentVelocity().ProjectOnTo(GetActorForwardVector()).GetSignVector() != GetActorForwardVector().GetSignVector())
+		FVector alignedVelocity = GetActorForwardVector().GetSafeNormal() * currentSpeed();
+		if (meshComponent->GetComponentVelocity().ProjectOnTo(GetActorForwardVector()).GetSignVector() != GetActorForwardVector().GetSignVector())
 		{
-			alignedVelocity = (-GetActorForwardVector()).GetSafeNormal()*meshComponent->GetComponentVelocity().Size();///this is used when the jet is in reverse.
+			alignedVelocity = (-GetActorForwardVector()).GetSafeNormal() * meshComponent->GetComponentVelocity().Size();///this is used when the jet is in reverse.
 			//We should change the direction multiplier so it changes the torque direction when in reverse
 		}
-		
-		
+
+
 		meshComponent->SetPhysicsLinearVelocity(alignedVelocity);//this happens a frame before the torque is applied.
 		//velocityAlignmentNeeded = false;//to be able to use this, we need to fire this block on the next tick. Maybe a delegate??
 	}
@@ -100,8 +100,8 @@ void AJet::accelerate(float anAccelerationMultiplier)
 {
 	if (anAccelerationMultiplier > 0 && currentSpeed() < settedTopSpeed() && !FMath::IsNearlyEqual(currentSpeed(), settedTopSpeed(), 0.5f))
 	{
-		FVector forceToApply = GetActorForwardVector()*acceleration();
-		meshComponent->AddForce(forceToApply*anAccelerationMultiplier, NAME_None, true);
+		FVector forceToApply = GetActorForwardVector() * acceleration();
+		meshComponent->AddForce(forceToApply * anAccelerationMultiplier, NAME_None, true);
 	}
 }
 
@@ -119,7 +119,7 @@ void AJet::brake(float aBrakeMultiplier)
 {
 	if (aBrakeMultiplier > 0)
 	{
-		FVector forceToApply = GetActorForwardVector()*(-brakeValue());//notice the '-' next to brakeValue. Brake value's sign is positive.
+		FVector forceToApply = GetActorForwardVector() * (-brakeValue());//notice the '-' next to brakeValue. Brake value's sign is positive.
 		meshComponent->AddForce(forceToApply * aBrakeMultiplier, NAME_None, true);
 	}
 }
@@ -131,9 +131,13 @@ void AJet::brake(float aBrakeMultiplier)
 //to get drift, the velocity update should be disabled by a moment (as long as the drifting lasts), maintaining the acceleration of the jet.
 void AJet::steer(float aDirectionMultiplier)
 {
-	if(aDirectionMultiplier != 0)
+	if (aDirectionMultiplier != 0)
 	{
 		//if reverse, change directionMultiplier sign.
+		if (!GetVelocity().ProjectOnTo(GetActorForwardVector()).GetSignVector().Equals(GetActorForwardVector().GetSignVector(), 0.1f))//is going backwards
+		{
+			aDirectionMultiplier = -aDirectionMultiplier;//invert steering
+		}
 		FVector torqueToApply = FVector(0, 0, aDirectionMultiplier * steerForce());//directionMultiplier is used to steer right or left and to have a range of steering.
 		meshComponent->AddTorqueInDegrees(torqueToApply, NAME_None, true);
 

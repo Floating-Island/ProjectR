@@ -1181,16 +1181,15 @@ bool FCheckAJetInvertSteeringWhenInReverseCommand::Update()
 		{
 			++aTickCount;
 
-			float currentZRotation = testJet->GetActorRotation().Yaw;
-			bool hasSteeredCounterClockWise = currentZRotation < 0;//clockwise is right when going forwards. When in reverse, it should go counterclockwise.
-			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotation, 0.1f);
+			bool ismovingRight = testJet->GetVelocity().Y < 0;//clockwise is right when going forwards. When in reverse, it should go counterclockwise.
+			bool isMinimalSteering = FMath::IsNearlyZero(testJet->GetActorRotation().Yaw, 0.1f);
 			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
-			
+			FVector jetForwardDirection = testJet->GetActorForwardVector();
+			bool isMovingBackwards = testJet->GetVelocity().ProjectOnTo(jetForwardDirection).GetSignVector().X != jetForwardDirection.GetSignVector().X;
 
-
-			if (!speedNearlyZero && !isMinimalSteering && hasSteeredCounterClockWise)
+			if (!speedNearlyZero && !isMinimalSteering && ismovingRight && isMovingBackwards)
 			{
-				test->TestTrue(TEXT("The Jet should steer right counterclockwise if it's in reverse."), !speedNearlyZero && !isMinimalSteering && hasSteeredCounterClockWise);
+				test->TestTrue(TEXT("The Jet should steer right counterclockwise if it's in reverse."), !speedNearlyZero && !isMinimalSteering && ismovingRight && isMovingBackwards);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -1221,8 +1220,8 @@ bool FAJetShouldInvertSteeringWhenInReverseTest::RunTest(const FString& Paramete
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetBrakeAndSteerRightCommand);
 	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetInvertSteeringWhenInReverseCommand(tickCount, tickLimit, FVector(), this));
+	int tickLimit = 4;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetInvertSteeringWhenInReverseCommand(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
