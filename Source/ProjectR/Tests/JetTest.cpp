@@ -321,7 +321,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItBrakeCommand);
 
 bool FSpawningAJetMakeItBrakeCommand::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (!GEditor->IsPlayingSessionInEditor())
 	{
 		return false;
 	}
@@ -418,7 +418,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetSetVelocityToTopSpeedCommand);
 
 bool FSpawningAJetSetVelocityToTopSpeedCommand::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (!GEditor->IsPlayingSessionInEditor())
 	{
 		return false;
 	}
@@ -447,7 +447,6 @@ bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
 		{
 			float currentSpeed = testJet->currentSpeed();
 			bool isAtTopSpeed = FMath::IsNearlyEqual(currentSpeed, testJet->settedTopSpeed(), 1.0f);
-
 			++aTickCount;
 
 			if (aTickCount > aTickLimit)
@@ -492,7 +491,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItSteerRightCommand);
 
 bool FSpawningAJetMakeItSteerRightCommand::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (!GEditor->IsPlayingSessionInEditor())
 	{
 		return false;
 	}
@@ -588,7 +587,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerationKeyCommand);
 
 bool FSpawningAJetPressAccelerationKeyCommand::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (!GEditor->IsPlayingSessionInEditor())
 	{
 		return false;
 	}
@@ -634,7 +633,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKeyCommand);
 
 bool FSpawningAJetPressSteerRightKeyCommand::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (!GEditor->IsPlayingSessionInEditor())
 	{
 		return false;
 	}
@@ -806,7 +805,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetSnapedToFloorCommand);
 
 bool FSpawningAJetSnapedToFloorCommand::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (!GEditor->IsPlayingSessionInEditor())
 	{
 		return false;
 	}
@@ -891,7 +890,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotateAndAccelerateCommand);
 
 bool FSpawningAJetRotateAndAccelerateCommand::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (!GEditor->IsPlayingSessionInEditor())
 	{
 		return false;
 	}
@@ -978,7 +977,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotateAndBrakeCommand);
 
 bool FSpawningAJetRotateAndBrakeCommand::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (!GEditor->IsPlayingSessionInEditor())
 	{
 		return false;
 	}
@@ -1065,7 +1064,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetAccelerateAndSteerRightCommand);
 
 bool FSpawningAJetAccelerateAndSteerRightCommand::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (!GEditor->IsPlayingSessionInEditor())
 	{
 		return false;
 	}
