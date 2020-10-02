@@ -336,9 +336,9 @@ bool FSpawningAJetMakeItBrakeCommand::Update()
 }
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedDecreaseCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetVelocityDecreaseCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
 
-bool FCheckAJetSpeedDecreaseCommand::Update()
+bool FCheckAJetVelocityDecreaseCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -348,12 +348,14 @@ bool FCheckAJetSpeedDecreaseCommand::Update()
 		if (testJet)
 		{
 			float currentSpeed = testJet->currentSpeed();
-			bool isMovingBackwards = currentSpeed < 0;
 			bool isIdle = FMath::IsNearlyZero(currentSpeed, 0.1f);
+			FVector jetForwardDirection = testJet->GetActorForwardVector();
+			bool isMovingBackwards = testJet->GetVelocity().ProjectOnTo(jetForwardDirection).GetSignVector() != jetForwardDirection.GetSignVector();
+			
 
 			if (isMovingBackwards && !isIdle)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
 			{
-				test->TestTrue(TEXT("The Jet speed should decrease after a brake (after ticking)."), isMovingBackwards && !isIdle);
+				test->TestTrue(TEXT("The Jet velocity should be negative after a brake (after ticking) from idle."), isMovingBackwards && !isIdle);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -361,7 +363,7 @@ bool FCheckAJetSpeedDecreaseCommand::Update()
 
 			if (aTickCount > aTickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from zero."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet velocity never changed from zero."), aTickCount > aTickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -371,9 +373,9 @@ bool FCheckAJetSpeedDecreaseCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpeedDecreasesWhenBrakesTest, "ProjectR.Unit.JetTests.SpeedDecreasesWhenBrakes", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetVelocityNegativeWhenBrakesTest, "ProjectR.Unit.JetTests.VelocityNegativeWhenBrakes", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FAJetSpeedDecreasesWhenBrakesTest::RunTest(const FString& Parameters)
+bool FAJetVelocityNegativeWhenBrakesTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -385,7 +387,7 @@ bool FAJetSpeedDecreasesWhenBrakesTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItBrakeCommand);
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedDecreaseCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetVelocityDecreaseCommand(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
@@ -707,7 +709,7 @@ bool FAJetBrakesWhenPressingBrakeKeyTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeKeyCommand);
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedDecreaseCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetVelocityDecreaseCommand(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
