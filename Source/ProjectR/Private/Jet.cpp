@@ -61,13 +61,15 @@ void AJet::Tick(float DeltaTime)
 	if(velocityAlignmentNeeded)
 	{
 		FVector alignedVelocity = GetActorForwardVector().GetSafeNormal()*currentSpeed() ;
-		/*if(meshComponent->GetComponentVelocity().ProjectOnTo(GetActorForwardVector()).GetSignVector() != GetActorForwardVector().GetSignVector())
-		{
-			alignedVelocity = (-GetActorForwardVector()).GetSafeNormal()*meshComponent->GetComponentVelocity().Size();///this is wrong
-		}*/
+		//if(meshComponent->GetComponentVelocity().ProjectOnTo(GetActorForwardVector()).GetSignVector() != GetActorForwardVector().GetSignVector())
+		//{
+		//	alignedVelocity = (-GetActorForwardVector()).GetSafeNormal()*meshComponent->GetComponentVelocity().Size();///this is used when the jet is in reverse.
+		//	//We should change the direction multiplier so it changes the torque direction
+		//}
+		
 		
 		meshComponent->SetPhysicsLinearVelocity(alignedVelocity);//this happens a frame before the torque is applied.
-		/*velocityAlignmentNeeded = false;*/
+		//velocityAlignmentNeeded = false;//to be able to use this, we need to fire this block on the next tick. Maybe a delegate??
 	}
 }
 
