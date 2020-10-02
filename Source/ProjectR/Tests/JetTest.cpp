@@ -253,10 +253,11 @@ bool FCheckAJetSpeedIncreaseCommand::Update()
 		{
 			float currentSpeed = testJet->currentSpeed();
 
-			bool isMovingForwards = currentSpeed > 0;
+			FVector jetForwardDirection = testJet->GetActorForwardVector();
+			bool isMovingForwards = testJet->GetVelocity().ProjectOnTo(jetForwardDirection).GetSignVector() == jetForwardDirection.GetSignVector();
 			bool isIdle = FMath::IsNearlyZero(currentSpeed, 0.1f);
 
-			if (isMovingForwards && !isIdle)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
+			if (isMovingForwards && !isIdle)
 			{
 				test->TestTrue(TEXT("The Jet speed should increase after accelerating (after ticking)."), isMovingForwards && !isIdle);
 				testWorld->bDebugFrameStepExecution = true;
@@ -353,7 +354,7 @@ bool FCheckAJetVelocityDecreaseCommand::Update()
 			bool isMovingBackwards = testJet->GetVelocity().ProjectOnTo(jetForwardDirection).GetSignVector() != jetForwardDirection.GetSignVector();
 			
 
-			if (isMovingBackwards && !isIdle)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
+			if (isMovingBackwards && !isIdle)
 			{
 				test->TestTrue(TEXT("The Jet velocity should be negative after a brake (after ticking) from idle."), isMovingBackwards && !isIdle);
 				testWorld->bDebugFrameStepExecution = true;
