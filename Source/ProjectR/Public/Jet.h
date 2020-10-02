@@ -52,7 +52,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 		UAntiGravityComponent* antiGravitySystem;
 
-
+	bool velocityAlignmentNeeded;
 
 public:
 	// Called every frame

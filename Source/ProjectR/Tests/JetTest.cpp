@@ -1070,8 +1070,15 @@ bool FSpawningAJetAccelerateAndSteerRightCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJet* testJet = sessionUtilities.spawnJetInPIE();
 
+	AFloorMeshActor* meshActor = sessionUtilities.spawnFloorMeshActorInPIE();
+
+	FVector spawnLocation = meshActor->GetActorLocation() + FVector(0, 0, 1000);
+
+	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE(spawnLocation);
+
+	GEditor->SnapObjectTo(FActorOrComponent(testJet), true, true, true, false, FActorOrComponent(meshActor));
+	
 	float direction = 1;//1 is right, -1 is left...
 	testJet->accelerate();
 	testJet->steer(direction);
@@ -1080,7 +1087,7 @@ bool FSpawningAJetAccelerateAndSteerRightCommand::Update()
 }
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetUpdatedVelocityWhenAfterSteeringCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckAJetUpdatedVelocityWhenAfterSteeringCommand, int, aTickCount, int, aTickLimit,FVector, previousForwardVector, FAutomationTestBase*, test);
 
 bool FCheckAJetUpdatedVelocityWhenAfterSteeringCommand::Update()
 {
@@ -1096,10 +1103,11 @@ bool FCheckAJetUpdatedVelocityWhenAfterSteeringCommand::Update()
 			FVector currentVelocity = testJet->GetVelocity();
 			FVector jetForwardsVector = testJet->GetActorForwardVector();
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet velocity: %s"), *currentVelocity.ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet forward vector: %s"), *jetForwardsVector.ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet velocity: %s"), *currentVelocity.ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet previous forward vector: %s"), *previousForwardVector.ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet current forward vector: %s"), *jetForwardsVector.ToString()));
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet velocity normalized: %s"), *currentVelocity.GetSafeNormal2D().ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet forward vector normalized: %s"), *jetForwardsVector.GetSafeNormal2D().ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet previous forward vector normalized: %s"), *previousForwardVector.GetSafeNormal2D().ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet current forward vector normalized: %s"), *jetForwardsVector.GetSafeNormal2D().ToString()));
 			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
 			bool velocityAlignedToForwardVector = FVector::Coincident(testJet->GetVelocity().GetSafeNormal2D(), testJet->GetActorForwardVector().GetSafeNormal2D());
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet speed %s zero"), *FString(speedNearlyZero? "is":"isn't")));
@@ -1108,12 +1116,11 @@ bool FCheckAJetUpdatedVelocityWhenAfterSteeringCommand::Update()
 			
 			if (aTickCount > aTickLimit)
 			{
-				
-				
 				test->TestTrue(TEXT("The Jet should update it's velocity to match the direction of the forward vector after steering."), !speedNearlyZero && velocityAlignedToForwardVector);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
+			previousForwardVector = jetForwardsVector;
 		}
 	}
 	return false;
@@ -1134,7 +1141,7 @@ bool FAJetShouldUpdateVelocityDirectionAfterSteeringTest::RunTest(const FString&
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetAccelerateAndSteerRightCommand);
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetUpdatedVelocityWhenAfterSteeringCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetUpdatedVelocityWhenAfterSteeringCommand(tickCount, tickLimit, FVector(), this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 

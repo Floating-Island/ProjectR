@@ -43,6 +43,9 @@ AJet::AJet()
 	meshComponent->SetMassOverrideInKg(NAME_None, 100, true);
 
 	antiGravitySystem = CreateDefaultSubobject<UAntiGravityComponent>(TEXT("Anti-Gravity System"));
+
+
+	velocityAlignmentNeeded = false;
 }
 
 // Called when the game starts or when spawned
@@ -55,6 +58,17 @@ void AJet::BeginPlay()
 void AJet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if(velocityAlignmentNeeded)
+	{
+		FVector alignedVelocity = GetActorForwardVector().GetSafeNormal()*currentSpeed() ;
+		/*if(meshComponent->GetComponentVelocity().ProjectOnTo(GetActorForwardVector()).GetSignVector() != GetActorForwardVector().GetSignVector())
+		{
+			alignedVelocity = (-GetActorForwardVector()).GetSafeNormal()*meshComponent->GetComponentVelocity().Size();///this is wrong
+		}*/
+		
+		meshComponent->SetPhysicsLinearVelocity(alignedVelocity);//this happens a frame before the torque is applied.
+		/*velocityAlignmentNeeded = false;*/
+	}
 }
 
 // Called to bind functionality to input
@@ -72,7 +86,7 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 float AJet::currentSpeed()
 {
-	return meshComponent->GetComponentVelocity().Size();
+	return (meshComponent->GetComponentVelocity().ProjectOnTo(GetActorForwardVector())).Size();//speed is calculated as the forward velocity.
 }
 
 float AJet::settedTopSpeed()
@@ -121,10 +135,7 @@ void AJet::steer(float aDirectionMultiplier)
 		FVector torqueToApply = FVector(0, 0, aDirectionMultiplier * steerForce());//directionMultiplier is used to steer right or left and to have a range of steering.
 		meshComponent->AddTorqueInDegrees(torqueToApply, NAME_None, true);
 
-		FVector alignedVelocity = GetActorForwardVector().GetSafeNormal()*currentSpeed() ;
-		
-		
-		meshComponent->SetPhysicsLinearVelocity(alignedVelocity);
+		velocityAlignmentNeeded = true;
 	}
 }
 
