@@ -87,7 +87,7 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 
 float AJet::currentSpeed()
-{
+{//has to calculate if it's going backwards. Maybe another method that projects onto the forward vector and compares their heading angles...
 	return (meshComponent->GetComponentVelocity().ProjectOnTo(GetActorForwardVector())).Size();//speed is calculated as the forward velocity.
 }
 
