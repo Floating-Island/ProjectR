@@ -1109,14 +1109,14 @@ bool FCheckAJetUpdatedVelocityWhenAfterSteeringCommand::Update()
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet previous forward vector normalized: %s"), *previousForwardVector.GetSafeNormal2D().ToString()));
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet current forward vector normalized: %s"), *jetForwardsVector.GetSafeNormal2D().ToString()));
 			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
-			bool velocityAlignedToForwardVector = FVector::Coincident(testJet->GetVelocity().GetSafeNormal2D(), testJet->GetActorForwardVector().GetSafeNormal2D());
+			bool velocityAlignedToPreviousForwardVector = FVector::Coincident(currentVelocity.GetSafeNormal2D(), previousForwardVector.GetSafeNormal2D());
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet speed %s zero"), *FString(speedNearlyZero? "is":"isn't")));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet velocity %s aligned to forward vector"), *FString(velocityAlignedToForwardVector? "is":"isn't")));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet velocity %s aligned to forward vector"), *FString(velocityAlignedToPreviousForwardVector? "is":"isn't")));
 			
 			
 			if (aTickCount > aTickLimit)
 			{
-				test->TestTrue(TEXT("The Jet should update it's velocity to match the direction of the forward vector after steering."), !speedNearlyZero && velocityAlignedToForwardVector);
+				test->TestTrue(TEXT("The Jet should update it's velocity to match the direction of the forward vector after steering."), !speedNearlyZero && velocityAlignedToPreviousForwardVector);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
