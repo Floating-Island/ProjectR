@@ -72,7 +72,7 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 float AJet::currentSpeed()
 {
-	return meshComponent->GetComponentVelocity().X;//this is wrong...
+	return meshComponent->GetComponentVelocity().Size();
 }
 
 float AJet::settedTopSpeed()
@@ -117,12 +117,14 @@ void AJet::steer(float aDirectionMultiplier)
 {
 	if(aDirectionMultiplier != 0)
 	{
+		//if reverse, change directionMultiplier sign.
 		FVector torqueToApply = FVector(0, 0, aDirectionMultiplier * steerForce());//directionMultiplier is used to steer right or left and to have a range of steering.
 		meshComponent->AddTorqueInDegrees(torqueToApply, NAME_None, true);
 
-		FVector alignedVelocity = GetActorForwardVector()*meshComponent->GetComponentVelocity().Size() ;//currentSpeed isn't calculated correctly.//it should take into consideration the speed gained by antigravitySystemlifting.
+		FVector alignedVelocity = GetActorForwardVector().GetSafeNormal()*currentSpeed() ;
 		
-		meshComponent->AddForce(alignedVelocity,NAME_None,true);	
+		
+		meshComponent->SetPhysicsLinearVelocity(alignedVelocity);
 	}
 }
 
