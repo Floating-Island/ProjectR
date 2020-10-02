@@ -521,12 +521,12 @@ bool FCheckAJetRotatedYawCommand::Update()
 		if (testJet)
 		{
 			float currentZRotation = testJet->GetActorRotation().Yaw;
-			bool hasSteered = currentZRotation > 0;
+			bool hasSteeredRight = currentZRotation > 0;
 			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotation, 0.1f);
 
-			if (hasSteered && !isMinimalSteering)
+			if (hasSteeredRight && !isMinimalSteering)
 			{
-				test->TestTrue(TEXT("The Jet yaw rotation (around Z axis) should be greater than zero after steering right (after ticking)."), hasSteered && !isMinimalSteering);
+				test->TestTrue(TEXT("The Jet yaw rotation (around Z axis) should be greater than zero after steering right (after ticking)."), hasSteeredRight && !isMinimalSteering);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -1104,17 +1104,8 @@ bool FCheckAJetUpdatedVelocityWhenAfterSteeringCommand::Update()
 
 			FVector currentVelocity = testJet->GetVelocity();
 			FVector jetForwardsVector = testJet->GetActorForwardVector();
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet velocity: %s"), *currentVelocity.ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet previous forward vector: %s"), *previousForwardVector.ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet current forward vector: %s"), *jetForwardsVector.ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet velocity normalized: %s"), *currentVelocity.GetSafeNormal2D().ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet previous forward vector normalized: %s"), *previousForwardVector.GetSafeNormal2D().ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet current forward vector normalized: %s"), *jetForwardsVector.GetSafeNormal2D().ToString()));
 			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
 			bool velocityAlignedToPreviousForwardVector = FVector::Coincident(currentVelocity.GetSafeNormal2D(), previousForwardVector.GetSafeNormal2D());
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet speed %s zero"), *FString(speedNearlyZero? "is":"isn't")));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("jet velocity %s aligned to forward vector"), *FString(velocityAlignedToPreviousForwardVector? "is":"isn't")));
-			
 			
 			if (aTickCount > aTickLimit)
 			{
@@ -1153,6 +1144,90 @@ bool FAJetShouldUpdateVelocityDirectionAfterSteeringTest::RunTest(const FString&
 
 
 
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetBrakeAndSteerRightCommand);
+
+bool FSpawningAJetBrakeAndSteerRightCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE();
+	
+	float direction = 1;//1 is right, -1 is left going forwards
+	testJet->brake();
+	testJet->steer(direction);
+
+	return true;
+}
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetInvertSteeringWhenInReverseCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+
+bool FCheckAJetInvertSteeringWhenInReverseCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
+		if (testJet)
+		{
+			++aTickCount;
+
+			float currentZRotation = testJet->GetActorRotation().Yaw;
+			bool hasSteeredCounterClockWise = currentZRotation < 0;//clockwise is right when going forwards. When in reverse, it should go counterclockwise.
+			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotation, 0.1f);
+			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
+			
+
+
+			if (!speedNearlyZero && !isMinimalSteering && hasSteeredCounterClockWise)
+			{
+				test->TestTrue(TEXT("The Jet should steer right counterclockwise if it's in reverse."), !speedNearlyZero && !isMinimalSteering && hasSteeredCounterClockWise);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			++aTickCount;
+
+			if (aTickCount > aTickLimit)
+			{
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet didn't steer right counterclockwise in reverse."), aTickCount > aTickLimit);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldInvertSteeringWhenInReverseTest, "ProjectR.Unit.JetTests.ShouldInvertSteeringWhenInReverse", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetShouldInvertSteeringWhenInReverseTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetBrakeAndSteerRightCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetInvertSteeringWhenInReverseCommand(tickCount, tickLimit, FVector(), this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
 
 
 
