@@ -131,6 +131,11 @@ bool AJet::goesForward()
 		forwardDirection.GetSignVector(), 0.1f);
 }
 
+bool AJet::goesBackwards()
+{
+	return !goesForward();
+}
+
 //like this, it drifts if the steer action is made for too long.
 //It also drifts if you don't accelerate. That's a problem.
 //The jet velocity should update with steering.
@@ -141,7 +146,7 @@ void AJet::steer(float aDirectionMultiplier)
 	if (aDirectionMultiplier != 0)
 	{
 		//if reverse, change directionMultiplier sign.
-		if (!goesForward())//is going backwards
+		if (goesBackwards())//is going backwards
 		{
 			aDirectionMultiplier = -aDirectionMultiplier;//invert steering
 		}
