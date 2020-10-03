@@ -45,7 +45,7 @@ AJet::AJet()
 	antiGravitySystem = CreateDefaultSubobject<UAntiGravityComponent>(TEXT("Anti-Gravity System"));
 
 
-	velocityAlignmentNeeded = false;
+	
 }
 
 // Called when the game starts or when spawned
@@ -159,7 +159,6 @@ void AJet::steer(float aDirectionMultiplier)
 		FVector torqueToApply = FVector(0, 0, aDirectionMultiplier * steerForce());//directionMultiplier is used to steer right or left and to have a range of steering.
 		meshComponent->AddTorqueInDegrees(torqueToApply, NAME_None, true);
 
-		velocityAlignmentNeeded = true;
 		GetWorldTimerManager().SetTimerForNextTick(this, &AJet::alignVelocity);//the torque is applied on next tick, so we need to align velocity on next tick also.
 	}
 }
