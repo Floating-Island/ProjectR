@@ -145,11 +145,8 @@ void AJet::alignVelocity()
 	//velocityAlignmentNeeded = false;//to be able to use this, we need to fire this block on the next tick. Maybe a delegate??
 }
 
-//like this, it drifts if the steer action is made for too long.
-//It also drifts if you don't accelerate. That's a problem.
-//The jet velocity should update with steering.
-//get velocity, get forward vector, get velocity speed and set new velocity multiplying the speed with the forward vector. This will nullify the drifting. If it's needed, now we now how it's done.
-//to get drift, the velocity update should be disabled by a moment (as long as the drifting lasts), maintaining the acceleration of the jet.
+
+//to get drift, the velocity alignment should be disabled by a moment (as long as the drifting lasts), maintaining the acceleration of the jet.
 void AJet::steer(float aDirectionMultiplier)
 {
 	if (aDirectionMultiplier != 0)
