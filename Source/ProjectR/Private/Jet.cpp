@@ -54,22 +54,27 @@ void AJet::BeginPlay()
 	Super::BeginPlay();
 }
 
+void AJet::alignVelocity()
+{
+	FVector alignedVelocity = GetActorForwardVector().GetSafeNormal() * currentSpeed();
+	if (meshComponent->GetComponentVelocity().ProjectOnTo(GetActorForwardVector()).GetSignVector() != GetActorForwardVector().GetSignVector())
+	{
+		alignedVelocity = (-GetActorForwardVector()).GetSafeNormal() * meshComponent->GetComponentVelocity().Size();///this is used when the jet is in reverse.
+		//We should change the direction multiplier so it changes the torque direction when in reverse
+	}
+
+
+	meshComponent->SetPhysicsLinearVelocity(alignedVelocity);//this happens a frame before the torque is applied.
+	//velocityAlignmentNeeded = false;//to be able to use this, we need to fire this block on the next tick. Maybe a delegate??
+}
+
 // Called every frame
 void AJet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	if (velocityAlignmentNeeded)
 	{
-		FVector alignedVelocity = GetActorForwardVector().GetSafeNormal() * currentSpeed();
-		if (meshComponent->GetComponentVelocity().ProjectOnTo(GetActorForwardVector()).GetSignVector() != GetActorForwardVector().GetSignVector())
-		{
-			alignedVelocity = (-GetActorForwardVector()).GetSafeNormal() * meshComponent->GetComponentVelocity().Size();///this is used when the jet is in reverse.
-			//We should change the direction multiplier so it changes the torque direction when in reverse
-		}
-
-
-		meshComponent->SetPhysicsLinearVelocity(alignedVelocity);//this happens a frame before the torque is applied.
-		//velocityAlignmentNeeded = false;//to be able to use this, we need to fire this block on the next tick. Maybe a delegate??
+		//alignVelocity();
 	}
 }
 
@@ -159,6 +164,7 @@ void AJet::steer(float aDirectionMultiplier)
 		meshComponent->AddTorqueInDegrees(torqueToApply, NAME_None, true);
 
 		velocityAlignmentNeeded = true;
+		GetWorldTimerManager().SetTimerForNextTick(this, &AJet::alignVelocity);
 	}
 }
 

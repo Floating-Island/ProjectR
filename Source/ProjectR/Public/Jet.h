@@ -24,6 +24,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	void alignVelocity();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Movement")
 		float accelerationValue;
