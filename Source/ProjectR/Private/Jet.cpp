@@ -136,6 +136,14 @@ bool AJet::goesBackwards()
 	return !goesForward();
 }
 
+void AJet::InReverseInverts(float& aDirectionMultiplier)
+{
+	if (goesBackwards())//is going backwards
+	{
+		aDirectionMultiplier = -aDirectionMultiplier;//invert steering
+	}
+}
+
 //like this, it drifts if the steer action is made for too long.
 //It also drifts if you don't accelerate. That's a problem.
 //The jet velocity should update with steering.
@@ -146,10 +154,7 @@ void AJet::steer(float aDirectionMultiplier)
 	if (aDirectionMultiplier != 0)
 	{
 		//if reverse, change directionMultiplier sign.
-		if (goesBackwards())//is going backwards
-		{
-			aDirectionMultiplier = -aDirectionMultiplier;//invert steering
-		}
+		InReverseInverts(aDirectionMultiplier);
 		FVector torqueToApply = FVector(0, 0, aDirectionMultiplier * steerForce());//directionMultiplier is used to steer right or left and to have a range of steering.
 		meshComponent->AddTorqueInDegrees(torqueToApply, NAME_None, true);
 
