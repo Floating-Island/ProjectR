@@ -1228,7 +1228,7 @@ bool FAJetShouldInvertSteeringWhenInReverseTest::RunTest(const FString& Paramete
 	return true;
 }
 
-
+//RECHECK TESTS, look a way to simplify them and look why sometimes they fail. Also, create the tick function and then move it to a new component.
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

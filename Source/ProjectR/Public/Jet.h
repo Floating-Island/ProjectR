@@ -72,6 +72,7 @@ public:
 	float brakeValue();
 
 	void brake(float aBrakeMultiplier = 1.0f);
+	bool goesForward();
 
 	void steer(float aDirectionMultiplier);
 
