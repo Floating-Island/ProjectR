@@ -136,13 +136,11 @@ void AJet::InReverseInverts(float& aDirectionMultiplier)
 void AJet::alignVelocity()
 {
 	FVector alignedVelocity = GetActorForwardVector().GetSafeNormal() * currentSpeed();
-	if (meshComponent->GetComponentVelocity().ProjectOnTo(GetActorForwardVector()).GetSignVector() != GetActorForwardVector().GetSignVector())
+	if (goesBackwards())
 	{
-		alignedVelocity = (-GetActorForwardVector()).GetSafeNormal() * meshComponent->GetComponentVelocity().Size();///this is used when the jet is in reverse.
-		//We should change the direction multiplier so it changes the torque direction when in reverse
+		alignedVelocity = -alignedVelocity;//velocity should go backwards then...
 	}
-	meshComponent->SetPhysicsLinearVelocity(alignedVelocity);//this happens a frame before the torque is applied.
-	//velocityAlignmentNeeded = false;//to be able to use this, we need to fire this block on the next tick. Maybe a delegate??
+	meshComponent->SetPhysicsLinearVelocity(alignedVelocity);//this should happen after the jet steers (gets it's torque applied)
 }
 
 
