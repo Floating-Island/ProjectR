@@ -28,7 +28,7 @@ AJet::AJet()
 	accelerationValue = 5000.0f;
 	brakeAbsoluteValue = 1000.0f;
 	topSpeed = 1000.0f;
-	steerForceValue = 200.0f;
+	
 
 	AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
 
@@ -112,54 +112,3 @@ void AJet::brake(float aBrakeMultiplier)
 		meshComponent->AddForce(forceToApply * aBrakeMultiplier, NAME_None, true);
 	}
 }
-
-bool AJet::goesForward()
-{
-	FVector forwardDirection = GetActorForwardVector();
-	return GetVelocity().ProjectOnTo(forwardDirection).GetSignVector().Equals(
-		forwardDirection.GetSignVector(), 0.1f);
-}
-
-bool AJet::goesBackwards()
-{
-	return !goesForward();
-}
-
-void AJet::InReverseInverts(float& aDirectionMultiplier)
-{
-	if (goesBackwards())//is going backwards. Should add to it that the jet is actually moving (speed bigger than 0).
-	{
-		aDirectionMultiplier = -aDirectionMultiplier;//invert steering
-	}
-}
-
-void AJet::alignVelocity()
-{
-	FVector alignedVelocity = GetActorForwardVector().GetSafeNormal() * currentSpeed();
-	if (goesBackwards())
-	{
-		alignedVelocity = -alignedVelocity;//velocity should go backwards then...
-	}
-	meshComponent->SetPhysicsLinearVelocity(alignedVelocity);//this should happen after the jet steers (gets it's torque applied)
-}
-
-
-//to get drift, the velocity alignment should be disabled by a moment (as long as the drifting lasts), maintaining the acceleration of the jet.
-void AJet::steer(float aDirectionMultiplier)
-{
-	if (aDirectionMultiplier != 0)
-	{
-		//if reverse, change directionMultiplier sign.
-		InReverseInverts(aDirectionMultiplier);
-		FVector torqueToApply = FVector(0, 0, aDirectionMultiplier * steerForce());//directionMultiplier is used to steer right or left and to have a range of steering. Should be changed to get the jet normal instead of the Z axis
-		meshComponent->AddTorqueInDegrees(torqueToApply, NAME_None, true);
-
-		GetWorldTimerManager().SetTimerForNextTick(this, &AJet::alignVelocity);//the torque is applied on next tick, so we need to align velocity on next tick also.
-	}
-}
-
-float AJet::steerForce()
-{
-	return steerForceValue;
-}
-

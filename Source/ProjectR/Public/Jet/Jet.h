@@ -24,7 +24,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	void alignVelocity();
+	
 
 	UPROPERTY(EditDefaultsOnly, Category = "Movement")
 		float accelerationValue;
@@ -35,8 +35,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Movement")
 		float topSpeed;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Movement")
-		float steerForceValue;
+	
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		UStaticMeshComponent* meshComponent;
@@ -53,7 +52,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 		UAntiGravityComponent* antiGravitySystem;
 
-
+	
+	
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -72,11 +72,5 @@ public:
 	float brakeValue();
 
 	void brake(float aBrakeMultiplier = 1.0f);
-	bool goesForward();
-	bool goesBackwards();
-	void InReverseInverts(float& aDirectionMultiplier);
 
-	void steer(float aDirectionMultiplier);
-
-	float steerForce();
 };
