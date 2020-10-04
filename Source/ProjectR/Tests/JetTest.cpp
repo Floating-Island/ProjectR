@@ -191,7 +191,7 @@ bool FCheckAJetLocationCommand::Update()
 			float currentXLocation = testJet->GetActorLocation().X;
 
 			bool hasMoved = currentXLocation > 0;
-			bool isAtOrigin = FMath::IsNearlyZero(currentXLocation, 0.1f);
+			bool isAtOrigin = FMath::IsNearlyZero(currentXLocation, 0.09f);
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString()));
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet %s at origin (0,0,0)"), *FString(isAtOrigin? "is":"isn't")));
 			if (hasMoved && !isAtOrigin)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
