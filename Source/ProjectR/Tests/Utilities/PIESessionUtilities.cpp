@@ -2,6 +2,7 @@
 
 
 #include "PIESessionUtilities.h"
+#include "Jet.h"
 #include "../Mocks/JetMOCK.h"
 #include "floorMeshActor.h"
 #include "Kismet/GameplayStatics.h"
