@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Jet.h"
+#include "Jet/Jet.h"
 #include "JetMOCK.generated.h"
 
 /**

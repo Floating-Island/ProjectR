@@ -1,13 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Jet.h"
+#include "Jet/Jet.h"
 
 #include "Components/StaticMeshComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-#include "AntiGravityComponent.h"
+#include "Jet/AntiGravityComponent.h"
 
 // Sets default values
 AJet::AJet()
