@@ -1269,7 +1269,8 @@ bool FAJetShouldInvertSteeringWhenInReverseTest::RunTest(const FString& Paramete
 	return true;
 }
 
-//If a jet brakes and then stops naturally, the steering keeps acting as if it was in reverse. That's a problem that should be changed to a normal steering when idle. a simple change to not inverse steering when at 0 speed.
-
+//If a jet brakes and then stops naturally, the steering keeps acting as if it was in reverse. That's a problem that should be changed to a normal steering when idle.
+//A simple change to not inverse steering when at 0 speed.
+//Create a steer component so we condense steering logic inside it intead of spreading it inside the Jet.
 
 #endif //WITH_DEV_AUTOMATION_TESTS
