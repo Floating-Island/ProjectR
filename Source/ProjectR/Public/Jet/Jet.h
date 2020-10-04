@@ -11,6 +11,7 @@
 class USpringArmComponent;
 class UCameraComponent;
 class UAntiGravityComponent;
+class USteeringComponent;
 
 UCLASS()
 class PROJECTR_API AJet : public APawn
@@ -35,8 +36,6 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Movement")
 		float topSpeed;
 
-	
-
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		UStaticMeshComponent* meshComponent;
 
@@ -52,6 +51,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 		UAntiGravityComponent* antiGravitySystem;
 
+	//steering system component
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+		USteeringComponent* steeringSystem;
 	
 	
 public:
@@ -73,4 +75,5 @@ public:
 
 	void brake(float aBrakeMultiplier = 1.0f);
 
+	void steer(float aDirectionMultiplier);
 };

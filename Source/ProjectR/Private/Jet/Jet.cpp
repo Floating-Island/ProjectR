@@ -8,6 +8,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Jet/AntiGravityComponent.h"
+#include "Jet/SteeringComponent.h"
 
 // Sets default values
 AJet::AJet()
@@ -27,8 +28,7 @@ AJet::AJet()
 
 	accelerationValue = 5000.0f;
 	brakeAbsoluteValue = 1000.0f;
-	topSpeed = 1000.0f;
-	
+	topSpeed = 1000.0f;	
 
 	AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
 
@@ -44,7 +44,7 @@ AJet::AJet()
 
 	antiGravitySystem = CreateDefaultSubobject<UAntiGravityComponent>(TEXT("Anti-Gravity System"));
 
-
+	steeringSystem = CreateDefaultSubobject<USteeringComponent>(TEXT("Steering System"));
 	
 }
 
@@ -111,4 +111,9 @@ void AJet::brake(float aBrakeMultiplier)
 		FVector forceToApply = GetActorForwardVector() * (-brakeValue());//notice the '-' next to brakeValue. Brake value's sign is positive.
 		meshComponent->AddForce(forceToApply * aBrakeMultiplier, NAME_None, true);
 	}
+}
+
+void AJet::steer(float aDirectionMultiplier)
+{
+	steeringSystem->steer(aDirectionMultiplier);
 }
