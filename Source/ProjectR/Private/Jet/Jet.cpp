@@ -127,7 +127,7 @@ bool AJet::goesBackwards()
 
 void AJet::InReverseInverts(float& aDirectionMultiplier)
 {
-	if (goesBackwards())//is going backwards
+	if (goesBackwards())//is going backwards. Should add to it that the jet is actually moving (speed bigger than 0).
 	{
 		aDirectionMultiplier = -aDirectionMultiplier;//invert steering
 	}

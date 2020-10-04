@@ -1039,9 +1039,8 @@ bool FCheckAJetLocationParallelToForwardVectorCommand::Update()
 
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet backwards vector: %s"), *jetBackwardsVector.ToString()));
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet location: %s"), *currentLocation.ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet location projection on backwards vector: %s"), *currentLocation.ProjectOnTo(jetBackwardsVector).ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet location projection sign: %s"), *currentLocation.ProjectOnTo(jetBackwardsVector).GetSignVector().ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet backwards vector sign: %s"), *jetBackwardsVector.GetSignVector().ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet location normal on XY: %s"), *currentLocation.GetSafeNormal2D().ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet backwards vector normal on XY: %s"), *jetBackwardsVector.GetSafeNormal2D().ToString()));
 
 			if (hasMoved && locationIsAlignedToBackwardsVector)
 			{
@@ -1137,11 +1136,11 @@ bool FCheckAJetUpdatedVelocityWhenAfterSteeringCommand::Update()
 			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
 			bool velocityAlignedToPreviousForwardVector = FVector::Coincident(currentVelocity.GetSafeNormal2D(), previousForwardVector.GetSafeNormal2D());
 
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet forward vector: %s"), *jetForwardsVector.ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet previous forward vector: %s"), *previousForwardVector.ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet current forward vector: %s"), *jetForwardsVector.ToString()));
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity: %s"), *currentVelocity.ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity projection on forward vector: %s"), *currentVelocity.ProjectOnTo(jetForwardsVector).ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity projection sign: %s"), *currentVelocity.ProjectOnTo(jetForwardsVector).GetSignVector().ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet forward vector sign: %s"), *jetForwardsVector.GetSignVector().ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity normal on XY: %s"), *currentVelocity.GetSafeNormal2D().ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet previous forward vector normal on XY: %s"), *previousForwardVector.GetSafeNormal2D().ToString()));
 			
 			if (aTickCount > aTickLimit)
 			{
@@ -1270,7 +1269,7 @@ bool FAJetShouldInvertSteeringWhenInReverseTest::RunTest(const FString& Paramete
 	return true;
 }
 
-//RECHECK TESTS, look a way to simplify them and look why sometimes they fail. Also, create the tick function and then move it to a new component.
+//If a jet brakes and then stops naturally, the steering keeps acting as if it was in reverse. That's a problem that should be changed to a normal steering when idle. a simple change to not inverse steering when at 0 speed.
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
