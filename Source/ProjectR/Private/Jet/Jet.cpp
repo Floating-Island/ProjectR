@@ -151,7 +151,7 @@ void AJet::steer(float aDirectionMultiplier)
 	{
 		//if reverse, change directionMultiplier sign.
 		InReverseInverts(aDirectionMultiplier);
-		FVector torqueToApply = FVector(0, 0, aDirectionMultiplier * steerForce());//directionMultiplier is used to steer right or left and to have a range of steering.
+		FVector torqueToApply = FVector(0, 0, aDirectionMultiplier * steerForce());//directionMultiplier is used to steer right or left and to have a range of steering. Should be changed to get the jet normal instead of the Z axis
 		meshComponent->AddTorqueInDegrees(torqueToApply, NAME_None, true);
 
 		GetWorldTimerManager().SetTimerForNextTick(this, &AJet::alignVelocity);//the torque is applied on next tick, so we need to align velocity on next tick also.
