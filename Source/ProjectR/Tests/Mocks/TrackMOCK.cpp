@@ -22,3 +22,8 @@ bool ATrackMOCK::magnetBoxAttachedToRoot()
 {
 	return magnetBox->GetAttachParent() == RootComponent? true : false;
 }
+
+bool ATrackMOCK::magnetBoxHasCollisionsEnabled()
+{
+	return magnetBox->IsCollisionEnabled();
+}
