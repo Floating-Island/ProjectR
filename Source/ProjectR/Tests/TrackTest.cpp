@@ -105,13 +105,13 @@ bool FATrackMagnetBoxShouldHaveCollisionsEnabledToQueryOnlyTest::RunTest(const F
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackMagnetBoxShouldIgnoreCollisionOnAllChannelsTest, "ProjectR.Unit.TrackTest.ATrackMagnetBoxShouldIgnoreCollisionOnAllChannels", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackMagnetBoxShouldOverlapWithPawnChannelIgnoreTheRestTest, "ProjectR.Unit.TrackTest.ATrackMagnetBoxShouldOverlapWithPawnChannelIgnoreTheRest", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackMagnetBoxShouldIgnoreCollisionOnAllChannelsTest::RunTest(const FString& Parameters)
+bool FATrackMagnetBoxShouldOverlapWithPawnChannelIgnoreTheRestTest::RunTest(const FString& Parameters)
 {
 	ATrackMOCK* testTrack = NewObject<ATrackMOCK>();
 	{
-		TestTrue(TEXT("The track magnet box ignore all collisions."), testTrack->magnetBoxIgnoresAllChannelsCollisions());
+		TestTrue(TEXT("The track magnet box should overlap with the pawn channel and ignore the rest."), testTrack->magnetBoxIgnoresAllChannelsCollisions());
 	}
 	
 	return true;
