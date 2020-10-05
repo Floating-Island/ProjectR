@@ -10,6 +10,9 @@ ATrack::ATrack()
 	PrimaryActorTick.bCanEverTick = true;
 	floorComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh Component"));
 	RootComponent = floorComponent;
+
+	UStaticMesh* Mesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Engine/MapTemplates/SM_Template_Map_Floor")));
+	floorComponent->SetStaticMesh(Mesh);
 }
 
 // Called when the game starts or when spawned
