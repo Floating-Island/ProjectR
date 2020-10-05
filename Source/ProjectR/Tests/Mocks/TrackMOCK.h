@@ -15,5 +15,5 @@ class PROJECTR_API ATrackMOCK : public ATrack
 	GENERATED_BODY()
 
 public:
-  bool hasAFloor();
+ 	bool hasAFloor();
 };

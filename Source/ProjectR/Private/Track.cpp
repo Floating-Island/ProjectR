@@ -8,7 +8,8 @@ ATrack::ATrack()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	floorComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh Component"));
+	RootComponent = floorComponent;
 }
 
 // Called when the game starts or when spawned
