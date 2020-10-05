@@ -134,13 +134,13 @@ bool FATrackMagnetBoxGeneratesOverlapEventsTest::RunTest(const FString& Paramete
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldGenerateOverlapEventsTest, "ProjectR.Unit.TrackTest.AJetShouldGenerateOverlapEvents", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMeshComponentShouldGenerateOverlapEventsTest, "ProjectR.Unit.TrackTest.AJetMeshComponentShouldGenerateOverlapEvents", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FAJetShouldGenerateOverlapEventsTest::RunTest(const FString& Parameters)
+bool FAJetMeshComponentShouldGenerateOverlapEventsTest::RunTest(const FString& Parameters)
 {
 	AJetMOCK* testJet = NewObject<AJetMOCK>();
 	{
-		TestTrue(TEXT("The track magnet box should generate overlap events."), testJet->generatesOverlapEvents());
+		TestTrue(TEXT("The Jet meshComponent should generate overlap events so the Track gets notified."), testJet->generatesOverlapEvents());
 	}
 	
 	return true;
