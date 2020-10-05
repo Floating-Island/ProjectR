@@ -40,22 +40,9 @@ void USteeringComponent::alignVelocity()
 	ownerPrimitiveComponent->SetPhysicsLinearVelocity(alignedVelocity);//this should happen after the jet steers (gets it's torque applied)
 }
 
-
-bool USteeringComponent::goesForward()
-{
-	FVector forwardDirection = owner->GetActorForwardVector();
-	return owner->GetVelocity().ProjectOnTo(forwardDirection).GetSignVector().Equals(
-		forwardDirection.GetSignVector(), 0.1f);
-}
-
-bool USteeringComponent::goesBackwards()
-{
-	return !goesForward();
-}
-
 void USteeringComponent::InReverseInverts(float& aDirectionMultiplier)
 {
-	if (goesBackwards())//is going backwards. Should add to it that the jet is actually moving (speed bigger than 0).
+	if (owner->goesBackwards())//is going backwards. Should add to it that the jet is actually moving (speed bigger than 0).
 	{
 		aDirectionMultiplier = -aDirectionMultiplier;//invert steering
 	}
