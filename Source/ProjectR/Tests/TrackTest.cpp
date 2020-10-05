@@ -47,4 +47,24 @@ bool FATrackShouldHaveAFloorTest::RunTest(const FString& Parameters)
 	return true;
 }
 
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackFloorShouldHaveAStaticMeshTest, "ProjectR.Unit.TrackTest.ATrackFloorShouldHaveAStaticMesh", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackFloorShouldHaveAStaticMeshTest::RunTest(const FString& Parameters)
+{
+	ATrackMOCK* testTrack = NewObject<ATrackMOCK>();
+	{
+		TestTrue(TEXT("The track floor should have a static mesh attached."), testTrack->floorHasStaticMesh());
+	}
+	
+	return true;
+}
+
+
+
+
+
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS
