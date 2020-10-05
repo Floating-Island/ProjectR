@@ -32,7 +32,7 @@ void USteeringComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
 void USteeringComponent::alignVelocity()
 {
-	FVector alignedVelocity = owner->GetActorForwardVector().GetSafeNormal() * owner->currentSpeed();
+	FVector alignedVelocity = owner->GetActorForwardVector().GetSafeNormal() * owner->currentSpeed();//we should project velocity to the forward vector instead...Or, make the speed ignore gravity.
 	if (owner->goesBackwards())
 	{
 		alignedVelocity = -alignedVelocity;//velocity should go backwards then...

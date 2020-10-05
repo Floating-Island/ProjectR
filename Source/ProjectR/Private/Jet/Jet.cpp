@@ -52,7 +52,7 @@ AJet::AJet()
 // Called when the game starts or when spawned
 void AJet::BeginPlay()
 {
-	Super::BeginPlay();
+	Super::BeginPlay();//we should make the current velocity 0 when we spawn, to avoid forwards/backwards problems...
 }
 
 
@@ -78,7 +78,9 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 float AJet::currentSpeed()
 {//has to calculate if it's going backwards. Maybe another method that projects onto the forward vector and compares their heading angles...
-	return (meshComponent->GetComponentVelocity().ProjectOnTo(GetActorForwardVector())).Size();//speed is calculated as the forward velocity.
+	return (meshComponent->GetComponentVelocity().ProjectOnTo(GetActorForwardVector())).Size();//speed is calculated as the forward velocity
+	//we should substract the gravity velocity. For that, we should get the gravity direction (we could make a special method for that, we'll need it for future use),
+	//then we project the velocity along that vector and then we substract it to the real velocity. Then we get the size of all that and that's the current speed.
 }
 
 float AJet::settedTopSpeed()

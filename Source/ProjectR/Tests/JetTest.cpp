@@ -1273,5 +1273,8 @@ bool FAJetShouldInvertSteeringWhenInReverseTest::RunTest(const FString& Paramete
 //A simple change to not inverse steering when at 0 speed or near.
 //some tests fail because the jet speed isn't 0 when beginning play. set physics linear velocity at zero when the Jet spawns and it should work normally.
 //It has to do with the above comments. when the Jet spawns, sometimes the float of the velocity vector is treated as negative and that makes that steering behaves like going backwards.
+//Also, if a Jet is falling and a steering is applied, the align velocity makes it transform the gravity force into forward/backwards velocity and stops falling as long as the steering is made.
+//We should first project velocity into the forward vector, save that value and use it to update the velocity.
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
