@@ -38,6 +38,7 @@ void USteeringComponent::alignVelocity()
 		alignedVelocity = -alignedVelocity;//velocity should go backwards then...
 	}
 	ownerPrimitiveComponent->SetPhysicsLinearVelocity(alignedVelocity);//this should happen after the jet steers (gets it's torque applied)
+	//we should also have to re-apply the gravity velocity to it...
 }
 
 void USteeringComponent::InReverseInverts(float& aDirectionMultiplier)
