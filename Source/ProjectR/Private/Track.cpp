@@ -15,6 +15,7 @@ ATrack::ATrack()
 	floorComponent->SetStaticMesh(Mesh);
 
 	magnetBox = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Magnet Box Component"));
+	magnetBox->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
