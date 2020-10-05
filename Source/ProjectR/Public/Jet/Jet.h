@@ -77,6 +77,7 @@ public:
 
 	bool goesForward();
 	bool goesBackwards();
-	
+
+	float steerForce();
 	void steer(float aDirectionMultiplier);
 };

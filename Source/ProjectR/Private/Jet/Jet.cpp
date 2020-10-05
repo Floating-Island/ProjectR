@@ -125,6 +125,11 @@ bool AJet::goesBackwards()
 	return !goesForward();
 }
 
+float AJet::steerForce()
+{
+	return steeringSystem->steerForce();
+}
+
 void AJet::steer(float aDirectionMultiplier)
 {
 	steeringSystem->steer(aDirectionMultiplier);
