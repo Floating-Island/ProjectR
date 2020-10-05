@@ -2,6 +2,7 @@
 
 
 #include "TrackMOCK.h"
+#include "Engine/EngineTypes.h"
 
 bool ATrackMOCK::hasAFloor()
 {
@@ -31,4 +32,21 @@ bool ATrackMOCK::magnetBoxHasCollisionsEnabled()
 bool ATrackMOCK::magnetBoxHasCollisionsEnabledToQueryOnly()
 {
 	return magnetBox->GetCollisionEnabled() == ECollisionEnabled::QueryOnly ? true : false;
+}
+
+bool ATrackMOCK::magnetBoxIgnoresAllChannelsCollisions()
+{
+	FCollisionResponseContainer allChannelsResponse = FCollisionResponseContainer();
+	allChannelsResponse = magnetBox->GetCollisionResponseToChannels();
+	TArray<FResponseChannel> ChannelResponses = TArray<FResponseChannel>();
+	allChannelsResponse.FillArrayFromResponses(ChannelResponses);
+	for (FResponseChannel channel : ChannelResponses)
+	{
+		if(!(channel.Response == ECollisionResponse::ECR_Ignore))
+		{
+			return false;
+		}
+	}
+	
+	return true;
 }
