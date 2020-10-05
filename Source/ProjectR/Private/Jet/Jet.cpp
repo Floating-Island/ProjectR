@@ -45,7 +45,8 @@ AJet::AJet()
 	antiGravitySystem = CreateDefaultSubobject<UAntiGravityComponent>(TEXT("Anti-Gravity System"));
 
 	steeringSystem = CreateDefaultSubobject<USteeringComponent>(TEXT("Steering System"));
-	
+
+        meshComponent->SetGenerateOverlapEvents(true);
 }
 
 // Called when the game starts or when spawned
