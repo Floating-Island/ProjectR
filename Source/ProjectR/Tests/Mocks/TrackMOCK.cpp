@@ -38,3 +38,8 @@ bool ATrackMOCK::magnetBoxOverlapsPawnChannel()
 {
 	return magnetBox->GetCollisionResponseToChannels().GetResponse(ECC_Pawn) == ECR_Overlap;
 }
+
+bool ATrackMOCK::magnetBoxGeneratesOverlapEvents()
+{
+        return magnetBox->GetGenerateOverlapEvents();
+}

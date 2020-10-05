@@ -22,4 +22,5 @@ public:
 	bool magnetBoxHasCollisionsEnabled();
 	bool magnetBoxHasCollisionsEnabledToQueryOnly();
 	bool magnetBoxOverlapsPawnChannel();
+        bool magnetBoxGeneratesOverlapEvents();
 };
