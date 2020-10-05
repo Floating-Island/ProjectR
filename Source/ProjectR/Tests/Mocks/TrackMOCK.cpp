@@ -15,15 +15,20 @@ bool ATrackMOCK::floorHasStaticMesh()
 
 bool ATrackMOCK::hasAMagnetBox()
 {
-	return magnetBox? true : false;
+	return magnetBox ? true : false;
 }
 
 bool ATrackMOCK::magnetBoxAttachedToRoot()
 {
-	return magnetBox->GetAttachParent() == RootComponent? true : false;
+	return magnetBox->GetAttachParent() == RootComponent ? true : false;
 }
 
 bool ATrackMOCK::magnetBoxHasCollisionsEnabled()
 {
 	return magnetBox->IsCollisionEnabled();
+}
+
+bool ATrackMOCK::magnetBoxHasCollisionsEnabledToQueryOnly()
+{
+	return magnetBox->GetCollisionEnabled() == ECollisionEnabled::QueryOnly ? true : false;
 }

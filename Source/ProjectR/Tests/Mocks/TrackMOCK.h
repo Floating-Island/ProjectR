@@ -20,4 +20,5 @@ public:
 	bool hasAMagnetBox();
 	bool magnetBoxAttachedToRoot();
 	bool magnetBoxHasCollisionsEnabled();
+	bool magnetBoxHasCollisionsEnabledToQueryOnly();
 };
