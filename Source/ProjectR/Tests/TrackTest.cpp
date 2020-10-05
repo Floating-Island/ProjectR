@@ -41,7 +41,7 @@ bool FATrackShouldHaveAFloorTest::RunTest(const FString& Parameters)
 {
 	ATrackMOCK* testTrack = NewObject<ATrackMOCK>();
 	{
-		TestNotNull(TEXT("The track should have a floor so jets can step in."), testTrack->hasAFloor());
+		TestTrue(TEXT("The track should have a floor so jets can step in."), testTrack->hasAFloor());
 	}
 	
 	return true;
