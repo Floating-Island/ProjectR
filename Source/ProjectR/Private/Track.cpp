@@ -18,6 +18,7 @@ ATrack::ATrack()
 	magnetBox->SetupAttachment(RootComponent);
 	magnetBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	magnetBox->SetCollisionResponseToAllChannels(ECR_Ignore);
+	magnetBox->SetCollisionResponseToChannel(ECC_Pawn,ECR_Overlap);
 }
 
 // Called when the game starts or when spawned
