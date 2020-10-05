@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Jet.h"
+#include "Jet/Jet.h"
 #include "JetMOCK.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PROJECTR_API AJetMOCK : public AJet
@@ -19,7 +19,7 @@ public:
 	bool hasAStaticMesh();
 
 	bool isMeshTheRootComponent();
-		
+
 	bool hasGravityEnabled();
 
 	bool isAffectingNavigation();
@@ -31,7 +31,7 @@ public:
 	bool isSpringArmAttachedToRoot();
 
 	bool HasCameraComponent();
-	
+
 	bool isCameraAttachedToSpringArm();
 
 	bool usesAbsoluteRotation();

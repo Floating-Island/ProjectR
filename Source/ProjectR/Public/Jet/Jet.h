@@ -7,8 +7,11 @@
 #include "Jet.generated.h"
 
 
+
 class USpringArmComponent;
 class UCameraComponent;
+class UAntiGravityComponent;
+class USteeringComponent;
 
 UCLASS()
 class PROJECTR_API AJet : public APawn
@@ -22,14 +25,16 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
 
-	float accelerationValue;
+	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+		float accelerationValue;
 
-	float brakeAbsoluteValue;
+	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+		float brakeAbsoluteValue;
 
-	float topSpeed;
-
-	float steerForceValue;
+	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+		float topSpeed;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		UStaticMeshComponent* meshComponent;
@@ -42,12 +47,15 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 		UCameraComponent* camera;
 
-	////anti-gravity system component
-	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	//	USceneComponent* antiGravitySystem;
-	void antiGravityLifting();
+	//anti-gravity system component
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+		UAntiGravityComponent* antiGravitySystem;
 
-
+	//steering system component
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+		USteeringComponent* steeringSystem;
+	
+	
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -67,7 +75,9 @@ public:
 
 	void brake(float aBrakeMultiplier = 1.0f);
 
-	void steer(float aDirectionMultiplier);
+	bool goesForward();
+	bool goesBackwards();
 
 	float steerForce();
+	void steer(float aDirectionMultiplier);
 };

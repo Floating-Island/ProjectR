@@ -3,7 +3,7 @@
 
 #include "JetTest.h"
 
-#include "Jet.h"
+#include "Jet/Jet.h"
 #include "Mocks/JetMOCK.h"
 
 #include "Misc/AutomationTest.h"
@@ -16,6 +16,8 @@
 #include "GameFramework/GameModeBase.h"
 //used for floors:
 #include "Utilities/FloorMeshActor.h"
+
+#include "Utilities/PIESessionUtilities.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -32,11 +34,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldntBeNullWhenInstantiatedTest, "Proje
 
 bool FAJetShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
-	{
-		AJet* testJet = NewObject<AJet>();
-		
-		TestNotNull(TEXT("The Jet shouldn't be null after instantiating it."), testJet);
-	}
+
+	AJet* testJet = NewObject<AJet>();
+
+	TestNotNull(TEXT("The Jet shouldn't be null after instantiating it."), testJet);
+
 
 	return true;
 }
@@ -47,11 +49,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpeedIsZeroWhenInstantiatedTest, "ProjectR
 
 bool FAJetSpeedIsZeroWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
-	{
-		AJet* testJet = NewObject<AJet>();
-		
-		TestTrue(TEXT("Jet speed should be zero when instantiated."), testJet->currentSpeed() == 0);
-	}
+
+	AJet* testJet = NewObject<AJet>();
+
+	TestTrue(TEXT("Jet speed should be zero when instantiated."), testJet->currentSpeed() == 0);
+
 
 	return true;
 }
@@ -63,11 +65,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveAStaticMeshTest, "ProjectR.Unit.
 
 bool FAJetShouldHaveAStaticMeshTest::RunTest(const FString& Parameters)
 {
-	{
-		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
-		TestTrue(TEXT("The Jet static mesh shouldn't be null if it has one."), testJet->hasAStaticMesh());
-	}
+
+	AJetMOCK* testJet = NewObject<AJetMOCK>();
+
+	TestTrue(TEXT("The Jet static mesh shouldn't be null if it has one."), testJet->hasAStaticMesh());
+
 
 	return true;
 }
@@ -79,11 +81,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMeshShouldBeTheRootComponentTest, "Project
 
 bool FAJetMeshShouldBeTheRootComponentTest::RunTest(const FString& Parameters)
 {
-	{
-		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
-		TestTrue(TEXT("The Jet static mesh should be the root component."), testJet->isMeshTheRootComponent());
-	}
+
+	AJetMOCK* testJet = NewObject<AJetMOCK>();
+
+	TestTrue(TEXT("The Jet static mesh should be the root component."), testJet->isMeshTheRootComponent());
+
 
 	return true;
 }
@@ -95,11 +97,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveGravityEnabledTest, "ProjectR.Un
 
 bool FAJetShouldHaveGravityEnabledTest::RunTest(const FString& Parameters)
 {
-	{
-		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
-		TestTrue(TEXT("The Jet should have gravity enabled."), testJet->hasGravityEnabled());
-	}
+
+	AJetMOCK* testJet = NewObject<AJetMOCK>();
+
+	TestTrue(TEXT("The Jet should have gravity enabled."), testJet->hasGravityEnabled());
+
 
 	return true;
 }
@@ -111,11 +113,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldntAffectNavigationVolumeTest, "Proje
 
 bool FAJetShouldntAffectNavigationVolumeTest::RunTest(const FString& Parameters)
 {
-	{
-		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
-		TestFalse(TEXT("The Jet shouldn't affect the navigation volume."), testJet->isAffectingNavigation());
-	}
+
+	AJetMOCK* testJet = NewObject<AJetMOCK>();
+
+	TestFalse(TEXT("The Jet shouldn't affect the navigation volume."), testJet->isAffectingNavigation());
+
 
 	return true;
 }
@@ -127,11 +129,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldBeMovableTest, "ProjectR.Unit.JetTes
 
 bool FAJetShouldBeMovableTest::RunTest(const FString& Parameters)
 {
-	{
-		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
-		TestTrue(TEXT("The Jet should be movable when spawned into the world."), testJet->IsRootComponentMovable());
-	}
+
+	AJetMOCK* testJet = NewObject<AJetMOCK>();
+
+	TestTrue(TEXT("The Jet should be movable when spawned into the world."), testJet->IsRootComponentMovable());
+
 
 	return true;
 }
@@ -145,7 +147,7 @@ bool FAJetDefaultAccelerationIsGreaterThanZeroTest::RunTest(const FString& Param
 	AJet* testJet = NewObject<AJet>(AJet::StaticClass());
 
 	TestTrue(TEXT("A Jet's default acceleration should be bigger than zero."), testJet->acceleration() > 0);
-	
+
 	return true;
 }
 
@@ -163,9 +165,12 @@ bool FSpawningAJetMakeItAccelerateCommand::Update()
 		return false;
 	}
 
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
+
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+	AJet* testJet = sessionUtilities.spawnJetInPIE();
 
 	testJet->accelerate();
 
@@ -178,22 +183,26 @@ bool FCheckAJetLocationCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-		UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-		AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJet::StaticClass()));
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
 		if (testJet)
 		{
 			float currentXLocation = testJet->GetActorLocation().X;
 
-
-			if (currentXLocation > 0 && !FMath::IsNearlyZero(currentXLocation, 0.1f))//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
+			bool hasMoved = currentXLocation > 0;
+			bool isAtOrigin = FMath::IsNearlyZero(currentXLocation, 0.1f);
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet %s at origin (0,0,0)"), *FString(isAtOrigin? "is":"isn't")));
+			if (hasMoved && !isAtOrigin)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
 			{
-				test->TestTrue(TEXT("The Jet X location should increase after an acceleration is added (after ticking)."), currentXLocation > 0 && !FMath::IsNearlyZero(currentXLocation, 0.1f));
+				test->TestTrue(TEXT("The Jet X location should increase after an acceleration is added (after ticking)."), hasMoved && !isAtOrigin);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
 			++aTickCount;
 
-			if ( aTickCount > aTickLimit)
+			if (aTickCount > aTickLimit)
 			{
 				test->TestFalse(TEXT("Tick limit reached for this test. The Jet X Location never changed from zero."), aTickCount > aTickLimit);
 				testWorld->bDebugFrameStepExecution = true;
@@ -205,24 +214,24 @@ bool FCheckAJetLocationCommand::Update()
 }
 
 
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldMoveForwardWhenAcceleratedTest, "ProjectR.Unit.JetTests.ShouldMoveForwardWhenAccelerated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetShouldMoveForwardWhenAcceleratedTest::RunTest(const FString& Parameters)
 {
-	{
-		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-		
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand);
-		int tickCount = 0;
-		int tickLimit = 3;
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocationCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	}
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocationCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
 	return true;
 }
@@ -238,23 +247,33 @@ bool FCheckAJetSpeedIncreaseCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-		UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-		AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJet::StaticClass()));
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
 		if (testJet)
 		{
 			float currentSpeed = testJet->currentSpeed();
 
-
-			if (currentSpeed > 0 && !FMath::IsNearlyZero(currentSpeed, 0.1f))//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
+			FVector jetForwardDirection = testJet->GetActorForwardVector();
+			bool isMovingForwards = testJet->GetVelocity().ProjectOnTo(jetForwardDirection).GetSignVector() == jetForwardDirection.GetSignVector();
+			bool isIdle = FMath::IsNearlyZero(currentSpeed, 0.1f);
+			
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet forward vector: %s"), *jetForwardDirection.ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity: %s"), *testJet->GetVelocity().ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity projection on forward vector: %s"), *testJet->GetVelocity().ProjectOnTo(jetForwardDirection).ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity projection sign: %s"), *testJet->GetVelocity().ProjectOnTo(jetForwardDirection).GetSignVector().ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet forward vector sign: %s"), *jetForwardDirection.GetSignVector().ToString()));
+			
+			if (isMovingForwards && !isIdle)
 			{
-				test->TestTrue(TEXT("The Jet speed should increase after accelerating (after ticking)."), currentSpeed > 0 && !FMath::IsNearlyZero(currentSpeed, 0.1f));
+				test->TestTrue(TEXT("The Jet speed should increase after accelerating (after ticking)."), isMovingForwards && !isIdle);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
 
 			++aTickCount;
 
-			if ( aTickCount > aTickLimit)
+			if (aTickCount > aTickLimit)
 			{
 				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from zero."), aTickCount > aTickLimit);
 				testWorld->bDebugFrameStepExecution = true;
@@ -270,20 +289,19 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpeedIncreasesWhenAcceleratesTest, "Projec
 
 bool FAJetSpeedIncreasesWhenAcceleratesTest::RunTest(const FString& Parameters)
 {
-	{
-		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-		
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand);
-		int tickCount = 0;
-		int tickLimit = 3;
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedIncreaseCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	}
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedIncreaseCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
 	return true;
 }
@@ -297,7 +315,7 @@ bool FAJetDefaultBrakeValueIsGreaterThanZeroTest::RunTest(const FString& Paramet
 	AJet* testJet = NewObject<AJet>(AJet::StaticClass());
 
 	TestTrue(TEXT("A Jet's default brake value should be bigger than zero."), testJet->brakeValue() > 0);
-	
+
 	return true;
 }
 
@@ -310,14 +328,15 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItBrakeCommand);
 
 bool FSpawningAJetMakeItBrakeCommand::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (!GEditor->IsPlayingSessionInEditor())
 	{
 		return false;
 	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
+	AJet* testJet = sessionUtilities.spawnJetInPIE();
 
 	testJet->brake();
 
@@ -325,30 +344,39 @@ bool FSpawningAJetMakeItBrakeCommand::Update()
 }
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedDecreaseCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetVelocityDecreaseCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
 
-bool FCheckAJetSpeedDecreaseCommand::Update()
+bool FCheckAJetVelocityDecreaseCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-		UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-		AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJet::StaticClass()));
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
 		if (testJet)
 		{
 			float currentSpeed = testJet->currentSpeed();
+			bool isIdle = FMath::IsNearlyZero(currentSpeed, 0.1f);
+			FVector jetForwardDirection = testJet->GetActorForwardVector();
+			bool isMovingBackwards = testJet->GetVelocity().ProjectOnTo(jetForwardDirection).GetSignVector() != jetForwardDirection.GetSignVector();
 
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet forward vector: %s"), *jetForwardDirection.ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity: %s"), *testJet->GetVelocity().ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity projection on forward vector: %s"), *testJet->GetVelocity().ProjectOnTo(jetForwardDirection).ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity projection sign: %s"), *testJet->GetVelocity().ProjectOnTo(jetForwardDirection).GetSignVector().ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet forward vector sign: %s"), *jetForwardDirection.GetSignVector().ToString()));
 
-			if (currentSpeed < 0 && !FMath::IsNearlyZero(currentSpeed, 0.1f))//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
+			if (isMovingBackwards && !isIdle)
 			{
-				test->TestTrue(TEXT("The Jet speed should decrease after a brake (after ticking)."), currentSpeed < 0 && !FMath::IsNearlyZero(currentSpeed, 0.1f));
+				test->TestTrue(TEXT("The Jet velocity should be negative after a brake (after ticking) from idle."), isMovingBackwards && !isIdle);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
 			++aTickCount;
 
-			if ( aTickCount > aTickLimit)
+			if (aTickCount > aTickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from zero."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet velocity never changed from zero."), aTickCount > aTickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -358,24 +386,23 @@ bool FCheckAJetSpeedDecreaseCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpeedDecreasesWhenBrakesTest, "ProjectR.Unit.JetTests.SpeedDecreasesWhenBrakes", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetVelocityNegativeWhenBrakesTest, "ProjectR.Unit.JetTests.VelocityNegativeWhenBrakes", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FAJetSpeedDecreasesWhenBrakesTest::RunTest(const FString& Parameters)
+bool FAJetVelocityNegativeWhenBrakesTest::RunTest(const FString& Parameters)
 {
-	{
-		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-		
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItBrakeCommand);
-		int tickCount = 0;
-		int tickLimit = 3;
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedDecreaseCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	}
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItBrakeCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetVelocityDecreaseCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
 	return true;
 }
@@ -389,7 +416,7 @@ bool FAJetDefaultTopSpeedIsGreaterThanZeroTest::RunTest(const FString& Parameter
 	AJet* testJet = NewObject<AJet>(AJet::StaticClass());
 
 	TestTrue(TEXT("A Jet's default top speed should be bigger than zero."), testJet->settedTopSpeed() > 0);
-	
+
 	return true;
 }
 
@@ -403,14 +430,15 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetSetVelocityToTopSpeedCommand);
 
 bool FSpawningAJetSetVelocityToTopSpeedCommand::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (!GEditor->IsPlayingSessionInEditor())
 	{
 		return false;
 	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJetMOCK* testJet = testWorld->SpawnActor<AJetMOCK>(AJetMOCK::StaticClass());
+	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE();
 
 	testJet->setCurrentSpeedTo(testJet->settedTopSpeed());
 	testJet->accelerate();
@@ -424,18 +452,21 @@ bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-		UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-		AJetMOCK* testJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJetMOCK::StaticClass()));
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJetMOCK* testJet = sessionUtilities.retrieveJetMOCKFromPIE();
 		if (testJet)
 		{
 			float currentSpeed = testJet->currentSpeed();
-
+			bool isAtTopSpeed = FMath::IsNearlyEqual(currentSpeed, testJet->settedTopSpeed(), 1.4f);
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet location: %f"), currentSpeed));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet %s at currentSpeed"), *FString(isAtTopSpeed? "is":"isn't")));
 			++aTickCount;
-			
 
-			if ( aTickCount > aTickLimit)
+			if (aTickCount > aTickLimit)
 			{
-				test->TestTrue(TEXT("If a jet is at top speed, it should never increase it after an acceleration is added (after ticking)."), FMath::IsNearlyEqual(currentSpeed, testJet->settedTopSpeed(), 1.0f));
+				test->TestTrue(TEXT("If a jet is at top speed, it should never increase it after an acceleration is added (after ticking)."), isAtTopSpeed);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -449,20 +480,19 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldntAccelerateWhenAtTopSpeedTest, "Pro
 
 bool FAJetShouldntAccelerateWhenAtTopSpeedTest::RunTest(const FString& Parameters)
 {
-	{
-		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-		
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetSetVelocityToTopSpeedCommand);
-		int tickCount = 0;
-		int tickLimit = 3;
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedAgainstTopSpeedCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	}
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetSetVelocityToTopSpeedCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedAgainstTopSpeedCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
 	return true;
 }
@@ -476,47 +506,52 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItSteerRightCommand);
 
 bool FSpawningAJetMakeItSteerRightCommand::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (!GEditor->IsPlayingSessionInEditor())
 	{
 		return false;
 	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
+	AJet* testJet = sessionUtilities.spawnJetInPIE();
 
 	float direction = 1;//1 is right, -1 is left...
-	
+
 	testJet->steer(direction);
 
 	return true;
 }
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetMovedRightCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetRotatedYawCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
 
-bool FCheckAJetMovedRightCommand::Update()
+bool FCheckAJetRotatedYawCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-		UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-		AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJet::StaticClass()));
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
 		if (testJet)
 		{
-			float currentYLocation = testJet->GetActorLocation().Y;
+			float currentZRotation = testJet->GetActorRotation().Yaw;
+			bool hasSteeredRight = currentZRotation > 0;
+			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotation, 0.1f);
 
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet rotation vector: %s"), *testJet->GetActorRotation().ToString()));
 
-			if (currentYLocation > 0  && !FMath::IsNearlyZero(currentYLocation, 0.1f))//we should be careful of near zero floats. Maybe !NearEqual would be better...
+			if (hasSteeredRight && !isMinimalSteering)
 			{
-				test->TestTrue(TEXT("The Jet Y location should be greater than zero after steering right (after ticking)."), currentYLocation > 0 && !FMath::IsNearlyZero(currentYLocation, 0.1f));
+				test->TestTrue(TEXT("The Jet yaw rotation (around Z axis) should be greater than zero after steering right (after ticking)."), hasSteeredRight && !isMinimalSteering);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
 			++aTickCount;
 
-			if ( aTickCount > aTickLimit)
+			if (aTickCount > aTickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet Y location never changed from zero."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet yaw rotation (around Z axis) never changed from zero."), aTickCount > aTickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -526,24 +561,23 @@ bool FCheckAJetMovedRightCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldMoveRightWhenSteeringRightTest, "ProjectR.Unit.JetTests.ShouldMoveRightWhenSteeringRight", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldRotateYawRightWhenSteeringRightTest, "ProjectR.Unit.JetTests.ShouldRotateYawRightWhenSteeringRight", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FAJetShouldMoveRightWhenSteeringRightTest::RunTest(const FString& Parameters)
+bool FAJetShouldRotateYawRightWhenSteeringRightTest::RunTest(const FString& Parameters)
 {
-	{
-		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-		
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItSteerRightCommand);
-		int tickCount = 0;
-		int tickLimit = 3;
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetMovedRightCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	}
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItSteerRightCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetRotatedYawCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
 	return true;
 }
@@ -557,7 +591,7 @@ bool FAJetDefaultSteerForceIsGreaterThanZeroTest::RunTest(const FString& Paramet
 	AJet* testJet = NewObject<AJet>(AJet::StaticClass());
 
 	TestTrue(TEXT("A Jet's default steer force should be bigger than zero."), testJet->steerForce() > 0);
-	
+
 	return true;
 }
 
@@ -570,38 +604,17 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerationKeyCommand);
 
 bool FSpawningAJetPressAccelerationKeyCommand::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (!GEditor->IsPlayingSessionInEditor())
 	{
 		return false;
 	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
-	AGameModeBase* testGameMode = testWorld->GetAuthGameMode();
+	AJet* testJet = sessionUtilities.spawnJetInPIE();
 
-	testGameMode->SpawnPlayerFromSimulate(FVector(), FRotator());
-
-	
-	APlayerController* jetController = Cast<APlayerController,AActor>(testGameMode->GetGameInstance()->GetFirstLocalPlayerController(testWorld));
-
-	FName const accelerateActionName = FName(TEXT("AccelerateAction"));
-	TArray<FInputAxisKeyMapping> axisMappings = jetController->PlayerInput->GetKeysForAxis(accelerateActionName);//in the editor, we are going to add a new axis mapping inside Project settings -> Input
-	//in the jet class, we are going to add a player input binding with:
-	//	PlayerInputComponent->BindAxis("AccelerateAction",this, &AJet::accelerate);
-	//and in the constructor:
-	//AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
-	FKey accelerateKey;
-	for(auto axisMap: axisMappings)
-	{
-		if(axisMap.Scale > 0)
-		{
-			accelerateKey = axisMap.Key;
-			break;
-		}
-	}
-	
-	jetController->InputKey(accelerateKey,EInputEvent::IE_Repeat,5.0f,false);
+	sessionUtilities.processLocalPlayerInputFrom(FName(TEXT("AccelerateAction")));
 
 	return true;
 }
@@ -611,20 +624,19 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetAcceleratesWhenPressingAccelerationKeyTest
 
 bool FAJetAcceleratesWhenPressingAccelerationKeyTest::RunTest(const FString& Parameters)
 {
-	{
-		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-		
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerationKeyCommand);
-		int tickCount = 0;
-		int tickLimit = 3;
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedIncreaseCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	}
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerationKeyCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedIncreaseCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
 	return true;
 }
@@ -638,34 +650,17 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKeyCommand);
 
 bool FSpawningAJetPressSteerRightKeyCommand::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (!GEditor->IsPlayingSessionInEditor())
 	{
 		return false;
 	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
-	AGameModeBase* testGameMode = testWorld->GetAuthGameMode();
+	AJet* testJet = sessionUtilities.spawnJetInPIE();
 
-	testGameMode->SpawnPlayerFromSimulate(FVector(), FRotator());
-
-	
-	APlayerController* jetController = Cast<APlayerController,AActor>(testGameMode->GetGameInstance()->GetFirstLocalPlayerController(testWorld));
-
-	FName const steerRightActionName = FName(TEXT("SteerAction"));
-	
-	TArray<FInputAxisKeyMapping> axisMappings = jetController->PlayerInput->GetKeysForAxis(steerRightActionName);
-	FKey SteerRightKey;
-	for(auto axisMap: axisMappings)
-	{
-		if(axisMap.Scale > 0)
-		{
-			SteerRightKey = axisMap.Key;
-			break;
-		}
-	}
-	jetController->InputKey(SteerRightKey,EInputEvent::IE_Repeat,5.0f,false);
+	sessionUtilities.processLocalPlayerInputFrom(FName(TEXT("SteerAction")));
 
 	return true;
 }
@@ -675,20 +670,19 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldMoveRightWhenPressingSteerRightKeyTe
 
 bool FAJetShouldMoveRightWhenPressingSteerRightKeyTest::RunTest(const FString& Parameters)
 {
-	{
-		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-		
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKeyCommand);
-		int tickCount = 0;
-		int tickLimit = 3;
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetMovedRightCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	}
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKeyCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetRotatedYawCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
 	return true;
 }
@@ -706,31 +700,13 @@ bool FSpawningAJetPressBrakeKeyCommand::Update()
 	{
 		return false;
 	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJet* testJet = testWorld->SpawnActor<AJet>(AJet::StaticClass());
-	AGameModeBase* testGameMode = testWorld->GetAuthGameMode();
+	AJet* testJet = sessionUtilities.spawnJetInPIE();
 
-	testGameMode->SpawnPlayerFromSimulate(FVector(), FRotator());
-
-	
-	APlayerController* jetController = Cast<APlayerController,AActor>(testGameMode->GetGameInstance()->GetFirstLocalPlayerController(testWorld));
-
-	FName const brakeActionName = FName(TEXT("BrakeAction"));
-
-	TArray<FInputAxisKeyMapping> axisMappings = jetController->PlayerInput->GetKeysForAxis(brakeActionName);
-	FKey brakeKey;
-	for(auto axisMap: axisMappings)
-	{
-		if(axisMap.Scale > 0)
-		{
-			brakeKey = axisMap.Key;
-			break;
-		}
-	}
-
-	jetController->InputKey(brakeKey,EInputEvent::IE_Repeat,5.0f,false);
+	sessionUtilities.processLocalPlayerInputFrom(FName(TEXT("BrakeAction")));
 
 	return true;
 }
@@ -740,20 +716,19 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetBrakesWhenPressingBrakeKeyTest, "ProjectR.
 
 bool FAJetBrakesWhenPressingBrakeKeyTest::RunTest(const FString& Parameters)
 {
-	{
-		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-		
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeKeyCommand);
-		int tickCount = 0;
-		int tickLimit = 3;
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedDecreaseCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	}
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeKeyCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetVelocityDecreaseCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
 	return true;
 }
@@ -767,7 +742,7 @@ bool FAJetShouldHaveASpringArmTest::RunTest(const FString& Parameters)
 {
 	{
 		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
+
 		TestTrue(TEXT("The Jet should have a spring arm."), testJet->hasASprinArm());
 	}
 
@@ -783,7 +758,7 @@ bool FAJetShouldHaveASpringArmAttachedToRootComponentTest::RunTest(const FString
 {
 	{
 		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
+
 		TestTrue(TEXT("The Jet should have a spring arm attached to the root component."), testJet->isSpringArmAttachedToRoot());
 	}
 
@@ -799,7 +774,7 @@ bool FAJetShouldHaveACameraTest::RunTest(const FString& Parameters)
 {
 	{
 		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
+
 		TestTrue(TEXT("The Jet should have a camera."), testJet->HasCameraComponent());
 	}
 
@@ -815,7 +790,7 @@ bool FAJetShouldHaveACameraAttachedToSpringArmTest::RunTest(const FString& Param
 {
 	{
 		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
+
 		TestTrue(TEXT("The Jet should have a camera attached to a springArm."), testJet->isCameraAttachedToSpringArm());
 	}
 
@@ -824,31 +799,15 @@ bool FAJetShouldHaveACameraAttachedToSpringArmTest::RunTest(const FString& Param
 
 
 
-//uses a MOCK
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpringArmShouldUseAbsoluteRotationTest, "ProjectR.Unit.JetTests.SpringArmShouldUseAbsoluteRotation", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FAJetSpringArmShouldUseAbsoluteRotationTest::RunTest(const FString& Parameters)
-{
-	{
-		AJetMOCK* testJet = NewObject<AJetMOCK>();
-		
-		TestTrue(TEXT("The Jet spring arm should use absolute rotation."), testJet->usesAbsoluteRotation());
-	}
-
-	return true;
-}
-
-
-
 ////uses a MOCK
-//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldHaveAnAntiGravitySystemTest, "ProjectR.Unit.JetTests.ShouldHaveAnAntiGravitySystem", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpringArmShouldUseAbsoluteRotationTest, "ProjectR.Unit.JetTests.SpringArmShouldUseAbsoluteRotation", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 //
-//bool FAJetShouldHaveAnAntiGravitySystemTest::RunTest(const FString& Parameters)
+//bool FAJetSpringArmShouldUseAbsoluteRotationTest::RunTest(const FString& Parameters)
 //{
 //	{
 //		AJetMOCK* testJet = NewObject<AJetMOCK>();
-//		
-//		TestTrue(TEXT("The Jet should have."), testJet->hasAnAntiGravitySystem());
+//
+//		TestTrue(TEXT("The Jet spring arm should use absolute rotation."), testJet->usesAbsoluteRotation());//change to use the relative yaw
 //	}
 //
 //	return true;
@@ -863,22 +822,21 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetSnapedToFloorCommand);
 
 bool FSpawningAJetSnapedToFloorCommand::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (!GEditor->IsPlayingSessionInEditor())
 	{
 		return false;
 	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AFloorMeshActor* meshActor = testWorld->SpawnActor<AFloorMeshActor>(AFloorMeshActor::StaticClass());
+	AFloorMeshActor* meshActor = sessionUtilities.spawnFloorMeshActorInPIE();
 
-	FActorSpawnParameters spawnParams;
-	spawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	FVector spawnLocation = meshActor->GetActorLocation() + FVector(0,0, 1000);
+	FVector spawnLocation = meshActor->GetActorLocation() + FVector(0, 0, 1000);
 
-	AJetMOCK* testJet = testWorld->SpawnActor<AJetMOCK>(AJetMOCK::StaticClass(), spawnLocation, FRotator(), spawnParams);
-	
-	GEditor->SnapObjectTo(FActorOrComponent(testJet),true,true,true,false,FActorOrComponent(meshActor));
+	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE(spawnLocation);
+
+	GEditor->SnapObjectTo(FActorOrComponent(testJet), true, true, true, false, FActorOrComponent(meshActor));
 
 	return true;
 }
@@ -889,22 +847,27 @@ bool FCheckAJetZLocationCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-		UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-		AJetMOCK* testJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, AJetMOCK::StaticClass()));
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJetMOCK* testJet = sessionUtilities.retrieveJetMOCKFromPIE();
 		if (testJet)
 		{
 			float currentZVelocity = testJet->getZVelocity();
 
+			bool isBeingLifted = currentZVelocity > 0;
+			bool isMinimalLifting = FMath::IsNearlyZero(currentZVelocity, 0.1f);
 
-			if (currentZVelocity > 0 && !FMath::IsNearlyZero(currentZVelocity, 0.1f))
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity: %s"), *testJet->GetVelocity().ToString()));
+			
+			if (isBeingLifted && !isMinimalLifting)
 			{
-				test->TestTrue(TEXT("The Jet Z veocity should increase due to anti-gravity activation near floor."), currentZVelocity > 0 && !FMath::IsNearlyZero(currentZVelocity, 0.1f));
+				test->TestTrue(TEXT("The Jet Z veocity should increase due to anti-gravity activation near floor."), isBeingLifted && !isMinimalLifting);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
 			++aTickCount;
 
-			if ( aTickCount > aTickLimit)
+			if (aTickCount > aTickLimit)
 			{
 				test->TestFalse(TEXT("Tick limit reached for this test. The Jet never lifted from the ground."), aTickCount > aTickLimit);
 				testWorld->bDebugFrameStepExecution = true;
@@ -915,30 +878,398 @@ bool FCheckAJetZLocationCommand::Update()
 	return false;
 }
 
-
+//uses a mock
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetGetsUpwardsImpulseFromAntiGravityOnFloorTest, "ProjectR.Unit.JetTests.GetsUpwardsImpulseFromAntiGravityOnFloor", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetGetsUpwardsImpulseFromAntiGravityOnFloorTest::RunTest(const FString& Parameters)
 {
-	{
-		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-		
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName))
 
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetSnapedToFloorCommand);
-		int tickCount = 0;
-		int tickLimit = 3;
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetZLocationCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-		ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	}
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetSnapedToFloorCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetZLocationCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
 	return true;
 }
 
 
 
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotateAndAccelerateCommand);
+
+bool FSpawningAJetRotateAndAccelerateCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+	AJet* testJet = sessionUtilities.spawnJetInPIE();
+
+	float yawValue = 50;
+	testJet->SetActorRotation(FRotator(0, yawValue, 0));
+	testJet->accelerate();
+
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetLocationCoincidentToForwardVectorCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+
+bool FCheckAJetLocationCoincidentToForwardVectorCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
+		if (testJet)
+		{
+			FVector currentLocation = testJet->GetActorLocation();
+			FVector jetForwardVector = testJet->GetActorForwardVector();
+
+			bool hasMoved = !FMath::IsNearlyZero(FVector::Distance(currentLocation, FVector(0)), 0.1f);
+			bool locationIsAlignedToForwardVector = FVector::Coincident(currentLocation.GetSafeNormal2D(), jetForwardVector.GetSafeNormal2D());
+
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet forward vector: %s"), *jetForwardVector.ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet location: %s"), *currentLocation.ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet location normal on XY: %s"), *currentLocation.GetSafeNormal2D().ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet forward vector normal on XY: %s"), *jetForwardVector.GetSafeNormal2D().ToString()));
+			
+			if (hasMoved && locationIsAlignedToForwardVector)//We have to be careful of gravity in this test. That's why a normal on XY is used.
+			{
+				test->TestTrue(TEXT("The Jet should accelerate in the direction of it's forward vector after being rotated."), hasMoved && locationIsAlignedToForwardVector);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			++aTickCount;
+
+			if (aTickCount > aTickLimit)
+			{
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet acceleration wasn't aligned to it's forward vector."), aTickCount > aTickLimit);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldAccelerateAlongItsForwardVectorWhenAcceleratedAfterRotationTest, "ProjectR.Unit.JetTests.ShouldAccelerateAlongItsForwardVectorWhenAcceleratedAfterRotation", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetShouldAccelerateAlongItsForwardVectorWhenAcceleratedAfterRotationTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotateAndAccelerateCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocationCoincidentToForwardVectorCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
+
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotateAndBrakeCommand);
+
+bool FSpawningAJetRotateAndBrakeCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+	AJet* testJet = sessionUtilities.spawnJetInPIE();
+
+	float yawValue = 50;
+	testJet->SetActorRotation(FRotator(0, yawValue, 0));
+	testJet->brake();
+
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetLocationParallelToForwardVectorCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+
+bool FCheckAJetLocationParallelToForwardVectorCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
+		if (testJet)
+		{
+			FVector currentLocation = testJet->GetActorLocation();
+			FVector jetBackwardsVector = -testJet->GetActorForwardVector();//notice the '-'. It's the forward vector negated.
+
+			bool hasMoved = !FMath::IsNearlyZero(FVector::Distance(currentLocation, jetBackwardsVector), 0.1f);
+			bool locationIsAlignedToBackwardsVector = FVector::Coincident(currentLocation.GetSafeNormal2D(), jetBackwardsVector.GetSafeNormal2D());
+
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet backwards vector: %s"), *jetBackwardsVector.ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet location: %s"), *currentLocation.ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet location normal on XY: %s"), *currentLocation.GetSafeNormal2D().ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet backwards vector normal on XY: %s"), *jetBackwardsVector.GetSafeNormal2D().ToString()));
+
+			if (hasMoved && locationIsAlignedToBackwardsVector)
+			{
+				test->TestTrue(TEXT("The Jet should brake contrary to the direction of it's forward vector after being rotated."), hasMoved && locationIsAlignedToBackwardsVector);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			++aTickCount;
+
+			if (aTickCount > aTickLimit)
+			{
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet acceleration wasn't aligned to it's forward vector."), aTickCount > aTickLimit);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldBrakeAlongItsBackwardsVectorWhileRotatedTest, "ProjectR.Unit.JetTests.ShouldBrakeAlongItsBackwardsVectorWhileRotated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetShouldBrakeAlongItsBackwardsVectorWhileRotatedTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotateAndBrakeCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocationParallelToForwardVectorCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
+
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetAccelerateAndSteerRightCommand);
+
+bool FSpawningAJetAccelerateAndSteerRightCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+
+	AFloorMeshActor* meshActor = sessionUtilities.spawnFloorMeshActorInPIE();
+
+	FVector spawnLocation = meshActor->GetActorLocation() + FVector(0, 0, 1000);
+
+	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE(spawnLocation);
+
+	GEditor->SnapObjectTo(FActorOrComponent(testJet), true, true, true, false, FActorOrComponent(meshActor));
+	
+	float direction = 1;//1 is right, -1 is left...
+	testJet->accelerate();
+	testJet->steer(direction);
+
+	return true;
+}
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckAJetUpdatedVelocityWhenAfterSteeringCommand, int, aTickCount, int, aTickLimit,FVector, previousForwardVector, FAutomationTestBase*, test);
+
+bool FCheckAJetUpdatedVelocityWhenAfterSteeringCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
+		if (testJet)
+		{
+			++aTickCount;
+
+			FVector currentVelocity = testJet->GetVelocity();
+			FVector jetForwardsVector = testJet->GetActorForwardVector();
+			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
+			bool velocityAlignedToPreviousForwardVector = FVector::Coincident(currentVelocity.GetSafeNormal2D(), previousForwardVector.GetSafeNormal2D());
+
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet previous forward vector: %s"), *previousForwardVector.ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet current forward vector: %s"), *jetForwardsVector.ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity: %s"), *currentVelocity.ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity normal on XY: %s"), *currentVelocity.GetSafeNormal2D().ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet previous forward vector normal on XY: %s"), *previousForwardVector.GetSafeNormal2D().ToString()));
+			
+			if (aTickCount > aTickLimit)
+			{
+				test->TestTrue(TEXT("The Jet should update it's velocity to match the direction of the forward vector after steering."), !speedNearlyZero && velocityAlignedToPreviousForwardVector);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			previousForwardVector = jetForwardsVector;
+		}
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldUpdateVelocityDirectionAfterSteeringTest, "ProjectR.Unit.JetTests.ShouldUpdateVelocityDirectionAfterSteering", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetShouldUpdateVelocityDirectionAfterSteeringTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetAccelerateAndSteerRightCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetUpdatedVelocityWhenAfterSteeringCommand(tickCount, tickLimit, FVector(0), this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
+
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetBrakeAndSteerRightCommand);
+
+bool FSpawningAJetBrakeAndSteerRightCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE();
+	
+	float direction = 1;//1 is right, -1 is left going forwards
+	testJet->brake();
+	testJet->steer(direction);
+
+	return true;
+}
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetInvertSteeringWhenInReverseCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+
+bool FCheckAJetInvertSteeringWhenInReverseCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
+		if (testJet)
+		{
+			++aTickCount;
+
+			bool ismovingRight = testJet->GetVelocity().Y < 0;//clockwise is right when going forwards. When in reverse, it should go counterclockwise.
+			bool isMinimalSteering = FMath::IsNearlyZero(testJet->GetActorRotation().Yaw, 0.1f);
+			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
+			FVector jetForwardDirection = testJet->GetActorForwardVector();
+			bool isMovingBackwards = testJet->GetVelocity().ProjectOnTo(jetForwardDirection).GetSignVector().X != jetForwardDirection.GetSignVector().X;
+
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet forward vector: %s"), *jetForwardDirection.ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity: %s"), *testJet->GetVelocity().ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity projection on forward vector: %s"), *testJet->GetVelocity().ProjectOnTo(jetForwardDirection).ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity projection sign: %s"), *testJet->GetVelocity().ProjectOnTo(jetForwardDirection).GetSignVector().ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet forward vector sign: %s"), *jetForwardDirection.GetSignVector().ToString()));
+
+			if (!speedNearlyZero && !isMinimalSteering && ismovingRight && isMovingBackwards)
+			{
+				test->TestTrue(TEXT("The Jet should steer right counterclockwise if it's in reverse."), !speedNearlyZero && !isMinimalSteering && ismovingRight && isMovingBackwards);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			++aTickCount;
+
+			if (aTickCount > aTickLimit)
+			{
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet didn't steer right counterclockwise in reverse."), aTickCount > aTickLimit);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldInvertSteeringWhenInReverseTest, "ProjectR.Unit.JetTests.ShouldInvertSteeringWhenInReverse", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetShouldInvertSteeringWhenInReverseTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetBrakeAndSteerRightCommand);
+	int tickCount = 0;
+	int tickLimit = 4;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetInvertSteeringWhenInReverseCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
+
+//If a jet brakes and then stops naturally, the steering keeps acting as if it was in reverse. That's a problem that should be changed to a normal steering when idle.
+//A simple change to not inverse steering when at 0 speed or near.
 
 #endif //WITH_DEV_AUTOMATION_TESTS

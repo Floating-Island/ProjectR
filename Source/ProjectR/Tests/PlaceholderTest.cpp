@@ -25,9 +25,8 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FOneShouldBeOneTest, "ProjectR.Unit.Placeholder
 bool FOneShouldBeOneTest::RunTest(const FString& Parameters)
 {
 	//One should be one.
-	{
-		TestEqual(TEXT("one is one"), 1, 1);
-	}
+
+	TestEqual(TEXT("one is one"), 1, 1);
 
 	return true;
 }
@@ -40,9 +39,8 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FSTwoShouldBeTwoTest, "ProjectR.Unit.Placeholde
 bool FSTwoShouldBeTwoTest::RunTest(const FString& Parameters)
 {
 	//two should be two.
-	{
-		TestEqual(TEXT("two is two"), 2, 2);
-	}
+
+	TestEqual(TEXT("two is two"), 2, 2);
 
 	return true;
 }
