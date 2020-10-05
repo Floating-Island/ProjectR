@@ -8,11 +8,13 @@ ATrack::ATrack()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	floorComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh Component"));
+	floorComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Floor Component"));
 	RootComponent = floorComponent;
 
 	UStaticMesh* Mesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Engine/MapTemplates/SM_Template_Map_Floor")));
 	floorComponent->SetStaticMesh(Mesh);
+
+	magnetBox = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Magnet Box Component"));
 }
 
 // Called when the game starts or when spawned

@@ -22,7 +22,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		UStaticMeshComponent* floorComponent;
 
-
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		UStaticMeshComponent* magnetBox;
 
 
 public:
