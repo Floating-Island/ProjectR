@@ -111,7 +111,7 @@ bool FATrackMagnetBoxShouldOverlapWithPawnChannelIgnoreTheRestTest::RunTest(cons
 {
 	ATrackMOCK* testTrack = NewObject<ATrackMOCK>();
 	{
-		TestTrue(TEXT("The track magnet box should overlap with the pawn channel and ignore the rest."), testTrack->magnetBoxIgnoresAllChannelsCollisions());
+		TestTrue(TEXT("The track magnet box should overlap with the pawn channel and ignore the rest."), testTrack->magnetBoxOverlapsPawnIgnoresOtherChannels());
 	}
 	
 	return true;
