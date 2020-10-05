@@ -61,6 +61,11 @@ float AJetMOCK::getZVelocity()
 	return meshComponent->GetComponentVelocity().Z;
 }
 
+bool AJetMOCK::generatesOverlapEvents()
+{
+        return meshComponent->GetGenerateOverlapEvents();
+}
+
 //bool AJetMOCK::hasAnAntiGravitySystem()
 //{
 //	return antiGravitySystem? true : false;

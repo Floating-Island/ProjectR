@@ -39,4 +39,6 @@ public:
 	/*bool hasAnAntiGravitySystem();*/
 
 	float getZVelocity();
+
+        bool generatesOverlapEvents();
 };
