@@ -3,3 +3,7 @@
 
 #include "TrackMOCK.h"
 
+bool ATrackMOCK::hasAFloor()
+{
+	return floorComponent? true : false;
+}
