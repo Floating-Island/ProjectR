@@ -12,3 +12,8 @@ bool ATrackMOCK::floorHasStaticMesh()
 {
 	return floorComponent->GetStaticMesh() ? true : false;
 }
+
+bool ATrackMOCK::hasAMagnetBox()
+{
+	return magnetBox? true : false;
+}
