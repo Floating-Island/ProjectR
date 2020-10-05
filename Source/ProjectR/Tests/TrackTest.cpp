@@ -117,4 +117,18 @@ bool FATrackMagnetBoxShouldOverlapWithPawnChannelTest::RunTest(const FString& Pa
 	return true;
 }
 
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackMagnetBoxGeneratesOverlapEventsTest, "ProjectR.Unit.TrackTest.ATrackMagnetBoxGeneratesOverlapEvents", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackMagnetBoxGeneratesOverlapEventsTest::RunTest(const FString& Parameters)
+{
+	ATrackMOCK* testTrack = NewObject<ATrackMOCK>();
+	{
+		TestTrue(TEXT("The track magnet box should generate overlap events."), testTrack->magnetBoxGeneratesOverlapEvents());
+	}
+	
+	return true;
+}
+
 #endif //WITH_DEV_AUTOMATION_TESTS
