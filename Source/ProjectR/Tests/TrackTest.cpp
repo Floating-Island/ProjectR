@@ -32,4 +32,18 @@ bool FATrackShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Parameter
 	return true;
 }
 
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackShouldHaveAFloorTest, "ProjectR.Unit.TrackTest.ATrackShouldHaveAFloor", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackShouldHaveAFloorTest::RunTest(const FString& Parameters)
+{
+	ATrackMOCK* testTrack = NewObject<ATrackMOCK>();
+	{
+		TestNotNull(TEXT("The track should have a floor so jets can step in."), testTrack->hasAFloor());
+	}
+	
+	return true;
+}
+
 #endif //WITH_DEV_AUTOMATION_TESTS
