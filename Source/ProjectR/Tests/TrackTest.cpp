@@ -105,4 +105,18 @@ bool FATrackMagnetBoxShouldHaveCollisionsEnabledTest::RunTest(const FString& Par
 
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackMagnetBoxShouldHaveCollisionsEnabledToQueryOnlyTest, "ProjectR.Unit.TrackTest.ATrackMagnetBoxShouldHaveCollisionsEnabledToQueryOnly", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackMagnetBoxShouldHaveCollisionsEnabledToQueryOnlyTest::RunTest(const FString& Parameters)
+{
+	ATrackMOCK* testTrack = NewObject<ATrackMOCK>();
+	{
+		TestTrue(TEXT("The track magnet box should have collisions enabled to query only."), testTrack->magnetBoxHasCollisionsEnabledToQueryOnly());
+	}
+	
+	return true;
+}
+
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS
