@@ -16,4 +16,5 @@ class PROJECTR_API ATrackMOCK : public ATrack
 
 public:
  	bool hasAFloor();
+	bool floorHasStaticMesh();
 };
