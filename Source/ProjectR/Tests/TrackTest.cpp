@@ -91,5 +91,18 @@ bool FATrackMagnetBoxShouldBeAttachedToRootTest::RunTest(const FString& Paramete
 
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackMagnetBoxShouldHaveCollisionsEnabledTest, "ProjectR.Unit.TrackTest.ATrackMagnetBoxShouldHaveCollisionsEnabled", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackMagnetBoxShouldHaveCollisionsEnabledTest::RunTest(const FString& Parameters)
+{
+	ATrackMOCK* testTrack = NewObject<ATrackMOCK>();
+	{
+		TestTrue(TEXT("The track magnet box should have collisions enabled."), testTrack->magnetBoxHasCollisionsEnabled());
+	}
+	
+	return true;
+}
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
