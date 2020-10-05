@@ -34,19 +34,23 @@ bool ATrackMOCK::magnetBoxHasCollisionsEnabledToQueryOnly()
 	return magnetBox->GetCollisionEnabled() == ECollisionEnabled::QueryOnly ? true : false;
 }
 
-bool ATrackMOCK::magnetBoxIgnoresAllChannelsCollisions()
+bool ATrackMOCK::magnetBoxOverlapsPawnIgnoresOtherChannels()
 {
 	FCollisionResponseContainer allChannelsResponse = FCollisionResponseContainer();
 	allChannelsResponse = magnetBox->GetCollisionResponseToChannels();
 	TArray<FResponseChannel> ChannelResponses = TArray<FResponseChannel>();
 	allChannelsResponse.FillArrayFromResponses(ChannelResponses);
+	int noIgnoreResponseCounter = 0;
 	for (FResponseChannel channel : ChannelResponses)
 	{
 		if(!(channel.Response == ECollisionResponse::ECR_Ignore))
 		{
-			return false;
+			++noIgnoreResponseCounter;
 		}
 	}
-	
-	return true;
+	if(noIgnoreResponseCounter == 1 && allChannelsResponse.GetResponse(ECC_Pawn) == ECollisionResponse::ECR_Overlap)
+	{
+		return true;
+	}
+	return false;
 }

@@ -21,5 +21,5 @@ public:
 	bool magnetBoxAttachedToRoot();
 	bool magnetBoxHasCollisionsEnabled();
 	bool magnetBoxHasCollisionsEnabledToQueryOnly();
-	bool magnetBoxIgnoresAllChannelsCollisions();
+	bool magnetBoxOverlapsPawnIgnoresOtherChannels();
 };
