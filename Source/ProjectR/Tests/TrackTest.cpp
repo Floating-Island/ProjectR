@@ -5,6 +5,7 @@
 
 #include "Track.h"
 #include "Mocks/TrackMOCK.h"
+#include "Mocks/JetMOCK.h"
 
 #include "Misc/AutomationTest.h"
 
@@ -126,6 +127,20 @@ bool FATrackMagnetBoxGeneratesOverlapEventsTest::RunTest(const FString& Paramete
 	ATrackMOCK* testTrack = NewObject<ATrackMOCK>();
 	{
 		TestTrue(TEXT("The track magnet box should generate overlap events."), testTrack->magnetBoxGeneratesOverlapEvents());
+	}
+	
+	return true;
+}
+
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetShouldGenerateOverlapEventsTest, "ProjectR.Unit.TrackTest.AJetShouldGenerateOverlapEvents", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetShouldGenerateOverlapEventsTest::RunTest(const FString& Parameters)
+{
+	AJetMOCK* testJet = NewObject<AJetMOCK>();
+	{
+		TestTrue(TEXT("The track magnet box should generate overlap events."), testJet->generatesOverlapEvents());
 	}
 	
 	return true;
