@@ -105,4 +105,16 @@ bool FATrackMagnetBoxShouldHaveCollisionsEnabledToQueryOnlyTest::RunTest(const F
 
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackMagnetBoxShouldIgnoreCollisionOnAllChannelsTest, "ProjectR.Unit.TrackTest.ATrackMagnetBoxShouldIgnoreCollisionOnAllChannels", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackMagnetBoxShouldIgnoreCollisionOnAllChannelsTest::RunTest(const FString& Parameters)
+{
+	ATrackMOCK* testTrack = NewObject<ATrackMOCK>();
+	{
+		TestTrue(TEXT("The track magnet box ignore all collisions."), testTrack->magnetBoxIgnoresAllChannelsCollisions());
+	}
+	
+	return true;
+}
+
 #endif //WITH_DEV_AUTOMATION_TESTS
