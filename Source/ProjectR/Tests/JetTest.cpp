@@ -1271,5 +1271,7 @@ bool FAJetShouldInvertSteeringWhenInReverseTest::RunTest(const FString& Paramete
 
 //If a jet brakes and then stops naturally, the steering keeps acting as if it was in reverse. That's a problem that should be changed to a normal steering when idle.
 //A simple change to not inverse steering when at 0 speed or near.
+//some tests fail because the jet speed isn't 0 when beginning play. set physics linear velocity at zero when the Jet spawns and it should work normally.
+//It has to do with the above comments. when the Jet spawns, sometimes the float of the velocity vector is treated as negative and that makes that steering behaves like going backwards.
 
 #endif //WITH_DEV_AUTOMATION_TESTS
