@@ -77,5 +77,19 @@ bool FATrackShouldHaveAMagnetBoxTest::RunTest(const FString& Parameters)
 
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackMagnetBoxShouldBeAttachedToRootTest, "ProjectR.Unit.TrackTest.ATrackMagnetBoxShouldBeAttachedToRoot", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackMagnetBoxShouldBeAttachedToRootTest::RunTest(const FString& Parameters)
+{
+	ATrackMOCK* testTrack = NewObject<ATrackMOCK>();
+	{
+		TestTrue(TEXT("The track magnet box should be attached to the root component."), testTrack->magnetBoxAttachedToRoot());
+	}
+	
+	return true;
+}
+
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
