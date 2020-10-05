@@ -18,4 +18,5 @@ public:
  	bool hasAFloor();
 	bool floorHasStaticMesh();
 	bool hasAMagnetBox();
+	bool magnetBoxAttachedToRoot();
 };

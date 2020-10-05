@@ -17,3 +17,8 @@ bool ATrackMOCK::hasAMagnetBox()
 {
 	return magnetBox? true : false;
 }
+
+bool ATrackMOCK::magnetBoxAttachedToRoot()
+{
+	return magnetBox->GetAttachParent() == RootComponent? true : false;
+}
