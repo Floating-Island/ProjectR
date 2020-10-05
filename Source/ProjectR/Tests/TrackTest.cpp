@@ -63,6 +63,17 @@ bool FATrackFloorShouldHaveAStaticMeshTest::RunTest(const FString& Parameters)
 
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackShouldHaveAMagnetBoxTest, "ProjectR.Unit.TrackTest.ATrackShouldHaveAMagnetBox", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackShouldHaveAMagnetBoxTest::RunTest(const FString& Parameters)
+{
+	ATrackMOCK* testTrack = NewObject<ATrackMOCK>();
+	{
+		TestTrue(TEXT("The track should have a magnet box so it catches jets when the track rotates."), testTrack->hasAMagnetBox());
+	}
+	
+	return true;
+}
 
 
 
