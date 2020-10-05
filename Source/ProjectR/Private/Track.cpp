@@ -16,6 +16,7 @@ ATrack::ATrack()
 
 	magnetBox = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Magnet Box Component"));
 	magnetBox->SetupAttachment(RootComponent);
+	magnetBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 }
 
 // Called when the game starts or when spawned
