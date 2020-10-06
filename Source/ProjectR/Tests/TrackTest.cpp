@@ -32,7 +32,7 @@ bool FATrackShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Parameter
 	{
 		TestNotNull(TEXT("The track shouldn't be null when instantiated"), testTrack);
 	}
-	
+
 	return true;
 }
 
@@ -46,7 +46,7 @@ bool FATrackShouldHaveAFloorTest::RunTest(const FString& Parameters)
 	{
 		TestTrue(TEXT("The track should have a floor so jets can step in."), testTrack->hasAFloor());
 	}
-	
+
 	return true;
 }
 
@@ -60,7 +60,7 @@ bool FATrackFloorShouldHaveAStaticMeshTest::RunTest(const FString& Parameters)
 	{
 		TestTrue(TEXT("The track floor should have a static mesh attached."), testTrack->floorHasStaticMesh());
 	}
-	
+
 	return true;
 }
 
@@ -74,7 +74,7 @@ bool FATrackShouldHaveAMagnetBoxTest::RunTest(const FString& Parameters)
 	{
 		TestTrue(TEXT("The track should have a magnet box so it catches jets when the track rotates."), testTrack->hasAMagnetBox());
 	}
-	
+
 	return true;
 }
 
@@ -88,7 +88,7 @@ bool FATrackMagnetBoxShouldBeAttachedToRootTest::RunTest(const FString& Paramete
 	{
 		TestTrue(TEXT("The track magnet box should be attached to the root component."), testTrack->magnetBoxAttachedToRoot());
 	}
-	
+
 	return true;
 }
 
@@ -102,7 +102,7 @@ bool FATrackMagnetBoxShouldHaveCollisionsEnabledToQueryOnlyTest::RunTest(const F
 	{
 		TestTrue(TEXT("The track magnet box should have collisions enabled to query only."), testTrack->magnetBoxHasCollisionsEnabledToQueryOnly());
 	}
-	
+
 	return true;
 }
 
@@ -116,7 +116,7 @@ bool FATrackMagnetBoxShouldOverlapWithPawnChannelTest::RunTest(const FString& Pa
 	{
 		TestTrue(TEXT("The track magnet box should overlap with the pawn channel."), testTrack->magnetBoxOverlapsPawnChannel());
 	}
-	
+
 	return true;
 }
 
@@ -130,7 +130,7 @@ bool FATrackMagnetBoxGeneratesOverlapEventsTest::RunTest(const FString& Paramete
 	{
 		TestTrue(TEXT("The track magnet box should generate overlap events."), testTrack->magnetBoxGeneratesOverlapEvents());
 	}
-	
+
 	return true;
 }
 
@@ -144,7 +144,7 @@ bool FAJetMeshCollisionTypeShouldBePawnTest::RunTest(const FString& Parameters)
 	{
 		TestTrue(TEXT("The jet collision object type should be pawn."), testJet->meshCollisionIsPawn());
 	}
-	
+
 	return true;
 }
 
@@ -158,7 +158,7 @@ bool FAJetMeshComponentShouldGenerateOverlapEventsTest::RunTest(const FString& P
 	{
 		TestTrue(TEXT("The Jet meshComponent should generate overlap events so the Track gets notified."), testJet->generatesOverlapEvents());
 	}
-	
+
 	return true;
 }
 
@@ -172,7 +172,7 @@ bool FATrackMagnetBoxShouldHaveVolumeTest::RunTest(const FString& Parameters)
 	{
 		TestTrue(TEXT("The magnet box should have a box volume."), testTrack->magnetBoxHasVolume());
 	}
-	
+
 	return true;
 }
 
@@ -186,7 +186,7 @@ bool FATrackMagnetBoxShouldBeHiddenTest::RunTest(const FString& Parameters)
 	{
 		TestTrue(TEXT("The magnet box should be hidden."), testTrack->magnetBoxIsHidden());
 	}
-	
+
 	return true;
 }
 
@@ -200,7 +200,7 @@ bool FATrackMagnetBoxShouldBeOnTopOfFloorTest::RunTest(const FString& Parameters
 	{
 		TestTrue(TEXT("The magnet box should be on top of the floor."), testTrack->magnetBoxOnTopOfFloor());
 	}
-	
+
 	return true;
 }
 
@@ -214,7 +214,7 @@ bool FATrackMagnetBoxShouldMatchFloorXYExtensionTest::RunTest(const FString& Par
 	{
 		TestTrue(TEXT("The magnet box should have the floor XY extension."), testTrack->magnetBoxHasXYFloorExtension());
 	}
-	
+
 	return true;
 }
 
@@ -236,19 +236,19 @@ bool FSpawningAJetAndTrackUpsideDownCommand::Update()
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
 	ATrackMOCK* testTrack = sessionUtilities.spawnTrackMOCKInPie();
-	FRotator upsideDown = FRotator(180,0,0);
+	FRotator upsideDown = FRotator(180, 0, 0);
 	testTrack->SetActorRotation(upsideDown);
 
-	FVector distanceFromTrack = FVector(0,0, 800);
+	FVector distanceFromTrack = FVector(0, 0, 800);
 	FVector beneathTheTrack = testTrack->GetActorLocation() - distanceFromTrack;
-	
+
 	AJet* testJet = sessionUtilities.spawnJetInPIE(beneathTheTrack);
 
 	return true;
 }
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckATrackAttractsAJetCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckATrackAttractsAJetCommand, int, aTickCount, int, aTickLimit, float, previousDistance, FAutomationTestBase*, test);
 
 bool FCheckATrackAttractsAJetCommand::Update()
 {
@@ -258,25 +258,24 @@ bool FCheckATrackAttractsAJetCommand::Update()
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
 		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
 		ATrackMOCK* testTrack = sessionUtilities.retrieveTrackMOCKFromPIE();
-		
+
 		if (testJet && testTrack)
 		{
 			++aTickCount;
-
-			bool isPullForceAlongTrackNormal = testJet->GetVelocity().ProjectOnTo(testTrack->normalVector()) == testJet->GetVelocity();
+			float currentDistance = (testJet->GetActorLocation() - testTrack->GetActorLocation()).Size();
+			bool isPulling = currentDistance < previousDistance;
+			bool isVelocityFullyAlongNormal = testJet->GetVelocity().ProjectOnTo(testTrack->normalVector()).Size() == testJet->GetVelocity().Size();
 			bool velocityNearZero = FMath::IsNearlyZero(testJet->GetVelocity().Size(), 0.1f);
 
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString()));
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Track location: %s"), *testTrack->GetActorLocation().ToString()));
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity: %s"), *testJet->GetVelocity().ToString()));
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity projection on normal vector: %s"), *testJet->GetVelocity().ProjectOnTo(testTrack->normalVector()).ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity projection sign: %s"), *testJet->GetVelocity().ProjectOnTo(testTrack->normalVector()).GetSignVector().ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Track normal vector sign: %s"), *testTrack->normalVector().GetSignVector().ToString()));
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Track normal vector: %s"), *testTrack->normalVector().ToString()));
 
-			if (isPullForceAlongTrackNormal && !velocityNearZero)
+			if (!velocityNearZero && isVelocityFullyAlongNormal && isPulling)
 			{
-				test->TestTrue(TEXT("The Track should attract a Jet along the track normal vector."), isPullForceAlongTrackNormal && !velocityNearZero);
+				test->TestTrue(TEXT("The Track should attract a Jet along the track normal vector."), !velocityNearZero && isVelocityFullyAlongNormal && isPulling);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -288,6 +287,7 @@ bool FCheckATrackAttractsAJetCommand::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
+			previousDistance = currentDistance;
 		}
 	}
 	return false;
@@ -308,7 +308,7 @@ bool FATrackUpsideDownShouldAttractAJetAlongItsNormalVectorTest::RunTest(const F
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetAndTrackUpsideDownCommand);
 	int tickCount = 0;
 	int tickLimit = 4;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackAttractsAJetCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackAttractsAJetCommand(tickCount, tickLimit, std::numeric_limits<float>::min(), this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
