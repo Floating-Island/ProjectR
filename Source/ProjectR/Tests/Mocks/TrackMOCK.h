@@ -23,4 +23,5 @@ public:
 	bool magnetBoxHasCollisionsEnabledToQueryOnly();
 	bool magnetBoxOverlapsPawnChannel();
     bool magnetBoxGeneratesOverlapEvents();
+	bool magnetBoxHasStaticMesh();
 };

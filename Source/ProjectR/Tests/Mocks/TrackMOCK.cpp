@@ -41,5 +41,10 @@ bool ATrackMOCK::magnetBoxOverlapsPawnChannel()
 
 bool ATrackMOCK::magnetBoxGeneratesOverlapEvents()
 {
-        return magnetBox->GetGenerateOverlapEvents();
+	return magnetBox->GetGenerateOverlapEvents();
+}
+
+bool ATrackMOCK::magnetBoxHasStaticMesh()
+{
+	return magnetBox->GetStaticMesh() ? true : false;
 }
