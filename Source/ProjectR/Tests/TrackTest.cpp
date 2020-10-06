@@ -190,17 +190,17 @@ bool FATrackMagnetBoxMeshShouldBeOnTopOfFloorTest::RunTest(const FString& Parame
 
 
 
-//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackMagnetBoxMeshShouldHaveFloorXYExtensionTest, "ProjectR.Unit.TrackTest.ATrackMagnetBoxMeshShouldHaveFloorXYExtension", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-//
-//bool FATrackMagnetBoxMeshShouldHaveFloorXYExtensionTest::RunTest(const FString& Parameters)
-//{
-//	ATrackMOCK* testTrack = NewObject<ATrackMOCK>();
-//	{
-//		TestTrue(TEXT("The magnet box mesh should have the floor XY extension."), testTrack->magnetBoxMeshHasXYFloorExtension());
-//	}
-//	
-//	return true;
-//}
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackMagnetBoxShouldMatchFloorXYExtensionTest, "ProjectR.Unit.TrackTest.ATrackMagnetBoxShouldMatchFloorXYExtension", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackMagnetBoxShouldMatchFloorXYExtensionTest::RunTest(const FString& Parameters)
+{
+	ATrackMOCK* testTrack = NewObject<ATrackMOCK>();
+	{
+		TestTrue(TEXT("The magnet box should have the floor XY extension."), testTrack->magnetBoxHasXYFloorExtension());
+	}
+	
+	return true;
+}
 
 
 
