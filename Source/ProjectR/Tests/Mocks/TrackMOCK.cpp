@@ -50,12 +50,12 @@ bool ATrackMOCK::magnetBoxHasVolume()
 	return (magnetBox->GetScaledBoxExtent().Size() > 0) ? true : false;
 }
 
-bool ATrackMOCK::magnetBoxMeshIsHidden()
+bool ATrackMOCK::magnetBoxIsHidden()
 {
 	return magnetBox->bHiddenInGame;
 }
 
-bool ATrackMOCK::magnetBoxMeshOnTopOfFloor()
+bool ATrackMOCK::magnetBoxOnTopOfFloor()
 {
 	float magnetBoxMeshZLowerBound = magnetBox->GetRelativeLocation().Z;
 	return FMath::IsNearlyEqual(magnetBox->GetUnscaledBoxExtent().Z, magnetBoxMeshZLowerBound);

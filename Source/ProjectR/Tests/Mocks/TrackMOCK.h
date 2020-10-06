@@ -24,7 +24,7 @@ public:
 	bool magnetBoxOverlapsPawnChannel();
     bool magnetBoxGeneratesOverlapEvents();
 	bool magnetBoxHasVolume();
-	bool magnetBoxMeshIsHidden();
-	bool magnetBoxMeshOnTopOfFloor();
+	bool magnetBoxIsHidden();
+	bool magnetBoxOnTopOfFloor();
 	bool magnetBoxHasXYFloorExtension();
 };

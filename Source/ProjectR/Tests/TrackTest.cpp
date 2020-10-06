@@ -162,13 +162,13 @@ bool FATrackMagnetBoxShouldHaveVolumeTest::RunTest(const FString& Parameters)
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackMagnetBoxMeshShouldBeInvisibleTest, "ProjectR.Unit.TrackTest.ATrackMagnetBoxMeshShouldBeInvisible", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackMagnetBoxShouldBeHiddenTest, "ProjectR.Unit.TrackTest.ATrackMagnetBoxShouldBeHidden", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackMagnetBoxMeshShouldBeInvisibleTest::RunTest(const FString& Parameters)
+bool FATrackMagnetBoxShouldBeHiddenTest::RunTest(const FString& Parameters)
 {
 	ATrackMOCK* testTrack = NewObject<ATrackMOCK>();
 	{
-		TestTrue(TEXT("The magnet box mesh should be hidden."), testTrack->magnetBoxMeshIsHidden());
+		TestTrue(TEXT("The magnet box should be hidden."), testTrack->magnetBoxIsHidden());
 	}
 	
 	return true;
@@ -176,13 +176,13 @@ bool FATrackMagnetBoxMeshShouldBeInvisibleTest::RunTest(const FString& Parameter
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackMagnetBoxMeshShouldBeOnTopOfFloorTest, "ProjectR.Unit.TrackTest.ATrackMagnetBoxMeshShouldBeOnTopOfFloor", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackMagnetBoxShouldBeOnTopOfFloorTest, "ProjectR.Unit.TrackTest.ATrackMagnetBoxShouldBeOnTopOfFloor", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackMagnetBoxMeshShouldBeOnTopOfFloorTest::RunTest(const FString& Parameters)
+bool FATrackMagnetBoxShouldBeOnTopOfFloorTest::RunTest(const FString& Parameters)
 {
 	ATrackMOCK* testTrack = NewObject<ATrackMOCK>();
 	{
-		TestTrue(TEXT("The magnet box mesh should be on top of the floor."), testTrack->magnetBoxMeshOnTopOfFloor());
+		TestTrue(TEXT("The magnet box should be on top of the floor."), testTrack->magnetBoxOnTopOfFloor());
 	}
 	
 	return true;
