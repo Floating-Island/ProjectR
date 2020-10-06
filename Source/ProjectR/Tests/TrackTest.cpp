@@ -146,4 +146,18 @@ bool FAJetMeshComponentShouldGenerateOverlapEventsTest::RunTest(const FString& P
 	return true;
 }
 
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackMagnetBoxShouldHaveAStaticMeshTest, "ProjectR.Unit.TrackTest.ATrackMagnetBoxShouldHaveAStaticMesh", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackMagnetBoxShouldHaveAStaticMeshTest::RunTest(const FString& Parameters)
+{
+	ATrackMOCK* testTrack = NewObject<ATrackMOCK>();
+	{
+		TestTrue(TEXT("The magnet box should have a static mesh attached."), testTrack->magnetBoxHasStaticMesh());
+	}
+	
+	return true;
+}
+
 #endif //WITH_DEV_AUTOMATION_TESTS
