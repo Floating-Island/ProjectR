@@ -14,8 +14,10 @@ class PROJECTR_API ATrack : public AActor
 	GENERATED_BODY()
 
 private:
-	void matchMagnetBoxXYExtensionToFloor();
-	void snapMagnetBoxToFloor();
+	UFUNCTION()
+		void matchMagnetBoxXYExtensionToFloor();
+	UFUNCTION()
+		void snapMagnetBoxToFloor();
 public:
 	// Sets default values for this actor's properties
 	ATrack();
@@ -23,7 +25,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	void magnetizeOverlappingJets();
+	UFUNCTION()
+		void magnetizeOverlappingJets();
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		UStaticMeshComponent* floorComponent;

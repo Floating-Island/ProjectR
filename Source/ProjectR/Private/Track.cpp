@@ -66,6 +66,7 @@ void ATrack::magnetizeOverlappingJets()
 {
 	TArray<AActor*> CollectedActors = TArray<AActor*>();
 	magnetBox->GetOverlappingActors(CollectedActors, AJet::StaticClass());//get all the actors that overlap with the magnet box.
+	GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("heyy")));
 	for (AActor* actor : CollectedActors)
 	{
 		AJet* overlappedJet = Cast<AJet, AActor>(actor);
@@ -74,10 +75,11 @@ void ATrack::magnetizeOverlappingJets()
 			UStaticMeshComponent* actorRootComponent = Cast<UStaticMeshComponent, USceneComponent>(overlappedJet->GetRootComponent());
 			if (actorRootComponent && actorRootComponent->IsSimulatingPhysics())
 			{
-				FVector gravity = overlappedJet->GetGravityDirection() * GetWorld()->GetGravityZ();
-				actorRootComponent->AddForce(-gravity);//we counter force....
+				FVector gravity = overlappedJet->GetGravityDirection() * GetWorld()->GetDefaultGravityZ();
+				actorRootComponent->AddForce(-gravity);//we counter gravity....
 				FVector magnet = -GetActorUpVector() * gravity.Size();//notice the '-' we need to pull, so we invert the normal.
-				actorRootComponent->AddForce(magnet);
+				GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("magnet vector: %s."), *magnet.ToString()));
+				actorRootComponent->AddForce(magnet * 10);
 			}
 		}
 	}
