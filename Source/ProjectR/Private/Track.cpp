@@ -5,6 +5,8 @@
 #include "Components/BoxComponent.h"
 
 
+
+
 // Sets default values
 ATrack::ATrack()
 {
@@ -28,8 +30,7 @@ ATrack::ATrack()
 
 	matchMagnetBoxXYExtensionToFloor();
 	
-	float boxMeshRelativeZLocation = magnetBox->GetUnscaledBoxExtent().Z;
-	magnetBox->AddRelativeLocation(FVector(0,0, boxMeshRelativeZLocation));
+	snapMagnetBoxToFloor();
 	
 }
 
@@ -38,6 +39,13 @@ void ATrack::matchMagnetBoxXYExtensionToFloor()
 	float xExtent = floorComponent->GetStaticMesh()->GetBoundingBox().GetExtent().X;
 	float yExtent = floorComponent->GetStaticMesh()->GetBoundingBox().GetExtent().Y;
 	magnetBox->SetBoxExtent(FVector(xExtent,yExtent,magnetBoxHeight));
+}
+
+
+void ATrack::snapMagnetBoxToFloor()
+{
+	float boxMeshRelativeZLocation = magnetBox->GetUnscaledBoxExtent().Z;
+	magnetBox->AddRelativeLocation(FVector(0,0, boxMeshRelativeZLocation));
 }
 
 // Called when the game starts or when spawned

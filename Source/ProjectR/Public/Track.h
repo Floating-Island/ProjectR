@@ -15,6 +15,7 @@ class PROJECTR_API ATrack : public AActor
 
 public:
 	void matchMagnetBoxXYExtensionToFloor();
+	void snapMagnetBoxToFloor();
 	// Sets default values for this actor's properties
 	ATrack();
 
