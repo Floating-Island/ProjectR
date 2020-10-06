@@ -66,6 +66,11 @@ bool AJetMOCK::generatesOverlapEvents()
         return meshComponent->GetGenerateOverlapEvents();
 }
 
+bool AJetMOCK::meshCollisionIsPawn()
+{
+	return meshComponent->GetCollisionObjectType() == ECC_Pawn;
+}
+
 //bool AJetMOCK::hasAnAntiGravitySystem()
 //{
 //	return antiGravitySystem? true : false;

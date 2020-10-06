@@ -40,5 +40,7 @@ public:
 
 	float getZVelocity();
 
-        bool generatesOverlapEvents();
+    bool generatesOverlapEvents();
+
+	bool meshCollisionIsPawn();
 };
