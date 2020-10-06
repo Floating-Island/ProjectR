@@ -28,6 +28,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		UBoxComponent* magnetBox;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Magnet System")
+		float magnetBoxHeight;
 
 public:
 	// Called every frame

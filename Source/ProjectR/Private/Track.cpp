@@ -24,17 +24,20 @@ ATrack::ATrack()
     magnetBox->SetGenerateOverlapEvents(true);
 
 	magnetBox->SetHiddenInGame(true);
+	magnetBoxHeight = 800;
 
+	matchMagnetBoxXYExtensionToFloor();
+	
 	float boxMeshRelativeZLocation = magnetBox->GetUnscaledBoxExtent().Z;
 	magnetBox->AddRelativeLocation(FVector(0,0, boxMeshRelativeZLocation));
-	matchMagnetBoxXYExtensionToFloor();
+	
 }
 
 void ATrack::matchMagnetBoxXYExtensionToFloor()
 {
 	float xExtent = floorComponent->GetStaticMesh()->GetBoundingBox().GetExtent().X;
 	float yExtent = floorComponent->GetStaticMesh()->GetBoundingBox().GetExtent().Y;
-	magnetBox->SetBoxExtent(FVector(xExtent,yExtent,magnetBox->GetUnscaledBoxExtent().Z));
+	magnetBox->SetBoxExtent(FVector(xExtent,yExtent,magnetBoxHeight));
 }
 
 // Called when the game starts or when spawned
