@@ -11,8 +11,8 @@ ATrack::ATrack()
 	floorComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Floor Component"));
 	RootComponent = floorComponent;
 
-	UStaticMesh* Mesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Engine/MapTemplates/SM_Template_Map_Floor")));
-	floorComponent->SetStaticMesh(Mesh);
+	UStaticMesh* floorMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Engine/MapTemplates/SM_Template_Map_Floor")));
+	floorComponent->SetStaticMesh(floorMesh);
 
 	magnetBox = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Magnet Box Component"));
 	magnetBox->SetupAttachment(RootComponent);
@@ -20,6 +20,9 @@ ATrack::ATrack()
 	magnetBox->SetCollisionResponseToAllChannels(ECR_Ignore);
 	magnetBox->SetCollisionResponseToChannel(ECC_Pawn,ECR_Overlap);
     magnetBox->SetGenerateOverlapEvents(true);
+
+	UStaticMesh* magnetMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Engine/EditorMeshes/EditorCube")));
+	magnetBox->SetStaticMesh(magnetMesh);
 }
 
 // Called when the game starts or when spawned
