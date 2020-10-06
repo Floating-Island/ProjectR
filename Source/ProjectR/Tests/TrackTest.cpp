@@ -136,6 +136,20 @@ bool FATrackMagnetBoxGeneratesOverlapEventsTest::RunTest(const FString& Paramete
 
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMeshCollisionTypeShouldBePawnTest, "ProjectR.Unit.TrackTest.AJetMeshCollisionTypeShouldBePawn", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetMeshCollisionTypeShouldBePawnTest::RunTest(const FString& Parameters)
+{
+	AJetMOCK* testJet = NewObject<AJetMOCK>();
+	{
+		TestTrue(TEXT("The jet collision object type should be pawn."), testJet->meshCollisionIsPawn());
+	}
+	
+	return true;
+}
+
+
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMeshComponentShouldGenerateOverlapEventsTest, "ProjectR.Unit.TrackTest.AJetMeshComponentShouldGenerateOverlapEvents", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetMeshComponentShouldGenerateOverlapEventsTest::RunTest(const FString& Parameters)
