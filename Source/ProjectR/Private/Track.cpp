@@ -75,11 +75,10 @@ void ATrack::magnetizeOverlappingJets()
 			UStaticMeshComponent* actorRootComponent = Cast<UStaticMeshComponent, USceneComponent>(overlappedJet->GetRootComponent());
 			if (actorRootComponent && actorRootComponent->IsSimulatingPhysics())
 			{
-				FVector gravity = overlappedJet->GetGravityDirection() * GetWorld()->GetDefaultGravityZ();
-				actorRootComponent->AddForce(-gravity);//we counter gravity....
+				FVector gravity = overlappedJet->GetGravityDirection() * GetWorld()->GetGravityZ();
+				actorRootComponent->AddForce(gravity*actorRootComponent->GetMass());//we counter gravity....
 				FVector magnet = -GetActorUpVector() * gravity.Size();//notice the '-' we need to pull, so we invert the normal.
-				GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("magnet vector: %s."), *magnet.ToString()));
-				actorRootComponent->AddForce(magnet * 10);
+				actorRootComponent->AddForce(magnet*actorRootComponent->GetMass());
 			}
 		}
 	}
