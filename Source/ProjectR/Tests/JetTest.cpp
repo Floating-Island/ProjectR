@@ -1193,7 +1193,7 @@ bool FSpawningAJetBrakeAndSteerRightCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE();
+	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE();//is a mock necessary??
 	
 	float direction = 1;//1 is right, -1 is left going forwards
 	testJet->brake();
