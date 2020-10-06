@@ -25,9 +25,9 @@ ATrack::ATrack()
 
 	UStaticMesh* magnetMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Engine/EditorMeshes/EditorCube")));
 	magnetBox->SetStaticMesh(magnetMesh);
-	/*magnetBox->SetHiddenInGame(true);*/
+	magnetBox->SetHiddenInGame(true);
 
-	float boxMeshRelativeZLocation = floorComponent->GetStaticMesh()->PositiveBoundsExtension.Z + abs(magnetBox->GetStaticMesh()->NegativeBoundsExtension.Z);
+	float boxMeshRelativeZLocation = magnetBox->GetStaticMesh()->GetBoundingBox().GetExtent().Z;
 	magnetBox->AddRelativeLocation(FVector(0,0, boxMeshRelativeZLocation));
 	/*matchMagnetBoxXYExtensionToFloor();*/
 }
@@ -46,6 +46,8 @@ void ATrack::BeginPlay()
 {
 	Super::BeginPlay();
 	/*matchMagnetBoxXYExtensionToFloor();*/
+	GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("floor Z bounds: %f."), floorComponent->GetStaticMesh()->GetBoundingBox().GetExtent().Z));
+	GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("magnet box Z bounds: %f."), magnetBox->GetStaticMesh()->GetBoundingBox().GetExtent().Z));
 }
 
 // Called every frame

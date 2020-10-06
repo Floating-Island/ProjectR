@@ -56,8 +56,8 @@ bool ATrackMOCK::magnetBoxMeshIsHidden()
 
 bool ATrackMOCK::magnetBoxMeshOnTopOfFloor()
 {
-	float magnetBoxMeshZLowerBound = magnetBox->GetRelativeLocation().Z - abs(magnetBox->GetStaticMesh()->NegativeBoundsExtension.Z);
-	return floorComponent->GetStaticMesh()->PositiveBoundsExtension.Z == magnetBoxMeshZLowerBound;
+	float magnetBoxMeshZLowerBound = magnetBox->GetRelativeLocation().Z;
+	return FMath::IsNearlyEqual(magnetBox->GetStaticMesh()->GetBoundingBox().GetExtent().Z, magnetBoxMeshZLowerBound);
 }
 
 bool ATrackMOCK::magnetBoxMeshHasXYFloorExtension()
