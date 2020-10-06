@@ -160,4 +160,29 @@ bool FATrackMagnetBoxShouldHaveAStaticMeshTest::RunTest(const FString& Parameter
 	return true;
 }
 
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackMagnetBoxMeshShouldBeInvisibleTest, "ProjectR.Unit.TrackTest.ATrackMagnetBoxMeshShouldBeInvisible", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackMagnetBoxMeshShouldBeInvisibleTest::RunTest(const FString& Parameters)
+{
+	ATrackMOCK* testTrack = NewObject<ATrackMOCK>();
+	{
+		TestTrue(TEXT("The magnet box mesh should be hidden."), testTrack->magnetBoxMeshIsHidden());
+	}
+	
+	return true;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS
