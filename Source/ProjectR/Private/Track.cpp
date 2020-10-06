@@ -24,7 +24,7 @@ ATrack::ATrack()
     magnetBox->SetGenerateOverlapEvents(true);
 
 	magnetBox->SetHiddenInGame(true);
-	magnetBoxHeight = 800;
+	magnetBoxHeight = 400;
 
 	matchMagnetBoxXYExtensionToFloor();
 	
