@@ -3,6 +3,7 @@
 
 #include "PIESessionUtilities.h"
 #include "Jet/Jet.h"
+#include "../Mocks/TrackMOCK.h"
 #include "../Mocks/JetMOCK.h"
 #include "floorMeshActor.h"
 #include "Kismet/GameplayStatics.h"
@@ -44,6 +45,11 @@ AFloorMeshActor* PIESessionUtilities::spawnFloorMeshActorInPIE(FVector atALocati
 	return pieWorld->SpawnActor<AFloorMeshActor>(AFloorMeshActor::StaticClass(), atALocation, FRotator(), spawnParams);
 }
 
+ATrackMOCK* PIESessionUtilities::spawnTrackMOCKInPie(FVector atALocation)
+{
+	return pieWorld->SpawnActor<ATrackMOCK>(ATrackMOCK::StaticClass(), atALocation, FRotator(), spawnParams);
+}
+
 AJet* PIESessionUtilities::retrieveJetFromPIE()
 {
 	return Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, AJet::StaticClass()));
@@ -52,6 +58,11 @@ AJet* PIESessionUtilities::retrieveJetFromPIE()
 AJetMOCK* PIESessionUtilities::retrieveJetMOCKFromPIE()
 {
 	return Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, AJetMOCK::StaticClass()));
+}
+
+ATrackMOCK* PIESessionUtilities::retrieveTrackMOCKFromPIE()
+{
+	return Cast<ATrackMOCK, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, ATrackMOCK::StaticClass()));
 }
 
 void PIESessionUtilities::processLocalPlayerInputFrom(FName anAxisMappingName)
