@@ -3,6 +3,7 @@
 
 #include "TrackMOCK.h"
 #include "Engine/EngineTypes.h"
+#include "Components/BoxComponent.h"
 
 bool ATrackMOCK::hasAFloor()
 {
@@ -57,13 +58,13 @@ bool ATrackMOCK::magnetBoxMeshIsHidden()
 bool ATrackMOCK::magnetBoxMeshOnTopOfFloor()
 {
 	float magnetBoxMeshZLowerBound = magnetBox->GetRelativeLocation().Z;
-	return FMath::IsNearlyEqual(magnetBox->GetStaticMesh()->GetBoundingBox().GetExtent().Z, magnetBoxMeshZLowerBound);
+	return FMath::IsNearlyEqual(magnetBox->GetUnscaledBoxExtent().Z, magnetBoxMeshZLowerBound);
 }
 
-bool ATrackMOCK::magnetBoxMeshHasXYFloorExtension()
-{
-	return magnetBox->GetStaticMesh()->PositiveBoundsExtension.X == floorComponent->GetStaticMesh()->PositiveBoundsExtension.X &&
-		magnetBox->GetStaticMesh()->PositiveBoundsExtension.Y == floorComponent->GetStaticMesh()->PositiveBoundsExtension.Y &&
-		magnetBox->GetStaticMesh()->NegativeBoundsExtension.X == floorComponent->GetStaticMesh()->NegativeBoundsExtension.X &&
-		magnetBox->GetStaticMesh()->NegativeBoundsExtension.X == floorComponent->GetStaticMesh()->NegativeBoundsExtension.X;
-}
+//bool ATrackMOCK::magnetBoxMeshHasXYFloorExtension()
+//{
+//	return magnetBox->GetStaticMesh()->PositiveBoundsExtension.X == floorComponent->GetStaticMesh()->PositiveBoundsExtension.X &&
+//		magnetBox->GetStaticMesh()->PositiveBoundsExtension.Y == floorComponent->GetStaticMesh()->PositiveBoundsExtension.Y &&
+//		magnetBox->GetStaticMesh()->NegativeBoundsExtension.X == floorComponent->GetStaticMesh()->NegativeBoundsExtension.X &&
+//		magnetBox->GetStaticMesh()->NegativeBoundsExtension.X == floorComponent->GetStaticMesh()->NegativeBoundsExtension.X;
+//}
