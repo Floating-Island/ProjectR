@@ -40,5 +40,7 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
+	void CounterGravityForce(UStaticMeshComponent* actorRootComponent, FVector jetWeightAbsolute);
+	void pullTowardsFloor(UStaticMeshComponent* anActorRootComponent, FVector aJetWeightAbsolute);
+	void magnetize(UStaticMeshComponent* actorRootComponent, FVector jetWeightAbsolute);
 };

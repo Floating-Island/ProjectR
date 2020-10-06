@@ -77,10 +77,25 @@ void ATrack::magnetizeOverlappingJets()
 			{
 				FVector gravityAccelerationAbsolute = overlappedJet->GetGravityDirection() * GetWorld()->GetGravityZ();
 				FVector jetWeightAbsolute = gravityAccelerationAbsolute * actorRootComponent->GetMass();
-				actorRootComponent->AddForce(jetWeightAbsolute);//we counter the weight force....
-				FVector magnet = -GetActorUpVector() * jetWeightAbsolute;//notice the '-' we need to pull, so we invert the normal.
-				actorRootComponent->AddForce(magnet);
+				magnetize(actorRootComponent, jetWeightAbsolute);
 			}
 		}
 	}
+}
+
+void ATrack::magnetize(UStaticMeshComponent* actorRootComponent, FVector jetWeightAbsolute)
+{
+	CounterGravityForce(actorRootComponent, jetWeightAbsolute);
+	pullTowardsFloor(actorRootComponent, jetWeightAbsolute);
+}
+
+void ATrack::CounterGravityForce(UStaticMeshComponent* actorRootComponent, FVector jetWeightAbsolute)
+{
+	actorRootComponent->AddForce(jetWeightAbsolute);//we counter the weight force....
+}
+
+void ATrack::pullTowardsFloor(UStaticMeshComponent* anActorRootComponent, FVector aJetWeightAbsolute)
+{
+	FVector magnet = -GetActorUpVector() * aJetWeightAbsolute;//notice the '-' we need to pull, so we invert the normal.
+	anActorRootComponent->AddForce(magnet);
 }
