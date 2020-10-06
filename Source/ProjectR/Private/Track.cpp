@@ -23,7 +23,10 @@ ATrack::ATrack()
 
 	UStaticMesh* magnetMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Engine/EditorMeshes/EditorCube")));
 	magnetBox->SetStaticMesh(magnetMesh);
-	magnetBox->SetHiddenInGame(false);//weird. Putting false makes it hidden...	
+	magnetBox->SetHiddenInGame(false);//weird. Putting false makes it hidden...
+
+	float boxMeshRelativeZLocation = floorComponent->GetStaticMesh()->PositiveBoundsExtension.Z + abs(magnetBox->GetStaticMesh()->NegativeBoundsExtension.Z);
+	magnetBox->AddRelativeLocation(FVector(0,0, boxMeshRelativeZLocation));
 }
 
 // Called when the game starts or when spawned
