@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Track.generated.h"
 
+class UBoxComponent;
+
 UCLASS()
 class PROJECTR_API ATrack : public AActor
 {
@@ -24,7 +26,7 @@ protected:
 		UStaticMeshComponent* floorComponent;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-		UStaticMeshComponent* magnetBox;
+		UBoxComponent* magnetBox;
 
 
 public:
