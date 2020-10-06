@@ -23,7 +23,7 @@ public:
 	bool magnetBoxHasCollisionsEnabledToQueryOnly();
 	bool magnetBoxOverlapsPawnChannel();
     bool magnetBoxGeneratesOverlapEvents();
-	bool magnetBoxHasStaticMesh();
+	bool magnetBoxHasVolume();
 	bool magnetBoxMeshIsHidden();
 	bool magnetBoxMeshOnTopOfFloor();
 	bool magnetBoxMeshHasXYFloorExtension();

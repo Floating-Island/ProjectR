@@ -44,9 +44,9 @@ bool ATrackMOCK::magnetBoxGeneratesOverlapEvents()
 	return magnetBox->GetGenerateOverlapEvents();
 }
 
-bool ATrackMOCK::magnetBoxHasStaticMesh()
+bool ATrackMOCK::magnetBoxHasVolume()
 {
-	return magnetBox->GetStaticMesh() ? true : false;
+	return (magnetBox->GetScaledBoxExtent().Size > 0) ? true : false;
 }
 
 bool ATrackMOCK::magnetBoxMeshIsHidden()

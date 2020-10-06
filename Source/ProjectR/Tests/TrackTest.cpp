@@ -154,7 +154,7 @@ bool FATrackMagnetBoxShouldHaveVolumeTest::RunTest(const FString& Parameters)
 {
 	ATrackMOCK* testTrack = NewObject<ATrackMOCK>();
 	{
-		TestTrue(TEXT("The magnet box should have a box volume."), testTrack->magnetBoxHasStaticMesh());
+		TestTrue(TEXT("The magnet box should have a box volume."), testTrack->magnetBoxHasVolume());
 	}
 	
 	return true;
