@@ -23,6 +23,7 @@ ATrack::ATrack()
 
 	UStaticMesh* magnetMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Engine/EditorMeshes/EditorCube")));
 	magnetBox->SetStaticMesh(magnetMesh);
+	magnetBox->SetHiddenInGame(false);//weird. Putting false makes it hidden...
 }
 
 // Called when the game starts or when spawned
