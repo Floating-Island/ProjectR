@@ -3,6 +3,8 @@
 
 #include "Track.h"
 
+
+
 // Sets default values
 ATrack::ATrack()
 {
@@ -27,6 +29,15 @@ ATrack::ATrack()
 
 	float boxMeshRelativeZLocation = floorComponent->GetStaticMesh()->PositiveBoundsExtension.Z + abs(magnetBox->GetStaticMesh()->NegativeBoundsExtension.Z);
 	magnetBox->AddRelativeLocation(FVector(0,0, boxMeshRelativeZLocation));
+	matchMagnetBoxXYExtensionToFloor();
+}
+
+void ATrack::matchMagnetBoxXYExtensionToFloor()
+{
+	magnetBox->GetStaticMesh()->PositiveBoundsExtension.X = floorComponent->GetStaticMesh()->PositiveBoundsExtension.X;
+	magnetBox->GetStaticMesh()->PositiveBoundsExtension.Y = floorComponent->GetStaticMesh()->PositiveBoundsExtension.Y;
+	magnetBox->GetStaticMesh()->NegativeBoundsExtension.X = floorComponent->GetStaticMesh()->NegativeBoundsExtension.X;
+	magnetBox->GetStaticMesh()->NegativeBoundsExtension.X = floorComponent->GetStaticMesh()->NegativeBoundsExtension.X;
 }
 
 // Called when the game starts or when spawned
