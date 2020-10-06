@@ -64,7 +64,7 @@ void ATrack::Tick(float DeltaTime)
 
 void ATrack::magnetizeOverlappingJets()
 {
-	TArray<AActor*> CollectedActors;
+	TArray<AActor*> CollectedActors = TArray<AActor*>();
 	magnetBox->GetOverlappingActors(CollectedActors, AJet::StaticClass());//get all the actors that overlap with the magnet box.
 	for (AActor* actor : CollectedActors)
 	{
