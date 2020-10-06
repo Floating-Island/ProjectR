@@ -264,7 +264,7 @@ bool FCheckATrackAttractsAJetCommand::Update()
 			++aTickCount;
 			float currentDistance = (testJet->GetActorLocation() - testTrack->GetActorLocation()).Size();
 			bool isPulling = currentDistance < previousDistance;
-			bool isVelocityFullyAlongNormal = testJet->GetVelocity().ProjectOnTo(testTrack->normalVector()).Size() == testJet->GetVelocity().Size();
+			bool isVelocityFullyAlongNormal = FMath::IsNearlyEqual(testJet->GetVelocity().ProjectOnTo(testTrack->normalVector()).Size(), testJet->GetVelocity().Size());
 			bool velocityNearZero = FMath::IsNearlyZero(testJet->GetVelocity().Size(), 0.1f);
 
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString()));
