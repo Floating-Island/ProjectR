@@ -25,26 +25,27 @@ ATrack::ATrack()
 
 	UStaticMesh* magnetMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Engine/EditorMeshes/EditorCube")));
 	magnetBox->SetStaticMesh(magnetMesh);
-	magnetBox->SetHiddenInGame(true);
+	/*magnetBox->SetHiddenInGame(true);*/
 
 	float boxMeshRelativeZLocation = floorComponent->GetStaticMesh()->PositiveBoundsExtension.Z + abs(magnetBox->GetStaticMesh()->NegativeBoundsExtension.Z);
 	magnetBox->AddRelativeLocation(FVector(0,0, boxMeshRelativeZLocation));
-	matchMagnetBoxXYExtensionToFloor();
+	/*matchMagnetBoxXYExtensionToFloor();*/
 }
 
-void ATrack::matchMagnetBoxXYExtensionToFloor()
-{
-	magnetBox->GetStaticMesh()->PositiveBoundsExtension.X = floorComponent->GetStaticMesh()->PositiveBoundsExtension.X;
-	magnetBox->GetStaticMesh()->PositiveBoundsExtension.Y = floorComponent->GetStaticMesh()->PositiveBoundsExtension.Y;
-	magnetBox->GetStaticMesh()->NegativeBoundsExtension.X = floorComponent->GetStaticMesh()->NegativeBoundsExtension.X;
-	magnetBox->GetStaticMesh()->NegativeBoundsExtension.X = floorComponent->GetStaticMesh()->NegativeBoundsExtension.X;
-}
+//void ATrack::matchMagnetBoxXYExtensionToFloor()
+//{
+//	magnetBox->GetStaticMesh()->PositiveBoundsExtension.X = floorComponent->GetStaticMesh()->PositiveBoundsExtension.X;
+//	magnetBox->GetStaticMesh()->PositiveBoundsExtension.Y = floorComponent->GetStaticMesh()->PositiveBoundsExtension.Y;
+//	magnetBox->GetStaticMesh()->NegativeBoundsExtension.X = floorComponent->GetStaticMesh()->NegativeBoundsExtension.X;
+//	magnetBox->GetStaticMesh()->NegativeBoundsExtension.X = floorComponent->GetStaticMesh()->NegativeBoundsExtension.X;
+//	//(FVector(floorComponent->GetStaticMesh()->GetBounds().BoxExtent.X,floorComponent->GetStaticMesh()->GetBounds().BoxExtent.Y,magnetBox->GetRelativeScale3D().Z));
+//}
 
 // Called when the game starts or when spawned
 void ATrack::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	/*matchMagnetBoxXYExtensionToFloor();*/
 }
 
 // Called every frame
