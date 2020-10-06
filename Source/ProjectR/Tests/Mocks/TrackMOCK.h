@@ -26,4 +26,5 @@ public:
 	bool magnetBoxHasStaticMesh();
 	bool magnetBoxMeshIsHidden();
 	bool magnetBoxMeshOnTopOfFloor();
+	bool magnetBoxMeshHasXYFloorExtension();
 };
