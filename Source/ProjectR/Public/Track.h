@@ -14,7 +14,7 @@ class PROJECTR_API ATrack : public AActor
 	GENERATED_BODY()
 
 public:
-	/*void matchMagnetBoxXYExtensionToFloor();*/
+	void matchMagnetBoxXYExtensionToFloor();
 	// Sets default values for this actor's properties
 	ATrack();
 
