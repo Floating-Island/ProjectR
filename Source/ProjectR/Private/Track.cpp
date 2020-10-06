@@ -44,8 +44,6 @@ void ATrack::matchMagnetBoxXYExtensionToFloor()
 void ATrack::BeginPlay()
 {
 	Super::BeginPlay();
-	GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("floor Z bounds: %f."), floorComponent->GetStaticMesh()->GetBoundingBox().GetExtent().Z));
-	GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("magnet box Z bounds: %f."), magnetBox->GetUnscaledBoxExtent().Z));
 }
 
 // Called every frame
