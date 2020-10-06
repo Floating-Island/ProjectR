@@ -65,13 +65,13 @@ void ATrack::Tick(float DeltaTime)
 void ATrack::magnetizeOverlappingJets()
 {
 	TArray<AActor*> CollectedActors;
-	magnetBox->GetOverlappingActors(CollectedActors);//get all the actor components that overlap with the attraction sphere.
+	magnetBox->GetOverlappingActors(CollectedActors, AJet::StaticClass());//get all the actors that overlap with the magnet box.
 	for (AActor* actor : CollectedActors)
 	{
 		AJet* overlappedJet = Cast<AJet, AActor>(actor);
 		if (overlappedJet)
 		{
-			UPrimitiveComponent* actorRootComponent = Cast<UPrimitiveComponent, USceneComponent>(overlappedJet->GetRootComponent());
+			UStaticMeshComponent* actorRootComponent = Cast<UStaticMeshComponent, USceneComponent>(overlappedJet->GetRootComponent());
 			if (actorRootComponent && actorRootComponent->IsSimulatingPhysics())
 			{
 				FVector gravity = overlappedJet->GetGravityDirection() * GetWorld()->GetGravityZ();
