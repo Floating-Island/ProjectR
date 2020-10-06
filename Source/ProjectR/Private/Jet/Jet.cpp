@@ -47,6 +47,7 @@ AJet::AJet()
 	steeringSystem = CreateDefaultSubobject<USteeringComponent>(TEXT("Steering System"));
 
     meshComponent->SetGenerateOverlapEvents(true);
+	meshComponent->SetCollisionObjectType(ECC_Pawn);
 }
 
 // Called when the game starts or when spawned
