@@ -66,3 +66,8 @@ bool ATrackMOCK::magnetBoxHasXYFloorExtension()
 	return magnetBox->GetUnscaledBoxExtent().X == floorComponent->GetStaticMesh()->GetBoundingBox().GetExtent().X &&
 		magnetBox->GetUnscaledBoxExtent().Y == floorComponent->GetStaticMesh()->GetBoundingBox().GetExtent().Y;
 }
+
+FVector ATrackMOCK::normalVector()
+{
+	return floorComponent->GetUpVector();
+}

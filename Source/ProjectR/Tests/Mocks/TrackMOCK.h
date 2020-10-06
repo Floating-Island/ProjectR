@@ -27,4 +27,5 @@ public:
 	bool magnetBoxIsHidden();
 	bool magnetBoxOnTopOfFloor();
 	bool magnetBoxHasXYFloorExtension();
+	FVector normalVector();
 };
