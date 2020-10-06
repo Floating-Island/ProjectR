@@ -48,3 +48,8 @@ bool ATrackMOCK::magnetBoxHasStaticMesh()
 {
 	return magnetBox->GetStaticMesh() ? true : false;
 }
+
+bool ATrackMOCK::magnetBoxMeshIsHidden()
+{
+	return magnetBox->bHiddenInGame;
+}

@@ -24,4 +24,5 @@ public:
 	bool magnetBoxOverlapsPawnChannel();
     bool magnetBoxGeneratesOverlapEvents();
 	bool magnetBoxHasStaticMesh();
+	bool magnetBoxMeshIsHidden();
 };
