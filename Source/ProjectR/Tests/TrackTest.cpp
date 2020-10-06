@@ -250,7 +250,7 @@ bool FCheckATrackAttractsAJetCommand::Update()
 			++aTickCount;
 
 			bool isPullForceAlongTrackNormal = testJet->GetVelocity().ProjectOnTo(testTrack->normalVector()) == testJet->GetVelocity();
-
+			bool velocityNearZero = FMath::IsNearlyZero(testJet->GetVelocity().Size(), 0.1f);
 
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString()));
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Track location: %s"), *testTrack->GetActorLocation().ToString()));
@@ -260,9 +260,9 @@ bool FCheckATrackAttractsAJetCommand::Update()
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Track normal vector sign: %s"), *testTrack->normalVector().GetSignVector().ToString()));
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Track normal vector: %s"), *testTrack->normalVector().ToString()));
 
-			if (isPullForceAlongTrackNormal)
+			if (isPullForceAlongTrackNormal && !velocityNearZero)
 			{
-				test->TestTrue(TEXT("The Track should attract a Jet along the track normal vector."), isPullForceAlongTrackNormal);
+				test->TestTrue(TEXT("The Track should attract a Jet along the track normal vector."), isPullForceAlongTrackNormal && !velocityNearZero);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
