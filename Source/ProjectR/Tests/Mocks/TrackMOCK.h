@@ -25,4 +25,5 @@ public:
     bool magnetBoxGeneratesOverlapEvents();
 	bool magnetBoxHasStaticMesh();
 	bool magnetBoxMeshIsHidden();
+	bool magnetBoxMeshOnTopOfFloor();
 };
