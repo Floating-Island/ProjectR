@@ -61,10 +61,8 @@ bool ATrackMOCK::magnetBoxMeshOnTopOfFloor()
 	return FMath::IsNearlyEqual(magnetBox->GetUnscaledBoxExtent().Z, magnetBoxMeshZLowerBound);
 }
 
-//bool ATrackMOCK::magnetBoxMeshHasXYFloorExtension()
-//{
-//	return magnetBox->GetStaticMesh()->PositiveBoundsExtension.X == floorComponent->GetStaticMesh()->PositiveBoundsExtension.X &&
-//		magnetBox->GetStaticMesh()->PositiveBoundsExtension.Y == floorComponent->GetStaticMesh()->PositiveBoundsExtension.Y &&
-//		magnetBox->GetStaticMesh()->NegativeBoundsExtension.X == floorComponent->GetStaticMesh()->NegativeBoundsExtension.X &&
-//		magnetBox->GetStaticMesh()->NegativeBoundsExtension.X == floorComponent->GetStaticMesh()->NegativeBoundsExtension.X;
-//}
+bool ATrackMOCK::magnetBoxHasXYFloorExtension()
+{
+	return magnetBox->GetUnscaledBoxExtent().X == floorComponent->GetStaticMesh()->GetBoundingBox().GetExtent().X &&
+		magnetBox->GetUnscaledBoxExtent().Y == floorComponent->GetStaticMesh()->GetBoundingBox().GetExtent().Y;
+}
