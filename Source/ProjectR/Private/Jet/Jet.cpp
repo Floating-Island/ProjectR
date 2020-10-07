@@ -83,7 +83,7 @@ float AJet::settedTopSpeed()
 
 void AJet::accelerate(float anAccelerationMultiplier)
 {
-	if (anAccelerationMultiplier > 0 && currentSpeed() < settedTopSpeed() && !FMath::IsNearlyEqual(currentSpeed(), settedTopSpeed(), 0.5f))
+	if (anAccelerationMultiplier > 0 && currentSpeed() < settedTopSpeed() && !FMath::IsNearlyEqual(currentSpeed(), settedTopSpeed(), 1.0f))
 	{
 		FVector forceToApply = GetActorForwardVector() * acceleration();
 		meshComponent->AddForce(forceToApply * anAccelerationMultiplier, NAME_None, true);
