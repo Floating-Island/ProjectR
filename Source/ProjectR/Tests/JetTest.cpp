@@ -458,9 +458,10 @@ bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
 		if (testJet)
 		{
 			float currentSpeed = testJet->currentSpeed();
-			bool isAtTopSpeed = FMath::IsNearlyEqual(currentSpeed, testJet->settedTopSpeed(), 1.4f);
+			bool isAtTopSpeed = FMath::IsNearlyEqual(currentSpeed, testJet->settedTopSpeed(), 2.0f);
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet location: %f"), currentSpeed));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet speed: %f"), currentSpeed));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet top speed: %f"), testJet->settedTopSpeed()));
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet %s at currentSpeed"), *FString(isAtTopSpeed? "is":"isn't")));
 			++aTickCount;
 
@@ -1218,7 +1219,7 @@ bool FCheckAJetInvertSteeringWhenInReverseCommand::Update()
 			++aTickCount;
 
 			bool ismovingRight = testJet->GetVelocity().Y > 0;//if steering in reverse, Y should be > 0, the velocity vector points backwards and right.
-			bool isMinimalSteering = FMath::IsNearlyZero(testJet->GetActorRotation().Yaw, 0.1f);
+			bool isMinimalSteering = FMath::IsNearlyZero(testJet->GetActorRotation().Yaw, 0.01f);
 			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
 			FVector jetForwardDirection = testJet->GetActorForwardVector();
 			bool isMovingBackwards = testJet->goesBackwards();
@@ -1228,6 +1229,7 @@ bool FCheckAJetInvertSteeringWhenInReverseCommand::Update()
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity projection on forward vector: %s"), *testJet->GetVelocity().ProjectOnTo(jetForwardDirection).ToString()));
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity projection sign: %s"), *testJet->GetVelocity().ProjectOnTo(jetForwardDirection).GetSignVector().ToString()));
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet forward vector sign: %s"), *jetForwardDirection.GetSignVector().ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet rotation is: %s"), *testJet->GetActorRotation().ToString()));
 
 			if (!speedNearlyZero && !isMinimalSteering && ismovingRight && isMovingBackwards)
 			{
