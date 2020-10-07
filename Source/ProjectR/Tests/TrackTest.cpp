@@ -260,7 +260,6 @@ bool FCheckATrackAttractsAJetCommand::Update()
 
 		if (testJet && testTrack)
 		{
-			testJet->SetActorRotation(FRotator(0));//so it doesn't mess up its rotation.
 			++aTickCount;
 			float currentDistance = (testJet->GetActorLocation() - testTrack->GetActorLocation()).Size();
 			bool isPulling = currentDistance < aPreviousDistance;
@@ -336,7 +335,7 @@ bool FSpawningAJetAndTrackSideWaysCommand::Update()
 	FRotator sideways = FRotator(0, 0, 90);
 	testTrack->SetActorRotation(sideways);
 
-	FVector distanceFromTrack = FVector(0, 900, 0);
+	FVector distanceFromTrack = FVector(0, 900, 0); 
 	FVector nearTheTrack = testTrack->GetActorLocation() + distanceFromTrack;
 
 	AJet* testJet = sessionUtilities.spawnJetInPIE(nearTheTrack);
