@@ -517,7 +517,7 @@ bool FSpawningAJetMakeItSteerRightCommand::Update()
 	AJet* testJet = sessionUtilities.spawnJetInPIE();
 
 	float direction = 1;//1 is right, -1 is left...
-
+	//we should set the speed to 1 first so the jet is able to steer. Change it to a mock.
 	testJet->steer(direction);
 
 	return true;
@@ -659,7 +659,7 @@ bool FSpawningAJetPressSteerRightKeyCommand::Update()
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
 	AJet* testJet = sessionUtilities.spawnJetInPIE();
-
+	//we should set the speed to 1 first so the jet is able to steer. Change it to a mock.
 	sessionUtilities.processLocalPlayerInputFrom(FName(TEXT("SteerAction")));
 
 	return true;
@@ -1276,5 +1276,87 @@ bool FAJetShouldInvertSteeringWhenInReverseTest::RunTest(const FString& Paramete
 //Also, if a Jet is falling and a steering is applied, the align velocity makes it transform the gravity force into forward/backwards velocity and stops falling as long as the steering is made.
 //We should first project velocity into the forward vector, save that value and use it to update the velocity.
 
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJeSteerRightWhenIdleCommand);
+
+bool FSpawningAJeSteerRightWhenIdleCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+
+	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE();
+
+	float direction = 1;//1 is right, -1 is left...
+	testJet->SetActorRotation(FRotator(0));//so we are sure to start with zero rotation
+	testJet->steer(direction);
+
+	return true;
+}
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckAJetUnableToSteerWhenIdleCommand, int, aTickCount, int, aTickLimit, FRotator, previousRotation, FAutomationTestBase*, test);
+
+bool FCheckAJetUnableToSteerWhenIdleCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
+		if (testJet)
+		{
+			++aTickCount;
+
+			FRotator currentRotation = testJet->GetActorRotation();
+			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
+			bool hasntRotatedFromPreviousRotation = FMath::IsNearlyEqual(previousRotation.Yaw, currentRotation.Yaw);
+
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet previous rotation: %s"), *previousRotation.ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet current rotation: %s"), *currentRotation.ToString()));
+			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet speed: %f"), testJet->currentSpeed()));
+			
+			if (aTickCount > aTickLimit || !hasntRotatedFromPreviousRotation)
+			{
+				test->TestTrue(TEXT("The Jet should update it's velocity to match the direction of the forward vector after steering."), speedNearlyZero && hasntRotatedFromPreviousRotation);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			previousRotation = currentRotation;
+		}
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetIsntAbleToSteerWhenIdleTest, "ProjectR.Unit.JetTests.IsntAbleToSteerWhenIdle", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetIsntAbleToSteerWhenIdleTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJeSteerRightWhenIdleCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetUnableToSteerWhenIdleCommand(tickCount, tickLimit, FRotator(0), this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
 
 #endif //WITH_DEV_AUTOMATION_TESTS
