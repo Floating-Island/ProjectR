@@ -263,7 +263,7 @@ bool FCheckATrackAttractsAJetCommand::Update()
 			++aTickCount;
 			float currentDistance = (testJet->GetActorLocation() - testTrack->GetActorLocation()).Size();
 			bool isPulling = currentDistance < aPreviousDistance;
-			bool isVelocityFullyAlongNormal = FMath::IsNearlyEqual(testJet->GetVelocity().ProjectOnTo(testTrack->normalVector()).Size(), testJet->GetVelocity().Size(), 0.1f);
+			bool isVelocityFullyAlongNormal = FMath::IsNearlyEqual(testJet->GetVelocity().ProjectOnTo(testTrack->normalVector()).Size(), testJet->GetVelocity().Size());
 			bool velocityNearZero = FMath::IsNearlyZero(testJet->GetVelocity().Size(), 0.1f);
 
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString()));
@@ -278,9 +278,9 @@ bool FCheckATrackAttractsAJetCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *testJet->GetVelocity().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity projection on normal vector: %s"), *testJet->GetVelocity().ProjectOnTo(testTrack->normalVector()).ToString());
 			UE_LOG(LogTemp, Log, TEXT("Track normal vector: %s"), *testTrack->normalVector().ToString());
-			UE_LOG(LogTemp, Log, TEXT("is pulling: %s"), *(isPulling? "true" : "false"));
-			UE_LOG(LogTemp, Log, TEXT("is velocity fully along normal: %s"), *(isVelocityFullyAlongNormal? "true" : "false"));
-			UE_LOG(LogTemp, Log, TEXT("is velocity near zero: %s"), *(velocityNearZero? "true" : "false"));
+			UE_LOG(LogTemp, Log, TEXT("is pulling: %s"), *FString(isPulling? "true" : "false"));
+			UE_LOG(LogTemp, Log, TEXT("is velocity fully along normal: %s"), *FString(isVelocityFullyAlongNormal? "true" : "false"));
+			UE_LOG(LogTemp, Log, TEXT("is velocity near zero: %s"), *FString(velocityNearZero? "true" : "false"));
 			
 			if (!velocityNearZero && isVelocityFullyAlongNormal && isPulling)
 			{
