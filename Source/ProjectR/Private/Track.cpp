@@ -91,6 +91,6 @@ void ATrack::CounterGravityForce(UStaticMeshComponent* anActorRootComponent, FVe
 
 void ATrack::pullTowardsFloor(UStaticMeshComponent* anActorRootComponent, FVector aJetWeightAbsolute)
 {
-	FVector magnet = -GetActorUpVector() * aJetWeightAbsolute;//notice the '-' we need to pull, so we invert the normal.
+	FVector magnet = -GetActorUpVector() * aJetWeightAbsolute.Size();//notice the '-' we need to pull, so we invert the normal.
 	anActorRootComponent->AddForce(magnet);
 }
