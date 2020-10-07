@@ -360,7 +360,7 @@ bool FATrackSideWaysShouldAttractAJetAlongItsNormalVectorTest::RunTest(const FSt
 	int tickLimit = 4;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackAttractsAJetCommand(tickCount, tickLimit, std::numeric_limits<float>::min(), this));
 
-	//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
 	return true;
 }
