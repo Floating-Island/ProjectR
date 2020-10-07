@@ -248,7 +248,7 @@ bool FSpawningAJetAndTrackUpsideDownCommand::Update()
 }
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckATrackAttractsAJetCommand, int, aTickCount, int, aTickLimit, float, previousDistance, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckATrackAttractsAJetCommand, int, aTickCount, int, aTickLimit, float, aPreviousDistance, FAutomationTestBase*, test);
 
 bool FCheckATrackAttractsAJetCommand::Update()
 {
@@ -263,7 +263,7 @@ bool FCheckATrackAttractsAJetCommand::Update()
 		{
 			++aTickCount;
 			float currentDistance = (testJet->GetActorLocation() - testTrack->GetActorLocation()).Size();
-			bool isPulling = currentDistance < previousDistance;
+			bool isPulling = currentDistance < aPreviousDistance;
 			bool isVelocityFullyAlongNormal = FMath::IsNearlyEqual(testJet->GetVelocity().ProjectOnTo(testTrack->normalVector()).Size(), testJet->GetVelocity().Size());
 			bool velocityNearZero = FMath::IsNearlyZero(testJet->GetVelocity().Size(), 0.1f);
 
@@ -287,7 +287,7 @@ bool FCheckATrackAttractsAJetCommand::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			previousDistance = currentDistance;
+			aPreviousDistance = currentDistance;
 		}
 	}
 	return false;
