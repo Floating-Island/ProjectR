@@ -83,15 +83,15 @@ void ATrack::magnetizeOverlappingJets()
 	}
 }
 
-void ATrack::magnetize(UStaticMeshComponent* actorRootComponent, FVector jetWeightAbsolute)
+void ATrack::magnetize(UStaticMeshComponent* anActorRootComponent, FVector aJetWeightAbsolute)
 {
-	CounterGravityForce(actorRootComponent, jetWeightAbsolute);
-	pullTowardsFloor(actorRootComponent, jetWeightAbsolute);
+	CounterGravityForce(anActorRootComponent, aJetWeightAbsolute);
+	pullTowardsFloor(anActorRootComponent, aJetWeightAbsolute);
 }
 
-void ATrack::CounterGravityForce(UStaticMeshComponent* actorRootComponent, FVector jetWeightAbsolute)
+void ATrack::CounterGravityForce(UStaticMeshComponent* anActorRootComponent, FVector aJetWeightAbsolute)
 {
-	actorRootComponent->AddForce(jetWeightAbsolute);//we counter the weight force....
+	anActorRootComponent->AddForce(aJetWeightAbsolute);//we counter the weight force....
 }
 
 void ATrack::pullTowardsFloor(UStaticMeshComponent* anActorRootComponent, FVector aJetWeightAbsolute)

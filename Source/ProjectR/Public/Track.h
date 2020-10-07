@@ -28,9 +28,9 @@ protected:
 	UFUNCTION()
 		void magnetizeOverlappingJets();
 
-	void CounterGravityForce(UStaticMeshComponent* actorRootComponent, FVector jetWeightAbsolute);
+	void CounterGravityForce(UStaticMeshComponent* anActorRootComponent, FVector aJetWeightAbsolute);
 	void pullTowardsFloor(UStaticMeshComponent* anActorRootComponent, FVector aJetWeightAbsolute);
-	void magnetize(UStaticMeshComponent* actorRootComponent, FVector jetWeightAbsolute);
+	void magnetize(UStaticMeshComponent* anActorRootComponent, FVector aJetWeightAbsolute);
 	
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		UStaticMeshComponent* floorComponent;
