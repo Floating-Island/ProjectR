@@ -32,22 +32,22 @@ UWorld* PIESessionUtilities::currentPIEWorld()
 
 AJet* PIESessionUtilities::spawnJetInPIE(FVector atALocation)
 {
-	return pieWorld->SpawnActor<AJet>(AJet::StaticClass(), atALocation, FRotator(), spawnParams);
+	return pieWorld->SpawnActor<AJet>(AJet::StaticClass(), atALocation, FRotator(0), spawnParams);
 }
 
 AJetMOCK* PIESessionUtilities::spawnJetMOCKInPIE(FVector atALocation)
 {
-	return pieWorld->SpawnActor<AJetMOCK>(AJetMOCK::StaticClass(), atALocation, FRotator(), spawnParams);
+	return pieWorld->SpawnActor<AJetMOCK>(AJetMOCK::StaticClass(), atALocation, FRotator(0), spawnParams);
 }
 
 AFloorMeshActor* PIESessionUtilities::spawnFloorMeshActorInPIE(FVector atALocation)
 {
-	return pieWorld->SpawnActor<AFloorMeshActor>(AFloorMeshActor::StaticClass(), atALocation, FRotator(), spawnParams);
+	return pieWorld->SpawnActor<AFloorMeshActor>(AFloorMeshActor::StaticClass(), atALocation, FRotator(0), spawnParams);
 }
 
 ATrackMOCK* PIESessionUtilities::spawnTrackMOCKInPie(FVector atALocation)
 {
-	return pieWorld->SpawnActor<ATrackMOCK>(ATrackMOCK::StaticClass(), atALocation, FRotator(), spawnParams);
+	return pieWorld->SpawnActor<ATrackMOCK>(ATrackMOCK::StaticClass(), atALocation, FRotator(0), spawnParams);
 }
 
 AJet* PIESessionUtilities::retrieveJetFromPIE()
@@ -69,7 +69,7 @@ void PIESessionUtilities::processLocalPlayerInputFrom(FName anAxisMappingName)
 {
 	AGameModeBase* testGameMode = pieWorld->GetAuthGameMode();
 
-	testGameMode->SpawnPlayerFromSimulate(FVector(), FRotator());//spawns a player controller.
+	testGameMode->SpawnPlayerFromSimulate(FVector(0), FRotator(0));//spawns a player controller.
 
 	
 	APlayerController* controller = Cast<APlayerController,AActor>(testGameMode->GetGameInstance()->GetFirstLocalPlayerController(pieWorld));
