@@ -194,8 +194,9 @@ bool FCheckAJetLocationCommand::Update()
 			bool isAtOrigin = FMath::IsNearlyZero(currentXLocation, 0.1f);
 			
 			
-			UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString());
-			UE_LOG(LogTemp, Log, TEXT("Jet %s at origin (0,0,0)"), *FString(isAtOrigin? "is":"isn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet location: %s."), *testJet->GetActorLocation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet %s moved."), *FString(hasMoved? "is":"isn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet %s at origin (0,0,0)."), *FString(isAtOrigin? "is":"isn't"));
 			if (hasMoved && !isAtOrigin)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
 			{
 				test->TestTrue(TEXT("The Jet X location should increase after an acceleration is added (after ticking)."), hasMoved && !isAtOrigin);
@@ -265,6 +266,8 @@ bool FCheckAJetSpeedIncreaseCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity projection on forward vector: %s"), *testJet->GetVelocity().ProjectOnTo(jetForwardDirection).ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity projection sign: %s"), *testJet->GetVelocity().ProjectOnTo(jetForwardDirection).GetSignVector().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet forward vector sign: %s"), *jetForwardDirection.GetSignVector().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet %s moving forwards."), *FString(isMovingForwards? "is":"isn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet %s idle."), *FString(isIdle? "is":"isn't"));
 			
 			if (isMovingForwards && !isIdle)
 			{
@@ -367,6 +370,8 @@ bool FCheckAJetVelocityDecreaseCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity projection on forward vector: %s"), *testJet->GetVelocity().ProjectOnTo(jetForwardDirection).ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity projection sign: %s"), *testJet->GetVelocity().ProjectOnTo(jetForwardDirection).GetSignVector().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet forward vector sign: %s"), *jetForwardDirection.GetSignVector().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet %s moving backwards."), *FString(isMovingBackwards? "is":"isn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet %s idle."), *FString(isIdle? "is":"isn't"));
 
 			if (isMovingBackwards && !isIdle)
 			{
@@ -543,6 +548,8 @@ bool FCheckAJetRotatedYawCommand::Update()
 			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotation, 0.1f);
 
 			UE_LOG(LogTemp, Log, TEXT("Jet rotation vector: %s"), *testJet->GetActorRotation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet %s steered right."), *FString(hasSteeredRight? "has":"hasn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet %s made a minimal steering."), *FString(isMinimalSteering? "has":"hasn't"));
 
 			if (hasSteeredRight && !isMinimalSteering)
 			{
@@ -862,6 +869,8 @@ bool FCheckAJetZLocationCommand::Update()
 			bool isMinimalLifting = FMath::IsNearlyZero(currentZVelocity, 0.1f);
 
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *testJet->GetVelocity().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet %s being lifted."), *FString(isBeingLifted? "is":"isn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet %s made a minimal steering."), *FString(isMinimalLifting? "has":"hasn't"));
 			
 			if (isBeingLifted && !isMinimalLifting)
 			{
@@ -953,6 +962,8 @@ bool FCheckAJetLocationCoincidentToForwardVectorCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *currentLocation.ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet location normal on XY: %s"), *currentLocation.GetSafeNormal2D().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet forward vector normal on XY: %s"), *jetForwardVector.GetSafeNormal2D().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet %s moved."), *FString(hasMoved? "has":"hasn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet location %s aligned to forward vector."), *FString(locationIsAlignedToForwardVector? "is":"isn't"));
 			
 			if (hasMoved && locationIsAlignedToForwardVector)//We have to be careful of gravity in this test. That's why a normal on XY is used.
 			{
@@ -1045,6 +1056,8 @@ bool FCheckAJetLocationParallelToForwardVectorCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *currentLocation.ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet location normal on XY: %s"), *currentLocation.GetSafeNormal2D().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet backwards vector normal on XY: %s"), *jetBackwardsVector.GetSafeNormal2D().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet %s moved."), *FString(hasMoved? "has":"hasn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet location %s aligned to backwards vector."), *FString(locationIsAlignedToBackwardsVector? "is":"isn't"));
 
 			if (hasMoved && locationIsAlignedToBackwardsVector)
 			{
@@ -1145,6 +1158,8 @@ bool FCheckAJetUpdatedVelocityWhenAfterSteeringCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *currentVelocity.ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity normal on XY: %s"), *currentVelocity.GetSafeNormal2D().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet previous forward vector normal on XY: %s"), *previousForwardVector.GetSafeNormal2D().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet speed %s nearly zero."), *FString(speedNearlyZero? "is":"isn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet velocity %s aligned to previous forward vector."), *FString(velocityAlignedToPreviousForwardVector? "is":"isn't"));
 			
 			if (aTickCount > aTickLimit)
 			{
@@ -1232,6 +1247,10 @@ bool FCheckAJetInvertSteeringWhenInReverseCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity projection sign: %s"), *testJet->GetVelocity().ProjectOnTo(jetForwardDirection).GetSignVector().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet forward vector sign: %s"), *jetForwardDirection.GetSignVector().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet rotation is: %s"), *testJet->GetActorRotation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet %s moving right."), *FString(ismovingRight? "is":"isn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet %s made a minimal steering."), *FString(isMinimalSteering? "has":"hasn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet speed %s nearly zero."), *FString(speedNearlyZero? "is":"isn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet %s moving backwards."), *FString(ismovingRight? "is":"isn't"));
 
 			if (!speedNearlyZero && !isMinimalSteering && ismovingRight && isMovingBackwards)
 			{
@@ -1314,15 +1333,17 @@ bool FCheckAJetUnableToSteerWhenIdleCommand::Update()
 
 			FRotator currentRotation = testJet->GetActorRotation();
 			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
-			bool hasntRotatedFromPreviousRotation = FMath::IsNearlyEqual(previousRotation.Yaw, currentRotation.Yaw);
+			bool hasRotatedFromPreviousRotation = !FMath::IsNearlyEqual(previousRotation.Yaw, currentRotation.Yaw, 0.01f);
 
 			UE_LOG(LogTemp, Log, TEXT("Jet previous rotation: %s"), *previousRotation.ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet current rotation: %s"), *currentRotation.ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet speed: %f"), testJet->currentSpeed());
+			UE_LOG(LogTemp, Log, TEXT("Jet speed %s nearly zero."), *FString(speedNearlyZero? "is":"isn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet %s rotated from previous rotation."), *FString(hasRotatedFromPreviousRotation? "has":"hasn't"));
 			
-			if (aTickCount > aTickLimit || !hasntRotatedFromPreviousRotation)
+			if (aTickCount > aTickLimit || hasRotatedFromPreviousRotation)
 			{
-				test->TestTrue(TEXT("The Jet should update it's velocity to match the direction of the forward vector after steering."), speedNearlyZero && hasntRotatedFromPreviousRotation);
+				test->TestTrue(TEXT("The Jet should update it's velocity to match the direction of the forward vector after steering."), speedNearlyZero && !hasRotatedFromPreviousRotation);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
