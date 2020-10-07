@@ -3,11 +3,9 @@
 
 #include "Jet/AntiGravityComponent.h"
 
-// Sets default values for this component's properties
+
 UAntiGravityComponent::UAntiGravityComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 
 	levitationHeight = 600.0f;
@@ -15,23 +13,17 @@ UAntiGravityComponent::UAntiGravityComponent()
 	owner = GetOwner();
 }
 
-
-// Called when the game starts
 void UAntiGravityComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	// ...
 	ownerPrimitiveComponent = Cast<UPrimitiveComponent, UActorComponent>(owner->GetComponentByClass(UPrimitiveComponent::StaticClass()));
 
 }
 
-
-// Called every frame
 void UAntiGravityComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	antiGravityLifting();
-	// ...
 }
 
 void UAntiGravityComponent::activateAvoidanceTo(FHitResult anObstacle)

@@ -7,10 +7,9 @@
 
 
 
-// Sets default values
+
 ATrack::ATrack()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	floorComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Floor Component"));
 	RootComponent = floorComponent;
@@ -41,21 +40,17 @@ void ATrack::matchMagnetBoxXYExtensionToFloor()
 	magnetBox->SetBoxExtent(FVector(xExtent, yExtent, magnetBoxHeight));
 }
 
-
 void ATrack::snapMagnetBoxToFloor()
 {
 	float boxMeshRelativeZLocation = magnetBox->GetUnscaledBoxExtent().Z;
 	magnetBox->AddRelativeLocation(FVector(0, 0, boxMeshRelativeZLocation));
 }
 
-// Called when the game starts or when spawned
 void ATrack::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-
-// Called every frame
 void ATrack::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);

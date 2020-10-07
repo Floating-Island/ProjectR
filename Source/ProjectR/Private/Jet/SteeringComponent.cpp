@@ -4,27 +4,21 @@
 #include "Jet/SteeringComponent.h"
 #include "Jet/Jet.h"
 
-// Sets default values for this component's properties
+
 USteeringComponent::USteeringComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
 	owner = Cast<AJet, AActor>(GetOwner());
 	
 	steerForceValue = 200.0f;
 }
 
-
-// Called when the game starts
 void USteeringComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	ownerPrimitiveComponent = Cast<UPrimitiveComponent, UActorComponent>(owner->GetComponentByClass(UPrimitiveComponent::StaticClass()));
 }
 
-
-// Called every frame
 void USteeringComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
@@ -32,18 +26,17 @@ void USteeringComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
 void USteeringComponent::alignVelocity()
 {
-	FVector alignedVelocity = owner->GetActorForwardVector().GetSafeNormal() * owner->currentSpeed();//we should project velocity to the forward vector instead...Or, make the speed ignore gravity.
+	FVector alignedVelocity = owner->GetActorForwardVector().GetSafeNormal() * owner->currentSpeed();
 	if (owner->goesBackwards())
 	{
 		alignedVelocity = -alignedVelocity;//velocity should go backwards then...
 	}
 	ownerPrimitiveComponent->SetPhysicsLinearVelocity(alignedVelocity);//this should happen after the jet steers (gets it's torque applied)
-	//we should also have to re-apply the gravity velocity to it...
 }
 
 void USteeringComponent::InReverseInverts(float& aDirectionMultiplier)
 {
-	if (owner->goesBackwards())//is going backwards. Should add to it that the jet is actually moving (speed bigger than 0).
+	if (owner->goesBackwards())
 	{
 		aDirectionMultiplier = -aDirectionMultiplier;//invert steering
 	}

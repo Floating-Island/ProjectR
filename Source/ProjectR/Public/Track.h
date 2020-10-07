@@ -19,11 +19,9 @@ private:
 	UFUNCTION()
 		void snapMagnetBoxToFloor();
 public:
-	// Sets default values for this actor's properties
 	ATrack();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	UFUNCTION()
 		void magnetizeOverlappingJets();
@@ -42,7 +40,6 @@ protected:
 		float magnetBoxHeight;
 
 public:
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
 };
