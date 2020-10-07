@@ -1217,11 +1217,11 @@ bool FCheckAJetInvertSteeringWhenInReverseCommand::Update()
 		{
 			++aTickCount;
 
-			bool ismovingRight = testJet->GetVelocity().Y < 0;//clockwise is right when going forwards. When in reverse, it should go counterclockwise.
+			bool ismovingRight = testJet->GetVelocity().Y > 0;//if steering in reverse, Y should be > 0, the velocity vector points backwards and right.
 			bool isMinimalSteering = FMath::IsNearlyZero(testJet->GetActorRotation().Yaw, 0.1f);
 			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
 			FVector jetForwardDirection = testJet->GetActorForwardVector();
-			bool isMovingBackwards = testJet->GetVelocity().ProjectOnTo(jetForwardDirection).GetSignVector().X != jetForwardDirection.GetSignVector().X;
+			bool isMovingBackwards = testJet->goesBackwards();
 
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet forward vector: %s"), *jetForwardDirection.ToString()));
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity: %s"), *testJet->GetVelocity().ToString()));
