@@ -336,7 +336,7 @@ bool FSpawningAJetAndTrackSideWaysCommand::Update()
 	FRotator upsideDown = FRotator(90, 0, 0);
 	testTrack->SetActorRotation(upsideDown);
 
-	FVector distanceFromTrack = FVector(300, 0, 0);
+	FVector distanceFromTrack = FVector(0, 600, 0);
 	FVector beneathTheTrack = testTrack->GetActorLocation() + distanceFromTrack;
 
 	AJet* testJet = sessionUtilities.spawnJetInPIE(beneathTheTrack);
