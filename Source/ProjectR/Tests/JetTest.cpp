@@ -1112,7 +1112,7 @@ bool FSpawningAJetAccelerateAndSteerRightCommand::Update()
 	GEditor->SnapObjectTo(FActorOrComponent(testJet), true, true, true, false, FActorOrComponent(meshActor));
 	
 	float direction = 1;//1 is right, -1 is left...
-	testJet->setCurrentXVelocityTo(1);
+	testJet->setCurrentXVelocityTo(1);//we go forward and then steer.
 	testJet->steer(direction);
 
 	return true;
@@ -1197,7 +1197,7 @@ bool FSpawningAJetBrakeAndSteerRightCommand::Update()
 	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE();//is a mock necessary??
 	
 	float direction = 1;//1 is right, -1 is left going forwards
-	testJet->setCurrentXVelocityTo(-1);
+	testJet->setCurrentXVelocityTo(-1);//we go reverse and then we try to steer
 	testJet->steer(direction);
 
 	return true;
