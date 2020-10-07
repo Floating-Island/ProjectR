@@ -45,7 +45,7 @@ void USteeringComponent::InReverseInverts(float& aDirectionMultiplier)
 //to get drift, the velocity alignment should be disabled by a moment (as long as the drifting lasts), maintaining the acceleration of the jet.
 void USteeringComponent::steer(float aDirectionMultiplier)
 {
-	if (aDirectionMultiplier != 0 && !FMath::IsNearlyZero(owner->currentSpeed(), 0.1f))
+	if (aDirectionMultiplier != 0 && !FMath::IsNearlyZero(owner->currentSpeed(), 0.5f))
 	{
 		//if reverse, change directionMultiplier sign.
 		InReverseInverts(aDirectionMultiplier);
