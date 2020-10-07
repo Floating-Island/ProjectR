@@ -316,7 +316,58 @@ bool FATrackUpsideDownShouldAttractAJetAlongItsNormalVectorTest::RunTest(const F
 }
 
 
-//we need another test to check that we cancel gravity...
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetAndTrackSideWaysCommand);
+
+bool FSpawningAJetAndTrackSideWaysCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+	ATrackMOCK* testTrack = sessionUtilities.spawnTrackMOCKInPie();
+	FRotator upsideDown = FRotator(90, 0, 0);
+	testTrack->SetActorRotation(upsideDown);
+
+	FVector distanceFromTrack = FVector(300, 0, 0);
+	FVector beneathTheTrack = testTrack->GetActorLocation() + distanceFromTrack;
+
+	AJet* testJet = sessionUtilities.spawnJetInPIE(beneathTheTrack);
+
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackSideWaysShouldAttractAJetAlongItsNormalVectorTest, "ProjectR.Unit.TrackTest.SideWaysShouldAttractAJetAlongItsNormalVector", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackSideWaysShouldAttractAJetAlongItsNormalVectorTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetAndTrackSideWaysCommand);
+	int tickCount = 0;
+	int tickLimit = 4;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackAttractsAJetCommand(tickCount, tickLimit, std::numeric_limits<float>::min(), this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
+
+
+
+//we need another test to check that we cancel gravity... We do, but it's not on the tests...
 
 
 
