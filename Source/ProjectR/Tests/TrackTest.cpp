@@ -239,11 +239,11 @@ bool FSpawningAJetAndTrackUpsideDownCommand::Update()
 	FRotator upsideDown = FRotator(180, 0, 0);
 	testTrack->SetActorRotation(upsideDown);
 
-	FVector distanceFromTrack = FVector(0, 0, 800);
+	FVector distanceFromTrack = FVector(0, 0, 400);
 	FVector beneathTheTrack = testTrack->GetActorLocation() - distanceFromTrack;
 
 	AJet* testJet = sessionUtilities.spawnJetInPIE(beneathTheTrack);
-
+	testJet->SetActorRotation(FRotator(0));//so it doesn't mess up its rotation.
 	return true;
 }
 
@@ -340,7 +340,7 @@ bool FSpawningAJetAndTrackSideWaysCommand::Update()
 	FVector nearTheTrack = testTrack->GetActorLocation() + distanceFromTrack;
 
 	AJet* testJet = sessionUtilities.spawnJetInPIE(nearTheTrack);
-
+	testJet->SetActorRotation(FRotator(0));//so it doesn't mess up its rotation.
 	return true;
 }
 
