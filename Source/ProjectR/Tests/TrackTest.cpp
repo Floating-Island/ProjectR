@@ -271,7 +271,12 @@ bool FCheckATrackAttractsAJetCommand::Update()
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity: %s"), *testJet->GetVelocity().ToString()));
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity projection on normal vector: %s"), *testJet->GetVelocity().ProjectOnTo(testTrack->normalVector()).ToString()));
 			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Track normal vector: %s"), *testTrack->normalVector().ToString()));
-
+			UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Track location: %s"), *testTrack->GetActorLocation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *testJet->GetVelocity().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet velocity projection on normal vector: %s"), *testJet->GetVelocity().ProjectOnTo(testTrack->normalVector()).ToString());
+			UE_LOG(LogTemp, Log, TEXT("Track normal vector: %s"), *testTrack->normalVector().ToString());
+			
 			if (!velocityNearZero && isVelocityFullyAlongNormal && isPulling)
 			{
 				test->TestTrue(TEXT("The Track should attract a Jet along the track normal vector."), !velocityNearZero && isVelocityFullyAlongNormal && isPulling);
@@ -306,7 +311,7 @@ bool FATrackUpsideDownShouldAttractAJetAlongItsNormalVectorTest::RunTest(const F
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetAndTrackUpsideDownCommand);
 	int tickCount = 0;
-	int tickLimit = 4;
+	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackAttractsAJetCommand(tickCount, tickLimit, std::numeric_limits<float>::min(), this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);

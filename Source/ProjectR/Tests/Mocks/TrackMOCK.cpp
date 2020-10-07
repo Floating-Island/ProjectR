@@ -69,5 +69,5 @@ bool ATrackMOCK::magnetBoxHasXYFloorExtension()
 
 FVector ATrackMOCK::normalVector()
 {
-	return floorComponent->GetUpVector();
+	return GetActorUpVector();
 }
