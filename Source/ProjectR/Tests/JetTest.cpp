@@ -514,10 +514,10 @@ bool FSpawningAJetMakeItSteerRightCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJet* testJet = sessionUtilities.spawnJetInPIE();
+	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE();
 
 	float direction = 1;//1 is right, -1 is left...
-	//we should set the speed to 1 first so the jet is able to steer. Change it to a mock.
+	testJet->setCurrentSpeedTo(1);//we should set the speed to 1 first so the jet is able to steer.
 	testJet->steer(direction);
 
 	return true;
@@ -532,7 +532,7 @@ bool FCheckAJetRotatedYawCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
+		AJetMOCK* testJet = sessionUtilities.retrieveJetMOCKFromPIE();
 		if (testJet)
 		{
 			float currentZRotation = testJet->GetActorRotation().Yaw;
@@ -658,9 +658,10 @@ bool FSpawningAJetPressSteerRightKeyCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJet* testJet = sessionUtilities.spawnJetInPIE();
-	//we should set the speed to 1 first so the jet is able to steer. Change it to a mock.
-	sessionUtilities.processLocalPlayerInputFrom(FName(TEXT("SteerAction")));
+	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE();
+	
+	testJet->setCurrentSpeedTo(1);//we should set the speed to 1 first so the jet is able to steer.
+	sessionUtilities.processLocalPlayerInputFrom(FName(TEXT("SteerAction")));                 
 
 	return true;
 }
