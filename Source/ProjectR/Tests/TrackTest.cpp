@@ -266,11 +266,6 @@ bool FCheckATrackAttractsAJetCommand::Update()
 			bool isVelocityFullyAlongNormal = FMath::IsNearlyEqual(testJet->GetVelocity().ProjectOnTo(testTrack->normalVector()).Size(), testJet->GetVelocity().Size(), 0.1f);
 			bool velocityNearZero = FMath::IsNearlyZero(testJet->GetVelocity().Size(), 0.1f);
 
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Track location: %s"), *testTrack->GetActorLocation().ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity: %s"), *testJet->GetVelocity().ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity projection on normal vector: %s"), *testJet->GetVelocity().ProjectOnTo(testTrack->normalVector()).ToString()));
-			GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Track normal vector: %s"), *testTrack->normalVector().ToString()));
 			UE_LOG(LogTemp, Log, TEXT("previous distance between track and jet: %f"), aPreviousDistance);
 			UE_LOG(LogTemp, Log, TEXT("current distance between track and jet: %f"), currentDistance);
 			UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString());
