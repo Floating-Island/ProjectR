@@ -333,13 +333,13 @@ bool FSpawningAJetAndTrackSideWaysCommand::Update()
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
 	ATrackMOCK* testTrack = sessionUtilities.spawnTrackMOCKInPie();
-	FRotator upsideDown = FRotator(90, 0, 0);
-	testTrack->SetActorRotation(upsideDown);
+	FRotator sideways = FRotator(0, 0, 90);
+	testTrack->SetActorRotation(sideways);
 
 	FVector distanceFromTrack = FVector(0, 600, 0);
-	FVector beneathTheTrack = testTrack->GetActorLocation() + distanceFromTrack;
+	FVector nearTheTrack = testTrack->GetActorLocation() + distanceFromTrack;
 
-	AJet* testJet = sessionUtilities.spawnJetInPIE(beneathTheTrack);
+	AJet* testJet = sessionUtilities.spawnJetInPIE(nearTheTrack);
 
 	return true;
 }
@@ -360,7 +360,7 @@ bool FATrackSideWaysShouldAttractAJetAlongItsNormalVectorTest::RunTest(const FSt
 	int tickLimit = 4;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackAttractsAJetCommand(tickCount, tickLimit, std::numeric_limits<float>::min(), this));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
 	return true;
 }
