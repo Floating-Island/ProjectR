@@ -25,7 +25,7 @@ bool AJetMOCK::isAffectingNavigation()
 	return meshComponent->CanEverAffectNavigation();
 }
 
-void AJetMOCK::setCurrentSpeedTo(float aDesiredSpeed)
+void AJetMOCK::setCurrentXVelocityTo(float aDesiredSpeed)
 {
 	FVector newVelocity = FVector(aDesiredSpeed, 0, 0);
 	meshComponent->SetPhysicsLinearVelocity(newVelocity);

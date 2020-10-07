@@ -440,7 +440,7 @@ bool FSpawningAJetSetVelocityToTopSpeedCommand::Update()
 
 	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE();
 
-	testJet->setCurrentSpeedTo(testJet->settedTopSpeed());
+	testJet->setCurrentXVelocityTo(testJet->settedTopSpeed());
 	testJet->accelerate();
 
 	return true;
@@ -517,7 +517,7 @@ bool FSpawningAJetMakeItSteerRightCommand::Update()
 	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE();
 
 	float direction = 1;//1 is right, -1 is left...
-	testJet->setCurrentSpeedTo(1);//we should set the speed to 1 first so the jet is able to steer.
+	testJet->setCurrentXVelocityTo(1);//we should set the speed to 1 first so the jet is able to steer.
 	testJet->steer(direction);
 
 	return true;
@@ -660,7 +660,7 @@ bool FSpawningAJetPressSteerRightKeyCommand::Update()
 
 	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE();
 	
-	testJet->setCurrentSpeedTo(1);//we should set the speed to 1 first so the jet is able to steer.
+	testJet->setCurrentXVelocityTo(1);//we should set the speed to 1 first so the jet is able to steer.
 	sessionUtilities.processLocalPlayerInputFrom(FName(TEXT("SteerAction")));                 
 
 	return true;
@@ -1112,7 +1112,7 @@ bool FSpawningAJetAccelerateAndSteerRightCommand::Update()
 	GEditor->SnapObjectTo(FActorOrComponent(testJet), true, true, true, false, FActorOrComponent(meshActor));
 	
 	float direction = 1;//1 is right, -1 is left...
-	testJet->accelerate();
+	testJet->setCurrentXVelocityTo(1);
 	testJet->steer(direction);
 
 	return true;
@@ -1197,7 +1197,7 @@ bool FSpawningAJetBrakeAndSteerRightCommand::Update()
 	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE();//is a mock necessary??
 	
 	float direction = 1;//1 is right, -1 is left going forwards
-	testJet->brake();
+	testJet->setCurrentXVelocityTo(-1);
 	testJet->steer(direction);
 
 	return true;
