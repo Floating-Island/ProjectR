@@ -1378,5 +1378,8 @@ bool FAJetIsntAbleToSteerWhenIdleTest::RunTest(const FString& Parameters)
 
 //we should test if the jet steers along it's normal (up) vector instead of Z axis.
 //we should test that if the jet is falling and we steer, the falling keeps happening. Currently, alignVelocity discards gravity.
+//we should change the mesh so we put one that has bones, so we can query them and apply an anti-gravity force to each, instead of applying it onto the center of mass.
+//we should lower the center of mass of the jet.
+//we should project the forward vector along the surface we are on and use that projection to accelerate and brake.
 
 #endif //WITH_DEV_AUTOMATION_TESTS
