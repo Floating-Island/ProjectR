@@ -1146,7 +1146,6 @@ bool FCheckAJetUpdatedVelocityWhenAfterSteeringCommand::Update()
 		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
 		if (testJet)
 		{
-			++aTickCount;
 
 			FVector currentVelocity = testJet->GetVelocity();
 			FVector jetForwardsVector = testJet->GetActorForwardVector();
@@ -1161,6 +1160,7 @@ bool FCheckAJetUpdatedVelocityWhenAfterSteeringCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet speed %s nearly zero."), *FString(speedNearlyZero? "is":"isn't"));
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity %s aligned to previous forward vector."), *FString(velocityAlignedToPreviousForwardVector? "is":"isn't"));
 			
+			++aTickCount;
 			if (aTickCount > aTickLimit)
 			{
 				test->TestTrue(TEXT("The Jet should update it's velocity to match the direction of the forward vector after steering."), !speedNearlyZero && velocityAlignedToPreviousForwardVector);
@@ -1233,7 +1233,6 @@ bool FCheckAJetInvertSteeringWhenInReverseCommand::Update()
 		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
 		if (testJet)
 		{
-			++aTickCount;
 
 			bool ismovingRight = testJet->GetVelocity().Y > 0;//if steering in reverse, Y should be > 0, the velocity vector points backwards and right.
 			bool isMinimalSteering = FMath::IsNearlyZero(testJet->GetActorRotation().Yaw, 0.01f);
@@ -1285,7 +1284,7 @@ bool FAJetShouldInvertSteeringWhenInReverseTest::RunTest(const FString& Paramete
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetBrakeAndSteerRightCommand);
 	int tickCount = 0;
-	int tickLimit = 4;
+	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetInvertSteeringWhenInReverseCommand(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
@@ -1329,7 +1328,6 @@ bool FCheckAJetUnableToSteerWhenIdleCommand::Update()
 		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
 		if (testJet)
 		{
-			++aTickCount;
 
 			FRotator currentRotation = testJet->GetActorRotation();
 			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
@@ -1341,6 +1339,7 @@ bool FCheckAJetUnableToSteerWhenIdleCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet speed %s nearly zero."), *FString(speedNearlyZero? "is":"isn't"));
 			UE_LOG(LogTemp, Log, TEXT("Jet %s rotated from previous rotation."), *FString(hasRotatedFromPreviousRotation? "has":"hasn't"));
 			
+			++aTickCount;
 			if (aTickCount > aTickLimit || hasRotatedFromPreviousRotation)
 			{
 				test->TestTrue(TEXT("The Jet should update it's velocity to match the direction of the forward vector after steering."), speedNearlyZero && !hasRotatedFromPreviousRotation);

@@ -260,7 +260,6 @@ bool FCheckATrackAttractsAJetCommand::Update()
 
 		if (testJet && testTrack)
 		{
-			++aTickCount;
 			float currentDistance = (testJet->GetActorLocation() - testTrack->GetActorLocation()).Size();
 			bool isPulling = currentDistance < aPreviousDistance;
 			bool isVelocityFullyAlongNormal = FMath::IsNearlyEqual(testJet->GetVelocity().ProjectOnTo(testTrack->normalVector()).Size(), testJet->GetVelocity().Size(), 0.1f);
@@ -283,8 +282,8 @@ bool FCheckATrackAttractsAJetCommand::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
+			
 			++aTickCount;
-
 			if (aTickCount > aTickLimit)
 			{
 				test->TestFalse(TEXT("Tick limit reached for this test. The Track didn't attract the jet along the track normal vector."), aTickCount > aTickLimit);
@@ -361,13 +360,14 @@ bool FATrackSideWaysShouldAttractAJetAlongItsNormalVectorTest::RunTest(const FSt
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetAndTrackSideWaysCommand);
 	int tickCount = 0;
-	int tickLimit = 4;
+	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackAttractsAJetCommand(tickCount, tickLimit, std::numeric_limits<float>::min(), this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
 	return true;
 }
+
 
 
 
