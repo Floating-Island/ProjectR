@@ -9,6 +9,7 @@ ATrackGenerator::ATrackGenerator()
 	PrimaryActorTick.bCanEverTick = true;
 
 	splineComponent = CreateDefaultSubobject<USplineComponent>(TEXT("Spline Component"));
+	RootComponent = splineComponent;
 }
 
 // Called when the game starts or when spawned
