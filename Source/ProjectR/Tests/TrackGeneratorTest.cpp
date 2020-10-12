@@ -4,6 +4,7 @@
 #include "TrackGeneratorTest.h"
 
 #include "Track/TrackGenerator.h"
+#include "Mocks/TrackGeneratorMOCK.h"
 
 #include "Misc/AutomationTest.h"
 
@@ -40,7 +41,7 @@ bool FATrackGeneratorShouldHaveASplineComponentTest::RunTest(const FString& Para
 {
 	ATrackGeneratorMOCK* testGenerator = NewObject<ATrackGeneratorMOCK>();
 	{
-		TestNotNull(TEXT("The track generator should have a spline component."), testGenerator->hasSplineComponent);
+		TestTrue(TEXT("The track generator should have a spline component."), testGenerator->hasSplineComponent);
 	}
 
 	return true;
