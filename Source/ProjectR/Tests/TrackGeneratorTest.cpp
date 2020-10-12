@@ -3,6 +3,8 @@
 
 #include "TrackGeneratorTest.h"
 
+#include "Track/TrackGenerator.h"
+
 #include "Misc/AutomationTest.h"
 
 
@@ -18,7 +20,18 @@
 //Pay attention to the automation flags because they're needed to run the tests without UI errors.
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackShouldntBeNullWhenInstantiatedTest, "ProjectR.Unit.TrackTest.ATrackShouldntBeNullWhenInstantiated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
+
+bool FATrackShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Parameters)
+{
+	ATrackGenerator* testGenerator = NewObject<ATrackGenerator>();
+	{
+		TestNotNull(TEXT("The track generator shouldn't be null when instantiated"), testGenerator);
+	}
+
+	return true;
+}
 
 
 
