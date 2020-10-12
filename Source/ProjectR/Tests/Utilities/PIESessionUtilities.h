@@ -27,10 +27,8 @@ public:
 	AJetMOCK* spawnJetMOCKInPIE(FVector atALocation = FVector(0));
 	AFloorMeshActor* spawnFloorMeshActorInPIE(FVector atALocation = FVector(0));
 	ATrackMOCK* spawnTrackMOCKInPie(FVector atALocation = FVector(0));
-	ATrack* spawnTrackInPie(FVector atALocation = FVector(0));
 	AJet* retrieveJetFromPIE();
 	AJetMOCK* retrieveJetMOCKFromPIE();
 	ATrackMOCK* retrieveTrackMOCKFromPIE();
-	ATrack* retrieveTrackFromPIE();
 	void processLocalPlayerInputFrom(FName anAxisMappingName);
 };

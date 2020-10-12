@@ -50,11 +50,6 @@ ATrackMOCK* PIESessionUtilities::spawnTrackMOCKInPie(FVector atALocation)
 	return pieWorld->SpawnActor<ATrackMOCK>(ATrackMOCK::StaticClass(), atALocation, FRotator(0), spawnParams);
 }
 
-ATrack* PIESessionUtilities::spawnTrackInPie(FVector atALocation)
-{
-	return pieWorld->SpawnActor<ATrack>(ATrack::StaticClass(), atALocation, FRotator(0), spawnParams);
-}
-
 AJet* PIESessionUtilities::retrieveJetFromPIE()
 {
 	return Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, AJet::StaticClass()));
@@ -68,11 +63,6 @@ AJetMOCK* PIESessionUtilities::retrieveJetMOCKFromPIE()
 ATrackMOCK* PIESessionUtilities::retrieveTrackMOCKFromPIE()
 {
 	return Cast<ATrackMOCK, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, ATrackMOCK::StaticClass()));
-}
-
-ATrack* PIESessionUtilities::retrieveTrackFromPIE()
-{
-	return Cast<ATrack, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, ATrack::StaticClass()));
 }
 
 void PIESessionUtilities::processLocalPlayerInputFrom(FName anAxisMappingName)
