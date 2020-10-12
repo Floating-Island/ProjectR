@@ -31,5 +31,6 @@ public:
 	AJet* retrieveJetFromPIE();
 	AJetMOCK* retrieveJetMOCKFromPIE();
 	ATrackMOCK* retrieveTrackMOCKFromPIE();
+	ATrack* retrieveTrackFromPIE();
 	void processLocalPlayerInputFrom(FName anAxisMappingName);
 };

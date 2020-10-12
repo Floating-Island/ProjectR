@@ -70,6 +70,11 @@ ATrackMOCK* PIESessionUtilities::retrieveTrackMOCKFromPIE()
 	return Cast<ATrackMOCK, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, ATrackMOCK::StaticClass()));
 }
 
+ATrack* PIESessionUtilities::retrieveTrackFromPIE()
+{
+	return Cast<ATrack, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, ATrack::StaticClass()));
+}
+
 void PIESessionUtilities::processLocalPlayerInputFrom(FName anAxisMappingName)
 {
 	AGameModeBase* testGameMode = pieWorld->GetAuthGameMode();
