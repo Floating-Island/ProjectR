@@ -372,7 +372,7 @@ bool FATrackSideWaysShouldAttractAJetAlongItsNormalVectorTest::RunTest(const FSt
 
 
 //we need another test to check that we cancel gravity... We do, but it's not on the tests...
-
+//we need to use a spline to generate race tracks.
 
 
 
