@@ -2,6 +2,7 @@
 
 
 #include "TrackGeneratorMOCK.h"
+#include "Components/SplineComponent.h"
 
 bool ATrackGeneratorMOCK::hasSplineComponent()
 {
@@ -10,5 +11,5 @@ bool ATrackGeneratorMOCK::hasSplineComponent()
 
 bool ATrackGeneratorMOCK::splineIsRootComponent()
 {
-	return RootComponent == Cast<USceneComponent, USplineComponent>(splineComponent)? true : false;
+	return RootComponent == splineComponent ? true : false;
 }
