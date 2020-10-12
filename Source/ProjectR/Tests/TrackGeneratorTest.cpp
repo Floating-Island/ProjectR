@@ -20,10 +20,9 @@
 //Pay attention to the automation flags because they're needed to run the tests without UI errors.
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackShouldntBeNullWhenInstantiatedTest, "ProjectR.Unit.TrackGeneratorTest.ATrackGeneratorShouldntBeNullWhenInstantiated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorShouldntBeNullWhenInstantiatedTest, "ProjectR.Unit.TrackGeneratorTest.ATrackGeneratorShouldntBeNullWhenInstantiated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-
-bool FATrackShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
 	ATrackGenerator* testGenerator = NewObject<ATrackGenerator>();
 	{
@@ -32,7 +31,6 @@ bool FATrackShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Parameter
 
 	return true;
 }
-
 
 
 
