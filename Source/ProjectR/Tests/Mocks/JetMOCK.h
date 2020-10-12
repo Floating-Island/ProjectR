@@ -24,7 +24,7 @@ public:
 
 	bool isAffectingNavigation();
 
-	void setCurrentSpeedTo(float aDesiredSpeed);
+	void setCurrentXVelocityTo(float aDesiredSpeed);
 
 	bool hasASprinArm();
 
@@ -39,4 +39,8 @@ public:
 	/*bool hasAnAntiGravitySystem();*/
 
 	float getZVelocity();
+
+    bool generatesOverlapEvents();
+
+	bool meshCollisionIsPawn();
 };

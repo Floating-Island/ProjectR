@@ -16,11 +16,9 @@ private:
 	AActor* owner;
 	UPrimitiveComponent* ownerPrimitiveComponent;
 public:	
-	// Sets default values for this component's properties
 	UAntiGravityComponent();
 
 protected:
-	// Called when the game starts
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Settings")

@@ -8,6 +8,8 @@
 class AJet;
 class AJetMOCK;
 class AFloorMeshActor;
+class ATrackMOCK;
+class ATrack;
 
 /**
  * This class is intended to use in tests only and when the editor is playing a PIE session.
@@ -24,7 +26,9 @@ public:
 	AJet* spawnJetInPIE(FVector atALocation = FVector(0));
 	AJetMOCK* spawnJetMOCKInPIE(FVector atALocation = FVector(0));
 	AFloorMeshActor* spawnFloorMeshActorInPIE(FVector atALocation = FVector(0));
+	ATrackMOCK* spawnTrackMOCKInPie(FVector atALocation = FVector(0));
 	AJet* retrieveJetFromPIE();
 	AJetMOCK* retrieveJetMOCKFromPIE();
+	ATrackMOCK* retrieveTrackMOCKFromPIE();
 	void processLocalPlayerInputFrom(FName anAxisMappingName);
 };

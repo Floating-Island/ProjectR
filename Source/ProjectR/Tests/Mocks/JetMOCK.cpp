@@ -25,7 +25,7 @@ bool AJetMOCK::isAffectingNavigation()
 	return meshComponent->CanEverAffectNavigation();
 }
 
-void AJetMOCK::setCurrentSpeedTo(float aDesiredSpeed)
+void AJetMOCK::setCurrentXVelocityTo(float aDesiredSpeed)
 {
 	FVector newVelocity = FVector(aDesiredSpeed, 0, 0);
 	meshComponent->SetPhysicsLinearVelocity(newVelocity);
@@ -59,6 +59,16 @@ bool AJetMOCK::usesAbsoluteRotation()
 float AJetMOCK::getZVelocity()
 {
 	return meshComponent->GetComponentVelocity().Z;
+}
+
+bool AJetMOCK::generatesOverlapEvents()
+{
+        return meshComponent->GetGenerateOverlapEvents();
+}
+
+bool AJetMOCK::meshCollisionIsPawn()
+{
+	return meshComponent->GetCollisionObjectType() == ECC_Pawn;
 }
 
 //bool AJetMOCK::hasAnAntiGravitySystem()

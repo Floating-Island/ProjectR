@@ -10,10 +10,9 @@
 #include "Jet/AntiGravityComponent.h"
 #include "Jet/SteeringComponent.h"
 
-// Sets default values
+
 AJet::AJet()
 {
-	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	meshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh Component"));
@@ -45,24 +44,21 @@ AJet::AJet()
 	antiGravitySystem = CreateDefaultSubobject<UAntiGravityComponent>(TEXT("Anti-Gravity System"));
 
 	steeringSystem = CreateDefaultSubobject<USteeringComponent>(TEXT("Steering System"));
-	
+
+    meshComponent->SetGenerateOverlapEvents(true);
+	meshComponent->SetCollisionObjectType(ECC_Pawn);
 }
 
-// Called when the game starts or when spawned
 void AJet::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-
-
-// Called every frame
 void AJet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
 
-// Called to bind functionality to input
 void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -76,8 +72,8 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 
 float AJet::currentSpeed()
-{//has to calculate if it's going backwards. Maybe another method that projects onto the forward vector and compares their heading angles...
-	return (meshComponent->GetComponentVelocity().ProjectOnTo(GetActorForwardVector())).Size();//speed is calculated as the forward velocity.
+{
+	return (meshComponent->GetComponentVelocity().ProjectOnTo(GetActorForwardVector())).Size();//speed is calculated as the forward velocity
 }
 
 float AJet::settedTopSpeed()
@@ -87,7 +83,7 @@ float AJet::settedTopSpeed()
 
 void AJet::accelerate(float anAccelerationMultiplier)
 {
-	if (anAccelerationMultiplier > 0 && currentSpeed() < settedTopSpeed() && !FMath::IsNearlyEqual(currentSpeed(), settedTopSpeed(), 0.5f))
+	if (anAccelerationMultiplier > 0 && currentSpeed() < settedTopSpeed() && !FMath::IsNearlyEqual(currentSpeed(), settedTopSpeed(), 1.0f))
 	{
 		FVector forceToApply = GetActorForwardVector() * acceleration();
 		meshComponent->AddForce(forceToApply * anAccelerationMultiplier, NAME_None, true);
