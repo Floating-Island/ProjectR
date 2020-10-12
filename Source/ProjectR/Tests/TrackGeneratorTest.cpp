@@ -41,7 +41,7 @@ bool FATrackGeneratorShouldHaveASplineComponentTest::RunTest(const FString& Para
 {
 	ATrackGeneratorMOCK* testGenerator = NewObject<ATrackGeneratorMOCK>();
 	{
-		TestTrue(TEXT("The track generator should have a spline component."), testGenerator->hasSplineComponent);
+		TestTrue(TEXT("The track generator should have a spline component."), testGenerator->hasSplineComponent());
 	}
 
 	return true;
