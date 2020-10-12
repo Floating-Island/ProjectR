@@ -13,5 +13,6 @@ UCLASS()
 class PROJECTR_API ATrackGeneratorMOCK : public ATrackGenerator
 {
 	GENERATED_BODY()
-	
+public:
+	bool hasSplineComponent();
 };

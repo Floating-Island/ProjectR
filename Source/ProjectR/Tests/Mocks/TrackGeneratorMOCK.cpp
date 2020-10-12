@@ -3,3 +3,7 @@
 
 #include "TrackGeneratorMOCK.h"
 
+bool ATrackGeneratorMOCK::hasSplineComponent()
+{
+	return splineComponent ? true : false;
+}
