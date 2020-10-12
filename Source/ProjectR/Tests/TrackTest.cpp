@@ -371,6 +371,105 @@ bool FATrackSideWaysShouldAttractAJetAlongItsNormalVectorTest::RunTest(const FSt
 
 
 
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAJetBetweenSidewaysOpposingTracksCommand);
+
+bool FSpawnAJetBetweenSidewaysOpposingTracksCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+	AJet* testJet = sessionUtilities.spawnJetInPIE();//at origin
+	FVector jetLocation = testJet->GetActorLocation();
+	float distance = 500;
+	
+	FVector atLeftOfJet = jetLocation + FVector(0, -distance, 0);
+	ATrack* leftTestTrack = sessionUtilities.spawnTrackInPie(atLeftOfJet);
+	FRotator rollRight = FRotator(0, 0, 90);
+	leftTestTrack->SetActorRotation(rollRight);
+	
+	FVector atRightOfJet = jetLocation + FVector(0, distance, 0);
+	ATrack* rightTestTrack = sessionUtilities.spawnTrackInPie(atRightOfJet);
+	FRotator rollLeft = FRotator(0, 0, -90);
+	rightTestTrack->SetActorRotation(rollLeft);
+	
+
+	return true;
+}
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckAJetBetweenOpposingTracksDoesntMoveCommand, int, aTickCount, int, aTickLimit, FVector, aJetPreviousLocation, FAutomationTestBase*, test);
+
+bool FCheckAJetBetweenOpposingTracksDoesntMoveCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
+		ATrack* aTestTrack = sessionUtilities.retrieveTrackFromPIE();
+		ATrack* anotherTestTrack = sessionUtilities.retrieveTrackFromPIE();
+
+		if (testJet && aTestTrack)
+		{
+			FVector currentJetLocation = testJet->GetActorLocation();
+			bool hasMovedOnYAxis = FMath::IsNearlyEqual(currentJetLocation.Y,aJetPreviousLocation.Y, 0.1f);
+			bool isFalling = FMath::IsNearlyZero(currentJetLocation.Z, 0.1f);
+
+			UE_LOG(LogTemp, Log, TEXT("Jet previous location: %s"), *aJetPreviousLocation.ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet current location: %s"), *currentJetLocation.ToString());
+			UE_LOG(LogTemp, Log, TEXT("A Track location: %s"), *aTestTrack->GetActorLocation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("A Track rotation: %s"), *aTestTrack->GetActorRotation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Another Track location: %s"), *anotherTestTrack->GetActorLocation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Another Track rotation: %s"), *anotherTestTrack->GetActorRotation().ToString());
+
+			UE_LOG(LogTemp, Log, TEXT("is falling: %s"), *FString(isFalling? "true" : "false"));
+			UE_LOG(LogTemp, Log, TEXT("the jet %s moved along the Y axis."), *FString(hasMovedOnYAxis? "has" : "hasn't"));
+			
+			
+			++aTickCount;
+			if (aTickCount > aTickLimit)
+			{
+				test->TestTrue(TEXT("The should move or be affected by gravity when between two opposing tracks."), !hasMovedOnYAxis && !isFalling);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			aJetPreviousLocation = currentJetLocation;
+		}
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetDoesntMoveNorIsAffectedByGravityBetweenOpposingTracksTest, "ProjectR.Unit.TrackTest.AJetDoesntMoveNorIsAffectedByGravityBetweenOpposingTracks", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetDoesntMoveNorIsAffectedByGravityBetweenOpposingTracksTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAJetBetweenSidewaysOpposingTracksCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetBetweenOpposingTracksDoesntMoveCommand(tickCount, tickLimit, FVector(0), this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
+
+
+
 //we need another test to check that we cancel gravity... We do, but it's not on the tests...
 //we need to use a spline to generate race tracks.
 
