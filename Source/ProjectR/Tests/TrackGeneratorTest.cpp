@@ -49,4 +49,17 @@ bool FATrackGeneratorShouldHaveASplineComponentTest::RunTest(const FString& Para
 
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineComponentShouldBeTheRootComponentTest, "ProjectR.Unit.TrackGeneratorTest.ATrackGeneratorSplineComponentShouldBeTheRootComponent", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorSplineComponentShouldBeTheRootComponentTest::RunTest(const FString& Parameters)
+{
+	ATrackGeneratorMOCK* testGenerator = NewObject<ATrackGeneratorMOCK>();
+	{
+		TestTrue(TEXT("The track generator spline component should be the root component."), testGenerator->splineIsRootComponent());
+	}
+
+	return true;
+}
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS
