@@ -16,7 +16,7 @@ bool ATrackGeneratorMOCK::splineIsRootComponent()
 
 int32 ATrackGeneratorMOCK::splineMeshesQuantity()
 {
-	return splineComponent->GetNumberOfSplinePoints();
+	return splineMeshes.Num();
 }
 
 void ATrackGeneratorMOCK::addSplinePoint(FVector atLocation)
