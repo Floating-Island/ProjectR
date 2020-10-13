@@ -7,6 +7,10 @@
 #include "Mocks/TrackGeneratorMOCK.h"
 
 #include "Misc/AutomationTest.h"
+#include "Tests/AutomationEditorCommon.h"
+#include "Editor.h"
+#include "../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include "Engine/Engine.h"
 
 
 
@@ -61,5 +65,76 @@ bool FATrackGeneratorSplineComponentShouldBeTheRootComponentTest::RunTest(const 
 	return true;
 }
 
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+
+bool FSpawnTrackGeneratorInEditorWorldCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+
+	testWorld->SpawnActor<ATrackGeneratorMOCK>(ATrackGeneratorMOCK::StaticClass());
+	
+	return true;
+}
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMeshesCreatedCommand, FAutomationTestBase*, test);
+
+bool FCheckSplineMeshesCreatedCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld*  testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+		int initialSplineMeshesQuantity = testGenerator->splineMeshesQuantity();
+		bool initialSplinePointHasSplineMesh = initialSplineMeshesQuantity == 1;
+		UE_LOG(LogTemp, Log, TEXT("Initial spline meshes quantity in generator: %d."), initialSplineMeshesQuantity);
+		UE_LOG(LogTemp, Log, TEXT("Initial spline point has spline mesh: %s."), *FString(initialSplinePointHasSplineMesh? "true" : "false"));
+		FVector arbitraryLocation = testGenerator->GetActorLocation() + FVector(1);
+		testGenerator->addSplinePoint(arbitraryLocation);
+		bool addedSplineIncreasesSplineMeshesQuantity = testGenerator->splineMeshesQuantity() == initialSplineMeshesQuantity + 1;
+		UE_LOG(LogTemp, Log, TEXT("Spline meshes quantity after adding a spline point: %d."), testGenerator->splineMeshesQuantity());
+		UE_LOG(LogTemp, Log, TEXT("Added spline point increases spline meshes quantity by one: %s."), *FString(addedSplineIncreasesSplineMeshesQuantity? "true" : "false"));
+			
+			if (initialSplinePointHasSplineMesh && addedSplineIncreasesSplineMeshesQuantity)
+			{
+				test->TestTrue(TEXT("When adding spline points, a spline mesh is added to the track generator."), initialSplinePointHasSplineMesh && addedSplineIncreasesSplineMeshesQuantity);
+				return true;
+			}
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackUpsideDownShouldAttractAJetAlongItsNormalVectorTest, "ProjectR.Unit.TrackTest.UpsideDownShouldAttractAJetAlongItsNormalVector", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackUpsideDownShouldAttractAJetAlongItsNormalVectorTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesCreatedCommand(this);
+
+	//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);clean it instead
+
+	return true;
+}
 
 #endif //WITH_DEV_AUTOMATION_TESTS
