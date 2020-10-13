@@ -17,4 +17,5 @@ public:
 	bool hasSplineComponent();
 	bool splineIsRootComponent();
 	int32 splineMeshesQuantity();
+	void addSplinePoint(FVector atLocation);
 };
