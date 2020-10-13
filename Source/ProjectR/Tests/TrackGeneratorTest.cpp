@@ -87,7 +87,7 @@ bool FSpawnTrackGeneratorInEditorWorldCommand::Update()
 }
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckSplineMeshesQuantityCommand, int, tickCounter, int, tickLimit, bool, testStarted, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMeshesQuantityCommand, FAutomationTestBase*, test);
 
 bool FCheckSplineMeshesQuantityCommand::Update()
 {
@@ -106,13 +106,9 @@ bool FCheckSplineMeshesQuantityCommand::Update()
 	        UE_LOG(LogTemp, Log, TEXT("Spline meshes quantity in generator: %d."), splineMeshesQuantity);
 		UE_LOG(LogTemp, Log, TEXT("Spline meshes quantity is coincident with number of spline points: %s."), *FString(sameAmountOfSplinePointsAsSplineMeshes ? "true" : "false"));
 
-		++tickCounter;
-		if (tickCounter > tickLimit)
-		{
-			test->TestTrue(TEXT("At spawning, the number of spline meshes should be coincident with the spline points quantity."), sameAmountOfSplinePointsAsSplineMeshes);
-			return true;
-		}
-		testStarted = true;
+
+		test->TestTrue(TEXT("At spawning, the number of spline meshes should be coincident with the spline points quantity."), sameAmountOfSplinePointsAsSplineMeshes);
+		return true;
 	}
 	return false;
 }
@@ -131,7 +127,7 @@ bool FATrackGeneratorSplineMeshesQuantityShouldBeTheSameAsSplinePointsAtSpawning
 
 	int tickCounter = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesQuantityCommand(tickCounter, tickLimit, false, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesQuantityCommand(this));
 
 	//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);clean it instead
 
