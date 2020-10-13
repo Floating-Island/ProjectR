@@ -25,12 +25,13 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		USplineComponent* splineComponent;
-
+	  
 	TArray<USplineMeshComponent*> splineMeshes;
-	
+	void updateSplineMeshesQuantity();
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+        
 
-	virtual void OnConstruction(const FTransform& Transform) override;
+        virtual void OnConstruction(const FTransform& Transform) override;
 };
