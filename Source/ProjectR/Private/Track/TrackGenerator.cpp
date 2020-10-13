@@ -37,10 +37,11 @@ void ATrackGenerator::OnConstruction(const FTransform& Transform)
 	for(int32 splinePointIndex =0;splinePointIndex < splineQuantity; ++splinePointIndex)
 	{
 		UE_LOG(LogTemp, Log, TEXT("current spline point index: %d."), splinePointIndex);
-		UE_LOG(LogTemp, Log, TEXT("current spline meshes inside splineMeshes array: %d."), splineMeshes.Num());
+		UE_LOG(LogTemp, Log, TEXT("spline meshes inside splineMeshes array before adding another: %d."), splineMeshes.Num());
 		USplineMeshComponent* splineMesh = NewObject<USplineMeshComponent>(this,USplineMeshComponent::StaticClass(), FName(TEXT("Spline Mesh Component %d"), splinePointIndex), RF_Transient);
 		splineMesh->RegisterComponent();
 		splineMeshes.Add(splineMesh);
+		UE_LOG(LogTemp, Log, TEXT("spline meshes inside splineMeshes array after adding another: %d."), splineMeshes.Num());
 	}
 }
 

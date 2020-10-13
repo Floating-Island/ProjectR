@@ -100,7 +100,7 @@ bool FCheckSplineMeshesCreatedCommand::Update()
 	if (testGenerator)
 	{
 		int32 initialSplineMeshesQuantity = testGenerator->splineMeshesQuantity();
-		bool initialSplinePointHasSplineMesh = initialSplineMeshesQuantity == 1;
+		bool initialSplinePointHasSplineMesh = initialSplineMeshesQuantity == 2;//splines always have start and end points at the beginning...
 		UE_LOG(LogTemp, Log, TEXT("Initial spline meshes quantity in generator: %d."), initialSplineMeshesQuantity);
 		UE_LOG(LogTemp, Log, TEXT("Initial spline point has spline mesh: %s."), *FString(initialSplinePointHasSplineMesh ? "true" : "false"));
 		FVector arbitraryLocation = testGenerator->GetActorLocation() + FVector(1);
