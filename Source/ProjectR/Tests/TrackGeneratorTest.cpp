@@ -87,7 +87,7 @@ bool FSpawnTrackGeneratorInEditorWorldCommand::Update()
 }
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMeshesCreatedCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckSplineMeshesCreatedCommand, int, tickCounter, int, tickLimit, bool, testStarted, FAutomationTestBase*, test);
 
 bool FCheckSplineMeshesCreatedCommand::Update()
 {
@@ -104,13 +104,22 @@ bool FCheckSplineMeshesCreatedCommand::Update()
 		UE_LOG(LogTemp, Log, TEXT("Initial spline meshes quantity in generator: %d."), initialSplineMeshesQuantity);
 		UE_LOG(LogTemp, Log, TEXT("Initial spline point has spline mesh: %s."), *FString(initialSplinePointHasSplineMesh ? "true" : "false"));
 		FVector arbitraryLocation = testGenerator->GetActorLocation() + FVector(1);
-		testGenerator->addSplinePoint(arbitraryLocation);
+
+	        if (!testStarted)
+		{
+			testGenerator->addSplinePoint(arbitraryLocation);
+		}
 		bool addedSplineIncreasesSplineMeshesQuantity = testGenerator->splineMeshesQuantity() == initialSplineMeshesQuantity + 1;
 		UE_LOG(LogTemp, Log, TEXT("Spline meshes quantity after adding a spline point: %d."), testGenerator->splineMeshesQuantity());
 		UE_LOG(LogTemp, Log, TEXT("Added spline point increases spline meshes quantity by one: %s."), *FString(addedSplineIncreasesSplineMeshesQuantity ? "true" : "false"));
 
-		test->TestTrue(TEXT("When adding spline points, a spline mesh is added to the track generator."), initialSplinePointHasSplineMesh && addedSplineIncreasesSplineMeshesQuantity);
-		return true;
+		++tickCounter;
+		if (tickCounter > tickLimit)
+		{
+			test->TestTrue(TEXT("When adding spline points, a spline mesh is added to the track generator."), initialSplinePointHasSplineMesh && addedSplineIncreasesSplineMeshesQuantity);
+			return true;
+		}
+		testStarted = true;
 	}
 	return false;
 }
@@ -127,7 +136,9 @@ bool FATrackGeneratorSplinePointsShouldBeAssociatedWithSplineMeshesTest::RunTest
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesCreatedCommand(this));
+	int tickCounter = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesCreatedCommand(tickCounter, tickLimit, false, this));
 
 	//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);clean it instead
 
