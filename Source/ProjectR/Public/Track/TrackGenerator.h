@@ -25,8 +25,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")	
 		USplineComponent* splineComponent;
-	UPROPERTY(EditAnywhere, Category = "Spline Meshes")
-		TArray<USplineMeshComponent*> splineMeshes;
+	
+	TArray<USplineMeshComponent*> splineMeshes;
 
 	void updateSplineMeshesQuantity();
 public:
