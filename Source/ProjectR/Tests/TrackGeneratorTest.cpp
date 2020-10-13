@@ -119,9 +119,9 @@ bool FCheckSplineMeshesCreatedCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackUpsideDownShouldAttractAJetAlongItsNormalVectorTest, "ProjectR.Unit.TrackTest.UpsideDownShouldAttractAJetAlongItsNormalVector", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplinePointsShouldBeAssociatedWithSplineMeshesTest, "ProjectR.Unit.TrackGeneratorTest.SplinePointsShouldBeAssociatedWithSplineMeshes", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackUpsideDownShouldAttractAJetAlongItsNormalVectorTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorSplinePointsShouldBeAssociatedWithSplineMeshesTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
