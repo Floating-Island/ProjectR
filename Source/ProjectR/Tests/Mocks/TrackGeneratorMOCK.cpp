@@ -13,3 +13,8 @@ bool ATrackGeneratorMOCK::splineIsRootComponent()
 {
 	return RootComponent == splineComponent ? true : false;
 }
+
+int ATrackGeneratorMOCK::splineMeshesQuantity()
+{
+	return splineComponent->GetNumberOfSplinePoints();
+}
