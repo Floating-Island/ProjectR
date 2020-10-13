@@ -22,4 +22,5 @@ int32 ATrackGeneratorMOCK::splineMeshesQuantity()
 void ATrackGeneratorMOCK::addSplinePoint(FVector atLocation)
 {
 	splineComponent->AddSplineWorldPoint(atLocation);
+        OnConstruction(GetTransform());
 }
