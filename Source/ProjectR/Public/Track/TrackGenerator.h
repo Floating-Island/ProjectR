@@ -14,8 +14,8 @@ UCLASS()
 class PROJECTR_API ATrackGenerator : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ATrackGenerator();
 
@@ -25,13 +25,13 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		USplineComponent* splineComponent;
-	  
-	TArray<USplineMeshComponent*> splineMeshes;
+	UPROPERTY(EditAnywhere, Category = "Spline Meshes")
+		TArray<USplineMeshComponent*> splineMeshes;
+
 	void updateSplineMeshesQuantity();
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-        
 
-        virtual void OnConstruction(const FTransform& Transform) override;
+	virtual void OnConstruction(const FTransform& Transform) override;
 };
