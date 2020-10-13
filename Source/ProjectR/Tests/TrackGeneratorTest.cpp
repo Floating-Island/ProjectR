@@ -129,8 +129,6 @@ bool FATrackGeneratorSplineMeshesQuantityShouldBeTheSameAsSplinePointsAtSpawning
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesQuantityCommand(this));
 
-	//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);clean it instead
-
 	return true;
 }
 
