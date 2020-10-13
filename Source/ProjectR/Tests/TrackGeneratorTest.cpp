@@ -130,7 +130,7 @@ bool FATrackUpsideDownShouldAttractAJetAlongItsNormalVectorTest::RunTest(const F
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesCreatedCommand(this);
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesCreatedCommand(this));
 
 	//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);clean it instead
 
