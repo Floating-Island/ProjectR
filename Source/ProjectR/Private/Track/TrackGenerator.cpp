@@ -3,6 +3,7 @@
 
 #include "Track/TrackGenerator.h"
 #include "Components/SplineComponent.h"
+#include "Components/SplineMeshComponent.h"
 
 ATrackGenerator::ATrackGenerator()
 {
@@ -24,5 +25,18 @@ void ATrackGenerator::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ATrackGenerator::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+
+	int32 splineQuantity = splineComponent->GetNumberOfSplinePoints();
+	for(int32 splinePointIndex =0;splinePointIndex < splineQuantity; ++splinePointIndex)
+	{
+		USplineMeshComponent* splineMesh = NewObject<USplineMeshComponent>(this,USplineMeshComponent::StaticClass(), FName(TEXT("Spline Mesh Component %d"), splinePointIndex));
+		splineMesh->RegisterComponent();
+		splineMeshes.Add(splineMesh);
+	}
 }
 

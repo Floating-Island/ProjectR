@@ -8,6 +8,7 @@
 
 
 class USplineComponent;
+class USplineMeshComponent;
 
 UCLASS()
 class PROJECTR_API ATrackGenerator : public AActor
@@ -23,10 +24,13 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-	USplineComponent* splineComponent;
+		USplineComponent* splineComponent;
+
+	TArray<USplineMeshComponent*> splineMeshes;
 	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void OnConstruction(const FTransform& Transform) override;
 };
