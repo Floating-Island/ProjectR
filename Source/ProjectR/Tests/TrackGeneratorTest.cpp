@@ -82,12 +82,12 @@ bool FSpawnTrackGeneratorInEditorWorldCommand::Update()
 	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
 
 	testWorld->SpawnActor<ATrackGeneratorMOCK>(ATrackGeneratorMOCK::StaticClass());
-	
+
 	return true;
 }
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMeshesCreatedCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckSplineMeshesCreatedCommand, int, tickCounter, int, tickLimit, FAutomationTestBase*, test);
 
 bool FCheckSplineMeshesCreatedCommand::Update()
 {
@@ -95,22 +95,26 @@ bool FCheckSplineMeshesCreatedCommand::Update()
 	{
 		return false;
 	}
-	UWorld*  testWorld = GEditor->GetEditorWorldContext().World();
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
 	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
 	if (testGenerator)
 	{
 		int32 initialSplineMeshesQuantity = testGenerator->splineMeshesQuantity();
 		bool initialSplinePointHasSplineMesh = initialSplineMeshesQuantity == 1;
 		UE_LOG(LogTemp, Log, TEXT("Initial spline meshes quantity in generator: %d."), initialSplineMeshesQuantity);
-		UE_LOG(LogTemp, Log, TEXT("Initial spline point has spline mesh: %s."), *FString(initialSplinePointHasSplineMesh? "true" : "false"));
+		UE_LOG(LogTemp, Log, TEXT("Initial spline point has spline mesh: %s."), *FString(initialSplinePointHasSplineMesh ? "true" : "false"));
 		FVector arbitraryLocation = testGenerator->GetActorLocation() + FVector(1);
 		testGenerator->addSplinePoint(arbitraryLocation);
 		bool addedSplineIncreasesSplineMeshesQuantity = testGenerator->splineMeshesQuantity() == initialSplineMeshesQuantity + 1;
 		UE_LOG(LogTemp, Log, TEXT("Spline meshes quantity after adding a spline point: %d."), testGenerator->splineMeshesQuantity());
-		UE_LOG(LogTemp, Log, TEXT("Added spline point increases spline meshes quantity by one: %s."), *FString(addedSplineIncreasesSplineMeshesQuantity? "true" : "false"));
-			
-		test->TestTrue(TEXT("When adding spline points, a spline mesh is added to the track generator."), initialSplinePointHasSplineMesh && addedSplineIncreasesSplineMeshesQuantity);
-		return true;
+		UE_LOG(LogTemp, Log, TEXT("Added spline point increases spline meshes quantity by one: %s."), *FString(addedSplineIncreasesSplineMeshesQuantity ? "true" : "false"));
+
+		++tickCounter;
+		if (tickCounter > tickLimit)
+		{
+			test->TestTrue(TEXT("When adding spline points, a spline mesh is added to the track generator."), initialSplinePointHasSplineMesh && addedSplineIncreasesSplineMeshesQuantity);
+			return true;
+		}
 	}
 	return false;
 }
@@ -127,7 +131,9 @@ bool FATrackGeneratorSplinePointsShouldBeAssociatedWithSplineMeshesTest::RunTest
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesCreatedCommand(this));
+	int tickCounter = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesCreatedCommand(tickCounter, tickLimit, this));
 
 	//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);clean it instead
 
