@@ -19,8 +19,13 @@ int32 ATrackGeneratorMOCK::splineMeshesQuantity()
 	return splineMeshes.Num();
 }
 
+int32 ATrackGeneratorMOCK::splinePointsQuantity()
+{
+	return splineComponent->GetNumberOfSplinePoints();
+}
+
 void ATrackGeneratorMOCK::addSplinePoint(FVector atLocation)
 {
 	splineComponent->AddSplineWorldPoint(atLocation);
-        OnConstruction(GetTransform());
+	OnConstruction(GetTransform());
 }
