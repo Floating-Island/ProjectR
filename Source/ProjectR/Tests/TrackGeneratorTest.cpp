@@ -99,7 +99,7 @@ bool FCheckSplineMeshesCreatedCommand::Update()
 	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
 	if (testGenerator)
 	{
-		int initialSplineMeshesQuantity = testGenerator->splineMeshesQuantity();
+		int32 initialSplineMeshesQuantity = testGenerator->splineMeshesQuantity();
 		bool initialSplinePointHasSplineMesh = initialSplineMeshesQuantity == 1;
 		UE_LOG(LogTemp, Log, TEXT("Initial spline meshes quantity in generator: %d."), initialSplineMeshesQuantity);
 		UE_LOG(LogTemp, Log, TEXT("Initial spline point has spline mesh: %s."), *FString(initialSplinePointHasSplineMesh? "true" : "false"));

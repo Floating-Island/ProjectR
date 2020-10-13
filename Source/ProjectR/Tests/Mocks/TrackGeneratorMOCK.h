@@ -16,5 +16,5 @@ class PROJECTR_API ATrackGeneratorMOCK : public ATrackGenerator
 public:
 	bool hasSplineComponent();
 	bool splineIsRootComponent();
-	int splineMeshesQuantity();
+	int32 splineMeshesQuantity();
 };
