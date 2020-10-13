@@ -41,7 +41,7 @@ void ATrackGenerator::updateSplineMeshesQuantity()
 	int32 splineQuantity = splineComponent->GetNumberOfSplinePoints();
 	for (int32 splinePointIndex = 0; splinePointIndex < splineQuantity; ++splinePointIndex)
 	{
-		USplineMeshComponent* splineMesh = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Spline Mesh Component %d"), splinePointIndex), RF_Transient);
+		USplineMeshComponent* splineMesh = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Spline Mesh Component")), RF_Transient);
 		splineMesh->RegisterComponent();
 		splineMeshes.Add(splineMesh);
 	}
