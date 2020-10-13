@@ -87,9 +87,9 @@ bool FSpawnTrackGeneratorInEditorWorldCommand::Update()
 }
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckSplineMeshesCreatedCommand, int, tickCounter, int, tickLimit, bool, testStarted, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckSplineMeshesQuantityCommand, int, tickCounter, int, tickLimit, bool, testStarted, FAutomationTestBase*, test);
 
-bool FCheckSplineMeshesCreatedCommand::Update()
+bool FCheckSplineMeshesQuantityCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -99,25 +99,17 @@ bool FCheckSplineMeshesCreatedCommand::Update()
 	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
 	if (testGenerator)
 	{
-		int32 initialSplineMeshesQuantity = testGenerator->splineMeshesQuantity();
-		bool initialSplinePointHasSplineMesh = initialSplineMeshesQuantity == 2;//splines always have start and end points at the beginning...
-		UE_LOG(LogTemp, Log, TEXT("Initial spline meshes quantity in generator: %d."), initialSplineMeshesQuantity);
-		UE_LOG(LogTemp, Log, TEXT("Initial spline point has spline mesh: %s."), *FString(initialSplinePointHasSplineMesh ? "true" : "false"));
-		FVector arbitraryLocation = testGenerator->GetActorLocation() + FVector(1);
-
-	        if (!testStarted)
-		{
-			testGenerator->addSplinePoint(arbitraryLocation);       
-		}
-
-		bool addedSplineIncreasesSplineMeshesQuantity = testGenerator->splineMeshesQuantity() == initialSplineMeshesQuantity + 1;
-		UE_LOG(LogTemp, Log, TEXT("Spline meshes quantity after adding a spline point: %d."), testGenerator->splineMeshesQuantity());
-		UE_LOG(LogTemp, Log, TEXT("Added spline point increases spline meshes quantity by one: %s."), *FString(addedSplineIncreasesSplineMeshesQuantity ? "true" : "false"));
+		int32 splineMeshesQuantity = testGenerator->splineMeshesQuantity();
+		int32 splinePointsQuantity = testGenerator->splinePointsQuantity();
+		bool sameAmountOfSplinePointsAsSplineMeshes = splineMeshesQuantity == splinePointsQuantity;//splines always have start and end points at the beginning...
+		UE_LOG(LogTemp, Log, TEXT("Spline points quantity in generator: %d."), splinePointsQuantity);
+	        UE_LOG(LogTemp, Log, TEXT("Spline meshes quantity in generator: %d."), splineMeshesQuantity);
+		UE_LOG(LogTemp, Log, TEXT("Spline meshes quantity is coincident with number of spline points: %s."), *FString(sameAmountOfSplinePointsAsSplineMeshes ? "true" : "false"));
 
 		++tickCounter;
 		if (tickCounter > tickLimit)
 		{
-			test->TestTrue(TEXT("When adding spline points, a spline mesh is added to the track generator."), initialSplinePointHasSplineMesh && addedSplineIncreasesSplineMeshesQuantity);
+			test->TestTrue(TEXT("At spawning, the number of spline meshes should be coincident with the spline points quantity."), sameAmountOfSplinePointsAsSplineMeshes);
 			return true;
 		}
 		testStarted = true;
@@ -126,9 +118,9 @@ bool FCheckSplineMeshesCreatedCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplinePointsShouldBeAssociatedWithSplineMeshesTest, "ProjectR.Unit.TrackGeneratorTest.SplinePointsShouldBeAssociatedWithSplineMeshes", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineMeshesQuantityShouldBeTheSameAsSplinePointsAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.SplineMeshesQuantityShouldBeTheSameAsSplinePointsAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorSplinePointsShouldBeAssociatedWithSplineMeshesTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorSplineMeshesQuantityShouldBeTheSameAsSplinePointsAtSpawningTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -139,7 +131,7 @@ bool FATrackGeneratorSplinePointsShouldBeAssociatedWithSplineMeshesTest::RunTest
 
 	int tickCounter = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesCreatedCommand(tickCounter, tickLimit, false, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesQuantityCommand(tickCounter, tickLimit, false, this));
 
 	//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);clean it instead
 
