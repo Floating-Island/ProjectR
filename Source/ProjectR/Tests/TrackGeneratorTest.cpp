@@ -108,6 +108,7 @@ bool FCheckSplineMeshesCreatedCommand::Update()
 	        if (!testStarted)
 		{
 			testGenerator->addSplinePoint(arbitraryLocation);
+		        testGenerator->SetActorLocation(FVector(1));//we move it to trigger the on construction event one more time.
 		}
 		bool addedSplineIncreasesSplineMeshesQuantity = testGenerator->splineMeshesQuantity() == initialSplineMeshesQuantity + 1;
 		UE_LOG(LogTemp, Log, TEXT("Spline meshes quantity after adding a spline point: %d."), testGenerator->splineMeshesQuantity());
