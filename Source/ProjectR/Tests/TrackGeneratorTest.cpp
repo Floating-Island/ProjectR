@@ -109,11 +109,8 @@ bool FCheckSplineMeshesCreatedCommand::Update()
 		UE_LOG(LogTemp, Log, TEXT("Spline meshes quantity after adding a spline point: %d."), testGenerator->splineMeshesQuantity());
 		UE_LOG(LogTemp, Log, TEXT("Added spline point increases spline meshes quantity by one: %s."), *FString(addedSplineIncreasesSplineMeshesQuantity? "true" : "false"));
 			
-			if (initialSplinePointHasSplineMesh && addedSplineIncreasesSplineMeshesQuantity)
-			{
-				test->TestTrue(TEXT("When adding spline points, a spline mesh is added to the track generator."), initialSplinePointHasSplineMesh && addedSplineIncreasesSplineMeshesQuantity);
-				return true;
-			}
+		test->TestTrue(TEXT("When adding spline points, a spline mesh is added to the track generator."), initialSplinePointHasSplineMesh && addedSplineIncreasesSplineMeshesQuantity);
+		return true;
 	}
 	return false;
 }
