@@ -39,7 +39,7 @@ bool ATrackGeneratorMOCK::MeshesAndPointsHaveSameStartPositions()
 
 	for (int32 splinePointIndex = 0; splinePointIndex < splinePointsQuantity(); ++splinePointIndex)
 	{
-		FVector currentSplinePointPosition = splineComponent->GetLocationAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::World);
+		FVector currentSplinePointPosition = splineComponent->GetLocationAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::Local);
 		FVector currentSplineMeshPosition = (splineMeshes[splinePointIndex])->GetStartPosition();
 
 		UE_LOG(LogTemp, Log, TEXT("Spline point position: %s."), *currentSplinePointPosition.ToString());
@@ -64,7 +64,7 @@ bool ATrackGeneratorMOCK::MeshesAndPointsHaveSameEndPositions()
 
 	for (int32 splinePointIndex = 0; splinePointIndex < splinePointsQuantity(); ++splinePointIndex)
 	{
-		FVector nextSplinePointPosition = splineComponent->GetLocationAtSplinePoint(nextSplineIndex(splinePointIndex), ESplineCoordinateSpace::World);
+		FVector nextSplinePointPosition = splineComponent->GetLocationAtSplinePoint(nextSplineIndex(splinePointIndex), ESplineCoordinateSpace::Local);
 		FVector currentSplineMeshPosition = (splineMeshes[splinePointIndex])->GetEndPosition();
 
 		UE_LOG(LogTemp, Log, TEXT("Spline point position: %s."), *nextSplinePointPosition.ToString());
@@ -91,7 +91,7 @@ bool ATrackGeneratorMOCK::MeshesAndPointsHaveSameStartTangents()
 
 	for (int32 splinePointIndex = 0; splinePointIndex < splinePointsQuantity(); ++splinePointIndex)
 	{
-		FVector currentSplinePointTangent = splineComponent->GetTangentAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::World);
+		FVector currentSplinePointTangent = splineComponent->GetTangentAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::Local);
 		FVector currentSplineMeshTangent = (splineMeshes[splinePointIndex])->GetStartTangent();
 
 		UE_LOG(LogTemp, Log, TEXT("Spline point tangent: %s."), *currentSplinePointTangent.ToString());

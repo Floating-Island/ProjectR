@@ -50,11 +50,11 @@ void ATrackGenerator::updateSplineMeshesQuantity()
 		splineMesh->RegisterComponent();
 		splineMeshes.Add(splineMesh);
 
-		FVector currentSplinePointPosition = splineComponent->GetLocationAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::World);
+		FVector currentSplinePointPosition = splineComponent->GetLocationAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::Local);
 		splineMesh->SetStartPosition(currentSplinePointPosition);
-		FVector nextSplinePointPosition = splineComponent->GetLocationAtSplinePoint(nextSplineIndex(splinePointIndex), ESplineCoordinateSpace::World);
+		FVector nextSplinePointPosition = splineComponent->GetLocationAtSplinePoint(nextSplineIndex(splinePointIndex), ESplineCoordinateSpace::Local);
 		splineMesh->SetEndPosition(nextSplinePointPosition);
-		FVector currentSplinePointTangent = splineComponent->GetTangentAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::World);
+		FVector currentSplinePointTangent = splineComponent->GetTangentAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::Local);
 		splineMesh->SetStartTangent(currentSplinePointTangent);
 	}
 }
