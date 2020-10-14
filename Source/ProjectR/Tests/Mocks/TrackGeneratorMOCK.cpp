@@ -72,7 +72,7 @@ bool ATrackGeneratorMOCK::MeshesAndPointsHaveSameEndPositions()
 
 		if (!currentSplineMeshPosition.Equals(nextSplinePointPosition))
 		{
-			UE_LOG(LogTemp, Log, TEXT("Spline mesh end position doesn't match spline point position."));
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh end position doesn't match next spline point position."));
 			return false;
 		}
 	}
@@ -100,6 +100,31 @@ bool ATrackGeneratorMOCK::MeshesAndPointsHaveSameStartTangents()
 		if (!currentSplineMeshTangent.Equals(currentSplinePointTangent))
 		{
 			UE_LOG(LogTemp, Log, TEXT("Spline mesh start tangent doesn't match spline point tangent."));
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool ATrackGeneratorMOCK::MeshesAndPointsHaveSameEndTangents()
+{
+		if (!sameNumberOfMeshesThanPoints())
+	{
+		return false;
+	}
+
+	for (int32 splinePointIndex = 0; splinePointIndex < splinePointsQuantity(); ++splinePointIndex)
+	{
+		FVector nextSplinePointTangent = splineComponent->GetTangentAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::Local);
+		FVector currentSplineMeshTangent = (splineMeshes[splinePointIndex])->GetEndTangent();
+
+		UE_LOG(LogTemp, Log, TEXT("Spline point tangent: %s."), *nextSplinePointTangent.ToString());
+		UE_LOG(LogTemp, Log, TEXT("Spline mesh start tangent: %s."), *currentSplineMeshTangent.ToString());
+
+		if (!currentSplineMeshTangent.Equals(nextSplinePointTangent))
+		{
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh end tangent doesn't match next spline point tangent."));
 			return false;
 		}
 	}

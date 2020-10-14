@@ -22,4 +22,5 @@ public:
 	bool MeshesAndPointsHaveSameStartPositions();
 	bool MeshesAndPointsHaveSameEndPositions();
 	bool MeshesAndPointsHaveSameStartTangents();
+	bool MeshesAndPointsHaveSameEndTangents();
 };
