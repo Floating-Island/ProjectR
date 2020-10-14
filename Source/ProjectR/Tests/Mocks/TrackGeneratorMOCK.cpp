@@ -62,7 +62,7 @@ bool ATrackGeneratorMOCK::MeshesAndPointsHaveSameEndPositions()
 	for (int32 splinePointIndex = 0; splinePointIndex < splinePointsQuantity(); ++splinePointIndex)
 	{
 		FVector nextSplinePointPosition = splineComponent->GetLocationAtSplinePoint(nextSplineIndex(splinePointIndex), ESplineCoordinateSpace::World);
-		FVector currentSplineMeshPosition = (splineMeshes[splinePointIndex])->GetStartPosition();
+		FVector currentSplineMeshPosition = (splineMeshes[splinePointIndex])->GetEndPosition();
 
 		UE_LOG(LogTemp, Log, TEXT("Spline point position: %s."), *nextSplinePointPosition.ToString());
 		UE_LOG(LogTemp, Log, TEXT("Spline mesh end position: %s."), *currentSplineMeshPosition.ToString());
