@@ -39,11 +39,37 @@ bool ATrackGeneratorMOCK::MeshesAndPointsHaveSameStartPositions()
 		FVector currentSplineMeshPosition = (splineMeshes[splinePointIndex])->GetStartPosition();
 
 		UE_LOG(LogTemp, Log, TEXT("Spline point position: %s."), *currentSplinePointPosition.ToString());
-		UE_LOG(LogTemp, Log, TEXT("Spline mesh position: %s."), *currentSplineMeshPosition.ToString());
+		UE_LOG(LogTemp, Log, TEXT("Spline mesh start position: %s."), *currentSplineMeshPosition.ToString());
 		
 		if (!currentSplineMeshPosition.Equals(currentSplinePointPosition))
 		{
-			UE_LOG(LogTemp, Log, TEXT("Spline mesh position doesn't match spline point position."));
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh start position doesn't match spline point position."));
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool ATrackGeneratorMOCK::MeshesAndPointsHaveSameEndPositions()
+{
+	bool haveSameQuantityOfMembers = splineMeshesQuantity() == splinePointsQuantity();
+	if (!haveSameQuantityOfMembers)
+	{
+		return false;
+	}
+
+	for (int32 splinePointIndex = 0; splinePointIndex < splinePointsQuantity(); ++splinePointIndex)
+	{
+		FVector nextSplinePointPosition = splineComponent->GetLocationAtSplinePoint(nextSplineIndex(splinePointIndex), ESplineCoordinateSpace::World);
+		FVector currentSplineMeshPosition = (splineMeshes[splinePointIndex])->GetStartPosition();
+
+		UE_LOG(LogTemp, Log, TEXT("Spline point position: %s."), *nextSplinePointPosition.ToString());
+		UE_LOG(LogTemp, Log, TEXT("Spline mesh end position: %s."), *currentSplineMeshPosition.ToString());
+		
+		if (!currentSplineMeshPosition.Equals(nextSplinePointPosition))
+		{
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh end position doesn't match spline point position."));
 			return false;
 		}
 	}

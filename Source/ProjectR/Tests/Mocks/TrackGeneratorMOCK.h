@@ -19,4 +19,5 @@ public:
 	int32 splineMeshesQuantity();
     int32 splinePointsQuantity();
 	bool MeshesAndPointsHaveSameStartPositions();
+	bool MeshesAndPointsHaveSameEndPositions();
 };
