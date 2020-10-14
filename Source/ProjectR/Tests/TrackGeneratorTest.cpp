@@ -125,11 +125,19 @@ bool FATrackGeneratorSplineMeshesQuantityShouldBeTheSameAsSplinePointsAtSpawning
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	int tickCounter = 0;
-	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesQuantityCommand(this));
 
 	return true;
 }
+
+
+
+
+
+
+
+
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
