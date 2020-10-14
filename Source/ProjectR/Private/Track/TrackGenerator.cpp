@@ -44,5 +44,8 @@ void ATrackGenerator::updateSplineMeshesQuantity()
 		USplineMeshComponent* splineMesh = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Spline Mesh Component "), splinePointIndex), RF_Transient);
 		splineMesh->RegisterComponent();
 		splineMeshes.Add(splineMesh);
+		
+		FVector currentSplinePointPosition = splineComponent->GetLocationAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::World);
+		splineMesh->SetStartPosition(currentSplinePointPosition);
 	}
 }
