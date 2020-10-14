@@ -360,5 +360,49 @@ bool FATrackGeneratorSplineMeshesMeshesShouldBeSetAtSpawningTest::RunTest(const 
 
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMeshesMeshesAreRoadMeshCommand, FAutomationTestBase*, test);
+
+bool FCheckSplineMeshesMeshesAreRoadMeshCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool splineMeshesHaveMeshesSet = testGenerator->splineMeshesHaveMeshesSet();
+		UE_LOG(LogTemp, Log, TEXT("Spline meshes meshes are the road mesh: %s."), *FString(splineMeshesHaveMeshesSet ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("At spawning, the spline meshes meshes should be the road mesh."), splineMeshesHaveMeshesSet);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineMeshesMeshesShouldBeTheRoadMeshAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.SplineMeshesMeshesShouldBeTheRoadMeshAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorSplineMeshesMeshesShouldBeTheRoadMeshAtSpawningTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesMeshesAreRoadMeshCommand(this));
+
+	return true;
+}
+
+
+
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
