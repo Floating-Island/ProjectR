@@ -116,7 +116,7 @@ bool ATrackGeneratorMOCK::MeshesAndPointsHaveSameEndTangents()
 
 	for (int32 splinePointIndex = 0; splinePointIndex < splinePointsQuantity(); ++splinePointIndex)
 	{
-		FVector nextSplinePointTangent = splineComponent->GetTangentAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::Local);
+		FVector nextSplinePointTangent = splineComponent->GetTangentAtSplinePoint(nextSplineIndex(splinePointIndex), ESplineCoordinateSpace::Local);
 		FVector currentSplineMeshTangent = (splineMeshes[splinePointIndex])->GetEndTangent();
 
 		UE_LOG(LogTemp, Log, TEXT("Spline point tangent: %s."), *nextSplinePointTangent.ToString());
