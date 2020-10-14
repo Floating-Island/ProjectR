@@ -35,6 +35,11 @@ void ATrackGenerator::OnConstruction(const FTransform& Transform)
 	updateSplineMeshesQuantity();
 }
 
+int32 ATrackGenerator::nextSplineIndex(int32 currentIndex)
+{
+	return (currentIndex + 1) % splineComponent->GetNumberOfSplinePoints();
+}
+
 void ATrackGenerator::updateSplineMeshesQuantity()
 {
 	splineMeshes.Empty();
@@ -44,8 +49,10 @@ void ATrackGenerator::updateSplineMeshesQuantity()
 		USplineMeshComponent* splineMesh = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Spline Mesh Component "), splinePointIndex), RF_Transient);
 		splineMesh->RegisterComponent();
 		splineMeshes.Add(splineMesh);
-		
+
 		FVector currentSplinePointPosition = splineComponent->GetLocationAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::World);
 		splineMesh->SetStartPosition(currentSplinePointPosition);
+		FVector nextSplinePointPosition = splineComponent->GetLocationAtSplinePoint(nextSplineIndex(splinePointIndex), ESplineCoordinateSpace::World);
+		splineMesh->SetEndPosition(nextSplinePointPosition);
 	}
 }

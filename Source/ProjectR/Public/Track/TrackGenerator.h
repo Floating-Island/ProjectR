@@ -34,4 +34,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void OnConstruction(const FTransform& Transform) override;
+
+	int32 nextSplineIndex(int32 currentIndex);
 };
