@@ -36,4 +36,5 @@ public:
 	virtual void OnConstruction(const FTransform& Transform) override;
 
 	int32 nextSplineIndex(int32 currentIndex);
+	void splineMeshPositionsAndTangentsSetup(int32 splinePointIndex, USplineMeshComponent* splineMesh);
 };
