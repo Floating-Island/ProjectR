@@ -155,9 +155,28 @@ bool ATrackGeneratorMOCK::splineMeshesMeshesAreRoadMesh()
 			UE_LOG(LogTemp, Log, TEXT("Spline mesh doesn't have static mesh set."));
 			return false;
 		}
-		if(mesh != roadMesh)
+		if (mesh != roadMesh)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Spline mesh static mesh isn't the road mesh."));
+			return false;
+		}
+	}
+	return true;
+}
+
+bool ATrackGeneratorMOCK::splineMeshesMeshesAreAttachedToRoot()
+{
+	for (auto splineMesh : splineMeshes)
+	{
+		UStaticMesh* mesh = splineMesh->GetStaticMesh();
+		if (!mesh)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh doesn't have static mesh set."));
+			return false;
+		}
+		if (splineMesh->GetAttachParent() != RootComponent)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh isn't attached to root component."));
 			return false;
 		}
 	}
