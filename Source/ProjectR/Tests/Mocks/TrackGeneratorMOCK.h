@@ -18,6 +18,8 @@ public:
 	bool splineIsRootComponent();
 	int32 splineMeshesQuantity();
     int32 splinePointsQuantity();
+	bool sameNumberOfMeshesThanPoints();
 	bool MeshesAndPointsHaveSameStartPositions();
 	bool MeshesAndPointsHaveSameEndPositions();
+	bool MeshesAndPointsHaveSameStartTangents();
 };
