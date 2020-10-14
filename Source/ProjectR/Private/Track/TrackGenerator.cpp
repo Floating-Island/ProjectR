@@ -34,7 +34,7 @@ void ATrackGenerator::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
 
-	updateSplineMeshesQuantity();
+	updateSplineMeshes();
 }
 
 int32 ATrackGenerator::nextSplineIndex(int32 currentIndex)
@@ -42,7 +42,7 @@ int32 ATrackGenerator::nextSplineIndex(int32 currentIndex)
 	return (currentIndex + 1) % splineComponent->GetNumberOfSplinePoints();
 }
 
-void ATrackGenerator::updateSplineMeshesQuantity()
+void ATrackGenerator::updateSplineMeshes()
 {
 	splineMeshes.Empty();
 	int32 splineQuantity = splineComponent->GetNumberOfSplinePoints();

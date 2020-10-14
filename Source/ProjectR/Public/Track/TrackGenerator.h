@@ -28,7 +28,7 @@ protected:
 	
 	TArray<USplineMeshComponent*> splineMeshes;
 
-	void updateSplineMeshesQuantity();
+	void updateSplineMeshes();
 
 	UPROPERTY(EditAnywhere, Category = "Default Meshes")
 		UStaticMesh* roadMesh;
