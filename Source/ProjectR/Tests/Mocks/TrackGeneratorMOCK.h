@@ -23,4 +23,5 @@ public:
 	bool MeshesAndPointsHaveSameEndPositions();
 	bool MeshesAndPointsHaveSameStartTangents();
 	bool MeshesAndPointsHaveSameEndTangents();
+	bool splineMeshesHaveMeshesSet();
 };

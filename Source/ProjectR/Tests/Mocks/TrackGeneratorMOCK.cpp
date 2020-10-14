@@ -131,3 +131,16 @@ bool ATrackGeneratorMOCK::MeshesAndPointsHaveSameEndTangents()
 
 	return true;
 }
+
+bool ATrackGeneratorMOCK::splineMeshesHaveMeshesSet()
+{
+	for (auto splineMesh : splineMeshes)
+	{
+		if(!splineMesh->GetStaticMesh())
+		{
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh doesn't have static mesh set."));
+			return false;
+		}
+	}
+	return true;
+}
