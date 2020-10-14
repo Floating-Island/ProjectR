@@ -25,5 +25,4 @@ public:
 	bool MeshesAndPointsHaveSameEndTangents();
 	bool splineMeshesHaveMeshesSet();
 	bool splineMeshesMeshesAreRoadMesh();
-	bool splineMeshesMeshesAreAttachedToRoot();
 };
