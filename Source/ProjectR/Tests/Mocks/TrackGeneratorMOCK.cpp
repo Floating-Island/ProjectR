@@ -136,9 +136,28 @@ bool ATrackGeneratorMOCK::splineMeshesHaveMeshesSet()
 {
 	for (auto splineMesh : splineMeshes)
 	{
-		if(!splineMesh->GetStaticMesh())
+		if (!splineMesh->GetStaticMesh())
 		{
 			UE_LOG(LogTemp, Log, TEXT("Spline mesh doesn't have static mesh set."));
+			return false;
+		}
+	}
+	return true;
+}
+
+bool ATrackGeneratorMOCK::splineMeshesMeshesAreRoadMesh()
+{
+	for (auto splineMesh : splineMeshes)
+	{
+		UStaticMesh* mesh = splineMesh->GetStaticMesh();
+		if (!mesh)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh doesn't have static mesh set."));
+			return false;
+		}
+		if(mesh != roadMesh)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh static mesh isn't the road mesh."));
 			return false;
 		}
 	}

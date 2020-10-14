@@ -24,4 +24,5 @@ public:
 	bool MeshesAndPointsHaveSameStartTangents();
 	bool MeshesAndPointsHaveSameEndTangents();
 	bool splineMeshesHaveMeshesSet();
+	bool splineMeshesMeshesAreRoadMesh();
 };
