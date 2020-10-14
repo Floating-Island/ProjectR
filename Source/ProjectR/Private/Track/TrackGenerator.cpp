@@ -13,7 +13,7 @@ ATrackGenerator::ATrackGenerator()
 	RootComponent = splineComponent;
 	splineMeshes = TArray<USplineMeshComponent*>();
 
-	UStaticMesh* roadMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Engine/MapTemplates/SM_Template_Map_Floor")));
+	roadMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Engine/MapTemplates/SM_Template_Map_Floor")));
 }
 
 // Called when the game starts or when spawned
