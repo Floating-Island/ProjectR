@@ -328,11 +328,11 @@ bool FCheckSplineMeshesMeshesCommand::Update()
 	if (testGenerator)
 	{
 
-		bool splineMeshesEndTangentsMatchNextSplinePoints = testGenerator->splineMeshesHaveMeshesSet();
-		UE_LOG(LogTemp, Log, TEXT("Spline meshes end tangents are coincident with the tangents of next spline points: %s."), *FString(splineMeshesEndTangentsMatchNextSplinePoints ? "true" : "false"));
+		bool splineMeshesHaveMeshesSet = testGenerator->splineMeshesHaveMeshesSet();
+		UE_LOG(LogTemp, Log, TEXT("Spline meshes meshes are set: %s."), *FString(splineMeshesHaveMeshesSet ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("At spawning, the end tangents of spline meshes should be coincident with the next spline points tangents."), splineMeshesEndTangentsMatchNextSplinePoints);
+		test->TestTrue(TEXT("At spawning, the spline meshes meshes should be set."), splineMeshesHaveMeshesSet);
 		return true;
 	}
 	return false;
@@ -354,6 +354,7 @@ bool FATrackGeneratorSplineMeshesMeshesShouldBeSetAtSpawningTest::RunTest(const 
 
 	return true;
 }
+
 
 
 
