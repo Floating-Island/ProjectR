@@ -109,7 +109,7 @@ bool ATrackGeneratorMOCK::MeshesAndPointsHaveSameStartTangents()
 
 bool ATrackGeneratorMOCK::MeshesAndPointsHaveSameEndTangents()
 {
-		if (!sameNumberOfMeshesThanPoints())
+	if (!sameNumberOfMeshesThanPoints())
 	{
 		return false;
 	}
