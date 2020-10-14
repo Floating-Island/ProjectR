@@ -373,11 +373,11 @@ bool FCheckSplineMeshesMeshesAreRoadMeshCommand::Update()
 	if (testGenerator)
 	{
 
-		bool splineMeshesHaveMeshesSet = testGenerator->splineMeshesHaveMeshesSetAsRoadMesh();
-		UE_LOG(LogTemp, Log, TEXT("Spline meshes meshes are the road mesh: %s."), *FString(splineMeshesHaveMeshesSet ? "true" : "false"));
+		bool splineMeshesHaveMeshesSetAsRoadMesh = testGenerator->splineMeshesMeshesAreRoadMesh();
+		UE_LOG(LogTemp, Log, TEXT("Spline meshes meshes are the road mesh: %s."), *FString(splineMeshesHaveMeshesSetAsRoadMesh ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("At spawning, the spline meshes meshes should be the road mesh."), splineMeshesHaveMeshesSet);
+		test->TestTrue(TEXT("At spawning, the spline meshes meshes should be the road mesh."), splineMeshesHaveMeshesSetAsRoadMesh);
 		return true;
 	}
 	return false;
