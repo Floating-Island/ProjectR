@@ -29,6 +29,10 @@ protected:
 	TArray<USplineMeshComponent*> splineMeshes;
 
 	void updateSplineMeshesQuantity();
+
+	UPROPERTY(EditAnywhere, Category = "Default Meshes")
+		UStaticMesh* roadMesh;
+	
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

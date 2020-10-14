@@ -12,6 +12,8 @@ ATrackGenerator::ATrackGenerator()
 	splineComponent = CreateDefaultSubobject<USplineComponent>(TEXT("Spline Component"));
 	RootComponent = splineComponent;
 	splineMeshes = TArray<USplineMeshComponent*>();
+
+	UStaticMesh* roadMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Engine/MapTemplates/SM_Template_Map_Floor")));
 }
 
 // Called when the game starts or when spawned
@@ -51,9 +53,8 @@ void ATrackGenerator::updateSplineMeshesQuantity()
 		splineMeshes.Add(splineMesh);
 
 		splineMeshPositionsAndTangentsSetup(splinePointIndex, splineMesh);
-
-		UStaticMesh* Mesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Engine/EditorMeshes/ArcadeEditorSphere")));
-		splineMesh->SetStaticMesh(Mesh);
+		
+		splineMesh->SetStaticMesh(roadMesh);
 	}
 }
 
