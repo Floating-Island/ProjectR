@@ -51,6 +51,9 @@ void ATrackGenerator::updateSplineMeshesQuantity()
 		splineMeshes.Add(splineMesh);
 
 		splineMeshPositionsAndTangentsSetup(splinePointIndex, splineMesh);
+
+		UStaticMesh* Mesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Engine/EditorMeshes/ArcadeEditorSphere")));
+		splineMesh->SetStaticMesh(Mesh);
 	}
 }
 
