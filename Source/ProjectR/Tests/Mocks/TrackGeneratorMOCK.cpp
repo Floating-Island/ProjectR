@@ -120,7 +120,7 @@ bool ATrackGeneratorMOCK::MeshesAndPointsHaveSameEndTangents()
 		FVector currentSplineMeshTangent = (splineMeshes[splinePointIndex])->GetEndTangent();
 
 		UE_LOG(LogTemp, Log, TEXT("Spline point tangent: %s."), *nextSplinePointTangent.ToString());
-		UE_LOG(LogTemp, Log, TEXT("Spline mesh start tangent: %s."), *currentSplineMeshTangent.ToString());
+		UE_LOG(LogTemp, Log, TEXT("Spline mesh end tangent: %s."), *currentSplineMeshTangent.ToString());
 
 		if (!currentSplineMeshTangent.Equals(nextSplinePointTangent))
 		{
