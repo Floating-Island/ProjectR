@@ -54,5 +54,7 @@ void ATrackGenerator::updateSplineMeshesQuantity()
 		splineMesh->SetStartPosition(currentSplinePointPosition);
 		FVector nextSplinePointPosition = splineComponent->GetLocationAtSplinePoint(nextSplineIndex(splinePointIndex), ESplineCoordinateSpace::World);
 		splineMesh->SetEndPosition(nextSplinePointPosition);
+		FVector currentSplinePointTangent = splineComponent->GetTangentAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::World);
+		splineMesh->SetStartTangent(currentSplinePointTangent);
 	}
 }
