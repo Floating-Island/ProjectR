@@ -17,5 +17,6 @@ public:
 	bool hasSplineComponent();
 	bool splineIsRootComponent();
 	int32 splineMeshesQuantity();
-        int32 splinePointsQuantity();
+    int32 splinePointsQuantity();
+	bool MeshesAndPointsHaveSameStartPositions();
 };
