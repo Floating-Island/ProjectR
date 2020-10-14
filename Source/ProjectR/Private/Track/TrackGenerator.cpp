@@ -52,6 +52,8 @@ void ATrackGenerator::updateSplineMeshes()
 		splineMesh->RegisterComponent();
 		splineMeshes.Add(splineMesh);
 
+		splineMesh->SetupAttachment(RootComponent);
+
 		splineMeshPositionsAndTangentsSetup(splinePointIndex, splineMesh);
 		
 		splineMesh->SetStaticMesh(roadMesh);
