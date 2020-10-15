@@ -242,5 +242,10 @@ bool ATrackGeneratorMOCK::splineMeshesMobilitySameAsRoot()
 	return true;
 }
 
+bool ATrackGeneratorMOCK::isSplineComponentLooping()
+{
+	return splineComponent->IsClosedLoop();
+}
+
 
 
