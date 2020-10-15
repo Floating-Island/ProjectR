@@ -28,4 +28,5 @@ public:
 	bool MagnetBoxesQuantitySameAsSplinePoints();
 	bool splineMeshesHaveCollisionEnabledSetToQueryAndPhysics();
 	bool splineMeshesHaveCollisionObjectToWorldStatic();
+	bool splineMeshesAreAttachedToRoot();
 };

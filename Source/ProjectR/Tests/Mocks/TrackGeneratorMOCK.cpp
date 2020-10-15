@@ -206,5 +206,23 @@ bool ATrackGeneratorMOCK::splineMeshesHaveCollisionObjectToWorldStatic()
 	return true;
 }
 
+bool ATrackGeneratorMOCK::splineMeshesAreAttachedToRoot()
+{
+	for (auto splineMesh : splineMeshes)
+	{
+		if (!splineMesh)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh is nullptr."));
+			return false;
+		}
+		if (splineMesh->GetAttachParent() != RootComponent)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh isn't attached to root component."));
+			return false;
+		}
+	}
+	return true;
+}
+
 
 
