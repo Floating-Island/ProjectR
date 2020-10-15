@@ -580,6 +580,50 @@ bool FATrackGeneratorMeshesShouldBeAttachedToRootAtSpawningTest::RunTest(const F
 	return true;
 }
 
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMeshesMobilityCommand, FAutomationTestBase*, test);
+
+bool FCheckSplineMeshesMobilityCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool splineMeshesMobilitySameAsSpline = testGenerator->splineMeshesMobilitySameAsSpline();
+		UE_LOG(LogTemp, Log, TEXT("Spline meshes have the same mobility as the spline component: %s."), *FString(splineMeshesMobilitySameAsSpline ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("At spawning, Spline meshes should have the same mobility as the spline component."), splineMeshesMobilitySameAsSpline);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMeshesShouldHaveSameMobilityAsSplineToRootAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.MeshesShouldHaveSameMobilityAsSplineToRootAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorMeshesShouldHaveSameMobilityAsSplineToRootAtSpawningTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesMobilityCommand(this));
+
+	return true;
+}
 //check location to relative when setting position and tangent.
 
 
