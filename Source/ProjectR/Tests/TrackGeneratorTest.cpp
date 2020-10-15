@@ -463,11 +463,11 @@ bool FCheckSplineMeshesCollisionEnabledCommand::Update()
 	if (testGenerator)
 	{
 
-		bool splineMeshesHaveCollisionEnabled = testGenerator->splineMeshesHaveCollisionEnabledSetToQueryAndPhysics();
-		UE_LOG(LogTemp, Log, TEXT("Spline meshes have collision enabled: %s."), *FString(splineMeshesHaveCollisionEnabled ? "true" : "false"));
+		bool splineMeshesHaveCollisionEnabledSetToQueryAndPhysics = testGenerator->splineMeshesHaveCollisionEnabledSetToQueryAndPhysics();
+		UE_LOG(LogTemp, Log, TEXT("Spline meshes have collision enabled set to query and physics: %s."), *FString(splineMeshesHaveCollisionEnabledSetToQueryAndPhysics ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("At spawning, Spline meshes should have collision enabled."), splineMeshesHaveCollisionEnabled);
+		test->TestTrue(TEXT("At spawning, Spline meshes should have collision enabled set to query and physics."), splineMeshesHaveCollisionEnabledSetToQueryAndPhysics);
 		return true;
 	}
 	return false;
