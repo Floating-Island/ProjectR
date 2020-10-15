@@ -624,6 +624,23 @@ bool FATrackGeneratorMeshesShouldHaveSameMobilityAsRootAtSpawningTest::RunTest(c
 
 	return true;
 }
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineComponentShouldLoopTest, "ProjectR.Unit.TrackGeneratorTest.SplineComponentShouldLoop", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorSplineComponentShouldLoopTest::RunTest(const FString& Parameters)
+{
+	ATrackGeneratorMOCK* testGenerator = NewObject<ATrackGeneratorMOCK>();
+	{
+		TestTrue(TEXT("The track generator spline component should loop, I'm doing race tracks."), testGenerator->isLoop());
+	}
+
+	return true;
+}
+
+
+
+
+
 //check location to relative when setting position and tangent.
 
 
