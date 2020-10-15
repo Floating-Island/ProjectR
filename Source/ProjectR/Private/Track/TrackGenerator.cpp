@@ -50,7 +50,7 @@ void ATrackGenerator::updateSplineMeshes()
 	int32 splineQuantity = splineComponent->GetNumberOfSplinePoints();
 	for (int32 splinePointIndex = 0; splinePointIndex < splineQuantity; ++splinePointIndex)
 	{
-		USplineMeshComponent* splineMesh = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Spline Mesh Component "), splinePointIndex), RF_Transient);
+		USplineMeshComponent* splineMesh = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Spline Mesh Component "), splinePointIndex), RF_DefaultSubObject);
 		splineMesh->RegisterComponent();
 		splineMeshes.Add(splineMesh);
 
@@ -58,7 +58,7 @@ void ATrackGenerator::updateSplineMeshes()
 
 		splineMesh->SetStaticMesh(roadMesh);
 
-		USplineMeshComponent* magnetBox = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Magnet Box Component "), splinePointIndex), RF_Transient);
+		USplineMeshComponent* magnetBox = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Magnet Box Component "), splinePointIndex), RF_DefaultSubObject);
 		magnetBox->RegisterComponent();
 		magnetBoxes.Add(magnetBox);
 	}
