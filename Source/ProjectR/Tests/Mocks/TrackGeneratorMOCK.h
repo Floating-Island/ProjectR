@@ -30,4 +30,5 @@ public:
 	bool splineMeshesHaveCollisionObjectToWorldStatic();
 	bool splineMeshesAreAttachedToRoot();
 	bool splineMeshesMobilitySameAsRoot();
+	
 };

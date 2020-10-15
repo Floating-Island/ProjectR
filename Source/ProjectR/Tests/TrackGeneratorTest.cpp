@@ -631,7 +631,7 @@ bool FATrackGeneratorSplineComponentShouldLoopTest::RunTest(const FString& Param
 {
 	ATrackGeneratorMOCK* testGenerator = NewObject<ATrackGeneratorMOCK>();
 	{
-		TestTrue(TEXT("The track generator spline component should loop, I'm doing race tracks."), testGenerator->isLoop());
+		TestTrue(TEXT("The track generator spline component should loop, I'm doing race tracks."), testGenerator->isSplineComponentLooping());
 	}
 
 	return true;
