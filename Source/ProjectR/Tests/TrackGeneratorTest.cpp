@@ -580,8 +580,6 @@ bool FATrackGeneratorMeshesShouldBeAttachedToRootAtSpawningTest::RunTest(const F
 	return true;
 }
 
-
-//attach spline meshes to spline using attach to.
 //check location to relative when setting position and tangent.
 
 
