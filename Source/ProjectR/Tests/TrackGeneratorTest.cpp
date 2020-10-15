@@ -450,6 +450,50 @@ bool FATrackGeneratorShouldHaveSameAmountOfMagnetBoxesAsSplinePointsAtSpawningTe
 
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMeshesCollisionEnabledCommand, FAutomationTestBase*, test);
+
+bool FCheckSplineMeshesCollisionEnabledCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool splineMeshesHaveCollisionEnabled = testGenerator->splineMeshesHaveCollisionEnabled();
+		UE_LOG(LogTemp, Log, TEXT("Spline meshes have collision enabled: %s."), *FString(splineMeshesHaveCollisionEnabled ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("At spawning, Spline meshes should have collision enabled."), splineMeshesHaveCollisionEnabled);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMeshesShouldHaveCollisionEnabledAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.MeshesShouldHaveCollisionEnabledAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorMeshesShouldHaveCollisionEnabledAtSpawningTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesCollisionEnabledCommand(this));
+
+	return true;
+}
+
+
+
+
+
 
 
 
