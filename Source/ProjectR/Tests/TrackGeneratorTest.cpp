@@ -540,6 +540,52 @@ bool FATrackGeneratorMeshesShouldHaveCollisionObjectTypeWorldStaticAtSpawningTes
 
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMeshesAttachToRootCommand, FAutomationTestBase*, test);
+
+bool FCheckSplineMeshesAttachToRootCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool splineMeshesAreAttachedToRoot = testGenerator->splineMeshesAreAttachedToRoot();
+		UE_LOG(LogTemp, Log, TEXT("Spline meshes are attached to root component: %s."), *FString(splineMeshesAreAttachedToRoot ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("At spawning, Spline meshes should be attached to root component."), splineMeshesAreAttachedToRoot);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMeshesShouldBeAttachedToRootAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.MeshesShouldBeAttachedToRootAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorMeshesShouldBeAttachedToRootAtSpawningTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesAttachToRootCommand(this));
+
+	return true;
+}
+
+
+//attach spline meshes to spline using attach to.
+//check location to relative when setting position and tangent.
+
+
+
 
 
 
