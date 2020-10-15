@@ -450,49 +450,6 @@ bool FATrackGeneratorShouldHaveSameAmountOfMagnetBoxesAsSplinePointsAtSpawningTe
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMagnetBoxesHeightCommand, FAutomationTestBase*, test);
-
-bool FCheckSplineMagnetBoxesHeightCommand::Update()
-{
-	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
-	{
-		return false;
-	}
-	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
-	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
-	if (testGenerator)
-	{
-
-		bool magnetBoxesAreAboveSplineMeshes = testGenerator->magnetBoxesAboveSplineMeshes();
-		UE_LOG(LogTemp, Log, TEXT("Each magnet box is above it's corresponding spline meshes (start and end): %s."), *FString(magnetBoxesAreAboveSplineMeshes ? "true" : "false"));
-
-
-		test->TestTrue(TEXT("Each magnet box should be above it's corresponding spline meshes (start and end)."), magnetBoxesAreAboveSplineMeshes);
-		return true;
-	}
-	return false;
-}
-
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxesShouldBeAboveSplineMeshesTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxesShouldBeAboveSplineMeshes", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FATrackGeneratorMagnetBoxesShouldBeAboveSplineMeshesTest::RunTest(const FString& Parameters)
-{
-
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
-
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMagnetBoxesHeightCommand(this));
-
-	return true;
-}
-
-
-
-
 
 
 
