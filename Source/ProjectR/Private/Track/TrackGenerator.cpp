@@ -16,6 +16,8 @@ ATrackGenerator::ATrackGenerator()
 	roadMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Engine/MapTemplates/SM_Template_Map_Floor")));
 
 	magnetBoxes = TArray<USplineMeshComponent*>();
+
+	splineComponent->SetClosedLoop(true, true);
 }
 
 // Called when the game starts or when spawned
