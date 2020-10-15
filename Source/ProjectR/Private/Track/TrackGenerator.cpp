@@ -58,6 +58,8 @@ void ATrackGenerator::updateSplineMeshes()
 
 		splineMesh->SetStaticMesh(roadMesh);
 
+		splineMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+
 		USplineMeshComponent* magnetBox = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Magnet Box Component "), splinePointIndex), RF_DefaultSubObject);
 		magnetBox->RegisterComponent();
 		magnetBoxes.Add(magnetBox);
