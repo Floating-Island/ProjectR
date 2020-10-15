@@ -32,6 +32,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Default Meshes")
 		UStaticMesh* roadMesh;
+
+	TArray<USplineMeshComponent*> magnetBoxes;
 	
 public:
 	// Called every frame

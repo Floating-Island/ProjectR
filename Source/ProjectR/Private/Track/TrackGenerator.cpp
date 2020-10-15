@@ -14,6 +14,8 @@ ATrackGenerator::ATrackGenerator()
 	splineMeshes = TArray<USplineMeshComponent*>();
 
 	roadMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Engine/MapTemplates/SM_Template_Map_Floor")));
+
+	magnetBoxes = TArray<USplineMeshComponent*>();
 }
 
 // Called when the game starts or when spawned
@@ -53,8 +55,12 @@ void ATrackGenerator::updateSplineMeshes()
 		splineMeshes.Add(splineMesh);
 
 		splineMeshPositionsAndTangentsSetup(splinePointIndex, splineMesh);
-		
+
 		splineMesh->SetStaticMesh(roadMesh);
+
+		USplineMeshComponent* magnetBox = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Magnet Box Component "), splinePointIndex), RF_Transient);
+		magnetBox->RegisterComponent();
+		magnetBoxes.Add(magnetBox);
 	}
 }
 
@@ -64,6 +70,6 @@ void ATrackGenerator::splineMeshPositionsAndTangentsSetup(int32 splinePointIndex
 	FVector nextSplinePointPosition = splineComponent->GetLocationAtSplinePoint(nextSplineIndex(splinePointIndex), ESplineCoordinateSpace::World);
 	FVector currentSplinePointTangent = splineComponent->GetTangentAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::World);
 	FVector nextSplinePointTangent = splineComponent->GetTangentAtSplinePoint(nextSplineIndex(splinePointIndex), ESplineCoordinateSpace::World);
-	
+
 	splineMesh->SetStartAndEnd(currentSplinePointPosition, currentSplinePointTangent, nextSplinePointPosition, nextSplinePointTangent);
 }
