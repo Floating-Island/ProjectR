@@ -224,5 +224,23 @@ bool ATrackGeneratorMOCK::splineMeshesAreAttachedToRoot()
 	return true;
 }
 
+bool ATrackGeneratorMOCK::splineMeshesMobilitySameAsRoot()
+{
+	for (auto splineMesh : splineMeshes)
+	{
+		if (!splineMesh)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh is nullptr."));
+			return false;
+		}
+		if (splineMesh->Mobility != RootComponent->Mobility)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh doesn't have same mobility as root."));
+			return false;
+		}
+	}
+	return true;
+}
+
 
 

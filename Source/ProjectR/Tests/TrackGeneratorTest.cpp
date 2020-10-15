@@ -598,20 +598,20 @@ bool FCheckSplineMeshesMobilityCommand::Update()
 	if (testGenerator)
 	{
 
-		bool splineMeshesMobilitySameAsSpline = testGenerator->splineMeshesMobilitySameAsSpline();
-		UE_LOG(LogTemp, Log, TEXT("Spline meshes have the same mobility as the spline component: %s."), *FString(splineMeshesMobilitySameAsSpline ? "true" : "false"));
+		bool splineMeshesMobilitySameAsRoot = testGenerator->splineMeshesMobilitySameAsRoot();
+		UE_LOG(LogTemp, Log, TEXT("Spline meshes have the same mobility as the root component: %s."), *FString(splineMeshesMobilitySameAsRoot ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("At spawning, Spline meshes should have the same mobility as the spline component."), splineMeshesMobilitySameAsSpline);
+		test->TestTrue(TEXT("At spawning, Spline meshes should have the same mobility as the root component."), splineMeshesMobilitySameAsRoot);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMeshesShouldHaveSameMobilityAsSplineToRootAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.MeshesShouldHaveSameMobilityAsSplineToRootAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMeshesShouldHaveSameMobilityAsRootAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.MeshesShouldHaveSameMobilityAsRootAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorMeshesShouldHaveSameMobilityAsSplineToRootAtSpawningTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorMeshesShouldHaveSameMobilityAsRootAtSpawningTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");

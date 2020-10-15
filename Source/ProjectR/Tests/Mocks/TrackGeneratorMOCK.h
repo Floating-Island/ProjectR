@@ -29,4 +29,5 @@ public:
 	bool splineMeshesHaveCollisionEnabledSetToQueryAndPhysics();
 	bool splineMeshesHaveCollisionObjectToWorldStatic();
 	bool splineMeshesAreAttachedToRoot();
+	bool splineMeshesMobilitySameAsRoot();
 };
