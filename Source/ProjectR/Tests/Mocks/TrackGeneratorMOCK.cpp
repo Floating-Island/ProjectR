@@ -164,3 +164,9 @@ bool ATrackGeneratorMOCK::splineMeshesMeshesAreRoadMesh()
 	return true;
 }
 
+bool ATrackGeneratorMOCK::MagnetBoxesQuantitySameAsSplinePoints()
+{
+
+	return static_cast<int32>(magnetBoxes.Num()) == splinePointsQuantity();
+}
+
