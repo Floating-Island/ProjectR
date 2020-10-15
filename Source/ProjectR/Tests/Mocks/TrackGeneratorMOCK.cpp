@@ -169,7 +169,7 @@ bool ATrackGeneratorMOCK::MagnetBoxesQuantitySameAsSplinePoints()
 	return static_cast<int32>(magnetBoxes.Num()) == splinePointsQuantity();
 }
 
-bool ATrackGeneratorMOCK::splineMeshesHaveCollisionEnabled()
+bool ATrackGeneratorMOCK::splineMeshesHaveCollisionEnabledSetToQueryAndPhysics()
 {
 	for (auto splineMesh : splineMeshes)
 	{

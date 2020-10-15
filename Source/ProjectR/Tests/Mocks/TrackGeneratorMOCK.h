@@ -26,5 +26,5 @@ public:
 	bool splineMeshesHaveMeshesSet();
 	bool splineMeshesMeshesAreRoadMesh();
 	bool MagnetBoxesQuantitySameAsSplinePoints();
-	bool splineMeshesHaveCollisionEnabled();
+	bool splineMeshesHaveCollisionEnabledSetToQueryAndPhysics();
 };
