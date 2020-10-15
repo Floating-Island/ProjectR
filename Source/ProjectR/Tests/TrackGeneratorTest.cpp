@@ -463,20 +463,20 @@ bool FCheckSplineMagnetBoxesHeightCommand::Update()
 	if (testGenerator)
 	{
 
-		bool magnetBoxesAreAboveSplinePoints = testGenerator->magnetBoxesAboveSplinePoints();
-		UE_LOG(LogTemp, Log, TEXT("Each magnet box is above it's corresponding spline points (start and end): %s."), *FString(magnetBoxesAreAboveSplinePoints ? "true" : "false"));
+		bool magnetBoxesAreAboveSplinePoints = testGenerator->magnetBoxesAboveSplineMeshes();
+		UE_LOG(LogTemp, Log, TEXT("Each magnet box is above it's corresponding spline meshes (start and end): %s."), *FString(magnetBoxesAreAboveSplinePoints ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("Each magnet box should be above it's corresponding spline points (start and end)."), magnetBoxesAreAboveSplinePoints);
+		test->TestTrue(TEXT("Each magnet box should be above it's corresponding spline meshes (start and end)."), magnetBoxesAreAboveSplinePoints);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxesShouldBeAboveSplinePointsTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxesShouldBeAboveSplinePoints", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxesShouldBeAboveSplineMeshesTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxesShouldBeAboveSplineMeshes", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorMagnetBoxesShouldBeAboveSplinePointsTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorMagnetBoxesShouldBeAboveSplineMeshesTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
