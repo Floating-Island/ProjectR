@@ -463,11 +463,11 @@ bool FCheckSplineMagnetBoxesHeightCommand::Update()
 	if (testGenerator)
 	{
 
-		bool magnetBoxesAreAboveSplinePoints = testGenerator->magnetBoxesAboveSplineMeshes();
-		UE_LOG(LogTemp, Log, TEXT("Each magnet box is above it's corresponding spline meshes (start and end): %s."), *FString(magnetBoxesAreAboveSplinePoints ? "true" : "false"));
+		bool magnetBoxesAreAboveSplineMeshes = testGenerator->magnetBoxesAboveSplineMeshes();
+		UE_LOG(LogTemp, Log, TEXT("Each magnet box is above it's corresponding spline meshes (start and end): %s."), *FString(magnetBoxesAreAboveSplineMeshes ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("Each magnet box should be above it's corresponding spline meshes (start and end)."), magnetBoxesAreAboveSplinePoints);
+		test->TestTrue(TEXT("Each magnet box should be above it's corresponding spline meshes (start and end)."), magnetBoxesAreAboveSplineMeshes);
 		return true;
 	}
 	return false;
