@@ -169,4 +169,22 @@ bool ATrackGeneratorMOCK::MagnetBoxesQuantitySameAsSplinePoints()
 	return static_cast<int32>(magnetBoxes.Num()) == splinePointsQuantity();
 }
 
+bool ATrackGeneratorMOCK::splineMeshesHaveCollisionEnabled()
+{
+	for (auto splineMesh : splineMeshes)
+	{
+		if (!splineMesh)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh is nullptr."));
+			return false;
+		}
+		if (splineMesh->GetCollisionEnabled() != ECollisionEnabled::QueryAndPhysics)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh doesn't have collision enabled."));
+			return false;
+		}
+	}
+	return true;
+}
+
 
