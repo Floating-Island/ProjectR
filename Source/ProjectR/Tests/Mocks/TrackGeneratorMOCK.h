@@ -27,4 +27,5 @@ public:
 	bool splineMeshesMeshesAreRoadMesh();
 	bool MagnetBoxesQuantitySameAsSplinePoints();
 	bool splineMeshesHaveCollisionEnabledSetToQueryAndPhysics();
+	bool splineMeshesHaveCollisionObjectToWorldStatic();
 };

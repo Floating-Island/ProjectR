@@ -188,5 +188,23 @@ bool ATrackGeneratorMOCK::splineMeshesHaveCollisionEnabledSetToQueryAndPhysics()
 	return true;
 }
 
+bool ATrackGeneratorMOCK::splineMeshesHaveCollisionObjectToWorldStatic()
+{
+	for (auto splineMesh : splineMeshes)
+	{
+		if (!splineMesh)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh is nullptr."));
+			return false;
+		}
+		if (splineMesh->GetCollisionObjectType() != ECollisionChannel::ECC_WorldStatic)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh isn't of type world static."));
+			return false;
+		}
+	}
+	return true;
+}
+
 
 
