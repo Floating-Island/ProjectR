@@ -4,6 +4,7 @@
 #include "TrackGeneratorMOCK.h"
 #include "Components/SplineComponent.h"
 #include "Components/SplineMeshComponent.h"
+#include "Engine/EngineTypes.h"
 
 bool ATrackGeneratorMOCK::hasSplineComponent()
 {
@@ -186,5 +187,6 @@ bool ATrackGeneratorMOCK::splineMeshesHaveCollisionEnabledSetToQueryAndPhysics()
 	}
 	return true;
 }
+
 
 

@@ -495,50 +495,6 @@ bool FATrackGeneratorMeshesShouldHaveCollisionEnabledAtSpawningTest::RunTest(con
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMeshesCollisionResponseBolckAllCommand, FAutomationTestBase*, test);
-
-bool FCheckSplineMeshesCollisionResponseBolckAllCommand::Update()
-{
-	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
-	{
-		return false;
-	}
-	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
-	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
-	if (testGenerator)
-	{
-
-		bool splineMeshesHaveCollisionResponseBlockAll = testGenerator->splineMeshesHaveCollisionResponseBlockAll();
-		UE_LOG(LogTemp, Log, TEXT("Spline meshes have collision response to block all: %s."), *FString(splineMeshesHaveCollisionResponseBlockAll ? "true" : "false"));
-
-
-		test->TestTrue(TEXT("At spawning, Spline meshes should have collision response to block all."), splineMeshesHaveCollisionResponseBlockAll);
-		return true;
-	}
-	return false;
-}
-
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMeshesShouldHaveCollisionResponseToBlockAllAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.MeshesShouldHaveCollisionResponseToBlockAllAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FATrackGeneratorMeshesShouldHaveCollisionResponseToBlockAllAtSpawningTest::RunTest(const FString& Parameters)
-{
-
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
-
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesCollisionResponseBolckAllCommand(this));
-
-	return true;
-}
-
-
-
-
-
 
 
 
