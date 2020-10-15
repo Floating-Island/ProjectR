@@ -405,6 +405,50 @@ bool FATrackGeneratorSplineMeshesMeshesShouldBeTheRoadMeshAtSpawningTest::RunTes
 
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMagnetBoxesQuantityCommand, FAutomationTestBase*, test);
+
+bool FCheckSplineMagnetBoxesQuantityCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool splineHasSameNumberOfMagnetBoxesAsSplinePoints = testGenerator->MagnetBoxesQuantitySameAsSplinePoints();
+		UE_LOG(LogTemp, Log, TEXT("Has the same amount of spline points as magnet boxes: %s."), *FString(splineHasSameNumberOfMagnetBoxesAsSplinePoints ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("At spawning, the spline should have the same amount of magnet boxes as spline points."), splineHasSameNumberOfMagnetBoxesAsSplinePoints);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorShouldHaveSameAmountOfMagnetBoxesAsSplinePointsAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.ShouldHaveSameAmountOfMagnetBoxesAsSplinePointsAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorShouldHaveSameAmountOfMagnetBoxesAsSplinePointsAtSpawningTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMagnetBoxesQuantityCommand(this));
+
+	return true;
+}
+
+
+
+
+
 
 
 
