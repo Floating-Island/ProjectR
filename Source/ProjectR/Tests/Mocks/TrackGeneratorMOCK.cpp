@@ -247,5 +247,23 @@ bool ATrackGeneratorMOCK::isSplineComponentLooping()
 	return splineComponent->IsClosedLoop();
 }
 
+bool ATrackGeneratorMOCK::magnetBoxesAreAttachedToSplineMeshes()
+{
+	for (int atIndex = 0; atIndex < splineMeshes.Num(); ++atIndex)
+	{
+		if (!splineMeshes[atIndex] || !magnetBoxes[atIndex])
+		{
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh or manget box is nullptr."));
+			return false;
+		}
+		if (magnetBoxes[atIndex]->GetAttachParent() != splineMeshes[atIndex])
+		{
+			UE_LOG(LogTemp, Log, TEXT("magnet box at index %d isn't attached to spline mesh."), atIndex);
+			return false;
+		}
+	}
+	return true;
+}
+
 
 

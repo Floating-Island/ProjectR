@@ -31,4 +31,5 @@ public:
 	bool splineMeshesAreAttachedToRoot();
 	bool splineMeshesMobilitySameAsRoot();
 	bool isSplineComponentLooping();
+	bool magnetBoxesAreAttachedToSplineMeshes();
 };
