@@ -77,7 +77,7 @@ void ATrackGenerator::splineMeshSetup(int32 splinePointIndex, USplineMeshCompone
 	splineMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
 
 	splineMesh->Mobility = RootComponent->Mobility;
-	splineMesh->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+	splineMesh->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepWorld, false));
 }
 
 void ATrackGenerator::componentPositionsAndTangentsSetup(int32 splinePointIndex, USplineMeshComponent* splineMesh)
@@ -105,7 +105,7 @@ void ATrackGenerator::magnetBoxSetup(int32 splinePointIndex, USplineMeshComponen
 	//magnetBox->SetStartScale(magnetBox->GetStartScale()*5);//should be removed once the initial bounds Z extension is known (of a mesh created for it)...
 	//magnetBox->SetEndScale(magnetBox->GetEndScale()*5);//should be removed once the initial bounds Z extension is known (of a mesh created for it)...
 	
-	magnetBox->AttachToComponent(splineMesh,FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+	magnetBox->AttachToComponent(splineMesh,FAttachmentTransformRules(EAttachmentRule::KeepWorld, false));
 
 	FVector magnetBoxHeight = FVector(0,0, magnetBoxHeightDistanceToSplineMesh);
 		
