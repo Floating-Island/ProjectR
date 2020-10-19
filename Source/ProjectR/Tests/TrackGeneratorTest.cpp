@@ -774,10 +774,52 @@ bool FATrackGeneratorMagnetBoxesShouldBeOnTopOfSplineMeshesAtSpawningTest::RunTe
 
 
 
-//set location of magnet box same as spline mesh, attach and elevate the same amount as thickness along the local Z axis.
 
 
-//check location to relative when setting position and tangent.
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetBoxesTangentsCommand, FAutomationTestBase*, test);
+
+bool FCheckMagnetBoxesTangentsCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool magnetBoxesAndPointsHaveSameTangents = testGenerator->magnetBoxesAndPointsHaveSameTangents();
+		UE_LOG(LogTemp, Log, TEXT("Magnet boxes tangents are coincident with the tangents of spline points: %s."), *FString(magnetBoxesAndPointsHaveSameTangents ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("At spawning, the tangents of magnet boxes should be coincident with the spline points tangents."), magnetBoxesAndPointsHaveSameTangents);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxesTangentsShouldBeTheSameAsSplinePointsAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxesTangentsShouldBeTheSameAsSplinePointsAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorMagnetBoxesTangentsShouldBeTheSameAsSplinePointsAtSpawningTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetBoxesTangentsCommand(this));
+
+	return true;
+}
+
+
+
+//set location of magnet box same as spline mesh, attach and elevate the same amount as the bound of mesh (saved in constructor) multiplied by the scale (gotten in on construction).
 
 
 
