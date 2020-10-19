@@ -338,11 +338,24 @@ bool ATrackGeneratorMOCK::magnetBoxesAndPointsHaveSameTangents()
 
 bool ATrackGeneratorMOCK::magnetBoxesHaveMeshesSet()
 {
-		for (auto magnetBox : magnetBoxes)
+	for (auto magnetBox : magnetBoxes)
 	{
 		if (!magnetBox->GetStaticMesh())
 		{
 			UE_LOG(LogTemp, Log, TEXT("Magnet box doesn't have static mesh set."));
+			return false;
+		}
+	}
+	return true;
+}
+
+bool ATrackGeneratorMOCK::magnetBoxesAreHiddenInGame()
+{
+	for (auto magnetBox : magnetBoxes)
+	{
+		if (!magnetBox->bHiddenInGame)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Magnet box isn't set to be hidden in game."));
 			return false;
 		}
 	}

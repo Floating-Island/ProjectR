@@ -36,4 +36,5 @@ public:
 	bool magnetBoxesOnTopOfSplineMeshes();
 	bool magnetBoxesAndPointsHaveSameTangents();
 	bool magnetBoxesHaveMeshesSet();
+	bool magnetBoxesAreHiddenInGame();
 };
