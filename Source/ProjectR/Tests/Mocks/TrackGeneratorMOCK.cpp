@@ -351,9 +351,9 @@ bool ATrackGeneratorMOCK::magnetBoxesHaveMeshesSet()
 
 bool ATrackGeneratorMOCK::magnetBoxesAreHiddenInGame()
 {
-	for (auto splineMesh : splineMeshes)
+	for (auto magnetBox : magnetBoxes)
 	{
-		if (!splineMesh->bHiddenInGame)
+		if (!magnetBox->bHiddenInGame)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Magnet box isn't set to be hidden in game."));
 			return false;
