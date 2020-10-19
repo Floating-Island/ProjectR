@@ -911,6 +911,55 @@ bool FATrackGeneratorMagnetBoxesShouldBeHiddenInGameTest::RunTest(const FString&
 
 
 
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMeshesRollsCommand, FAutomationTestBase*, test);
+
+bool FCheckSplineMeshesRollsCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool splineMeshesAlignedToSplinePointRolls = testGenerator->splineMeshesAlignedToSplinePointRolls();
+		UE_LOG(LogTemp, Log, TEXT("Spline meshes are aligned to the spline points rolls: %s."), *FString(splineMeshesAlignedToSplinePointRolls ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("The spline meshes rolls should be aligned to the spline points rolls."), splineMeshesAlignedToSplinePointRolls);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineMeshesShouldAlingTheirRollToTheSplinePointsTest, "ProjectR.Unit.TrackGeneratorTest.SplineMeshesShouldAlingTheirRollToTheSplinePoints", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorSplineMeshesShouldAlingTheirRollToTheSplinePointsTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesRollsCommand(this));
+
+	return true;
+}
+
+
+
+
+
+
+
+
+
 //set location of magnet box same as spline mesh, attach and elevate the same amount as the bound of mesh (saved in constructor) multiplied by the scale (gotten in on construction).
 
 
