@@ -20,6 +20,8 @@ ATrackGenerator::ATrackGenerator()
 	splineComponent->SetClosedLoop(true, true);
 
 	magnetBoxHeightDistanceToSplineMesh = 400.0f;
+
+	magnetBoxMesh = roadMesh;
 }
 
 // Called when the game starts or when spawned
@@ -95,7 +97,9 @@ void ATrackGenerator::magnetBoxSetup(int32 splinePointIndex, USplineMeshComponen
 	magnetBox->Mobility = splineMesh->Mobility; 
 
 	componentPositionsAndTangentsSetup(splinePointIndex, magnetBox);
-		
+
+	magnetBox->SetStaticMesh(magnetBoxMesh);
+	
 	magnetBox->AttachToComponent(splineMesh,FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false));
 
 	FVector magnetBoxHeight = FVector(0,0, magnetBoxHeightDistanceToSplineMesh);
