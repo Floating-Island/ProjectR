@@ -307,5 +307,34 @@ bool ATrackGeneratorMOCK::magnetBoxesOnTopOfSplineMeshes()
 	return true;
 }
 
+bool ATrackGeneratorMOCK::magnetBoxesAndPointsHaveSameTangents()
+{
+	if (!MagnetBoxesQuantitySameAsSplinePoints())
+	{
+		return false;
+	}
+
+	for (int32 splinePointIndex = 0; splinePointIndex < splinePointsQuantity(); ++splinePointIndex)
+	{
+		FVector magnetBoxStartTangent = (splineMeshes[splinePointIndex])->GetStartTangent();
+		FVector magnetBoxEndTangent = (splineMeshes[splinePointIndex])->GetEndTangent();
+		FVector currentSplinePointTangent = splineComponent->GetTangentAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::Local);
+		FVector nextSplinePointTangent = splineComponent->GetTangentAtSplinePoint(nextSplineIndex(splinePointIndex), ESplineCoordinateSpace::Local);
+
+		UE_LOG(LogTemp, Log, TEXT("current spline point tangent: %s."), *currentSplinePointTangent.ToString());
+		UE_LOG(LogTemp, Log, TEXT("Magnet Box start tangent: %s."), *magnetBoxStartTangent.ToString());
+		UE_LOG(LogTemp, Log, TEXT("Next spline point tangent: %s."), *nextSplinePointTangent.ToString());
+		UE_LOG(LogTemp, Log, TEXT("Magnet box end tangent: %s."), *magnetBoxEndTangent.ToString());
+
+		if (!magnetBoxStartTangent.Equals(currentSplinePointTangent) || !magnetBoxEndTangent.Equals(nextSplinePointTangent))
+		{
+			UE_LOG(LogTemp, Log, TEXT("Magnet box tangents don't match spline point tangents."));
+			return false;
+		}
+	}
+
+	return true;
+}
+
 
 
