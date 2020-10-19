@@ -44,5 +44,7 @@ public:
 	virtual void OnConstruction(const FTransform& Transform) override;
 
 	int32 nextSplineIndex(int32 currentIndex);
+	void magnetBoxSetup(int32 splinePointIndex, USplineMeshComponent* splineMesh, USplineMeshComponent* magnetBox);
+	void splineMeshSetup(int32 splinePointIndex, USplineMeshComponent* splineMesh);
 	void componentPositionsAndTangentsSetup(int32 splinePointIndex, USplineMeshComponent* splineMesh);
 };

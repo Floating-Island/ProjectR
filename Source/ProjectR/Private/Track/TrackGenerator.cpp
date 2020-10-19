@@ -55,36 +55,27 @@ void ATrackGenerator::updateSplineMeshes()
 	for (int32 splinePointIndex = 0; splinePointIndex < splineQuantity; ++splinePointIndex)
 	{
 		USplineMeshComponent* splineMesh = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Spline Mesh Component "), splinePointIndex), RF_DefaultSubObject);
-		splineMesh->RegisterComponent();
-		splineMeshes.Add(splineMesh);
-
-		componentPositionsAndTangentsSetup(splinePointIndex, splineMesh);
-
-		splineMesh->SetStaticMesh(roadMesh);
-
-		splineMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		splineMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
-
-		splineMesh->Mobility = RootComponent->Mobility;
-		splineMesh->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepWorld, false));
+		splineMeshSetup(splinePointIndex, splineMesh);
 		
 		USplineMeshComponent* magnetBox = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Magnet Box Component "), splinePointIndex), RF_DefaultSubObject);
-		magnetBox->RegisterComponent();
-		magnetBoxes.Add(magnetBox);
-		magnetBox->Mobility = splineMesh->Mobility;
-
-		componentPositionsAndTangentsSetup(splinePointIndex, magnetBox);
-		
-		magnetBox->AttachToComponent(splineMesh,FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false));
-
-		FVector magnetBoxHeight = FVector(0,0, magnetBoxHeightDistanceToSplineMesh);
-		
-		magnetBox->SetStartPosition(magnetBox->GetStartPosition() + magnetBoxHeight);
-		magnetBox->SetEndPosition(magnetBox->GetEndPosition() + magnetBoxHeight);
-
-		
-		
+		magnetBoxSetup(splinePointIndex, splineMesh, magnetBox);
 	}
+}
+
+void ATrackGenerator::splineMeshSetup(int32 splinePointIndex, USplineMeshComponent* splineMesh)
+{
+	splineMesh->RegisterComponent();
+	splineMeshes.Add(splineMesh);
+
+	componentPositionsAndTangentsSetup(splinePointIndex, splineMesh);
+
+	splineMesh->SetStaticMesh(roadMesh);
+
+	splineMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	splineMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
+
+	splineMesh->Mobility = RootComponent->Mobility;
+	splineMesh->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepWorld, false));
 }
 
 void ATrackGenerator::componentPositionsAndTangentsSetup(int32 splinePointIndex, USplineMeshComponent* splineMesh)
@@ -95,4 +86,20 @@ void ATrackGenerator::componentPositionsAndTangentsSetup(int32 splinePointIndex,
 	FVector nextSplinePointTangent = splineComponent->GetTangentAtSplinePoint(nextSplineIndex(splinePointIndex), ESplineCoordinateSpace::World);
 
 	splineMesh->SetStartAndEnd(currentSplinePointPosition, currentSplinePointTangent, nextSplinePointPosition, nextSplinePointTangent);
+}
+
+void ATrackGenerator::magnetBoxSetup(int32 splinePointIndex, USplineMeshComponent* splineMesh, USplineMeshComponent* magnetBox)
+{
+	magnetBox->RegisterComponent();
+	magnetBoxes.Add(magnetBox);
+	magnetBox->Mobility = splineMesh->Mobility;
+
+	componentPositionsAndTangentsSetup(splinePointIndex, magnetBox);
+		
+	magnetBox->AttachToComponent(splineMesh,FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false));
+
+	FVector magnetBoxHeight = FVector(0,0, magnetBoxHeightDistanceToSplineMesh);
+		
+	magnetBox->SetStartPosition(magnetBox->GetStartPosition() + magnetBoxHeight);
+	magnetBox->SetEndPosition(magnetBox->GetEndPosition() + magnetBoxHeight);
 }
