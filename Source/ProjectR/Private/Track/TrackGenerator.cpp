@@ -77,15 +77,15 @@ void ATrackGenerator::splineMeshSetup(int32 splinePointIndex, USplineMeshCompone
 	splineMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
 
 	splineMesh->Mobility = RootComponent->Mobility;
-	splineMesh->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepWorld, false));
+	splineMesh->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
 }
 
 void ATrackGenerator::componentPositionsAndTangentsSetup(int32 splinePointIndex, USplineMeshComponent* splineMesh)
 {
-	FVector currentSplinePointPosition = splineComponent->GetLocationAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::World);
-	FVector nextSplinePointPosition = splineComponent->GetLocationAtSplinePoint(nextSplineIndex(splinePointIndex), ESplineCoordinateSpace::World);
-	FVector currentSplinePointTangent = splineComponent->GetTangentAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::World);
-	FVector nextSplinePointTangent = splineComponent->GetTangentAtSplinePoint(nextSplineIndex(splinePointIndex), ESplineCoordinateSpace::World);
+	FVector currentSplinePointPosition = splineComponent->GetLocationAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::Local);
+	FVector nextSplinePointPosition = splineComponent->GetLocationAtSplinePoint(nextSplineIndex(splinePointIndex), ESplineCoordinateSpace::Local);
+	FVector currentSplinePointTangent = splineComponent->GetTangentAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::Local);
+	FVector nextSplinePointTangent = splineComponent->GetTangentAtSplinePoint(nextSplineIndex(splinePointIndex), ESplineCoordinateSpace::Local);
 
 	splineMesh->SetStartAndEnd(currentSplinePointPosition, currentSplinePointTangent, nextSplinePointPosition, nextSplinePointTangent);
 }
@@ -105,7 +105,7 @@ void ATrackGenerator::magnetBoxSetup(int32 splinePointIndex, USplineMeshComponen
 	//magnetBox->SetStartScale(magnetBox->GetStartScale()*5);//should be removed once the initial bounds Z extension is known (of a mesh created for it)...
 	//magnetBox->SetEndScale(magnetBox->GetEndScale()*5);//should be removed once the initial bounds Z extension is known (of a mesh created for it)...
 	
-	magnetBox->AttachToComponent(splineMesh,FAttachmentTransformRules(EAttachmentRule::KeepWorld, false));
+	magnetBox->AttachToComponent(splineMesh,FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
 
 	FVector magnetBoxHeight = FVector(0,0, magnetBoxHeightDistanceToSplineMesh);
 		
