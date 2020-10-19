@@ -18,6 +18,8 @@ ATrackGenerator::ATrackGenerator()
 	magnetBoxes = TArray<USplineMeshComponent*>();
 
 	splineComponent->SetClosedLoop(true, true);
+
+	magnetBoxHeightDistanceToSplineMesh = 400.0f;
 }
 
 // Called when the game starts or when spawned
@@ -70,7 +72,17 @@ void ATrackGenerator::updateSplineMeshes()
 		magnetBox->RegisterComponent();
 		magnetBoxes.Add(magnetBox);
 		magnetBox->Mobility = splineMesh->Mobility;
+
+		splineMeshPositionsAndTangentsSetup(splinePointIndex, magnetBox);
+		
 		magnetBox->AttachToComponent(splineMesh,FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false));
+
+		FVector magnetBoxHeight = FVector(0,0, magnetBoxHeightDistanceToSplineMesh);
+		
+		magnetBox->SetStartPosition(magnetBox->GetStartPosition() + magnetBoxHeight);
+		magnetBox->SetEndPosition(magnetBox->GetEndPosition() + magnetBoxHeight);
+
+		
 		
 	}
 }

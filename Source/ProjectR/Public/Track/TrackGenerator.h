@@ -34,6 +34,8 @@ protected:
 		UStaticMesh* roadMesh;
 
 	TArray<USplineMeshComponent*> magnetBoxes;
+
+	float magnetBoxHeightDistanceToSplineMesh;
 	
 public:
 	// Called every frame
