@@ -88,8 +88,6 @@ void ATrackGenerator::componentPositionsAndTangentsSetup(int32 aSplinePointIndex
 	FVector nextSplinePointTangent = splineComponent->GetTangentAtSplinePoint(nextSplineIndex(aSplinePointIndex), ESplineCoordinateSpace::Local);
 
 	aSplineMesh->SetStartAndEnd(currentSplinePointPosition, currentSplinePointTangent, nextSplinePointPosition, nextSplinePointTangent);
-	aSplineMesh->SetStartRoll(splineComponent->GetRollAtSplinePoint(aSplinePointIndex, ESplineCoordinateSpace::Local));
-	aSplineMesh->SetEndRoll(splineComponent->GetRollAtSplinePoint(nextSplineIndex(aSplinePointIndex), ESplineCoordinateSpace::Local));
 }
 
 void ATrackGenerator::magnetBoxSetup(int32 aSplinePointIndex, USplineMeshComponent* aSplineMesh, USplineMeshComponent* aMagnetBox)
