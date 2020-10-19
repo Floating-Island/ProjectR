@@ -819,6 +819,54 @@ bool FATrackGeneratorMagnetBoxesTangentsShouldBeTheSameAsSplinePointsAtSpawningT
 
 
 
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetBoxesMeshesCommand, FAutomationTestBase*, test);
+
+bool FCheckMagnetBoxesMeshesCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool magnetBoxesHaveMeshesSet = testGenerator->magnetBoxesHaveMeshesSet();
+		UE_LOG(LogTemp, Log, TEXT("Magnet boxes meshes are set: %s."), *FString(magnetBoxesHaveMeshesSet ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("At spawning, the magnet boxes meshes should be set."), magnetBoxesHaveMeshesSet);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxesMeshesShouldBeSetAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxesMeshesShouldBeSetAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorMagnetBoxesMeshesShouldBeSetAtSpawningTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetBoxesMeshesCommand(this));
+
+	return true;
+}
+
+
+
+
+
+
 //set location of magnet box same as spline mesh, attach and elevate the same amount as the bound of mesh (saved in constructor) multiplied by the scale (gotten in on construction).
 
 
