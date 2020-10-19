@@ -92,7 +92,7 @@ void ATrackGenerator::magnetBoxSetup(int32 splinePointIndex, USplineMeshComponen
 {
 	magnetBox->RegisterComponent();
 	magnetBoxes.Add(magnetBox);
-	magnetBox->Mobility = splineMesh->Mobility;
+	magnetBox->Mobility = splineMesh->Mobility; 
 
 	componentPositionsAndTangentsSetup(splinePointIndex, magnetBox);
 		
