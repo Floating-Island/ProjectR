@@ -386,5 +386,29 @@ bool ATrackGeneratorMOCK::splineMeshesAlignedToSplinePointRolls()
 	return true;
 }
 
+bool ATrackGeneratorMOCK::magnetBoxesAlignedToSplinePointRolls()
+{
+		for (int32 splinePointIndex = 0; splinePointIndex < splinePointsQuantity(); ++splinePointIndex)
+	{
+		float currentSplinePointRoll = splineComponent->GetRollAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::Local);
+		float magnetBoxStartRoll = (magnetBoxes[splinePointIndex])->GetStartRoll();
+		float nextSplinePointRoll = splineComponent->GetRollAtSplinePoint(nextSplineIndex(splinePointIndex), ESplineCoordinateSpace::Local);
+		float magnetBoxEndRoll = (magnetBoxes[splinePointIndex])->GetEndRoll();
+
+		UE_LOG(LogTemp, Log, TEXT("Current spline point roll: %f."), currentSplinePointRoll);
+		UE_LOG(LogTemp, Log, TEXT("Spline mesh start roll: %f."), magnetBoxStartRoll);
+		UE_LOG(LogTemp, Log, TEXT("Next spline point roll: %f."), nextSplinePointRoll);
+		UE_LOG(LogTemp, Log, TEXT("Spline mesh end roll: %f."), magnetBoxEndRoll);
+		
+		if (!FMath::IsNearlyEqual(magnetBoxStartRoll,currentSplinePointRoll) || !FMath::IsNearlyEqual(magnetBoxEndRoll,nextSplinePointRoll))
+		{
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh rolls don't match spline points rolls."));
+			return false;
+		}
+	}
+
+	return true;
+}
+
 
 
