@@ -65,11 +65,13 @@ void ATrackGenerator::updateSplineMeshes()
 
 		splineMesh->Mobility = RootComponent->Mobility;
 		splineMesh->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepWorld, false));
-
+		
 		USplineMeshComponent* magnetBox = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Magnet Box Component "), splinePointIndex), RF_DefaultSubObject);
 		magnetBox->RegisterComponent();
 		magnetBoxes.Add(magnetBox);
+		magnetBox->Mobility = splineMesh->Mobility;
 		magnetBox->AttachToComponent(splineMesh,FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false));
+		
 	}
 }
 
