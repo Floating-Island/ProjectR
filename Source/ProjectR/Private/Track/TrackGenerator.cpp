@@ -58,7 +58,7 @@ void ATrackGenerator::updateSplineMeshes()
 		splineMesh->RegisterComponent();
 		splineMeshes.Add(splineMesh);
 
-		splineMeshPositionsAndTangentsSetup(splinePointIndex, splineMesh);
+		componentPositionsAndTangentsSetup(splinePointIndex, splineMesh);
 
 		splineMesh->SetStaticMesh(roadMesh);
 
@@ -73,7 +73,7 @@ void ATrackGenerator::updateSplineMeshes()
 		magnetBoxes.Add(magnetBox);
 		magnetBox->Mobility = splineMesh->Mobility;
 
-		splineMeshPositionsAndTangentsSetup(splinePointIndex, magnetBox);
+		componentPositionsAndTangentsSetup(splinePointIndex, magnetBox);
 		
 		magnetBox->AttachToComponent(splineMesh,FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false));
 
@@ -87,7 +87,7 @@ void ATrackGenerator::updateSplineMeshes()
 	}
 }
 
-void ATrackGenerator::splineMeshPositionsAndTangentsSetup(int32 splinePointIndex, USplineMeshComponent* splineMesh)
+void ATrackGenerator::componentPositionsAndTangentsSetup(int32 splinePointIndex, USplineMeshComponent* splineMesh)
 {
 	FVector currentSplinePointPosition = splineComponent->GetLocationAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::World);
 	FVector nextSplinePointPosition = splineComponent->GetLocationAtSplinePoint(nextSplineIndex(splinePointIndex), ESplineCoordinateSpace::World);
