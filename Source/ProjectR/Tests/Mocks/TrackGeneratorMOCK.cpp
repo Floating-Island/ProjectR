@@ -292,8 +292,8 @@ bool ATrackGeneratorMOCK::magnetBoxesOnTopOfSplineMeshes()
 			UE_LOG(LogTemp, Log, TEXT("Spline mesh or manget box is nullptr."));
 			return false;
 		}
-		float magnetBoxStartDistance = magnetBoxes[atIndex]->GetStartPosition().Size();
-		float magnetBoxEndDistance = magnetBoxes[atIndex]->GetEndPosition().Size();
+		float magnetBoxStartDistance = (magnetBoxes[atIndex]->GetStartPosition() - splineMeshes[atIndex]->GetStartPosition()).Size();
+		float magnetBoxEndDistance = (magnetBoxes[atIndex]->GetEndPosition() - splineMeshes[atIndex]->GetEndPosition()).Size();
 		if (!FMath::IsNearlyEqual(magnetBoxStartDistance, magnetBoxHeightDistanceToSplineMesh, 0.001f) || !FMath::IsNearlyEqual(magnetBoxEndDistance, magnetBoxHeightDistanceToSplineMesh, 0.001f))
 		{
 			UE_LOG(LogTemp, Log, TEXT("Magnet box at index %d isn't located at the specified height distance from the spline mesh."), atIndex);
