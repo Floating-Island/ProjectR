@@ -283,5 +283,25 @@ bool ATrackGeneratorMOCK::magnetBoxesMobilitySameAsSplineMeshes()
 	return true;
 }
 
+bool ATrackGeneratorMOCK::magnetBoxesOnTopOfSplineMeshes()
+{
+	for (int atIndex = 0; atIndex < splineMeshes.Num(); ++atIndex)
+	{
+		if (!splineMeshes[atIndex] || !magnetBoxes[atIndex])
+		{
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh or manget box is nullptr."));
+			return false;
+		}
+		float magnetBoxStartDistance = magnetBoxes[atIndex]->GetStartPosition().Size();
+		float magnetBoxEndDistance = magnetBoxes[atIndex]->GetEndPosition().Size();
+		if (!FMath::IsNearlyEqual(magnetBoxStartDistance, magnetBoxHeightDistanceToSplineMesh) || !FMath::IsNearlyEqual(magnetBoxEndDistance, magnetBoxHeightDistanceToSplineMesh))
+		{
+			UE_LOG(LogTemp, Log, TEXT("magnet box at index %d isn't located at the specified height distance from the spline mesh."), atIndex);
+			return false;
+		}
+	}
+	return true;
+}
+
 
 
