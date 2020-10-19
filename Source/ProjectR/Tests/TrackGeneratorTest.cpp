@@ -730,6 +730,53 @@ bool FATrackGeneratorMagnetBoxesShouldBeAttachedToSplineMeshesAtSpawningTest::Ru
 
 
 
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetBoxesOnTopSplineMeshesCommand, FAutomationTestBase*, test);
+
+bool FCheckMagnetBoxesOnTopSplineMeshesCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool magnetBoxesOnTopOfSplineMeshes = testGenerator->magnetBoxesOnTopOfSplineMeshes();
+		UE_LOG(LogTemp, Log, TEXT("Magnet boxes are on top of spline meshes: %s."), *FString(magnetBoxesOnTopOfSplineMeshes ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("At spawning, magnet boxes should be on top of spline meshes."), magnetBoxesOnTopOfSplineMeshes);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxesShouldBeOnTopOfSplineMeshesAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxesShouldBeOnTopOfSplineMeshesAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorMagnetBoxesShouldBeOnTopOfSplineMeshesAtSpawningTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetBoxesOnTopSplineMeshesCommand(this));
+
+	return true;
+}
+
+
+
+//set location of magnet box same as spline mesh, attach and elevate the same amount as thickness along the local Z axis.
+
+
 //check location to relative when setting position and tangent.
 
 
