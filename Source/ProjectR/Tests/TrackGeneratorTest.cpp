@@ -642,6 +642,51 @@ bool FATrackGeneratorSplineComponentShouldLoopTest::RunTest(const FString& Param
 
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetBoxesMobilityCommand, FAutomationTestBase*, test);
+
+bool FCheckMagnetBoxesMobilityCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool magnetBoxesMobilitySameAsSplineMeshes = testGenerator->magnetBoxesMobilitySameAsSplineMeshes();
+		UE_LOG(LogTemp, Log, TEXT("Magnet boxes have the same mobility as spline meshes: %s."), *FString(magnetBoxesMobilitySameAsSplineMeshes ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("At spawning, magnet boxes should have the same mobility as spline meshes."), magnetBoxesMobilitySameAsSplineMeshes);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxesShouldHaveSameMobilityAsSplineMeshesAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxesShouldHaveSameMobilityAsSplineMeshesAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorMagnetBoxesShouldHaveSameMobilityAsSplineMeshesAtSpawningTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetBoxesMobilityCommand(this));
+
+	return true;
+}
+
+
+
+
+
+
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetBoxesAttachToSplineMeshesCommand, FAutomationTestBase*, test);
 
 bool FCheckMagnetBoxesAttachToSplineMeshesCommand::Update()
