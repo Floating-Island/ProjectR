@@ -265,5 +265,23 @@ bool ATrackGeneratorMOCK::magnetBoxesAreAttachedToSplineMeshes()
 	return true;
 }
 
+bool ATrackGeneratorMOCK::magnetBoxesMobilitySameAsSplineMeshes()
+{
+	for (int atIndex = 0; atIndex < splineMeshes.Num(); ++atIndex)
+	{
+		if (!splineMeshes[atIndex] || !magnetBoxes[atIndex])
+		{
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh or manget box is nullptr."));
+			return false;
+		}
+		if (magnetBoxes[atIndex]->Mobility != splineMeshes[atIndex]->Mobility)
+		{
+			UE_LOG(LogTemp, Log, TEXT("magnet box at index %d doesn't have the same mobility as the spline mesh."), atIndex);
+			return false;
+		}
+	}
+	return true;
+}
+
 
 
