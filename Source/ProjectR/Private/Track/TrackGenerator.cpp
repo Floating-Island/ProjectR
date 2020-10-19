@@ -105,7 +105,7 @@ void ATrackGenerator::magnetBoxSetup(int32 splinePointIndex, USplineMeshComponen
 	magnetBox->SetStartScale(magnetBox->GetStartScale()*5);//should be removed once the initial bounds Z extension is known (of a mesh created for it)...
 	magnetBox->SetEndScale(magnetBox->GetEndScale()*5);//should be removed once the initial bounds Z extension is known (of a mesh created for it)...
 	
-	magnetBox->AttachToComponent(splineMesh,FAttachmentTransformRules(EAttachmentRule::SnapToTarget, false));
+	magnetBox->AttachToComponent(splineMesh,FAttachmentTransformRules(EAttachmentRule::KeepWorld, false));
 
 	FVector magnetBoxHeight = FVector(0,0, magnetBoxHeightDistanceToSplineMesh);
 		
