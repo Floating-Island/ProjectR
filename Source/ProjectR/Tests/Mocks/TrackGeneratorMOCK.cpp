@@ -258,7 +258,7 @@ bool ATrackGeneratorMOCK::magnetBoxesAreAttachedToSplineMeshes()
 		}
 		if (magnetBoxes[atIndex]->GetAttachParent() != splineMeshes[atIndex])
 		{
-			UE_LOG(LogTemp, Log, TEXT("magnet box at index %d isn't attached to spline mesh."), atIndex);
+			UE_LOG(LogTemp, Log, TEXT("Magnet box at index %d isn't attached to spline mesh."), atIndex);
 			return false;
 		}
 	}
@@ -276,7 +276,7 @@ bool ATrackGeneratorMOCK::magnetBoxesMobilitySameAsSplineMeshes()
 		}
 		if (magnetBoxes[atIndex]->Mobility != splineMeshes[atIndex]->Mobility)
 		{
-			UE_LOG(LogTemp, Log, TEXT("magnet box at index %d doesn't have the same mobility as the spline mesh."), atIndex);
+			UE_LOG(LogTemp, Log, TEXT("Magnet box at index %d doesn't have the same mobility as the spline mesh."), atIndex);
 			return false;
 		}
 	}
@@ -294,9 +294,13 @@ bool ATrackGeneratorMOCK::magnetBoxesOnTopOfSplineMeshes()
 		}
 		float magnetBoxStartDistance = magnetBoxes[atIndex]->GetStartPosition().Size();
 		float magnetBoxEndDistance = magnetBoxes[atIndex]->GetEndPosition().Size();
-		if (!FMath::IsNearlyEqual(magnetBoxStartDistance, magnetBoxHeightDistanceToSplineMesh) || !FMath::IsNearlyEqual(magnetBoxEndDistance, magnetBoxHeightDistanceToSplineMesh))
+		if (!FMath::IsNearlyEqual(magnetBoxStartDistance, magnetBoxHeightDistanceToSplineMesh, 0.001f) || !FMath::IsNearlyEqual(magnetBoxEndDistance, magnetBoxHeightDistanceToSplineMesh, 0.001f))
 		{
-			UE_LOG(LogTemp, Log, TEXT("magnet box at index %d isn't located at the specified height distance from the spline mesh."), atIndex);
+			UE_LOG(LogTemp, Log, TEXT("Magnet box at index %d isn't located at the specified height distance from the spline mesh."), atIndex);
+			UE_LOG(LogTemp, Log, TEXT("Magnet box start position: %s."), *magnetBoxes[atIndex]->GetStartPosition().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh start position: %s."), *splineMeshes[atIndex]->GetStartPosition().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Magnet box end position: %s."), *magnetBoxes[atIndex]->GetEndPosition().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh end position: %s."), *splineMeshes[atIndex]->GetEndPosition().ToString());
 			return false;
 		}
 	}
