@@ -96,6 +96,8 @@ void ATrackGenerator::magnetBoxSetup(int32 splinePointIndex, USplineMeshComponen
 	magnetBoxes.Add(magnetBox);
 	magnetBox->Mobility = splineMesh->Mobility; 
 
+	magnetBox->SetHiddenInGame(true);
+	
 	componentPositionsAndTangentsSetup(splinePointIndex, magnetBox);
 
 	magnetBox->SetStaticMesh(magnetBoxMesh);
