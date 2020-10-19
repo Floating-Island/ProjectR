@@ -351,14 +351,38 @@ bool ATrackGeneratorMOCK::magnetBoxesHaveMeshesSet()
 
 bool ATrackGeneratorMOCK::magnetBoxesAreHiddenInGame()
 {
-	for (auto magnetBox : magnetBoxes)
+	for (auto splineMesh : splineMeshes)
 	{
-		if (!magnetBox->bHiddenInGame)
+		if (!splineMesh->bHiddenInGame)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Magnet box isn't set to be hidden in game."));
 			return false;
 		}
 	}
+	return true;
+}
+
+bool ATrackGeneratorMOCK::splineMeshesAlignedToSplinePointRolls()
+{
+	for (int32 splinePointIndex = 0; splinePointIndex < splinePointsQuantity(); ++splinePointIndex)
+	{
+		float currentSplinePointRoll = splineComponent->GetRollAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::Local);
+		float splineMeshStartRoll = (splineMeshes[splinePointIndex])->GetStartRoll();
+		float nextSplinePointRoll = splineComponent->GetRollAtSplinePoint(nextSplineIndex(splinePointIndex), ESplineCoordinateSpace::Local);
+		float splineMeshEndRoll = (splineMeshes[splinePointIndex])->GetEndRoll();
+
+		UE_LOG(LogTemp, Log, TEXT("Current spline point roll: %f."), currentSplinePointRoll);
+		UE_LOG(LogTemp, Log, TEXT("Spline mesh start roll: %f."), splineMeshStartRoll);
+		UE_LOG(LogTemp, Log, TEXT("Next spline point roll: %f."), nextSplinePointRoll);
+		UE_LOG(LogTemp, Log, TEXT("Spline mesh end roll: %f."), splineMeshEndRoll);
+		
+		if (!FMath::IsNearlyEqual(splineMeshStartRoll,currentSplinePointRoll) || !FMath::IsNearlyEqual(splineMeshEndRoll,nextSplinePointRoll))
+		{
+			UE_LOG(LogTemp, Log, TEXT("Spline mesh rolls don't match spline points rolls."));
+			return false;
+		}
+	}
+
 	return true;
 }
 
