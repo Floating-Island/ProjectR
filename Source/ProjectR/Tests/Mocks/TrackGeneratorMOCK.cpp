@@ -336,5 +336,18 @@ bool ATrackGeneratorMOCK::magnetBoxesAndPointsHaveSameTangents()
 	return true;
 }
 
+bool ATrackGeneratorMOCK::magnetBoxesHaveMeshesSet()
+{
+		for (auto magnetBox : magnetBoxes)
+	{
+		if (!magnetBox->GetStaticMesh())
+		{
+			UE_LOG(LogTemp, Log, TEXT("Magnet box doesn't have static mesh set."));
+			return false;
+		}
+	}
+	return true;
+}
+
 
 

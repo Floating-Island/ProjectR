@@ -35,4 +35,5 @@ public:
 	bool magnetBoxesMobilitySameAsSplineMeshes();
 	bool magnetBoxesOnTopOfSplineMeshes();
 	bool magnetBoxesAndPointsHaveSameTangents();
+	bool magnetBoxesHaveMeshesSet();
 };
