@@ -41,5 +41,5 @@ public:
 	bool magnetBoxesOverlapWithPawnChannel();
 	bool magnetBoxesGenerateOverlapEvents();
 	bool componentsHaveSmoothInterpolation();
-	bool magnetBoxesRelativeRotationIsZero();
+	bool magnetBoxesRollMathcesSplineMeshes();
 };

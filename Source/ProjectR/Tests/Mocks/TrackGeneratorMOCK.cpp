@@ -421,7 +421,7 @@ bool ATrackGeneratorMOCK::componentsHaveSmoothInterpolation()
 	return true;
 }
 
-bool ATrackGeneratorMOCK::magnetBoxesRelativeRotationIsZero()
+bool ATrackGeneratorMOCK::magnetBoxesRollMathcesSplineMeshes()
 {
 	for (auto splineMesh : splineMeshes)
 	{

@@ -1123,11 +1123,11 @@ bool FCheckMagnetBoxRelativeRollCommand::Update()
 	if (testGenerator)
 	{
 
-		bool magnetBoxesRelativeRotationIsZero = testGenerator->magnetBoxesRelativeRotationIsZero();
-		UE_LOG(LogTemp, Log, TEXT("Magnet Boxes have relative roll as zero: %s."), *FString(magnetBoxesRelativeRotationIsZero ? "true" : "false"));
+		bool magnetBoxesRelativeRotationIsZero = testGenerator->magnetBoxesRollMathcesSplineMeshes();
+		UE_LOG(LogTemp, Log, TEXT("Magnet Boxes have roll same as spline meshes: %s."), *FString(magnetBoxesRelativeRotationIsZero ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("The magnet boxes should have relative roll of zero after rolling spline meshes."), magnetBoxesRelativeRotationIsZero);
+		test->TestTrue(TEXT("The magnet boxes should have roll of spline meshes after rolling spline meshes."), magnetBoxesRelativeRotationIsZero);
 		return true;
 	}
 	return false;
