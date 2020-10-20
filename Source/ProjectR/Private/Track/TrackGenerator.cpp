@@ -67,6 +67,8 @@ void ATrackGenerator::configureSplineMesh(int32 aSplinePointIndex, USplineMeshCo
 	aSplineMesh->RegisterComponent();
 	splineMeshes.Add(aSplineMesh);
 
+	aSplineMesh->bSmoothInterpRollScale = true;
+	
 	configureComponentPositionsAndTangents(aSplinePointIndex, aSplineMesh);
 
 	aSplineMesh->SetStaticMesh(roadMesh);
@@ -95,6 +97,8 @@ void ATrackGenerator::configureMagnetBox(int32 aSplinePointIndex, USplineMeshCom
 	aMagnetBox->Mobility = aSplineMesh->Mobility;
 
 	aMagnetBox->SetHiddenInGame(true);
+
+	aMagnetBox->bSmoothInterpRollScale = true;
 
 	configureComponentPositionsAndTangents(aSplinePointIndex, aMagnetBox);
 
