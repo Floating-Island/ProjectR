@@ -1069,7 +1069,7 @@ bool FATrackGeneratorMagnetBoxesShouldGenerateOverlapEventsTest::RunTest(const F
 //make the magnet box ignore all channels.
 //make the magnet box respond to pawn overlap (jet overlaps too, the test is in the track tests).
 //make the magnet box generate overlap events.
-//make the magnet box broadcast on begin overlap and on end overlap events.
+//make the magnet box broadcast on begin overlap and on end overlap events (it's automatic once we generate overlap events).
 //make a track manager to catch those events, add the overlapped pawns to a owning set and every frame travel the set and magnetize pawns this way:
 //1) get the jet location.
 //2) search along the spline the nearest point to the jet location.
