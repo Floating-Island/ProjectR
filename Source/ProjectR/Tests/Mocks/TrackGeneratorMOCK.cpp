@@ -316,8 +316,8 @@ bool ATrackGeneratorMOCK::magnetBoxesAndPointsHaveSameTangents()
 
 	for (int32 splinePointIndex = 0; splinePointIndex < splinePointsQuantity(); ++splinePointIndex)
 	{
-		FVector magnetBoxStartTangent = (splineMeshes[splinePointIndex])->GetStartTangent();
-		FVector magnetBoxEndTangent = (splineMeshes[splinePointIndex])->GetEndTangent();
+		FVector magnetBoxStartTangent = (magnetBoxes[splinePointIndex])->GetStartTangent();
+		FVector magnetBoxEndTangent = (magnetBoxes[splinePointIndex])->GetEndTangent();
 		FVector currentSplinePointTangent = splineComponent->GetTangentAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::Local);
 		FVector nextSplinePointTangent = splineComponent->GetTangentAtSplinePoint(nextSplineIndex(splinePointIndex), ESplineCoordinateSpace::Local);
 
@@ -414,6 +414,39 @@ bool ATrackGeneratorMOCK::componentsHaveSmoothInterpolation()
 		if (!splineMeshWithSmoothInterpolation || !magnetBoxWithSmoothInterpolation)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Components don't have smooth interpolation enabled."));
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool ATrackGeneratorMOCK::magnetBoxesRelativeRotationIsZero()
+{
+	for (auto splineMesh : splineMeshes)
+	{
+		float roll = 30.0f;
+		splineMesh->SetStartRoll(roll);
+		splineMesh->SetEndRoll(roll);
+	}
+	//updateSplineMeshes();
+
+	for (int32 splinePointIndex = 0; splinePointIndex < splinePointsQuantity(); ++splinePointIndex)
+	{
+		float splineMeshStartRoll = (splineMeshes[splinePointIndex])->GetStartRoll();
+		float splineMeshEndRoll = (splineMeshes[splinePointIndex])->GetEndRoll();
+		float magnetBoxStartRoll = (magnetBoxes[splinePointIndex])->GetStartRoll();
+		float magnetBoxEndRoll = (magnetBoxes[splinePointIndex])->GetEndRoll();
+
+
+		UE_LOG(LogTemp, Log, TEXT("Spline mesh start roll: %s."), *FString::SanitizeFloat(splineMeshStartRoll));
+		UE_LOG(LogTemp, Log, TEXT("Spline mesh end roll: %s."), *FString::SanitizeFloat(splineMeshEndRoll));
+		UE_LOG(LogTemp, Log, TEXT("Magnet box start roll: %s."), *FString::SanitizeFloat(magnetBoxStartRoll));
+		UE_LOG(LogTemp, Log, TEXT("Magnet box end roll: %s."), *FString::SanitizeFloat(magnetBoxEndRoll));
+
+		if (!FMath::IsNearlyEqual(magnetBoxStartRoll, splineMeshStartRoll) || !FMath::IsNearlyEqual(magnetBoxEndRoll, splineMeshEndRoll))
+		{
+			UE_LOG(LogTemp, Log, TEXT("Magnet box rolls don't match spline mesh rolls."));
 			return false;
 		}
 	}
