@@ -957,6 +957,50 @@ bool FATrackGeneratorMagnetBoxesShouldHaveCollisionEnabledToQueryOnlyTest::RunTe
 
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetBoxesResponseToPawnChannelCommand, FAutomationTestBase*, test);
+
+bool FCheckMagnetBoxesResponseToPawnChannelCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool magnetBoxesOverlapWithPawnChannel = testGenerator->magnetBoxesOverlapWithPawnChannel();
+		UE_LOG(LogTemp, Log, TEXT("Magnet boxes overlap with the pawn channel: %s."), *FString(magnetBoxesOverlapWithPawnChannel ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("The magnet boxes should overlap with the pawn channel."), magnetBoxesOverlapWithPawnChannel);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxesShouldOverlapWithPawnChannelTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxesShouldOverlapWithPawnChannel", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorMagnetBoxesShouldOverlapWithPawnChannelTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetBoxesResponseToPawnChannelCommand(this));
+
+	return true;
+}
+
+
+
+
+
 
 
 
