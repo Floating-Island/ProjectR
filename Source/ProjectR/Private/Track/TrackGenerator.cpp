@@ -57,19 +57,19 @@ void ATrackGenerator::updateSplineMeshes()
 	for (int32 splinePointIndex = 0; splinePointIndex < splineQuantity; ++splinePointIndex)
 	{
 		USplineMeshComponent* splineMesh = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Spline Mesh Component "), splinePointIndex), RF_DefaultSubObject);
-		splineMeshSetup(splinePointIndex, splineMesh);
+		configureSplineMesh(splinePointIndex, splineMesh);
 
 		USplineMeshComponent* magnetBox = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Magnet Box Component "), splinePointIndex), RF_DefaultSubObject);
-		magnetBoxSetup(splinePointIndex, splineMesh, magnetBox);
+		configureMagnetBox(splinePointIndex, splineMesh, magnetBox);
 	}
 }
 
-void ATrackGenerator::splineMeshSetup(int32 aSplinePointIndex, USplineMeshComponent* aSplineMesh)
+void ATrackGenerator::configureSplineMesh(int32 aSplinePointIndex, USplineMeshComponent* aSplineMesh)
 {
 	aSplineMesh->RegisterComponent();
 	splineMeshes.Add(aSplineMesh);
 
-	componentPositionsAndTangentsSetup(aSplinePointIndex, aSplineMesh);
+	configureComponentPositionsAndTangents(aSplinePointIndex, aSplineMesh);
 
 	aSplineMesh->SetStaticMesh(roadMesh);
 
@@ -80,7 +80,7 @@ void ATrackGenerator::splineMeshSetup(int32 aSplinePointIndex, USplineMeshCompon
 	aSplineMesh->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
 }
 
-void ATrackGenerator::componentPositionsAndTangentsSetup(int32 aSplinePointIndex, USplineMeshComponent* aSplineMesh)
+void ATrackGenerator::configureComponentPositionsAndTangents(int32 aSplinePointIndex, USplineMeshComponent* aSplineMesh)
 {
 	FVector currentSplinePointPosition = splineComponent->GetLocationAtSplinePoint(aSplinePointIndex, ESplineCoordinateSpace::Local);
 	FVector nextSplinePointPosition = splineComponent->GetLocationAtSplinePoint(nextSplineIndex(aSplinePointIndex), ESplineCoordinateSpace::Local);
@@ -90,7 +90,7 @@ void ATrackGenerator::componentPositionsAndTangentsSetup(int32 aSplinePointIndex
 	aSplineMesh->SetStartAndEnd(currentSplinePointPosition, currentSplinePointTangent, nextSplinePointPosition, nextSplinePointTangent);
 }
 
-void ATrackGenerator::magnetBoxSetup(int32 aSplinePointIndex, USplineMeshComponent* aSplineMesh, USplineMeshComponent* aMagnetBox)
+void ATrackGenerator::configureMagnetBox(int32 aSplinePointIndex, USplineMeshComponent* aSplineMesh, USplineMeshComponent* aMagnetBox)
 {
 	aMagnetBox->RegisterComponent();
 	magnetBoxes.Add(aMagnetBox);
@@ -98,7 +98,7 @@ void ATrackGenerator::magnetBoxSetup(int32 aSplinePointIndex, USplineMeshCompone
 
 	aMagnetBox->SetHiddenInGame(true);
 
-	componentPositionsAndTangentsSetup(aSplinePointIndex, aMagnetBox);
+	configureComponentPositionsAndTangents(aSplinePointIndex, aMagnetBox);
 
 	aMagnetBox->SetStaticMesh(magnetBoxMesh);
 
@@ -112,6 +112,11 @@ void ATrackGenerator::magnetBoxSetup(int32 aSplinePointIndex, USplineMeshCompone
 	aMagnetBox->SetStartPosition(aMagnetBox->GetStartPosition() + magnetBoxHeight);
 	aMagnetBox->SetEndPosition(aMagnetBox->GetEndPosition() + magnetBoxHeight);
 
+	configureCollisionOf(aMagnetBox);
+}
+
+void ATrackGenerator::configureCollisionOf(USplineMeshComponent* aMagnetBox)
+{
 	aMagnetBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	aMagnetBox->SetCollisionResponseToAllChannels(ECR_Ignore);
 	aMagnetBox->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);

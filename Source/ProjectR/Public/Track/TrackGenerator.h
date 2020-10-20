@@ -30,9 +30,10 @@ protected:
 
 	void updateSplineMeshes();
 
-	void magnetBoxSetup(int32 splinePointIndex, USplineMeshComponent* splineMesh, USplineMeshComponent* magnetBox);
-	void splineMeshSetup(int32 splinePointIndex, USplineMeshComponent* splineMesh);
-	void componentPositionsAndTangentsSetup(int32 splinePointIndex, USplineMeshComponent* splineMesh);
+	void configureMagnetBox(int32 splinePointIndex, USplineMeshComponent* splineMesh, USplineMeshComponent* magnetBox);
+	void configureSplineMesh(int32 splinePointIndex, USplineMeshComponent* splineMesh);
+	void configureComponentPositionsAndTangents(int32 splinePointIndex, USplineMeshComponent* splineMesh);
+	void configureCollisionOf(USplineMeshComponent* aMagnetBox);
 
 	UPROPERTY(EditAnywhere, Category = "Default Meshes")
 		UStaticMesh* roadMesh;
