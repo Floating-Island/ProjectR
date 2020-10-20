@@ -362,6 +362,19 @@ bool ATrackGeneratorMOCK::magnetBoxesAreHiddenInGame()
 	return true;
 }
 
+bool ATrackGeneratorMOCK::collisionEnabledToQueryOnlyOnMagnetBoxes()
+{
+	for (auto magnetBox : magnetBoxes)
+	{
+		if (magnetBox->GetCollisionEnabled() != ECollisionEnabled::QueryOnly)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Magnet box isn't set to have collisions enabled to query only."));
+			return false;
+		}
+	}
+	return true;
+}
+
 
 
 

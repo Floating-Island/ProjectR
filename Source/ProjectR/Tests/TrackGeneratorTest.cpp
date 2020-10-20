@@ -925,20 +925,20 @@ bool FCheckMagnetBoxesCollisionResponseCommand::Update()
 	if (testGenerator)
 	{
 
-		bool collisionEnabledOnMagnetBoxes = testGenerator->collisionEnabledOnMagnetBoxes();
-		UE_LOG(LogTemp, Log, TEXT("Magnet boxes have collision enabled: %s."), *FString(collisionEnabledOnMagnetBoxes ? "true" : "false"));
+		bool collisionEnabledToQueryOnlyOnMagnetBoxes = testGenerator->collisionEnabledToQueryOnlyOnMagnetBoxes();
+		UE_LOG(LogTemp, Log, TEXT("Magnet boxes have collision enabled: %s."), *FString(collisionEnabledToQueryOnlyOnMagnetBoxes ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("The magnet boxes should have collision enabled."), collisionEnabledOnMagnetBoxes);
+		test->TestTrue(TEXT("The magnet boxes should have collision enabled."), collisionEnabledToQueryOnlyOnMagnetBoxes);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxesShouldHaveCollisionEnabledTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxesShouldHaveCollisionEnabled", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxesShouldHaveCollisionEnabledToQueryOnlyTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxesShouldHaveCollisionEnabledToQueryOnly", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorMagnetBoxesShouldHaveCollisionEnabledTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorMagnetBoxesShouldHaveCollisionEnabledToQueryOnlyTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
