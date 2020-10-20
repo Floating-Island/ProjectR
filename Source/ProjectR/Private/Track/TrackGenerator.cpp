@@ -58,7 +58,7 @@ void ATrackGenerator::updateSplineMeshes()
 	{
 		USplineMeshComponent* splineMesh = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Spline Mesh Component "), splinePointIndex), RF_DefaultSubObject);
 		splineMeshSetup(splinePointIndex, splineMesh);
-		
+
 		USplineMeshComponent* magnetBox = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Magnet Box Component "), splinePointIndex), RF_DefaultSubObject);
 		magnetBoxSetup(splinePointIndex, splineMesh, magnetBox);
 	}
@@ -94,21 +94,21 @@ void ATrackGenerator::magnetBoxSetup(int32 aSplinePointIndex, USplineMeshCompone
 {
 	aMagnetBox->RegisterComponent();
 	magnetBoxes.Add(aMagnetBox);
-	aMagnetBox->Mobility = aSplineMesh->Mobility; 
+	aMagnetBox->Mobility = aSplineMesh->Mobility;
 
 	aMagnetBox->SetHiddenInGame(true);
-	
+
 	componentPositionsAndTangentsSetup(aSplinePointIndex, aMagnetBox);
 
 	aMagnetBox->SetStaticMesh(magnetBoxMesh);
 
 	//aMagnetBox->SetStartScale(aMagnetBox->GetStartScale()*5);//should be removed once the initial bounds Z extension is known (of a mesh created for it)...
 	//aMagnetBox->SetEndScale(aMagnetBox->GetEndScale()*5);//should be removed once the initial bounds Z extension is known (of a mesh created for it)...
-	
-	aMagnetBox->AttachToComponent(aSplineMesh,FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
 
-	FVector magnetBoxHeight = FVector(0,0, magnetBoxHeightDistanceToSplineMesh);
-		
+	aMagnetBox->AttachToComponent(aSplineMesh, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+
+	FVector magnetBoxHeight = FVector(0, 0, magnetBoxHeightDistanceToSplineMesh);
+
 	aMagnetBox->SetStartPosition(aMagnetBox->GetStartPosition() + magnetBoxHeight);
 	aMagnetBox->SetEndPosition(aMagnetBox->GetEndPosition() + magnetBoxHeight);
 
