@@ -1000,6 +1000,9 @@ bool FATrackGeneratorMagnetBoxesShouldOverlapWithPawnChannelTest::RunTest(const 
 
 
 
+
+
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMeshCollisionTypeShouldBePawnTest, "ProjectR.Unit.TrackGeneratorTest.AJetMeshCollisionTypeShouldBePawn", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetMeshCollisionTypeShouldBePawnTest::RunTest(const FString& Parameters)
@@ -1012,6 +1015,50 @@ bool FAJetMeshCollisionTypeShouldBePawnTest::RunTest(const FString& Parameters)
 	return true;
 }
 
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetBoxesGenerateOverlapEventsCommand, FAutomationTestBase*, test);
+
+bool FCheckMagnetBoxesGenerateOverlapEventsCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool magnetBoxesGenerateOverlapEvents = testGenerator->magnetBoxesGenerateOverlapEvents();
+		UE_LOG(LogTemp, Log, TEXT("Magnet boxes generate overlap events: %s."), *FString(magnetBoxesGenerateOverlapEvents ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("The magnet boxes should generate overlap events."), magnetBoxesGenerateOverlapEvents);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxesShouldGenerateOverlapEventsTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxesShouldGenerateOverlapEvents", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorMagnetBoxesShouldGenerateOverlapEventsTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetBoxesGenerateOverlapEventsCommand(this));
+
+	return true;
+}
 
 
 
