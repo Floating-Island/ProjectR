@@ -375,6 +375,19 @@ bool ATrackGeneratorMOCK::collisionEnabledToQueryOnlyOnMagnetBoxes()
 	return true;
 }
 
+bool ATrackGeneratorMOCK::magnetBoxesOverlapWithPawnChannel()
+{
+	for (auto magnetBox : magnetBoxes)
+	{
+		if (magnetBox->GetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn) != ECollisionResponse::ECR_Overlap)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Magnet box isn't set to overlap with the pawn channel."));
+			return false;
+		}
+	}
+	return true;
+}
+
 
 
 

@@ -38,4 +38,5 @@ public:
 	bool magnetBoxesHaveMeshesSet();
 	bool magnetBoxesAreHiddenInGame();
 	bool collisionEnabledToQueryOnlyOnMagnetBoxes();
+	bool magnetBoxesOverlapWithPawnChannel();
 };
