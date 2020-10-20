@@ -5,6 +5,7 @@
 
 #include "Track/TrackGenerator.h"
 #include "Mocks/TrackGeneratorMOCK.h"
+#include "Mocks/JetMOCK.h"
 
 #include "Misc/AutomationTest.h"
 #include "Tests/AutomationEditorCommon.h"
@@ -997,6 +998,19 @@ bool FATrackGeneratorMagnetBoxesShouldOverlapWithPawnChannelTest::RunTest(const 
 	return true;
 }
 
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMeshCollisionTypeShouldBePawnTest, "ProjectR.Unit.TrackGeneratorTest.AJetMeshCollisionTypeShouldBePawn", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetMeshCollisionTypeShouldBePawnTest::RunTest(const FString& Parameters)
+{
+	AJetMOCK* testJet = NewObject<AJetMOCK>();
+	{
+		TestTrue(TEXT("The jet collision object type should be pawn."), testJet->meshCollisionIsPawn());
+	}
+
+	return true;
+}
 
 
 
