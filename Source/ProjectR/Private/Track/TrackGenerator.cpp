@@ -113,4 +113,6 @@ void ATrackGenerator::magnetBoxSetup(int32 aSplinePointIndex, USplineMeshCompone
 	aMagnetBox->SetEndPosition(aMagnetBox->GetEndPosition() + magnetBoxHeight);
 
 	aMagnetBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	aMagnetBox->SetCollisionResponseToAllChannels(ECR_Ignore);
+	aMagnetBox->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 }
