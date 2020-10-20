@@ -29,13 +29,6 @@ void ATrackGenerator::BeginPlay()
 
 }
 
-// Called every frame
-void ATrackGenerator::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-
 void ATrackGenerator::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
