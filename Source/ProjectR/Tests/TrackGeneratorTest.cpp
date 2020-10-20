@@ -1061,26 +1061,9 @@ bool FATrackGeneratorMagnetBoxesShouldGenerateOverlapEventsTest::RunTest(const F
 }
 
 
-
-
-
-
-//enable collision on the magnet box (query only).
-//make the magnet box ignore all channels.
-//make the magnet box respond to pawn overlap (jet overlaps too, the test is in the track tests).
-//make the magnet box generate overlap events.
-//make the magnet box broadcast on begin overlap and on end overlap events (it's automatic once we generate overlap events).
-//make a track manager to catch those events, add the overlapped pawns to a owning set and every frame travel the set and magnetize pawns this way:
-//1) get the jet location.
-//2) search along the spline the nearest point to the jet location.
-//3) trace a line from the jet towards the nearest spline location (it will hit the spline mesh surface).
-//4) get the normal of that surface (from the hit result).
-//5) cancel gravity.
-//6) apply gravity contrary to the surface normal (it needs to pull), like how it's done in the track.
-
-
 //allow to change roll to spline meshes. Make the magnet box attached to that roll (roll after the magnet box has been attached).
-//set location of magnet box same as spline mesh, attach and elevate the same amount as the bound of mesh (saved in constructor) multiplied by the scale (gotten in on construction).
+//(when a custom mesh for magnet box is already made) set location of magnet box same as spline mesh,
+//attach and elevate the same amount as the bound of mesh (saved in constructor) multiplied by the scale (gotten in on construction).
 
 
 
