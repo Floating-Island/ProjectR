@@ -1110,6 +1110,50 @@ bool FATrackGeneratorSplineComponentsShouldHaveSmoothInterpolationEnabledTest::R
 
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetBoxRelativeRollCommand, FAutomationTestBase*, test);
+
+bool FCheckMagnetBoxRelativeRollCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool magnetBoxesRelativeRotationIsZero = testGenerator->magnetBoxesRelativeRotationIsZero();
+		UE_LOG(LogTemp, Log, TEXT("Magnet Boxes have relative roll as zero: %s."), *FString(magnetBoxesRelativeRotationIsZero ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("The magnet boxes should have relative roll of zero after rolling spline meshes."), magnetBoxesRelativeRotationIsZero);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxRelativeRollShouldBeZeroAfterRotatingSplineMeshTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxRelativeRollShouldBeZeroAfterRotatingSplineMesh", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorMagnetBoxRelativeRollShouldBeZeroAfterRotatingSplineMeshTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetBoxRelativeRollCommand(this));
+
+	return true;
+}
+
+
+
+
+
 
 //allow to change roll to spline meshes. Make the magnet box attached to that roll (roll after the magnet box has been attached).
 //(when a custom mesh for magnet box is already made) set location of magnet box same as spline mesh,
