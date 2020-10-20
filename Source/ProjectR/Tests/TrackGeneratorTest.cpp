@@ -1061,6 +1061,57 @@ bool FATrackGeneratorMagnetBoxesShouldGenerateOverlapEventsTest::RunTest(const F
 }
 
 
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckComponentsSmoothInterpolationCommand, FAutomationTestBase*, test);
+
+bool FCheckComponentsSmoothInterpolationCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool componentsHaveSmoothInterpolation = testGenerator->componentsHaveSmoothInterpolation();
+		UE_LOG(LogTemp, Log, TEXT("Components have smooth interpolation: %s."), *FString(componentsHaveSmoothInterpolation ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("The components should have smooth interpolation."), componentsHaveSmoothInterpolation);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineComponentsShouldHaveSmoothInterpolationEnabledTest, "ProjectR.Unit.TrackGeneratorTest.SplineComponentsShouldHaveSmoothInterpolationEnabled", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorSplineComponentsShouldHaveSmoothInterpolationEnabledTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsSmoothInterpolationCommand(this));
+
+	return true;
+}
+
+
+
+
+
+
+
+//make smooth interpolation in spline meshes.
 //allow to change roll to spline meshes. Make the magnet box attached to that roll (roll after the magnet box has been attached).
 //(when a custom mesh for magnet box is already made) set location of magnet box same as spline mesh,
 //attach and elevate the same amount as the bound of mesh (saved in constructor) multiplied by the scale (gotten in on construction).
