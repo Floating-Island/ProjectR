@@ -388,6 +388,19 @@ bool ATrackGeneratorMOCK::magnetBoxesOverlapWithPawnChannel()
 	return true;
 }
 
+bool ATrackGeneratorMOCK::magnetBoxesGenerateOverlapEvents()
+{
+	for (auto magnetBox : magnetBoxes)
+	{
+		if (!magnetBox->GetGenerateOverlapEvents())
+		{
+			UE_LOG(LogTemp, Log, TEXT("Magnet box isn't set to generate overlap events."));
+			return false;
+		}
+	}
+	return true;
+}
+
 
 
 
