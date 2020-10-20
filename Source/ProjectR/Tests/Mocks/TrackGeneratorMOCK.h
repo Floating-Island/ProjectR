@@ -40,4 +40,5 @@ public:
 	bool collisionEnabledToQueryOnlyOnMagnetBoxes();
 	bool magnetBoxesOverlapWithPawnChannel();
 	bool magnetBoxesGenerateOverlapEvents();
+	bool componentsHaveSmoothInterpolation();
 };

@@ -401,6 +401,26 @@ bool ATrackGeneratorMOCK::magnetBoxesGenerateOverlapEvents()
 	return true;
 }
 
+bool ATrackGeneratorMOCK::componentsHaveSmoothInterpolation()
+{
+	for (int32 splinePointIndex = 0; splinePointIndex < splinePointsQuantity(); ++splinePointIndex)
+	{
+		bool magnetBoxWithSmoothInterpolation = magnetBoxes[splinePointIndex]->bSmoothInterpRollScale;
+		bool splineMeshWithSmoothInterpolation = splineMeshes[splinePointIndex]->bSmoothInterpRollScale;
+
+		UE_LOG(LogTemp, Log, TEXT("Spline mesh has smooth interpolation: %s."), *FString(splineMeshWithSmoothInterpolation ? "true" : "false"));
+		UE_LOG(LogTemp, Log, TEXT("Magnet box has smooth interpolation: %s."), *FString(magnetBoxWithSmoothInterpolation ? "true" : "false"));
+
+		if (!splineMeshWithSmoothInterpolation || !magnetBoxWithSmoothInterpolation)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Components don't have smooth interpolation enabled."));
+			return false;
+		}
+	}
+
+	return true;
+}
+
 
 
 
