@@ -912,7 +912,54 @@ bool FATrackGeneratorMagnetBoxesShouldBeHiddenInGameTest::RunTest(const FString&
 
 
 
-//allow to change roll to spline meshes. Make the magnet box attached to that roll (roll after the magnet box has been attached).
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetBoxesCollisionResponseCommand, FAutomationTestBase*, test);
+
+bool FCheckMagnetBoxesCollisionResponseCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool collisionEnabledOnMagnetBoxes = testGenerator->collisionEnabledOnMagnetBoxes();
+		UE_LOG(LogTemp, Log, TEXT("Magnet boxes have collision enabled: %s."), *FString(collisionEnabledOnMagnetBoxes ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("The magnet boxes should have collision enabled."), collisionEnabledOnMagnetBoxes);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxesShouldHaveCollisionEnabledTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxesShouldHaveCollisionEnabled", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorMagnetBoxesShouldHaveCollisionEnabledTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetBoxesCollisionResponseCommand(this));
+
+	return true;
+}
+
+
+
+
+
+
+
+
+
 //enable collision on the magnet box (query only).
 //make the magnet box ignore all channels.
 //make the magnet box respond to pawn overlap (jet overlaps too, the test is in the track tests).
@@ -927,7 +974,7 @@ bool FATrackGeneratorMagnetBoxesShouldBeHiddenInGameTest::RunTest(const FString&
 //6) apply gravity contrary to the surface normal (it needs to pull), like how it's done in the track.
 
 
-
+//allow to change roll to spline meshes. Make the magnet box attached to that roll (roll after the magnet box has been attached).
 //set location of magnet box same as spline mesh, attach and elevate the same amount as the bound of mesh (saved in constructor) multiplied by the scale (gotten in on construction).
 
 
