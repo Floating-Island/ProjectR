@@ -1154,7 +1154,8 @@ bool FATrackGeneratorSplineComponentsShouldHaveSmoothInterpolationEnabledTest::R
 
 
 
-
+//create a struct containing roll and width for each spline mesh and add it to an array. Check that the array has the same amount of elements as spline meshes.
+//modify an array element and check that the corresponding spline changes accordingly.
 //allow to change roll to spline meshes. Make the magnet box attached to that roll (roll after the magnet box has been attached).
 //(when a custom mesh for magnet box is already made) set location of magnet box same as spline mesh,
 // attach and elevate the same amount as the bound of mesh (saved in constructor) multiplied by the scale (gotten in on construction).
