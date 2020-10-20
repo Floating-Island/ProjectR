@@ -1113,7 +1113,7 @@ bool FATrackGeneratorSplineComponentsShouldHaveSmoothInterpolationEnabledTest::R
 
 //allow to change roll to spline meshes. Make the magnet box attached to that roll (roll after the magnet box has been attached).
 //(when a custom mesh for magnet box is already made) set location of magnet box same as spline mesh,
-//attach and elevate the same amount as the bound of mesh (saved in constructor) multiplied by the scale (gotten in on construction).
+// attach and elevate the same amount as the bound of mesh (saved in constructor) multiplied by the scale (gotten in on construction).
 
 
 
