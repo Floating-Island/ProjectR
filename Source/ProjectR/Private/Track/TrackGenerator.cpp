@@ -115,4 +115,5 @@ void ATrackGenerator::magnetBoxSetup(int32 aSplinePointIndex, USplineMeshCompone
 	aMagnetBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	aMagnetBox->SetCollisionResponseToAllChannels(ECR_Ignore);
 	aMagnetBox->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
+	aMagnetBox->SetGenerateOverlapEvents(true);
 }
