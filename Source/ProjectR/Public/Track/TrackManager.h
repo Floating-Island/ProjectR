@@ -31,5 +31,6 @@ public:
 
 inline void ATrackManager::PostInitializeComponents()
 {
+	Super::PostInitializeComponents();
 	trackGenerator = GetWorld()->SpawnActor<ATrackGenerator>(ATrackGenerator::StaticClass());
 }
