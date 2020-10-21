@@ -5,5 +5,5 @@
 
 TSet<ATrackGenerator*> ATrackManagerMOCK::trackGenerators()
 {
-  return trackGenerators;
+	return trackGeneratorSet;
 }

@@ -21,7 +21,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	TSet<ATrackGenerator*> trackGenerators;
+	TSet<ATrackGenerator*> trackGeneratorSet;
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

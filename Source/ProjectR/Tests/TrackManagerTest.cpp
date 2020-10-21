@@ -73,10 +73,10 @@ bool FCheckATrackManagerTrackGeneratorsCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		ATrackManager* testManager = Cast<ATrackManager, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackManager::StaticClass()));
+		ATrackManagerMOCK* testManager = Cast<ATrackManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackManagerMOCK::StaticClass()));
 		if (testManager)
 		{
-			bool spawnedTrackGeneratorInTrackManager = testManager->trackGenerators()->Find(Cast<ATrackGenerator, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGenerator::StaticClass()));)
+			bool spawnedTrackGeneratorInTrackManager = testManager->trackGenerators().Find(Cast<ATrackGenerator, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGenerator::StaticClass()));)
 			
 			UE_LOG(LogTemp, Log, TEXT("Track manager %s the track generator listed."), *FString(spawnedTrackGeneratorInTrackManager? "has":"doesn't have"));
 			++aTickCount;

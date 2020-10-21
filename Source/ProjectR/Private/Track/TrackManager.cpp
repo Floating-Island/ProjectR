@@ -23,7 +23,7 @@ void ATrackManager::BeginPlay()
 		ATrackGenerator* trackGenerator = Cast<ATrackGenerator, AActor>(generator);
 		if (trackGenerator)
 		{
-			trackGenerators.Add(trackGenerator);
+			trackGeneratorSet.Add(trackGenerator);
 		}
 	}
 }
