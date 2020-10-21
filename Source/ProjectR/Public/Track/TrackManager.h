@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "TrackManager.generated.h"
 
+class ATrackGenerator;
+
 UCLASS()
 class PROJECTR_API ATrackManager : public AActor
 {
@@ -18,6 +20,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	ATrackGenerator* trackGenerator;
 
 public:	
 	// Called every frame

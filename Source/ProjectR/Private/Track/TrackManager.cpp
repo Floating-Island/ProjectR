@@ -2,20 +2,22 @@
 
 
 #include "Track/TrackManager.h"
+#include "Track/TrackGenerator.h"
 
 // Sets default values
 ATrackManager::ATrackManager()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	trackGenerator = CreateDefaultSubobject<ATrackGenerator>(TEXT("Track Generator"));
 }
 
 // Called when the game starts or when spawned
 void ATrackManager::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
