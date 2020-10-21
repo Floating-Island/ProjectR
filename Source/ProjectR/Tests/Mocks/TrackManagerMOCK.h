@@ -7,11 +7,13 @@
 #include "TrackManagerMOCK.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PROJECTR_API ATrackManagerMOCK : public ATrackManager
 {
 	GENERATED_BODY()
-	
+
+public:
+	bool hasATrackGenerator();
 };

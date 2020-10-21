@@ -3,3 +3,7 @@
 
 #include "TrackManagerMOCK.h"
 
+bool ATrackManagerMOCK::hasATrackGenerator()
+{
+	return trackGenerator ? true : false;
+}
