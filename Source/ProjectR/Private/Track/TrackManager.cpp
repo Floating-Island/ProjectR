@@ -2,6 +2,7 @@
 
 
 #include "Track/TrackManager.h"
+#include "Track/TrackGenerator.h"
 
 // Sets default values
 ATrackManager::ATrackManager()
@@ -22,5 +23,15 @@ void ATrackManager::BeginPlay()
 void ATrackManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void ATrackManager::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
+
+	if(trackGenerator == nullptr)
+	{
+		trackGenerator = GetWorld()->SpawnActor<ATrackGenerator>(ATrackGenerator::StaticClass());
+	}
 }
 
