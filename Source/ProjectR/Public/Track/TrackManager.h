@@ -4,9 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Track/TrackGenerator.h"
 #include "TrackManager.generated.h"
-
-class ATrackGenerator;
 
 UCLASS()
 class PROJECTR_API ATrackManager : public AActor
@@ -27,4 +26,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void PostInitializeComponents() override;
 };
+
+inline void ATrackManager::PostInitializeComponents()
+{
+	trackGenerator = GetWorld()->SpawnActor<ATrackGenerator>(ATrackGenerator::StaticClass());
+}
