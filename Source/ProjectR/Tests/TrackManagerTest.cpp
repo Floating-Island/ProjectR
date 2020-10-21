@@ -76,7 +76,7 @@ bool FCheckATrackManagerTrackGeneratorsCommand::Update()
 		ATrackManagerMOCK* testManager = Cast<ATrackManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackManagerMOCK::StaticClass()));
 		if (testManager)
 		{
-			bool spawnedTrackGeneratorInTrackManager = testManager->trackGenerators().Find(Cast<ATrackGenerator, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGenerator::StaticClass()));)
+			bool spawnedTrackGeneratorInTrackManager = testManager->trackGenerators().Contains(Cast<ATrackGenerator, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGenerator::StaticClass())));
 			
 			UE_LOG(LogTemp, Log, TEXT("Track manager %s the track generator listed."), *FString(spawnedTrackGeneratorInTrackManager? "has":"doesn't have"));
 			++aTickCount;
