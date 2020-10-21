@@ -4,6 +4,7 @@
 #include "TrackManagerTest.h"
 
 #include "Track/TrackManager.h"
+#include "Mocks/TrackManagerMOCK.h"
 
 #include "Misc/AutomationTest.h"
 
