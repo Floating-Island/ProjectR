@@ -23,15 +23,16 @@ void ATrackManager::Tick(float DeltaTime)
 }
 
 
-void ATrackManager::collectTrackGenerators() {
-  TArray<AActor*> spawnedGenerators = TArray<AActor*>();
-  UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATrackGenerator::StaticClass(), spawnedGenerators);
-  for (auto generator : spawnedGenerators)
-  {
-    ATrackGenerator* trackGenerator = Cast<ATrackGenerator, AActor>(generator);
-    if (trackGenerator)
-    {
-      trackGeneratorSet.Add(trackGenerator);
-    }
-  }
+void ATrackManager::collectTrackGenerators()
+{
+	TArray<AActor*> spawnedGenerators = TArray<AActor*>();
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATrackGenerator::StaticClass(), spawnedGenerators);
+	for (auto generator : spawnedGenerators)
+	{
+		ATrackGenerator* trackGenerator = Cast<ATrackGenerator, AActor>(generator);
+		if (trackGenerator)
+		{
+			trackGeneratorSet.Add(trackGenerator);
+		}
+	}
 }

@@ -60,7 +60,7 @@ bool FSpawningATrackManagerAndTrackGeneratorCommand::Update()
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
 	testWorld->SpawnActor<ATrackGenerator>(ATrackGenerator::StaticClass());
-        testWorld->SpawnActor<ATrackManagerMOCK>(ATrackManagerMOCK::StaticClass());
+	testWorld->SpawnActor<ATrackManagerMOCK>(ATrackManagerMOCK::StaticClass());
 
 	return true;
 }
@@ -77,8 +77,8 @@ bool FCheckATrackManagerTrackGeneratorsCommand::Update()
 		if (testManager)
 		{
 			bool spawnedTrackGeneratorInTrackManager = testManager->trackGenerators().Contains(Cast<ATrackGenerator, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGenerator::StaticClass())));
-			
-			UE_LOG(LogTemp, Log, TEXT("Track manager %s the track generator listed."), *FString(spawnedTrackGeneratorInTrackManager? "has":"doesn't have"));
+
+			UE_LOG(LogTemp, Log, TEXT("Track manager %s the track generator listed."), *FString(spawnedTrackGeneratorInTrackManager ? "has" : "doesn't have"));
 			++aTickCount;
 			if (aTickCount > aTickLimit)
 			{
