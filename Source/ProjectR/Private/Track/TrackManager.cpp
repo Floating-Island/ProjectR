@@ -17,7 +17,6 @@ ATrackManager::ATrackManager()
 void ATrackManager::BeginPlay()
 {
 	Super::BeginPlay();
-
 }
 
 // Called every frame
