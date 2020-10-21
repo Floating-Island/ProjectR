@@ -3,10 +3,14 @@
 
 #include "TrackManagerTest.h"
 
+
+#include "Kismet/GameplayStatics.h"
 #include "Track/TrackManager.h"
 #include "Mocks/TrackManagerMOCK.h"
+#include "Track/TrackGenerator.h"
 
 #include "Misc/AutomationTest.h"
+#include "Tests/AutomationEditorCommon.h"
 
 
 
@@ -36,14 +40,61 @@ bool FATrackManagerShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Pa
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerShouldHaveATrackGeneratorTest, "ProjectR.Unit.TrackManagerTest.ATrackManagerShouldHaveATrackGenerator", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackManagerShouldHaveATrackGeneratorTest::RunTest(const FString& Parameters)
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnTrackManagerInEditorWorldCommand);
+
+bool FSpawnTrackManagerInEditorWorldCommand::Update()
 {
-	ATrackManagerMOCK* testManager = NewObject<ATrackManagerMOCK>();
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
-		TestTrue(TEXT("The track manager shouldn't be null when instantiated."), testManager->hasATrackGenerator());
+		return false;
 	}
+
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+
+	testWorld->SpawnActor<ATrackManager>(ATrackManager::StaticClass());
+
+	return true;
+}
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckTrackGeneratorSpawningCommand, FAutomationTestBase*, test);
+
+bool FCheckTrackGeneratorSpawningCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackManager* testManager = Cast<ATrackManager, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackManager::StaticClass()));
+	ATrackGenerator* testGenerator = Cast<ATrackGenerator, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGenerator::StaticClass()));
+	
+	if (testManager && testGenerator)
+	{
+		test->TestNotNull(TEXT("When spawning a track manager, a track generator should be spawned too."), testGenerator);
+		return true;
+	}
+	
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerShouldSpawnATrackGeneratorAtSpawningTest, "ProjectR.Unit.TrackManagerTest.ShouldSpawnATrackGeneratorAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackManagerShouldSpawnATrackGeneratorAtSpawningTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackManagerInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckTrackGeneratorSpawningCommand(this));
 
 	return true;
 }
