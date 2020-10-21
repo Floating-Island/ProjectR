@@ -25,10 +25,9 @@ void ATrackManager::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ATrackManager::OnConstruction(const FTransform& Transform)
+void ATrackManager::PostActorCreated()
 {
-	Super::OnConstruction(Transform);
-
+	Super::PostActorCreated();
 	if(trackGenerator == nullptr)
 	{
 		trackGenerator = GetWorld()->SpawnActor<ATrackGenerator>(ATrackGenerator::StaticClass());
