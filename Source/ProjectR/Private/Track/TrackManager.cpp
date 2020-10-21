@@ -3,6 +3,7 @@
 
 #include "Track/TrackManager.h"
 #include "Track/TrackGenerator.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ATrackManager::ATrackManager()
@@ -15,6 +16,16 @@ ATrackManager::ATrackManager()
 void ATrackManager::BeginPlay()
 {
 	Super::BeginPlay();
+	TArray<AActor*> spawnedGenerators = TArray<AActor*>();
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATrackGenerator::StaticClass(), spawnedGenerators);
+	for (auto generator : spawnedGenerators)
+	{
+		ATrackGenerator* trackGenerator = Cast<ATrackGenerator, AActor>(generator);
+		if (trackGenerator)
+		{
+			trackGenerators.Add(trackGenerator);
+		}
+	}
 }
 
 // Called every frame
