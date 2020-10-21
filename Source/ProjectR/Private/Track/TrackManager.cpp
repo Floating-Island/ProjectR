@@ -9,7 +9,7 @@ ATrackManager::ATrackManager()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
 	trackGenerator = nullptr;
 }
 
@@ -32,6 +32,7 @@ void ATrackManager::PostActorCreated()
 	{
 		trackGenerator = GetWorld()->SpawnActor<ATrackGenerator>(ATrackGenerator::StaticClass());
 		trackGenerator->AttachToActor(this,FAttachmentTransformRules(EAttachmentRule::KeepWorld, false));
+		UE_LOG(LogTemp, Log, TEXT("the track manager: %s a root component set."), *FString(GetRootComponent() != nullptr ? "has" : "doesn't have"));
 	}
 }
 
