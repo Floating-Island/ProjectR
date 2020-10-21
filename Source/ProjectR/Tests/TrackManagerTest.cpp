@@ -21,7 +21,17 @@
 //Pay attention to the automation flags because they're needed to run the tests without UI errors.
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerShouldntBeNullWhenInstantiatedTest, "ProjectR.Unit.TrackManagerTest.ATrackManagerShouldntBeNullWhenInstantiated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
+bool FATrackManagerShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Parameters)
+{
+	ATrackManager* testManager = NewObject<ATrackManager>();
+	{
+		TestNotNull(TEXT("The track manager shouldn't be null when instantiated."), testManager);
+	}
+
+	return true;
+}
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
