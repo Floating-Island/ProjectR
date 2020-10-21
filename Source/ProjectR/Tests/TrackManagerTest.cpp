@@ -34,4 +34,17 @@ bool FATrackManagerShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Pa
 }
 
 
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerShouldHaveATrackGeneratorTest, "ProjectR.Unit.TrackManagerTest.ATrackManagerShouldHaveATrackGenerator", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackManagerShouldHaveATrackGeneratorTest::RunTest(const FString& Parameters)
+{
+	ATrackManagerMOCK* testManager = NewObject<ATrackManagerMOCK>();
+	{
+		TestTrue(TEXT("The track manager shouldn't be null when instantiated."), testManager->hasATrackGenerator());
+	}
+
+	return true;
+}
+
 #endif //WITH_DEV_AUTOMATION_TESTS
