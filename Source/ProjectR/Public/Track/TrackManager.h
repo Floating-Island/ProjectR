@@ -12,8 +12,8 @@ UCLASS()
 class PROJECTR_API ATrackManager : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ATrackManager();
 
@@ -21,11 +21,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	ATrackGenerator* trackGenerator;
-
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	virtual void PostActorCreated() override;
 };
+
+
