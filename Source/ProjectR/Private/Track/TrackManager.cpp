@@ -31,6 +31,7 @@ void ATrackManager::PostActorCreated()
 	if(trackGenerator == nullptr)
 	{
 		trackGenerator = GetWorld()->SpawnActor<ATrackGenerator>(ATrackGenerator::StaticClass());
+		trackGenerator->AttachToActor(this,FAttachmentTransformRules(EAttachmentRule::KeepWorld, false));
 	}
 }
 
