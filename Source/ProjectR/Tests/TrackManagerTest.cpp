@@ -11,8 +11,7 @@
 
 #include "Misc/AutomationTest.h"
 #include "Tests/AutomationEditorCommon.h"
-
-
+#include "Utilities/PIESessionUtilities.h"
 
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -41,6 +40,79 @@ bool FATrackManagerShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Pa
 
 
 
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningATrackManagerAndTrackGeneratorCommand);
+
+bool FSpawningATrackManagerAndTrackGeneratorCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	{
+		return false;
+	}
+
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+	testWorld->SpawnActor<ATrackGenerator>(ATrackGenerator::StaticClass());
+        testWorld->SpawnActor<ATrackManagerMOCK>(ATrackManagerMOCK::StaticClass());
+
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckATrackManagerTrackGeneratorsCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+
+bool FCheckATrackManagerTrackGeneratorsCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		ATrackManager* testManager = Cast<ATrackManager, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackManager::StaticClass()));
+		if (testManager)
+		{
+			bool spawnedTrackGeneratorInTrackManager = testManager->trackGenerators()->Find(Cast<ATrackGenerator, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGenerator::StaticClass()));)
+			
+			UE_LOG(LogTemp, Log, TEXT("Track manager %s the track generator listed."), *FString(spawnedTrackGeneratorInTrackManager? "has":"doesn't have"));
+			++aTickCount;
+			if (aTickCount > aTickLimit)
+			{
+				test->TestTrue(TEXT("The track manager should have track generators already spawned in world."), spawnedTrackGeneratorInTrackManager);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerShouldHaveSpawnedTrackGeneratorsTest, "ProjectR.Unit.TrackManagerTest.ShouldHaveSpawnedTrackGenerators", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackManagerShouldHaveSpawnedTrackGeneratorsTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningATrackManagerAndTrackGeneratorCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackManagerTrackGeneratorsCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
 
 
 
