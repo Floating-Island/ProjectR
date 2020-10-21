@@ -61,15 +61,16 @@ void ATrackGenerator::configureSplineMesh(int32 aSplinePointIndex, USplineMeshCo
 	splineMeshes.Add(aSplineMesh);
 
 	aSplineMesh->bSmoothInterpRollScale = true;
-	
+
 	configureComponentPositionsAndTangents(aSplinePointIndex, aSplineMesh);
 
-	aSplineMesh->SetStaticMesh(roadMesh);
+
 
 	aSplineMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	aSplineMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
 
 	aSplineMesh->Mobility = RootComponent->Mobility;
+	aSplineMesh->SetStaticMesh(roadMesh);
 	aSplineMesh->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
 }
 
