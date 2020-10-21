@@ -99,4 +99,52 @@ bool FATrackManagerShouldSpawnATrackGeneratorAtSpawningTest::RunTest(const FStri
 	return true;
 }
 
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckTrackGeneratorAttachmentCommand, FAutomationTestBase*, test);
+
+bool FCheckTrackGeneratorAttachmentCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackManager* testManager = Cast<ATrackManager, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackManager::StaticClass()));
+	ATrackGenerator* testGenerator = Cast<ATrackGenerator, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGenerator::StaticClass()));
+	
+	if (testManager && testGenerator)
+	{
+		test->TestTrue(TEXT("When spawning a track manager, a track generator should be attached to it."), testGenerator->IsAttachedTo(testManager));
+		return true;
+	}
+	
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerTrackGeneratorShouldBeAttachedToItAtSpawningTest, "ProjectR.Unit.TrackManagerTest.TrackGeneratorShouldBeAttachedToItAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackManagerTrackGeneratorShouldBeAttachedToItAtSpawningTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackManagerInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckTrackGeneratorAttachmentCommand(this));
+
+	return true;
+}
+
+
+
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS
