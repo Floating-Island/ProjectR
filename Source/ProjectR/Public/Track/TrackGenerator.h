@@ -7,8 +7,10 @@
 #include "TrackGenerator.generated.h"
 
 
+
 class USplineComponent;
 class USplineMeshComponent;
+class ATrackManager;
 
 UCLASS()
 class PROJECTR_API ATrackGenerator : public AActor
@@ -50,5 +52,7 @@ public:
 	virtual void OnConstruction(const FTransform& Transform) override;
 
 	int32 nextSplineIndex(int32 currentIndex);
+
+	void toMagnetOverlapSubscribe(ATrackManager* manager);
 	
 };

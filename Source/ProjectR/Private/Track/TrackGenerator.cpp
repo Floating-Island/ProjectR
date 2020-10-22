@@ -4,6 +4,7 @@
 #include "Track/TrackGenerator.h"
 #include "Components/SplineComponent.h"
 #include "Components/SplineMeshComponent.h"
+#include "Track/TrackManager.h"
 
 ATrackGenerator::ATrackGenerator()
 {
@@ -39,6 +40,14 @@ void ATrackGenerator::OnConstruction(const FTransform& Transform)
 int32 ATrackGenerator::nextSplineIndex(int32 currentIndex)
 {
 	return (currentIndex + 1) % splineComponent->GetNumberOfSplinePoints();
+}
+
+void ATrackGenerator::toMagnetOverlapSubscribe(ATrackManager* manager)
+{
+	for (auto magnetMesh : magnetBoxes)
+	{
+		magnetMesh->OnComponentBeginOverlap.AddDynamic(manager, &ATrackManager::addJetToMagnetize);
+	}
 }
 
 void ATrackGenerator::updateSplineMeshes()

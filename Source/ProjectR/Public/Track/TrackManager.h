@@ -7,6 +7,7 @@
 #include "TrackManager.generated.h"
 
 class ATrackGenerator;
+class AJet;
 
 UCLASS()
 class PROJECTR_API ATrackManager : public AActor
@@ -24,9 +25,20 @@ protected:
 
 	TSet<ATrackGenerator*> trackGeneratorSet;
 	void collectTrackGenerators();
+	TSet<AJet*> jetsToMagnetize;
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION()
+		void addJetToMagnetize (UPrimitiveComponent* OverlappedComponent,
+								AActor* OtherActor,
+								UPrimitiveComponent* OtherComp,
+								int32 OtherBodyIndex,
+								bool bFromSweep,
+								const FHitResult& SweepResult);
+
+	
 };
 
 
