@@ -59,8 +59,8 @@ bool FSpawningATrackManagerAndTrackGeneratorCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	testWorld->SpawnActor<ATrackGenerator>(ATrackGenerator::StaticClass());
-	testWorld->SpawnActor<ATrackManagerMOCK>(ATrackManagerMOCK::StaticClass());
+	sessionUtilities.spawnTrackGeneratorInPie();
+	sessionUtilities.spawnTrackManagerMOCKInPie();
 
 	return true;
 }
@@ -73,7 +73,7 @@ bool FCheckATrackManagerTrackGeneratorsCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		ATrackManagerMOCK* testManager = Cast<ATrackManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackManagerMOCK::StaticClass()));
+		ATrackManagerMOCK* testManager = sessionUtilities.retrieveTrackManagerMOCKFromPIE();
 		if (testManager)
 		{
 			bool spawnedTrackGeneratorInTrackManager = testManager->trackGenerators().Contains(Cast<ATrackGenerator, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGenerator::StaticClass())));
@@ -90,8 +90,6 @@ bool FCheckATrackManagerTrackGeneratorsCommand::Update()
 	}
 	return false;
 }
-
-
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerShouldHaveSpawnedTrackGeneratorsTest, "ProjectR.Unit.TrackManagerTest.ShouldHaveSpawnedTrackGenerators", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 

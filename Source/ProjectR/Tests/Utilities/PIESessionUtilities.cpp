@@ -5,6 +5,8 @@
 #include "Jet/Jet.h"
 #include "../Mocks/TrackMOCK.h"
 #include "../Mocks/JetMOCK.h"
+#include "Track/TrackGenerator.h"
+#include "../Mocks/TrackManagerMOCK.h"
 #include "floorMeshActor.h"
 #include "Kismet/GameplayStatics.h"
 //to be able to process inputs:
@@ -50,6 +52,16 @@ ATrackMOCK* PIESessionUtilities::spawnTrackMOCKInPie(FVector atALocation)
 	return pieWorld->SpawnActor<ATrackMOCK>(ATrackMOCK::StaticClass(), atALocation, FRotator(0), spawnParams);
 }
 
+ATrackGenerator* PIESessionUtilities::spawnTrackGeneratorInPie(FVector atALocation)
+{
+	return pieWorld->SpawnActor<ATrackGenerator>(ATrackGenerator::StaticClass());
+}
+
+ATrackManagerMOCK* PIESessionUtilities::spawnTrackManagerMOCKInPie(FVector atALocation)
+{
+	return pieWorld->SpawnActor<ATrackManagerMOCK>(ATrackManagerMOCK::StaticClass());
+}
+
 AJet* PIESessionUtilities::retrieveJetFromPIE()
 {
 	return Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, AJet::StaticClass()));
@@ -63,6 +75,11 @@ AJetMOCK* PIESessionUtilities::retrieveJetMOCKFromPIE()
 ATrackMOCK* PIESessionUtilities::retrieveTrackMOCKFromPIE()
 {
 	return Cast<ATrackMOCK, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, ATrackMOCK::StaticClass()));
+}
+
+ATrackManagerMOCK* PIESessionUtilities::retrieveTrackManagerMOCKFromPIE()
+{
+	return Cast<ATrackManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, ATrackManagerMOCK::StaticClass()));
 }
 
 void PIESessionUtilities::processLocalPlayerInputFrom(FName anAxisMappingName)
