@@ -8,6 +8,7 @@
 #include "Track/TrackManager.h"
 #include "Mocks/TrackManagerMOCK.h"
 #include "Track/TrackGenerator.h"
+#include "Jet/Jet.h"
 
 #include "Misc/AutomationTest.h"
 #include "Tests/AutomationEditorCommon.h"
@@ -49,7 +50,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningATrackManagerAndTrackGeneratorCommand)
 
 bool FSpawningATrackManagerAndTrackGeneratorCommand::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (!GEditor->IsPlayingSessionInEditor())
 	{
 		return false;
 	}
@@ -106,6 +107,113 @@ bool FATrackManagerShouldHaveSpawnedTrackGeneratorsTest::RunTest(const FString& 
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackManagerTrackGeneratorsCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
+
+
+
+
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningATrackManagerARotatedTrackGeneratorAndJetCloseToItCommand);
+
+bool FSpawningATrackManagerARotatedTrackGeneratorAndJetCloseToItCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+	ATrackGenerator* testGenerator = sessionUtilities.spawnTrackGeneratorInPie();
+
+	sessionUtilities.spawnTrackManagerInPie();
+
+	FRotator arbitraryRotator = FRotator(0, 0, 135);
+	testGenerator->SetActorRotation(arbitraryRotator);
+	
+	FVector generatorDirection = testGenerator->GetActorUpVector();
+	float magnetBoxDistanceToFloor = 400;
+	FVector jetLoctation = generatorDirection * magnetBoxDistanceToFloor;
+
+	sessionUtilities.spawnJetInPIE(jetLoctation);
+
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckATrackManagerAttractsJetsCommand, int, aTickCount, int, aTickLimit, float, aPreviousDistance, FAutomationTestBase*, test);
+
+bool FCheckATrackManagerAttractsJetsCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		ATrackGenerator* testGenerator = sessionUtilities.retrieveTrackGeneratorFromPIE();
+		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
+		if (testGenerator && testJet)
+		{
+			float currentDistance = (testJet->GetActorLocation() - testGenerator->GetActorLocation()).Size();
+			bool isPulling = currentDistance < aPreviousDistance;
+			bool isVelocityFullyAlongNormal = FMath::IsNearlyEqual(testJet->GetVelocity().ProjectOnTo(testGenerator->GetActorUpVector()).Size(), testJet->GetVelocity().Size(), 0.1f);
+			bool velocityNearZero = FMath::IsNearlyZero(testJet->GetVelocity().Size(), 0.1f);
+
+			UE_LOG(LogTemp, Log, TEXT("previous distance between track generator and jet: %f"), aPreviousDistance);
+			UE_LOG(LogTemp, Log, TEXT("current distance between track generator and jet: %f"), currentDistance);
+			UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Track generator location: %s"), *testGenerator->GetActorLocation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *testJet->GetVelocity().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet velocity projection on normal vector: %s"), *testJet->GetVelocity().ProjectOnTo(testGenerator->GetActorUpVector()).ToString());
+			UE_LOG(LogTemp, Log, TEXT("Track generator normal vector: %s"), *testGenerator->GetActorUpVector().ToString());
+			UE_LOG(LogTemp, Log, TEXT("is pulling: %s"), *FString(isPulling? "true" : "false"));
+			UE_LOG(LogTemp, Log, TEXT("is velocity fully along normal: %s"), *FString(isVelocityFullyAlongNormal? "true" : "false"));
+			UE_LOG(LogTemp, Log, TEXT("is velocity near zero: %s"), *FString(velocityNearZero? "true" : "false"));
+			
+			if (!velocityNearZero && isVelocityFullyAlongNormal && isPulling)
+			{
+				test->TestTrue(TEXT("The track generator should attract a Jet along the track normal vector when a track manager is present."), !velocityNearZero && isVelocityFullyAlongNormal && isPulling);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			
+			++aTickCount;
+			if (aTickCount > aTickLimit)
+			{
+				test->TestFalse(TEXT("Tick limit reached for this test. The track generator didn't attract the jet along the track normal vector when a track manager was present."), aTickCount > aTickLimit);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			aPreviousDistance = currentDistance;
+		}
+	}
+	return false;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerShouldAttractJetsTowardsTrackGeneratorsTest, "ProjectR.Unit.TrackManagerTest.ShouldAttractJetsTowardsTrackGenerators", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackManagerShouldAttractJetsTowardsTrackGeneratorsTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningATrackManagerARotatedTrackGeneratorAndJetCloseToItCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackManagerAttractsJetsCommand(tickCount, tickLimit, std::numeric_limits<float>::min(), this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
