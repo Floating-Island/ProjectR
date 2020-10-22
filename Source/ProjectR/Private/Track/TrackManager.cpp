@@ -11,6 +11,7 @@
 ATrackManager::ATrackManager()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	trackGeneratorSet = TSet<ATrackGenerator*>();
 	jetsToMagnetize = TSet<AJet*>();//should do the same with the track generator set.
 }
 
