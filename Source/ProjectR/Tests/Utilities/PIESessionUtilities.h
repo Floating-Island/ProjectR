@@ -11,6 +11,7 @@ class AFloorMeshActor;
 class ATrackMOCK;
 class ATrack;
 class ATrackGenerator;
+class ATrackManager;
 class ATrackManagerMOCK;
 
 /**
@@ -30,10 +31,12 @@ public:
 	AFloorMeshActor* spawnFloorMeshActorInPIE(FVector atALocation = FVector(0));
 	ATrackMOCK* spawnTrackMOCKInPie(FVector atALocation = FVector(0));
 	ATrackGenerator* spawnTrackGeneratorInPie(FVector atALocation = FVector(0));
+	ATrackManager* spawnTrackManagerInPie(FVector atALocation = FVector(0));
 	ATrackManagerMOCK* spawnTrackManagerMOCKInPie(FVector atALocation = FVector(0));
 	AJet* retrieveJetFromPIE();
 	AJetMOCK* retrieveJetMOCKFromPIE();
 	ATrackMOCK* retrieveTrackMOCKFromPIE();
+	ATrackGenerator* retrieveTrackGeneratorFromPIE();
 	ATrackManagerMOCK* retrieveTrackManagerMOCKFromPIE();
 	void processLocalPlayerInputFrom(FName anAxisMappingName);
 };
