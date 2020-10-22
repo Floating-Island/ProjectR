@@ -1374,7 +1374,7 @@ bool FAJetIsntAbleToSteerWhenIdleTest::RunTest(const FString& Parameters)
 	return true;
 }
 
-
+//jet mesh should be set to collision enabled. (query and physics or physics only).
 //we should test if the jet steers along it's normal (up) vector instead of Z axis.
 //we should test that if the jet is falling and we steer, the falling keeps happening. Currently, alignVelocity discards gravity.
 //we should change the mesh so we put one that has bones, so we can query them and apply an anti-gravity force to each, instead of applying it onto the center of mass.
