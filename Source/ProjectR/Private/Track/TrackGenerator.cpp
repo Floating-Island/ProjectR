@@ -27,7 +27,20 @@ ATrackGenerator::ATrackGenerator()
 void ATrackGenerator::BeginPlay()
 {
 	Super::BeginPlay();
-
+	for (auto splineMesh : splineMeshes)
+	{
+		K2_DestroyComponent(splineMesh);
+	}
+	for (auto magnetBox : magnetBoxes)
+	{
+		K2_DestroyComponent(magnetBox);
+	}
+	updateSplineMeshes();
+	UE_LOG(LogTemp, Log, TEXT("Started playing."));
+	UE_LOG(LogTemp, Log, TEXT("Spline Mesh quantity at begin play: %d."),magnetBoxes.Num());
+	UE_LOG(LogTemp, Log, TEXT("Magnet box quantity at begin play: %d."),magnetBoxes.Num());
+	UE_LOG(LogTemp, Log, TEXT("Quantity of components at begin play: %d."),GetComponents().Num());
+	UE_LOG(LogTemp, Log, TEXT("Quantity of spline points at begin play: %d."),splineComponent->GetNumberOfSplinePoints());
 }
 
 void ATrackGenerator::OnConstruction(const FTransform& Transform)
@@ -44,9 +57,12 @@ int32 ATrackGenerator::nextSplineIndex(int32 currentIndex)
 
 void ATrackGenerator::toMagnetOverlapSubscribe(ATrackManager* manager)
 {
+	UE_LOG(LogTemp, Log, TEXT("starting subscription."));
+	UE_LOG(LogTemp, Log, TEXT("Magnet box quantity: %d."),magnetBoxes.Num());
 	for (auto magnetMesh : magnetBoxes)
 	{
 		magnetMesh->OnComponentBeginOverlap.AddDynamic(manager, &ATrackManager::addJetToMagnetize);
+		UE_LOG(LogTemp, Log, TEXT("subscribing track manager."));
 	}
 }
 
@@ -58,13 +74,14 @@ FVector ATrackGenerator::closestLocationTo(FVector anotherLocation)
 void ATrackGenerator::updateSplineMeshes()
 {
 	splineMeshes.Empty();
+	magnetBoxes.Empty();
 	int32 splineQuantity = splineComponent->GetNumberOfSplinePoints();
-	for (int32 splinePointIndex = 0; splinePointIndex < splineQuantity; ++splinePointIndex)
+	for (int32 splinePointIndex = 0; splinePointIndex <= splineQuantity; ++splinePointIndex)
 	{
-		USplineMeshComponent* splineMesh = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Spline Mesh Component "), splinePointIndex), RF_DefaultSubObject);
+		USplineMeshComponent* splineMesh = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Spline Mesh Component "), splinePointIndex));
 		configureSplineMesh(splinePointIndex, splineMesh);
 
-		USplineMeshComponent* magnetBox = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Magnet Box Component "), splinePointIndex), RF_DefaultSubObject);
+		USplineMeshComponent* magnetBox = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Magnet Box Component "), splinePointIndex));
 		configureMagnetBox(splinePointIndex, splineMesh, magnetBox);
 	}
 }
@@ -101,7 +118,10 @@ void ATrackGenerator::configureComponentPositionsAndTangents(int32 aSplinePointI
 void ATrackGenerator::configureMagnetBox(int32 aSplinePointIndex, USplineMeshComponent* aSplineMesh, USplineMeshComponent* aMagnetBox)
 {
 	aMagnetBox->RegisterComponent();
+	UE_LOG(LogTemp, Log, TEXT("Magnet box quantity before adding another one: %d."),magnetBoxes.Num());
+	UE_LOG(LogTemp, Log, TEXT("Adding magnet box."));
 	magnetBoxes.Add(aMagnetBox);
+	UE_LOG(LogTemp, Log, TEXT("Magnet box quantity after adding another one: %d."),magnetBoxes.Num());
 	aMagnetBox->Mobility = aSplineMesh->Mobility;
 
 	aMagnetBox->SetHiddenInGame(true);

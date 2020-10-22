@@ -21,6 +21,7 @@ void ATrackManager::BeginPlay()
 	collectTrackGenerators();
 	for(auto generator : trackGeneratorSet)
 	{
+		UE_LOG(LogTemp, Log, TEXT("subscribing to components."));
 		generator->toMagnetOverlapSubscribe(this);
 	}
 }
@@ -28,6 +29,7 @@ void ATrackManager::BeginPlay()
 void ATrackManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	UE_LOG(LogTemp, Log, TEXT("ticking."));
 	for (auto jetTrackGeneratorPair : jetsToMagnetize)
 	{
 		AJet* jet = jetTrackGeneratorPair.Key;
@@ -41,19 +43,28 @@ void ATrackManager::Tick(float DeltaTime)
 		collisionParameters.AddIgnoredActor(jet);
 		collisionParameters.bTraceComplex = false;
 		
-		bool hitBlocked = GetWorld()->LineTraceSingleByChannel(hit, jetLocation, generatorLocation, ECollisionChannel::ECC_WorldStatic, collisionParameters);
+		bool hitBlocked = GetWorld()->LineTraceSingleByChannel(hit, jetLocation, generatorLocation, ECollisionChannel::ECC_Visibility, collisionParameters);
 		
 		if(hitBlocked)
 		{
+			UE_LOG(LogTemp, Log, TEXT("hitted something."));
 			FVector roadNormal = hit.ImpactNormal;
 			UStaticMeshComponent* jetRoot = Cast<UStaticMeshComponent, USceneComponent>(jet->GetRootComponent());
 			
 			if (jetRoot && jetRoot->IsSimulatingPhysics())
 			{
+				UE_LOG(LogTemp, Log, TEXT("the jet root."));
+				UE_LOG(LogTemp, Log, TEXT("Road Normal: %s."),*roadNormal.ToString());
 				FVector gravityAccelerationAbsolute = jet->GetGravityDirection() * GetWorld()->GetGravityZ();
+				UE_LOG(LogTemp, Log, TEXT("Gravity acceleration: %s."),*gravityAccelerationAbsolute.ToString());
 				FVector jetWeightAbsolute = gravityAccelerationAbsolute * jetRoot->GetMass();
+				UE_LOG(LogTemp, Log, TEXT("Jet weight absolute: %s."),*jetWeightAbsolute.ToString());
 				magnetize(jetRoot, jetWeightAbsolute, roadNormal);
 			}
+		}
+		else
+		{
+			UE_LOG(LogTemp, Log, TEXT("no hit."));
 		}
 	}
 }
@@ -82,6 +93,7 @@ void ATrackManager::collectTrackGenerators()
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATrackGenerator::StaticClass(), spawnedGenerators);
 	for (auto generator : spawnedGenerators)
 	{
+		UE_LOG(LogTemp, Log, TEXT("got a track generator."));
 		ATrackGenerator* trackGenerator = Cast<ATrackGenerator, AActor>(generator);
 		if (trackGenerator)
 		{
@@ -99,8 +111,12 @@ void ATrackManager::addJetToMagnetize(UPrimitiveComponent* OverlappedComponent,
 {
 	AJet* overlappedJet = Cast<AJet, AActor>(OtherActor);
 	ATrackGenerator* generator = Cast<ATrackGenerator,AActor>(OverlappedComponent->GetOwner());
+	UE_LOG(LogTemp, Log, TEXT("overlapped with something."));
+	UE_LOG(LogTemp, Log, TEXT("the other actor %s a jet."), *FString(overlappedJet? "is": "isn't"));
+	UE_LOG(LogTemp, Log, TEXT("the other component's owner %s a track generator."), *FString(generator? "is": "isn't"));
 	if(overlappedJet && generator)
 	{
 		jetsToMagnetize.Add(overlappedJet, generator);
+		UE_LOG(LogTemp, Log, TEXT("added overlapped jet and generator to map."));
 	}
 }
