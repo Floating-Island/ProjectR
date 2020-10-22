@@ -37,7 +37,8 @@ void ATrackManager::Tick(float DeltaTime)
 
 		FVector jetLocation = jet->GetActorLocation();
 		FVector generatorLocation = trackGenerator->closestLocationTo(jetLocation);
-
+		UE_LOG(LogTemp, Log, TEXT("jet location: %s."), *jetLocation.ToString());
+		UE_LOG(LogTemp, Log, TEXT("closest track generator point to jet: %s."), *generatorLocation.ToString());
 		FHitResult hit;
 		FCollisionQueryParams collisionParameters;
 		collisionParameters.AddIgnoredActor(jet);

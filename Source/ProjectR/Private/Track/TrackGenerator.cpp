@@ -55,13 +55,13 @@ int32 ATrackGenerator::nextSplineIndex(int32 currentIndex)
 	return (currentIndex + 1) % splineComponent->GetNumberOfSplinePoints();
 }
 
-void ATrackGenerator::toMagnetOverlapSubscribe(ATrackManager* manager)
+void ATrackGenerator::toMagnetOverlapSubscribe(ATrackManager* aManager)
 {
 	UE_LOG(LogTemp, Log, TEXT("starting subscription."));
 	UE_LOG(LogTemp, Log, TEXT("Magnet box quantity: %d."),magnetBoxes.Num());
 	for (auto magnetMesh : magnetBoxes)
 	{
-		magnetMesh->OnComponentBeginOverlap.AddDynamic(manager, &ATrackManager::addJetToMagnetize);
+		magnetMesh->OnComponentBeginOverlap.AddDynamic(aManager, &ATrackManager::addJetToMagnetize);
 		UE_LOG(LogTemp, Log, TEXT("subscribing track manager."));
 	}
 }

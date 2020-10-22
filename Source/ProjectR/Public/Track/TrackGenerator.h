@@ -52,7 +52,7 @@ public:
 	virtual void OnConstruction(const FTransform& Transform) override;
 
 	int32 nextSplineIndex(int32 currentIndex);
-	void toMagnetOverlapSubscribe(ATrackManager* manager);
+	void toMagnetOverlapSubscribe(ATrackManager* aManager);
 
 	FVector closestLocationTo(FVector anotherLocation);
 	
