@@ -8,6 +8,7 @@
 
 ATrackGenerator::ATrackGenerator()
 {
+	bGenerateOverlapEventsDuringLevelStreaming = true;
 	splineComponent = CreateDefaultSubobject<USplineComponent>(TEXT("Spline Component"));
 	RootComponent = splineComponent;
 	splineMeshes = TArray<USplineMeshComponent*>();

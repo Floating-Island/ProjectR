@@ -1150,7 +1150,17 @@ bool FATrackGeneratorSplineComponentsShouldHaveSmoothInterpolationEnabledTest::R
 //	return true;
 //}
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorShouldGenerateOverlapEventsWhenSpawnedTest, "ProjectR.Unit.TrackGeneratorTest.ShouldGenerateOverlapEventsWhenSpawned", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
+bool FATrackGeneratorShouldGenerateOverlapEventsWhenSpawnedTest::RunTest(const FString& Parameters)
+{
+	ATrackGenerator* testGenerator = NewObject<ATrackGenerator>();
+	{
+		TestTrue(TEXT("The track generator should should generate overlap events when spawned."), testGenerator->bGenerateOverlapEventsDuringLevelStreaming);
+	}
+
+	return true;
+}
 
 //should generate overlap events by default when spawned.
 //destroy spline meshes and magnet boxes every time in on construction to avoid memory leaks.
