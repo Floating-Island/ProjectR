@@ -6,6 +6,7 @@
 #include "Jet/Jet.h"
 #include "Track/TrackGenerator.h"
 #include "Kismet/GameplayStatics.h"
+#include "DrawDebugHelpers.h"
 
 
 ATrackManager::ATrackManager()
@@ -42,15 +43,17 @@ void ATrackManager::Tick(float DeltaTime)
 		FHitResult hit;
 		FCollisionQueryParams collisionParameters;
 		collisionParameters.AddIgnoredActor(jet);
-		collisionParameters.bTraceComplex = false;
-
-		float traceMultiplier = 1.5f;//used to create a trace that crosses the track generator.
-		bool hitBlocked = GetWorld()->LineTraceSingleByChannel(hit, jetLocation, (generatorLocation - jetLocation) * 1.5f, ECollisionChannel::ECC_Visibility, collisionParameters);
-
+		collisionParameters.bTraceComplex = true;
+		int directionMultiplier = 2;
+		FVector traceEnd = (generatorLocation - jetLocation) * directionMultiplier + jetLocation;//get the direction of the trace, make it double and set it at the jet location.
+		bool hitBlocked = GetWorld()->LineTraceSingleByChannel(hit, jetLocation, traceEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
+		DrawDebugLine(GetWorld(), jetLocation, traceEnd, FColor::Red, false, 0.5f, 0, 5);
+		//DrawDebugLine(GetWorld(), jetLocation, generatorLocation, FColor::Blue, false, 0.5f, 0, 5);
 		if (hitBlocked)
 		{
 			UE_LOG(LogTemp, Log, TEXT("hitted something."));
-			FVector roadNormal = hit.ImpactNormal;
+			FVector roadNormal = hit.Component->GetUpVector();
+
 			UStaticMeshComponent* jetRoot = Cast<UStaticMeshComponent, USceneComponent>(jet->GetRootComponent());
 
 			if (jetRoot && jetRoot->IsSimulatingPhysics())
