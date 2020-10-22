@@ -30,11 +30,11 @@ void ATrackGenerator::BeginPlay()
 	Super::BeginPlay();
 	for (auto splineMesh : splineMeshes)
 	{
-		K2_DestroyComponent(splineMesh);
+		splineMesh->DestroyComponent();
 	}
 	for (auto magnetBox : magnetBoxes)
 	{
-		K2_DestroyComponent(magnetBox);
+		magnetBox->DestroyComponent();
 	}
 	updateSplineMeshes();
 	UE_LOG(LogTemp, Log, TEXT("Started playing."));
