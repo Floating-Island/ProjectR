@@ -16,4 +16,5 @@ class PROJECTR_API ATrackManagerMOCK : public ATrackManager
 
 public:
 	TSet<ATrackGenerator*> trackGenerators();
+	bool hasJetsStored();
 };
