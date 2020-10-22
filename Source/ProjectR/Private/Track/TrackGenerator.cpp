@@ -77,7 +77,7 @@ void ATrackGenerator::updateSplineMeshes()
 	splineMeshes.Empty();
 	magnetBoxes.Empty();
 	int32 splineQuantity = splineComponent->GetNumberOfSplinePoints();
-	for (int32 splinePointIndex = 0; splinePointIndex <= splineQuantity; ++splinePointIndex)
+	for (int32 splinePointIndex = 0; splinePointIndex < splineQuantity; ++splinePointIndex)
 	{
 		USplineMeshComponent* splineMesh = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Spline Mesh Component "), splinePointIndex));
 		configureSplineMesh(splinePointIndex, splineMesh);
