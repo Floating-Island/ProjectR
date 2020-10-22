@@ -12,7 +12,7 @@ ATrackManager::ATrackManager()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	trackGeneratorSet = TSet<ATrackGenerator*>();
-	jetsToMagnetize = TSet<AJet*>();//should do the same with the track generator set.
+	jetsToMagnetize = TMap<AJet*,ATrackGenerator*>();
 }
 
 void ATrackManager::BeginPlay()
@@ -28,6 +28,51 @@ void ATrackManager::BeginPlay()
 void ATrackManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	for (auto jetTrackGeneratorPair : jetsToMagnetize)
+	{
+		AJet* jet = jetTrackGeneratorPair.Key;
+		ATrackGenerator* trackGenerator = jetTrackGeneratorPair.Value;
+
+		FVector jetLocation = jet->GetActorLocation();
+		FVector generatorLocation = trackGenerator->closestLocationTo(jetLocation);
+
+		FHitResult hit;
+		FCollisionQueryParams collisionParameters;
+		collisionParameters.AddIgnoredActor(jet);
+		collisionParameters.bTraceComplex = false;
+		
+		bool hitBlocked = GetWorld()->LineTraceSingleByChannel(hit, jetLocation, generatorLocation, ECollisionChannel::ECC_WorldStatic, collisionParameters);
+		
+		if(hitBlocked)
+		{
+			FVector roadNormal = hit.ImpactNormal;
+			UStaticMeshComponent* jetRoot = Cast<UStaticMeshComponent, USceneComponent>(jet->GetRootComponent());
+			
+			if (jetRoot && jetRoot->IsSimulatingPhysics())
+			{
+				FVector gravityAccelerationAbsolute = jet->GetGravityDirection() * GetWorld()->GetGravityZ();
+				FVector jetWeightAbsolute = gravityAccelerationAbsolute * jetRoot->GetMass();
+				magnetize(jetRoot, jetWeightAbsolute, roadNormal);
+			}
+		}
+	}
+}
+
+void ATrackManager::magnetize(UStaticMeshComponent* aJetRootComponent, FVector aJetWeightAbsolute, FVector aRoadNormal)
+{
+	CounterGravityForce(aJetRootComponent, aJetWeightAbsolute);
+	pullTowardsFloor(aJetRootComponent, aJetWeightAbsolute, aRoadNormal);
+}
+
+void ATrackManager::CounterGravityForce(UStaticMeshComponent* aJetRootComponent, FVector aJetWeightAbsolute)
+{
+	aJetRootComponent->AddForce(aJetWeightAbsolute);//counter the weight force....
+}
+
+void ATrackManager::pullTowardsFloor(UStaticMeshComponent* aJetRootComponent, FVector aJetWeightAbsolute, FVector aRoadNormal)
+{
+	FVector magnet = -aRoadNormal * aJetWeightAbsolute.Size();//notice the '-' it needs to pull, so the normal has to be inverted.
+	aJetRootComponent->AddForce(magnet);
 }
 
 
@@ -53,8 +98,9 @@ void ATrackManager::addJetToMagnetize(UPrimitiveComponent* OverlappedComponent,
 										const FHitResult& SweepResult)
 {
 	AJet* overlappedJet = Cast<AJet, AActor>(OtherActor);
-	if(overlappedJet)
+	ATrackGenerator* generator = Cast<ATrackGenerator,AActor>(OverlappedComponent->GetOwner());
+	if(overlappedJet && generator)
 	{
-		jetsToMagnetize.Add(overlappedJet);	
+		jetsToMagnetize.Add(overlappedJet, generator);
 	}
 }

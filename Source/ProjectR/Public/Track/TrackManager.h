@@ -25,7 +25,12 @@ protected:
 
 	TSet<ATrackGenerator*> trackGeneratorSet;
 	void collectTrackGenerators();
-	TSet<AJet*> jetsToMagnetize;
+	TMap<AJet*,ATrackGenerator*> jetsToMagnetize;
+
+	void magnetize(UStaticMeshComponent* aJetRootComponent, FVector aJetWeightAbsolute, FVector aRoadNormal);
+	void CounterGravityForce(UStaticMeshComponent* aJetRootComponent, FVector aJetWeightAbsolute);
+	void pullTowardsFloor(UStaticMeshComponent* aJetRootComponent, FVector aJetWeightAbsolute, FVector aRoadNormal);
+	
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

@@ -50,6 +50,11 @@ void ATrackGenerator::toMagnetOverlapSubscribe(ATrackManager* manager)
 	}
 }
 
+FVector ATrackGenerator::closestLocationTo(FVector anotherLocation)
+{
+	return splineComponent->FindLocationClosestToWorldLocation(anotherLocation, ESplineCoordinateSpace::World);
+}
+
 void ATrackGenerator::updateSplineMeshes()
 {
 	splineMeshes.Empty();

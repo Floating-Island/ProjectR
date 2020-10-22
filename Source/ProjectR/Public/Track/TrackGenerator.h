@@ -54,5 +54,7 @@ public:
 	int32 nextSplineIndex(int32 currentIndex);
 
 	void toMagnetOverlapSubscribe(ATrackManager* manager);
+
+	FVector closestLocationTo(FVector anotherLocation);
 	
 };
