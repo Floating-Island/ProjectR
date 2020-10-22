@@ -1374,6 +1374,20 @@ bool FAJetIsntAbleToSteerWhenIdleTest::RunTest(const FString& Parameters)
 	return true;
 }
 
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSShouldGenerateOverlapEventsWhenSpawnedTest, "ProjectR.Unit.JetTests.ShouldGenerateOverlapEventsWhenSpawned", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetSShouldGenerateOverlapEventsWhenSpawnedTest::RunTest(const FString& Parameters)
+{
+
+	AJet* testJet = NewObject<AJet>();
+
+	TestTrue(TEXT("Jet should generate overlap events when spawned into a level."), testJet->bGenerateOverlapEventsDuringLevelStreaming);
+
+	return true;
+}
+
+
 //the jet should generate overlap events by default when spawned.
 //jet mesh should be set to collision enabled. (query and physics or physics only).
 //we should test if the jet steers along it's normal (up) vector instead of Z axis.
