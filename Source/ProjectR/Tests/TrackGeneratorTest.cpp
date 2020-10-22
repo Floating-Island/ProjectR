@@ -1152,7 +1152,7 @@ bool FATrackGeneratorSplineComponentsShouldHaveSmoothInterpolationEnabledTest::R
 
 
 
-
+//should generate overlap events by default when spawned.
 //destroy spline meshes and magnet boxes every time in on construction to avoid memory leaks.
 //create a struct containing roll and width for each spline mesh and add it to an array. Check that the array has the same amount of elements as spline meshes.
 //modify an array element and check that the corresponding spline changes accordingly.
