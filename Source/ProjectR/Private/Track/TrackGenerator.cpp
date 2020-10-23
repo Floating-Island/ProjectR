@@ -24,10 +24,18 @@ ATrackGenerator::ATrackGenerator()
 	magnetBoxMesh = roadMesh;
 }
 
+
+
 // Called when the game starts or when spawned
 void ATrackGenerator::BeginPlay()
 {
 	Super::BeginPlay();
+	destroySplineMeshes();
+	updateSplineMeshes();
+}
+
+void ATrackGenerator::destroySplineMeshes()
+{
 	for (auto splineMesh : splineMeshes)
 	{
 		splineMesh->DestroyComponent();
@@ -36,7 +44,6 @@ void ATrackGenerator::BeginPlay()
 	{
 		magnetBox->DestroyComponent();
 	}
-	updateSplineMeshes();
 }
 
 void ATrackGenerator::OnConstruction(const FTransform& Transform)
