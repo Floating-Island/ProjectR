@@ -14,7 +14,7 @@
 AJet::AJet()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
+	bGenerateOverlapEventsDuringLevelStreaming = true;
 	meshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh Component"));
 	RootComponent = meshComponent;
 

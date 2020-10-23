@@ -7,8 +7,10 @@
 #include "TrackGenerator.generated.h"
 
 
+
 class USplineComponent;
 class USplineMeshComponent;
+class ATrackManager;
 
 UCLASS()
 class PROJECTR_API ATrackGenerator : public AActor
@@ -18,6 +20,7 @@ class PROJECTR_API ATrackGenerator : public AActor
 public:
 	// Sets default values for this actor's properties
 	ATrackGenerator();
+	void destroySplineMeshes();
 
 protected:
 	// Called when the game starts or when spawned
@@ -26,29 +29,32 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")	
 		USplineComponent* splineComponent;
 	
-	TArray<USplineMeshComponent*> splineMeshes;
+	TArray<USplineMeshComponent*> roadSplines;
 
-	void updateSplineMeshes();
+	void createSplineMeshes();
 
-	void configureMagnetBox(int32 splinePointIndex, USplineMeshComponent* splineMesh, USplineMeshComponent* magnetBox);
-	void configureSplineMesh(int32 splinePointIndex, USplineMeshComponent* splineMesh);
-	void configureComponentPositionsAndTangents(int32 splinePointIndex, USplineMeshComponent* splineMesh);
-	void configureCollisionOf(USplineMeshComponent* aMagnetBox);
+	void configureMagnetSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline, USplineMeshComponent* aMagnetSpline);
+	void configureRoadSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline);
+	void configureComponentPositionsAndTangents(int32 aSplinePointIndex, USplineMeshComponent* aSplineMesh);
+	void configureCollisionOf(USplineMeshComponent* aMagnetSpline);
 
 	UPROPERTY(EditAnywhere, Category = "Default Meshes")
 		UStaticMesh* roadMesh;
 
-	TArray<USplineMeshComponent*> magnetBoxes;
+	TArray<USplineMeshComponent*> magnetSplines;
 
-	float magnetBoxHeightDistanceToSplineMesh;
+	float magnetSplineHeightDistanceToRoadSpline;
 
 	UPROPERTY(EditAnywhere, Category = "Default Meshes")
-		UStaticMesh* magnetBoxMesh;
+		UStaticMesh* magnetSplineMesh;
 
 public:
 
 	virtual void OnConstruction(const FTransform& Transform) override;
 
-	int32 nextSplineIndex(int32 currentIndex);
+	int32 nextSplineIndexOf(int32 aCurrentIndex);
+	void toMagnetOverlapSubscribe(ATrackManager* aManager);
+
+	FVector closestLocationTo(FVector anotherLocation);
 	
 };

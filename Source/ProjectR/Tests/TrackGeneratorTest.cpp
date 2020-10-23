@@ -1150,10 +1150,20 @@ bool FATrackGeneratorSplineComponentsShouldHaveSmoothInterpolationEnabledTest::R
 //	return true;
 //}
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorShouldGenerateOverlapEventsWhenSpawnedTest, "ProjectR.Unit.TrackGeneratorTest.ShouldGenerateOverlapEventsWhenSpawned", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorShouldGenerateOverlapEventsWhenSpawnedTest::RunTest(const FString& Parameters)
+{
+	ATrackGenerator* testGenerator = NewObject<ATrackGenerator>();
+	{
+		TestTrue(TEXT("The track generator should should generate overlap events when spawned."), testGenerator->bGenerateOverlapEventsDuringLevelStreaming);
+	}
+
+	return true;
+}
 
 
-
-
+//destroy spline meshes and magnet boxes every time in on construction to avoid memory leaks.
 //create a struct containing roll and width for each spline mesh and add it to an array. Check that the array has the same amount of elements as spline meshes.
 //modify an array element and check that the corresponding spline changes accordingly.
 //allow to change roll to spline meshes. Make the magnet box attached to that roll (roll after the magnet box has been attached).
