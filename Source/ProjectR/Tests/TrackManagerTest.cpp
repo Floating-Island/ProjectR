@@ -21,14 +21,14 @@
 //each one of this tests should test something of the project class that this test class references to.
 //Each project class should have a test class for it. It's something kind of necessary for TDD.
 
-//It's nice if the prettyname follows a pattern like: Game.Unit.ClassToTest.TestName
+//It's nice if the prettyname follows a pattern like: Game.ClassToTest.Unit.TestName
 //TestName should express what you expect from a test given a scenario.
 //Pay attention to the automation flags because they're needed to run the tests without UI errors.
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerShouldntBeNullWhenInstantiatedTest, "ProjectR.Unit.TrackManagerTest.ATrackManagerShouldntBeNullWhenInstantiated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerIsntNullWhenInstantiatedTest, "ProjectR.TrackManager Tests.Unit.Isn't null when instantiated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackManagerShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Parameters)
+bool FATrackManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
 	ATrackManager* testManager = NewObject<ATrackManager>();
 	{
@@ -56,7 +56,6 @@ bool FSpawningATrackManagerAndTrackGeneratorCommand::Update()
 	}
 
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
 
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
@@ -92,11 +91,10 @@ bool FCheckATrackManagerTrackGeneratorsCommand::Update()
 	return false;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerShouldHaveSpawnedTrackGeneratorsTest, "ProjectR.Unit.TrackManagerTest.ShouldHaveSpawnedTrackGenerators", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerHasTrackGeneratorsListedWhenSpawnedTest, "ProjectR.TrackManager Tests.Integration.Has track generators listed when spawned", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackManagerShouldHaveSpawnedTrackGeneratorsTest::RunTest(const FString& Parameters)
+bool FATrackManagerHasTrackGeneratorsListedWhenSpawnedTest::RunTest(const FString& Parameters)
 {
-
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
@@ -184,9 +182,9 @@ bool FCheckATrackManagerStoresJetsWhenOverlapCommand::Update()
 	return false;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerShouldStoreJetsOverlappingWithTrackGeneratorsTest, "ProjectR.Unit.TrackManagerTest.ShouldStoreJetsOverlappingWithTrackGenerators", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerStoresJetsOverlappingWithTrackGeneratorsTest, "ProjectR.TrackManager Tests.Integration.Stores jets overlapping with track generators", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackManagerShouldStoreJetsOverlappingWithTrackGeneratorsTest::RunTest(const FString& Parameters)
+bool FATrackManagerStoresJetsOverlappingWithTrackGeneratorsTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -258,9 +256,9 @@ bool FCheckATrackManagerAttractsJetsCommand::Update()
 	return false;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerShouldAttractJetsTowardsTrackGeneratorsTest, "ProjectR.Unit.TrackManagerTest.ShouldAttractJetsTowardsTrackGenerators", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerAttractsJetsTowardsTrackGeneratorsTest, "ProjectR.TrackManager Tests.Integration.Attracts jets towards track generators", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackManagerShouldAttractJetsTowardsTrackGeneratorsTest::RunTest(const FString& Parameters)
+bool FATrackManagerAttractsJetsTowardsTrackGeneratorsTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
