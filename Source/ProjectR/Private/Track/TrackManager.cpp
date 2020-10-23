@@ -71,11 +71,11 @@ void ATrackManager::manageMagnetization()
 
 		bool hitBlocked = GetWorld()->LineTraceSingleByChannel(hit, jetLocation, traceEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
 
-		startMagnetization(jet, hit, hitBlocked);
+		prepareMagnetization(jet, hit, hitBlocked);
 	}
 }
 
-void ATrackManager::startMagnetization(AJet* aJet, FHitResult aHit, bool wasHitBlocked)
+void ATrackManager::prepareMagnetization(AJet* aJet, FHitResult aHit, bool wasHitBlocked)
 {
 	if (wasHitBlocked)
 	{

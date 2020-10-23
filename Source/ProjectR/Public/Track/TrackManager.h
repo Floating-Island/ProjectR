@@ -17,25 +17,26 @@ class PROJECTR_API ATrackManager : public AActor
 public:
 	// Sets default values for this actor's properties
 	ATrackManager();
-	void subscribeToTrackGeneratorsMagnetSplines();
+
 
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	void manageMagnetization();
-
+	
 	TSet<ATrackGenerator*> trackGeneratorSet;
 	void collectTrackGenerators();
+	void subscribeToTrackGeneratorsMagnetSplines();
 	TMap<AJet*,ATrackGenerator*> jetsToMagnetize;
 
+	void manageMagnetization();
+	void prepareMagnetization(AJet* aJet, FHitResult aHit, bool wasHitBlocked);
 	void magnetize(UStaticMeshComponent* aJetRootComponent, FVector aJetWeightAbsolute, FVector aRoadNormal);
 	void CounterGravityForce(UStaticMeshComponent* aJetRootComponent, FVector aJetWeightAbsolute);
 	void pullTowardsFloor(UStaticMeshComponent* aJetRootComponent, FVector aJetWeightAbsolute, FVector aRoadNormal);
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	void startMagnetization(AJet* aJet, FHitResult aHit, bool wasHitBlocked);
 
 	UFUNCTION()
 		void addJetToMagnetize (UPrimitiveComponent* OverlappedComponent,
