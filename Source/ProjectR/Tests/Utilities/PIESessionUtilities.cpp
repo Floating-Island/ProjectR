@@ -3,7 +3,6 @@
 
 #include "PIESessionUtilities.h"
 #include "Jet/Jet.h"
-#include "../Mocks/TrackMOCK.h"
 #include "../Mocks/JetMOCK.h"
 #include "Track/TrackGenerator.h"
 #include "Track/TrackManager.h"
@@ -48,11 +47,6 @@ AFloorMeshActor* PIESessionUtilities::spawnFloorMeshActorInPIE(FVector atALocati
 	return pieWorld->SpawnActor<AFloorMeshActor>(AFloorMeshActor::StaticClass(), atALocation, FRotator(0), spawnParams);
 }
 
-ATrackMOCK* PIESessionUtilities::spawnTrackMOCKInPie(FVector atALocation)
-{
-	return pieWorld->SpawnActor<ATrackMOCK>(ATrackMOCK::StaticClass(), atALocation, FRotator(0), spawnParams);
-}
-
 ATrackGenerator* PIESessionUtilities::spawnTrackGeneratorInPie(FVector atALocation)
 {
 	return pieWorld->SpawnActor<ATrackGenerator>(ATrackGenerator::StaticClass());
@@ -76,11 +70,6 @@ AJet* PIESessionUtilities::retrieveJetFromPIE()
 AJetMOCK* PIESessionUtilities::retrieveJetMOCKFromPIE()
 {
 	return Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, AJetMOCK::StaticClass()));
-}
-
-ATrackMOCK* PIESessionUtilities::retrieveTrackMOCKFromPIE()
-{
-	return Cast<ATrackMOCK, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, ATrackMOCK::StaticClass()));
 }
 
 ATrackGenerator* PIESessionUtilities::retrieveTrackGeneratorFromPIE()
