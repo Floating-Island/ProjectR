@@ -52,7 +52,7 @@ void ATrackManager::Tick(float DeltaTime)
 		if (hitBlocked)
 		{
 			UE_LOG(LogTemp, Log, TEXT("hitted something."));
-			FVector roadNormal = hit.Component->GetUpVector();
+			FVector roadNormal = hit.Component->GetUpVector();//could be a problem if the spline has roll...
 
 			UStaticMeshComponent* jetRoot = Cast<UStaticMeshComponent, USceneComponent>(jet->GetRootComponent());
 
