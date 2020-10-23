@@ -6,7 +6,6 @@
 #include "Jet/Jet.h"
 #include "Track/TrackGenerator.h"
 #include "Kismet/GameplayStatics.h"
-#include "DrawDebugHelpers.h"
 
 
 ATrackManager::ATrackManager()
@@ -22,7 +21,6 @@ void ATrackManager::BeginPlay()
 	collectTrackGenerators();
 	for (auto generator : trackGeneratorSet)
 	{
-		UE_LOG(LogTemp, Log, TEXT("subscribing to components."));
 		generator->toMagnetOverlapSubscribe(this);
 	}
 }
@@ -30,7 +28,6 @@ void ATrackManager::BeginPlay()
 void ATrackManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	UE_LOG(LogTemp, Log, TEXT("ticking."));
 	for (auto jetTrackGeneratorPair : jetsToMagnetize)
 	{
 		AJet* jet = jetTrackGeneratorPair.Key;
@@ -38,8 +35,6 @@ void ATrackManager::Tick(float DeltaTime)
 
 		FVector jetLocation = jet->GetActorLocation();
 		FVector generatorLocation = trackGenerator->closestLocationTo(jetLocation);
-		UE_LOG(LogTemp, Log, TEXT("jet location: %s."), *jetLocation.ToString());
-		UE_LOG(LogTemp, Log, TEXT("closest track generator point to jet: %s."), *generatorLocation.ToString());
 		FHitResult hit;
 		FCollisionQueryParams collisionParameters;
 		collisionParameters.AddIgnoredActor(jet);
@@ -47,29 +42,19 @@ void ATrackManager::Tick(float DeltaTime)
 		int directionMultiplier = 2;
 		FVector traceEnd = (generatorLocation - jetLocation) * directionMultiplier + jetLocation;//get the direction of the trace, make it double and set it at the jet location.
 		bool hitBlocked = GetWorld()->LineTraceSingleByChannel(hit, jetLocation, traceEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
-		DrawDebugLine(GetWorld(), jetLocation, traceEnd, FColor::Red, false, 0.5f, 0, 5);
-		//DrawDebugLine(GetWorld(), jetLocation, generatorLocation, FColor::Blue, false, 0.5f, 0, 5);
+
 		if (hitBlocked)
 		{
-			UE_LOG(LogTemp, Log, TEXT("hitted something."));
 			FVector roadNormal = hit.Component->GetUpVector();//could be a problem if the spline has roll...
 
 			UStaticMeshComponent* jetRoot = Cast<UStaticMeshComponent, USceneComponent>(jet->GetRootComponent());
 
 			if (jetRoot && jetRoot->IsSimulatingPhysics())
 			{
-				UE_LOG(LogTemp, Log, TEXT("the jet root."));
-				UE_LOG(LogTemp, Log, TEXT("Road Normal: %s."), *roadNormal.ToString());
 				FVector gravityAccelerationAbsolute = jet->GetGravityDirection() * GetWorld()->GetGravityZ();
-				UE_LOG(LogTemp, Log, TEXT("Gravity acceleration: %s."), *gravityAccelerationAbsolute.ToString());
 				FVector jetWeightAbsolute = gravityAccelerationAbsolute * jetRoot->GetMass();
-				UE_LOG(LogTemp, Log, TEXT("Jet weight absolute: %s."), *jetWeightAbsolute.ToString());
 				magnetize(jetRoot, jetWeightAbsolute, roadNormal);
 			}
-		}
-		else
-		{
-			UE_LOG(LogTemp, Log, TEXT("no hit."));
 		}
 	}
 }
@@ -98,7 +83,6 @@ void ATrackManager::collectTrackGenerators()
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATrackGenerator::StaticClass(), spawnedGenerators);
 	for (auto generator : spawnedGenerators)
 	{
-		UE_LOG(LogTemp, Log, TEXT("got a track generator."));
 		ATrackGenerator* trackGenerator = Cast<ATrackGenerator, AActor>(generator);
 		if (trackGenerator)
 		{
@@ -116,12 +100,8 @@ void ATrackManager::addJetToMagnetize(UPrimitiveComponent* OverlappedComponent,
 {
 	AJet* overlappedJet = Cast<AJet, AActor>(OtherActor);
 	ATrackGenerator* generator = Cast<ATrackGenerator, AActor>(OverlappedComponent->GetOwner());
-	UE_LOG(LogTemp, Log, TEXT("overlapped with something."));
-	UE_LOG(LogTemp, Log, TEXT("the other actor %s a jet."), *FString(overlappedJet ? "is" : "isn't"));
-	UE_LOG(LogTemp, Log, TEXT("the other component's owner %s a track generator."), *FString(generator ? "is" : "isn't"));
 	if (overlappedJet && generator)
 	{
 		jetsToMagnetize.Add(overlappedJet, generator);
-		UE_LOG(LogTemp, Log, TEXT("added overlapped jet and generator to map."));
 	}
 }

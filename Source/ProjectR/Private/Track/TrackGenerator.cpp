@@ -37,11 +37,6 @@ void ATrackGenerator::BeginPlay()
 		magnetBox->DestroyComponent();
 	}
 	updateSplineMeshes();
-	UE_LOG(LogTemp, Log, TEXT("Started playing."));
-	UE_LOG(LogTemp, Log, TEXT("Spline Mesh quantity at begin play: %d."),magnetBoxes.Num());
-	UE_LOG(LogTemp, Log, TEXT("Magnet box quantity at begin play: %d."),magnetBoxes.Num());
-	UE_LOG(LogTemp, Log, TEXT("Quantity of components at begin play: %d."),GetComponents().Num());
-	UE_LOG(LogTemp, Log, TEXT("Quantity of spline points at begin play: %d."),splineComponent->GetNumberOfSplinePoints());
 }
 
 void ATrackGenerator::OnConstruction(const FTransform& Transform)
@@ -58,12 +53,9 @@ int32 ATrackGenerator::nextSplineIndex(int32 currentIndex)
 
 void ATrackGenerator::toMagnetOverlapSubscribe(ATrackManager* aManager)
 {
-	UE_LOG(LogTemp, Log, TEXT("starting subscription."));
-	UE_LOG(LogTemp, Log, TEXT("Magnet box quantity: %d."),magnetBoxes.Num());
 	for (auto magnetMesh : magnetBoxes)
 	{
 		magnetMesh->OnComponentBeginOverlap.AddDynamic(aManager, &ATrackManager::addJetToMagnetize);
-		UE_LOG(LogTemp, Log, TEXT("subscribing track manager."));
 	}
 }
 
@@ -119,10 +111,8 @@ void ATrackGenerator::configureComponentPositionsAndTangents(int32 aSplinePointI
 void ATrackGenerator::configureMagnetBox(int32 aSplinePointIndex, USplineMeshComponent* aSplineMesh, USplineMeshComponent* aMagnetBox)
 {
 	aMagnetBox->RegisterComponent();
-	UE_LOG(LogTemp, Log, TEXT("Magnet box quantity before adding another one: %d."),magnetBoxes.Num());
-	UE_LOG(LogTemp, Log, TEXT("Adding magnet box."));
 	magnetBoxes.Add(aMagnetBox);
-	UE_LOG(LogTemp, Log, TEXT("Magnet box quantity after adding another one: %d."),magnetBoxes.Num());
+
 	aMagnetBox->Mobility = aSplineMesh->Mobility;
 
 	aMagnetBox->SetHiddenInGame(true);
