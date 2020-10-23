@@ -17,11 +17,13 @@ class PROJECTR_API ATrackManager : public AActor
 public:
 	// Sets default values for this actor's properties
 	ATrackManager();
+	void subscribeToTrackGeneratorsMagnetSplines();
 
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	void manageMagnetization();
 
 	TSet<ATrackGenerator*> trackGeneratorSet;
 	void collectTrackGenerators();
@@ -33,6 +35,7 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	void startMagnetization(AJet* aJet, FHitResult aHit, bool wasHitBlocked);
 
 	UFUNCTION()
 		void addJetToMagnetize (UPrimitiveComponent* OverlappedComponent,
