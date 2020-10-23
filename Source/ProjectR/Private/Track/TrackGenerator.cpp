@@ -13,7 +13,7 @@ ATrackGenerator::ATrackGenerator()
 	RootComponent = splineComponent;
 	splineMeshes = TArray<USplineMeshComponent*>();
 
-	roadMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Content/Development/Models/roadFloor")));
+	roadMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/roadFloor")));
 
 	magnetBoxes = TArray<USplineMeshComponent*>();
 
