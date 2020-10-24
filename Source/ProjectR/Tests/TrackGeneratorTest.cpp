@@ -1002,23 +1002,6 @@ bool FATrackGeneratorMagnetSplinesOverlapWithPawnChannelTest::RunTest(const FStr
 
 
 
-//check if this should be better in the jet tests...MOVE IT!
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMeshCollisionIsOfTypePawnTest, "ProjectR.TrackGenerator Tests.Unit.Jet mesh collision is of type pawn", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FAJetMeshCollisionIsOfTypePawnTest::RunTest(const FString& Parameters)
-{
-	AJetMOCK* testJet = NewObject<AJetMOCK>();
-	{
-		TestTrue(TEXT("The jet collision object type should be pawn."), testJet->meshCollisionIsPawn());
-	}
-
-	return true;
-}
-
-
-
-
-
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesGenerateOverlapEventsCommand, FAutomationTestBase*, test);
 

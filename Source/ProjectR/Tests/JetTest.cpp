@@ -1388,6 +1388,20 @@ bool FAJetGeneratesOverlapEventsWhenSpawnedTest::RunTest(const FString& Paramete
 }
 
 
+
+//Necessary so the track generator overlaps with it.
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMeshCollisionIsOfTypePawnTest, "ProjectR.Jet Tests.Unit.030: Jet mesh collision is of type pawn", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetMeshCollisionIsOfTypePawnTest::RunTest(const FString& Parameters)
+{
+	AJetMOCK* testJet = NewObject<AJetMOCK>();
+	{
+		TestTrue(TEXT("The jet collision object type should be pawn."), testJet->meshCollisionIsPawn());
+	}
+
+	return true;
+}
+
 //the jet should generate overlap events by default when spawned.
 //jet mesh should be set to collision enabled. (query and physics or physics only).
 //we should test if the jet steers along it's normal (up) vector instead of Z axis.
