@@ -26,7 +26,7 @@
 //Pay attention to the automation flags because they're needed to run the tests without UI errors.
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerIsntNullWhenInstantiatedTest, "ProjectR.TrackManager Tests.Unit.Isn't null when instantiated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerIsntNullWhenInstantiatedTest, "ProjectR.TrackManager Tests.Unit.000: Isn't null when instantiated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FATrackManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
@@ -91,7 +91,7 @@ bool FCheckATrackManagerTrackGeneratorsCommand::Update()
 	return false;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerHasTrackGeneratorsListedWhenSpawnedTest, "ProjectR.TrackManager Tests.Integration.Has track generators listed when spawned", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerHasTrackGeneratorsListedWhenSpawnedTest, "ProjectR.TrackManager Tests.Integration.001: Has track generators listed when spawned", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FATrackManagerHasTrackGeneratorsListedWhenSpawnedTest::RunTest(const FString& Parameters)
 {
@@ -182,7 +182,7 @@ bool FCheckATrackManagerStoresJetsWhenOverlapCommand::Update()
 	return false;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerStoresJetsOverlappingWithTrackGeneratorsTest, "ProjectR.TrackManager Tests.Integration.Stores jets overlapping with track generators", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerStoresJetsOverlappingWithTrackGeneratorsTest, "ProjectR.TrackManager Tests.Integration.002: Stores jets overlapping with track generators", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FATrackManagerStoresJetsOverlappingWithTrackGeneratorsTest::RunTest(const FString& Parameters)
 {
@@ -256,7 +256,7 @@ bool FCheckATrackManagerAttractsJetsCommand::Update()
 	return false;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerAttractsJetsTowardsTrackGeneratorsTest, "ProjectR.TrackManager Tests.Integration.Attracts jets towards track generators", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerAttractsJetsTowardsTrackGeneratorsTest, "ProjectR.TrackManager Tests.Integration.003: Attracts jets towards track generators", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FATrackManagerAttractsJetsTowardsTrackGeneratorsTest::RunTest(const FString& Parameters)
 {

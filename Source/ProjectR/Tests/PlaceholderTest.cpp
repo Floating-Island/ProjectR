@@ -19,7 +19,7 @@
 
 
 //a test
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FOneIsOneTest, "ProjectR.Placeholder Tests.Unit.One is one", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FOneIsOneTest, "ProjectR.Placeholder Tests.000: Unit.One is one", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 bool FOneIsOneTest::RunTest(const FString& Parameters)
@@ -33,7 +33,7 @@ bool FOneIsOneTest::RunTest(const FString& Parameters)
 
 
 //another test
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FSTwoIsTwoTest, "ProjectR.Placeholder Tests.Unit.Two is two", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FSTwoIsTwoTest, "ProjectR.Placeholder Tests.Unit.001: Two is two", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 bool FSTwoIsTwoTest::RunTest(const FString& Parameters)

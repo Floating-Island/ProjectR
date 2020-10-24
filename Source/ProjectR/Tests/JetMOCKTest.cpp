@@ -23,7 +23,7 @@
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FJetMOCKIsntNullWhenInstantiatedTest, "ProjectR.JetMOCK Tests.Unit.Isn't null when instantiated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FJetMOCKIsntNullWhenInstantiatedTest, "ProjectR.JetMOCK Tests.Unit.000: Isn't null when instantiated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 bool FJetMOCKIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
