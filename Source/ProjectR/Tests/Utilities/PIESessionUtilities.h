@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Kismet/GameplayStatics.h"
 
 
 class AJet;
@@ -15,7 +16,7 @@ class ATrackManager;
 class ATrackManagerMOCK;
 
 /**
- * This class is intended to use in tests only and when the editor is playing a PIE session.
+ * This class is intended to be used in tests only and when the editor is playing a PIE session.
  */
 class PROJECTR_API PIESessionUtilities
 {
@@ -26,15 +27,27 @@ public:
 	PIESessionUtilities();
 	~PIESessionUtilities();
 	UWorld* currentPIEWorld();
-	AJet* spawnJetInPIE(FVector atALocation = FVector(0));
-	AJetMOCK* spawnJetMOCKInPIE(FVector atALocation = FVector(0));
-	AFloorMeshActor* spawnFloorMeshActorInPIE(FVector atALocation = FVector(0));
-	ATrackGenerator* spawnTrackGeneratorInPie(FVector atALocation = FVector(0));
-	ATrackManager* spawnTrackManagerInPie(FVector atALocation = FVector(0));
-	ATrackManagerMOCK* spawnTrackManagerMOCKInPie(FVector atALocation = FVector(0));
-	AJet* retrieveJetFromPIE();
-	AJetMOCK* retrieveJetMOCKFromPIE();
-	ATrackGenerator* retrieveTrackGeneratorFromPIE();
-	ATrackManagerMOCK* retrieveTrackManagerMOCKFromPIE();
 	void processLocalPlayerInputFrom(FName anAxisMappingName);
+	
+
+	template <typename anActorDerivedClass>
+	anActorDerivedClass* spawnInPIEAnInstanceOf(FVector atLocation = FVector(0));
+
+
+	template <typename anActorDerivedClass>
+	anActorDerivedClass* retrieveFromPIEAnInstanceOf();
 };
+
+
+template <typename anActorDerivedClass>
+anActorDerivedClass* PIESessionUtilities::spawnInPIEAnInstanceOf(FVector atLocation)
+{
+	return pieWorld->SpawnActor<anActorDerivedClass>(anActorDerivedClass::StaticClass(), atLocation, FRotator(0), spawnParams);
+}
+
+
+template <typename anActorDerivedClass>
+anActorDerivedClass* PIESessionUtilities::retrieveFromPIEAnInstanceOf()
+{
+	return Cast<anActorDerivedClass, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, anActorDerivedClass::StaticClass()));
+}

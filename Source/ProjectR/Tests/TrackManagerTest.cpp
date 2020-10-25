@@ -21,14 +21,14 @@
 //each one of this tests should test something of the project class that this test class references to.
 //Each project class should have a test class for it. It's something kind of necessary for TDD.
 
-//It's nice if the prettyname follows a pattern like: Game.Unit.ClassToTest.TestName
+//It's nice if the prettyname follows a pattern like: Game.ClassToTest.Unit.TestName
 //TestName should express what you expect from a test given a scenario.
 //Pay attention to the automation flags because they're needed to run the tests without UI errors.
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerShouldntBeNullWhenInstantiatedTest, "ProjectR.Unit.TrackManagerTest.ATrackManagerShouldntBeNullWhenInstantiated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerIsntNullWhenInstantiatedTest, "ProjectR.TrackManager Tests.Unit.000: Isn't null when instantiated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackManagerShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Parameters)
+bool FATrackManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
 	ATrackManager* testManager = NewObject<ATrackManager>();
 	{
@@ -57,11 +57,10 @@ bool FSpawningATrackManagerAndTrackGeneratorCommand::Update()
 
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	sessionUtilities.spawnTrackGeneratorInPie();
-	sessionUtilities.spawnTrackManagerMOCKInPie();
+	sessionUtilities.spawnInPIEAnInstanceOf<ATrackGenerator>();
+	sessionUtilities.spawnInPIEAnInstanceOf<ATrackManagerMOCK>();
 
 	return true;
 }
@@ -74,7 +73,7 @@ bool FCheckATrackManagerTrackGeneratorsCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		ATrackManagerMOCK* testManager = sessionUtilities.retrieveTrackManagerMOCKFromPIE();
+		ATrackManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackManagerMOCK>();
 		if (testManager)
 		{
 			bool spawnedTrackGeneratorInTrackManager = testManager->trackGenerators().Contains(Cast<ATrackGenerator, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGenerator::StaticClass())));
@@ -92,11 +91,10 @@ bool FCheckATrackManagerTrackGeneratorsCommand::Update()
 	return false;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerShouldHaveSpawnedTrackGeneratorsTest, "ProjectR.Unit.TrackManagerTest.ShouldHaveSpawnedTrackGenerators", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerHasTrackGeneratorsListedWhenSpawnedTest, "ProjectR.TrackManager Tests.Integration.001: Has track generators listed when spawned", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackManagerShouldHaveSpawnedTrackGeneratorsTest::RunTest(const FString& Parameters)
+bool FATrackManagerHasTrackGeneratorsListedWhenSpawnedTest::RunTest(const FString& Parameters)
 {
-
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
@@ -135,18 +133,18 @@ bool FSpawningATrackManagerARotatedTrackGeneratorAndJetCloseToItCommand::Update(
 
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	ATrackGenerator* testGenerator = sessionUtilities.spawnTrackGeneratorInPie();
+	ATrackGenerator* testGenerator = sessionUtilities.spawnInPIEAnInstanceOf<ATrackGenerator>();
 
-	sessionUtilities.spawnTrackManagerMOCKInPie();
+	sessionUtilities.spawnInPIEAnInstanceOf<ATrackManagerMOCK>();
 
 	FRotator arbitraryRotator = FRotator(0, 0, 135);
 	testGenerator->SetActorRotation(arbitraryRotator);
-	
+
 	FVector generatorDirection = testGenerator->GetActorUpVector();
 	float magnetBoxDistanceToFloor = 400;
 	FVector jetLoctation = generatorDirection * magnetBoxDistanceToFloor;
 
-	sessionUtilities.spawnJetInPIE(jetLoctation);
+	sessionUtilities.spawnInPIEAnInstanceOf<AJet>(jetLoctation);
 
 	return true;
 }
@@ -159,19 +157,19 @@ bool FCheckATrackManagerStoresJetsWhenOverlapCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		ATrackManagerMOCK* testManager = sessionUtilities.retrieveTrackManagerMOCKFromPIE();
+		ATrackManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackManagerMOCK>();
 		if (testManager)
 		{
 			bool hasJetsStored = testManager->hasJetsStored();
-			UE_LOG(LogTemp, Log, TEXT("track manager has jets stored: %s"), *FString(hasJetsStored? "true" : "false"));
-			
+			UE_LOG(LogTemp, Log, TEXT("track manager has jets stored: %s"), *FString(hasJetsStored ? "true" : "false"));
+
 			if (hasJetsStored)
 			{
 				test->TestTrue(TEXT("The track manager should store the jets that overlap with a track generator's magnet box."), hasJetsStored);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			
+
 			++aTickCount;
 			if (aTickCount > aTickLimit)
 			{
@@ -184,9 +182,9 @@ bool FCheckATrackManagerStoresJetsWhenOverlapCommand::Update()
 	return false;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerShouldStoreJetsOverlappingWithTrackGeneratorsTest, "ProjectR.Unit.TrackManagerTest.ShouldStoreJetsOverlappingWithTrackGenerators", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerStoresJetsOverlappingWithTrackGeneratorsTest, "ProjectR.TrackManager Tests.Integration.002: Stores jets overlapping with track generators", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackManagerShouldStoreJetsOverlappingWithTrackGeneratorsTest::RunTest(const FString& Parameters)
+bool FATrackManagerStoresJetsOverlappingWithTrackGeneratorsTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -218,8 +216,8 @@ bool FCheckATrackManagerAttractsJetsCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		ATrackGenerator* testGenerator = sessionUtilities.retrieveTrackGeneratorFromPIE();
-		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
+		ATrackGenerator* testGenerator = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		if (testGenerator && testJet)
 		{
 			float currentDistance = (testJet->GetActorLocation() - testGenerator->GetActorLocation()).Size();
@@ -234,17 +232,17 @@ bool FCheckATrackManagerAttractsJetsCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *testJet->GetVelocity().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity projection on normal vector: %s"), *testJet->GetVelocity().ProjectOnTo(testGenerator->GetActorUpVector()).ToString());
 			UE_LOG(LogTemp, Log, TEXT("Track generator normal vector: %s"), *testGenerator->GetActorUpVector().ToString());
-			UE_LOG(LogTemp, Log, TEXT("is pulling: %s"), *FString(isPulling? "true" : "false"));
-			UE_LOG(LogTemp, Log, TEXT("is velocity fully along normal: %s"), *FString(isVelocityFullyAlongNormal? "true" : "false"));
-			UE_LOG(LogTemp, Log, TEXT("is velocity near zero: %s"), *FString(velocityNearZero? "true" : "false"));
-			
+			UE_LOG(LogTemp, Log, TEXT("is pulling: %s"), *FString(isPulling ? "true" : "false"));
+			UE_LOG(LogTemp, Log, TEXT("is velocity fully along normal: %s"), *FString(isVelocityFullyAlongNormal ? "true" : "false"));
+			UE_LOG(LogTemp, Log, TEXT("is velocity near zero: %s"), *FString(velocityNearZero ? "true" : "false"));
+
 			if (!velocityNearZero && isVelocityFullyAlongNormal && isPulling)
 			{
 				test->TestTrue(TEXT("The track generator should attract a Jet along the track normal vector when a track manager is present."), !velocityNearZero && isVelocityFullyAlongNormal && isPulling);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			
+
 			++aTickCount;
 			if (aTickCount > aTickLimit)
 			{
@@ -258,9 +256,9 @@ bool FCheckATrackManagerAttractsJetsCommand::Update()
 	return false;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerShouldAttractJetsTowardsTrackGeneratorsTest, "ProjectR.Unit.TrackManagerTest.ShouldAttractJetsTowardsTrackGenerators", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackManagerAttractsJetsTowardsTrackGeneratorsTest, "ProjectR.TrackManager Tests.Integration.003: Attracts jets towards track generators", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackManagerShouldAttractJetsTowardsTrackGeneratorsTest::RunTest(const FString& Parameters)
+bool FATrackManagerAttractsJetsTowardsTrackGeneratorsTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");

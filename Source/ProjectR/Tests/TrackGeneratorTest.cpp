@@ -5,7 +5,6 @@
 
 #include "Track/TrackGenerator.h"
 #include "Mocks/TrackGeneratorMOCK.h"
-#include "Mocks/JetMOCK.h"
 
 #include "Misc/AutomationTest.h"
 #include "Tests/AutomationEditorCommon.h"
@@ -21,14 +20,14 @@
 //each one of this tests should test something of the project class that this test class references to.
 //Each project class should have a test class for it. It's something kind of necessary for TDD.
 
-//It's nice if the prettyname follows a pattern like: Game.Unit.ClassToTest.TestName
+//It's nice if the prettyname follows a pattern like: Game.ClassToTest.Unit.TestName.
 //TestName should express what you expect from a test given a scenario.
 //Pay attention to the automation flags because they're needed to run the tests without UI errors.
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorShouldntBeNullWhenInstantiatedTest, "ProjectR.Unit.TrackGeneratorTest.ATrackGeneratorShouldntBeNullWhenInstantiated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorIsntNullWhenInstantiatedTest, "ProjectR.TrackGenerator Tests.Unit.000: Isn't null when instantiated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorShouldntBeNullWhenInstantiatedTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
 	ATrackGenerator* testGenerator = NewObject<ATrackGenerator>();
 	{
@@ -40,9 +39,9 @@ bool FATrackGeneratorShouldntBeNullWhenInstantiatedTest::RunTest(const FString& 
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorShouldHaveASplineComponentTest, "ProjectR.Unit.TrackGeneratorTest.ATrackGeneratorShouldHaveASplineComponent", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorHasASplineComponentTest, "ProjectR.TrackGenerator Tests.Unit.001: Has a spline component", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorShouldHaveASplineComponentTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorHasASplineComponentTest::RunTest(const FString& Parameters)
 {
 	ATrackGeneratorMOCK* testGenerator = NewObject<ATrackGeneratorMOCK>();
 	{
@@ -54,9 +53,9 @@ bool FATrackGeneratorShouldHaveASplineComponentTest::RunTest(const FString& Para
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineComponentShouldBeTheRootComponentTest, "ProjectR.Unit.TrackGeneratorTest.ATrackGeneratorSplineComponentShouldBeTheRootComponent", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineComponentIsTheRootComponentTest, "ProjectR.TrackGenerator Tests.Unit.002: Spline component is the root component", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorSplineComponentShouldBeTheRootComponentTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorSplineComponentIsTheRootComponentTest::RunTest(const FString& Parameters)
 {
 	ATrackGeneratorMOCK* testGenerator = NewObject<ATrackGeneratorMOCK>();
 	{
@@ -88,9 +87,9 @@ bool FSpawnTrackGeneratorInEditorWorldCommand::Update()
 }
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMeshesQuantityCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesQuantityCommand, FAutomationTestBase*, test);
 
-bool FCheckSplineMeshesQuantityCommand::Update()
+bool FCheckRoadSplinesQuantityCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -100,24 +99,24 @@ bool FCheckSplineMeshesQuantityCommand::Update()
 	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
 	if (testGenerator)
 	{
-		int32 splineMeshesQuantity = testGenerator->splineMeshesQuantity();
+		int32 roadSplinesQuantity = testGenerator->roadSplinesQuantity();
 		int32 splinePointsQuantity = testGenerator->splinePointsQuantity();
-		bool sameAmountOfSplinePointsAsSplineMeshes = splineMeshesQuantity == splinePointsQuantity;//splines always have start and end points at the beginning...
+		bool sameAmountOfSplinePointsAsRoadSplines = roadSplinesQuantity == splinePointsQuantity;//splines always have start and end points at the beginning...
 		UE_LOG(LogTemp, Log, TEXT("Spline points quantity in generator: %d."), splinePointsQuantity);
-		UE_LOG(LogTemp, Log, TEXT("Spline meshes quantity in generator: %d."), splineMeshesQuantity);
-		UE_LOG(LogTemp, Log, TEXT("Spline meshes quantity is coincident with number of spline points: %s."), *FString(sameAmountOfSplinePointsAsSplineMeshes ? "true" : "false"));
+		UE_LOG(LogTemp, Log, TEXT("Road splines quantity in generator: %d."), roadSplinesQuantity);
+		UE_LOG(LogTemp, Log, TEXT("Road splines quantity is coincident with number of spline points: %s."), *FString(sameAmountOfSplinePointsAsRoadSplines ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("At spawning, the number of spline meshes should be coincident with the spline points quantity."), sameAmountOfSplinePointsAsSplineMeshes);
+		test->TestTrue(TEXT("At spawning, the number of road splines should be coincident with the spline points quantity."), sameAmountOfSplinePointsAsRoadSplines);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineMeshesQuantityShouldBeTheSameAsSplinePointsAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.SplineMeshesQuantityShouldBeTheSameAsSplinePointsAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorRoadSplinesQuantityIsTheSameAsSplinePointsAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.003: Road splines quantity is the same as spline points at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorSplineMeshesQuantityShouldBeTheSameAsSplinePointsAtSpawningTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorRoadSplinesQuantityIsTheSameAsSplinePointsAtSpawningTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -126,7 +125,7 @@ bool FATrackGeneratorSplineMeshesQuantityShouldBeTheSameAsSplinePointsAtSpawning
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesQuantityCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesQuantityCommand(this));
 
 	return true;
 }
@@ -136,9 +135,9 @@ bool FATrackGeneratorSplineMeshesQuantityShouldBeTheSameAsSplinePointsAtSpawning
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMeshesStartPositionsCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesStartPositionsCommand, FAutomationTestBase*, test);
 
-bool FCheckSplineMeshesStartPositionsCommand::Update()
+bool FCheckRoadSplinesStartPositionsCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -149,20 +148,20 @@ bool FCheckSplineMeshesStartPositionsCommand::Update()
 	if (testGenerator)
 	{
 
-		bool splineMeshesStartPositionsMatchSplinePoints = testGenerator->MeshesAndPointsHaveSameStartPositions();
-		UE_LOG(LogTemp, Log, TEXT("Spline meshes start positions are coincident with the positions of spline points: %s."), *FString(splineMeshesStartPositionsMatchSplinePoints ? "true" : "false"));
+		bool roadSplinesStartPositionsMatchSplinePoints = testGenerator->roadSplinesAndPointsHaveSameStartPositions();
+		UE_LOG(LogTemp, Log, TEXT("Road splines start positions are coincident with the positions of spline points: %s."), *FString(roadSplinesStartPositionsMatchSplinePoints ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("At spawning, the start positions of spline meshes should be coincident with the spline points positions."), splineMeshesStartPositionsMatchSplinePoints);
+		test->TestTrue(TEXT("At spawning, the start positions of road splines should be coincident with the spline points positions."), roadSplinesStartPositionsMatchSplinePoints);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineMeshesStartPositionsShouldBeTheSameAsSplinePointsAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.SplineMeshesStartPositionsShouldBeTheSameAsSplinePointsAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorRoadSplinesStartPositionsAreTheSameAsSplinePointsAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.004: Road splines start positions are the same as spline points at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorSplineMeshesStartPositionsShouldBeTheSameAsSplinePointsAtSpawningTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorRoadSplinesStartPositionsAreTheSameAsSplinePointsAtSpawningTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -171,7 +170,7 @@ bool FATrackGeneratorSplineMeshesStartPositionsShouldBeTheSameAsSplinePointsAtSp
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesStartPositionsCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesStartPositionsCommand(this));
 
 	return true;
 }
@@ -181,9 +180,9 @@ bool FATrackGeneratorSplineMeshesStartPositionsShouldBeTheSameAsSplinePointsAtSp
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMeshesEndPositionsCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesEndPositionsCommand, FAutomationTestBase*, test);
 
-bool FCheckSplineMeshesEndPositionsCommand::Update()
+bool FCheckRoadSplinesEndPositionsCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -194,20 +193,20 @@ bool FCheckSplineMeshesEndPositionsCommand::Update()
 	if (testGenerator)
 	{
 
-		bool splineMeshesEndPositionsMatchSplinePoints = testGenerator->MeshesAndPointsHaveSameEndPositions();
-		UE_LOG(LogTemp, Log, TEXT("Spline meshes end positions are coincident with the positions of next spline points: %s."), *FString(splineMeshesEndPositionsMatchSplinePoints ? "true" : "false"));
+		bool roadSplinesEndPositionsMatchSplinePoints = testGenerator->roadSplinesAndPointsHaveSameEndPositions();
+		UE_LOG(LogTemp, Log, TEXT("Road splines end positions are coincident with the positions of next spline points: %s."), *FString(roadSplinesEndPositionsMatchSplinePoints ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("At spawning, the end positions of spline meshes should be coincident with the next spline points positions."), splineMeshesEndPositionsMatchSplinePoints);
+		test->TestTrue(TEXT("At spawning, the end positions of road splines should be coincident with the next spline points positions."), roadSplinesEndPositionsMatchSplinePoints);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineMeshesEndPositionsShouldBeTheSameAsNextSplinePointsAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.SplineMeshesEndPositionsShouldBeTheSameAsNextSplinePointsAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorRoadSplinesEndPositionsAreTheSameAsNextSplinePointsAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.005: Road splines end positions are the same as next spline points at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorSplineMeshesEndPositionsShouldBeTheSameAsNextSplinePointsAtSpawningTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorRoadSplinesEndPositionsAreTheSameAsNextSplinePointsAtSpawningTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -216,7 +215,7 @@ bool FATrackGeneratorSplineMeshesEndPositionsShouldBeTheSameAsNextSplinePointsAt
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesEndPositionsCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesEndPositionsCommand(this));
 
 	return true;
 }
@@ -226,9 +225,9 @@ bool FATrackGeneratorSplineMeshesEndPositionsShouldBeTheSameAsNextSplinePointsAt
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMeshesStartTangentsCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesStartTangentsCommand, FAutomationTestBase*, test);
 
-bool FCheckSplineMeshesStartTangentsCommand::Update()
+bool FCheckRoadSplinesStartTangentsCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -239,20 +238,20 @@ bool FCheckSplineMeshesStartTangentsCommand::Update()
 	if (testGenerator)
 	{
 
-		bool splineMeshesStartTangentsMatchSplinePoints = testGenerator->MeshesAndPointsHaveSameStartTangents();
-		UE_LOG(LogTemp, Log, TEXT("Spline meshes start tangents are coincident with the tangents of spline points: %s."), *FString(splineMeshesStartTangentsMatchSplinePoints ? "true" : "false"));
+		bool roadSplinesStartTangentsMatchSplinePoints = testGenerator->roadSplinesAndPointsHaveSameStartTangents();
+		UE_LOG(LogTemp, Log, TEXT("Road splines start tangents are coincident with the tangents of spline points: %s."), *FString(roadSplinesStartTangentsMatchSplinePoints ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("At spawning, the start tangents of spline meshes should be coincident with the spline points tangents."), splineMeshesStartTangentsMatchSplinePoints);
+		test->TestTrue(TEXT("At spawning, the start tangents of road splines should be coincident with the spline points tangents."), roadSplinesStartTangentsMatchSplinePoints);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineMeshesStartTangentsShouldBeTheSameAsSplinePointsAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.SplineMeshesStartTangentsShouldBeTheSameAsSplinePointsAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorRoadSplinesStartTangentsAreTheSameAsSplinePointsAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.006: Road splines start tangents are the same as spline points at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorSplineMeshesStartTangentsShouldBeTheSameAsSplinePointsAtSpawningTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorRoadSplinesStartTangentsAreTheSameAsSplinePointsAtSpawningTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -261,7 +260,7 @@ bool FATrackGeneratorSplineMeshesStartTangentsShouldBeTheSameAsSplinePointsAtSpa
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesStartTangentsCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesStartTangentsCommand(this));
 
 	return true;
 }
@@ -271,9 +270,9 @@ bool FATrackGeneratorSplineMeshesStartTangentsShouldBeTheSameAsSplinePointsAtSpa
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMeshesEndTangentsCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesEndTangentsCommand, FAutomationTestBase*, test);
 
-bool FCheckSplineMeshesEndTangentsCommand::Update()
+bool FCheckRoadSplinesEndTangentsCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -284,20 +283,20 @@ bool FCheckSplineMeshesEndTangentsCommand::Update()
 	if (testGenerator)
 	{
 
-		bool splineMeshesEndTangentsMatchNextSplinePoints = testGenerator->MeshesAndPointsHaveSameEndTangents();
-		UE_LOG(LogTemp, Log, TEXT("Spline meshes end tangents are coincident with the tangents of next spline points: %s."), *FString(splineMeshesEndTangentsMatchNextSplinePoints ? "true" : "false"));
+		bool roadSplinesEndTangentsMatchNextSplinePoints = testGenerator->roadSplinesAndPointsHaveSameEndTangents();
+		UE_LOG(LogTemp, Log, TEXT("Road splines end tangents are coincident with the tangents of next spline points: %s."), *FString(roadSplinesEndTangentsMatchNextSplinePoints ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("At spawning, the end tangents of spline meshes should be coincident with the next spline points tangents."), splineMeshesEndTangentsMatchNextSplinePoints);
+		test->TestTrue(TEXT("At spawning, the end tangents of road splines should be coincident with the next spline points tangents."), roadSplinesEndTangentsMatchNextSplinePoints);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineMeshesEndTangentsShouldBeTheSameAsNextSplinePointsAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.SplineMeshesEndTangentsShouldBeTheSameAsNextSplinePointsAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorRoadSplinesEndTangentsAreTheSameAsNextSplinePointsAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.007: Road splines end tangents are the same as next spline points at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorSplineMeshesEndTangentsShouldBeTheSameAsNextSplinePointsAtSpawningTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorRoadSplinesEndTangentsAreTheSameAsNextSplinePointsAtSpawningTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -306,7 +305,7 @@ bool FATrackGeneratorSplineMeshesEndTangentsShouldBeTheSameAsNextSplinePointsAtS
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesEndTangentsCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesEndTangentsCommand(this));
 
 	return true;
 }
@@ -316,9 +315,9 @@ bool FATrackGeneratorSplineMeshesEndTangentsShouldBeTheSameAsNextSplinePointsAtS
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMeshesMeshesCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesMeshesCommand, FAutomationTestBase*, test);
 
-bool FCheckSplineMeshesMeshesCommand::Update()
+bool FCheckRoadSplinesMeshesCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -329,20 +328,20 @@ bool FCheckSplineMeshesMeshesCommand::Update()
 	if (testGenerator)
 	{
 
-		bool splineMeshesHaveMeshesSet = testGenerator->splineMeshesHaveMeshesSet();
-		UE_LOG(LogTemp, Log, TEXT("Spline meshes meshes are set: %s."), *FString(splineMeshesHaveMeshesSet ? "true" : "false"));
+		bool roadSplinesHaveMeshesSet = testGenerator->roadSplinesHaveMeshesSet();
+		UE_LOG(LogTemp, Log, TEXT("Road splines meshes are set: %s."), *FString(roadSplinesHaveMeshesSet ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("At spawning, the spline meshes meshes should be set."), splineMeshesHaveMeshesSet);
+		test->TestTrue(TEXT("At spawning, the road splines meshes should be set."), roadSplinesHaveMeshesSet);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineMeshesMeshesShouldBeSetAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.SplineMeshesMeshesShouldBeSetAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorRoadSplinesMeshesAreSetAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.008: Road splines meshes are set at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorSplineMeshesMeshesShouldBeSetAtSpawningTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorRoadSplinesMeshesAreSetAtSpawningTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -351,7 +350,7 @@ bool FATrackGeneratorSplineMeshesMeshesShouldBeSetAtSpawningTest::RunTest(const 
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesMeshesCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesMeshesCommand(this));
 
 	return true;
 }
@@ -361,9 +360,9 @@ bool FATrackGeneratorSplineMeshesMeshesShouldBeSetAtSpawningTest::RunTest(const 
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMeshesMeshesAreRoadMeshCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesMeshesAreRoadMeshCommand, FAutomationTestBase*, test);
 
-bool FCheckSplineMeshesMeshesAreRoadMeshCommand::Update()
+bool FCheckRoadSplinesMeshesAreRoadMeshCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -374,20 +373,20 @@ bool FCheckSplineMeshesMeshesAreRoadMeshCommand::Update()
 	if (testGenerator)
 	{
 
-		bool splineMeshesHaveMeshesSetAsRoadMesh = testGenerator->splineMeshesMeshesAreRoadMesh();
-		UE_LOG(LogTemp, Log, TEXT("Spline meshes meshes are the road mesh: %s."), *FString(splineMeshesHaveMeshesSetAsRoadMesh ? "true" : "false"));
+		bool roadSplinesHaveMeshesSetAsRoadMesh = testGenerator->roadSplinesMeshesAreRoadMesh();
+		UE_LOG(LogTemp, Log, TEXT("Road splines meshes are the road mesh: %s."), *FString(roadSplinesHaveMeshesSetAsRoadMesh ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("At spawning, the spline meshes meshes should be the road mesh."), splineMeshesHaveMeshesSetAsRoadMesh);
+		test->TestTrue(TEXT("At spawning, the road splines meshes should be the road mesh."), roadSplinesHaveMeshesSetAsRoadMesh);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineMeshesMeshesShouldBeTheRoadMeshAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.SplineMeshesMeshesShouldBeTheRoadMeshAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorRoadSplinesMeshesAreTheRoadMeshAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.009: Road splines meshes are the road mesh at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorSplineMeshesMeshesShouldBeTheRoadMeshAtSpawningTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorRoadSplinesMeshesAreTheRoadMeshAtSpawningTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -396,7 +395,7 @@ bool FATrackGeneratorSplineMeshesMeshesShouldBeTheRoadMeshAtSpawningTest::RunTes
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesMeshesAreRoadMeshCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesMeshesAreRoadMeshCommand(this));
 
 	return true;
 }
@@ -406,9 +405,9 @@ bool FATrackGeneratorSplineMeshesMeshesShouldBeTheRoadMeshAtSpawningTest::RunTes
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMagnetBoxesQuantityCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMagnetSplinesQuantityCommand, FAutomationTestBase*, test);
 
-bool FCheckSplineMagnetBoxesQuantityCommand::Update()
+bool FCheckSplineMagnetSplinesQuantityCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -419,20 +418,20 @@ bool FCheckSplineMagnetBoxesQuantityCommand::Update()
 	if (testGenerator)
 	{
 
-		bool splineHasSameNumberOfMagnetBoxesAsSplinePoints = testGenerator->MagnetBoxesQuantitySameAsSplinePoints();
-		UE_LOG(LogTemp, Log, TEXT("Has the same amount of spline points as magnet boxes: %s."), *FString(splineHasSameNumberOfMagnetBoxesAsSplinePoints ? "true" : "false"));
+		bool splineHasSameNumberOfMagnetSplinesAsSplinePoints = testGenerator->magnetSplinesQuantitySameAsSplinePoints();
+		UE_LOG(LogTemp, Log, TEXT("Has the same amount of spline points as magnet splines: %s."), *FString(splineHasSameNumberOfMagnetSplinesAsSplinePoints ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("At spawning, the spline should have the same amount of magnet boxes as spline points."), splineHasSameNumberOfMagnetBoxesAsSplinePoints);
+		test->TestTrue(TEXT("At spawning, the spline should have the same amount of magnet splines as spline points."), splineHasSameNumberOfMagnetSplinesAsSplinePoints);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorShouldHaveSameAmountOfMagnetBoxesAsSplinePointsAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.ShouldHaveSameAmountOfMagnetBoxesAsSplinePointsAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorHasTheSameAmountOfMagnetSplinesAsSplinePointsAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.010: Has the same amount of magnet splines as spline points at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorShouldHaveSameAmountOfMagnetBoxesAsSplinePointsAtSpawningTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorHasTheSameAmountOfMagnetSplinesAsSplinePointsAtSpawningTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -441,7 +440,7 @@ bool FATrackGeneratorShouldHaveSameAmountOfMagnetBoxesAsSplinePointsAtSpawningTe
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMagnetBoxesQuantityCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMagnetSplinesQuantityCommand(this));
 
 	return true;
 }
@@ -451,9 +450,9 @@ bool FATrackGeneratorShouldHaveSameAmountOfMagnetBoxesAsSplinePointsAtSpawningTe
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMeshesCollisionEnabledCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesCollisionEnabledCommand, FAutomationTestBase*, test);
 
-bool FCheckSplineMeshesCollisionEnabledCommand::Update()
+bool FCheckRoadSplinesCollisionEnabledCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -464,20 +463,20 @@ bool FCheckSplineMeshesCollisionEnabledCommand::Update()
 	if (testGenerator)
 	{
 
-		bool splineMeshesHaveCollisionEnabledSetToQueryAndPhysics = testGenerator->splineMeshesHaveCollisionEnabledSetToQueryAndPhysics();
-		UE_LOG(LogTemp, Log, TEXT("Spline meshes have collision enabled set to query and physics: %s."), *FString(splineMeshesHaveCollisionEnabledSetToQueryAndPhysics ? "true" : "false"));
+		bool roadSplinesHaveCollisionEnabledSetToQueryAndPhysics = testGenerator->roadSplinesHaveCollisionEnabledSetToQueryAndPhysics();
+		UE_LOG(LogTemp, Log, TEXT("Road splines have collision enabled set to query and physics: %s."), *FString(roadSplinesHaveCollisionEnabledSetToQueryAndPhysics ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("At spawning, Spline meshes should have collision enabled set to query and physics."), splineMeshesHaveCollisionEnabledSetToQueryAndPhysics);
+		test->TestTrue(TEXT("At spawning, Road splines should have collision enabled set to query and physics."), roadSplinesHaveCollisionEnabledSetToQueryAndPhysics);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMeshesShouldHaveCollisionEnabledAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.MeshesShouldHaveCollisionEnabledAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMeshesHaveCollisionEnabledAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.011: Meshes have collision enabled at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorMeshesShouldHaveCollisionEnabledAtSpawningTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorMeshesHaveCollisionEnabledAtSpawningTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -486,7 +485,7 @@ bool FATrackGeneratorMeshesShouldHaveCollisionEnabledAtSpawningTest::RunTest(con
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesCollisionEnabledCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesCollisionEnabledCommand(this));
 
 	return true;
 }
@@ -496,9 +495,9 @@ bool FATrackGeneratorMeshesShouldHaveCollisionEnabledAtSpawningTest::RunTest(con
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMeshesCollisionObjectTypeCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesCollisionObjectTypeCommand, FAutomationTestBase*, test);
 
-bool FCheckSplineMeshesCollisionObjectTypeCommand::Update()
+bool FCheckRoadSplinesCollisionObjectTypeCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -509,20 +508,20 @@ bool FCheckSplineMeshesCollisionObjectTypeCommand::Update()
 	if (testGenerator)
 	{
 
-		bool splineMeshesHaveCollisionObjectToWorldStatic = testGenerator->splineMeshesHaveCollisionObjectToWorldStatic();
-		UE_LOG(LogTemp, Log, TEXT("Spline meshes have collision object type of world static: %s."), *FString(splineMeshesHaveCollisionObjectToWorldStatic ? "true" : "false"));
+		bool roadSplinesHaveCollisionObjectToWorldStatic = testGenerator->roadSplinesHaveCollisionObjectToWorldStatic();
+		UE_LOG(LogTemp, Log, TEXT("Road splines have collision object type of world static: %s."), *FString(roadSplinesHaveCollisionObjectToWorldStatic ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("At spawning, Spline meshes should have collision object type of world static."), splineMeshesHaveCollisionObjectToWorldStatic);
+		test->TestTrue(TEXT("At spawning, Road splines should have collision object type of world static."), roadSplinesHaveCollisionObjectToWorldStatic);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMeshesShouldHaveCollisionObjectTypeWorldStaticAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.MeshesShouldHaveCollisionObjectTypeWorldStaticAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMeshesHaveCollisionObjectTypeWorldStaticAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.012: Meshes have collision object type world static at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorMeshesShouldHaveCollisionObjectTypeWorldStaticAtSpawningTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorMeshesHaveCollisionObjectTypeWorldStaticAtSpawningTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -531,7 +530,7 @@ bool FATrackGeneratorMeshesShouldHaveCollisionObjectTypeWorldStaticAtSpawningTes
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesCollisionObjectTypeCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesCollisionObjectTypeCommand(this));
 
 	return true;
 }
@@ -541,9 +540,9 @@ bool FATrackGeneratorMeshesShouldHaveCollisionObjectTypeWorldStaticAtSpawningTes
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMeshesAttachToRootCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesAttachToRootCommand, FAutomationTestBase*, test);
 
-bool FCheckSplineMeshesAttachToRootCommand::Update()
+bool FCheckRoadSplinesAttachToRootCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -554,20 +553,20 @@ bool FCheckSplineMeshesAttachToRootCommand::Update()
 	if (testGenerator)
 	{
 
-		bool splineMeshesAreAttachedToRoot = testGenerator->splineMeshesAreAttachedToRoot();
-		UE_LOG(LogTemp, Log, TEXT("Spline meshes are attached to root component: %s."), *FString(splineMeshesAreAttachedToRoot ? "true" : "false"));
+		bool roadSplinesAreAttachedToRoot = testGenerator->roadSplinesAreAttachedToRoot();
+		UE_LOG(LogTemp, Log, TEXT("Road splines are attached to root component: %s."), *FString(roadSplinesAreAttachedToRoot ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("At spawning, Spline meshes should be attached to root component."), splineMeshesAreAttachedToRoot);
+		test->TestTrue(TEXT("At spawning, Road splines should be attached to root component."), roadSplinesAreAttachedToRoot);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMeshesShouldBeAttachedToRootAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.MeshesShouldBeAttachedToRootAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMeshesAreAttachedToRootAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.013: Meshes are attached to root at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorMeshesShouldBeAttachedToRootAtSpawningTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorMeshesAreAttachedToRootAtSpawningTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -576,7 +575,7 @@ bool FATrackGeneratorMeshesShouldBeAttachedToRootAtSpawningTest::RunTest(const F
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesAttachToRootCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesAttachToRootCommand(this));
 
 	return true;
 }
@@ -586,9 +585,9 @@ bool FATrackGeneratorMeshesShouldBeAttachedToRootAtSpawningTest::RunTest(const F
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMeshesMobilityCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesMobilityCommand, FAutomationTestBase*, test);
 
-bool FCheckSplineMeshesMobilityCommand::Update()
+bool FCheckRoadSplinesMobilityCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -599,20 +598,20 @@ bool FCheckSplineMeshesMobilityCommand::Update()
 	if (testGenerator)
 	{
 
-		bool splineMeshesMobilitySameAsRoot = testGenerator->splineMeshesMobilitySameAsRoot();
-		UE_LOG(LogTemp, Log, TEXT("Spline meshes have the same mobility as the root component: %s."), *FString(splineMeshesMobilitySameAsRoot ? "true" : "false"));
+		bool roadSplinesMobilitySameAsRoot = testGenerator->roadSplinesMobilitySameAsRoot();
+		UE_LOG(LogTemp, Log, TEXT("Road splines have the same mobility as the root component: %s."), *FString(roadSplinesMobilitySameAsRoot ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("At spawning, Spline meshes should have the same mobility as the root component."), splineMeshesMobilitySameAsRoot);
+		test->TestTrue(TEXT("At spawning, Road splines should have the same mobility as the root component."), roadSplinesMobilitySameAsRoot);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMeshesShouldHaveSameMobilityAsRootAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.MeshesShouldHaveSameMobilityAsRootAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMeshesHaveSameMobilityAsRootAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.014: Meshes have same mobility as root at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorMeshesShouldHaveSameMobilityAsRootAtSpawningTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorMeshesHaveSameMobilityAsRootAtSpawningTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -621,18 +620,18 @@ bool FATrackGeneratorMeshesShouldHaveSameMobilityAsRootAtSpawningTest::RunTest(c
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMeshesMobilityCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesMobilityCommand(this));
 
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineComponentShouldLoopTest, "ProjectR.Unit.TrackGeneratorTest.SplineComponentShouldLoop", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineComponentLoopsTest, "ProjectR.TrackGenerator Tests.Unit.Spline component loops", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorSplineComponentShouldLoopTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorSplineComponentLoopsTest::RunTest(const FString& Parameters)
 {
 	ATrackGeneratorMOCK* testGenerator = NewObject<ATrackGeneratorMOCK>();
 	{
-		TestTrue(TEXT("The track generator spline component should loop, I'm doing race tracks."), testGenerator->isSplineComponentLooping());
+		TestTrue(TEXT("The track generator spline component should loop, these are race tracks."), testGenerator->isSplineComponentLooping());
 	}
 
 	return true;
@@ -643,9 +642,9 @@ bool FATrackGeneratorSplineComponentShouldLoopTest::RunTest(const FString& Param
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetBoxesMobilityCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesMobilityCommand, FAutomationTestBase*, test);
 
-bool FCheckMagnetBoxesMobilityCommand::Update()
+bool FCheckMagnetSplinesMobilityCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -656,20 +655,20 @@ bool FCheckMagnetBoxesMobilityCommand::Update()
 	if (testGenerator)
 	{
 
-		bool magnetBoxesMobilitySameAsSplineMeshes = testGenerator->magnetBoxesMobilitySameAsSplineMeshes();
-		UE_LOG(LogTemp, Log, TEXT("Magnet boxes have the same mobility as spline meshes: %s."), *FString(magnetBoxesMobilitySameAsSplineMeshes ? "true" : "false"));
+		bool magnetSplinesMobilitySameAsRoadSplines = testGenerator->magnetSplinesMobilitySameAsRoadSplines();
+		UE_LOG(LogTemp, Log, TEXT("Magnet splines have the same mobility as road splines: %s."), *FString(magnetSplinesMobilitySameAsRoadSplines ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("At spawning, magnet boxes should have the same mobility as spline meshes."), magnetBoxesMobilitySameAsSplineMeshes);
+		test->TestTrue(TEXT("At spawning, magnet splines should have the same mobility as road splines."), magnetSplinesMobilitySameAsRoadSplines);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxesShouldHaveSameMobilityAsSplineMeshesAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxesShouldHaveSameMobilityAsSplineMeshesAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesHaveTheSameMobilityAsRoadSplinesAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.015: Magnet splines have the same mobility as road splines at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorMagnetBoxesShouldHaveSameMobilityAsSplineMeshesAtSpawningTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorMagnetSplinesHaveTheSameMobilityAsRoadSplinesAtSpawningTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -678,7 +677,7 @@ bool FATrackGeneratorMagnetBoxesShouldHaveSameMobilityAsSplineMeshesAtSpawningTe
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetBoxesMobilityCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesMobilityCommand(this));
 
 	return true;
 }
@@ -688,9 +687,9 @@ bool FATrackGeneratorMagnetBoxesShouldHaveSameMobilityAsSplineMeshesAtSpawningTe
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetBoxesAttachToSplineMeshesCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesAttachToRoadSplinesCommand, FAutomationTestBase*, test);
 
-bool FCheckMagnetBoxesAttachToSplineMeshesCommand::Update()
+bool FCheckMagnetSplinesAttachToRoadSplinesCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -701,20 +700,20 @@ bool FCheckMagnetBoxesAttachToSplineMeshesCommand::Update()
 	if (testGenerator)
 	{
 
-		bool magnetBoxesAreAttachedToSplineMeshes = testGenerator->magnetBoxesAreAttachedToSplineMeshes();
-		UE_LOG(LogTemp, Log, TEXT("Magnet boxes are attached to spline meshes: %s."), *FString(magnetBoxesAreAttachedToSplineMeshes ? "true" : "false"));
+		bool magnetSplinesAreAttachedToRoadSplines = testGenerator->magnetSplinesAreAttachedToRoadSplines();
+		UE_LOG(LogTemp, Log, TEXT("Magnet splines are attached to road splines: %s."), *FString(magnetSplinesAreAttachedToRoadSplines ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("At spawning, magnet boxes should be attached to spline meshes."), magnetBoxesAreAttachedToSplineMeshes);
+		test->TestTrue(TEXT("At spawning, magnet splines should be attached to road splines."), magnetSplinesAreAttachedToRoadSplines);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxesShouldBeAttachedToSplineMeshesAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxesShouldBeAttachedToSplineMeshesAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesAreAttachedToRoadSplinesAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.016: Magnet splines are attached to road splines at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorMagnetBoxesShouldBeAttachedToSplineMeshesAtSpawningTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorMagnetSplinesAreAttachedToRoadSplinesAtSpawningTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -723,7 +722,7 @@ bool FATrackGeneratorMagnetBoxesShouldBeAttachedToSplineMeshesAtSpawningTest::Ru
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetBoxesAttachToSplineMeshesCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesAttachToRoadSplinesCommand(this));
 
 	return true;
 }
@@ -733,9 +732,9 @@ bool FATrackGeneratorMagnetBoxesShouldBeAttachedToSplineMeshesAtSpawningTest::Ru
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetBoxesOnTopSplineMeshesCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesOnTopRoadSplinesCommand, FAutomationTestBase*, test);
 
-bool FCheckMagnetBoxesOnTopSplineMeshesCommand::Update()
+bool FCheckMagnetSplinesOnTopRoadSplinesCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -746,20 +745,20 @@ bool FCheckMagnetBoxesOnTopSplineMeshesCommand::Update()
 	if (testGenerator)
 	{
 
-		bool magnetBoxesOnTopOfSplineMeshes = testGenerator->magnetBoxesOnTopOfSplineMeshes();
-		UE_LOG(LogTemp, Log, TEXT("Magnet boxes are on top of spline meshes: %s."), *FString(magnetBoxesOnTopOfSplineMeshes ? "true" : "false"));
+		bool magnetSplinesOnTopOfRoadSplines = testGenerator->magnetSplinesOnTopOfRoadSplines();
+		UE_LOG(LogTemp, Log, TEXT("Magnet splines are on top of road splines: %s."), *FString(magnetSplinesOnTopOfRoadSplines ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("At spawning, magnet boxes should be on top of spline meshes."), magnetBoxesOnTopOfSplineMeshes);
+		test->TestTrue(TEXT("At spawning, magnet splines should be on top of road splines."), magnetSplinesOnTopOfRoadSplines);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxesShouldBeOnTopOfSplineMeshesAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxesShouldBeOnTopOfSplineMeshesAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesAreOnTopOfRoadSplinesAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.017: Magnet splines are on top of road splines at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorMagnetBoxesShouldBeOnTopOfSplineMeshesAtSpawningTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorMagnetSplinesAreOnTopOfRoadSplinesAtSpawningTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -768,7 +767,7 @@ bool FATrackGeneratorMagnetBoxesShouldBeOnTopOfSplineMeshesAtSpawningTest::RunTe
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetBoxesOnTopSplineMeshesCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesOnTopRoadSplinesCommand(this));
 
 	return true;
 }
@@ -778,9 +777,9 @@ bool FATrackGeneratorMagnetBoxesShouldBeOnTopOfSplineMeshesAtSpawningTest::RunTe
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetBoxesTangentsCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesTangentsCommand, FAutomationTestBase*, test);
 
-bool FCheckMagnetBoxesTangentsCommand::Update()
+bool FCheckMagnetSplinesTangentsCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -791,20 +790,20 @@ bool FCheckMagnetBoxesTangentsCommand::Update()
 	if (testGenerator)
 	{
 
-		bool magnetBoxesAndPointsHaveSameTangents = testGenerator->magnetBoxesAndPointsHaveSameTangents();
-		UE_LOG(LogTemp, Log, TEXT("Magnet boxes tangents are coincident with the tangents of spline points: %s."), *FString(magnetBoxesAndPointsHaveSameTangents ? "true" : "false"));
+		bool magnetSplinesAndPointsHaveSameTangents = testGenerator->magnetSplinesAndPointsHaveSameTangents();
+		UE_LOG(LogTemp, Log, TEXT("Magnet splines tangents are coincident with the tangents of spline points: %s."), *FString(magnetSplinesAndPointsHaveSameTangents ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("At spawning, the tangents of magnet boxes should be coincident with the spline points tangents."), magnetBoxesAndPointsHaveSameTangents);
+		test->TestTrue(TEXT("At spawning, the tangents of magnet splines should be coincident with the spline points tangents."), magnetSplinesAndPointsHaveSameTangents);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxesTangentsShouldBeTheSameAsSplinePointsAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxesTangentsShouldBeTheSameAsSplinePointsAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesTangentsAreTheSameAsSplinePointsAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.018: Magnet splines tangents are the same as spline points at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorMagnetBoxesTangentsShouldBeTheSameAsSplinePointsAtSpawningTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorMagnetSplinesTangentsAreTheSameAsSplinePointsAtSpawningTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -813,7 +812,7 @@ bool FATrackGeneratorMagnetBoxesTangentsShouldBeTheSameAsSplinePointsAtSpawningT
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetBoxesTangentsCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesTangentsCommand(this));
 
 	return true;
 }
@@ -823,9 +822,9 @@ bool FATrackGeneratorMagnetBoxesTangentsShouldBeTheSameAsSplinePointsAtSpawningT
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetBoxesMeshesCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesMeshesCommand, FAutomationTestBase*, test);
 
-bool FCheckMagnetBoxesMeshesCommand::Update()
+bool FCheckMagnetSplinesMeshesCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -836,20 +835,20 @@ bool FCheckMagnetBoxesMeshesCommand::Update()
 	if (testGenerator)
 	{
 
-		bool magnetBoxesHaveMeshesSet = testGenerator->magnetBoxesHaveMeshesSet();
-		UE_LOG(LogTemp, Log, TEXT("Magnet boxes meshes are set: %s."), *FString(magnetBoxesHaveMeshesSet ? "true" : "false"));
+		bool magnetSplinesHaveMeshesSet = testGenerator->magnetSplinesHaveMeshesSet();
+		UE_LOG(LogTemp, Log, TEXT("Magnet splines meshes are set: %s."), *FString(magnetSplinesHaveMeshesSet ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("At spawning, the magnet boxes meshes should be set."), magnetBoxesHaveMeshesSet);
+		test->TestTrue(TEXT("At spawning, the magnet splines meshes should be set."), magnetSplinesHaveMeshesSet);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxesMeshesShouldBeSetAtSpawningTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxesMeshesShouldBeSetAtSpawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesMeshesAreSetAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.019: Magnet splines meshes are set at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorMagnetBoxesMeshesShouldBeSetAtSpawningTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorMagnetSplinesMeshesAreSetAtSpawningTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -858,7 +857,7 @@ bool FATrackGeneratorMagnetBoxesMeshesShouldBeSetAtSpawningTest::RunTest(const F
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetBoxesMeshesCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesMeshesCommand(this));
 
 	return true;
 }
@@ -868,9 +867,9 @@ bool FATrackGeneratorMagnetBoxesMeshesShouldBeSetAtSpawningTest::RunTest(const F
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetBoxesVisibilityCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesVisibilityCommand, FAutomationTestBase*, test);
 
-bool FCheckMagnetBoxesVisibilityCommand::Update()
+bool FCheckMagnetSplinesVisibilityCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -881,20 +880,20 @@ bool FCheckMagnetBoxesVisibilityCommand::Update()
 	if (testGenerator)
 	{
 
-		bool magnetBoxesAreHiddenInGame = testGenerator->magnetBoxesAreHiddenInGame();
-		UE_LOG(LogTemp, Log, TEXT("Magnet boxes are hidden in game: %s."), *FString(magnetBoxesAreHiddenInGame ? "true" : "false"));
+		bool magnetSplinesAreHiddenInGame = testGenerator->magnetSplinesAreHiddenInGame();
+		UE_LOG(LogTemp, Log, TEXT("Magnet splines are hidden in game: %s."), *FString(magnetSplinesAreHiddenInGame ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("The magnet boxes should be set hidden in game."), magnetBoxesAreHiddenInGame);
+		test->TestTrue(TEXT("The magnet splines should be set hidden in game."), magnetSplinesAreHiddenInGame);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxesShouldBeHiddenInGameTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxesShouldBeHiddenInGame", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesAreHiddenInGameTest, "ProjectR.TrackGenerator Tests.Unit.020: Magnet splines are hidden in game", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorMagnetBoxesShouldBeHiddenInGameTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorMagnetSplinesAreHiddenInGameTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -903,7 +902,7 @@ bool FATrackGeneratorMagnetBoxesShouldBeHiddenInGameTest::RunTest(const FString&
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetBoxesVisibilityCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesVisibilityCommand(this));
 
 	return true;
 }
@@ -913,9 +912,9 @@ bool FATrackGeneratorMagnetBoxesShouldBeHiddenInGameTest::RunTest(const FString&
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetBoxesCollisionResponseCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesCollisionResponseCommand, FAutomationTestBase*, test);
 
-bool FCheckMagnetBoxesCollisionResponseCommand::Update()
+bool FCheckMagnetSplinesCollisionResponseCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -926,20 +925,20 @@ bool FCheckMagnetBoxesCollisionResponseCommand::Update()
 	if (testGenerator)
 	{
 
-		bool collisionEnabledToQueryOnlyOnMagnetBoxes = testGenerator->collisionEnabledToQueryOnlyOnMagnetBoxes();
-		UE_LOG(LogTemp, Log, TEXT("Magnet boxes have collision enabled: %s."), *FString(collisionEnabledToQueryOnlyOnMagnetBoxes ? "true" : "false"));
+		bool collisionEnabledToQueryOnlyOnMagnetSplines = testGenerator->collisionEnabledToQueryOnlyOnMagnetSplines();
+		UE_LOG(LogTemp, Log, TEXT("Magnet splines have collision enabled: %s."), *FString(collisionEnabledToQueryOnlyOnMagnetSplines ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("The magnet boxes should have collision enabled."), collisionEnabledToQueryOnlyOnMagnetBoxes);
+		test->TestTrue(TEXT("The magnet splines should have collision enabled."), collisionEnabledToQueryOnlyOnMagnetSplines);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxesShouldHaveCollisionEnabledToQueryOnlyTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxesShouldHaveCollisionEnabledToQueryOnly", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesHaveCollisionEnabledToQueryOnlyTest, "ProjectR.TrackGenerator Tests.Unit.021: Magnet splines have collision enabled to query only", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorMagnetBoxesShouldHaveCollisionEnabledToQueryOnlyTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorMagnetSplinesHaveCollisionEnabledToQueryOnlyTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -948,7 +947,7 @@ bool FATrackGeneratorMagnetBoxesShouldHaveCollisionEnabledToQueryOnlyTest::RunTe
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetBoxesCollisionResponseCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesCollisionResponseCommand(this));
 
 	return true;
 }
@@ -958,9 +957,9 @@ bool FATrackGeneratorMagnetBoxesShouldHaveCollisionEnabledToQueryOnlyTest::RunTe
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetBoxesResponseToPawnChannelCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesResponseToPawnChannelCommand, FAutomationTestBase*, test);
 
-bool FCheckMagnetBoxesResponseToPawnChannelCommand::Update()
+bool FCheckMagnetSplinesResponseToPawnChannelCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -971,20 +970,20 @@ bool FCheckMagnetBoxesResponseToPawnChannelCommand::Update()
 	if (testGenerator)
 	{
 
-		bool magnetBoxesOverlapWithPawnChannel = testGenerator->magnetBoxesOverlapWithPawnChannel();
-		UE_LOG(LogTemp, Log, TEXT("Magnet boxes overlap with the pawn channel: %s."), *FString(magnetBoxesOverlapWithPawnChannel ? "true" : "false"));
+		bool magnetSplinesOverlapWithPawnChannel = testGenerator->magnetSplinesOverlapWithPawnChannel();
+		UE_LOG(LogTemp, Log, TEXT("Magnet splines overlap with the pawn channel: %s."), *FString(magnetSplinesOverlapWithPawnChannel ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("The magnet boxes should overlap with the pawn channel."), magnetBoxesOverlapWithPawnChannel);
+		test->TestTrue(TEXT("The magnet splines should overlap with the pawn channel."), magnetSplinesOverlapWithPawnChannel);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxesShouldOverlapWithPawnChannelTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxesShouldOverlapWithPawnChannel", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesOverlapWithPawnChannelTest, "ProjectR.TrackGenerator Tests.Unit.022: Magnet splines overlap with pawn channel", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorMagnetBoxesShouldOverlapWithPawnChannelTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorMagnetSplinesOverlapWithPawnChannelTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -993,7 +992,7 @@ bool FATrackGeneratorMagnetBoxesShouldOverlapWithPawnChannelTest::RunTest(const 
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetBoxesResponseToPawnChannelCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesResponseToPawnChannelCommand(this));
 
 	return true;
 }
@@ -1003,26 +1002,9 @@ bool FATrackGeneratorMagnetBoxesShouldOverlapWithPawnChannelTest::RunTest(const 
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMeshCollisionTypeShouldBePawnTest, "ProjectR.Unit.TrackGeneratorTest.AJetMeshCollisionTypeShouldBePawn", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesGenerateOverlapEventsCommand, FAutomationTestBase*, test);
 
-bool FAJetMeshCollisionTypeShouldBePawnTest::RunTest(const FString& Parameters)
-{
-	AJetMOCK* testJet = NewObject<AJetMOCK>();
-	{
-		TestTrue(TEXT("The jet collision object type should be pawn."), testJet->meshCollisionIsPawn());
-	}
-
-	return true;
-}
-
-
-
-
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetBoxesGenerateOverlapEventsCommand, FAutomationTestBase*, test);
-
-bool FCheckMagnetBoxesGenerateOverlapEventsCommand::Update()
+bool FCheckMagnetSplinesGenerateOverlapEventsCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -1033,20 +1015,20 @@ bool FCheckMagnetBoxesGenerateOverlapEventsCommand::Update()
 	if (testGenerator)
 	{
 
-		bool magnetBoxesGenerateOverlapEvents = testGenerator->magnetBoxesGenerateOverlapEvents();
-		UE_LOG(LogTemp, Log, TEXT("Magnet boxes generate overlap events: %s."), *FString(magnetBoxesGenerateOverlapEvents ? "true" : "false"));
+		bool magnetSplinesGenerateOverlapEvents = testGenerator->magnetSplinesGenerateOverlapEvents();
+		UE_LOG(LogTemp, Log, TEXT("Magnet splines generate overlap events: %s."), *FString(magnetSplinesGenerateOverlapEvents ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("The magnet boxes should generate overlap events."), magnetBoxesGenerateOverlapEvents);
+		test->TestTrue(TEXT("The magnet splines should generate overlap events."), magnetSplinesGenerateOverlapEvents);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxesShouldGenerateOverlapEventsTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxesShouldGenerateOverlapEvents", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesGenerateOverlapEventsTest, "ProjectR.TrackGenerator Tests.Unit.023: Magnet splines generate overlap events", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorMagnetBoxesShouldGenerateOverlapEventsTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorMagnetSplinesGenerateOverlapEventsTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -1055,7 +1037,7 @@ bool FATrackGeneratorMagnetBoxesShouldGenerateOverlapEventsTest::RunTest(const F
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetBoxesGenerateOverlapEventsCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesGenerateOverlapEventsCommand(this));
 
 	return true;
 }
@@ -1089,9 +1071,9 @@ bool FCheckComponentsSmoothInterpolationCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineComponentsShouldHaveSmoothInterpolationEnabledTest, "ProjectR.Unit.TrackGeneratorTest.SplineComponentsShouldHaveSmoothInterpolationEnabled", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineMeshComponentsHaveSmoothInterpolationEnabledTest, "ProjectR.TrackGenerator Tests.Unit.024: Spline mesh components have smooth interpolation enabled", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorSplineComponentsShouldHaveSmoothInterpolationEnabledTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorSplineMeshComponentsHaveSmoothInterpolationEnabledTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -1110,9 +1092,9 @@ bool FATrackGeneratorSplineComponentsShouldHaveSmoothInterpolationEnabledTest::R
 
 
 
-//DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetBoxRelativeRollCommand, FAutomationTestBase*, test);
+//DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplineRelativeRollCommand, FAutomationTestBase*, test);
 //
-//bool FCheckMagnetBoxRelativeRollCommand::Update()
+//bool FCheckMagnetSplineRelativeRollCommand::Update()
 //{
 //	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 //	{
@@ -1123,20 +1105,20 @@ bool FATrackGeneratorSplineComponentsShouldHaveSmoothInterpolationEnabledTest::R
 //	if (testGenerator)
 //	{
 //
-//		bool magnetBoxesRelativeRotationIsZero = testGenerator->magnetBoxesRollMathcesSplineMeshes();
-//		UE_LOG(LogTemp, Log, TEXT("Magnet Boxes have roll same as spline meshes: %s."), *FString(magnetBoxesRelativeRotationIsZero ? "true" : "false"));
+//		bool magnetSplinesRelativeRotationIsZero = testGenerator->magnetSplinesRollMathcesRoadSplines();
+//		UE_LOG(LogTemp, Log, TEXT("Magnet splines have roll same as road splines: %s."), *FString(magnetSplinesRelativeRotationIsZero ? "true" : "false"));
 //
 //
-//		test->TestTrue(TEXT("The magnet boxes should have roll of spline meshes after rolling spline meshes."), magnetBoxesRelativeRotationIsZero);
+//		test->TestTrue(TEXT("The magnet splines should have roll of road splines after rolling road splines."), magnetSplinesRelativeRotationIsZero);
 //		return true;
 //	}
 //	return false;
 //}
 //
 //
-//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetBoxRelativeRollShouldBeZeroAfterRotatingSplineMeshTest, "ProjectR.Unit.TrackGeneratorTest.MagnetBoxRelativeRollShouldBeZeroAfterRotatingSplineMesh", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplineRelativeRollIsZeroAfterRotatingSplineMeshTest, "ProjectR.TrackGenerator Tests.Unit.Magnet spline relative roll is zero after rotating spline mesh", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 //
-//bool FATrackGeneratorMagnetBoxRelativeRollShouldBeZeroAfterRotatingSplineMeshTest::RunTest(const FString& Parameters)
+//bool FATrackGeneratorMagnetSplineRelativeRollIsZeroAfterRotatingSplineMeshTest::RunTest(const FString& Parameters)
 //{
 //
 //	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -1145,14 +1127,14 @@ bool FATrackGeneratorSplineComponentsShouldHaveSmoothInterpolationEnabledTest::R
 //
 //	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 //
-//	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetBoxRelativeRollCommand(this));
+//	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplineRelativeRollCommand(this));
 //
 //	return true;
 //}
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorShouldGenerateOverlapEventsWhenSpawnedTest, "ProjectR.Unit.TrackGeneratorTest.ShouldGenerateOverlapEventsWhenSpawned", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorGeneratesOverlapEventsWhenSpawnedTest, "ProjectR.TrackGenerator Tests.Unit.025: Generates overlap events when spawned", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorShouldGenerateOverlapEventsWhenSpawnedTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorGeneratesOverlapEventsWhenSpawnedTest::RunTest(const FString& Parameters)
 {
 	ATrackGenerator* testGenerator = NewObject<ATrackGenerator>();
 	{
@@ -1163,10 +1145,10 @@ bool FATrackGeneratorShouldGenerateOverlapEventsWhenSpawnedTest::RunTest(const F
 }
 
 
-//destroy spline meshes and magnet boxes every time in on construction to avoid memory leaks.
-//create a struct containing roll and width for each spline mesh and add it to an array. Check that the array has the same amount of elements as spline meshes.
+//destroy road splines and magnet splines every time in on construction to avoid memory leaks.
+//create a struct containing roll and width for each spline mesh and add it to an array. Check that the array has the same amount of elements as road splines.
 //modify an array element and check that the corresponding spline changes accordingly.
-//allow to change roll to spline meshes. Make the magnet box attached to that roll (roll after the magnet box has been attached).
+//allow to change roll to road splines. Make the magnet box attached to that roll (roll after the magnet box has been attached).
 //(when a custom mesh for magnet box is already made) set location of magnet box same as spline mesh,
 // attach and elevate the same amount as the bound of mesh (saved in constructor) multiplied by the scale (gotten in on construction).
 

@@ -11,10 +11,11 @@ class PROJECTR_API AFloorMeshActor : public AActor
 {
 	GENERATED_BODY()
 
+private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		UStaticMeshComponent* meshComponent;
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AFloorMeshActor();
 
