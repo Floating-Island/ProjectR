@@ -625,7 +625,7 @@ bool FATrackGeneratorMeshesHaveSameMobilityAsRootAtSpawningTest::RunTest(const F
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineComponentLoopsTest, "ProjectR.TrackGenerator Tests.Unit.Spline component loops", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineComponentLoopsTest, "ProjectR.TrackGenerator Tests.Unit.Unit.015: Spline component loops", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FATrackGeneratorSplineComponentLoopsTest::RunTest(const FString& Parameters)
 {
@@ -666,7 +666,7 @@ bool FCheckMagnetSplinesMobilityCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesHaveTheSameMobilityAsRoadSplinesAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.015: Magnet splines have the same mobility as road splines at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesHaveTheSameMobilityAsRoadSplinesAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.016: Magnet splines have the same mobility as road splines at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FATrackGeneratorMagnetSplinesHaveTheSameMobilityAsRoadSplinesAtSpawningTest::RunTest(const FString& Parameters)
 {
@@ -711,7 +711,7 @@ bool FCheckMagnetSplinesAttachToRoadSplinesCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesAreAttachedToRoadSplinesAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.016: Magnet splines are attached to road splines at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesAreAttachedToRoadSplinesAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.017: Magnet splines are attached to road splines at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FATrackGeneratorMagnetSplinesAreAttachedToRoadSplinesAtSpawningTest::RunTest(const FString& Parameters)
 {
@@ -756,7 +756,7 @@ bool FCheckMagnetSplinesOnTopRoadSplinesCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesAreOnTopOfRoadSplinesAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.017: Magnet splines are on top of road splines at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesAreOnTopOfRoadSplinesAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.018: Magnet splines are on top of road splines at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FATrackGeneratorMagnetSplinesAreOnTopOfRoadSplinesAtSpawningTest::RunTest(const FString& Parameters)
 {
@@ -801,7 +801,7 @@ bool FCheckMagnetSplinesTangentsCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesTangentsAreTheSameAsSplinePointsAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.018: Magnet splines tangents are the same as spline points at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesTangentsAreTheSameAsSplinePointsAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.019: Magnet splines tangents are the same as spline points at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FATrackGeneratorMagnetSplinesTangentsAreTheSameAsSplinePointsAtSpawningTest::RunTest(const FString& Parameters)
 {
@@ -846,7 +846,7 @@ bool FCheckMagnetSplinesMeshesCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesMeshesAreSetAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.019: Magnet splines meshes are set at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesMeshesAreSetAtSpawningTest, "ProjectR.TrackGenerator Tests.Unit.020: Magnet splines meshes are set at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FATrackGeneratorMagnetSplinesMeshesAreSetAtSpawningTest::RunTest(const FString& Parameters)
 {
@@ -891,7 +891,7 @@ bool FCheckMagnetSplinesVisibilityCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesAreHiddenInGameTest, "ProjectR.TrackGenerator Tests.Unit.020: Magnet splines are hidden in game", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesAreHiddenInGameTest, "ProjectR.TrackGenerator Tests.Unit.021: Magnet splines are hidden in game", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FATrackGeneratorMagnetSplinesAreHiddenInGameTest::RunTest(const FString& Parameters)
 {
@@ -936,7 +936,7 @@ bool FCheckMagnetSplinesCollisionResponseCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesHaveCollisionEnabledToQueryOnlyTest, "ProjectR.TrackGenerator Tests.Unit.021: Magnet splines have collision enabled to query only", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesHaveCollisionEnabledToQueryOnlyTest, "ProjectR.TrackGenerator Tests.Unit.022: Magnet splines have collision enabled to query only", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FATrackGeneratorMagnetSplinesHaveCollisionEnabledToQueryOnlyTest::RunTest(const FString& Parameters)
 {
@@ -981,7 +981,7 @@ bool FCheckMagnetSplinesResponseToPawnChannelCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesOverlapWithPawnChannelTest, "ProjectR.TrackGenerator Tests.Unit.022: Magnet splines overlap with pawn channel", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesOverlapWithPawnChannelTest, "ProjectR.TrackGenerator Tests.Unit.023: Magnet splines overlap with pawn channel", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FATrackGeneratorMagnetSplinesOverlapWithPawnChannelTest::RunTest(const FString& Parameters)
 {
@@ -1026,7 +1026,7 @@ bool FCheckMagnetSplinesGenerateOverlapEventsCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesGenerateOverlapEventsTest, "ProjectR.TrackGenerator Tests.Unit.023: Magnet splines generate overlap events", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplinesGenerateOverlapEventsTest, "ProjectR.TrackGenerator Tests.Unit.024: Magnet splines generate overlap events", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FATrackGeneratorMagnetSplinesGenerateOverlapEventsTest::RunTest(const FString& Parameters)
 {
@@ -1071,7 +1071,7 @@ bool FCheckComponentsSmoothInterpolationCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineMeshComponentsHaveSmoothInterpolationEnabledTest, "ProjectR.TrackGenerator Tests.Unit.024: Spline mesh components have smooth interpolation enabled", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineMeshComponentsHaveSmoothInterpolationEnabledTest, "ProjectR.TrackGenerator Tests.Unit.025: Spline mesh components have smooth interpolation enabled", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FATrackGeneratorSplineMeshComponentsHaveSmoothInterpolationEnabledTest::RunTest(const FString& Parameters)
 {
@@ -1083,6 +1083,20 @@ bool FATrackGeneratorSplineMeshComponentsHaveSmoothInterpolationEnabledTest::Run
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsSmoothInterpolationCommand(this));
+
+	return true;
+}
+
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorGeneratesOverlapEventsWhenSpawnedTest, "ProjectR.TrackGenerator Tests.Unit.026: Generates overlap events when spawned", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorGeneratesOverlapEventsWhenSpawnedTest::RunTest(const FString& Parameters)
+{
+	ATrackGenerator* testGenerator = NewObject<ATrackGenerator>();
+	{
+		TestTrue(TEXT("The track generator should should generate overlap events when spawned."), testGenerator->bGenerateOverlapEventsDuringLevelStreaming);
+	}
 
 	return true;
 }
@@ -1132,17 +1146,6 @@ bool FATrackGeneratorSplineMeshComponentsHaveSmoothInterpolationEnabledTest::Run
 //	return true;
 //}
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorGeneratesOverlapEventsWhenSpawnedTest, "ProjectR.TrackGenerator Tests.Unit.025: Generates overlap events when spawned", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FATrackGeneratorGeneratesOverlapEventsWhenSpawnedTest::RunTest(const FString& Parameters)
-{
-	ATrackGenerator* testGenerator = NewObject<ATrackGenerator>();
-	{
-		TestTrue(TEXT("The track generator should should generate overlap events when spawned."), testGenerator->bGenerateOverlapEventsDuringLevelStreaming);
-	}
-
-	return true;
-}
 
 
 //destroy road splines and magnet splines every time in on construction to avoid memory leaks.
