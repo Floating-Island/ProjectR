@@ -36,10 +36,6 @@ public:
 	anActorDerivedClass* retrieveFromPIEAnInstanceOf();
 	
 	
-	AJet* retrieveJetFromPIE();
-	AJetMOCK* retrieveJetMOCKFromPIE();
-	ATrackGenerator* retrieveTrackGeneratorFromPIE();
-	ATrackManagerMOCK* retrieveTrackManagerMOCKFromPIE();
 	void processLocalPlayerInputFrom(FName anAxisMappingName);
 
 	
