@@ -59,8 +59,8 @@ bool FSpawningATrackManagerAndTrackGeneratorCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	sessionUtilities.spawnTrackGeneratorInPie();
-	sessionUtilities.spawnTrackManagerMOCKInPie();
+	sessionUtilities.spawnInPIEAnInstanceOf<ATrackGenerator>();
+	sessionUtilities.spawnInPIEAnInstanceOf<ATrackManagerMOCK>();
 
 	return true;
 }
@@ -133,9 +133,9 @@ bool FSpawningATrackManagerARotatedTrackGeneratorAndJetCloseToItCommand::Update(
 
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	ATrackGenerator* testGenerator = sessionUtilities.spawnTrackGeneratorInPie();
+	ATrackGenerator* testGenerator = sessionUtilities.spawnInPIEAnInstanceOf<ATrackGenerator>();
 
-	sessionUtilities.spawnTrackManagerMOCKInPie();
+	sessionUtilities.spawnInPIEAnInstanceOf<ATrackManagerMOCK>();
 
 	FRotator arbitraryRotator = FRotator(0, 0, 135);
 	testGenerator->SetActorRotation(arbitraryRotator);
@@ -144,7 +144,7 @@ bool FSpawningATrackManagerARotatedTrackGeneratorAndJetCloseToItCommand::Update(
 	float magnetBoxDistanceToFloor = 400;
 	FVector jetLoctation = generatorDirection * magnetBoxDistanceToFloor;
 
-	sessionUtilities.spawnJetInPIE(jetLoctation);
+	sessionUtilities.spawnInPIEAnInstanceOf<AJet>(jetLoctation);
 
 	return true;
 }

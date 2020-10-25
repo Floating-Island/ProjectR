@@ -170,7 +170,7 @@ bool FSpawningAJetMakeItAccelerateCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJet* testJet = sessionUtilities.spawnJetInPIE();
+	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
 
 	testJet->accelerate();
 
@@ -341,7 +341,7 @@ bool FSpawningAJetMakeItBrakeCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJet* testJet = sessionUtilities.spawnJetInPIE();
+	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
 
 	testJet->brake();
 
@@ -445,7 +445,7 @@ bool FSpawningAJetSetVelocityToTopSpeedCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE();
+	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
 
 	testJet->setCurrentXVelocityTo(testJet->settedTopSpeed());
 	testJet->accelerate();
@@ -522,7 +522,7 @@ bool FSpawningAJetMakeItSteerRightCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE();
+	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
 
 	float direction = 1;//1 is right, -1 is left...
 	testJet->setCurrentXVelocityTo(1);//we should set the speed to 1 first so the jet is able to steer.
@@ -622,7 +622,7 @@ bool FSpawningAJetPressAccelerationKeyCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJet* testJet = sessionUtilities.spawnJetInPIE();
+	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
 
 	sessionUtilities.processLocalPlayerInputFrom(FName(TEXT("AccelerateAction")));
 
@@ -668,7 +668,7 @@ bool FSpawningAJetPressSteerRightKeyCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE();
+	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
 	
 	testJet->setCurrentXVelocityTo(1);//we should set the speed to 1 first so the jet is able to steer.
 	sessionUtilities.processLocalPlayerInputFrom(FName(TEXT("SteerAction")));                 
@@ -715,7 +715,7 @@ bool FSpawningAJetPressBrakeKeyCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJet* testJet = sessionUtilities.spawnJetInPIE();
+	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
 
 	sessionUtilities.processLocalPlayerInputFrom(FName(TEXT("BrakeAction")));
 
@@ -841,11 +841,11 @@ bool FSpawningAJetSnapedToFloorCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AFloorMeshActor* meshActor = sessionUtilities.spawnFloorMeshActorInPIE();
+	AFloorMeshActor* meshActor = sessionUtilities.spawnInPIEAnInstanceOf<AFloorMeshActor>();
 
 	FVector spawnLocation = meshActor->GetActorLocation() + FVector(0, 0, 1000);
 
-	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE(spawnLocation);
+	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>(spawnLocation);
 
 	GEditor->SnapObjectTo(FActorOrComponent(testJet), true, true, true, false, FActorOrComponent(meshActor));
 
@@ -932,7 +932,7 @@ bool FSpawningAJetRotateAndAccelerateCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJet* testJet = sessionUtilities.spawnJetInPIE();
+	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
 
 	float yawValue = 50;
 	testJet->SetActorRotation(FRotator(0, yawValue, 0));
@@ -1026,7 +1026,7 @@ bool FSpawningAJetRotateAndBrakeCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJet* testJet = sessionUtilities.spawnJetInPIE();
+	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
 
 	float yawValue = 50;
 	testJet->SetActorRotation(FRotator(0, yawValue, 0));
@@ -1119,11 +1119,11 @@ bool FSpawningAJetAccelerateAndSteerRightCommand::Update()
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
 
-	AFloorMeshActor* meshActor = sessionUtilities.spawnFloorMeshActorInPIE();
+	AFloorMeshActor* meshActor = sessionUtilities.spawnInPIEAnInstanceOf<AFloorMeshActor>();
 
 	FVector spawnLocation = meshActor->GetActorLocation() + FVector(0, 0, 1000);
 
-	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE(spawnLocation);
+	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>(spawnLocation);
 
 	GEditor->SnapObjectTo(FActorOrComponent(testJet), true, true, true, false, FActorOrComponent(meshActor));
 	
@@ -1212,7 +1212,7 @@ bool FSpawningAJetBrakeAndSteerRightCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE();//is a mock necessary??
+	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();//is a mock necessary??
 	
 	float direction = 1;//1 is right, -1 is left going forwards
 	testJet->setCurrentXVelocityTo(-1);//we go reverse and then we try to steer
@@ -1307,7 +1307,7 @@ bool FSpawningAJeSteerRightWhenIdleCommand::Update()
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
 
-	AJetMOCK* testJet = sessionUtilities.spawnJetMOCKInPIE();
+	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
 
 	float direction = 1;//1 is right, -1 is left...
 	testJet->SetActorRotation(FRotator(0));//so we are sure to start with zero rotation

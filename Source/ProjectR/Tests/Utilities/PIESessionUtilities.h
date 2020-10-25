@@ -26,20 +26,18 @@ public:
 	PIESessionUtilities();
 	~PIESessionUtilities();
 	UWorld* currentPIEWorld();
-	AJet* spawnJetInPIE(FVector atALocation = FVector(0));
-	AJetMOCK* spawnJetMOCKInPIE(FVector atALocation = FVector(0));
-	AFloorMeshActor* spawnFloorMeshActorInPIE(FVector atALocation = FVector(0));
-	ATrackGenerator* spawnTrackGeneratorInPie(FVector atALocation = FVector(0));
-	ATrackManager* spawnTrackManagerInPie(FVector atALocation = FVector(0));
-	ATrackManagerMOCK* spawnTrackManagerMOCKInPie(FVector atALocation = FVector(0));
+
+	template <typename anActorDerivedClass>
+	anActorDerivedClass* spawnInPIEAnInstanceOf(FVector atLocation = FVector(0));
+	
+	
 	AJet* retrieveJetFromPIE();
 	AJetMOCK* retrieveJetMOCKFromPIE();
 	ATrackGenerator* retrieveTrackGeneratorFromPIE();
 	ATrackManagerMOCK* retrieveTrackManagerMOCKFromPIE();
 	void processLocalPlayerInputFrom(FName anAxisMappingName);
 
-	template <typename anActorDerivedClass>
-	anActorDerivedClass* spawnInPIEAnInstanceOf(FVector atLocation = FVector(0));
+	
 };
 
 
