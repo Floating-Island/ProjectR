@@ -34,11 +34,9 @@ public:
 
 	template <typename anActorDerivedClass>
 	anActorDerivedClass* retrieveFromPIEAnInstanceOf();
-	
-	
-	void processLocalPlayerInputFrom(FName anAxisMappingName);
 
-	
+
+	void processLocalPlayerInputFrom(FName anAxisMappingName);
 };
 
 
