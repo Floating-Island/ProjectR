@@ -34,33 +34,38 @@ UWorld* PIESessionUtilities::currentPIEWorld()
 
 AJet* PIESessionUtilities::spawnJetInPIE(FVector atALocation)
 {
-	return pieWorld->SpawnActor<AJet>(AJet::StaticClass(), atALocation, FRotator(0), spawnParams);
-	return pieWorld->SpawnActor<>(, atALocation, FRotator(0), spawnParams);
+	//return pieWorld->SpawnActor<AJet>(AJet::StaticClass(), atALocation, FRotator(0), spawnParams);
+	return spawnInPIEAnInstanceOf<AJet>(atALocation);
 }
 
 AJetMOCK* PIESessionUtilities::spawnJetMOCKInPIE(FVector atALocation)
 {
-	return pieWorld->SpawnActor<AJetMOCK>(AJetMOCK::StaticClass(), atALocation, FRotator(0), spawnParams);
+	//return pieWorld->SpawnActor<AJetMOCK>(AJetMOCK::StaticClass(), atALocation, FRotator(0), spawnParams);
+	return spawnInPIEAnInstanceOf<AJetMOCK>(atALocation);
 }
 
 AFloorMeshActor* PIESessionUtilities::spawnFloorMeshActorInPIE(FVector atALocation)
 {
-	return pieWorld->SpawnActor<AFloorMeshActor>(AFloorMeshActor::StaticClass(), atALocation, FRotator(0), spawnParams);
+	//return pieWorld->SpawnActor<AFloorMeshActor>(AFloorMeshActor::StaticClass(), atALocation, FRotator(0), spawnParams);
+	return spawnInPIEAnInstanceOf<AFloorMeshActor>(atALocation);
 }
 
 ATrackGenerator* PIESessionUtilities::spawnTrackGeneratorInPie(FVector atALocation)
 {
-	return pieWorld->SpawnActor<ATrackGenerator>(ATrackGenerator::StaticClass());
+	//return pieWorld->SpawnActor<ATrackGenerator>(ATrackGenerator::StaticClass());
+	return spawnInPIEAnInstanceOf<ATrackGenerator>(atALocation);
 }
 
 ATrackManager* PIESessionUtilities::spawnTrackManagerInPie(FVector atALocation)
 {
-	return pieWorld->SpawnActor<ATrackManager>(ATrackManager::StaticClass());
+	//return pieWorld->SpawnActor<ATrackManager>(ATrackManager::StaticClass());
+	return spawnInPIEAnInstanceOf<ATrackManager>(atALocation);
 }
 
 ATrackManagerMOCK* PIESessionUtilities::spawnTrackManagerMOCKInPie(FVector atALocation)
 {
-	return pieWorld->SpawnActor<ATrackManagerMOCK>(ATrackManagerMOCK::StaticClass());
+	//return pieWorld->SpawnActor<ATrackManagerMOCK>(ATrackManagerMOCK::StaticClass());
+	return spawnInPIEAnInstanceOf<ATrackManagerMOCK>(atALocation);
 }
 
 AJet* PIESessionUtilities::retrieveJetFromPIE()

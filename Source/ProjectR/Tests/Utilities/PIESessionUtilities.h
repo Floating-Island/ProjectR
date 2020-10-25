@@ -39,7 +39,7 @@ public:
 	void processLocalPlayerInputFrom(FName anAxisMappingName);
 
 	template <typename anActorDerivedClass>
-	anActorDerivedClass* spawnInPIEAnInstanceOf(FVector atLocation);
+	anActorDerivedClass* spawnInPIEAnInstanceOf(FVector atLocation = FVector(0));
 };
 
 
