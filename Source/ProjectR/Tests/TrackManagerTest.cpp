@@ -139,7 +139,7 @@ bool FSpawningATrackManagerARotatedTrackGeneratorAndJetCloseToItCommand::Update(
 
 	FRotator arbitraryRotator = FRotator(0, 0, 135);
 	testGenerator->SetActorRotation(arbitraryRotator);
-	
+
 	FVector generatorDirection = testGenerator->GetActorUpVector();
 	float magnetBoxDistanceToFloor = 400;
 	FVector jetLoctation = generatorDirection * magnetBoxDistanceToFloor;
@@ -161,15 +161,15 @@ bool FCheckATrackManagerStoresJetsWhenOverlapCommand::Update()
 		if (testManager)
 		{
 			bool hasJetsStored = testManager->hasJetsStored();
-			UE_LOG(LogTemp, Log, TEXT("track manager has jets stored: %s"), *FString(hasJetsStored? "true" : "false"));
-			
+			UE_LOG(LogTemp, Log, TEXT("track manager has jets stored: %s"), *FString(hasJetsStored ? "true" : "false"));
+
 			if (hasJetsStored)
 			{
 				test->TestTrue(TEXT("The track manager should store the jets that overlap with a track generator's magnet box."), hasJetsStored);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			
+
 			++aTickCount;
 			if (aTickCount > aTickLimit)
 			{
@@ -232,17 +232,17 @@ bool FCheckATrackManagerAttractsJetsCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *testJet->GetVelocity().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity projection on normal vector: %s"), *testJet->GetVelocity().ProjectOnTo(testGenerator->GetActorUpVector()).ToString());
 			UE_LOG(LogTemp, Log, TEXT("Track generator normal vector: %s"), *testGenerator->GetActorUpVector().ToString());
-			UE_LOG(LogTemp, Log, TEXT("is pulling: %s"), *FString(isPulling? "true" : "false"));
-			UE_LOG(LogTemp, Log, TEXT("is velocity fully along normal: %s"), *FString(isVelocityFullyAlongNormal? "true" : "false"));
-			UE_LOG(LogTemp, Log, TEXT("is velocity near zero: %s"), *FString(velocityNearZero? "true" : "false"));
-			
+			UE_LOG(LogTemp, Log, TEXT("is pulling: %s"), *FString(isPulling ? "true" : "false"));
+			UE_LOG(LogTemp, Log, TEXT("is velocity fully along normal: %s"), *FString(isVelocityFullyAlongNormal ? "true" : "false"));
+			UE_LOG(LogTemp, Log, TEXT("is velocity near zero: %s"), *FString(velocityNearZero ? "true" : "false"));
+
 			if (!velocityNearZero && isVelocityFullyAlongNormal && isPulling)
 			{
 				test->TestTrue(TEXT("The track generator should attract a Jet along the track normal vector when a track manager is present."), !velocityNearZero && isVelocityFullyAlongNormal && isPulling);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			
+
 			++aTickCount;
 			if (aTickCount > aTickLimit)
 			{
