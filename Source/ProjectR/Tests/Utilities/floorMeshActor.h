@@ -13,8 +13,8 @@ class PROJECTR_API AFloorMeshActor : public AActor
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		UStaticMeshComponent* meshComponent;
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AFloorMeshActor();
 
