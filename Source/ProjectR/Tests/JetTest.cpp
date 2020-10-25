@@ -185,7 +185,7 @@ bool FCheckAJetLocationCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		if (testJet)
 		{
 			float currentXLocation = testJet->GetActorLocation().X;
@@ -252,7 +252,7 @@ bool FCheckAJetSpeedIncreaseCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		if (testJet)
 		{
 			float currentSpeed = testJet->currentSpeed();
@@ -357,7 +357,7 @@ bool FCheckAJetVelocityDecreaseCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		if (testJet)
 		{
 			float currentSpeed = testJet->currentSpeed();
@@ -461,7 +461,7 @@ bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		AJetMOCK* testJet = sessionUtilities.retrieveJetMOCKFromPIE();
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 		if (testJet)
 		{
 			float currentSpeed = testJet->currentSpeed();
@@ -540,7 +540,7 @@ bool FCheckAJetRotatedYawCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		AJetMOCK* testJet = sessionUtilities.retrieveJetMOCKFromPIE();
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 		if (testJet)
 		{
 			float currentZRotation = testJet->GetActorRotation().Yaw;
@@ -860,7 +860,7 @@ bool FCheckAJetZLocationCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		AJetMOCK* testJet = sessionUtilities.retrieveJetMOCKFromPIE();
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 		if (testJet)
 		{
 			float currentZVelocity = testJet->getZVelocity();
@@ -949,7 +949,7 @@ bool FCheckAJetLocationCoincidentToForwardVectorCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		if (testJet)
 		{
 			FVector currentLocation = testJet->GetActorLocation();
@@ -1043,7 +1043,7 @@ bool FCheckAJetLocationParallelToForwardVectorCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		if (testJet)
 		{
 			FVector currentLocation = testJet->GetActorLocation();
@@ -1143,7 +1143,7 @@ bool FCheckAJetUpdatedVelocityWhenAfterSteeringCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		if (testJet)
 		{
 
@@ -1230,7 +1230,7 @@ bool FCheckAJetInvertSteeringWhenInReverseCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		if (testJet)
 		{
 
@@ -1325,7 +1325,7 @@ bool FCheckAJetUnableToSteerWhenIdleCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		if (testJet)
 		{
 

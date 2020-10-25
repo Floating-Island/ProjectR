@@ -73,7 +73,7 @@ bool FCheckATrackManagerTrackGeneratorsCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		ATrackManagerMOCK* testManager = sessionUtilities.retrieveTrackManagerMOCKFromPIE();
+		ATrackManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackManagerMOCK>();
 		if (testManager)
 		{
 			bool spawnedTrackGeneratorInTrackManager = testManager->trackGenerators().Contains(Cast<ATrackGenerator, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGenerator::StaticClass())));
@@ -157,7 +157,7 @@ bool FCheckATrackManagerStoresJetsWhenOverlapCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		ATrackManagerMOCK* testManager = sessionUtilities.retrieveTrackManagerMOCKFromPIE();
+		ATrackManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackManagerMOCK>();
 		if (testManager)
 		{
 			bool hasJetsStored = testManager->hasJetsStored();
@@ -216,8 +216,8 @@ bool FCheckATrackManagerAttractsJetsCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		ATrackGenerator* testGenerator = sessionUtilities.retrieveTrackGeneratorFromPIE();
-		AJet* testJet = sessionUtilities.retrieveJetFromPIE();
+		ATrackGenerator* testGenerator = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		if (testGenerator && testJet)
 		{
 			float currentDistance = (testJet->GetActorLocation() - testGenerator->GetActorLocation()).Size();
