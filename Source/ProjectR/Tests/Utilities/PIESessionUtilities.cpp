@@ -35,6 +35,7 @@ UWorld* PIESessionUtilities::currentPIEWorld()
 AJet* PIESessionUtilities::spawnJetInPIE(FVector atALocation)
 {
 	return pieWorld->SpawnActor<AJet>(AJet::StaticClass(), atALocation, FRotator(0), spawnParams);
+	return pieWorld->SpawnActor<>(, atALocation, FRotator(0), spawnParams);
 }
 
 AJetMOCK* PIESessionUtilities::spawnJetMOCKInPIE(FVector atALocation)

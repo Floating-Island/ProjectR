@@ -37,4 +37,14 @@ public:
 	ATrackGenerator* retrieveTrackGeneratorFromPIE();
 	ATrackManagerMOCK* retrieveTrackManagerMOCKFromPIE();
 	void processLocalPlayerInputFrom(FName anAxisMappingName);
+
+	template <typename anActorDerivedClass>
+	anActorDerivedClass* spawnInPIEAnInstanceOf(FVector atLocation);
 };
+
+
+template <typename anActorDerivedClass>
+anActorDerivedClass* PIESessionUtilities::spawnInPIEAnInstanceOf(FVector atLocation)
+{
+	return pieWorld->SpawnActor<anActorDerivedClass>(anActorDerivedClass::StaticClass(), atLocation, FRotator(0), spawnParams);
+}
