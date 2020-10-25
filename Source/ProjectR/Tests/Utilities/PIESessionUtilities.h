@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Kismet/GameplayStatics.h"
 
 
 class AJet;
@@ -15,7 +16,7 @@ class ATrackManager;
 class ATrackManagerMOCK;
 
 /**
- * This class is intended to use in tests only and when the editor is playing a PIE session.
+ * This class is intended to be used in tests only and when the editor is playing a PIE session.
  */
 class PROJECTR_API PIESessionUtilities
 {
@@ -29,6 +30,10 @@ public:
 
 	template <typename anActorDerivedClass>
 	anActorDerivedClass* spawnInPIEAnInstanceOf(FVector atLocation = FVector(0));
+
+
+	template <typename anActorDerivedClass>
+	anActorDerivedClass* retrieveFromPIEAnInstanceOf();
 	
 	
 	AJet* retrieveJetFromPIE();
@@ -45,4 +50,11 @@ template <typename anActorDerivedClass>
 anActorDerivedClass* PIESessionUtilities::spawnInPIEAnInstanceOf(FVector atLocation)
 {
 	return pieWorld->SpawnActor<anActorDerivedClass>(anActorDerivedClass::StaticClass(), atLocation, FRotator(0), spawnParams);
+}
+
+
+template <typename anActorDerivedClass>
+anActorDerivedClass* PIESessionUtilities::retrieveFromPIEAnInstanceOf()
+{
+	return Cast<anActorDerivedClass, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, anActorDerivedClass::StaticClass()));
 }
