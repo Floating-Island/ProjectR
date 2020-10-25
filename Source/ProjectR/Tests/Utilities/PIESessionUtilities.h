@@ -27,6 +27,8 @@ public:
 	PIESessionUtilities();
 	~PIESessionUtilities();
 	UWorld* currentPIEWorld();
+	void processLocalPlayerInputFrom(FName anAxisMappingName);
+	
 
 	template <typename anActorDerivedClass>
 	anActorDerivedClass* spawnInPIEAnInstanceOf(FVector atLocation = FVector(0));
@@ -34,9 +36,6 @@ public:
 
 	template <typename anActorDerivedClass>
 	anActorDerivedClass* retrieveFromPIEAnInstanceOf();
-
-
-	void processLocalPlayerInputFrom(FName anAxisMappingName);
 };
 
 
