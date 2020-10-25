@@ -34,22 +34,26 @@ UWorld* PIESessionUtilities::currentPIEWorld()
 
 AJet* PIESessionUtilities::retrieveJetFromPIE()
 {
-	return Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, AJet::StaticClass()));
+	//return Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, AJet::StaticClass()));
+	return retrieveFromPIEAnInstanceOf<AJet>();
 }
 
 AJetMOCK* PIESessionUtilities::retrieveJetMOCKFromPIE()
 {
-	return Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, AJetMOCK::StaticClass()));
+	//return Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, AJetMOCK::StaticClass()));
+	return retrieveFromPIEAnInstanceOf<AJetMOCK>();
 }
 
 ATrackGenerator* PIESessionUtilities::retrieveTrackGeneratorFromPIE()
 {
-	return Cast<ATrackGenerator, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, ATrackGenerator::StaticClass()));
+	//return Cast<ATrackGenerator, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, ATrackGenerator::StaticClass()));
+	return retrieveFromPIEAnInstanceOf<ATrackGenerator>();
 }
 
 ATrackManagerMOCK* PIESessionUtilities::retrieveTrackManagerMOCKFromPIE()
 {
-	return Cast<ATrackManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, ATrackManagerMOCK::StaticClass()));
+	//return Cast<ATrackManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, ATrackManagerMOCK::StaticClass()));
+	return retrieveFromPIEAnInstanceOf<ATrackManagerMOCK>();
 }
 
 void PIESessionUtilities::processLocalPlayerInputFrom(FName anAxisMappingName)
