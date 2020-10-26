@@ -1210,10 +1210,8 @@ bool FATrackGeneratorSplineMeshComponentsRollAfterSettingRollInEditorTest::RunTe
 
 
 
-//check that the quantity of roll values match the quantity of spline points.
-//check that the start and end roll match to the current and next roll index.
-//check that the magnet splines roll is equal to the road splines (relative, so it should be zero).
-//create a struct containing roll and width for each spline mesh and add it to an array. Check that the array has the same amount of elements as road splines.
+
+//create a struct containing roll and width for each spline mesh and add it to an array.
 //modify an array element and check that the corresponding spline changes accordingly.
 //allow to change roll to road splines. Make the magnet spline attached to that roll (roll after the magnet spline has been attached).
 //(when a custom mesh for magnet spline is already made) set location of magnet spline same as spline mesh,
