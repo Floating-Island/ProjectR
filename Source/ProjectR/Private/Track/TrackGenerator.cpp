@@ -36,17 +36,17 @@ void ATrackGenerator::BeginPlay()
 void ATrackGenerator::recreateSplineMeshComponents()
 {
 	cleanSplineMeshComponents();
-	createSplineMeshes();
+	createSplineMeshComponents();
 }
 
 void ATrackGenerator::cleanSplineMeshComponents()
 {
-	destroySplineMeshes();
+	destroySplineMeshComponents();
 	roadSplines.Empty();
 	magnetSplines.Empty();
 }
 
-void ATrackGenerator::destroySplineMeshes()
+void ATrackGenerator::destroySplineMeshComponents()
 {
 	for (auto roadSpline : roadSplines)
 	{
@@ -84,7 +84,7 @@ FVector ATrackGenerator::closestLocationTo(FVector anotherLocation)
 	return splineComponent->FindLocationClosestToWorldLocation(anotherLocation, ESplineCoordinateSpace::World);
 }
 
-void ATrackGenerator::createSplineMeshes()
+void ATrackGenerator::createSplineMeshComponents()
 {
 	int32 splineQuantity = splineComponent->GetNumberOfSplinePoints();
 	for (int32 splinePointIndex = 0; splinePointIndex < splineQuantity; ++splinePointIndex)

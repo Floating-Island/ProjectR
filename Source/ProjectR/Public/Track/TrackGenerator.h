@@ -32,9 +32,9 @@ protected:
 	TArray<USplineMeshComponent*> roadSplines;
 
 	void cleanSplineMeshComponents();
-	void destroySplineMeshes();
+	void destroySplineMeshComponents();
 	void recreateSplineMeshComponents();
-	void createSplineMeshes();
+	void createSplineMeshComponents();
 
 	void configureMagnetSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline, USplineMeshComponent* aMagnetSpline);
 	void configureRoadSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline);
