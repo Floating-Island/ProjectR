@@ -20,7 +20,7 @@ class PROJECTR_API ATrackGenerator : public AActor
 public:
 	// Sets default values for this actor's properties
 	ATrackGenerator();
-	void destroySplineMeshes();
+	
 
 protected:
 	// Called when the game starts or when spawned
@@ -31,6 +31,7 @@ protected:
 	
 	TArray<USplineMeshComponent*> roadSplines;
 
+	void destroySplineMeshes();
 	void createSplineMeshes();
 
 	void configureMagnetSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline, USplineMeshComponent* aMagnetSpline);
