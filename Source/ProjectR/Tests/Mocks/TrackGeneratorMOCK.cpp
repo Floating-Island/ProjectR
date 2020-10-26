@@ -428,7 +428,7 @@ bool ATrackGeneratorMOCK::sameAmountOfRollsThanSplinePoints()
 
 void ATrackGeneratorMOCK::rollSplines(float aRollValue)
 {
-	for(auto roll : rollArray)
+	for(auto& roll : rollArray)
 	{
 		roll = aRollValue;
 	}
