@@ -34,6 +34,13 @@ void ATrackGenerator::BeginPlay()
 	createSplineMeshes();
 }
 
+void ATrackGenerator::cleanSplineMeshComponents()
+{
+	destroySplineMeshes();
+	roadSplines.Empty();
+	magnetSplines.Empty();
+}
+
 void ATrackGenerator::destroySplineMeshes()
 {
 	for (auto roadSpline : roadSplines)

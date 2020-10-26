@@ -31,6 +31,7 @@ protected:
 	
 	TArray<USplineMeshComponent*> roadSplines;
 
+	void cleanSplineMeshComponents();
 	void destroySplineMeshes();
 	void createSplineMeshes();
 
