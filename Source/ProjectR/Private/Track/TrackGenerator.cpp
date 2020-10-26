@@ -114,10 +114,10 @@ void ATrackGenerator::createSplineMeshComponents()
 	int32 splineQuantity = splineComponent->GetNumberOfSplinePoints();
 	for (int32 splinePointIndex = 0; splinePointIndex < splineQuantity; ++splinePointIndex)
 	{
-		USplineMeshComponent* roadSpline = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Spline Mesh Component "), splinePointIndex));
+		USplineMeshComponent* roadSpline = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Road Spline Component "), splinePointIndex));
 		configureRoadSpline(splinePointIndex, roadSpline);
 
-		USplineMeshComponent* magnetSpline = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Magnet Box Component "), splinePointIndex));
+		USplineMeshComponent* magnetSpline = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Magnet Spline Component "), splinePointIndex));
 		configureMagnetSpline(splinePointIndex, roadSpline, magnetSpline);
 	}
 }
