@@ -1181,10 +1181,8 @@ bool FCheckComponentsRollCommand::Update()
 	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
 	if (testGenerator)
 	{
-
 		bool componentsRollMatchSettedRoll = testGenerator->splineMeshComponentsRollIs(rollValue);
 		UE_LOG(LogTemp, Log, TEXT("Components match setted roll: %s."), *FString(componentsRollMatchSettedRoll ? "true" : "false"));
-
 
 		test->TestTrue(TEXT("The components should have their roll matching the one set."), componentsRollMatchSettedRoll);
 		return true;
