@@ -426,12 +426,14 @@ bool ATrackGeneratorMOCK::sameAmountOfRollsThanSplinePoints()
 	return rollArray.Num() == splinePointsQuantity();
 }
 
-void ATrackGeneratorMOCK::rollSplines(float rollValue)
+void ATrackGeneratorMOCK::rollSplines(float aRollValue)
 {
 	for(auto roll : rollArray)
 	{
-		roll = rollValue;
+		roll = aRollValue;
 	}
+	UE_LOG(LogTemp, Log, TEXT("Roll has been set to: %f in the roll array. Now recreate the spline mesh components."), aRollValue);
+	recreateSplineMeshComponents();
 }
 
 bool ATrackGeneratorMOCK::splineMeshComponentsRollIs(float aRollValue)

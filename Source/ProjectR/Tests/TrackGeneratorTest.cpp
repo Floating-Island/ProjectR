@@ -1205,8 +1205,6 @@ bool FATrackGeneratorSplineMeshComponentsRollAfterSettingRollInEditorTest::RunTe
 	float rollValue = 30.0f;
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldRollSplineComponentsCommand(rollValue));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
-
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsRollCommand(rollValue, this));
 
 	return true;
