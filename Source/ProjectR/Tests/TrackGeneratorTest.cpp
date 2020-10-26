@@ -1106,6 +1106,51 @@ bool FATrackGeneratorGeneratesOverlapEventsWhenSpawnedTest::RunTest(const FStrin
 
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRollArrayQuantityAdjustedToNumberOfSplinePointsCommand, FAutomationTestBase*, test);
+
+bool FCheckRollArrayQuantityAdjustedToNumberOfSplinePointsCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool sameAmountOfRollsThanSplinePoints = testGenerator->sameAmountOfRollsThanSplinePoints();
+		UE_LOG(LogTemp, Log, TEXT("The roll array has the same number of elements as the number of spline points: %s."), *FString(sameAmountOfRollsThanSplinePoints ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("The roll array should have the same number of elements as the number of spline points."), sameAmountOfRollsThanSplinePoints);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorRollArrayQuantityMatchesSplinePointsNumberTest, "ProjectR.TrackGenerator Tests.Unit.027: roll values array quantity is adjusted to the number of spline points", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorRollArrayQuantityMatchesSplinePointsNumberTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRollArrayQuantityAdjustedToNumberOfSplinePointsCommand(this));
+
+	return true;
+}
+
+
+
+
+
+
 //DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawnTrackGeneratorInEditorWorldRollSplineComponentsCommand, float, rollValue);
 //
 //bool FSpawnTrackGeneratorInEditorWorldRollSplineComponentsCommand::Update()
@@ -1148,7 +1193,7 @@ bool FATrackGeneratorGeneratesOverlapEventsWhenSpawnedTest::RunTest(const FStrin
 //}
 //
 //
-//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineMeshComponentsRollAfterSettingRollInEditorTest, "ProjectR.TrackGenerator Tests.Unit.027: Spline mesh components modify their roll when setting it", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineMeshComponentsRollAfterSettingRollInEditorTest, "ProjectR.TrackGenerator Tests.Unit.02x: Spline mesh components modify their roll when setting it", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 //
 //bool FATrackGeneratorSplineMeshComponentsRollAfterSettingRollInEditorTest::RunTest(const FString& Parameters)
 //{
