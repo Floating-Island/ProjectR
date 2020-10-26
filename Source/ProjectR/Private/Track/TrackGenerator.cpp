@@ -119,9 +119,6 @@ void ATrackGenerator::createSplineMeshComponents()
 
 		USplineMeshComponent* magnetSpline = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Magnet Box Component "), splinePointIndex));
 		configureMagnetSpline(splinePointIndex, roadSpline, magnetSpline);
-
-		roadSpline->SetStartRoll(rollArray[splinePointIndex]);
-		roadSpline->SetEndRoll(rollArray[nextSplineIndexOf(splinePointIndex)]);
 	}
 }
 
@@ -140,6 +137,9 @@ void ATrackGenerator::configureRoadSpline(int32 aSplinePointIndex, USplineMeshCo
 	aRoadSpline->Mobility = RootComponent->Mobility;
 	aRoadSpline->SetStaticMesh(roadMesh);
 	aRoadSpline->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+
+	aRoadSpline->SetStartRoll(rollArray[aSplinePointIndex]);
+	aRoadSpline->SetEndRoll(rollArray[nextSplineIndexOf(aSplinePointIndex)]);
 }
 
 void ATrackGenerator::configureComponentPositionsAndTangents(int32 aSplinePointIndex, USplineMeshComponent* aSplineMesh)
@@ -178,6 +178,9 @@ void ATrackGenerator::configureMagnetSpline(int32 aSplinePointIndex, USplineMesh
 	aMagnetSpline->SetEndPosition(aMagnetSpline->GetEndPosition() + magnetSplineHeight);
 
 	configureCollisionOf(aMagnetSpline);
+
+	aMagnetSpline->SetStartRoll(rollArray[aSplinePointIndex]);
+	aMagnetSpline->SetEndRoll(rollArray[nextSplineIndexOf(aSplinePointIndex)]);
 }
 
 void ATrackGenerator::configureCollisionOf(USplineMeshComponent* aMagnetSpline)
