@@ -25,15 +25,17 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")	
 		USplineComponent* splineComponent;
 	
 	TArray<USplineMeshComponent*> roadSplines;
 
+	void recreateSplineMeshComponents();
+	void adjustRollArraySizeToSplinePointsQuantity();
 	void cleanSplineMeshComponents();
 	void destroySplineMeshComponents();
-	void recreateSplineMeshComponents();
 	void createSplineMeshComponents();
 
 	void configureMagnetSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline, USplineMeshComponent* aMagnetSpline);
@@ -50,6 +52,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Default Meshes")
 		UStaticMesh* magnetSplineMesh;
+
+	TArray<float> rollArray;
 
 public:
 

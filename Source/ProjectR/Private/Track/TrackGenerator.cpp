@@ -22,6 +22,8 @@ ATrackGenerator::ATrackGenerator()
 	magnetSplineHeightDistanceToRoadSpline = 400.0f;
 
 	magnetSplineMesh = roadMesh;
+
+	rollArray = TArray<float>();
 }
 
 
@@ -35,8 +37,31 @@ void ATrackGenerator::BeginPlay()
 
 void ATrackGenerator::recreateSplineMeshComponents()
 {
+	adjustRollArraySizeToSplinePointsQuantity();
 	cleanSplineMeshComponents();
 	createSplineMeshComponents();
+}
+
+void ATrackGenerator::adjustRollArraySizeToSplinePointsQuantity()
+{
+	int quantityDifference = splineComponent->GetNumberOfSplinePoints() - rollArray.Num();
+	if (quantityDifference > 0)
+	{
+		for (int addedElements = 0; addedElements < quantityDifference; ++addedElements)
+		{
+			rollArray.Add(0);
+		}
+		return;
+	}
+	if (quantityDifference < 0)
+	{
+		quantityDifference = abs(quantityDifference);
+		for (int removedElements = 0; removedElements < quantityDifference; ++removedElements)
+		{
+			rollArray.Pop(true);
+		}
+		return;
+	}
 }
 
 void ATrackGenerator::cleanSplineMeshComponents()
