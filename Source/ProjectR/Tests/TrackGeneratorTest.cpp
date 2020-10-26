@@ -1095,7 +1095,7 @@ bool FATrackGeneratorGeneratesOverlapEventsWhenSpawnedTest::RunTest(const FStrin
 {
 	ATrackGenerator* testGenerator = NewObject<ATrackGenerator>();
 	{
-		TestTrue(TEXT("The track generator should should generate overlap events when spawned."), testGenerator->bGenerateOverlapEventsDuringLevelStreaming);
+		TestTrue(TEXT("The track generator should generate overlap events when spawned."), testGenerator->bGenerateOverlapEventsDuringLevelStreaming);
 	}
 
 	return true;
@@ -1148,7 +1148,7 @@ bool FATrackGeneratorGeneratesOverlapEventsWhenSpawnedTest::RunTest(const FStrin
 
 
 
-//destroy road splines and magnet splines every time in on construction to avoid memory leaks.
+
 //create a struct containing roll and width for each spline mesh and add it to an array. Check that the array has the same amount of elements as road splines.
 //modify an array element and check that the corresponding spline changes accordingly.
 //allow to change roll to road splines. Make the magnet box attached to that roll (roll after the magnet box has been attached).
