@@ -1106,47 +1106,6 @@ bool FATrackGeneratorGeneratesOverlapEventsWhenSpawnedTest::RunTest(const FStrin
 
 
 
-//DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplineRelativeRollCommand, FAutomationTestBase*, test);
-//
-//bool FCheckMagnetSplineRelativeRollCommand::Update()
-//{
-//	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
-//	{
-//		return false;
-//	}
-//	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
-//	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
-//	if (testGenerator)
-//	{
-//
-//		bool magnetSplinesRelativeRotationIsZero = testGenerator->magnetSplinesRollMathcesRoadSplines();
-//		UE_LOG(LogTemp, Log, TEXT("Magnet splines have roll same as road splines: %s."), *FString(magnetSplinesRelativeRotationIsZero ? "true" : "false"));
-//
-//
-//		test->TestTrue(TEXT("The magnet splines should have roll of road splines after rolling road splines."), magnetSplinesRelativeRotationIsZero);
-//		return true;
-//	}
-//	return false;
-//}
-//
-//
-//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorMagnetSplineRelativeRollIsZeroAfterRotatingSplineMeshTest, "ProjectR.TrackGenerator Tests.Unit.Magnet spline relative roll is zero after rotating spline mesh", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-//
-//bool FATrackGeneratorMagnetSplineRelativeRollIsZeroAfterRotatingSplineMeshTest::RunTest(const FString& Parameters)
-//{
-//
-//	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-//
-//	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
-//
-//	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
-//
-//	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplineRelativeRollCommand(this));
-//
-//	return true;
-//}
-
-
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawnTrackGeneratorInEditorWorldRollSplineComponentsCommand, float, rollValue);
 
 bool FSpawnTrackGeneratorInEditorWorldRollSplineComponentsCommand::Update()
