@@ -1173,7 +1173,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckComponentsRollCommand, floa
 
 bool FCheckComponentsRollCommand::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
 		return false;
 	}
