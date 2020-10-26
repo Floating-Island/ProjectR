@@ -1151,8 +1151,8 @@ bool FATrackGeneratorGeneratesOverlapEventsWhenSpawnedTest::RunTest(const FStrin
 
 //create a struct containing roll and width for each spline mesh and add it to an array. Check that the array has the same amount of elements as road splines.
 //modify an array element and check that the corresponding spline changes accordingly.
-//allow to change roll to road splines. Make the magnet box attached to that roll (roll after the magnet box has been attached).
-//(when a custom mesh for magnet box is already made) set location of magnet box same as spline mesh,
+//allow to change roll to road splines. Make the magnet spline attached to that roll (roll after the magnet spline has been attached).
+//(when a custom mesh for magnet spline is already made) set location of magnet spline same as spline mesh,
 // attach and elevate the same amount as the bound of mesh (saved in constructor) multiplied by the scale (gotten in on construction).
 
 
