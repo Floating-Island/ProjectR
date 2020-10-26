@@ -41,4 +41,5 @@ public:
 	bool magnetSplinesOverlapWithPawnChannel();
 	bool magnetSplinesGenerateOverlapEvents();
 	bool componentsHaveSmoothInterpolation();
+	bool sameAmountOfRollsThanSplinePoints();
 };
