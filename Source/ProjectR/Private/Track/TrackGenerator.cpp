@@ -119,6 +119,9 @@ void ATrackGenerator::createSplineMeshComponents()
 
 		USplineMeshComponent* magnetSpline = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Magnet Box Component "), splinePointIndex));
 		configureMagnetSpline(splinePointIndex, roadSpline, magnetSpline);
+
+		roadSpline->SetStartRoll(rollArray[splinePointIndex]);
+		roadSpline->SetEndRoll(rollArray[nextSplineIndexOf(splinePointIndex)]);
 	}
 }
 
