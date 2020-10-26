@@ -53,7 +53,8 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Default Meshes")
 		UStaticMesh* magnetSplineMesh;
 
-	TArray<float> rollArray;
+	UPROPERTY(EditAnywhere, Category = "Elements", EditFixedSize)
+		TArray<float> rollArray;
 
 public:
 
