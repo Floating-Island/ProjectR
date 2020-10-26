@@ -421,40 +421,6 @@ bool ATrackGeneratorMOCK::componentsHaveSmoothInterpolation()
 	return true;
 }
 
-//bool ATrackGeneratorMOCK::magnetSplinesRollMatchesRoadSplines()
-//{
-//	for (auto roadSpline : roadSplines)
-//	{
-//		float defaultRoll = 30.0f;
-//		roadSpline->SetStartRoll(defaultRoll);
-//		roadSpline->SetEndRoll(defaultRoll);
-//		modifyRoll(roadSpline, defaultRoll);
-//	}
-//	//updateSplineMeshes();
-//
-//	for (int32 splinePointIndex = 0; splinePointIndex < splinePointsQuantity(); ++splinePointIndex)
-//	{
-//		float roadSplineStartRoll = (roadSplines[splinePointIndex])->GetStartRoll();
-//		float roadSplineEndRoll = (roadSplines[splinePointIndex])->GetEndRoll();
-//		float magnetSplineStartRoll = (magnetSplines[splinePointIndex])->GetStartRoll();
-//		float magnetSplineEndRoll = (magnetSplines[splinePointIndex])->GetEndRoll();
-//
-//
-//		UE_LOG(LogTemp, Log, TEXT("Road spline start roll: %s."), *FString::SanitizeFloat(roadSplineStartRoll));
-//		UE_LOG(LogTemp, Log, TEXT("Road spline end roll: %s."), *FString::SanitizeFloat(roadSplineEndRoll));
-//		UE_LOG(LogTemp, Log, TEXT("Magnet spline start roll: %s."), *FString::SanitizeFloat(magnetSplineStartRoll));
-//		UE_LOG(LogTemp, Log, TEXT("Magnet spline end roll: %s."), *FString::SanitizeFloat(magnetSplineEndRoll));
-//
-//		if (!FMath::IsNearlyEqual(magnetSplineStartRoll, roadSplineStartRoll) || !FMath::IsNearlyEqual(magnetSplineEndRoll, roadSplineEndRoll))
-//		{
-//			UE_LOG(LogTemp, Log, TEXT("Magnet spline rolls don't match road spline rolls."));
-//			return false;
-//		}
-//	}
-//
-//	return true;
-//}
-
 
 
 
