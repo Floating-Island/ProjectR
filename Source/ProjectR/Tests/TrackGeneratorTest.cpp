@@ -1130,7 +1130,7 @@ bool FCheckRollArrayQuantityAdjustedToNumberOfSplinePointsCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorRollArrayQuantityMatchesSplinePointsNumberTest, "ProjectR.TrackGenerator Tests.Unit.027: roll values array quantity is adjusted to the number of spline points", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorRollArrayQuantityMatchesSplinePointsNumberTest, "ProjectR.TrackGenerator Tests.Unit.027: Roll values array quantity is adjusted to the number of spline points", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FATrackGeneratorRollArrayQuantityMatchesSplinePointsNumberTest::RunTest(const FString& Parameters)
 {
