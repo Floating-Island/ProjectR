@@ -461,6 +461,7 @@ bool ATrackGeneratorMOCK::splineMeshComponentsRollIs(float aRollValue)
 			return false;
 		}
 	}
+	return true;
 }
 
 
