@@ -426,6 +426,14 @@ bool ATrackGeneratorMOCK::sameAmountOfRollsThanSplinePoints()
 	return rollArray.Num() == splinePointsQuantity();
 }
 
+void ATrackGeneratorMOCK::rollSplines(float rollValue)
+{
+	for(auto roll : rollArray)
+	{
+		roll = rollValue;
+	}
+}
+
 
 
 
