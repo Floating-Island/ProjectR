@@ -45,7 +45,6 @@ void ATrackGenerator::recreateSplineMeshComponents()
 void ATrackGenerator::adjustRollArraySizeToSplinePointsQuantity()
 {
 	int quantityDifference = splineComponent->GetNumberOfSplinePoints() - rollArray.Num();
-	UE_LOG(LogTemp, Log, TEXT("Spline points number difference with roll array size: %d."), quantityDifference);
 	if (quantityDifference > 0)
 	{
 		for (int addedElements = 0; addedElements < quantityDifference; ++addedElements)
@@ -115,7 +114,6 @@ void ATrackGenerator::createSplineMeshComponents()
 	int32 splineQuantity = splineComponent->GetNumberOfSplinePoints();
 	for (int32 splinePointIndex = 0; splinePointIndex < splineQuantity; ++splinePointIndex)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Roll array element value: %f."), rollArray[splinePointIndex]);
 		USplineMeshComponent* roadSpline = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Road Spline Component "), splinePointIndex));
 		configureRoadSpline(splinePointIndex, roadSpline);
 
