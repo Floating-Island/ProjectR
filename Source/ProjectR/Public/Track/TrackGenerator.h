@@ -33,6 +33,7 @@ protected:
 
 	void cleanSplineMeshComponents();
 	void destroySplineMeshes();
+	void recreateSplineMeshComponents();
 	void createSplineMeshes();
 
 	void configureMagnetSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline, USplineMeshComponent* aMagnetSpline);

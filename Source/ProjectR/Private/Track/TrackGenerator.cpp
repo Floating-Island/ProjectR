@@ -30,7 +30,12 @@ ATrackGenerator::ATrackGenerator()
 void ATrackGenerator::BeginPlay()
 {
 	Super::BeginPlay();
-	destroySplineMeshes();
+	recreateSplineMeshComponents();
+}
+
+void ATrackGenerator::recreateSplineMeshComponents()
+{
+	cleanSplineMeshComponents();
 	createSplineMeshes();
 }
 
@@ -53,11 +58,12 @@ void ATrackGenerator::destroySplineMeshes()
 	}
 }
 
+
+
 void ATrackGenerator::OnConstruction(const FTransform& Transform)
 {
 	Super::OnConstruction(Transform);
-
-	createSplineMeshes();
+	recreateSplineMeshComponents();
 }
 
 int32 ATrackGenerator::nextSplineIndexOf(int32 aCurrentIndex)
@@ -80,8 +86,6 @@ FVector ATrackGenerator::closestLocationTo(FVector anotherLocation)
 
 void ATrackGenerator::createSplineMeshes()
 {
-	roadSplines.Empty();
-	magnetSplines.Empty();
 	int32 splineQuantity = splineComponent->GetNumberOfSplinePoints();
 	for (int32 splinePointIndex = 0; splinePointIndex < splineQuantity; ++splinePointIndex)
 	{
