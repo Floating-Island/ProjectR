@@ -434,6 +434,35 @@ void ATrackGeneratorMOCK::rollSplines(float rollValue)
 	}
 }
 
+bool ATrackGeneratorMOCK::splineMeshComponentsRollIs(float aRollValue)
+{
+	for (int32 splinePointIndex = 0; splinePointIndex < splinePointsQuantity(); ++splinePointIndex)
+	{
+		float roadStartRoll = roadSplines[splinePointIndex]->GetStartRoll();
+		float roadEndRoll = roadSplines[splinePointIndex]->GetEndRoll();
+		float magnetStartRoll = magnetSplines[splinePointIndex]->GetStartRoll();
+		float magnetEndRoll = magnetSplines[splinePointIndex]->GetEndRoll();
+
+		UE_LOG(LogTemp, Log, TEXT("Specified roll: %f."), aRollValue);
+		UE_LOG(LogTemp, Log, TEXT("Spline point index: %d."), splinePointIndex);
+		UE_LOG(LogTemp, Log, TEXT("Road spline start roll: %f."), roadStartRoll);
+		UE_LOG(LogTemp, Log, TEXT("Road spline end roll: %f."), roadEndRoll);
+		UE_LOG(LogTemp, Log, TEXT("Magnet spline start roll: %f."), magnetStartRoll);
+		UE_LOG(LogTemp, Log, TEXT("Magnet spline end roll: %f."), magnetEndRoll);
+
+		bool roadStartRollSimillarToSpecified = FMath::IsNearlyEqual(roadStartRoll, aRollValue);
+		bool roadEndRollSimillarToSpecified = FMath::IsNearlyEqual(roadEndRoll, aRollValue);
+		bool magnetStartRollSimillarToSpecified = FMath::IsNearlyEqual(magnetStartRoll, aRollValue);
+		bool magnetEndRollSimillarToSpecified = FMath::IsNearlyEqual(magnetEndRoll, aRollValue);
+
+		if (!roadStartRollSimillarToSpecified || !roadEndRollSimillarToSpecified || !magnetStartRollSimillarToSpecified || !magnetEndRollSimillarToSpecified)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Components don't have roll similar to the specified."));
+			return false;
+		}
+	}
+}
+
 
 
 

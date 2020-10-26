@@ -43,4 +43,5 @@ public:
 	bool componentsHaveSmoothInterpolation();
 	bool sameAmountOfRollsThanSplinePoints();
 	void rollSplines(float rollValue);
+	bool splineMeshComponentsRollIs(float aRollValue);
 };
