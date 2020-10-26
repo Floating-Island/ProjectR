@@ -1147,6 +1147,68 @@ bool FATrackGeneratorGeneratesOverlapEventsWhenSpawnedTest::RunTest(const FStrin
 //}
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawnTrackGeneratorInEditorWorldRollSplineComponentsCommand, float, rollValue);
+
+bool FSpawnTrackGeneratorInEditorWorldRollSplineComponentsCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+
+	ATrackGeneratorMOCK* testGenerator = testWorld->SpawnActor<ATrackGeneratorMOCK>(ATrackGeneratorMOCK::StaticClass());
+
+	testGenerator->rollSplines(rollValue);
+
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckComponentsRollCommand, float, rollValue, FAutomationTestBase*, test);
+
+bool FCheckComponentsRollCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool componentsRollMatchSettedRoll = testGenerator->splineMeshComponentsRollIs(rollValue);
+		UE_LOG(LogTemp, Log, TEXT("Components match setted roll: %s."), *FString(componentsRollMatchSettedRoll ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("The components should have their roll matching the one set."), componentsRollMatchSettedRoll);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineMeshComponentsRollAfterSettingRollInEditorTest, "ProjectR.TrackGenerator Tests.Unit.027: Spline mesh components modify their roll when setting it", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorSplineMeshComponentsRollAfterSettingRollInEditorTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	float rollValue = 30.0f;
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldRollSplineComponentsCommand(rollValue));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsRollCommand(rollValue, this));
+
+	return true;
+}
+
+
 
 
 //create a struct containing roll and width for each spline mesh and add it to an array. Check that the array has the same amount of elements as road splines.
