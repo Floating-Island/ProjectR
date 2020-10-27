@@ -1211,6 +1211,67 @@ bool FATrackGeneratorSplineMeshComponentsRollAfterSettingRollInEditorTest::RunTe
 
 
 
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawnTrackGeneratorInEditorWorldWidenSplineComponentsCommand, float, widthValue);
+
+bool FSpawnTrackGeneratorInEditorWorldWidenSplineComponentsCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+
+	ATrackGeneratorMOCK* testGenerator = testWorld->SpawnActor<ATrackGeneratorMOCK>(ATrackGeneratorMOCK::StaticClass());
+
+	testGenerator->widenSplines(widthValue);
+
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckComponentsWidthCommand, float, widthValue, FAutomationTestBase*, test);
+
+bool FCheckComponentsWidthCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+		bool componentsWidthMatchSettedWidth = testGenerator->splineMeshComponentsWidthIs(widthValue);
+		UE_LOG(LogTemp, Log, TEXT("Components match setted width: %s."), *FString(componentsWidthMatchSettedWidth ? "true" : "false"));
+
+		test->TestTrue(TEXT("The components should have their width matching the one set."), componentsWidthMatchSettedWidth);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSplineMeshComponentsWidenAfterSettingWidenInEditorTest, "ProjectR.TrackGenerator Tests.Unit.029: Spline mesh components modify their width when setting it", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorSplineMeshComponentsWidenAfterSettingWidenInEditorTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	float widthValue = 30.0f;
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldWidenSplineComponentsCommand(widthValue));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsWidthCommand(widthValue, this));
+
+	return true;
+}
+
+
+
 //allow to change width for each spline mesh.
 //(when a custom mesh for magnet spline is already made) set location of magnet spline same as spline mesh,
 // attach and elevate the same amount as the bound of mesh (saved in constructor) multiplied by the scale (gotten in on construction).
