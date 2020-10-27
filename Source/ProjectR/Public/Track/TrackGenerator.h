@@ -54,6 +54,7 @@ protected:
 	void cleanSplineMeshComponents();
 	void destroySplineMeshComponents();
 	void createSplineMeshComponents();
+	void editorCollisionsEnabled(USplineMeshComponent* aSplineMeshComponent);
 
 	void configureMagnetSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline, USplineMeshComponent* aMagnetSpline);
 	void configureRoadSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline);

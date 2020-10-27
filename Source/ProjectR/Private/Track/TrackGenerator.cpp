@@ -138,11 +138,10 @@ void ATrackGenerator::configureRoadSpline(int32 aSplinePointIndex, USplineMeshCo
 
 	configureComponentPositionsAndTangents(aSplinePointIndex, aRoadSpline);
 
-	if(collisionsEnabled)
-	{
-		aRoadSpline->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		aRoadSpline->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
-	}
+	aRoadSpline->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	aRoadSpline->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
+
+	editorCollisionsEnabled(aRoadSpline);
 
 	aRoadSpline->Mobility = RootComponent->Mobility;
 
@@ -161,6 +160,15 @@ void ATrackGenerator::configureComponentPositionsAndTangents(int32 aSplinePointI
 	FVector nextSplinePointTangent = splineComponent->GetTangentAtSplinePoint(nextSplineIndexOf(aSplinePointIndex), ESplineCoordinateSpace::Local);
 
 	aSplineMesh->SetStartAndEnd(currentSplinePointPosition, currentSplinePointTangent, nextSplinePointPosition, nextSplinePointTangent);
+}
+
+
+void ATrackGenerator::editorCollisionsEnabled(USplineMeshComponent* aSplineMeshComponent)
+{
+	if(!collisionsEnabled)
+	{
+		aSplineMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
 }
 
 void ATrackGenerator::configureRollAndWidthOf(USplineMeshComponent* aSplineMeshComponent, int32 AtASplinePointIndex)
@@ -198,10 +206,7 @@ void ATrackGenerator::configureMagnetSpline(int32 aSplinePointIndex, USplineMesh
 	aMagnetSpline->SetStartPosition(aMagnetSpline->GetStartPosition() + magnetSplineHeight);//won't be necessary when I create a static mesh for magnet splines...
 	aMagnetSpline->SetEndPosition(aMagnetSpline->GetEndPosition() + magnetSplineHeight);//won't be necessary when I create a static mesh for magnet splines...
 
-	if(collisionsEnabled)
-	{
-		configureCollisionOf(aMagnetSpline);
-	}
+	configureCollisionOf(aMagnetSpline);
 
 	configureRollAndWidthOf(aMagnetSpline, aSplinePointIndex);
 }
@@ -212,4 +217,5 @@ void ATrackGenerator::configureCollisionOf(USplineMeshComponent* aMagnetSpline)
 	aMagnetSpline->SetCollisionResponseToAllChannels(ECR_Ignore);
 	aMagnetSpline->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	aMagnetSpline->SetGenerateOverlapEvents(true);
+	editorCollisionsEnabled(aMagnetSpline);
 }
