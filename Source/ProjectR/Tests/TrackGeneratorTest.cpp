@@ -1226,7 +1226,7 @@ bool FSpawnTrackGeneratorInEditorWorldWidenSplineComponentsCommand::Update()
 
 	ATrackGeneratorMOCK* testGenerator = testWorld->SpawnActor<ATrackGeneratorMOCK>(ATrackGeneratorMOCK::StaticClass());
 
-	testGenerator->WidenSplines(widthValue);
+	testGenerator->widenSplines(widthValue);
 
 	return true;
 }

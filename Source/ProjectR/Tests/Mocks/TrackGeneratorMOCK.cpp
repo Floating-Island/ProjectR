@@ -474,7 +474,7 @@ void ATrackGeneratorMOCK::widenSplines(float aWidthValue)
 {
 	for (auto& trackSection : trackSections)
 	{
-		trackSection.startWidth = aWidthValue;
+		trackSection.initialWidth = aWidthValue;
 	}
 	UE_LOG(LogTemp, Log, TEXT("Width has been set to: %f. Now recreate the spline mesh components."), aWidthValue);
 	recreateSplineMeshComponents();
