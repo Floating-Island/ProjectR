@@ -165,8 +165,8 @@ void ATrackGenerator::configureRollAndWidthOf(USplineMeshComponent* aSplineMeshC
 	aSplineMeshComponent->SetEndRoll(trackSections[nextSplineIndexOf(AtASplinePointIndex)].startRoll);
 
 	float thickness = 1;
-	aSplineMeshComponent->SetStartScale(FVector2D(trackSections[AtASplinePointIndex].initialWidth), thickness);
-	aSplineMeshComponent->SetEndScale(FVector2D(trackSections[nextSplineIndexOf(AtASplinePointIndex)].initialWidth), thickness);
+	aSplineMeshComponent->SetStartScale(FVector2D(trackSections[AtASplinePointIndex].initialWidth, thickness));
+	aSplineMeshComponent->SetEndScale(FVector2D(trackSections[nextSplineIndexOf(AtASplinePointIndex)].initialWidth, thickness));
 }
 
 void ATrackGenerator::configureMagnetSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline, USplineMeshComponent* aMagnetSpline)
