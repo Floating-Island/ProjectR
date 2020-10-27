@@ -44,4 +44,6 @@ public:
 	bool sameAmountOfTrackSectionsThanSplinePoints();
 	void rollSplines(float aRollValue);
 	bool splineMeshComponentsRollIs(float aRollValue);
+	void widenSplines(float aWidthValue);
+	bool splineMeshComponentsWidthIs(float aWidthValue);
 };

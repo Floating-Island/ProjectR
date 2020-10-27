@@ -455,12 +455,12 @@ bool ATrackGeneratorMOCK::splineMeshComponentsRollIs(float aRollValue)
 		UE_LOG(LogTemp, Log, TEXT("Magnet spline start roll: %f."), magnetStartRoll);
 		UE_LOG(LogTemp, Log, TEXT("Magnet spline end roll: %f."), magnetEndRoll);
 
-		bool roadStartRollSimillarToSpecified = FMath::IsNearlyEqual(roadStartRoll, aRollValue);
-		bool roadEndRollSimillarToSpecified = FMath::IsNearlyEqual(roadEndRoll, aRollValue);
-		bool magnetStartRollSimillarToSpecified = FMath::IsNearlyEqual(magnetStartRoll, aRollValue);
-		bool magnetEndRollSimillarToSpecified = FMath::IsNearlyEqual(magnetEndRoll, aRollValue);
+		bool roadStartRollSimilarToSpecified = FMath::IsNearlyEqual(roadStartRoll, aRollValue);
+		bool roadEndRollSimilarToSpecified = FMath::IsNearlyEqual(roadEndRoll, aRollValue);
+		bool magnetStartRollSimilarToSpecified = FMath::IsNearlyEqual(magnetStartRoll, aRollValue);
+		bool magnetEndRollSimilarToSpecified = FMath::IsNearlyEqual(magnetEndRoll, aRollValue);
 
-		if (!roadStartRollSimillarToSpecified || !roadEndRollSimillarToSpecified || !magnetStartRollSimillarToSpecified || !magnetEndRollSimillarToSpecified)
+		if (!roadStartRollSimilarToSpecified || !roadEndRollSimilarToSpecified || !magnetStartRollSimilarToSpecified || !magnetEndRollSimilarToSpecified)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Components don't have roll similar to the specified."));
 			return false;
@@ -470,6 +470,47 @@ bool ATrackGeneratorMOCK::splineMeshComponentsRollIs(float aRollValue)
 	return true;
 }
 
+void ATrackGeneratorMOCK::widenSplines(float aWidthValue)
+{
+	for (auto& trackSection : trackSections)
+	{
+		trackSection.startWidth = aWidthValue;
+	}
+	UE_LOG(LogTemp, Log, TEXT("Width has been set to: %f. Now recreate the spline mesh components."), aWidthValue);
+	recreateSplineMeshComponents();
+}
+
+bool ATrackGeneratorMOCK::splineMeshComponentsWidthIs(float aWidthValue)
+{
+	int index = 0;
+	for (const auto& trackSection : trackSections)
+	{
+		float roadInitialWidth = trackSection.roadSpline->GetStartScale().X;
+		float roadFinalWidth = trackSection.roadSpline->GetEndScale().X;
+		float magnetInitialWidth = trackSection.magnetSpline->GetStartScale().X;
+		float magnetFinalWidth = trackSection.magnetSpline->GetEndScale().X;
+
+		UE_LOG(LogTemp, Log, TEXT("Specified width: %f."), aWidthValue);
+		UE_LOG(LogTemp, Log, TEXT("Spline point index: %d."), index);
+		UE_LOG(LogTemp, Log, TEXT("Road spline initial width: %f."), roadInitialWidth);
+		UE_LOG(LogTemp, Log, TEXT("Road spline final width: %f."), roadFinalWidth);
+		UE_LOG(LogTemp, Log, TEXT("Magnet spline initial width: %f."), magnetInitialWidth);
+		UE_LOG(LogTemp, Log, TEXT("Magnet spline final width: %f."), magnetFinalWidth);
+
+		bool roadInitialScaleSimilarToSpecified = FMath::IsNearlyEqual(roadInitialWidth, aWidthValue);
+		bool roadEndScaleSimilarToSpecified = FMath::IsNearlyEqual(roadFinalWidth, aWidthValue);
+		bool magnetInitialScaleSimilarToSpecified = FMath::IsNearlyEqual(magnetInitialWidth, aWidthValue);
+		bool magnetEndScaleSimilarToSpecified = FMath::IsNearlyEqual(magnetFinalWidth, aWidthValue);
+
+		if (!roadInitialScaleSimilarToSpecified || !roadEndScaleSimilarToSpecified || !magnetInitialScaleSimilarToSpecified || !magnetEndScaleSimilarToSpecified)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Components don't have width similar to the specified."));
+			return false;
+		}
+		++index;
+	}
+	return true;
+}
 
 
 
