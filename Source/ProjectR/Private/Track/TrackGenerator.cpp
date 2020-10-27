@@ -19,7 +19,7 @@ ATrackGenerator::ATrackGenerator()
 
 	magnetSplineHeightDistanceToRoadSpline = 400.0f;
 
-	magnetSplineMesh = roadMesh;
+	magnetSplineMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/roadFloor")));
 
 	trackSections = TArray<FTrackSectionData>();
 }
@@ -60,7 +60,6 @@ void ATrackGenerator::adjustRollArraySizeToSplinePointsQuantity()
 		{
 			trackSections.Pop(true);
 		}
-		return;
 	}
 }
 

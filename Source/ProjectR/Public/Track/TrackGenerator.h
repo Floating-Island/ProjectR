@@ -21,9 +21,9 @@ struct FTrackSectionData
 	USplineMeshComponent* magnetSpline = nullptr;
 
 	UPROPERTY(EditAnywhere, Category = "Default Meshes")
-		UStaticMesh* roadMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/roadFloor")));;
+		UStaticMesh* roadMesh = nullptr;
 	UPROPERTY(EditAnywhere, Category = "Default Meshes")
-		UStaticMesh* magnetMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/roadFloor")));
+		UStaticMesh* magnetMesh = nullptr;
 
 	UPROPERTY(EditAnywhere, Category = "Section")
 		float startRoll = 0;
