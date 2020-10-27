@@ -12,6 +12,8 @@
 #include "../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "Engine/Engine.h"
 
+#include "Utilities/PIESessionUtilities.h"
+
 
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -1332,6 +1334,64 @@ bool FATrackGeneratorAllowsDisableCollisionsInEditorTest::RunTest(const FString&
 	return true;
 }
 
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInPIECommand);
+
+bool FSpawnTrackGeneratorInPIECommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	sessionUtilities.spawnInPIEAnInstanceOf<ATrackGeneratorMOCK>();
+
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckComponentsExpectedCollisionInPIECommand, FAutomationTestBase*, test);
+
+bool FCheckComponentsExpectedCollisionInPIECommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		ATrackGeneratorMOCK* testGenerator = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGeneratorMOCK>();
+		if (testGenerator)
+		{
+			bool componentsHavedTheirExpectedCollisions = testGenerator->splineMeshComponentsExpectedCollisions();
+			UE_LOG(LogTemp, Log, TEXT("Components have their collisions as expected: %s."), *FString(componentsHavedTheirExpectedCollisions ? "true" : "false"));
+
+			test->TestTrue(TEXT("The components should have have their collisions as expected."), componentsHavedTheirExpectedCollisions);
+			testWorld->bDebugFrameStepExecution = true;
+			return true;
+		}
+	}
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorHaveExpectedCollisionsInPIETest, "ProjectR.TrackGenerator Tests.Unit.031: Spline mesh components in PIE have their expected collisions", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorHaveExpectedCollisionsInPIETest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	float widthValue = 30.0f;
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInPIECommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsExpectedCollisionInPIECommand(this));
+
+	return true;
+}
 
 // Allow to set collisions disabled when editing the track generator (and always enable them in begin play).
 //(when a custom mesh for magnet spline is already made) set location of magnet spline same as spline mesh,
