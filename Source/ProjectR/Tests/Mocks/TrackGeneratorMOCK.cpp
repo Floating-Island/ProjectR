@@ -531,5 +531,10 @@ bool ATrackGeneratorMOCK::splineMeshComponentsCollisionsDisabled()
 	return true;
 }
 
+bool ATrackGeneratorMOCK::splineMeshComponentsExpectedCollisions()
+{
+	return collisionEnabledToQueryOnlyOnMagnetSplines() && roadSplinesHaveCollisionEnabledSetToQueryAndPhysics();
+}
+
 
 

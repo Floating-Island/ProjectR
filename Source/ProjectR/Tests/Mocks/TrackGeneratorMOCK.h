@@ -48,4 +48,5 @@ public:
 	bool splineMeshComponentsWidthIs(float aWidthValue);
 	void disableCollisions();
 	bool splineMeshComponentsCollisionsDisabled();
+	bool splineMeshComponentsExpectedCollisions();
 };
