@@ -19,12 +19,12 @@ struct FTrackSectionData
 
 	USplineMeshComponent* roadSpline = nullptr;
 	USplineMeshComponent* magnetSpline = nullptr;
-	
+
 	UPROPERTY(EditAnywhere, Category = "Default Meshes")
 		UStaticMesh* roadMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/roadFloor")));;
 	UPROPERTY(EditAnywhere, Category = "Default Meshes")
 		UStaticMesh* magnetMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/roadFloor")));
-	
+
 	UPROPERTY(EditAnywhere, Category = "Track")
 		float startRoll = 0;
 };
@@ -37,14 +37,14 @@ class PROJECTR_API ATrackGenerator : public AActor
 public:
 	// Sets default values for this actor's properties
 	ATrackGenerator();
-	
+
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
 
-	UPROPERTY(VisibleAnywhere, Category = "Components")	
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
 		USplineComponent* splineComponent;
 
 	void recreateSplineMeshComponents();
@@ -77,7 +77,7 @@ public:
 	void toMagnetOverlapSubscribe(ATrackManager* aManager);
 
 	FVector closestLocationTo(FVector anotherLocation);
-	
+
 };
 
 

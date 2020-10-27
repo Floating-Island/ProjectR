@@ -76,13 +76,13 @@ void ATrackGenerator::cleanSplineMeshComponents()
 
 void ATrackGenerator::destroySplineMeshComponents()
 {
-	for (auto trackSection: trackSections)
+	for (auto trackSection : trackSections)
 	{
-		if(trackSection.roadSpline)
+		if (trackSection.roadSpline)
 		{
 			trackSection.roadSpline->DestroyComponent();
 		}
-		if(trackSection.magnetSpline)
+		if (trackSection.magnetSpline)
 		{
 			trackSection.magnetSpline->DestroyComponent();
 		}
@@ -143,7 +143,7 @@ void ATrackGenerator::configureRoadSpline(int32 aSplinePointIndex, USplineMeshCo
 	aRoadSpline->Mobility = RootComponent->Mobility;
 
 	aRoadSpline->SetStaticMesh(trackSections[aSplinePointIndex].roadMesh);
-	
+
 	aRoadSpline->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
 
 	aRoadSpline->SetStartRoll(trackSections[aSplinePointIndex].startRoll);
@@ -188,7 +188,7 @@ void ATrackGenerator::configureMagnetSpline(int32 aSplinePointIndex, USplineMesh
 	configureCollisionOf(aMagnetSpline);
 
 	aMagnetSpline->SetStartRoll(trackSections[aSplinePointIndex].startRoll);
-	aMagnetSpline->SetEndRoll(trackSections[nextSplineIndexOf(aSplinePointIndex)].startRoll);	
+	aMagnetSpline->SetEndRoll(trackSections[nextSplineIndexOf(aSplinePointIndex)].startRoll);
 }
 
 void ATrackGenerator::configureCollisionOf(USplineMeshComponent* aMagnetSpline)

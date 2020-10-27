@@ -7,7 +7,7 @@
 #include "TrackGeneratorMOCK.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PROJECTR_API ATrackGeneratorMOCK : public ATrackGenerator
@@ -17,7 +17,7 @@ public:
 	bool hasSplineComponent();
 	bool splineIsRootComponent();
 	int32 roadSplinesQuantity();
-    int32 splinePointsQuantity();
+	int32 splinePointsQuantity();
 	bool sameNumberOfRoadSplinesThanPoints();
 	bool roadSplinesAndPointsHaveSameStartPositions();
 	bool roadSplinesAndPointsHaveSameEndPositions();
