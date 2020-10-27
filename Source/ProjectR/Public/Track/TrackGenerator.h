@@ -12,6 +12,23 @@ class USplineComponent;
 class USplineMeshComponent;
 class ATrackManager;
 
+USTRUCT()
+struct FTrackSectionData
+{
+	GENERATED_BODY()
+	
+	USplineMeshComponent* roadSpline = nullptr;
+	USplineMeshComponent* magnetSpline = nullptr;
+	
+	UPROPERTY(EditAnywhere, Category = "Default Meshes")
+		UStaticMesh* roadMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/roadFloor")));;
+	UPROPERTY(EditAnywhere, Category = "Default Meshes")
+		UStaticMesh* magnetMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/roadFloor")));
+	
+	UPROPERTY(EditAnywhere, Category = "Track")
+		float startRoll = 0;
+};
+
 UCLASS()
 class PROJECTR_API ATrackGenerator : public AActor
 {
@@ -56,6 +73,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Elements", EditFixedSize)
 		TArray<float> rollArray;
 
+	UPROPERTY(EditAnywhere, Category = "Elements", EditFixedSize)
+		TArray<FTrackSectionData> trackSection;
+
 public:
 
 	virtual void OnConstruction(const FTransform& Transform) override;
@@ -66,3 +86,6 @@ public:
 	FVector closestLocationTo(FVector anotherLocation);
 	
 };
+
+
+
