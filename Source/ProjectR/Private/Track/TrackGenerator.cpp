@@ -76,7 +76,7 @@ void ATrackGenerator::cleanSplineMeshComponents()
 
 void ATrackGenerator::destroySplineMeshComponents()
 {
-	for (auto trackSection : trackSections)
+	for (auto& trackSection : trackSections)
 	{
 		if (trackSection.roadSpline)
 		{
