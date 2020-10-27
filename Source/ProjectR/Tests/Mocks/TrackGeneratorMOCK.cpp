@@ -404,7 +404,7 @@ bool ATrackGeneratorMOCK::magnetSplinesMobilitySameAsRoadSplines()
 		}
 		if (trackSection.magnetSpline->Mobility != trackSection.roadSpline->Mobility)
 		{
-			UE_LOG(LogTemp, Log, TEXT("Magnet spline at index %d doesn't have the same mobility as the road spline."), atIndex);
+			UE_LOG(LogTemp, Log, TEXT("Magnet spline at doesn't have the same mobility as the road spline."));
 			return false;
 		}
 	}

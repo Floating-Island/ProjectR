@@ -98,8 +98,14 @@ void ATrackGenerator::destroySplineMeshComponents()
 	
 		for (auto trackSection: trackSections)
 		{
-			trackSection.roadSpline->DestroyComponent();
-			trackSection.magnetSpline->DestroyComponent();
+			if(trackSection.roadSpline)
+			{
+				trackSection.roadSpline->DestroyComponent();
+			}
+			if(trackSection.magnetSpline)
+			{
+				trackSection.magnetSpline->DestroyComponent();
+			}
 		}
 }
 
