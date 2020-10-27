@@ -135,7 +135,7 @@ bool ATrackGeneratorMOCK::roadSplinesAndPointsHaveSameEndTangents()
 
 bool ATrackGeneratorMOCK::roadSplinesHaveMeshesSet()
 {
-	for (auto trackSection : trackSections)
+	for (const auto& trackSection : trackSections)
 	{
 		if (!trackSection.roadSpline->GetStaticMesh())
 		{
@@ -148,7 +148,7 @@ bool ATrackGeneratorMOCK::roadSplinesHaveMeshesSet()
 
 bool ATrackGeneratorMOCK::roadSplinesMeshesAreRoadMesh()
 {
-	for (auto trackSection : trackSections)
+	for (const auto& trackSection : trackSections)
 	{
 		UStaticMesh* mesh = trackSection.roadSpline->GetStaticMesh();
 		if (!mesh)
@@ -172,7 +172,7 @@ bool ATrackGeneratorMOCK::magnetSplinesQuantitySameAsSplinePoints()
 
 bool ATrackGeneratorMOCK::roadSplinesHaveCollisionEnabledSetToQueryAndPhysics()
 {
-	for (auto trackSection : trackSections)
+	for (const auto& trackSection : trackSections)
 	{
 		if (!trackSection.roadSpline)
 		{
@@ -190,7 +190,7 @@ bool ATrackGeneratorMOCK::roadSplinesHaveCollisionEnabledSetToQueryAndPhysics()
 
 bool ATrackGeneratorMOCK::roadSplinesHaveCollisionObjectToWorldStatic()
 {
-	for (auto trackSection : trackSections)
+	for (const auto& trackSection : trackSections)
 	{
 		if (!trackSection.roadSpline)
 		{
@@ -208,7 +208,7 @@ bool ATrackGeneratorMOCK::roadSplinesHaveCollisionObjectToWorldStatic()
 
 bool ATrackGeneratorMOCK::roadSplinesAreAttachedToRoot()
 {
-	for (auto trackSection : trackSections)
+	for (const auto& trackSection : trackSections)
 	{
 		if (!trackSection.roadSpline)
 		{
@@ -226,7 +226,7 @@ bool ATrackGeneratorMOCK::roadSplinesAreAttachedToRoot()
 
 bool ATrackGeneratorMOCK::roadSplinesMobilitySameAsRoot()
 {
-	for (auto trackSection : trackSections)
+	for (const auto& trackSection : trackSections)
 	{
 		if (!trackSection.roadSpline)
 		{
@@ -249,7 +249,7 @@ bool ATrackGeneratorMOCK::isSplineComponentLooping()
 
 bool ATrackGeneratorMOCK::magnetSplinesAreAttachedToRoadSplines()
 {
-	for (auto trackSection : trackSections)
+	for (const auto& trackSection : trackSections)
 	{
 		if (!trackSection.roadSpline || !trackSection.magnetSpline)
 		{
@@ -267,7 +267,7 @@ bool ATrackGeneratorMOCK::magnetSplinesAreAttachedToRoadSplines()
 
 bool ATrackGeneratorMOCK::magnetSplinesMobilitySameAsRoadSplines()
 {
-	for (auto trackSection : trackSections)
+	for (const auto& trackSection : trackSections)
 	{
 		if (!trackSection.roadSpline || !trackSection.magnetSpline)
 		{
@@ -285,7 +285,7 @@ bool ATrackGeneratorMOCK::magnetSplinesMobilitySameAsRoadSplines()
 
 bool ATrackGeneratorMOCK::magnetSplinesOnTopOfRoadSplines()
 {
-	for (auto trackSection : trackSections)
+	for (const auto& trackSection : trackSections)
 	{
 		if (!trackSection.roadSpline || !trackSection.magnetSpline)
 		{
@@ -315,7 +315,7 @@ bool ATrackGeneratorMOCK::magnetSplinesAndPointsHaveSameTangents()
 	}
 
 	int index = 0;
-	for (auto trackSection : trackSections)
+	for (const auto& trackSection : trackSections)
 	{
 		FVector magnetSplineStartTangent = (trackSection.magnetSpline)->GetStartTangent();
 		FVector magnetSplineEndTangent = (trackSection.magnetSpline)->GetEndTangent();
@@ -340,7 +340,7 @@ bool ATrackGeneratorMOCK::magnetSplinesAndPointsHaveSameTangents()
 
 bool ATrackGeneratorMOCK::magnetSplinesHaveMeshesSet()
 {
-	for (auto trackSection : trackSections)
+	for (const auto& trackSection : trackSections)
 	{
 		if (!trackSection.magnetSpline->GetStaticMesh())
 		{
@@ -353,7 +353,7 @@ bool ATrackGeneratorMOCK::magnetSplinesHaveMeshesSet()
 
 bool ATrackGeneratorMOCK::magnetSplinesAreHiddenInGame()
 {
-	for (auto trackSection : trackSections)
+	for (const auto& trackSection : trackSections)
 	{
 		if (!trackSection.magnetSpline->bHiddenInGame)
 		{
@@ -366,7 +366,7 @@ bool ATrackGeneratorMOCK::magnetSplinesAreHiddenInGame()
 
 bool ATrackGeneratorMOCK::collisionEnabledToQueryOnlyOnMagnetSplines()
 {
-	for (auto trackSection : trackSections)
+	for (const auto& trackSection : trackSections)
 	{
 		if (trackSection.magnetSpline->GetCollisionEnabled() != ECollisionEnabled::QueryOnly)
 		{
@@ -379,7 +379,7 @@ bool ATrackGeneratorMOCK::collisionEnabledToQueryOnlyOnMagnetSplines()
 
 bool ATrackGeneratorMOCK::magnetSplinesOverlapWithPawnChannel()
 {
-	for (auto trackSection : trackSections)
+	for (const auto& trackSection : trackSections)
 	{
 		if (trackSection.magnetSpline->GetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn) != ECollisionResponse::ECR_Overlap)
 		{
@@ -392,7 +392,7 @@ bool ATrackGeneratorMOCK::magnetSplinesOverlapWithPawnChannel()
 
 bool ATrackGeneratorMOCK::magnetSplinesGenerateOverlapEvents()
 {
-	for (auto trackSection : trackSections)
+	for (const auto& trackSection : trackSections)
 	{
 		if (!trackSection.magnetSpline->GetGenerateOverlapEvents())
 		{
@@ -405,7 +405,7 @@ bool ATrackGeneratorMOCK::magnetSplinesGenerateOverlapEvents()
 
 bool ATrackGeneratorMOCK::componentsHaveSmoothInterpolation()
 {
-	for (auto trackSection : trackSections)
+	for (const auto& trackSection : trackSections)
 	{
 		bool magnetSplineWithSmoothInterpolation = trackSection.magnetSpline->bSmoothInterpRollScale;
 		bool roadSplineWithSmoothInterpolation = trackSection.roadSpline->bSmoothInterpRollScale;
@@ -441,7 +441,7 @@ void ATrackGeneratorMOCK::rollSplines(float aRollValue)
 bool ATrackGeneratorMOCK::splineMeshComponentsRollIs(float aRollValue)
 {
 	int index = 0;
-	for (auto trackSection : trackSections)
+	for (const auto& trackSection : trackSections)
 	{
 		float roadStartRoll = trackSection.roadSpline->GetStartRoll();
 		float roadEndRoll = trackSection.roadSpline->GetEndRoll();
