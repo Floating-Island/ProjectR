@@ -665,7 +665,7 @@ bool ATrackGeneratorMOCK::componentsHaveSmoothInterpolation()
 	return true;
 }
 
-bool ATrackGeneratorMOCK::sameAmountOfRollsThanSplinePoints()
+bool ATrackGeneratorMOCK::sameAmountOfTrackSectionsThanSplinePoints()
 {
 	//return rollArray.Num() == splinePointsQuantity();
 

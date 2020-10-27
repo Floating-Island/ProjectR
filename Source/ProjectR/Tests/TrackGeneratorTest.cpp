@@ -1106,9 +1106,9 @@ bool FATrackGeneratorGeneratesOverlapEventsWhenSpawnedTest::RunTest(const FStrin
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRollArrayQuantityAdjustedToNumberOfSplinePointsCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckTrackSectionsArrayQuantityAdjustedToNumberOfSplinePointsCommand, FAutomationTestBase*, test);
 
-bool FCheckRollArrayQuantityAdjustedToNumberOfSplinePointsCommand::Update()
+bool FCheckTrackSectionsArrayQuantityAdjustedToNumberOfSplinePointsCommand::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -1119,20 +1119,20 @@ bool FCheckRollArrayQuantityAdjustedToNumberOfSplinePointsCommand::Update()
 	if (testGenerator)
 	{
 
-		bool sameAmountOfRollsThanSplinePoints = testGenerator->sameAmountOfRollsThanSplinePoints();
-		UE_LOG(LogTemp, Log, TEXT("The roll array has the same number of elements as the number of spline points: %s."), *FString(sameAmountOfRollsThanSplinePoints ? "true" : "false"));
+		bool sameAmountOfTrackSectionsThanSplinePoints = testGenerator->sameAmountOfTrackSectionsThanSplinePoints();
+		UE_LOG(LogTemp, Log, TEXT("The track sections array has the same number of elements as the number of spline points: %s."), *FString(sameAmountOfTrackSectionsThanSplinePoints ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("The roll array should have the same number of elements as the number of spline points."), sameAmountOfRollsThanSplinePoints);
+		test->TestTrue(TEXT("The track sections array should have the same number of elements as the number of spline points."), sameAmountOfTrackSectionsThanSplinePoints);
 		return true;
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorRollArrayQuantityMatchesSplinePointsNumberTest, "ProjectR.TrackGenerator Tests.Unit.027: Roll values array quantity is adjusted to the number of spline points", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorTrackSectionsQuantityMatchesSplinePointsNumberTest, "ProjectR.TrackGenerator Tests.Unit.027: Track sections quantity is adjusted to the number of spline points", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FATrackGeneratorRollArrayQuantityMatchesSplinePointsNumberTest::RunTest(const FString& Parameters)
+bool FATrackGeneratorTrackSectionsQuantityMatchesSplinePointsNumberTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -1141,7 +1141,7 @@ bool FATrackGeneratorRollArrayQuantityMatchesSplinePointsNumberTest::RunTest(con
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckRollArrayQuantityAdjustedToNumberOfSplinePointsCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckTrackSectionsArrayQuantityAdjustedToNumberOfSplinePointsCommand(this));
 
 	return true;
 }
@@ -1211,9 +1211,7 @@ bool FATrackGeneratorSplineMeshComponentsRollAfterSettingRollInEditorTest::RunTe
 
 
 
-//create a struct containing roll and width for each spline mesh and add it to an array.
-//modify an array element and check that the corresponding spline changes accordingly.
-//allow to change roll to road splines. Make the magnet spline attached to that roll (roll after the magnet spline has been attached).
+//allow to change width for each spline mesh.
 //(when a custom mesh for magnet spline is already made) set location of magnet spline same as spline mesh,
 // attach and elevate the same amount as the bound of mesh (saved in constructor) multiplied by the scale (gotten in on construction).
 
