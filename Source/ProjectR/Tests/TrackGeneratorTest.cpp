@@ -1384,8 +1384,8 @@ bool FATrackGeneratorHaveExpectedCollisionsInPIETest::RunTest(const FString& Par
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	float widthValue = 30.0f;
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInPIECommand);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsExpectedCollisionInPIECommand(this));
