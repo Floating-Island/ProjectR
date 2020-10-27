@@ -47,7 +47,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")	
 		USplineComponent* splineComponent;
 	
-	TArray<USplineMeshComponent*> roadSplines;
+	//TArray<USplineMeshComponent*> roadSplines;
 
 	void recreateSplineMeshComponents();
 	void adjustRollArraySizeToSplinePointsQuantity();
@@ -63,15 +63,15 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Default Meshes")
 		UStaticMesh* roadMesh;
 
-	TArray<USplineMeshComponent*> magnetSplines;
+	//TArray<USplineMeshComponent*> magnetSplines;
 
 	float magnetSplineHeightDistanceToRoadSpline;
 
 	UPROPERTY(EditAnywhere, Category = "Default Meshes")
 		UStaticMesh* magnetSplineMesh;
 
-	UPROPERTY(EditAnywhere, Category = "Elements", EditFixedSize)
-		TArray<float> rollArray;
+	/*UPROPERTY(EditAnywhere, Category = "Elements", EditFixedSize)
+		TArray<float> rollArray;*/
 
 	UPROPERTY(EditAnywhere, Category = "Elements", EditFixedSize)
 		TArray<FTrackSectionData> trackSections;
