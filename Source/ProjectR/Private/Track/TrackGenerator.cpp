@@ -146,8 +146,7 @@ void ATrackGenerator::configureRoadSpline(int32 aSplinePointIndex, USplineMeshCo
 
 	aRoadSpline->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
 
-	aRoadSpline->SetStartRoll(trackSections[aSplinePointIndex].startRoll);
-	aRoadSpline->SetEndRoll(trackSections[nextSplineIndexOf(aSplinePointIndex)].startRoll);
+	configureRollAndWidthOf(aRoadSpline,aSplinePointIndex);
 }
 
 void ATrackGenerator::configureComponentPositionsAndTangents(int32 aSplinePointIndex, USplineMeshComponent* aSplineMesh)
@@ -158,6 +157,16 @@ void ATrackGenerator::configureComponentPositionsAndTangents(int32 aSplinePointI
 	FVector nextSplinePointTangent = splineComponent->GetTangentAtSplinePoint(nextSplineIndexOf(aSplinePointIndex), ESplineCoordinateSpace::Local);
 
 	aSplineMesh->SetStartAndEnd(currentSplinePointPosition, currentSplinePointTangent, nextSplinePointPosition, nextSplinePointTangent);
+}
+
+void ATrackGenerator::configureRollAndWidthOf(USplineMeshComponent* aSplineMeshComponent, int32 AtASplinePointIndex)
+{
+	aSplineMeshComponent->SetStartRoll(trackSections[AtASplinePointIndex].startRoll);
+	aSplineMeshComponent->SetEndRoll(trackSections[nextSplineIndexOf(AtASplinePointIndex)].startRoll);
+
+	float thickness = 1;
+	aSplineMeshComponent->SetStartScale(FVector2D(trackSections[AtASplinePointIndex].initialWidth), thickness);
+	aSplineMeshComponent->SetEndScale(FVector2D(trackSections[nextSplineIndexOf(AtASplinePointIndex)].initialWidth), thickness);
 }
 
 void ATrackGenerator::configureMagnetSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline, USplineMeshComponent* aMagnetSpline)
@@ -187,8 +196,7 @@ void ATrackGenerator::configureMagnetSpline(int32 aSplinePointIndex, USplineMesh
 
 	configureCollisionOf(aMagnetSpline);
 
-	aMagnetSpline->SetStartRoll(trackSections[aSplinePointIndex].startRoll);
-	aMagnetSpline->SetEndRoll(trackSections[nextSplineIndexOf(aSplinePointIndex)].startRoll);
+	configureRollAndWidthOf(aMagnetSpline, aSplinePointIndex);
 }
 
 void ATrackGenerator::configureCollisionOf(USplineMeshComponent* aMagnetSpline)

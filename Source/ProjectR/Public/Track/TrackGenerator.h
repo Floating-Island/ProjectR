@@ -25,8 +25,10 @@ struct FTrackSectionData
 	UPROPERTY(EditAnywhere, Category = "Default Meshes")
 		UStaticMesh* magnetMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/roadFloor")));
 
-	UPROPERTY(EditAnywhere, Category = "Track")
+	UPROPERTY(EditAnywhere, Category = "Section")
 		float startRoll = 0;
+	UPROPERTY(EditAnywhere, Category = "Section")
+		float initialWidth = 1;
 };
 
 UCLASS()
@@ -56,6 +58,7 @@ protected:
 	void configureMagnetSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline, USplineMeshComponent* aMagnetSpline);
 	void configureRoadSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline);
 	void configureComponentPositionsAndTangents(int32 aSplinePointIndex, USplineMeshComponent* aSplineMesh);
+	void configureRollAndWidthOf(USplineMeshComponent* aSplineMeshComponent, int32 AtASplinePointIndex);
 	void configureCollisionOf(USplineMeshComponent* aMagnetSpline);
 
 	UPROPERTY(EditAnywhere, Category = "Default Meshes")
