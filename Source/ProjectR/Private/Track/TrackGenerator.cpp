@@ -14,7 +14,6 @@ ATrackGenerator::ATrackGenerator()
 
 	roadMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/roadFloor")));
 
-
 	splineComponent->SetClosedLoop(true, true);
 
 	magnetSplineHeightDistanceToRoadSpline = 400.0f;
@@ -145,7 +144,7 @@ void ATrackGenerator::configureRoadSpline(int32 aSplinePointIndex, USplineMeshCo
 
 	aRoadSpline->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
 
-	configureRollAndWidthOf(aRoadSpline,aSplinePointIndex);
+	configureRollAndWidthOf(aRoadSpline, aSplinePointIndex);
 }
 
 void ATrackGenerator::configureComponentPositionsAndTangents(int32 aSplinePointIndex, USplineMeshComponent* aSplineMesh)
