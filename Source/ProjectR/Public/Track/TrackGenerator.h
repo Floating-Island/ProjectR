@@ -63,12 +63,12 @@ protected:
 	void configureCollisionOf(USplineMeshComponent* aMagnetSpline);
 
 	UPROPERTY(EditAnywhere, Category = "Default Settings")
-		UStaticMesh* roadMesh;
+		UStaticMesh* defaultRoadMesh;
 
 	float magnetSplineHeightDistanceToRoadSpline;
 
 	UPROPERTY(EditAnywhere, Category = "Default Settings")
-		UStaticMesh* magnetSplineMesh;
+		UStaticMesh* defaultMagnetMesh;
 	
 	UPROPERTY(EditAnywhere, Category = "Elements", EditFixedSize)
 		TArray<FTrackSectionData> trackSections;

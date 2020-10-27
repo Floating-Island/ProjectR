@@ -12,13 +12,13 @@ ATrackGenerator::ATrackGenerator()
 	splineComponent = CreateDefaultSubobject<USplineComponent>(TEXT("Spline Component"));
 	RootComponent = splineComponent;
 
-	roadMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/roadFloor")));
+	defaultRoadMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/roadFloor")));
 
 	splineComponent->SetClosedLoop(true, true);
 
 	magnetSplineHeightDistanceToRoadSpline = 400.0f;
 
-	magnetSplineMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/roadFloor")));
+	defaultMagnetMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/roadFloor")));
 
 	trackSections = TArray<FTrackSectionData>();
 
@@ -50,8 +50,8 @@ void ATrackGenerator::adjustRollArraySizeToSplinePointsQuantity()
 		for (int addedElements = 0; addedElements < quantityDifference; ++addedElements)
 		{
 			trackSections.Add(FTrackSectionData());
-			trackSections.Last().roadMesh = roadMesh;
-			trackSections.Last().magnetMesh = magnetSplineMesh;
+			trackSections.Last().roadMesh = defaultRoadMesh;
+			trackSections.Last().magnetMesh = defaultMagnetMesh;
 		}
 		return;
 	}

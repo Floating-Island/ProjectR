@@ -156,7 +156,7 @@ bool ATrackGeneratorMOCK::roadSplinesMeshesAreRoadMesh()
 			UE_LOG(LogTemp, Log, TEXT("Road spline doesn't have static mesh set."));
 			return false;
 		}
-		if (mesh != roadMesh)
+		if (mesh != defaultRoadMesh)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Road spline static mesh isn't the road mesh."));
 			return false;
