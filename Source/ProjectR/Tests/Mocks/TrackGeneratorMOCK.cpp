@@ -515,6 +515,7 @@ bool ATrackGeneratorMOCK::splineMeshComponentsWidthIs(float aWidthValue)
 void ATrackGeneratorMOCK::disableCollisions()
 {
 	collisionsEnabled = false;
+	recreateSplineMeshComponents();
 }
 
 bool ATrackGeneratorMOCK::splineMeshComponentsCollisionsDisabled()
