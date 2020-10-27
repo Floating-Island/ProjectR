@@ -1272,7 +1272,68 @@ bool FATrackGeneratorSplineMeshComponentsWidenAfterSettingWidenInEditorTest::Run
 
 
 
-//allow to change width for each spline mesh.
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldDisableCollisionsCommand);
+
+bool FSpawnTrackGeneratorInEditorWorldDisableCollisionsCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+
+	ATrackGeneratorMOCK* testGenerator = testWorld->SpawnActor<ATrackGeneratorMOCK>(ATrackGeneratorMOCK::StaticClass());
+
+	testGenerator->disableCollisions();
+
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckComponentsCollisionCommand, FAutomationTestBase*, test);
+
+bool FCheckComponentsCollisionCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+		bool componentsHavedCollisionsDisabled = testGenerator->splineMeshComponentsCollisionsDisabled();
+		UE_LOG(LogTemp, Log, TEXT("Components match setted collision enable: %s."), *FString(componentsHavedCollisionsDisabled ? "true" : "false"));
+
+		test->TestTrue(TEXT("The components should have their collision enable matching the one set."), componentsHavedCollisionsDisabled);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorAllowsDisableCollisionsInEditorTest, "ProjectR.TrackGenerator Tests.Unit.030: Spline mesh components disable collisions when setting it disabled", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorAllowsDisableCollisionsInEditorTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	float widthValue = 30.0f;
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldDisableCollisionsCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsCollisionCommand(this));
+
+	return true;
+}
+
+
+// Allow to set collisions disabled when editing the track generator (and always enable them in begin play).
 //(when a custom mesh for magnet spline is already made) set location of magnet spline same as spline mesh,
 // attach and elevate the same amount as the bound of mesh (saved in constructor) multiplied by the scale (gotten in on construction).
 
