@@ -61,16 +61,21 @@ protected:
 	void configureRollAndWidthOf(USplineMeshComponent* aSplineMeshComponent, int32 AtASplinePointIndex);
 	void configureCollisionOf(USplineMeshComponent* aMagnetSpline);
 
-	UPROPERTY(EditAnywhere, Category = "Default Meshes")
+	UPROPERTY(EditAnywhere, Category = "Default Settings")
 		UStaticMesh* roadMesh;
 
 	float magnetSplineHeightDistanceToRoadSpline;
 
-	UPROPERTY(EditAnywhere, Category = "Default Meshes")
+	UPROPERTY(EditAnywhere, Category = "Default Settings")
 		UStaticMesh* magnetSplineMesh;
-
+	
 	UPROPERTY(EditAnywhere, Category = "Elements", EditFixedSize)
 		TArray<FTrackSectionData> trackSections;
+
+	UPROPERTY(EditAnywhere, Category = "Default Settings")
+		bool collisionsEnabled;
+
+	
 
 public:
 

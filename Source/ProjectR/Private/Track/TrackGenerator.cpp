@@ -21,6 +21,8 @@ ATrackGenerator::ATrackGenerator()
 	magnetSplineMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/roadFloor")));
 
 	trackSections = TArray<FTrackSectionData>();
+
+	collisionsEnabled = true;
 }
 
 
@@ -29,6 +31,7 @@ ATrackGenerator::ATrackGenerator()
 void ATrackGenerator::BeginPlay()
 {
 	Super::BeginPlay();
+	collisionsEnabled = true;
 	recreateSplineMeshComponents();
 }
 
@@ -135,8 +138,11 @@ void ATrackGenerator::configureRoadSpline(int32 aSplinePointIndex, USplineMeshCo
 
 	configureComponentPositionsAndTangents(aSplinePointIndex, aRoadSpline);
 
-	aRoadSpline->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	aRoadSpline->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
+	if(collisionsEnabled)
+	{
+		aRoadSpline->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+		aRoadSpline->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
+	}
 
 	aRoadSpline->Mobility = RootComponent->Mobility;
 
@@ -192,7 +198,10 @@ void ATrackGenerator::configureMagnetSpline(int32 aSplinePointIndex, USplineMesh
 	aMagnetSpline->SetStartPosition(aMagnetSpline->GetStartPosition() + magnetSplineHeight);//won't be necessary when I create a static mesh for magnet splines...
 	aMagnetSpline->SetEndPosition(aMagnetSpline->GetEndPosition() + magnetSplineHeight);//won't be necessary when I create a static mesh for magnet splines...
 
-	configureCollisionOf(aMagnetSpline);
+	if(collisionsEnabled)
+	{
+		configureCollisionOf(aMagnetSpline);
+	}
 
 	configureRollAndWidthOf(aMagnetSpline, aSplinePointIndex);
 }
