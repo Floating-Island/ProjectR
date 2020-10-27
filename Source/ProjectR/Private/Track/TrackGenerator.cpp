@@ -24,6 +24,8 @@ ATrackGenerator::ATrackGenerator()
 	magnetSplineMesh = roadMesh;
 
 	rollArray = TArray<float>();
+
+	trackSections = TArray<FTrackSectionData>();
 }
 
 
@@ -49,7 +51,10 @@ void ATrackGenerator::adjustRollArraySizeToSplinePointsQuantity()
 	{
 		for (int addedElements = 0; addedElements < quantityDifference; ++addedElements)
 		{
-			rollArray.Add(0);
+			//rollArray.Add(0);
+			trackSections.Add(FTrackSectionData());
+			trackSections.Last().roadMesh = roadMesh;
+			trackSections.Last().magnetMesh = magnetSplineMesh;
 		}
 		return;
 	}
@@ -58,7 +63,8 @@ void ATrackGenerator::adjustRollArraySizeToSplinePointsQuantity()
 		quantityDifference = abs(quantityDifference);
 		for (int removedElements = 0; removedElements < quantityDifference; ++removedElements)
 		{
-			rollArray.Pop(true);
+			//rollArray.Pop(true);
+			trackSections.Pop(true);
 		}
 		return;
 	}
@@ -69,6 +75,13 @@ void ATrackGenerator::cleanSplineMeshComponents()
 	destroySplineMeshComponents();
 	roadSplines.Empty();
 	magnetSplines.Empty();
+
+	
+		for (auto& trackSection : trackSections)
+		{
+			trackSection.roadSpline = nullptr;
+			trackSection.magnetSpline = nullptr;
+		}
 }
 
 void ATrackGenerator::destroySplineMeshComponents()
@@ -81,6 +94,13 @@ void ATrackGenerator::destroySplineMeshComponents()
 	{
 		magnetSpline->DestroyComponent();
 	}
+
+	
+		for (auto trackSection: trackSections)
+		{
+			trackSection.roadSpline->DestroyComponent();
+			trackSection.magnetSpline->DestroyComponent();
+		}
 }
 
 
@@ -102,6 +122,11 @@ void ATrackGenerator::toMagnetOverlapSubscribe(ATrackManager* aManager)
 	{
 		magnetMesh->OnComponentBeginOverlap.AddDynamic(aManager, &ATrackManager::addJetToMagnetize);
 	}
+
+		for (auto& trackSection : trackSections)
+		{
+			trackSection.magnetSpline->OnComponentBeginOverlap.AddDynamic(aManager, &ATrackManager::addJetToMagnetize);
+		}
 }
 
 FVector ATrackGenerator::closestLocationTo(FVector anotherLocation)
@@ -127,6 +152,8 @@ void ATrackGenerator::configureRoadSpline(int32 aSplinePointIndex, USplineMeshCo
 	aRoadSpline->RegisterComponent();
 	roadSplines.Add(aRoadSpline);
 
+		trackSections[aSplinePointIndex].roadSpline = aRoadSpline;
+
 	aRoadSpline->bSmoothInterpRollScale = true;
 
 	configureComponentPositionsAndTangents(aSplinePointIndex, aRoadSpline);
@@ -136,10 +163,16 @@ void ATrackGenerator::configureRoadSpline(int32 aSplinePointIndex, USplineMeshCo
 
 	aRoadSpline->Mobility = RootComponent->Mobility;
 	aRoadSpline->SetStaticMesh(roadMesh);
+
+		aRoadSpline->SetStaticMesh(trackSections[aSplinePointIndex].roadMesh);
+	
 	aRoadSpline->AttachToComponent(RootComponent, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
 
 	aRoadSpline->SetStartRoll(rollArray[aSplinePointIndex]);
 	aRoadSpline->SetEndRoll(rollArray[nextSplineIndexOf(aSplinePointIndex)]);
+
+		aRoadSpline->SetStartRoll(trackSections[aSplinePointIndex].startRoll);
+		aRoadSpline->SetEndRoll(trackSections[nextSplineIndexOf(aSplinePointIndex)].startRoll);
 }
 
 void ATrackGenerator::configureComponentPositionsAndTangents(int32 aSplinePointIndex, USplineMeshComponent* aSplineMesh)
@@ -157,6 +190,8 @@ void ATrackGenerator::configureMagnetSpline(int32 aSplinePointIndex, USplineMesh
 	aMagnetSpline->RegisterComponent();
 	magnetSplines.Add(aMagnetSpline);
 
+		trackSections[aSplinePointIndex].magnetSpline = aMagnetSpline;
+
 	aMagnetSpline->Mobility = aRoadSpline->Mobility;
 
 	aMagnetSpline->SetHiddenInGame(true);
@@ -166,6 +201,8 @@ void ATrackGenerator::configureMagnetSpline(int32 aSplinePointIndex, USplineMesh
 	configureComponentPositionsAndTangents(aSplinePointIndex, aMagnetSpline);
 
 	aMagnetSpline->SetStaticMesh(magnetSplineMesh);
+
+		aMagnetSpline->SetStaticMesh(trackSections[aSplinePointIndex].magnetMesh);
 
 	//aMagnetBox->SetStartScale(aMagnetBox->GetStartScale()*5);//should be removed once the initial bounds Z extension is known (of a mesh created for it)...
 	//aMagnetBox->SetEndScale(aMagnetBox->GetEndScale()*5);//should be removed once the initial bounds Z extension is known (of a mesh created for it)...
@@ -181,6 +218,10 @@ void ATrackGenerator::configureMagnetSpline(int32 aSplinePointIndex, USplineMesh
 
 	aMagnetSpline->SetStartRoll(rollArray[aSplinePointIndex]);
 	aMagnetSpline->SetEndRoll(rollArray[nextSplineIndexOf(aSplinePointIndex)]);
+
+		aMagnetSpline->SetStartRoll(trackSections[aSplinePointIndex].startRoll);
+		aMagnetSpline->SetEndRoll(trackSections[nextSplineIndexOf(aSplinePointIndex)].startRoll);
+		
 }
 
 void ATrackGenerator::configureCollisionOf(USplineMeshComponent* aMagnetSpline)

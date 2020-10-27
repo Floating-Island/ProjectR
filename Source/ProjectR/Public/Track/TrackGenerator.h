@@ -16,7 +16,7 @@ USTRUCT()
 struct FTrackSectionData
 {
 	GENERATED_BODY()
-	
+
 	USplineMeshComponent* roadSpline = nullptr;
 	USplineMeshComponent* magnetSpline = nullptr;
 	
@@ -74,7 +74,7 @@ protected:
 		TArray<float> rollArray;
 
 	UPROPERTY(EditAnywhere, Category = "Elements", EditFixedSize)
-		TArray<FTrackSectionData> trackSection;
+		TArray<FTrackSectionData> trackSections;
 
 public:
 
