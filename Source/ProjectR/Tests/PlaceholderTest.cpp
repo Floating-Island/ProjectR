@@ -19,7 +19,7 @@
 
 
 //a test
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FOneIsOneTest, "ProjectR.Placeholder Tests.000: Unit.One is one", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FOneIsOneTest, "ProjectR.Placeholder Tests.Unit.000: One is one", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 bool FOneIsOneTest::RunTest(const FString& Parameters)

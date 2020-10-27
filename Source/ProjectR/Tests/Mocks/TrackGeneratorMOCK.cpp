@@ -18,7 +18,7 @@ bool ATrackGeneratorMOCK::splineIsRootComponent()
 
 int32 ATrackGeneratorMOCK::roadSplinesQuantity()
 {
-	return roadSplines.Num();
+	return trackSections.Num();
 }
 
 int32 ATrackGeneratorMOCK::splinePointsQuantity()
@@ -41,7 +41,7 @@ bool ATrackGeneratorMOCK::roadSplinesAndPointsHaveSameStartPositions()
 	for (int32 splinePointIndex = 0; splinePointIndex < splinePointsQuantity(); ++splinePointIndex)
 	{
 		FVector currentSplinePointPosition = splineComponent->GetLocationAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::Local);
-		FVector currentRoadSplinePosition = (roadSplines[splinePointIndex])->GetStartPosition();
+		FVector currentRoadSplinePosition = trackSections[splinePointIndex].roadSpline->GetStartPosition();
 
 		UE_LOG(LogTemp, Log, TEXT("Spline point position: %s."), *currentSplinePointPosition.ToString());
 		UE_LOG(LogTemp, Log, TEXT("Road spline start position: %s."), *currentRoadSplinePosition.ToString());
@@ -66,7 +66,7 @@ bool ATrackGeneratorMOCK::roadSplinesAndPointsHaveSameEndPositions()
 	for (int32 splinePointIndex = 0; splinePointIndex < splinePointsQuantity(); ++splinePointIndex)
 	{
 		FVector nextSplinePointPosition = splineComponent->GetLocationAtSplinePoint(nextSplineIndexOf(splinePointIndex), ESplineCoordinateSpace::Local);
-		FVector currentRoadSplinePosition = (roadSplines[splinePointIndex])->GetEndPosition();
+		FVector currentRoadSplinePosition = trackSections[splinePointIndex].roadSpline->GetEndPosition();
 
 		UE_LOG(LogTemp, Log, TEXT("Spline point position: %s."), *nextSplinePointPosition.ToString());
 		UE_LOG(LogTemp, Log, TEXT("Road spline end position: %s."), *currentRoadSplinePosition.ToString());
@@ -93,7 +93,7 @@ bool ATrackGeneratorMOCK::roadSplinesAndPointsHaveSameStartTangents()
 	for (int32 splinePointIndex = 0; splinePointIndex < splinePointsQuantity(); ++splinePointIndex)
 	{
 		FVector currentSplinePointTangent = splineComponent->GetTangentAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::Local);
-		FVector currentRoadSplineTangent = (roadSplines[splinePointIndex])->GetStartTangent();
+		FVector currentRoadSplineTangent = trackSections[splinePointIndex].roadSpline->GetStartTangent();
 
 		UE_LOG(LogTemp, Log, TEXT("Spline point tangent: %s."), *currentSplinePointTangent.ToString());
 		UE_LOG(LogTemp, Log, TEXT("Road spline start tangent: %s."), *currentRoadSplineTangent.ToString());
@@ -118,7 +118,7 @@ bool ATrackGeneratorMOCK::roadSplinesAndPointsHaveSameEndTangents()
 	for (int32 splinePointIndex = 0; splinePointIndex < splinePointsQuantity(); ++splinePointIndex)
 	{
 		FVector nextSplinePointTangent = splineComponent->GetTangentAtSplinePoint(nextSplineIndexOf(splinePointIndex), ESplineCoordinateSpace::Local);
-		FVector currentRoadSplineTangent = (roadSplines[splinePointIndex])->GetEndTangent();
+		FVector currentRoadSplineTangent = trackSections[splinePointIndex].roadSpline->GetEndTangent();
 
 		UE_LOG(LogTemp, Log, TEXT("Spline point tangent: %s."), *nextSplinePointTangent.ToString());
 		UE_LOG(LogTemp, Log, TEXT("Road spline end tangent: %s."), *currentRoadSplineTangent.ToString());
@@ -135,9 +135,9 @@ bool ATrackGeneratorMOCK::roadSplinesAndPointsHaveSameEndTangents()
 
 bool ATrackGeneratorMOCK::roadSplinesHaveMeshesSet()
 {
-	for (auto roadSpline : roadSplines)
+	for (const auto& trackSection : trackSections)
 	{
-		if (!roadSpline->GetStaticMesh())
+		if (!trackSection.roadSpline->GetStaticMesh())
 		{
 			UE_LOG(LogTemp, Log, TEXT("Road spline doesn't have static mesh set."));
 			return false;
@@ -148,15 +148,15 @@ bool ATrackGeneratorMOCK::roadSplinesHaveMeshesSet()
 
 bool ATrackGeneratorMOCK::roadSplinesMeshesAreRoadMesh()
 {
-	for (auto roadSpline : roadSplines)
+	for (const auto& trackSection : trackSections)
 	{
-		UStaticMesh* mesh = roadSpline->GetStaticMesh();
+		UStaticMesh* mesh = trackSection.roadSpline->GetStaticMesh();
 		if (!mesh)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Road spline doesn't have static mesh set."));
 			return false;
 		}
-		if (mesh != roadMesh)
+		if (mesh != defaultRoadMesh)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Road spline static mesh isn't the road mesh."));
 			return false;
@@ -167,19 +167,19 @@ bool ATrackGeneratorMOCK::roadSplinesMeshesAreRoadMesh()
 
 bool ATrackGeneratorMOCK::magnetSplinesQuantitySameAsSplinePoints()
 {
-	return static_cast<int32>(magnetSplines.Num()) == splinePointsQuantity();
+	return static_cast<int32>(trackSections.Num()) == splinePointsQuantity();
 }
 
 bool ATrackGeneratorMOCK::roadSplinesHaveCollisionEnabledSetToQueryAndPhysics()
 {
-	for (auto roadSpline : roadSplines)
+	for (const auto& trackSection : trackSections)
 	{
-		if (!roadSpline)
+		if (!trackSection.roadSpline)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Road spline is nullptr."));
 			return false;
 		}
-		if (roadSpline->GetCollisionEnabled() != ECollisionEnabled::QueryAndPhysics)
+		if (trackSection.roadSpline->GetCollisionEnabled() != ECollisionEnabled::QueryAndPhysics)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Road spline doesn't have collision enabled."));
 			return false;
@@ -190,14 +190,14 @@ bool ATrackGeneratorMOCK::roadSplinesHaveCollisionEnabledSetToQueryAndPhysics()
 
 bool ATrackGeneratorMOCK::roadSplinesHaveCollisionObjectToWorldStatic()
 {
-	for (auto roadSpline : roadSplines)
+	for (const auto& trackSection : trackSections)
 	{
-		if (!roadSpline)
+		if (!trackSection.roadSpline)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Road spline is nullptr."));
 			return false;
 		}
-		if (roadSpline->GetCollisionObjectType() != ECollisionChannel::ECC_WorldStatic)
+		if (trackSection.roadSpline->GetCollisionObjectType() != ECollisionChannel::ECC_WorldStatic)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Road spline isn't of type world static."));
 			return false;
@@ -208,14 +208,14 @@ bool ATrackGeneratorMOCK::roadSplinesHaveCollisionObjectToWorldStatic()
 
 bool ATrackGeneratorMOCK::roadSplinesAreAttachedToRoot()
 {
-	for (auto roadSpline : roadSplines)
+	for (const auto& trackSection : trackSections)
 	{
-		if (!roadSpline)
+		if (!trackSection.roadSpline)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Road spline is nullptr."));
 			return false;
 		}
-		if (roadSpline->GetAttachParent() != RootComponent)
+		if (trackSection.roadSpline->GetAttachParent() != RootComponent)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Road spline isn't attached to root component."));
 			return false;
@@ -226,14 +226,14 @@ bool ATrackGeneratorMOCK::roadSplinesAreAttachedToRoot()
 
 bool ATrackGeneratorMOCK::roadSplinesMobilitySameAsRoot()
 {
-	for (auto roadSpline : roadSplines)
+	for (const auto& trackSection : trackSections)
 	{
-		if (!roadSpline)
+		if (!trackSection.roadSpline)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Road spline is nullptr."));
 			return false;
 		}
-		if (roadSpline->Mobility != RootComponent->Mobility)
+		if (trackSection.roadSpline->Mobility != RootComponent->Mobility)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Road spline doesn't have same mobility as root."));
 			return false;
@@ -249,16 +249,16 @@ bool ATrackGeneratorMOCK::isSplineComponentLooping()
 
 bool ATrackGeneratorMOCK::magnetSplinesAreAttachedToRoadSplines()
 {
-	for (int atIndex = 0; atIndex < roadSplines.Num(); ++atIndex)
+	for (const auto& trackSection : trackSections)
 	{
-		if (!roadSplines[atIndex] || !magnetSplines[atIndex])
+		if (!trackSection.roadSpline || !trackSection.magnetSpline)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Road spline or magnet spline is nullptr."));
 			return false;
 		}
-		if (magnetSplines[atIndex]->GetAttachParent() != roadSplines[atIndex])
+		if (trackSection.magnetSpline->GetAttachParent() != trackSection.roadSpline)
 		{
-			UE_LOG(LogTemp, Log, TEXT("Magnet spline at index %d isn't attached to road spline."), atIndex);
+			UE_LOG(LogTemp, Log, TEXT("Magnet spline isn't attached to road spline."));
 			return false;
 		}
 	}
@@ -267,16 +267,16 @@ bool ATrackGeneratorMOCK::magnetSplinesAreAttachedToRoadSplines()
 
 bool ATrackGeneratorMOCK::magnetSplinesMobilitySameAsRoadSplines()
 {
-	for (int atIndex = 0; atIndex < roadSplines.Num(); ++atIndex)
+	for (const auto& trackSection : trackSections)
 	{
-		if (!roadSplines[atIndex] || !magnetSplines[atIndex])
+		if (!trackSection.roadSpline || !trackSection.magnetSpline)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Road spline or magnet spline is nullptr."));
 			return false;
 		}
-		if (magnetSplines[atIndex]->Mobility != roadSplines[atIndex]->Mobility)
+		if (trackSection.magnetSpline->Mobility != trackSection.roadSpline->Mobility)
 		{
-			UE_LOG(LogTemp, Log, TEXT("Magnet spline at index %d doesn't have the same mobility as the road spline."), atIndex);
+			UE_LOG(LogTemp, Log, TEXT("Magnet spline at doesn't have the same mobility as the road spline."));
 			return false;
 		}
 	}
@@ -285,22 +285,22 @@ bool ATrackGeneratorMOCK::magnetSplinesMobilitySameAsRoadSplines()
 
 bool ATrackGeneratorMOCK::magnetSplinesOnTopOfRoadSplines()
 {
-	for (int atIndex = 0; atIndex < roadSplines.Num(); ++atIndex)
+	for (const auto& trackSection : trackSections)
 	{
-		if (!roadSplines[atIndex] || !magnetSplines[atIndex])
+		if (!trackSection.roadSpline || !trackSection.magnetSpline)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Road spline or magnet spline is nullptr."));
 			return false;
 		}
-		float magnetSplineStartDistance = (magnetSplines[atIndex]->GetStartPosition() - roadSplines[atIndex]->GetStartPosition()).Size();
-		float magnetSplineEndDistance = (magnetSplines[atIndex]->GetEndPosition() - roadSplines[atIndex]->GetEndPosition()).Size();
+		float magnetSplineStartDistance = (trackSection.magnetSpline->GetStartPosition() - trackSection.roadSpline->GetStartPosition()).Size();
+		float magnetSplineEndDistance = (trackSection.magnetSpline->GetEndPosition() - trackSection.roadSpline->GetEndPosition()).Size();
 		if (!FMath::IsNearlyEqual(magnetSplineStartDistance, magnetSplineHeightDistanceToRoadSpline, 0.001f) || !FMath::IsNearlyEqual(magnetSplineEndDistance, magnetSplineHeightDistanceToRoadSpline, 0.001f))
 		{
-			UE_LOG(LogTemp, Log, TEXT("Magnet spline at index %d isn't located at the specified height distance from the road spline."), atIndex);
-			UE_LOG(LogTemp, Log, TEXT("Magnet spline start position: %s."), *magnetSplines[atIndex]->GetStartPosition().ToString());
-			UE_LOG(LogTemp, Log, TEXT("Road spline start position: %s."), *roadSplines[atIndex]->GetStartPosition().ToString());
-			UE_LOG(LogTemp, Log, TEXT("Magnet spline end position: %s."), *magnetSplines[atIndex]->GetEndPosition().ToString());
-			UE_LOG(LogTemp, Log, TEXT("Road spline end position: %s."), *roadSplines[atIndex]->GetEndPosition().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Magnet spline isn't located at the specified height distance from the road spline."));
+			UE_LOG(LogTemp, Log, TEXT("Magnet spline start position: %s."), *trackSection.magnetSpline->GetStartPosition().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Road spline start position: %s."), *trackSection.roadSpline->GetStartPosition().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Magnet spline end position: %s."), *trackSection.magnetSpline->GetEndPosition().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Road spline end position: %s."), *trackSection.roadSpline->GetEndPosition().ToString());
 			return false;
 		}
 	}
@@ -314,12 +314,13 @@ bool ATrackGeneratorMOCK::magnetSplinesAndPointsHaveSameTangents()
 		return false;
 	}
 
-	for (int32 splinePointIndex = 0; splinePointIndex < splinePointsQuantity(); ++splinePointIndex)
+	int index = 0;
+	for (const auto& trackSection : trackSections)
 	{
-		FVector magnetSplineStartTangent = (magnetSplines[splinePointIndex])->GetStartTangent();
-		FVector magnetSplineEndTangent = (magnetSplines[splinePointIndex])->GetEndTangent();
-		FVector currentSplinePointTangent = splineComponent->GetTangentAtSplinePoint(splinePointIndex, ESplineCoordinateSpace::Local);
-		FVector nextSplinePointTangent = splineComponent->GetTangentAtSplinePoint(nextSplineIndexOf(splinePointIndex), ESplineCoordinateSpace::Local);
+		FVector magnetSplineStartTangent = (trackSection.magnetSpline)->GetStartTangent();
+		FVector magnetSplineEndTangent = (trackSection.magnetSpline)->GetEndTangent();
+		FVector currentSplinePointTangent = splineComponent->GetTangentAtSplinePoint(index, ESplineCoordinateSpace::Local);
+		FVector nextSplinePointTangent = splineComponent->GetTangentAtSplinePoint(nextSplineIndexOf(index), ESplineCoordinateSpace::Local);
 
 		UE_LOG(LogTemp, Log, TEXT("current spline point tangent: %s."), *currentSplinePointTangent.ToString());
 		UE_LOG(LogTemp, Log, TEXT("Magnet spline start tangent: %s."), *magnetSplineStartTangent.ToString());
@@ -331,6 +332,7 @@ bool ATrackGeneratorMOCK::magnetSplinesAndPointsHaveSameTangents()
 			UE_LOG(LogTemp, Log, TEXT("Magnet spline tangents don't match spline point tangents."));
 			return false;
 		}
+		++index;
 	}
 
 	return true;
@@ -338,9 +340,9 @@ bool ATrackGeneratorMOCK::magnetSplinesAndPointsHaveSameTangents()
 
 bool ATrackGeneratorMOCK::magnetSplinesHaveMeshesSet()
 {
-	for (auto magnetSpline : magnetSplines)
+	for (const auto& trackSection : trackSections)
 	{
-		if (!magnetSpline->GetStaticMesh())
+		if (!trackSection.magnetSpline->GetStaticMesh())
 		{
 			UE_LOG(LogTemp, Log, TEXT("Magnet spline doesn't have static mesh set."));
 			return false;
@@ -351,9 +353,9 @@ bool ATrackGeneratorMOCK::magnetSplinesHaveMeshesSet()
 
 bool ATrackGeneratorMOCK::magnetSplinesAreHiddenInGame()
 {
-	for (auto magnetSpline : magnetSplines)
+	for (const auto& trackSection : trackSections)
 	{
-		if (!magnetSpline->bHiddenInGame)
+		if (!trackSection.magnetSpline->bHiddenInGame)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Magnet spline isn't set to be hidden in game."));
 			return false;
@@ -364,9 +366,9 @@ bool ATrackGeneratorMOCK::magnetSplinesAreHiddenInGame()
 
 bool ATrackGeneratorMOCK::collisionEnabledToQueryOnlyOnMagnetSplines()
 {
-	for (auto magnetSpline : magnetSplines)
+	for (const auto& trackSection : trackSections)
 	{
-		if (magnetSpline->GetCollisionEnabled() != ECollisionEnabled::QueryOnly)
+		if (trackSection.magnetSpline->GetCollisionEnabled() != ECollisionEnabled::QueryOnly)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Magnet spline isn't set to have collisions enabled to query only."));
 			return false;
@@ -377,9 +379,9 @@ bool ATrackGeneratorMOCK::collisionEnabledToQueryOnlyOnMagnetSplines()
 
 bool ATrackGeneratorMOCK::magnetSplinesOverlapWithPawnChannel()
 {
-	for (auto magnetSpline : magnetSplines)
+	for (const auto& trackSection : trackSections)
 	{
-		if (magnetSpline->GetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn) != ECollisionResponse::ECR_Overlap)
+		if (trackSection.magnetSpline->GetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn) != ECollisionResponse::ECR_Overlap)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Magnet spline isn't set to overlap with the pawn channel."));
 			return false;
@@ -390,9 +392,9 @@ bool ATrackGeneratorMOCK::magnetSplinesOverlapWithPawnChannel()
 
 bool ATrackGeneratorMOCK::magnetSplinesGenerateOverlapEvents()
 {
-	for (auto magnetSpline : magnetSplines)
+	for (const auto& trackSection : trackSections)
 	{
-		if (!magnetSpline->GetGenerateOverlapEvents())
+		if (!trackSection.magnetSpline->GetGenerateOverlapEvents())
 		{
 			UE_LOG(LogTemp, Log, TEXT("Magnet spline isn't set to generate overlap events."));
 			return false;
@@ -403,10 +405,10 @@ bool ATrackGeneratorMOCK::magnetSplinesGenerateOverlapEvents()
 
 bool ATrackGeneratorMOCK::componentsHaveSmoothInterpolation()
 {
-	for (int32 splinePointIndex = 0; splinePointIndex < splinePointsQuantity(); ++splinePointIndex)
+	for (const auto& trackSection : trackSections)
 	{
-		bool magnetSplineWithSmoothInterpolation = magnetSplines[splinePointIndex]->bSmoothInterpRollScale;
-		bool roadSplineWithSmoothInterpolation = roadSplines[splinePointIndex]->bSmoothInterpRollScale;
+		bool magnetSplineWithSmoothInterpolation = trackSection.magnetSpline->bSmoothInterpRollScale;
+		bool roadSplineWithSmoothInterpolation = trackSection.roadSpline->bSmoothInterpRollScale;
 
 		UE_LOG(LogTemp, Log, TEXT("Road spline has smooth interpolation: %s."), *FString(roadSplineWithSmoothInterpolation ? "true" : "false"));
 		UE_LOG(LogTemp, Log, TEXT("Magnet spline has smooth interpolation: %s."), *FString(magnetSplineWithSmoothInterpolation ? "true" : "false"));
@@ -421,40 +423,118 @@ bool ATrackGeneratorMOCK::componentsHaveSmoothInterpolation()
 	return true;
 }
 
-//bool ATrackGeneratorMOCK::magnetSplinesRollMatchesRoadSplines()
-//{
-//	for (auto roadSpline : roadSplines)
-//	{
-//		float defaultRoll = 30.0f;
-//		roadSpline->SetStartRoll(defaultRoll);
-//		roadSpline->SetEndRoll(defaultRoll);
-//		modifyRoll(roadSpline, defaultRoll);
-//	}
-//	//updateSplineMeshes();
-//
-//	for (int32 splinePointIndex = 0; splinePointIndex < splinePointsQuantity(); ++splinePointIndex)
-//	{
-//		float roadSplineStartRoll = (roadSplines[splinePointIndex])->GetStartRoll();
-//		float roadSplineEndRoll = (roadSplines[splinePointIndex])->GetEndRoll();
-//		float magnetSplineStartRoll = (magnetSplines[splinePointIndex])->GetStartRoll();
-//		float magnetSplineEndRoll = (magnetSplines[splinePointIndex])->GetEndRoll();
-//
-//
-//		UE_LOG(LogTemp, Log, TEXT("Road spline start roll: %s."), *FString::SanitizeFloat(roadSplineStartRoll));
-//		UE_LOG(LogTemp, Log, TEXT("Road spline end roll: %s."), *FString::SanitizeFloat(roadSplineEndRoll));
-//		UE_LOG(LogTemp, Log, TEXT("Magnet spline start roll: %s."), *FString::SanitizeFloat(magnetSplineStartRoll));
-//		UE_LOG(LogTemp, Log, TEXT("Magnet spline end roll: %s."), *FString::SanitizeFloat(magnetSplineEndRoll));
-//
-//		if (!FMath::IsNearlyEqual(magnetSplineStartRoll, roadSplineStartRoll) || !FMath::IsNearlyEqual(magnetSplineEndRoll, roadSplineEndRoll))
-//		{
-//			UE_LOG(LogTemp, Log, TEXT("Magnet spline rolls don't match road spline rolls."));
-//			return false;
-//		}
-//	}
-//
-//	return true;
-//}
+bool ATrackGeneratorMOCK::sameAmountOfTrackSectionsThanSplinePoints()
+{
+	return trackSections.Num() == splinePointsQuantity();
+}
 
+void ATrackGeneratorMOCK::rollSplines(float aRollValue)
+{
+	for (auto& trackSection : trackSections)
+	{
+		trackSection.startRoll = aRollValue;
+	}
+	UE_LOG(LogTemp, Log, TEXT("Roll has been set to: %f in the roll array. Now recreate the spline mesh components."), aRollValue);
+	recreateSplineMeshComponents();
+}
+
+bool ATrackGeneratorMOCK::splineMeshComponentsRollIs(float aRollValue)
+{
+	int index = 0;
+	for (const auto& trackSection : trackSections)
+	{
+		float roadStartRoll = trackSection.roadSpline->GetStartRoll();
+		float roadEndRoll = trackSection.roadSpline->GetEndRoll();
+		float magnetStartRoll = trackSection.magnetSpline->GetStartRoll();
+		float magnetEndRoll = trackSection.magnetSpline->GetEndRoll();
+
+		UE_LOG(LogTemp, Log, TEXT("Specified roll: %f."), aRollValue);
+		UE_LOG(LogTemp, Log, TEXT("Spline point index: %d."), index);
+		UE_LOG(LogTemp, Log, TEXT("Road spline start roll: %f."), roadStartRoll);
+		UE_LOG(LogTemp, Log, TEXT("Road spline end roll: %f."), roadEndRoll);
+		UE_LOG(LogTemp, Log, TEXT("Magnet spline start roll: %f."), magnetStartRoll);
+		UE_LOG(LogTemp, Log, TEXT("Magnet spline end roll: %f."), magnetEndRoll);
+
+		bool roadStartRollSimilarToSpecified = FMath::IsNearlyEqual(roadStartRoll, aRollValue);
+		bool roadEndRollSimilarToSpecified = FMath::IsNearlyEqual(roadEndRoll, aRollValue);
+		bool magnetStartRollSimilarToSpecified = FMath::IsNearlyEqual(magnetStartRoll, aRollValue);
+		bool magnetEndRollSimilarToSpecified = FMath::IsNearlyEqual(magnetEndRoll, aRollValue);
+
+		if (!roadStartRollSimilarToSpecified || !roadEndRollSimilarToSpecified || !magnetStartRollSimilarToSpecified || !magnetEndRollSimilarToSpecified)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Components don't have roll similar to the specified."));
+			return false;
+		}
+		++index;
+	}
+	return true;
+}
+
+void ATrackGeneratorMOCK::widenSplines(float aWidthValue)
+{
+	for (auto& trackSection : trackSections)
+	{
+		trackSection.initialWidth = aWidthValue;
+	}
+	UE_LOG(LogTemp, Log, TEXT("Width has been set to: %f. Now recreate the spline mesh components."), aWidthValue);
+	recreateSplineMeshComponents();
+}
+
+bool ATrackGeneratorMOCK::splineMeshComponentsWidthIs(float aWidthValue)
+{
+	int index = 0;
+	for (const auto& trackSection : trackSections)
+	{
+		float roadInitialWidth = trackSection.roadSpline->GetStartScale().X;
+		float roadFinalWidth = trackSection.roadSpline->GetEndScale().X;
+		float magnetInitialWidth = trackSection.magnetSpline->GetStartScale().X;
+		float magnetFinalWidth = trackSection.magnetSpline->GetEndScale().X;
+
+		UE_LOG(LogTemp, Log, TEXT("Specified width: %f."), aWidthValue);
+		UE_LOG(LogTemp, Log, TEXT("Spline point index: %d."), index);
+		UE_LOG(LogTemp, Log, TEXT("Road spline initial width: %f."), roadInitialWidth);
+		UE_LOG(LogTemp, Log, TEXT("Road spline final width: %f."), roadFinalWidth);
+		UE_LOG(LogTemp, Log, TEXT("Magnet spline initial width: %f."), magnetInitialWidth);
+		UE_LOG(LogTemp, Log, TEXT("Magnet spline final width: %f."), magnetFinalWidth);
+
+		bool roadInitialScaleSimilarToSpecified = FMath::IsNearlyEqual(roadInitialWidth, aWidthValue);
+		bool roadEndScaleSimilarToSpecified = FMath::IsNearlyEqual(roadFinalWidth, aWidthValue);
+		bool magnetInitialScaleSimilarToSpecified = FMath::IsNearlyEqual(magnetInitialWidth, aWidthValue);
+		bool magnetEndScaleSimilarToSpecified = FMath::IsNearlyEqual(magnetFinalWidth, aWidthValue);
+
+		if (!roadInitialScaleSimilarToSpecified || !roadEndScaleSimilarToSpecified || !magnetInitialScaleSimilarToSpecified || !magnetEndScaleSimilarToSpecified)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Components don't have width similar to the specified."));
+			return false;
+		}
+		++index;
+	}
+	return true;
+}
+
+void ATrackGeneratorMOCK::disableCollisions()
+{
+	collisionsEnabled = false;
+	recreateSplineMeshComponents();
+}
+
+bool ATrackGeneratorMOCK::splineMeshComponentsCollisionsDisabled()
+{
+	for (const auto& trackSection : trackSections)
+	{
+		if (trackSection.magnetSpline->GetCollisionEnabled() != ECollisionEnabled::NoCollision || trackSection.roadSpline->GetCollisionEnabled() != ECollisionEnabled::NoCollision)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Component has collisions enabled when setting it to disable."));
+			return false;
+		}
+	}
+	return true;
+}
+
+bool ATrackGeneratorMOCK::splineMeshComponentsExpectedCollisions()
+{
+	return collisionEnabledToQueryOnlyOnMagnetSplines() && roadSplinesHaveCollisionEnabledSetToQueryAndPhysics();
+}
 
 
 
