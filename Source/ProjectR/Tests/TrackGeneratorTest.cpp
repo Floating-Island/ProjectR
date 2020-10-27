@@ -1391,6 +1391,8 @@ bool FATrackGeneratorHaveExpectedCollisionsInPIETest::RunTest(const FString& Par
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsExpectedCollisionInPIECommand(this));
 
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
 	return true;
 }
 
