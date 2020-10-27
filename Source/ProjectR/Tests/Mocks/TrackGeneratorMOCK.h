@@ -46,4 +46,6 @@ public:
 	bool splineMeshComponentsRollIs(float aRollValue);
 	void widenSplines(float aWidthValue);
 	bool splineMeshComponentsWidthIs(float aWidthValue);
+	void disableCollisions();
+	bool splineMeshComponentsCollisionsDisabled();
 };

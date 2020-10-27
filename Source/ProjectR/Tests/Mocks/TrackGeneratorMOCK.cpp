@@ -512,5 +512,23 @@ bool ATrackGeneratorMOCK::splineMeshComponentsWidthIs(float aWidthValue)
 	return true;
 }
 
+void ATrackGeneratorMOCK::disableCollisions()
+{
+	collisionsEnabled = false;
+}
+
+bool ATrackGeneratorMOCK::splineMeshComponentsCollisionsDisabled()
+{
+	for (const auto& trackSection : trackSections)
+	{
+		if (trackSection.magnetSpline->GetCollisionEnabled() != ECollisionEnabled::NoCollision || trackSection.roadSpline->GetCollisionEnabled() != ECollisionEnabled::NoCollision)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Component has collisions enabled when setting it to disable."));
+			return false;
+		}
+	}
+	return true;
+}
+
 
 
