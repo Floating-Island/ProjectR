@@ -1396,7 +1396,6 @@ bool FATrackGeneratorHaveExpectedCollisionsInPIETest::RunTest(const FString& Par
 	return true;
 }
 
-// Allow to set collisions disabled when editing the track generator (and always enable them in begin play).
 //(when a custom mesh for magnet spline is already made) set location of magnet spline same as spline mesh,
 // attach and elevate the same amount as the bound of mesh (saved in constructor) multiplied by the scale (gotten in on construction).
 
