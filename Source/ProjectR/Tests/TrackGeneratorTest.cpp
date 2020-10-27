@@ -1373,6 +1373,7 @@ bool FCheckComponentsExpectedCollisionInPIECommand::Update()
 			return true;
 		}
 	}
+	return false;
 }
 
 
