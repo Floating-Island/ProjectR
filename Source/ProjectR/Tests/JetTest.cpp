@@ -1396,6 +1396,20 @@ bool FAJetMeshCollisionIsOfTypePawnTest::RunTest(const FString& Parameters)
 	return true;
 }
 
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetHasCenterOfMassLoweredTest, "ProjectR.Jet Tests.Unit.029: Has its center of mass lowered", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetHasCenterOfMassLoweredTest::RunTest(const FString& Parameters)
+{
+
+	AJetMOCK* testJet = NewObject<AJetMOCK>();
+
+	TestTrue(TEXT("Jet should have its center of mass lowered."), testJet->centerOfMassIsLowered());
+
+	return true;
+}
+
 //the jet should generate overlap events by default when spawned.
 //jet mesh should be set to collision enabled. (query and physics or physics only).
 //we should test if the jet steers along it's normal (up) vector instead of Z axis.
