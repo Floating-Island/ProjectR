@@ -52,7 +52,9 @@ protected:
 	//steering system component
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 		USteeringComponent* steeringSystem;
-	
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Movement")
+		float centerOfMassHeight;
 	
 public:
 	virtual void Tick(float DeltaTime) override;
