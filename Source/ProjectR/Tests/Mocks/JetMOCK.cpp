@@ -74,7 +74,7 @@ bool AJetMOCK::meshCollisionIsPawn()
 bool AJetMOCK::centerOfMassIsLowered()
 {
 	FVector centerOfMassLocation = centerOfMass();
-	return false;
+	return centerOfMassLocation.Z <= centerOfMassHeight;
 }
 
 FVector AJetMOCK::centerOfMass()
