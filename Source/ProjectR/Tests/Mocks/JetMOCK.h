@@ -43,4 +43,6 @@ public:
     bool generatesOverlapEvents();
 
 	bool meshCollisionIsPawn();
+
+	bool centerOfMassIsLowered();
 };

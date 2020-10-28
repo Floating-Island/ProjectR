@@ -71,6 +71,14 @@ bool AJetMOCK::meshCollisionIsPawn()
 	return meshComponent->GetCollisionObjectType() == ECC_Pawn;
 }
 
+bool AJetMOCK::centerOfMassIsLowered()
+{
+	FVector centerOfMass = meshComponent->GetCenterOfMass();
+	UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *GetActorLocation().ToString());
+	UE_LOG(LogTemp, Log, TEXT("Jet center of mass: %s"), *centerOfMass.ToString());
+	return false;
+}
+
 //bool AJetMOCK::hasAnAntiGravitySystem()
 //{
 //	return antiGravitySystem? true : false;
