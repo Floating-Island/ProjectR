@@ -1118,14 +1118,7 @@ bool FSpawningAJetAccelerateAndSteerRightCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-
-	AFloorMeshActor* meshActor = sessionUtilities.spawnInPIEAnInstanceOf<AFloorMeshActor>();
-
-	FVector spawnLocation = meshActor->GetActorLocation() + FVector(0, 0, 1000);
-
-	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>(spawnLocation);
-
-	GEditor->SnapObjectTo(FActorOrComponent(testJet), true, true, true, false, FActorOrComponent(meshActor));
+	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
 
 	float direction = 1;//1 is right, -1 is left...
 	testJet->setCurrentXVelocityTo(1);//we go forward and then steer.
