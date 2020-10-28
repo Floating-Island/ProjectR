@@ -1398,17 +1398,72 @@ bool FAJetMeshCollisionIsOfTypePawnTest::RunTest(const FString& Parameters)
 
 
 
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetCommand);
+
+bool FSpawningAJetCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
+
+	return true;
+}
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckAJetCenterOfMassCommand, FAutomationTestBase*, test);
+
+bool FCheckAJetCenterOfMassCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+		if (testJet)
+		{
+
+			bool centerOfMassLowered = testJet->centerOfMassIsLowered();
+
+			UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet center of mass: %s"), *testJet->centerOfMass().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet's center of mass %s lowered."), *FString(centerOfMassLowered ? "is" : "isn't"));
+
+			test->TestTrue(TEXT("The Jet should have its center of mass lowered."), centerOfMassLowered);
+			testWorld->bDebugFrameStepExecution = true;
+			return true;
+		}
+	}
+	return false;
+}
+
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetHasCenterOfMassLoweredTest, "ProjectR.Jet Tests.Unit.031: Has its center of mass lowered", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetHasCenterOfMassLoweredTest::RunTest(const FString& Parameters)
 {
 
-	AJetMOCK* testJet = NewObject<AJetMOCK>();
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-	TestTrue(TEXT("Jet should have its center of mass lowered."), testJet->centerOfMassIsLowered());
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetCenterOfMassCommand(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
 	return true;
 }
+
+
 
 //the jet should generate overlap events by default when spawned.
 //jet mesh should be set to collision enabled. (query and physics or physics only).
