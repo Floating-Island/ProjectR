@@ -45,4 +45,6 @@ public:
 	bool meshCollisionIsPawn();
 
 	bool centerOfMassIsLowered();
+
+	FVector centerOfMass();
 };
