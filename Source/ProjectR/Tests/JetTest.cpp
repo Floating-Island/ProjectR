@@ -1398,7 +1398,7 @@ bool FAJetMeshCollisionIsOfTypePawnTest::RunTest(const FString& Parameters)
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetHasCenterOfMassLoweredTest, "ProjectR.Jet Tests.Unit.029: Has its center of mass lowered", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetHasCenterOfMassLoweredTest, "ProjectR.Jet Tests.Unit.031: Has its center of mass lowered", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetHasCenterOfMassLoweredTest::RunTest(const FString& Parameters)
 {

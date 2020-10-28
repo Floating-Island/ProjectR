@@ -47,6 +47,8 @@ AJet::AJet()
 
     meshComponent->SetGenerateOverlapEvents(true);
 	meshComponent->SetCollisionObjectType(ECC_Pawn);
+
+	meshComponent->SetCenterOfMass(FVector(0,0, -100));
 }
 
 void AJet::BeginPlay()
