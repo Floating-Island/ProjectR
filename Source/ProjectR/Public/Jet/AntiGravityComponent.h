@@ -28,7 +28,7 @@ protected:
 	
 
 public:	
-	void activateAvoidanceTo(FHitResult anObstacle);
+	void activateAvoidanceTo(FHitResult anObstacle, FVector aVertexLocation);
 	void antiGravityLifting();
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
