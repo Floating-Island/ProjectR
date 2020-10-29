@@ -1465,12 +1465,96 @@ bool FAJetHasCenterOfMassLoweredTest::RunTest(const FString& Parameters)
 
 
 
-//the jet should generate overlap events by default when spawned.
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateAndSteerRightCommand);
+
+bool FSpawningAJetMakeItAccelerateAndSteerRightCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
+
+	float direction = 1;//1 is right, -1 is left...
+	testJet->accelerate(1);
+	testJet->steer(direction);
+
+	return true;
+}
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckAJetFallsWhileSteeringCommand, int, aTickCount, int, aTickLimit, float, previousZLocation, FAutomationTestBase*, test);
+
+bool FCheckAJetFallsWhileSteeringCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+		if (testJet)
+		{
+			testJet->accelerate(1);
+			int toTheRight = 1;
+			testJet->steer(toTheRight);
+			float currentZLocation = testJet->GetActorLocation().Z;
+			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
+			bool hasFelt = !FMath::IsNearlyEqual(previousZLocation, currentZLocation);
+
+			UE_LOG(LogTemp, Log, TEXT("Jet previous Z location: %f"), previousZLocation);
+			UE_LOG(LogTemp, Log, TEXT("Jet current Z location: %f"), currentZLocation);
+			UE_LOG(LogTemp, Log, TEXT("Jet speed: %f"), testJet->currentSpeed());
+			UE_LOG(LogTemp, Log, TEXT("Jet speed %s nearly zero."), *FString(speedNearlyZero ? "is" : "isn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet %s felt."), *FString(hasFelt ? "has" : "hasn't"));
+
+			++aTickCount;
+			if (aTickCount > aTickLimit || hasFelt)
+			{
+				test->TestTrue(TEXT("The Jet should keep falling even if it's steering."), speedNearlyZero && hasFelt);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			previousZLocation = currentZLocation;
+		}
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetKeepsFallingWhenSteeringTest, "ProjectR.Jet Tests.Unit.032: Keeps falling when steering", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetKeepsFallingWhenSteeringTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateAndSteerRightCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetFallsWhileSteeringCommand(tickCount, tickLimit, std::numeric_limits<float>::min(), this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
+
+
 //jet mesh should be set to collision enabled. (query and physics or physics only).
 //we should test if the jet steers along it's normal (up) vector instead of Z axis.
 //we should test that if the jet is falling and we steer, the falling keeps happening. Currently, alignVelocity discards gravity.
 //we should change the mesh so we put one that has bones, so we can query them and apply an anti-gravity force to each, instead of applying it onto the center of mass.
-//we should lower the center of mass of the jet.
+
 //we should project the forward vector along the surface we are on and use that projection to accelerate and brake.
 
 #endif //WITH_DEV_AUTOMATION_TESTS
