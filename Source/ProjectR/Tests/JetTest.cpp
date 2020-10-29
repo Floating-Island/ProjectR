@@ -1481,7 +1481,7 @@ bool FSpawningAJetMakeItAccelerateAndSteerRightCommand::Update()
 	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
 
 	float direction = 1;//1 is right, -1 is left...
-	testJet->accelerate(1);
+	testJet->setCurrentXVelocityTo(30);
 	testJet->steerEveryTick();
 
 	return true;
@@ -1498,10 +1498,9 @@ bool FCheckAJetFallsWhileSteeringCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 		if (testJet)
 		{
-			testJet->accelerate(1);
 			int toTheRight = 1;
 			float currentZLocation = testJet->GetActorLocation().Z;
 			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
