@@ -60,8 +60,6 @@ void AJet::BeginPlay()
 void AJet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *GetActorLocation().ToString());
-	GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet location: %s"), *GetActorLocation().ToString()));
 }
 
 void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
