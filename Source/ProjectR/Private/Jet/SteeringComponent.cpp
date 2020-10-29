@@ -9,7 +9,7 @@ USteeringComponent::USteeringComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
 	owner = Cast<AJet, AActor>(GetOwner());
-	
+
 	steerForceValue = 200.0f;
 }
 
@@ -26,12 +26,13 @@ void USteeringComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
 void USteeringComponent::alignVelocity()
 {
-	FVector alignedVelocity = owner->GetActorForwardVector().GetSafeNormal() * owner->currentSpeed();
+	FVector alignedUpwardsVelocity = owner->GetVelocity().ProjectOnTo(owner->GetActorUpVector());
+	FVector alignedForwardVelocity = owner->GetActorForwardVector().GetSafeNormal() * owner->currentSpeed();
 	if (owner->goesBackwards())
 	{
-		alignedVelocity = -alignedVelocity;//velocity should go backwards then...
+		alignedForwardVelocity = -alignedForwardVelocity;//velocity should go backwards then...
 	}
-	ownerPrimitiveComponent->SetPhysicsLinearVelocity(alignedVelocity);//this should happen after the jet steers (gets it's torque applied)
+	ownerPrimitiveComponent->SetPhysicsLinearVelocity(alignedForwardVelocity + alignedUpwardsVelocity);//this should happen after the jet steers (gets it's torque applied)
 }
 
 void USteeringComponent::InReverseInverts(float& aDirectionMultiplier)
