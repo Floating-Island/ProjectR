@@ -51,7 +51,7 @@ void USteeringComponent::steer(float aDirectionMultiplier)
 	{
 		//if reverse, change directionMultiplier sign.
 		InReverseInverts(aDirectionMultiplier);
-		FVector torqueToApply = FVector(0, 0, aDirectionMultiplier * steerForce());//directionMultiplier is used to steer right or left and to have a range of steering. Should be changed to get the jet normal instead of the Z axis
+		FVector torqueToApply = owner->GetActorUpVector() * aDirectionMultiplier * steerForce();//directionMultiplier is used to steer right or left and to have a range of steering. Should be changed to get the jet normal instead of the Z axis
 		ownerPrimitiveComponent->AddTorqueInDegrees(torqueToApply, NAME_None, true);
 
 		owner->GetWorldTimerManager().SetTimerForNextTick(this, &USteeringComponent::alignVelocity);//the torque is applied on next tick, so we need to align velocity on next tick also.
