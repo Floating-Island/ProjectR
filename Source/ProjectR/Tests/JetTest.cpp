@@ -1518,7 +1518,7 @@ bool FCheckAJetFallSpeedCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet: %d"), index);
 			UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet rotation: %s"), *testJet->GetActorRotation().ToString());
-			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %f"), testJet->GetVelocity());
+			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *testJet->GetVelocity().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet speed: %f"), testJet->currentSpeed());
 			++index;
 		}
