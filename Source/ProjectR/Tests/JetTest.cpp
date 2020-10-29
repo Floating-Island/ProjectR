@@ -1515,9 +1515,9 @@ bool FCheckAJetFallsWhileSteeringCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet %s felt."), *FString(hasFelt ? "has" : "hasn't"));
 
 			++aTickCount;
-			if (aTickCount > aTickLimit || hasFelt)
+			if (aTickCount > aTickLimit)
 			{
-				test->TestTrue(TEXT("The Jet should keep falling even if it's steering."), speedNearlyZero && hasFelt);
+				test->TestTrue(TEXT("The Jet should keep falling even if it's steering."), !speedNearlyZero && hasFelt);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
