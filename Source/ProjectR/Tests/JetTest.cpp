@@ -1503,7 +1503,7 @@ bool FCheckAJetFallSpeedCommand::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
 		TArray<AJetMOCK*> testJets = sessionUtilities.retrieveFromPIEAllInstancesOf<AJetMOCK>();
-		
+
 		for (const auto& testJet : testJets)
 		{
 			if (!testJet)
@@ -1525,7 +1525,7 @@ bool FCheckAJetFallSpeedCommand::Update()
 
 		float jetAFallSpeed = testJets[0]->getZVelocity();
 		float jetBFallSpeed = testJets[1]->getZVelocity();
-		bool fallAtSameSpeed = FMath::IsNearlyEqual(jetAFallSpeed,jetBFallSpeed);
+		bool fallAtSameSpeed = FMath::IsNearlyEqual(jetAFallSpeed, jetBFallSpeed);
 		UE_LOG(LogTemp, Log, TEXT("Jets %s fall at same speed."), *FString(fallAtSameSpeed ? "do" : "don't"));
 
 		++aTickCount;
@@ -1555,6 +1555,96 @@ bool FAJetFallingSpeedWhenSteeringSameAsNoSteeringTest::RunTest(const FString& P
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetFallSpeedCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
+
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawningAJetTiltItAndMakeItSteerRightCommand, float, roll);
+
+bool FSpawningAJetTiltItAndMakeItSteerRightCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
+
+	float direction = 1;//1 is right, -1 is left...
+	FRotator rollRotator = FRotator(0, 0, roll);
+	testJet->SetActorRotation(rollRotator);
+	testJet->setCurrentXVelocityTo(1);//we should set the speed to 1 first so the jet is able to steer.
+	testJet->steer(direction);
+
+	return true;
+}
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckAJetSteersAroundUpVectorCommand, int, aTickCount, int, aTickLimit, float, roll, FAutomationTestBase*, test);
+
+bool FCheckAJetSteersAroundUpVectorCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+		if (testJet)
+		{
+			float currentZRotationAroundUpVector = testJet->GetActorRotation().Pitch;//we rolled, so now it's not the yaw what's changed, it's the pitch.
+			bool hasSteeredRight = currentZRotationAroundUpVector > 0;
+			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotationAroundUpVector, 0.1f);
+
+			UE_LOG(LogTemp, Log, TEXT("Jet rotation vector: %s"), *testJet->GetActorRotation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet rotation around up vector: %f"), currentZRotationAroundUpVector);
+			UE_LOG(LogTemp, Log, TEXT("Jet %s steered right."), *FString(hasSteeredRight ? "has" : "hasn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet %s made a minimal steering."), *FString(isMinimalSteering ? "has" : "hasn't"));
+
+			if (hasSteeredRight && !isMinimalSteering)
+			{
+				test->TestTrue(TEXT("The Jet pitch rotation should be greater than zero after being tilted and steered."), hasSteeredRight && !isMinimalSteering);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			++aTickCount;
+
+			if (aTickCount > aTickLimit)
+			{
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet pitch rotation never changed from zero."), aTickCount > aTickLimit);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetRotatesPitchRightWhenTiltedAndSteersRightTest, "ProjectR.Jet Tests.Unit.033: Rotates pitch right when tilted and steers right", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetRotatesPitchRightWhenTiltedAndSteersRightTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	float roll = 30;
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetTiltItAndMakeItSteerRightCommand(roll));
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSteersAroundUpVectorCommand(tickCount, tickLimit, roll, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
