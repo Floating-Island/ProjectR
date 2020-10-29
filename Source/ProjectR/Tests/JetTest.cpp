@@ -1479,8 +1479,8 @@ bool FSpawningTwoJetsMakeOneOfThemItAccelerateAndSteerRightCommand::Update()
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
 	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
-	FVector aSomewhatDistancedPosition = FVector(1000, 1000, 0);
-	sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
+	FVector aSomewhatDistancedPosition = FVector(10000, 10000, 0);
+	sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>(aSomewhatDistancedPosition);
 
 	float direction = 1;//1 is right, -1 is left...
 	testJet->setCurrentXVelocityTo(30);
