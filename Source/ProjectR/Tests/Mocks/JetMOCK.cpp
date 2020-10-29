@@ -5,6 +5,20 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 
+AJetMOCK::AJetMOCK()
+{
+	alwaysSteerRight = false;
+}
+
+void AJetMOCK::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	if(alwaysSteerRight)
+	{
+		steer(1);
+	}
+}
+
 bool AJetMOCK::hasAStaticMesh()
 {
 	return (meshComponent) ? true : false;
@@ -80,6 +94,11 @@ bool AJetMOCK::centerOfMassIsLowered()
 FVector AJetMOCK::centerOfMass()
 {
 	return meshComponent->GetCenterOfMass();
+}
+
+void AJetMOCK::steerEveryTick()
+{
+	alwaysSteerRight = true;
 }
 
 //bool AJetMOCK::hasAnAntiGravitySystem()

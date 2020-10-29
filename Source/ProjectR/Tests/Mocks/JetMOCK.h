@@ -14,7 +14,11 @@ class PROJECTR_API AJetMOCK : public AJet
 {
 	GENERATED_BODY()
 
+private:
+	bool alwaysSteerRight;
 public:
+	AJetMOCK();
+	virtual void Tick(float DeltaTime) override;
 
 	bool hasAStaticMesh();
 
@@ -47,4 +51,6 @@ public:
 	bool centerOfMassIsLowered();
 
 	FVector centerOfMass();
+
+	void steerEveryTick();
 };
