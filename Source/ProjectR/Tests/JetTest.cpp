@@ -1525,7 +1525,7 @@ bool FCheckAJetFallSpeedCommand::Update()
 
 		float jetAFallSpeed = testJets[0]->getZVelocity();
 		float jetBFallSpeed = testJets[1]->getZVelocity();
-		bool fallAtSameSpeed = FMath::IsNearlyEqual(jetAFallSpeed,jetBFallSpeed);
+		bool fallAtSameSpeed = FMath::IsNearlyEqual(jetAFallSpeed,jetBFallSpeed, 0.01f);
 		UE_LOG(LogTemp, Log, TEXT("Jets %s fall at same speed."), *FString(fallAtSameSpeed ? "do" : "don't"));
 
 		++aTickCount;
