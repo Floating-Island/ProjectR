@@ -1468,9 +1468,9 @@ bool FAJetHasCenterOfMassLoweredTest::RunTest(const FString& Parameters)
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateAndSteerRightCommand);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningTwoJetsMakeOneOfThemItAccelerateAndSteerRightCommand);
 
-bool FSpawningAJetMakeItAccelerateAndSteerRightCommand::Update()
+bool FSpawningTwoJetsMakeOneOfThemItAccelerateAndSteerRightCommand::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -1479,10 +1479,14 @@ bool FSpawningAJetMakeItAccelerateAndSteerRightCommand::Update()
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
 	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
+	FVector aSomewhatDistancedPosition = FVector(1000, 1000, 0);
+	sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
 
 	float direction = 1;//1 is right, -1 is left...
 	testJet->setCurrentXVelocityTo(30);
 	testJet->steerEveryTick();
+
+
 
 	return true;
 }
@@ -1490,45 +1494,55 @@ bool FSpawningAJetMakeItAccelerateAndSteerRightCommand::Update()
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckAJetFallsWhileSteeringCommand, int, aTickCount, int, aTickLimit, float, previousZLocation, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetFallSpeedCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
 
-bool FCheckAJetFallsWhileSteeringCommand::Update()
+bool FCheckAJetFallSpeedCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-		if (testJet)
+		TArray<AJetMOCK*> testJets = sessionUtilities.retrieveFromPIEAllInstancesOf<AJetMOCK>();
+		
+		for (const auto& testJet : testJets)
 		{
-			int toTheRight = 1;
-			float currentZLocation = testJet->GetActorLocation().Z;
-			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
-			bool hasFelt = !FMath::IsNearlyEqual(previousZLocation, currentZLocation);
-
-			UE_LOG(LogTemp, Log, TEXT("Jet previous Z location: %f"), previousZLocation);
-			UE_LOG(LogTemp, Log, TEXT("Jet current Z location: %f"), currentZLocation);
-			UE_LOG(LogTemp, Log, TEXT("Jet speed: %f"), testJet->currentSpeed());
-			UE_LOG(LogTemp, Log, TEXT("Jet speed %s nearly zero."), *FString(speedNearlyZero ? "is" : "isn't"));
-			UE_LOG(LogTemp, Log, TEXT("Jet %s felt."), *FString(hasFelt ? "has" : "hasn't"));
-
-			++aTickCount;
-			if (aTickCount > aTickLimit)
+			if (!testJet)
 			{
-				test->TestTrue(TEXT("The Jet should keep falling even if it's steering."), !speedNearlyZero && hasFelt);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
+				return false;
 			}
-			previousZLocation = currentZLocation;
+		}
+
+		int index = 0;
+		for (const auto& testJet : testJets)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Jet: %d"), index);
+			UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet rotation: %s"), *testJet->GetActorRotation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %f"), testJet->GetVelocity());
+			UE_LOG(LogTemp, Log, TEXT("Jet speed: %f"), testJet->currentSpeed());
+			++index;
+		}
+
+		float jetAFallSpeed = testJets[0]->getZVelocity();
+		float jetBFallSpeed = testJets[1]->getZVelocity();
+		bool fallAtSameSpeed = FMath::IsNearlyEqual(jetAFallSpeed,jetBFallSpeed);
+		UE_LOG(LogTemp, Log, TEXT("Jets %s fall at same speed."), *FString(fallAtSameSpeed ? "do" : "don't"));
+
+		++aTickCount;
+		if (aTickCount > aTickLimit)
+		{
+			test->TestTrue(TEXT("The Jet should keep falling even if it's steering."), fallAtSameSpeed);
+			testWorld->bDebugFrameStepExecution = true;
+			return true;
 		}
 	}
 	return false;
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetKeepsFallingWhenSteeringTest, "ProjectR.Jet Tests.Unit.032: Keeps falling when steering", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetFallingSpeedWhenSteeringSameAsNoSteeringTest, "ProjectR.Jet Tests.Unit.032: Two jets fall at the same speed even if one accelerates and steers", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FAJetKeepsFallingWhenSteeringTest::RunTest(const FString& Parameters)
+bool FAJetFallingSpeedWhenSteeringSameAsNoSteeringTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -1537,10 +1551,10 @@ bool FAJetKeepsFallingWhenSteeringTest::RunTest(const FString& Parameters)
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerateAndSteerRightCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningTwoJetsMakeOneOfThemItAccelerateAndSteerRightCommand);
 	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetFallsWhileSteeringCommand(tickCount, tickLimit, std::numeric_limits<float>::min(), this));
+	int tickLimit = 6;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetFallSpeedCommand(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
