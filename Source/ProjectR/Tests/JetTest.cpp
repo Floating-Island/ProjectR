@@ -1553,7 +1553,7 @@ bool FAJetFallingSpeedWhenSteeringSameAsNoSteeringTest::RunTest(const FString& P
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningTwoJetsMakeOneOfThemItAccelerateAndSteerRightCommand);
 	int tickCount = 0;
-	int tickLimit = 6;
+	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetFallSpeedCommand(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
