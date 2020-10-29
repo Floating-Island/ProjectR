@@ -1482,7 +1482,7 @@ bool FSpawningAJetMakeItAccelerateAndSteerRightCommand::Update()
 
 	float direction = 1;//1 is right, -1 is left...
 	testJet->accelerate(1);
-	testJet->steer(direction);
+	testJet->steerEveryTick();
 
 	return true;
 }
@@ -1503,7 +1503,6 @@ bool FCheckAJetFallsWhileSteeringCommand::Update()
 		{
 			testJet->accelerate(1);
 			int toTheRight = 1;
-			testJet->steer(toTheRight);
 			float currentZLocation = testJet->GetActorLocation().Z;
 			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
 			bool hasFelt = !FMath::IsNearlyEqual(previousZLocation, currentZLocation);
