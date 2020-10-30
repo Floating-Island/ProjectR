@@ -24,20 +24,16 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Movement")
-		float steerTorqueMagnitude;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Movement")
 		float steerForceMagnitude;
 	
 	UFUNCTION()
-	void alignVelocityWith(FVector aPreviousForwardVelocity);
+		void alignVelocityFrom(FVector aPreviousForwardVector, FVector aPreviousLocation);
 	void InReverseInverts(float& aDirectionMultiplier);
 	
 public:	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void steer(float aDirectionMultiplier);
-	float steerTorque();
 	float steerForce();
 
 };
