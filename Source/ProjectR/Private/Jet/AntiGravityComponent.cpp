@@ -41,7 +41,10 @@ void UAntiGravityComponent::antiGravityLifting()
 	TArray<FVector> socketLocations = TArray<FVector>();
 	for (const auto& socket : vertexSockets)
 	{
-		socketLocations.Add(ownerPrimitiveComponent->GetSocketLocation(socket));
+		if(!socket.IsEqual(FName("BackSteeringPoint")))
+		{
+			socketLocations.Add(ownerPrimitiveComponent->GetSocketLocation(socket));
+		}
 	}
 	FVector ownerLowerBound = owner->GetActorLocation();//should take consideration the actor bounds...
 	FVector antiGravityExtensionLimit = ownerLowerBound - FVector(0, 0, levitationHeight);
