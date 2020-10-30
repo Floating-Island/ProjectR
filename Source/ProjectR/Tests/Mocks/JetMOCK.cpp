@@ -72,7 +72,7 @@ bool AJetMOCK::usesAbsoluteRotation()
 
 float AJetMOCK::getZVelocity()
 {
-	return meshComponent->GetComponentVelocity().Z;
+	return GetVelocity().Z;
 }
 
 bool AJetMOCK::generatesOverlapEvents()
