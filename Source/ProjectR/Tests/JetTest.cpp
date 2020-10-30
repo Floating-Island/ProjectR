@@ -1602,7 +1602,7 @@ bool FCheckAJetSteersAroundUpVectorCommand::Update()
 		if (testJet)
 		{
 			float currentZRotationAroundUpVector = testJet->GetActorRotation().Pitch;//we rolled, so now it's not the yaw what's changed, it's the pitch.
-			bool hasSteeredRight = currentZRotationAroundUpVector > 0;
+			bool hasSteeredRight = currentZRotationAroundUpVector < 0;//roll right, then steers right so the pitch is negative.
 			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotationAroundUpVector, 0.1f);
 
 			UE_LOG(LogTemp, Log, TEXT("Jet rotation vector: %s"), *testJet->GetActorRotation().ToString());
@@ -1653,10 +1653,8 @@ bool FAJetRotatesPitchRightWhenTiltedAndSteersRightTest::RunTest(const FString& 
 
 
 //jet mesh should be set to collision enabled. (query and physics or physics only).
-//we should test if the jet steers along it's normal (up) vector instead of Z axis.
-//we should test that if the jet is falling and we steer, the falling keeps happening. Currently, alignVelocity discards gravity.
-//we should change the mesh so we put one that has bones, so we can query them and apply an anti-gravity force to each, instead of applying it onto the center of mass.
-
 //we should project the forward vector along the surface we are on and use that projection to accelerate and brake.
+//delete tests that check velocity alignment to forward or backwards vectors after steering.
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
