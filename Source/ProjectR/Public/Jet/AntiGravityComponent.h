@@ -21,9 +21,9 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Settings")
+	UPROPERTY(EditAnywhere, Category = "Anti-Gravity Settings")
 		float levitationHeight;
-	UPROPERTY(EditDefaultsOnly, Category = "Settings")
+	UPROPERTY(EditAnywhere, Category = "Anti-Gravity Settings")
 		float antiGravityForceValue;
 	
 

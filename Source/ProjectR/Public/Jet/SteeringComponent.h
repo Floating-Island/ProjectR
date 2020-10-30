@@ -23,7 +23,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+	UPROPERTY(EditAnywhere, Category = "Steering Settings")
 		float steerForceMagnitude;
 	
 	UFUNCTION()

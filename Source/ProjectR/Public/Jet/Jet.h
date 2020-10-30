@@ -25,13 +25,13 @@ protected:
 	virtual void BeginPlay() override;
 	
 
-	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+	UPROPERTY(EditAnywhere, Category = "Movement")
 		float accelerationValue;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+	UPROPERTY(EditAnywhere, Category = "Movement")
 		float brakeAbsoluteValue;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Movement")
+	UPROPERTY(EditAnywhere, Category = "Movement")
 		float topSpeed;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
