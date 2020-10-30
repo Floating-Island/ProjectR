@@ -60,6 +60,7 @@ void AJet::BeginPlay()
 void AJet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet speed: %f"), currentSpeed()));
 }
 
 void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -126,7 +127,7 @@ bool AJet::goesBackwards()
 
 float AJet::steerForce()
 {
-	return steeringSystem->steerForce();
+	return steeringSystem->steerTorque();
 }
 
 void AJet::steer(float aDirectionMultiplier)
