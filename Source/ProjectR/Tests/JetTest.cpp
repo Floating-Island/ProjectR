@@ -1144,6 +1144,7 @@ bool FCheckAJetUpdatedVelocityWhenAfterSteeringCommand::Update()
 			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
 			bool velocityAlignedToPreviousForwardVector = FVector::Coincident(currentVelocity.GetSafeNormal2D(), previousForwardVector.GetSafeNormal2D());
 
+			UE_LOG(LogTemp, Log, TEXT("Tick: %d"), aTickCount);
 			UE_LOG(LogTemp, Log, TEXT("Jet previous forward vector: %s"), *previousForwardVector.ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet current forward vector: %s"), *jetForwardsVector.ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *currentVelocity.ToString());
@@ -1151,6 +1152,7 @@ bool FCheckAJetUpdatedVelocityWhenAfterSteeringCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet previous forward vector normal on XY: %s"), *previousForwardVector.GetSafeNormal2D().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet speed %s nearly zero."), *FString(speedNearlyZero ? "is" : "isn't"));
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity %s aligned to previous forward vector."), *FString(velocityAlignedToPreviousForwardVector ? "is" : "isn't"));
+			UE_LOG(LogTemp, Log, TEXT("End of tick."));
 
 			++aTickCount;
 			if (aTickCount > aTickLimit)
