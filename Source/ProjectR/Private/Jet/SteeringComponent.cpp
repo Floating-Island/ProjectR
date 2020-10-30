@@ -10,7 +10,9 @@ USteeringComponent::USteeringComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 	owner = Cast<AJet, AActor>(GetOwner());
 
-	steerForceValue = 200.0f;
+	steerTorqueMagnitude = 200;
+
+	steerForceMagnitude = 2000;
 }
 
 void USteeringComponent::BeginPlay()
@@ -24,16 +26,28 @@ void USteeringComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
-void USteeringComponent::alignVelocity()
+void USteeringComponent::alignVelocityWith(FVector aPreviousForwardVelocity)
 {
-	FVector alignedUpwardsVelocity = owner->GetVelocity().ProjectOnTo(owner->GetActorUpVector());
-	FVector alignedSidewaysVelocity = owner->GetVelocity().ProjectOnTo(owner->GetActorRightVector());
-	FVector alignedForwardVelocity = owner->GetActorForwardVector().GetSafeNormal() * owner->currentSpeed();
+
+	FVector currentVelocity = owner->GetVelocity();
+	FVector previousForwardVelocityAlignedToCurrentForwardVector = owner->GetActorForwardVector() * aPreviousForwardVelocity.Size();  //owner->GetActorForwardVector() * owner->currentSpeed();
 	if (owner->goesBackwards())
 	{
-		alignedForwardVelocity = -alignedForwardVelocity;//velocity should go backwards then...
+		previousForwardVelocityAlignedToCurrentForwardVector = -previousForwardVelocityAlignedToCurrentForwardVector;//velocity should go backwards then...
 	}
-	ownerPrimitiveComponent->SetPhysicsLinearVelocity(alignedForwardVelocity + alignedUpwardsVelocity + alignedSidewaysVelocity);//this should happen after the jet steers (gets it's torque applied)
+	UE_LOG(LogTemp, Log, TEXT("Jet speed: %f"), owner->currentSpeed());
+	UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *owner->GetActorLocation().ToString());
+	UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *currentVelocity.ToString());
+	UE_LOG(LogTemp, Log, TEXT("Jet previous forward velocity: %s"), *aPreviousForwardVelocity.ToString());
+	UE_LOG(LogTemp, Log, TEXT("Jet current forward velocity: %s"), *previousForwardVelocityAlignedToCurrentForwardVector.ToString());
+
+	GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet speed: %f"), owner->currentSpeed()));
+	GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet location: %s"), *owner->GetActorLocation().ToString()));
+	GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet velocity: %s"), *currentVelocity.ToString()));
+	GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet previous forward velocity: %s"), *aPreviousForwardVelocity.ToString()));
+	GEngine->AddOnScreenDebugMessage(-1, 50.0f, FColor::Green, FString::Printf(TEXT("Jet current forward velocity: %s"), *previousForwardVelocityAlignedToCurrentForwardVector.ToString()));
+
+	ownerPrimitiveComponent->SetPhysicsLinearVelocity(currentVelocity - aPreviousForwardVelocity + previousForwardVelocityAlignedToCurrentForwardVector);//this should happen after the jet steers (gets it's torque applied)
 }
 
 void USteeringComponent::InReverseInverts(float& aDirectionMultiplier)
@@ -51,15 +65,28 @@ void USteeringComponent::steer(float aDirectionMultiplier)
 	{
 		//if reverse, change directionMultiplier sign.
 		InReverseInverts(aDirectionMultiplier);
-		FVector torqueToApply = owner->GetActorUpVector() * aDirectionMultiplier * steerForce();//directionMultiplier is used to steer right or left and to have a range of steering. Should be changed to get the jet normal instead of the Z axis
+		FVector torqueToApply = owner->GetActorUpVector() * aDirectionMultiplier * steerTorque();//directionMultiplier is used to steer right or left and to have a range of steering. Should be changed to get the jet normal instead of the Z axis
 		ownerPrimitiveComponent->AddTorqueInDegrees(torqueToApply, NAME_None, true);
+		float ownerSpeed = owner->currentSpeed();
+		ownerPrimitiveComponent->AddForce(owner->GetActorRightVector() * aDirectionMultiplier * steerForceMagnitude, NAME_None, true);
+		//float speedAtSteering = owner->currentSpeed();
+		//if (speedAtSteering < owner->settedTopSpeed())//to avoid collision problems...
+		//{
+		//	FVector currentForwardVelocity = owner->GetActorForwardVector() * speedAtSteering;
+		//	FTimerDelegate alignVelocityOnNextTick = FTimerDelegate::CreateUObject(this, &USteeringComponent::alignVelocityWith, currentForwardVelocity);
+		//	owner->GetWorldTimerManager().SetTimerForNextTick(alignVelocityOnNextTick);//the torque is applied on next tick, so we need to align velocity on next tick also.
+		//}
 
-		owner->GetWorldTimerManager().SetTimerForNextTick(this, &USteeringComponent::alignVelocity);//the torque is applied on next tick, so we need to align velocity on next tick also.
 	}
+}
+
+float USteeringComponent::steerTorque()
+{
+	return steerTorqueMagnitude;
 }
 
 float USteeringComponent::steerForce()
 {
-	return steerForceValue;
+	return steerForceMagnitude;
 }
 
