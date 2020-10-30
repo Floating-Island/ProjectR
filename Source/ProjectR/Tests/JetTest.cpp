@@ -524,9 +524,8 @@ bool FSpawningAJetMakeItSteerRightCommand::Update()
 
 	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
 
-	float direction = 1;//1 is right, -1 is left...
 	testJet->setCurrentXVelocityTo(1);//we should set the speed to 1 first so the jet is able to steer.
-	testJet->steer(direction);
+	testJet->steerEveryTick();
 
 	return true;
 }
