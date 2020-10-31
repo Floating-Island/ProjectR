@@ -1099,95 +1099,95 @@ bool FAJetBrakesAlongItsBackwardsVectorWhileRotatedTest::RunTest(const FString& 
 
 	return true;
 }
-
-
-
-
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetAccelerateAndSteerRightCommand);
-
-bool FSpawningAJetAccelerateAndSteerRightCommand::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
-
-	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
-
-	float direction = 1;//1 is right, -1 is left...
-	testJet->setCurrentXVelocityTo(1);//we go forward and then steer.
-	testJet->steer(direction);
-
-	return true;
-}
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckAJetUpdatedVelocityWhenAfterSteeringCommand, int, aTickCount, int, aTickLimit, FVector, previousForwardVector, FAutomationTestBase*, test);
-
-bool FCheckAJetUpdatedVelocityWhenAfterSteeringCommand::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
-		if (testJet)
-		{
-
-			FVector currentVelocity = testJet->GetVelocity();
-			FVector jetForwardsVector = testJet->GetActorForwardVector();
-			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
-			bool velocityAlignedToPreviousForwardVector = FVector::Coincident(currentVelocity.GetSafeNormal2D(), previousForwardVector.GetSafeNormal2D());
-
-			UE_LOG(LogTemp, Log, TEXT("Tick: %d"), aTickCount);
-			UE_LOG(LogTemp, Log, TEXT("Jet previous forward vector: %s"), *previousForwardVector.ToString());
-			UE_LOG(LogTemp, Log, TEXT("Jet current forward vector: %s"), *jetForwardsVector.ToString());
-			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *currentVelocity.ToString());
-			UE_LOG(LogTemp, Log, TEXT("Jet velocity normal on XY: %s"), *currentVelocity.GetSafeNormal2D().ToString());
-			UE_LOG(LogTemp, Log, TEXT("Jet previous forward vector normal on XY: %s"), *previousForwardVector.GetSafeNormal2D().ToString());
-			UE_LOG(LogTemp, Log, TEXT("Jet speed %s nearly zero."), *FString(speedNearlyZero ? "is" : "isn't"));
-			UE_LOG(LogTemp, Log, TEXT("Jet velocity %s aligned to previous forward vector."), *FString(velocityAlignedToPreviousForwardVector ? "is" : "isn't"));
-			UE_LOG(LogTemp, Log, TEXT("End of tick."));
-
-			++aTickCount;
-			if (aTickCount > aTickLimit)
-			{
-				test->TestTrue(TEXT("The Jet should update it's velocity to match the direction of the forward vector after steering."), !speedNearlyZero && velocityAlignedToPreviousForwardVector);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
-			previousForwardVector = jetForwardsVector;
-		}
-	}
-	return false;
-}
-
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetUpdatesVelocityDirectionAfterSteeringTest, "ProjectR.Jet Tests.Unit.026: Updates velocity direction after steering", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-bool FAJetUpdatesVelocityDirectionAfterSteeringTest::RunTest(const FString& Parameters)
-{
-
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetAccelerateAndSteerRightCommand);
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetUpdatedVelocityWhenAfterSteeringCommand(tickCount, tickLimit, FVector(0), this));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-
-	return true;
-}
+//
+//
+//
+//
+//
+//
+//DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetAccelerateAndSteerRightCommand);
+//
+//bool FSpawningAJetAccelerateAndSteerRightCommand::Update()
+//{
+//	if (!GEditor->IsPlayingSessionInEditor())
+//	{
+//		return false;
+//	}
+//	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+//
+//	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+//
+//	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
+//
+//	float direction = 1;//1 is right, -1 is left...
+//	testJet->setCurrentXVelocityTo(1);//we go forward and then steer.
+//	testJet->steer(direction);
+//
+//	return true;
+//}
+//
+//
+//DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckAJetUpdatedVelocityWhenAfterSteeringCommand, int, aTickCount, int, aTickLimit, FVector, previousForwardVector, FAutomationTestBase*, test);
+//
+//bool FCheckAJetUpdatedVelocityWhenAfterSteeringCommand::Update()
+//{
+//	if (GEditor->IsPlayingSessionInEditor())
+//	{
+//		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+//		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+//		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+//		if (testJet)
+//		{
+//
+//			FVector currentVelocity = testJet->GetVelocity();
+//			FVector jetForwardsVector = testJet->GetActorForwardVector();
+//			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
+//			bool velocityAlignedToPreviousForwardVector = FVector::Coincident(currentVelocity.GetSafeNormal2D(), previousForwardVector.GetSafeNormal2D());
+//
+//			UE_LOG(LogTemp, Log, TEXT("Tick: %d"), aTickCount);
+//			UE_LOG(LogTemp, Log, TEXT("Jet previous forward vector: %s"), *previousForwardVector.ToString());
+//			UE_LOG(LogTemp, Log, TEXT("Jet current forward vector: %s"), *jetForwardsVector.ToString());
+//			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *currentVelocity.ToString());
+//			UE_LOG(LogTemp, Log, TEXT("Jet velocity normal on XY: %s"), *currentVelocity.GetSafeNormal2D().ToString());
+//			UE_LOG(LogTemp, Log, TEXT("Jet previous forward vector normal on XY: %s"), *previousForwardVector.GetSafeNormal2D().ToString());
+//			UE_LOG(LogTemp, Log, TEXT("Jet speed %s nearly zero."), *FString(speedNearlyZero ? "is" : "isn't"));
+//			UE_LOG(LogTemp, Log, TEXT("Jet velocity %s aligned to previous forward vector."), *FString(velocityAlignedToPreviousForwardVector ? "is" : "isn't"));
+//			UE_LOG(LogTemp, Log, TEXT("End of tick."));
+//
+//			++aTickCount;
+//			if (aTickCount > aTickLimit)
+//			{
+//				test->TestTrue(TEXT("The Jet should update it's velocity to match the direction of the forward vector after steering."), !speedNearlyZero && velocityAlignedToPreviousForwardVector);
+//				testWorld->bDebugFrameStepExecution = true;
+//				return true;
+//			}
+//			previousForwardVector = jetForwardsVector;
+//		}
+//	}
+//	return false;
+//}
+//
+//
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetUpdatesVelocityDirectionAfterSteeringTest, "ProjectR.Jet Tests.Unit.026: Updates velocity direction after steering", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//bool FAJetUpdatesVelocityDirectionAfterSteeringTest::RunTest(const FString& Parameters)
+//{
+//
+//	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetAccelerateAndSteerRightCommand);
+//	int tickCount = 0;
+//	int tickLimit = 3;
+//	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetUpdatedVelocityWhenAfterSteeringCommand(tickCount, tickLimit, FVector(0), this));
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+//
+//	return true;
+//}
 
 
 
