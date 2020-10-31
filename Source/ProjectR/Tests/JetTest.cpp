@@ -1702,7 +1702,7 @@ bool FCheckAJetSpeedOrthogonalityToFloorCommand::Update()
 			float speedAlongFloorPlane = velocityProjectedOnFloorPlane.Size();
 
 			bool isMoving = !FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
-			bool movesParallelToFloor = FMath::IsNearlyEqual(speedAlongFloorPlane,testJet->currentSpeed());
+			bool movesParallelToFloor = FMath::IsNearlyEqual(speedAlongFloorPlane,testJet->currentSpeed(), 0.001f);
 
 			UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet rotation: %s"), *testJet->GetActorRotation().ToString());
