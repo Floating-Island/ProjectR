@@ -1712,7 +1712,7 @@ bool FCheckAJetSpeedOrthogonalityToFloorCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Speed along floor plane: %f"), speedAlongFloorPlane);
 			UE_LOG(LogTemp, Log, TEXT("Jet speed: %f"), testJet->currentSpeed());
 			UE_LOG(LogTemp, Log, TEXT("Jet %s moving."), *FString(isMoving ? "is" : "isn't"));
-			UE_LOG(LogTemp, Log, TEXT("Jet %s moves parallel to floor normal."), *FString(movesParallelToFloor ? "does" : "doesn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet %s parallel to floor normal."), *FString(movesParallelToFloor ? "moves" : "doesn't move"));
 
 			if (isMoving && movesParallelToFloor)
 			{
