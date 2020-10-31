@@ -1707,6 +1707,10 @@ bool FCheckAJetSpeedOrthogonalityToFloorCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet rotation: %s"), *testJet->GetActorRotation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *jetVelocity.ToString());
+			UE_LOG(LogTemp, Log, TEXT("Floor normal: %s"), *floorNormal.ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet velocity projected on floor normal: %s"), *velocityProjectedOnFloorPlane.ToString());
+			UE_LOG(LogTemp, Log, TEXT("Speed along floor plane: %f"), speedAlongFloorPlane);
+			UE_LOG(LogTemp, Log, TEXT("Jet speed: %f"), testJet->currentSpeed());
 			UE_LOG(LogTemp, Log, TEXT("Jet %s moving."), *FString(isMoving ? "is" : "isn't"));
 			UE_LOG(LogTemp, Log, TEXT("Jet %s moves parallel to floor normal."), *FString(movesParallelToFloor ? "does" : "doesn't"));
 
