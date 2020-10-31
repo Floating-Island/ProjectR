@@ -10,7 +10,7 @@ USteeringComponent::USteeringComponent()
 	PrimaryComponentTick.bCanEverTick = true;
 	owner = Cast<AJet, AActor>(GetOwner());
 
-	steerForceMagnitude = 20000;
+	steerForceMagnitude = 250000;
 }
 
 void USteeringComponent::BeginPlay()
@@ -61,11 +61,13 @@ void USteeringComponent::steer(float aDirectionMultiplier)
 	{
 		//if reverse, change directionMultiplier sign.
 		InReverseInverts(aDirectionMultiplier);
-
+		//replace this with torque?
 		FVector steeringLocation = ownerPrimitiveComponent->GetSocketLocation(FName("BackSteeringPoint"));
 		FVector steerForce = owner->GetActorRightVector() * -aDirectionMultiplier * steerForceMagnitude;
 		ownerPrimitiveComponent->AddForceAtLocation(steerForce, steeringLocation);
-
+		/*FVector torqueToApply = FVector(0, 0, steerForceMagnitude * aDirectionMultiplier);
+		ownerPrimitiveComponent->AddTorque(torqueToApply, NAME_None, true);*/
+		//and leave this as is:
 		FVector currentForwardVector = owner->GetActorForwardVector();
 		FVector currentLocation = owner->GetActorLocation();
 		FTimerDelegate alignVelocityOnNextTick = FTimerDelegate::CreateUObject(this, &USteeringComponent::alignVelocityFrom, currentForwardVector, currentLocation);
