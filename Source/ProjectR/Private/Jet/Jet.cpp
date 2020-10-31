@@ -76,7 +76,7 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 float AJet::currentSpeed()
 {
-	return (meshComponent->GetComponentVelocity().ProjectOnTo(GetActorForwardVector())).Size();//speed is calculated as the forward velocity
+	return (meshComponent->GetComponentVelocity().ProjectOnTo(ForwardAccelerationDirection())).Size();//speed is calculated as the forward velocity, parallel to floor if any.
 }
 
 float AJet::settedTopSpeed()
