@@ -78,4 +78,6 @@ public:
 
 	float steerForce();
 	void steer(float aDirectionMultiplier);
+
+	FVector ForwardAccelerationDirection();
 };

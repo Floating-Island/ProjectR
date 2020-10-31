@@ -27,7 +27,7 @@ AJet::AJet()
 
 	accelerationValue = 5000.0f;
 	brakeAbsoluteValue = 1000.0f;
-	topSpeed = 1000.0f;	
+	topSpeed = 1000.0f;
 
 	AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
 
@@ -45,11 +45,11 @@ AJet::AJet()
 
 	steeringSystem = CreateDefaultSubobject<USteeringComponent>(TEXT("Steering System"));
 
-    meshComponent->SetGenerateOverlapEvents(true);
+	meshComponent->SetGenerateOverlapEvents(true);
 	meshComponent->SetCollisionObjectType(ECC_Pawn);
 
 	centerOfMassHeight = -100;
-	meshComponent->SetCenterOfMass(FVector(0,0, centerOfMassHeight));
+	meshComponent->SetCenterOfMass(FVector(0, 0, centerOfMassHeight));
 }
 
 void AJet::BeginPlay()
@@ -88,7 +88,7 @@ void AJet::accelerate(float anAccelerationMultiplier)
 {
 	if (anAccelerationMultiplier > 0 && currentSpeed() < settedTopSpeed() && !FMath::IsNearlyEqual(currentSpeed(), settedTopSpeed(), 1.0f))
 	{
-		FVector forceToApply = GetActorForwardVector() * acceleration();
+		FVector forceToApply = ForwardAccelerationDirection() * acceleration();
 		meshComponent->AddForce(forceToApply * anAccelerationMultiplier, NAME_None, true);
 	}
 }
@@ -132,4 +132,28 @@ float AJet::steerForce()
 void AJet::steer(float aDirectionMultiplier)
 {
 	steeringSystem->steer(aDirectionMultiplier);
+}
+
+FVector AJet::ForwardAccelerationDirection()
+{
+	FVector jetLocation = GetActorLocation();//should take consideration the actor bounds...
+	float rayExtension = 1000;
+	FVector rayEnd = -GetActorUpVector() * rayExtension;
+
+	FHitResult obstacle;
+	FCollisionQueryParams collisionParameters;
+	collisionParameters.AddIgnoredActor(this);
+	collisionParameters.bTraceComplex = false;
+	collisionParameters.bReturnPhysicalMaterial = false;
+
+	bool nearFloor = GetWorld()->LineTraceSingleByChannel(obstacle, jetLocation, rayEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
+
+	if (nearFloor)
+	{
+		return FVector::VectorPlaneProject(GetActorForwardVector(), obstacle.Normal);
+	}
+	else
+	{
+		return GetActorForwardVector();
+	}
 }
