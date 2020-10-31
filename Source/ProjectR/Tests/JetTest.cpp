@@ -1757,7 +1757,8 @@ bool FAJetAcceleratesOrthogonalToSurfaceNormalTest::RunTest(const FString& Param
 
 
 //jet mesh should be set to collision enabled. (query and physics or physics only).
-//we should project the forward vector along the surface we are on and use that projection to accelerate and brake.
+//we should project the forward vector along the surface we are on and use that projection to accelerate, brake and steer.
+//anti-gravity line trace should be made not only on the Z-axis, but opposite to the jet up vector
 //delete tests that check velocity alignment to forward or backwards vectors after steering.
 
 
