@@ -1653,6 +1653,105 @@ bool FAJetRotatesPitchRightWhenTiltedAndSteersRightTest::RunTest(const FString& 
 }
 
 
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotatedOverFloorAndAccelerateItCommand);
+
+bool FSpawningAJetRotatedOverFloorAndAccelerateItCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+	AFloorMeshActor* meshActor = sessionUtilities.spawnInPIEAnInstanceOf<AFloorMeshActor>();
+
+	FVector scale = FVector(4, 4, 1);
+	meshActor->SetActorScale3D(scale);
+
+	FVector spawnLocation = meshActor->GetActorLocation() + FVector(0, 0, 1000);
+
+	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>(spawnLocation);
+	FRotator pitchUp = FRotator(20, 0, 0);
+	testJet->SetActorRotation(pitchUp);
+	testJet->accelerate(1);
+
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetSpeedOrthogonalityToFloorCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+
+bool FCheckAJetSpeedOrthogonalityToFloorCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+		AFloorMeshActor* testFloor = sessionUtilities.retrieveFromPIEAnInstanceOf<AFloorMeshActor>();
+		if (testJet)
+		{
+			FVector floorNormal = testFloor->GetActorUpVector();
+			FVector jetVelocity = testJet->GetVelocity();
+			FVector velocityProjectedOnFloorPlane = FVector::VectorPlaneProject(jetVelocity, floorNormal);
+			float speedAlongFloorPlane = velocityProjectedOnFloorPlane.Size();
+
+			bool isMoving = !FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
+			bool movesParallelToFloor = FMath::IsNearlyEqual(speedAlongFloorPlane,testJet->currentSpeed());
+
+			UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet rotation: %s"), *testJet->GetActorRotation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *jetVelocity.ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet %s moving."), *FString(isMoving ? "is" : "isn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet %s moves parallel to floor normal."), *FString(movesParallelToFloor ? "does" : "doesn't"));
+
+			if (isMoving && movesParallelToFloor)
+			{
+				test->TestTrue(TEXT("The Jet should move parallel to the floor."), isMoving && movesParallelToFloor);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			++aTickCount;
+
+			if (aTickCount > aTickLimit)
+			{
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet never moved parallel to floor."), aTickCount > aTickLimit);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetAcceleratesOrthogonalToSurfaceNormalTest, "ProjectR.Jet Tests.Integration.034: Accelerates orthogonal to the floor surface normal", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetAcceleratesOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotatedOverFloorAndAccelerateItCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedOrthogonalityToFloorCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
+
+
 //jet mesh should be set to collision enabled. (query and physics or physics only).
 //we should project the forward vector along the surface we are on and use that projection to accelerate and brake.
 //delete tests that check velocity alignment to forward or backwards vectors after steering.
