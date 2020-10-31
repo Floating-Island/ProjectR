@@ -67,6 +67,7 @@ void USteeringComponent::steer(float aDirectionMultiplier)
 		ownerPrimitiveComponent->AddForceAtLocation(steerForce, steeringLocation);
 		/*FVector torqueToApply = FVector(0, 0, steerForceMagnitude * aDirectionMultiplier);
 		ownerPrimitiveComponent->AddTorque(torqueToApply, NAME_None, true);*/
+		//then check where the rotated forward vector would be and apply the alignment to it...
 		//and leave this as is:
 		FVector currentForwardVector = owner->GetActorForwardVector();
 		FVector currentLocation = owner->GetActorLocation();
