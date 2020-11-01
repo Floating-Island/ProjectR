@@ -959,12 +959,12 @@ bool FCheckAJetLocationCoincidentToForwardVectorCommand::Update()
 
 			UE_LOG(LogTemp, Log, TEXT("Jet forward vector: %s"), *jetForwardVector.ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *currentLocation.ToString());
-			UE_LOG(LogTemp, Log, TEXT("Jet location normal on XY: %s"), *currentLocation.GetSafeNormal2D().ToString());
-			UE_LOG(LogTemp, Log, TEXT("Jet forward vector normal on XY: %s"), *jetForwardVector.GetSafeNormal2D().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet location up vector on XY: %s"), *currentLocation.GetSafeNormal2D().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet forward vector up vector on XY: %s"), *jetForwardVector.GetSafeNormal2D().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet %s moved."), *FString(hasMoved ? "has" : "hasn't"));
 			UE_LOG(LogTemp, Log, TEXT("Jet location %s aligned to forward vector."), *FString(locationIsAlignedToForwardVector ? "is" : "isn't"));
 
-			if (hasMoved && locationIsAlignedToForwardVector)//We have to be careful of gravity in this test. That's why a normal on XY is used.
+			if (hasMoved && locationIsAlignedToForwardVector)//We have to be careful of gravity in this test. That's why a up vector on XY is used.
 			{
 				test->TestTrue(TEXT("The Jet should accelerate in the direction of it's forward vector after being rotated."), hasMoved && locationIsAlignedToForwardVector);
 				testWorld->bDebugFrameStepExecution = true;
@@ -1053,8 +1053,8 @@ bool FCheckAJetLocationParallelToForwardVectorCommand::Update()
 
 			UE_LOG(LogTemp, Log, TEXT("Jet backwards vector: %s"), *jetBackwardsVector.ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *currentLocation.ToString());
-			UE_LOG(LogTemp, Log, TEXT("Jet location normal on XY: %s"), *currentLocation.GetSafeNormal2D().ToString());
-			UE_LOG(LogTemp, Log, TEXT("Jet backwards vector normal on XY: %s"), *jetBackwardsVector.GetSafeNormal2D().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet location up vector on XY: %s"), *currentLocation.GetSafeNormal2D().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet backwards vector up vector on XY: %s"), *jetBackwardsVector.GetSafeNormal2D().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet %s moved."), *FString(hasMoved ? "has" : "hasn't"));
 			UE_LOG(LogTemp, Log, TEXT("Jet location %s aligned to backwards vector."), *FString(locationIsAlignedToBackwardsVector ? "is" : "isn't"));
 
@@ -1148,8 +1148,8 @@ bool FAJetBrakesAlongItsBackwardsVectorWhileRotatedTest::RunTest(const FString& 
 //			UE_LOG(LogTemp, Log, TEXT("Jet previous forward vector: %s"), *previousForwardVector.ToString());
 //			UE_LOG(LogTemp, Log, TEXT("Jet current forward vector: %s"), *jetForwardsVector.ToString());
 //			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *currentVelocity.ToString());
-//			UE_LOG(LogTemp, Log, TEXT("Jet velocity normal on XY: %s"), *currentVelocity.GetSafeNormal2D().ToString());
-//			UE_LOG(LogTemp, Log, TEXT("Jet previous forward vector normal on XY: %s"), *previousForwardVector.GetSafeNormal2D().ToString());
+//			UE_LOG(LogTemp, Log, TEXT("Jet velocity up vector on XY: %s"), *currentVelocity.GetSafeNormal2D().ToString());
+//			UE_LOG(LogTemp, Log, TEXT("Jet previous forward vector up vector on XY: %s"), *previousForwardVector.GetSafeNormal2D().ToString());
 //			UE_LOG(LogTemp, Log, TEXT("Jet speed %s nearly zero."), *FString(speedNearlyZero ? "is" : "isn't"));
 //			UE_LOG(LogTemp, Log, TEXT("Jet velocity %s aligned to previous forward vector."), *FString(velocityAlignedToPreviousForwardVector ? "is" : "isn't"));
 //			UE_LOG(LogTemp, Log, TEXT("End of tick."));
@@ -1702,17 +1702,17 @@ bool FCheckAJetSpeedOrthogonalityToFloorCommand::Update()
 			float speedAlongFloorPlane = velocityProjectedOnFloorPlane.Size();
 
 			bool isMoving = !FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
-			bool movesParallelToFloor = FMath::IsNearlyEqual(speedAlongFloorPlane,testJet->currentSpeed(), 0.001f);
+			bool movesParallelToFloor = FMath::IsNearlyEqual(speedAlongFloorPlane, testJet->currentSpeed(), 0.001f);
 
 			UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet rotation: %s"), *testJet->GetActorRotation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *jetVelocity.ToString());
-			UE_LOG(LogTemp, Log, TEXT("Floor normal: %s"), *floorNormal.ToString());
-			UE_LOG(LogTemp, Log, TEXT("Jet velocity projected on floor normal: %s"), *velocityProjectedOnFloorPlane.ToString());
+			UE_LOG(LogTemp, Log, TEXT("Floor up vector: %s"), *floorNormal.ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet velocity projected on floor up vector: %s"), *velocityProjectedOnFloorPlane.ToString());
 			UE_LOG(LogTemp, Log, TEXT("Speed along floor plane: %f"), speedAlongFloorPlane);
 			UE_LOG(LogTemp, Log, TEXT("Jet speed: %f"), testJet->currentSpeed());
 			UE_LOG(LogTemp, Log, TEXT("Jet %s moving."), *FString(isMoving ? "is" : "isn't"));
-			UE_LOG(LogTemp, Log, TEXT("Jet %s parallel to floor normal."), *FString(movesParallelToFloor ? "moves" : "doesn't move"));
+			UE_LOG(LogTemp, Log, TEXT("Jet %s parallel to floor up vector."), *FString(movesParallelToFloor ? "moves" : "doesn't move"));
 
 			if (isMoving && movesParallelToFloor)
 			{
@@ -1734,7 +1734,7 @@ bool FCheckAJetSpeedOrthogonalityToFloorCommand::Update()
 }
 
 //uses a mock
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetAcceleratesOrthogonalToSurfaceNormalTest, "ProjectR.Jet Tests.Integration.034: Accelerates orthogonal to the floor surface normal", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetAcceleratesOrthogonalToSurfaceNormalTest, "ProjectR.Jet Tests.Integration.034: Accelerates orthogonal to the floor surface up vector", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetAcceleratesOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters)
 {
@@ -1773,15 +1773,19 @@ bool FSpawningAJetAndFloorSideWaysCommand::Update()
 	AFloorMeshActor* testFloor = sessionUtilities.spawnInPIEAnInstanceOf<AFloorMeshActor>();
 	FRotator sideways = FRotator(0, 0, 90);
 	testFloor->SetActorRotation(sideways);
-
+	FVector floorScale = FVector(5, 5, 1);
+	testFloor->SetActorScale3D(floorScale);
+	
 	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
 
 	float distanceInRangeOfAntiGravityTrigger = testJet->antiGravityHeight() - 50.0f;
-	FVector distanceFromFloor = FVector(0, distanceInRangeOfAntiGravityTrigger, 0); 
+	FVector distanceFromFloor = FVector(0, distanceInRangeOfAntiGravityTrigger, 0);
 	FVector nearTheFloor = testFloor->GetActorLocation() + distanceFromFloor;
 	testJet->SetActorLocation(nearTheFloor);
 	testFloor->SetActorRotation(sideways);
-	
+
+	GEditor->SnapObjectTo(FActorOrComponent(testJet), true, true, true, false, FActorOrComponent(testFloor));
+
 	return true;
 }
 
@@ -1809,17 +1813,18 @@ bool FCheckAJetSidewaysRejectsFloorCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Floor location: %s"), *testFloor->GetActorLocation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *testJet->GetVelocity().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity projection on floor up vector: %s"), *testJet->GetVelocity().ProjectOnTo(testFloor->GetActorUpVector()).ToString());
-			UE_LOG(LogTemp, Log, TEXT("Floor normal vector: %s"), *testFloor->GetActorUpVector().ToString());
-			UE_LOG(LogTemp, Log, TEXT("Jet is rejecting floor: %s"), *FString(isRejectingFloor? "true" : "false"));
-			UE_LOG(LogTemp, Log, TEXT("is velocity near zero: %s"), *FString(sidewaysVelocityNearZero? "true" : "false"));
-			
+			UE_LOG(LogTemp, Log, TEXT("Floor up vector: %s"), *testFloor->GetActorUpVector().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet up vector: %s"), *testFloor->GetActorUpVector().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet is rejecting floor: %s"), *FString(isRejectingFloor ? "true" : "false"));
+			UE_LOG(LogTemp, Log, TEXT("is velocity near zero: %s"), *FString(sidewaysVelocityNearZero ? "true" : "false"));
+
 			if (!sidewaysVelocityNearZero && isRejectingFloor)
 			{
 				test->TestTrue(TEXT("The jet should reject the nearest floor along the floor up vector."), !sidewaysVelocityNearZero && isRejectingFloor);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			
+
 			++aTickCount;
 			if (aTickCount > aTickLimit)
 			{
