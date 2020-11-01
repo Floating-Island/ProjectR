@@ -160,5 +160,5 @@ FVector AJet::ForwardAccelerationDirection()
 
 float AJet::antiGravityHeight()
 {
-	antiGravitySystem->triggerHeight();
+	return antiGravitySystem->triggerHeight();
 }
