@@ -162,3 +162,8 @@ float AJet::antiGravityHeight()
 {
 	return antiGravitySystem->triggerHeight();
 }
+
+FVector AJet::forwardVelocity()
+{
+	return GetVelocity().ProjectOnTo(ForwardAccelerationDirection());
+}

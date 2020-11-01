@@ -82,4 +82,6 @@ public:
 	FVector ForwardAccelerationDirection();
 
 	float antiGravityHeight();
+
+	FVector forwardVelocity();
 };
