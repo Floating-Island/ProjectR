@@ -114,14 +114,14 @@ void AJet::brake(float aBrakeMultiplier)
 
 bool AJet::goesForward()
 {
-	FVector forwardDirection = GetActorForwardVector();
+	FVector forwardDirection = ForwardAccelerationDirection();
 	return GetVelocity().ProjectOnTo(forwardDirection).GetSignVector().Equals(
 		forwardDirection.GetSignVector(), 0.1f);
 }
 
 bool AJet::goesBackwards()
 {
-	return !goesForward();
+	return !goesForward() && currentSpeed() > 0;
 }
 
 float AJet::steerForce()
