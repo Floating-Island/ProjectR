@@ -280,7 +280,7 @@ bool FATrackManagerAttractsJetsTowardsTrackGeneratorsTest::RunTest(const FString
 
 
 
-
+//make the track generator create a track manager after recreating spline meshes on begin play. This way, the track manager is always created after the track generator. Update tests from track manager.
 
 
 
