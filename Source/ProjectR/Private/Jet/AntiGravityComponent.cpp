@@ -26,6 +26,11 @@ void UAntiGravityComponent::TickComponent(float DeltaTime, ELevelTick TickType, 
 	antiGravityLifting();
 }
 
+float UAntiGravityComponent::triggerHeight()
+{
+	return levitationHeight;
+}
+
 void UAntiGravityComponent::activateAvoidanceTo(FHitResult anObstacle, FVector aVertexLocation)
 {
 	float antiGravityIntensity = anObstacle.Distance / levitationHeight;

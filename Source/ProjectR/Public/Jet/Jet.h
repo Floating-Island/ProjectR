@@ -80,4 +80,6 @@ public:
 	void steer(float aDirectionMultiplier);
 
 	FVector ForwardAccelerationDirection();
+
+	float antiGravityHeight();
 };
