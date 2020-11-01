@@ -1756,6 +1756,105 @@ bool FAJetAcceleratesOrthogonalToSurfaceNormalTest::RunTest(const FString& Param
 }
 
 
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetAndFloorSideWaysCommand);
+
+bool FSpawningAJetAndFloorSideWaysCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	AFloorMeshActor* testFloor = sessionUtilities.spawnInPIEAnInstanceOf<AFloorMeshActor>();
+	FRotator sideways = FRotator(0, 0, 90);
+	testFloor->SetActorRotation(sideways);
+
+	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
+
+	float distanceInRangeOfAntiGravityTrigger = testJet->antiGravityHeight() - 50.0f;
+	FVector distanceFromFloor = FVector(0, distanceInRangeOfAntiGravityTrigger, 0); 
+	FVector nearTheFloor = testFloor->GetActorLocation() + distanceFromFloor;
+	testJet->SetActorLocation(nearTheFloor);
+	testFloor->SetActorRotation(sideways);
+	
+	return true;
+}
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckAJetSidewaysRejectsFloorCommand, int, aTickCount, int, aTickLimit, float, aPreviousDistance, FAutomationTestBase*, test);
+
+bool FCheckAJetSidewaysRejectsFloorCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+		AFloorMeshActor* testFloor = sessionUtilities.retrieveFromPIEAnInstanceOf<AFloorMeshActor>();
+
+		if (testJet && testFloor)
+		{
+			float currentDistance = testJet->GetActorLocation().Y - testFloor->GetActorLocation().Y;
+			bool isRejectingFloor = currentDistance > aPreviousDistance;
+			bool sidewaysVelocityNearZero = FMath::IsNearlyZero(testJet->GetVelocity().Y, 0.1f);
+
+			UE_LOG(LogTemp, Log, TEXT("previous distance between floor and jet: %f"), aPreviousDistance);
+			UE_LOG(LogTemp, Log, TEXT("current distance between floor and jet: %f"), currentDistance);
+			UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Floor location: %s"), *testFloor->GetActorLocation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *testJet->GetVelocity().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet velocity projection on floor up vector: %s"), *testJet->GetVelocity().ProjectOnTo(testFloor->GetActorUpVector()).ToString());
+			UE_LOG(LogTemp, Log, TEXT("Floor normal vector: %s"), *testFloor->GetActorUpVector().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet is rejecting floor: %s"), *FString(isRejectingFloor? "true" : "false"));
+			UE_LOG(LogTemp, Log, TEXT("is velocity near zero: %s"), *FString(sidewaysVelocityNearZero? "true" : "false"));
+			
+			if (!sidewaysVelocityNearZero && isRejectingFloor)
+			{
+				test->TestTrue(TEXT("The jet should reject the nearest floor along the floor up vector."), !sidewaysVelocityNearZero && isRejectingFloor);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			
+			++aTickCount;
+			if (aTickCount > aTickLimit)
+			{
+				test->TestFalse(TEXT("Tick limit reached for this test. The jet didn't reject the nearest floor along the floor up vector."), aTickCount > aTickLimit);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			aPreviousDistance = currentDistance;
+		}
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSidewaysRejectsAFloorSidewaysTest, "ProjectR.Jet Tests.Integration.035: Activates anti-gravity even if sideways near a sideways floor", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetSidewaysRejectsAFloorSidewaysTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetAndFloorSideWaysCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSidewaysRejectsFloorCommand(tickCount, tickLimit, std::numeric_limits<float>::max(), this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
+
 //jet mesh should be set to collision enabled. (query and physics or physics only).
 //we should project the forward vector along the surface we are on and use that projection to accelerate, brake and steer.
 //anti-gravity line trace should be made not only on the Z-axis, but opposite to the jet up vector
