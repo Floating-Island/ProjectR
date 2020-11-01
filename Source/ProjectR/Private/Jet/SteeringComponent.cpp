@@ -26,7 +26,7 @@ void USteeringComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
 void USteeringComponent::alignVelocityFrom(FVector aPreviousForwardVector, FVector aPreviousLocation)
 {
-	FVector currentForwardVelocity = owner->GetVelocity().ProjectOnTo(owner->GetActorForwardVector());
+	FVector currentForwardVelocity = owner->GetVelocity().ProjectOnTo(owner->ForwardAccelerationDirection());
 	FVector currentLocation = owner->GetActorLocation();
 
 	float mass = ownerPrimitiveComponent->GetMass();
@@ -42,7 +42,7 @@ void USteeringComponent::alignVelocityFrom(FVector aPreviousForwardVector, FVect
 
 	ownerPrimitiveComponent->AddForce(counterForce);
 
-	FVector alignedForce = owner->GetActorForwardVector() * forceMagnitudeToRecreateVelocity;
+	FVector alignedForce = owner->ForwardAccelerationDirection() * forceMagnitudeToRecreateVelocity;
 	ownerPrimitiveComponent->AddForce(alignedForce);
 }
 
@@ -69,7 +69,7 @@ void USteeringComponent::steer(float aDirectionMultiplier)
 		ownerPrimitiveComponent->AddTorque(torqueToApply, NAME_None, true);*/
 		//then check where the rotated forward vector would be and apply the alignment to it...
 		//and leave this as is:
-		FVector currentForwardVector = owner->GetActorForwardVector();
+		FVector currentForwardVector = owner->ForwardAccelerationDirection();
 		FVector currentLocation = owner->GetActorLocation();
 		FTimerDelegate alignVelocityOnNextTick = FTimerDelegate::CreateUObject(this, &USteeringComponent::alignVelocityFrom, currentForwardVector, currentLocation);
 		owner->GetWorldTimerManager().SetTimerForNextTick(alignVelocityOnNextTick);//the torque is applied on next tick, so we need to also align velocity on next tick.
