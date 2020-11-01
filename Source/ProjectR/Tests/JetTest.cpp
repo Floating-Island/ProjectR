@@ -1778,13 +1778,12 @@ bool FSpawningAJetAndFloorSideWaysCommand::Update()
 	
 	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
 
-	float distanceInRangeOfAntiGravityTrigger = testJet->antiGravityHeight() - 50.0f;
+	float distanceInRangeOfAntiGravityTrigger = testJet->antiGravityHeight() - 200;
 	FVector distanceFromFloor = FVector(0, distanceInRangeOfAntiGravityTrigger, 0);
 	FVector nearTheFloor = testFloor->GetActorLocation() + distanceFromFloor;
 	testJet->SetActorLocation(nearTheFloor);
 	testFloor->SetActorRotation(sideways);
 
-	GEditor->SnapObjectTo(FActorOrComponent(testJet), true, true, true, false, FActorOrComponent(testFloor));
 
 	return true;
 }
