@@ -46,13 +46,13 @@ void UAntiGravityComponent::antiGravityLifting()
 	TArray<FVector> socketLocations = TArray<FVector>();
 	for (const auto& socket : vertexSockets)
 	{
-		if(!socket.IsEqual(FName("BackSteeringPoint")))
+		if (!socket.IsEqual(FName("BackSteeringPoint")))
 		{
 			socketLocations.Add(ownerPrimitiveComponent->GetSocketLocation(socket));
 		}
 	}
 	FVector ownerLowerBound = owner->GetActorLocation();//should take consideration the actor bounds...
-	FVector antiGravityExtensionLimit = ownerLowerBound - FVector(0, 0, levitationHeight);//should use the up vector of the actor and extend it downwards. (if its sideways, current implementation doesn't work).
+	FVector antiGravityExtensionLimit = ownerLowerBound - owner->GetActorUpVector() * triggerHeight();//should use the up vector of the actor and extend it downwards. (if its sideways, current implementation doesn't work).
 	FHitResult obstacle;
 	FCollisionQueryParams collisionParameters;
 	collisionParameters.AddIgnoredActor(owner);
