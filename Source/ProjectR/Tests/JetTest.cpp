@@ -1906,6 +1906,105 @@ bool FAJetBrakesOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters
 
 	return true;
 }
+
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotatedOverFloorAccelerateAndSteerItRightCommand);
+
+bool FSpawningAJetRotatedOverFloorAccelerateAndSteerItRightCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+	AFloorMeshActor* meshActor = sessionUtilities.spawnInPIEAnInstanceOf<AFloorMeshActor>();
+
+	FVector scale = FVector(4, 4, 1);
+	meshActor->SetActorScale3D(scale);
+
+	FVector spawnLocation = meshActor->GetActorLocation() + FVector(0, 0, 1000);
+
+	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>(spawnLocation);
+	FRotator pitchUp = FRotator(30, 0, 0);
+	testJet->SetActorRotation(pitchUp);
+	testJet->accelerateOnEveryTick();
+	testJet->steerRightEveryTick();
+	testJet->cancelGravityOnEveryTick();
+
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetVelocityMagnitudeOrthogonalityToFloorCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+
+bool FCheckAJetVelocityMagnitudeOrthogonalityToFloorCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+		AFloorMeshActor* testFloor = sessionUtilities.retrieveFromPIEAnInstanceOf<AFloorMeshActor>();
+		if (testJet)
+		{
+			FVector floorNormal = testFloor->GetActorUpVector();
+			FVector jetVelocity = testJet->GetVelocity();
+			FVector velocityProjectedOnFloorPlane = FVector::VectorPlaneProject(jetVelocity, floorNormal);
+			float speedAlongFloorPlane = velocityProjectedOnFloorPlane.Size();
+			float velocityMagnitude = jetVelocity.Size();
+
+			bool isMoving = !FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
+			bool speedOnFloorIsSameAsJetVelocityMagnitude = FMath::IsNearlyEqual(speedAlongFloorPlane, velocityMagnitude, 0.001f);
+
+			UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet rotation: %s"), *testJet->GetActorRotation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *jetVelocity.ToString());
+			UE_LOG(LogTemp, Log, TEXT("Floor up vector: %s"), *floorNormal.ToString());
+			UE_LOG(LogTemp, Log, TEXT("Speed along floor plane: %f"), speedAlongFloorPlane);
+			UE_LOG(LogTemp, Log, TEXT("Velocity magnitude: %f"), velocityMagnitude);
+			UE_LOG(LogTemp, Log, TEXT("Jet %s moving."), *FString(isMoving ? "is" : "isn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet %s parallel to floor up vector."), *FString(speedOnFloorIsSameAsJetVelocityMagnitude ? "moves" : "doesn't move"));
+
+			++aTickCount;
+
+			if (aTickCount > aTickLimit)
+			{
+				test->TestTrue(TEXT("The Jet should move parallel to the floor. Then, the floor speed and velocity magnitude (gravity is being canceled) should be the same."), isMoving && speedOnFloorIsSameAsJetVelocityMagnitude);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSteersOrthogonalToSurfaceNormalTest, "ProjectR.Jet Tests.Integration.037: steers orthogonal to the floor surface up vector", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetSteersOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotatedOverFloorAccelerateAndSteerItRightCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetVelocityMagnitudeOrthogonalityToFloorCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
 //jet mesh should be set to collision enabled. (query and physics or physics only).
 //I should project the forward vector along the surface we are on and use that projection to accelerate, brake and steer. Accelerate and steer already done.
 //remake the goesforward goes backwards logic. (the jet could steer and en up opposite to the forward acceleration direction.
