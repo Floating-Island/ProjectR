@@ -2006,9 +2006,7 @@ bool FAJetSteersOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters
 	return true;
 }
 //jet mesh should be set to collision enabled. (query and physics or physics only).
-//I should project the forward vector along the surface we are on and use that projection to accelerate, brake and steer. Accelerate and steer already done.
-//remake the goesforward goes backwards logic. (the jet could steer and en up opposite to the forward acceleration direction.
-//	I could make a engine state to check if the engine is accelerating forwards (>0) or backwards (<0)
+
 //delete tests that check velocity alignment to forward or backwards vectors after steering.
 
 
