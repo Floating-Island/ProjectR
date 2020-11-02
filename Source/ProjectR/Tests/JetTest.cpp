@@ -1902,7 +1902,7 @@ bool FAJetBrakesOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedOrthogonalityToFloorCommand(tickCount, tickLimit, this));
 
-	//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
 	return true;
 }

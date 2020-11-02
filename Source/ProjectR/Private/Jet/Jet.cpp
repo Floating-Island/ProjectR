@@ -107,7 +107,7 @@ void AJet::brake(float aBrakeMultiplier)
 {
 	if (aBrakeMultiplier > 0)
 	{
-		FVector forceToApply = GetActorForwardVector() * (-brakeValue());//notice the '-' next to brakeValue. Brake value's sign is positive.
+		FVector forceToApply = ForwardProjectionOnFloor() * (-brakeValue());//notice the '-' next to brakeValue. Brake value's sign is positive.
 		meshComponent->AddForce(forceToApply * aBrakeMultiplier, NAME_None, true);
 	}
 }
