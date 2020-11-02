@@ -26,7 +26,7 @@ AJet::AJet()
 	meshComponent->SetStaticMesh(Mesh);
 
 	accelerationValue = 5000.0f;
-	brakeAbsoluteValue = 1000.0f;
+	brakeAbsoluteValue = 5000.0f;
 	topSpeed = 1000.0f;
 
 	AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
