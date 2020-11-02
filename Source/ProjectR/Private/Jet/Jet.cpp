@@ -76,7 +76,7 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 float AJet::currentSpeed()
 {
-	return (meshComponent->GetComponentVelocity().ProjectOnTo(ForwardProjectionOnFloor())).Size();//speed is calculated as the forward velocity, parallel to floor if any.
+	return forwardVelocity().Size();//speed is calculated as the forward velocity, parallel to floor if any.
 }
 
 float AJet::settedTopSpeed()
@@ -115,7 +115,7 @@ void AJet::brake(float aBrakeMultiplier)
 bool AJet::goesForward()
 {
 	FVector forwardDirection = ForwardProjectionOnFloor();
-	return GetVelocity().ProjectOnTo(forwardDirection).GetSignVector().Equals(
+	return forwardVelocity().GetSignVector().Equals(
 		forwardDirection.GetSignVector(), 0.1f);
 }
 
