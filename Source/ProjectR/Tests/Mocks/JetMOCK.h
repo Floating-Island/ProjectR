@@ -16,6 +16,7 @@ class PROJECTR_API AJetMOCK : public AJet
 
 private:
 	bool alwaysSteerRight;
+	bool alwaysAccelerate;
 public:
 	AJetMOCK();
 	virtual void Tick(float DeltaTime) override;
@@ -53,4 +54,5 @@ public:
 	FVector centerOfMass();
 
 	void steerRightEveryTick();
+	void accelerateOnEveryTick();
 };

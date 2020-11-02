@@ -1675,7 +1675,7 @@ bool FSpawningAJetRotatedOverFloorAndAccelerateItCommand::Update()
 	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>(spawnLocation);
 	FRotator pitchUp = FRotator(20, 0, 0);
 	testJet->SetActorRotation(pitchUp);
-	testJet->accelerate(1);
+	testJet->accelerateOnEveryTick();
 
 	return true;
 }
@@ -1696,7 +1696,8 @@ bool FCheckAJetSpeedOrthogonalityToFloorCommand::Update()
 			FVector jetVelocity = testJet->GetVelocity();
 			FVector velocityProjectedOnFloorPlane = FVector::VectorPlaneProject(jetVelocity, floorNormal);
 			float speedAlongFloorPlane = velocityProjectedOnFloorPlane.Size();
-
+			FVector velocityAlongForwardVector = jetVelocity.ProjectOnTo(testJet->GetActorForwardVector());
+			
 			bool isMoving = !FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
 			bool movesParallelToFloor = FMath::IsNearlyEqual(speedAlongFloorPlane, testJet->currentSpeed(), 0.001f);
 
@@ -1704,6 +1705,7 @@ bool FCheckAJetSpeedOrthogonalityToFloorCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet rotation: %s"), *testJet->GetActorRotation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *jetVelocity.ToString());
 			UE_LOG(LogTemp, Log, TEXT("Floor up vector: %s"), *floorNormal.ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet velocity projected on on its forward vector: %s"), *velocityAlongForwardVector.ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity projected on floor up vector: %s"), *velocityProjectedOnFloorPlane.ToString());
 			UE_LOG(LogTemp, Log, TEXT("Speed along floor plane: %f"), speedAlongFloorPlane);
 			UE_LOG(LogTemp, Log, TEXT("Jet speed: %f"), testJet->currentSpeed());
@@ -1904,7 +1906,7 @@ bool FAJetBrakesOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedOrthogonalityToFloorCommand(tickCount, tickLimit, this));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
 	return true;
 }
