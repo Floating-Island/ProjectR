@@ -1698,6 +1698,7 @@ bool FCheckAJetSpeedOrthogonalityToFloorCommand::Update()
 			FVector velocityProjectedOnFloorPlane = FVector::VectorPlaneProject(jetVelocity, floorNormal);
 			float speedAlongFloorPlane = velocityProjectedOnFloorPlane.Size();
 			FVector velocityAlongForwardVector = jetVelocity.ProjectOnTo(testJet->GetActorForwardVector());
+			float speedAlongForwardVector = velocityAlongForwardVector.Size();
 			
 			bool isMoving = !FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
 			bool movesParallelToFloor = FMath::IsNearlyEqual(speedAlongFloorPlane, testJet->currentSpeed(), 0.001f);
@@ -1709,6 +1710,7 @@ bool FCheckAJetSpeedOrthogonalityToFloorCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity projected on on its forward vector: %s"), *velocityAlongForwardVector.ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity projected on floor up vector: %s"), *velocityProjectedOnFloorPlane.ToString());
 			UE_LOG(LogTemp, Log, TEXT("Speed along floor plane: %f"), speedAlongFloorPlane);
+			UE_LOG(LogTemp, Log, TEXT("Speed along forward vector: %f"), speedAlongForwardVector);
 			UE_LOG(LogTemp, Log, TEXT("Jet speed: %f"), testJet->currentSpeed());
 			UE_LOG(LogTemp, Log, TEXT("Jet %s moving."), *FString(isMoving ? "is" : "isn't"));
 			UE_LOG(LogTemp, Log, TEXT("Jet %s parallel to floor up vector."), *FString(movesParallelToFloor ? "moves" : "doesn't move"));
