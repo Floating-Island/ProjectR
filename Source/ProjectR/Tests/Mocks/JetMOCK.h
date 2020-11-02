@@ -17,6 +17,7 @@ class PROJECTR_API AJetMOCK : public AJet
 private:
 	bool alwaysSteerRight;
 	bool alwaysAccelerate;
+	bool alwaysBrake;
 public:
 	AJetMOCK();
 	virtual void Tick(float DeltaTime) override;
@@ -55,4 +56,5 @@ public:
 
 	void steerRightEveryTick();
 	void accelerateOnEveryTick();
+	void brakeOnEveryTick();
 };

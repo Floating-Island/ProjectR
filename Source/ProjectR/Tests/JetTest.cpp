@@ -1711,18 +1711,12 @@ bool FCheckAJetSpeedOrthogonalityToFloorCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet speed: %f"), testJet->currentSpeed());
 			UE_LOG(LogTemp, Log, TEXT("Jet %s moving."), *FString(isMoving ? "is" : "isn't"));
 			UE_LOG(LogTemp, Log, TEXT("Jet %s parallel to floor up vector."), *FString(movesParallelToFloor ? "moves" : "doesn't move"));
-
-			if (isMoving && movesParallelToFloor)
-			{
-				test->TestTrue(TEXT("The Jet should move parallel to the floor."), isMoving && movesParallelToFloor);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
+			
 			++aTickCount;
 
 			if (aTickCount > aTickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet never moved parallel to floor."), aTickCount > aTickLimit);
+				test->TestTrue(TEXT("The Jet should move parallel to the floor."), isMoving && movesParallelToFloor);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -1884,7 +1878,7 @@ bool FSpawningAJetRotatedOverFloorAndBrakeItCommand::Update()
 	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>(spawnLocation);
 	FRotator pitchDown = FRotator(-20, 0, 0);
 	testJet->SetActorRotation(pitchDown);
-	testJet->brake(1);
+	testJet->brakeOnEveryTick();
 
 	return true;
 }
