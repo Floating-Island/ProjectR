@@ -1880,8 +1880,8 @@ bool FSpawningAJetRotatedOverFloorAndBrakeItCommand::Update()
 	FVector spawnLocation = meshActor->GetActorLocation() + FVector(0, 0, 1000);
 
 	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>(spawnLocation);
-	FRotator pitchUp = FRotator(20, 0, 0);
-	testJet->SetActorRotation(pitchUp);
+	FRotator pitchDown = FRotator(-20, 0, 0);
+	testJet->SetActorRotation(pitchDown);
 	testJet->brake(1);
 
 	return true;
