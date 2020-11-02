@@ -1855,8 +1855,61 @@ bool FAJetSidewaysRejectsAFloorSidewaysTest::RunTest(const FString& Parameters)
 	return true;
 }
 
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotatedOverFloorAndBrakeItCommand);
+
+bool FSpawningAJetRotatedOverFloorAndBrakeItCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+	AFloorMeshActor* meshActor = sessionUtilities.spawnInPIEAnInstanceOf<AFloorMeshActor>();
+
+	FVector scale = FVector(4, 4, 1);
+	meshActor->SetActorScale3D(scale);
+
+	FVector spawnLocation = meshActor->GetActorLocation() + FVector(0, 0, 1000);
+
+	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>(spawnLocation);
+	FRotator pitchUp = FRotator(20, 0, 0);
+	testJet->SetActorRotation(pitchUp);
+	testJet->brake(1);
+
+	return true;
+}
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetBrakesOrthogonalToSurfaceNormalTest, "ProjectR.Jet Tests.Integration.036: Brakes orthogonal to the floor surface up vector", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAJetBrakesOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotatedOverFloorAndBrakeItCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedOrthogonalityToFloorCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
 //jet mesh should be set to collision enabled. (query and physics or physics only).
-//I should project the forward vector along the surface we are on and use that projection to accelerate, brake and steer. Accelerate already done.
+//I should project the forward vector along the surface we are on and use that projection to accelerate, brake and steer. Accelerate and steer already done.
 //remake the goesforward goes backwards logic. (the jet could steer and en up opposite to the forward acceleration direction.
 //	I could make a engine state to check if the engine is accelerating forwards (>0) or backwards (<0)
 //delete tests that check velocity alignment to forward or backwards vectors after steering.
