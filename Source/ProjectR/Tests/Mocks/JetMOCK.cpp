@@ -96,7 +96,7 @@ FVector AJetMOCK::centerOfMass()
 	return meshComponent->GetCenterOfMass();
 }
 
-void AJetMOCK::steerEveryTick()
+void AJetMOCK::steerRightEveryTick()
 {
 	alwaysSteerRight = true;
 }

@@ -524,8 +524,8 @@ bool FSpawningAJetMakeItSteerRightCommand::Update()
 
 	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
 
-	testJet->setCurrentXVelocityTo(1);//we should set the speed to 1 first so the jet is able to steer.
-	testJet->steerEveryTick();
+	testJet->setCurrentXVelocityTo(10000);//we should set the speed to 1000 first so the jet is able to steer.
+	testJet->steerRightEveryTick();
 
 	return true;
 }
@@ -593,13 +593,13 @@ bool FAJetRotatesYawRightWhenSteeringRightTest::RunTest(const FString& Parameter
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetDefaultSteerForceIsGreaterThanZeroTest, "ProjectR.Jet Tests.Unit.015: Default steer force is greater than zero", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetDefaultSteerRadiusIsGreaterThanZeroTest, "ProjectR.Jet Tests.Unit.015: Default steer radius is greater than zero", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FAJetDefaultSteerForceIsGreaterThanZeroTest::RunTest(const FString& Parameters)
+bool FAJetDefaultSteerRadiusIsGreaterThanZeroTest::RunTest(const FString& Parameters)
 {
 	AJet* testJet = NewObject<AJet>(AJet::StaticClass());
 
-	TestTrue(TEXT("A Jet's default steer force should be bigger than zero."), testJet->steerForce() > 0);
+	TestTrue(TEXT("A Jet's default steer radius should be bigger than zero."), testJet->steerRadius() > 0);
 
 	return true;
 }
@@ -669,7 +669,7 @@ bool FSpawningAJetPressSteerRightKeyCommand::Update()
 
 	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
 
-	testJet->setCurrentXVelocityTo(1);//we should set the speed to 1 first so the jet is able to steer.
+	testJet->setCurrentXVelocityTo(10000);//we should set the speed to 1 first so the jet is able to steer.
 	sessionUtilities.processLocalPlayerInputFrom(FName(TEXT("SteerAction")));
 
 	return true;
@@ -1204,13 +1204,10 @@ bool FSpawningAJetBrakeAndSteerRightCommand::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
-
 	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();//is a mock necessary??
 
-	float direction = 1;//1 is right, -1 is left going forwards
-	testJet->setCurrentXVelocityTo(-1);//we go reverse and then we try to steer
-	testJet->steer(direction);
+	testJet->setCurrentXVelocityTo(-10000);//we go reverse and then we try to steer
+	testJet->steerRightEveryTick();
 
 	return true;
 }
@@ -1227,27 +1224,25 @@ bool FCheckAJetInvertSteeringWhenInReverseCommand::Update()
 		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		if (testJet)
 		{
-
-			bool ismovingRight = testJet->GetVelocity().Y > 0;//if steering in reverse, Y should be > 0, the velocity vector points backwards and right.
-			bool isMinimalSteering = FMath::IsNearlyZero(testJet->GetActorRotation().Yaw, 0.01f);
 			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
 			FVector jetForwardDirection = testJet->GetActorForwardVector();
 			bool isMovingBackwards = testJet->goesBackwards();
+			float currentZRotation = testJet->GetActorRotation().Yaw;
+			bool hasSteeredLeft = currentZRotation < 0;
+			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotation, 0.1f);
 
+			UE_LOG(LogTemp, Log, TEXT("Jet rotation vector: %s"), *testJet->GetActorRotation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet %s steered left."), *FString(hasSteeredLeft ? "has" : "hasn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet %s made a minimal steering."), *FString(isMinimalSteering ? "has" : "hasn't"));
 			UE_LOG(LogTemp, Log, TEXT("Jet forward vector: %s"), *jetForwardDirection.ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *testJet->GetVelocity().ToString());
-			UE_LOG(LogTemp, Log, TEXT("Jet velocity projection on forward vector: %s"), *testJet->GetVelocity().ProjectOnTo(jetForwardDirection).ToString());
-			UE_LOG(LogTemp, Log, TEXT("Jet velocity projection sign: %s"), *testJet->GetVelocity().ProjectOnTo(jetForwardDirection).GetSignVector().ToString());
-			UE_LOG(LogTemp, Log, TEXT("Jet forward vector sign: %s"), *jetForwardDirection.GetSignVector().ToString());
-			UE_LOG(LogTemp, Log, TEXT("Jet rotation is: %s"), *testJet->GetActorRotation().ToString());
-			UE_LOG(LogTemp, Log, TEXT("Jet %s moving right."), *FString(ismovingRight ? "is" : "isn't"));
-			UE_LOG(LogTemp, Log, TEXT("Jet %s made a minimal steering."), *FString(isMinimalSteering ? "has" : "hasn't"));
-			UE_LOG(LogTemp, Log, TEXT("Jet speed %s nearly zero."), *FString(speedNearlyZero ? "is" : "isn't"));
-			UE_LOG(LogTemp, Log, TEXT("Jet %s moving backwards."), *FString(ismovingRight ? "is" : "isn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet velocity projection on forward vector: %s"), *testJet->forwardVelocity().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet velocity projection sign: %s"), *testJet->forwardVelocity().GetSignVector().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet %s moving backwards."), *FString(isMovingBackwards ? "is" : "isn't"));
 
-			if (!speedNearlyZero && !isMinimalSteering && ismovingRight && isMovingBackwards)
+			if (!speedNearlyZero && !isMinimalSteering && hasSteeredLeft && isMovingBackwards)
 			{
-				test->TestTrue(TEXT("The Jet should steer right counterclockwise if it's in reverse."), !speedNearlyZero && !isMinimalSteering && ismovingRight && isMovingBackwards);
+				test->TestTrue(TEXT("The Jet should steer right counterclockwise if it's in reverse."), !speedNearlyZero && !isMinimalSteering && hasSteeredLeft && isMovingBackwards);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -1485,7 +1480,7 @@ bool FSpawningTwoJetsMakeOneOfThemItAccelerateAndSteerRightCommand::Update()
 
 	float direction = 1;//1 is right, -1 is left...
 	testJet->setCurrentXVelocityTo(30);
-	testJet->steerEveryTick();
+	testJet->steerRightEveryTick();
 
 
 
@@ -1584,7 +1579,7 @@ bool FSpawningAJetTiltItAndMakeItSteerRightCommand::Update()
 	float direction = 1;//1 is right, -1 is left...
 	FRotator rollRotator = FRotator(0, 0, roll);
 	testJet->SetActorRotation(rollRotator);
-	testJet->setCurrentXVelocityTo(1);//we should set the speed to 1 first so the jet is able to steer.
+	testJet->setCurrentXVelocityTo(10000);//we should set the speed to 1 first so the jet is able to steer.
 	testJet->steer(direction);
 
 	return true;

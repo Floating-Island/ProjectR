@@ -52,5 +52,5 @@ public:
 
 	FVector centerOfMass();
 
-	void steerEveryTick();
+	void steerRightEveryTick();
 };
