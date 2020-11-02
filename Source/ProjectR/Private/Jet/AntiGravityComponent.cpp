@@ -46,7 +46,7 @@ void UAntiGravityComponent::antiGravityLifting()
 	TArray<FVector> socketLocations = TArray<FVector>();
 	for (const auto& socket : vertexSockets)
 	{
-		if (!socket.IsEqual(FName("BackSteeringPoint")))
+		if (!socket.IsEqual(FName("BackSteeringPoint")) && !socket.IsEqual(FName("FrontSteeringPoint")))
 		{
 			socketLocations.Add(ownerPrimitiveComponent->GetSocketLocation(socket));
 		}
