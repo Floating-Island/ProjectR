@@ -1676,6 +1676,7 @@ bool FSpawningAJetRotatedOverFloorAndAccelerateItCommand::Update()
 	FRotator pitchUp = FRotator(20, 0, 0);
 	testJet->SetActorRotation(pitchUp);
 	testJet->accelerateOnEveryTick();
+	testJet->cancelGravityOnEveryTick();
 
 	return true;
 }
@@ -1879,6 +1880,7 @@ bool FSpawningAJetRotatedOverFloorAndBrakeItCommand::Update()
 	FRotator pitchDown = FRotator(-20, 0, 0);
 	testJet->SetActorRotation(pitchDown);
 	testJet->brakeOnEveryTick();
+	testJet->cancelGravityOnEveryTick();
 
 	return true;
 }

@@ -10,22 +10,28 @@ AJetMOCK::AJetMOCK()
 	alwaysSteerRight = false;
 	alwaysAccelerate = false;
 	alwaysBrake = false;
+	alwaysCancelGravity = false;
 }
 
 void AJetMOCK::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if(alwaysSteerRight)
+	if (alwaysSteerRight)
 	{
 		steer(1);
 	}
-	if(alwaysAccelerate)
+	if (alwaysAccelerate)
 	{
 		accelerate(1);
 	}
-	if(alwaysBrake)
+	if (alwaysBrake)
 	{
 		brake(1);
+	}
+	if (alwaysCancelGravity)
+	{
+		float weight = abs(meshComponent->GetMass() * GetWorld()->GetGravityZ());
+		meshComponent->AddForce(FVector(0, 0, weight));
 	}
 }
 
@@ -87,7 +93,7 @@ float AJetMOCK::getZVelocity()
 
 bool AJetMOCK::generatesOverlapEvents()
 {
-        return meshComponent->GetGenerateOverlapEvents();
+	return meshComponent->GetGenerateOverlapEvents();
 }
 
 bool AJetMOCK::meshCollisionIsPawn()
@@ -119,6 +125,11 @@ void AJetMOCK::accelerateOnEveryTick()
 void AJetMOCK::brakeOnEveryTick()
 {
 	alwaysBrake = true;
+}
+
+void AJetMOCK::cancelGravityOnEveryTick()
+{
+	alwaysCancelGravity = true;
 }
 
 //bool AJetMOCK::hasAnAntiGravitySystem()
