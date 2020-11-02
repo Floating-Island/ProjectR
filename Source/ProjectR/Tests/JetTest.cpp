@@ -1673,7 +1673,7 @@ bool FSpawningAJetRotatedOverFloorAndAccelerateItCommand::Update()
 	FVector spawnLocation = meshActor->GetActorLocation() + FVector(0, 0, 1000);
 
 	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>(spawnLocation);
-	FRotator pitchUp = FRotator(20, 0, 0);
+	FRotator pitchUp = FRotator(30, 0, 0);
 	testJet->SetActorRotation(pitchUp);
 	testJet->accelerateOnEveryTick();
 	testJet->cancelGravityOnEveryTick();
@@ -1697,29 +1697,27 @@ bool FCheckAJetSpeedOrthogonalityToFloorCommand::Update()
 			FVector jetVelocity = testJet->GetVelocity();
 			FVector velocityProjectedOnFloorPlane = FVector::VectorPlaneProject(jetVelocity, floorNormal);
 			float speedAlongFloorPlane = velocityProjectedOnFloorPlane.Size();
-			FVector velocityAlongForwardVector = jetVelocity.ProjectOnTo(testJet->GetActorForwardVector());
-			float speedAlongForwardVector = velocityAlongForwardVector.Size();
-			
+			float velocityMagnitude = jetVelocity.Size();
+
 			bool isMoving = !FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
-			bool movesParallelToFloor = FMath::IsNearlyEqual(speedAlongFloorPlane, testJet->currentSpeed(), 0.001f);
+			bool speedOnFloorIsSameAsJetSpeed = FMath::IsNearlyEqual(speedAlongFloorPlane, testJet->currentSpeed(), 0.001f);
+			bool speedOnFloorIsSameAsJetVelocityMagnitude = FMath::IsNearlyEqual(speedAlongFloorPlane, velocityMagnitude, 0.001f);
 
 			UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet rotation: %s"), *testJet->GetActorRotation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *jetVelocity.ToString());
 			UE_LOG(LogTemp, Log, TEXT("Floor up vector: %s"), *floorNormal.ToString());
-			UE_LOG(LogTemp, Log, TEXT("Jet velocity projected on on its forward vector: %s"), *velocityAlongForwardVector.ToString());
-			UE_LOG(LogTemp, Log, TEXT("Jet velocity projected on floor up vector: %s"), *velocityProjectedOnFloorPlane.ToString());
 			UE_LOG(LogTemp, Log, TEXT("Speed along floor plane: %f"), speedAlongFloorPlane);
-			UE_LOG(LogTemp, Log, TEXT("Speed along forward vector: %f"), speedAlongForwardVector);
+			UE_LOG(LogTemp, Log, TEXT("Velocity magnitude: %f"), velocityMagnitude);
 			UE_LOG(LogTemp, Log, TEXT("Jet speed: %f"), testJet->currentSpeed());
 			UE_LOG(LogTemp, Log, TEXT("Jet %s moving."), *FString(isMoving ? "is" : "isn't"));
-			UE_LOG(LogTemp, Log, TEXT("Jet %s parallel to floor up vector."), *FString(movesParallelToFloor ? "moves" : "doesn't move"));
-			
+			UE_LOG(LogTemp, Log, TEXT("Jet %s parallel to floor up vector."), *FString(speedOnFloorIsSameAsJetSpeed ? "moves" : "doesn't move"));
+
 			++aTickCount;
 
 			if (aTickCount > aTickLimit)
 			{
-				test->TestTrue(TEXT("The Jet should move parallel to the floor."), isMoving && movesParallelToFloor);
+				test->TestTrue(TEXT("The Jet should move parallel to the floor. Then, the speed, floor speed and velocity magnitude (gravity is being canceled) should be the same."), isMoving && speedOnFloorIsSameAsJetSpeed && speedOnFloorIsSameAsJetVelocityMagnitude);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -1770,7 +1768,7 @@ bool FSpawningAJetAndFloorSideWaysCommand::Update()
 	testFloor->SetActorRotation(sideways);
 	FVector floorScale = FVector(5, 5, 1);
 	testFloor->SetActorScale3D(floorScale);
-	
+
 	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
 
 	float distanceInRangeOfAntiGravityTrigger = testJet->antiGravityHeight() - 200;
@@ -1879,7 +1877,7 @@ bool FSpawningAJetRotatedOverFloorAndBrakeItCommand::Update()
 	FVector spawnLocation = meshActor->GetActorLocation() + FVector(0, 0, 1000);
 
 	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>(spawnLocation);
-	FRotator pitchDown = FRotator(-20, 0, 0);
+	FRotator pitchDown = FRotator(-30, 0, 0);
 	testJet->SetActorRotation(pitchDown);
 	testJet->brakeOnEveryTick();
 	testJet->cancelGravityOnEveryTick();
