@@ -22,18 +22,17 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-
-	UPROPERTY(EditAnywhere, Category = "Steering Settings")
-		float steerForceMagnitude;
 	
 	UFUNCTION()
 		void alignVelocityFrom(FVector aPreviousForwardVector, FVector aPreviousLocation);
 	void InReverseInverts(float& aDirectionMultiplier);
+
+	UPROPERTY(EditAnywhere, Category = "Steering Settings")
+		float steerRadius;
 	
 public:	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void steer(float aDirectionMultiplier);
-	float steerForce();
-
+	float steeringRadius();
 };

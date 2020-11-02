@@ -76,7 +76,7 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 float AJet::currentSpeed()
 {
-	return (meshComponent->GetComponentVelocity().ProjectOnTo(ForwardAccelerationDirection())).Size();//speed is calculated as the forward velocity, parallel to floor if any.
+	return (meshComponent->GetComponentVelocity().ProjectOnTo(ForwardProjectionOnFloor())).Size();//speed is calculated as the forward velocity, parallel to floor if any.
 }
 
 float AJet::settedTopSpeed()
@@ -88,7 +88,7 @@ void AJet::accelerate(float anAccelerationMultiplier)
 {
 	if (anAccelerationMultiplier > 0 && currentSpeed() < settedTopSpeed() && !FMath::IsNearlyEqual(currentSpeed(), settedTopSpeed(), 1.0f))
 	{
-		FVector forceToApply = ForwardAccelerationDirection() * acceleration();
+		FVector forceToApply = ForwardProjectionOnFloor() * acceleration();
 		meshComponent->AddForce(forceToApply * anAccelerationMultiplier, NAME_None, true);
 	}
 }
@@ -114,7 +114,7 @@ void AJet::brake(float aBrakeMultiplier)
 
 bool AJet::goesForward()
 {
-	FVector forwardDirection = ForwardAccelerationDirection();
+	FVector forwardDirection = ForwardProjectionOnFloor();
 	return GetVelocity().ProjectOnTo(forwardDirection).GetSignVector().Equals(
 		forwardDirection.GetSignVector(), 0.1f);
 }
@@ -124,9 +124,9 @@ bool AJet::goesBackwards()
 	return !goesForward() && currentSpeed() > 0;
 }
 
-float AJet::steerForce()
+float AJet::steerRadius()
 {
-	return steeringSystem->steerForce();
+	return steeringSystem->steeringRadius();
 }
 
 void AJet::steer(float aDirectionMultiplier)
@@ -134,19 +134,10 @@ void AJet::steer(float aDirectionMultiplier)
 	steeringSystem->steer(aDirectionMultiplier);
 }
 
-FVector AJet::ForwardAccelerationDirection()
+FVector AJet::ForwardProjectionOnFloor()
 {
-	FVector jetLocation = GetActorLocation();//should take consideration the actor bounds...
-	float rayExtension = 1000;
-	FVector rayEnd = -GetActorUpVector() * rayExtension;
-
 	FHitResult obstacle;
-	FCollisionQueryParams collisionParameters;
-	collisionParameters.AddIgnoredActor(this);
-	collisionParameters.bTraceComplex = false;
-	collisionParameters.bReturnPhysicalMaterial = false;
-
-	bool nearFloor = GetWorld()->LineTraceSingleByChannel(obstacle, jetLocation, rayEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
+	bool nearFloor = traceToFind(obstacle);
 
 	if (nearFloor)
 	{
@@ -158,6 +149,20 @@ FVector AJet::ForwardAccelerationDirection()
 	}
 }
 
+bool AJet::traceToFind(FHitResult& obstacle)
+{
+	FVector jetLocation = GetActorLocation();//should take consideration the actor bounds...
+	float rayExtension = 1000;
+	FVector rayEnd = -GetActorUpVector() * rayExtension;
+
+	FCollisionQueryParams collisionParameters;
+	collisionParameters.AddIgnoredActor(this);
+	collisionParameters.bTraceComplex = false;
+	collisionParameters.bReturnPhysicalMaterial = false;
+
+	return  GetWorld()->LineTraceSingleByChannel(obstacle, jetLocation, rayEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
+}
+
 float AJet::antiGravityHeight()
 {
 	return antiGravitySystem->triggerHeight();
@@ -165,5 +170,35 @@ float AJet::antiGravityHeight()
 
 FVector AJet::forwardVelocity()
 {
-	return GetVelocity().ProjectOnTo(ForwardAccelerationDirection());
+	return GetVelocity().ProjectOnTo(ForwardProjectionOnFloor());
+}
+
+FVector AJet::rightVectorProjectionOnFloor()
+{
+	FHitResult obstacle;
+	bool nearFloor = traceToFind(obstacle);
+
+	if (nearFloor)
+	{
+		return FVector::VectorPlaneProject(GetActorRightVector(), obstacle.Normal);
+	}
+	else
+	{
+		return GetActorRightVector();
+	}
+}
+
+FVector AJet::velocityProjectionOnFloor()
+{
+	FHitResult obstacle;
+	bool nearFloor = traceToFind(obstacle);
+
+	if (nearFloor)
+	{
+		return FVector::VectorPlaneProject(GetVelocity(), obstacle.Normal);
+	}
+	else
+	{
+		return FVector::VectorPlaneProject(GetVelocity(), GetActorUpVector());
+	}
 }

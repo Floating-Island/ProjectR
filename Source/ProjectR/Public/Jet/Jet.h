@@ -76,12 +76,17 @@ public:
 	bool goesForward();
 	bool goesBackwards();
 
-	float steerForce();
+	float steerRadius();
 	void steer(float aDirectionMultiplier);
+	bool traceToFind(FHitResult& obstacle);
 
-	FVector ForwardAccelerationDirection();
+	FVector ForwardProjectionOnFloor();
 
 	float antiGravityHeight();
 
 	FVector forwardVelocity();
+
+	FVector rightVectorProjectionOnFloor();
+
+	FVector velocityProjectionOnFloor();
 };
