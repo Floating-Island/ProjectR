@@ -15,7 +15,7 @@ AJet::AJet()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	bGenerateOverlapEventsDuringLevelStreaming = true;
-	physicsMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh Component"));
+	physicsMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Physics Mesh Component"));
 	RootComponent = physicsMeshComponent;
 
 	physicsMeshComponent->SetSimulatePhysics(true);
