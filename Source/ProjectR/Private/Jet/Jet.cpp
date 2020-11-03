@@ -15,15 +15,15 @@ AJet::AJet()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	bGenerateOverlapEventsDuringLevelStreaming = true;
-	meshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh Component"));
-	RootComponent = meshComponent;
+	physicsMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh Component"));
+	RootComponent = physicsMeshComponent;
 
-	meshComponent->SetSimulatePhysics(true);
-	meshComponent->SetEnableGravity(true);
-	meshComponent->SetCanEverAffectNavigation(false);
+	physicsMeshComponent->SetSimulatePhysics(true);
+	physicsMeshComponent->SetEnableGravity(true);
+	physicsMeshComponent->SetCanEverAffectNavigation(false);
 
-	UStaticMesh* Mesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/jetMesh")));
-	meshComponent->SetStaticMesh(Mesh);
+	UStaticMesh* physicsMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/jetMesh")));
+	physicsMeshComponent->SetStaticMesh(physicsMesh);
 
 	accelerationValue = 5000.0f;
 	brakeAbsoluteValue = 5000.0f;
@@ -39,17 +39,17 @@ AJet::AJet()
 	camera = CreateDefaultSubobject<UCameraComponent>(TEXT("camera"));
 	camera->SetupAttachment(springArm);
 
-	meshComponent->SetMassOverrideInKg(NAME_None, 100, true);
+	physicsMeshComponent->SetMassOverrideInKg(NAME_None, 100, true);
 
 	antiGravitySystem = CreateDefaultSubobject<UAntiGravityComponent>(TEXT("Anti-Gravity System"));
 
 	steeringSystem = CreateDefaultSubobject<USteeringComponent>(TEXT("Steering System"));
 
-	meshComponent->SetGenerateOverlapEvents(true);
-	meshComponent->SetCollisionObjectType(ECC_Pawn);
+	physicsMeshComponent->SetGenerateOverlapEvents(true);
+	physicsMeshComponent->SetCollisionObjectType(ECC_Pawn);
 
 	centerOfMassHeight = -100;
-	meshComponent->SetCenterOfMass(FVector(0, 0, centerOfMassHeight));
+	physicsMeshComponent->SetCenterOfMass(FVector(0, 0, centerOfMassHeight));
 }
 
 void AJet::BeginPlay()
@@ -89,7 +89,7 @@ void AJet::accelerate(float anAccelerationMultiplier)
 	if (anAccelerationMultiplier > 0 && currentSpeed() < settedTopSpeed() && !FMath::IsNearlyEqual(currentSpeed(), settedTopSpeed(), 1.0f))
 	{
 		FVector forceToApply = ForwardProjectionOnFloor() * acceleration();
-		meshComponent->AddForce(forceToApply * anAccelerationMultiplier, NAME_None, true);
+		physicsMeshComponent->AddForce(forceToApply * anAccelerationMultiplier, NAME_None, true);
 	}
 }
 
@@ -108,7 +108,7 @@ void AJet::brake(float aBrakeMultiplier)
 	if (aBrakeMultiplier > 0)
 	{
 		FVector forceToApply = ForwardProjectionOnFloor() * (-brakeValue());//notice the '-' next to brakeValue. Brake value's sign is positive.
-		meshComponent->AddForce(forceToApply * aBrakeMultiplier, NAME_None, true);
+		physicsMeshComponent->AddForce(forceToApply * aBrakeMultiplier, NAME_None, true);
 	}
 }
 

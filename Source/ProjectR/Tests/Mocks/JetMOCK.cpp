@@ -30,35 +30,35 @@ void AJetMOCK::Tick(float DeltaTime)
 	}
 	if (alwaysCancelGravity)
 	{
-		float weight = abs(meshComponent->GetMass() * GetWorld()->GetGravityZ());
-		meshComponent->AddForce(FVector(0, 0, weight));
+		float weight = abs(physicsMeshComponent->GetMass() * GetWorld()->GetGravityZ());
+		physicsMeshComponent->AddForce(FVector(0, 0, weight));
 	}
 }
 
 bool AJetMOCK::hasAStaticMesh()
 {
-	return (meshComponent) ? true : false;
+	return (physicsMeshComponent) ? true : false;
 }
 
 bool AJetMOCK::isMeshTheRootComponent()
 {
-	return (RootComponent == meshComponent) ? true : false;
+	return (RootComponent == physicsMeshComponent) ? true : false;
 }
 
 bool AJetMOCK::hasGravityEnabled()
 {
-	return meshComponent->IsGravityEnabled();
+	return physicsMeshComponent->IsGravityEnabled();
 }
 
 bool AJetMOCK::isAffectingNavigation()
 {
-	return meshComponent->CanEverAffectNavigation();
+	return physicsMeshComponent->CanEverAffectNavigation();
 }
 
 void AJetMOCK::setCurrentXVelocityTo(float aDesiredSpeed)
 {
 	FVector newVelocity = FVector(aDesiredSpeed, 0, 0);
-	meshComponent->SetPhysicsLinearVelocity(newVelocity);
+	physicsMeshComponent->SetPhysicsLinearVelocity(newVelocity);
 }
 
 bool AJetMOCK::hasASprinArm()
@@ -93,12 +93,12 @@ float AJetMOCK::getZVelocity()
 
 bool AJetMOCK::generatesOverlapEvents()
 {
-	return meshComponent->GetGenerateOverlapEvents();
+	return physicsMeshComponent->GetGenerateOverlapEvents();
 }
 
 bool AJetMOCK::meshCollisionIsPawn()
 {
-	return meshComponent->GetCollisionObjectType() == ECC_Pawn;
+	return physicsMeshComponent->GetCollisionObjectType() == ECC_Pawn;
 }
 
 bool AJetMOCK::centerOfMassIsLowered()
@@ -109,7 +109,7 @@ bool AJetMOCK::centerOfMassIsLowered()
 
 FVector AJetMOCK::centerOfMass()
 {
-	return meshComponent->GetCenterOfMass();
+	return physicsMeshComponent->GetCenterOfMass();
 }
 
 void AJetMOCK::steerRightEveryTick()

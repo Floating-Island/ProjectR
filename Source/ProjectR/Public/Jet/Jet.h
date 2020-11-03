@@ -35,7 +35,7 @@ protected:
 		float topSpeed;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
-		UStaticMeshComponent* meshComponent;
+		UStaticMeshComponent* physicsMeshComponent;
 
 	//spring arm component
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")

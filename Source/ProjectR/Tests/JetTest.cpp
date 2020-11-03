@@ -2005,8 +2005,8 @@ bool FAJetSteersOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters
 
 	return true;
 }
-//jet mesh should be set to collision enabled. (query and physics or physics only).
 
+//jet mesh should be set to collision enabled. (query and physics or physics only).
 //delete tests that check velocity alignment to forward or backwards vectors after steering.
 
 
