@@ -35,12 +35,12 @@ void AJetMOCK::Tick(float DeltaTime)
 	}
 }
 
-bool AJetMOCK::hasAStaticMesh()
+bool AJetMOCK::hasAPhysicsMesh()
 {
 	return (physicsMeshComponent) ? true : false;
 }
 
-bool AJetMOCK::isMeshTheRootComponent()
+bool AJetMOCK::isPhysicsMeshTheRootComponent()
 {
 	return (RootComponent == physicsMeshComponent) ? true : false;
 }

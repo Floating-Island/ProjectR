@@ -23,9 +23,9 @@ public:
 	AJetMOCK();
 	virtual void Tick(float DeltaTime) override;
 
-	bool hasAStaticMesh();
+	bool hasAPhysicsMesh();
 
-	bool isMeshTheRootComponent();
+	bool isPhysicsMeshTheRootComponent();
 
 	bool hasGravityEnabled();
 
