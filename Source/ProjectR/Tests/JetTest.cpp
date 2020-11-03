@@ -61,14 +61,14 @@ bool FAJetSpeedIsZeroWhenInstantiatedTest::RunTest(const FString& Parameters)
 
 
 //uses a MOCK
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetHasAStaticMeshTest, "ProjectR.Jet Tests.Unit.002: Has a static mesh", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetHasAStaticMeshTest, "ProjectR.Jet Tests.Unit.002: Has a static mesh as physics mesh", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FAJetHasAStaticMeshTest::RunTest(const FString& Parameters)
 {
 
 	AJetMOCK* testJet = NewObject<AJetMOCK>();
 
-	TestTrue(TEXT("The Jet static mesh shouldn't be null if it has one."), testJet->hasAStaticMesh());
+	TestTrue(TEXT("The Jet physics mesh shouldn't be null if it has one."), testJet->hasAPhysicsMesh());
 
 
 	return true;
@@ -84,7 +84,7 @@ bool FAJetMeshIsTheRootComponentTest::RunTest(const FString& Parameters)
 
 	AJetMOCK* testJet = NewObject<AJetMOCK>();
 
-	TestTrue(TEXT("The Jet static mesh should be the root component."), testJet->isMeshTheRootComponent());
+	TestTrue(TEXT("The Jet physics mesh should be the root component."), testJet->isPhysicsMeshTheRootComponent());
 
 
 	return true;
@@ -1119,9 +1119,8 @@ bool FAJetBrakesAlongItsBackwardsVectorWhileRotatedTest::RunTest(const FString& 
 //
 //	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
 //
-//	float direction = 1;//1 is right, -1 is left...
-//	testJet->setCurrentXVelocityTo(1);//we go forward and then steer.
-//	testJet->steer(direction);
+//	testJet->setCurrentXVelocityTo(10000);//we go forward and then steer.
+//	testJet->steerRightEveryTick();
 //
 //	return true;
 //}
@@ -1139,17 +1138,15 @@ bool FAJetBrakesAlongItsBackwardsVectorWhileRotatedTest::RunTest(const FString& 
 //		if (testJet)
 //		{
 //
-//			FVector currentVelocity = testJet->GetVelocity();
-//			FVector jetForwardsVector = testJet->GetActorForwardVector();
+//			FVector currentVelocity = testJet->velocityProjectionOnFloor();
+//			FVector jetForwardsVector = testJet->ForwardProjectionOnFloor();
 //			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
-//			bool velocityAlignedToPreviousForwardVector = FVector::Coincident(currentVelocity.GetSafeNormal2D(), previousForwardVector.GetSafeNormal2D());
+//			bool velocityAlignedToPreviousForwardVector = FVector::Coincident(currentVelocity, previousForwardVector);
 //
 //			UE_LOG(LogTemp, Log, TEXT("Tick: %d"), aTickCount);
 //			UE_LOG(LogTemp, Log, TEXT("Jet previous forward vector: %s"), *previousForwardVector.ToString());
 //			UE_LOG(LogTemp, Log, TEXT("Jet current forward vector: %s"), *jetForwardsVector.ToString());
 //			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *currentVelocity.ToString());
-//			UE_LOG(LogTemp, Log, TEXT("Jet velocity up vector on XY: %s"), *currentVelocity.GetSafeNormal2D().ToString());
-//			UE_LOG(LogTemp, Log, TEXT("Jet previous forward vector up vector on XY: %s"), *previousForwardVector.GetSafeNormal2D().ToString());
 //			UE_LOG(LogTemp, Log, TEXT("Jet speed %s nearly zero."), *FString(speedNearlyZero ? "is" : "isn't"));
 //			UE_LOG(LogTemp, Log, TEXT("Jet velocity %s aligned to previous forward vector."), *FString(velocityAlignedToPreviousForwardVector ? "is" : "isn't"));
 //			UE_LOG(LogTemp, Log, TEXT("End of tick."));
@@ -2007,7 +2004,7 @@ bool FAJetSteersOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters
 }
 
 //jet mesh should be set to collision enabled. (query and physics or physics only).
-//delete tests that check velocity alignment to forward or backwards vectors after steering.
+//delete tests that check velocity alignment to forward or backwards vectors after steering. Or see if it's possible to remade them.
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
