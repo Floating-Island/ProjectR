@@ -33,6 +33,7 @@ void ATrackGenerator::BeginPlay()
 	Super::BeginPlay();
 	collisionsEnabled = true;
 	recreateSplineMeshComponents();
+
 }
 
 void ATrackGenerator::recreateSplineMeshComponents()
