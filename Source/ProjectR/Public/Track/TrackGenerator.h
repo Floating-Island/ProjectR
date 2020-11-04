@@ -76,16 +76,16 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Default Settings")
 		bool collisionsEnabled;
 
-	
+	void trackManagerSubscription();
 
 public:
 
 	virtual void OnConstruction(const FTransform& Transform) override;
 
 	int32 nextSplineIndexOf(int32 aCurrentIndex);
-	void toMagnetOverlapSubscribe(ATrackManager* aManager);
 
 	FVector closestLocationTo(FVector anotherLocation);
+	void toMagnetOverlapSubscribe(ATrackManager* aManager);
 
 };
 

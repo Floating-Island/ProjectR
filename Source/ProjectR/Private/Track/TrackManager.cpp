@@ -123,3 +123,14 @@ void ATrackManager::addJetToMagnetize(UPrimitiveComponent* OverlappedComponent,
 		jetsToMagnetize.Add(overlappedJet, generator);
 	}
 }
+
+bool ATrackManager::hasJetsStored()
+{
+	return jetsToMagnetize.Num() > 0 ? true : false;
+}
+
+void ATrackManager::addGeneratorAndSubscribe(ATrackGenerator* newGenerator)
+{
+	trackGeneratorSet.Add(newGenerator);
+	newGenerator->toMagnetOverlapSubscribe(this);
+}

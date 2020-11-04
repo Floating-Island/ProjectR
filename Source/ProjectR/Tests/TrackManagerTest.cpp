@@ -46,9 +46,9 @@ bool FATrackManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Paramete
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningATrackManagerAndTrackGeneratorCommand);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningATrackGeneratorCommand);
 
-bool FSpawningATrackManagerAndTrackGeneratorCommand::Update()
+bool FSpawningATrackGeneratorCommand::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -61,7 +61,7 @@ bool FSpawningATrackManagerAndTrackGeneratorCommand::Update()
 
 	sessionUtilities.spawnInPIEAnInstanceOf<ATrackGenerator>();
 	sessionUtilities.spawnInPIEAnInstanceOf<ATrackManagerMOCK>();
-
+	
 	return true;
 }
 
@@ -101,7 +101,7 @@ bool FATrackManagerHasTrackGeneratorsListedWhenSpawnedTest::RunTest(const FStrin
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningATrackManagerAndTrackGeneratorCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningATrackGeneratorCommand);
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackManagerTrackGeneratorsCommand(tickCount, tickLimit, this));
@@ -119,9 +119,9 @@ bool FATrackManagerHasTrackGeneratorsListedWhenSpawnedTest::RunTest(const FStrin
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningATrackManagerARotatedTrackGeneratorAndJetCloseToItCommand);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningARotatedTrackGeneratorAndJetCloseToItCommand);
 
-bool FSpawningATrackManagerARotatedTrackGeneratorAndJetCloseToItCommand::Update()
+bool FSpawningARotatedTrackGeneratorAndJetCloseToItCommand::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -134,8 +134,6 @@ bool FSpawningATrackManagerARotatedTrackGeneratorAndJetCloseToItCommand::Update(
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
 	ATrackGenerator* testGenerator = sessionUtilities.spawnInPIEAnInstanceOf<ATrackGenerator>();
-
-	sessionUtilities.spawnInPIEAnInstanceOf<ATrackManagerMOCK>();
 
 	FRotator arbitraryRotator = FRotator(0, 0, 135);
 	testGenerator->SetActorRotation(arbitraryRotator);
@@ -157,7 +155,7 @@ bool FCheckATrackManagerStoresJetsWhenOverlapCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		ATrackManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackManagerMOCK>();
+		ATrackManager* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackManager>();
 		if (testManager)
 		{
 			bool hasJetsStored = testManager->hasJetsStored();
@@ -193,7 +191,7 @@ bool FATrackManagerStoresJetsOverlappingWithTrackGeneratorsTest::RunTest(const F
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningATrackManagerARotatedTrackGeneratorAndJetCloseToItCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningARotatedTrackGeneratorAndJetCloseToItCommand);
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackManagerStoresJetsWhenOverlapCommand(tickCount, tickLimit, this));
@@ -267,7 +265,7 @@ bool FATrackManagerAttractsJetsTowardsTrackGeneratorsTest::RunTest(const FString
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningATrackManagerARotatedTrackGeneratorAndJetCloseToItCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningARotatedTrackGeneratorAndJetCloseToItCommand);
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackManagerAttractsJetsCommand(tickCount, tickLimit, std::numeric_limits<float>::min(), this));

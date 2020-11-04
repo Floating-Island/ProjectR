@@ -5,6 +5,7 @@
 #include "Components/SplineComponent.h"
 #include "Components/SplineMeshComponent.h"
 #include "Track/TrackManager.h"
+#include "Kismet/GameplayStatics.h"
 
 ATrackGenerator::ATrackGenerator()
 {
@@ -27,12 +28,15 @@ ATrackGenerator::ATrackGenerator()
 
 
 
+
 // Called when the game starts or when spawned
 void ATrackGenerator::BeginPlay()
 {
 	Super::BeginPlay();
 	collisionsEnabled = true;
 	recreateSplineMeshComponents();
+	
+	trackManagerSubscription();//should always be after the spline mesh components are recreated.
 }
 
 void ATrackGenerator::recreateSplineMeshComponents()
@@ -103,14 +107,6 @@ int32 ATrackGenerator::nextSplineIndexOf(int32 aCurrentIndex)
 	return (aCurrentIndex + 1) % splineComponent->GetNumberOfSplinePoints();
 }
 
-void ATrackGenerator::toMagnetOverlapSubscribe(ATrackManager* aManager)
-{
-	for (auto& trackSection : trackSections)
-	{
-		trackSection.magnetSpline->OnComponentBeginOverlap.AddDynamic(aManager, &ATrackManager::addJetToMagnetize);
-	}
-}
-
 FVector ATrackGenerator::closestLocationTo(FVector anotherLocation)
 {
 	return splineComponent->FindLocationClosestToWorldLocation(anotherLocation, ESplineCoordinateSpace::World);
@@ -161,7 +157,6 @@ void ATrackGenerator::configureComponentPositionsAndTangents(int32 aSplinePointI
 
 	aSplineMesh->SetStartAndEnd(currentSplinePointPosition, currentSplinePointTangent, nextSplinePointPosition, nextSplinePointTangent);
 }
-
 
 void ATrackGenerator::editorCollisionsEnabled(USplineMeshComponent* aSplineMeshComponent)
 {
@@ -218,4 +213,26 @@ void ATrackGenerator::configureCollisionOf(USplineMeshComponent* aMagnetSpline)
 	aMagnetSpline->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 	aMagnetSpline->SetGenerateOverlapEvents(true);
 	editorCollisionsEnabled(aMagnetSpline);
+}
+
+void ATrackGenerator::trackManagerSubscription()
+{
+	ATrackManager* worldTrackManager = Cast<ATrackManager,AActor>(UGameplayStatics::GetActorOfClass(GetWorld(),ATrackManager::StaticClass()));
+	if(worldTrackManager)
+	{
+		worldTrackManager->addGeneratorAndSubscribe(this);
+	}
+	else
+	{
+		GetWorld()->SpawnActor(ATrackManager::StaticClass());
+	}
+}
+
+
+void ATrackGenerator::toMagnetOverlapSubscribe(ATrackManager* aManager)
+{
+	for (auto& trackSection : trackSections)
+	{
+		trackSection.magnetSpline->OnComponentBeginOverlap.AddDynamic(aManager, &ATrackManager::addJetToMagnetize);
+	}
 }
