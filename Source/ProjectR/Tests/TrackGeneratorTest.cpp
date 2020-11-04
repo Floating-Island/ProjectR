@@ -1443,6 +1443,74 @@ bool FATrackGeneratorSpawnTrackManagerAtBeginPlayTest::RunTest(const FString& Pa
 
 	return true;
 }
+
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnTwoTrackGeneratorsInPIECommand);
+
+bool FSpawnTwoTrackGeneratorsInPIECommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	sessionUtilities.spawnInPIEAnInstanceOf<ATrackGenerator>();
+
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckTrackGeneratorsSpawnOneTrackManagerInPIECommand, FAutomationTestBase*, test);
+
+bool FCheckTrackGeneratorsSpawnOneTrackManagerInPIECommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		TArray<ATrackGenerator*> testGenerators = sessionUtilities.retrieveFromPIEAllInstancesOf<ATrackGenerator>();
+		for (const auto& generator : testGenerators)
+		{
+			if (!generator)
+			{
+				return false;
+			}
+		}
+
+		TArray<ATrackManager*> testManagers = sessionUtilities.retrieveFromPIEAllInstancesOf<ATrackManager>();
+		bool onlyOneTrackManager = testManagers.Num() == 1 ? true : false;
+		UE_LOG(LogTemp, Log, TEXT("Track generators in same world spawned only one track manager: %s."), *FString(onlyOneTrackManager? "true" : "false"));
+
+		test->TestTrue(TEXT("The track generators should spawn only one track manager at begin play in the same world."), onlyOneTrackManager);
+		testWorld->bDebugFrameStepExecution = true;
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorsSpawnOnlyOneTrackManagerAtBeginPlayTest, "ProjectR.TrackGenerator Tests.Unit.033: Track generators spawn only one track manager at begin play", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorsSpawnOnlyOneTrackManagerAtBeginPlayTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTwoTrackGeneratorsInPIECommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckTrackGeneratorsSpawnOneTrackManagerInPIECommand(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
 //make the track generator create a track manager after recreating spline meshes on begin play. This way, the track manager is always created after the track generator. Update tests from track manager.
 //But only one track manager should be in the game so the next test is that if there are two track generators, only the first spawns a track manager:
 //1)retrieve all track managers.
