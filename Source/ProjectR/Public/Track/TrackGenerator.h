@@ -39,6 +39,7 @@ class PROJECTR_API ATrackGenerator : public AActor
 public:
 	// Sets default values for this actor's properties
 	ATrackGenerator();
+	void trackManagerSubscription();
 
 
 protected:

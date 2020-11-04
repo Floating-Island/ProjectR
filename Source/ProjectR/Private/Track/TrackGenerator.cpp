@@ -27,6 +27,18 @@ ATrackGenerator::ATrackGenerator()
 }
 
 
+void ATrackGenerator::trackManagerSubscription()
+{
+	ATrackManager* worldTrackManager = Cast<ATrackManager,AActor>(UGameplayStatics::GetActorOfClass(GetWorld(),ATrackManager::StaticClass()));
+	if(worldTrackManager)
+	{
+		worldTrackManager->addGeneratorAndSubscribe(this);
+	}
+	else
+	{
+		GetWorld()->SpawnActor(ATrackManager::StaticClass());
+	}
+}
 
 // Called when the game starts or when spawned
 void ATrackGenerator::BeginPlay()
@@ -35,15 +47,7 @@ void ATrackGenerator::BeginPlay()
 	collisionsEnabled = true;
 	recreateSplineMeshComponents();
 	
-	ATrackManager* worldTrackManager = Cast<ATrackManager,AActor>(UGameplayStatics::GetActorOfClass(GetWorld(),ATrackManager::StaticClass()));
-	if(worldTrackManager)
-	{
-		worldTrackManager->addGeneratorAndSubscribe(this);
-	}
-	else
-	{
-		GetWorld()->SpawnActor(ATrackManager::StaticClass());//should always be after the spline mesh components are recreated.
-	}
+	trackManagerSubscription();//should always be after the spline mesh components are recreated.
 }
 
 void ATrackGenerator::recreateSplineMeshComponents()
