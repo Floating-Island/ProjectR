@@ -34,7 +34,7 @@ float UMotorDriveComponent::settedTopSpeed()
 
 void UMotorDriveComponent::accelerate(float anAccelerationMultiplier)
 {
-	if (anAccelerationMultiplier > 0 && currentSpeed() < settedTopSpeed() && !FMath::IsNearlyEqual(currentSpeed(), settedTopSpeed(), 1.0f))
+	if (anAccelerationMultiplier > 0 && currentSpeed() < topSpeed && !FMath::IsNearlyEqual(currentSpeed(), topSpeed, 1.0f))
 	{
 		FVector forceToApply = jet->ForwardProjectionOnFloor() * acceleration();
 		jetPhysicsComponent->AddForce(forceToApply * anAccelerationMultiplier, NAME_None, true);
