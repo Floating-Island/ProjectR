@@ -33,6 +33,7 @@ void ATrackGenerator::BeginPlay()
 	Super::BeginPlay();
 	collisionsEnabled = true;
 	recreateSplineMeshComponents();
+	GetWorld()->SpawnActor(ATrackManager::StaticClass());//should always be after the spline mesh components are recreated.
 }
 
 void ATrackGenerator::recreateSplineMeshComponents()
