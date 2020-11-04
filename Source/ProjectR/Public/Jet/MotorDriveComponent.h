@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "MotorDriveComponent.generated.h"
 
+class AJet;
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class PROJECTR_API UMotorDriveComponent : public UActorComponent
@@ -13,7 +14,7 @@ class PROJECTR_API UMotorDriveComponent : public UActorComponent
 	GENERATED_BODY()
 
 private:
-	AActor* jet;
+	AJet* jet;
 	UPrimitiveComponent* jetPhysicsComponent;
 public:
 	// Sets default values for this component's properties
@@ -31,10 +32,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Motor Settings")
 		float topSpeed;
-
-	bool traceToFind(FHitResult& obstacle);
-
-	FVector jetVelocity();
 
 public:
 	// Called every frame
@@ -55,14 +52,4 @@ public:
 	bool goesForward();
 	
 	bool goesBackwards();
-
-	FVector ForwardProjectionOnFloor();
-
-	FVector forwardVelocity();
-
-	FVector rightVectorProjectionOnFloor();
-
-	FVector velocityProjectionOnFloor();
-
-
 };

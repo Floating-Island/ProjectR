@@ -12,6 +12,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UAntiGravityComponent;
 class USteeringComponent;
+class UMotorDriveComponent;
 
 UCLASS()
 class PROJECTR_API AJet : public APawn
@@ -23,16 +24,6 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
-	
-
-	UPROPERTY(EditAnywhere, Category = "Movement")
-		float accelerationValue;
-
-	UPROPERTY(EditAnywhere, Category = "Movement")
-		float brakeAbsoluteValue;
-
-	UPROPERTY(EditAnywhere, Category = "Movement")
-		float topSpeed;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		UStaticMeshComponent* physicsMeshComponent;
@@ -55,6 +46,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Movement")
 		float centerOfMassHeight;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+		UMotorDriveComponent* motorDriveSystem;
 	
 public:
 	virtual void Tick(float DeltaTime) override;
@@ -78,15 +72,16 @@ public:
 
 	float steerRadius();
 	void steer(float aDirectionMultiplier);
-	bool traceToFind(FHitResult& obstacle);
-
-	FVector ForwardProjectionOnFloor();
 
 	float antiGravityHeight();
 
+	FVector ForwardProjectionOnFloor();
+
+	bool traceToFind(FHitResult& obstacle);
+
 	FVector forwardVelocity();
 
-	FVector rightVectorProjectionOnFloor();
-
 	FVector velocityProjectionOnFloor();
+
+	FVector rightVectorProjectionOnFloor();
 };
