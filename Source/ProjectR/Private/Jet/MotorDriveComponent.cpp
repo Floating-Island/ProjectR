@@ -7,6 +7,7 @@
 // Sets default values for this component's properties
 UMotorDriveComponent::UMotorDriveComponent()
 {
+	PrimaryComponentTick.bCanEverTick = false;
 	jet = Cast<AJet, AActor>(GetOwner());
 	accelerationValue = 5000.0f;
 	brakeAbsoluteValue = 5000.0f;

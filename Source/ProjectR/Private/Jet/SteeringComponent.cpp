@@ -7,7 +7,7 @@
 
 USteeringComponent::USteeringComponent()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 	owner = Cast<AJet, AActor>(GetOwner());
 
 	steerRadius = 2000;
@@ -17,11 +17,6 @@ void USteeringComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	ownerPrimitiveComponent = Cast<UPrimitiveComponent, UActorComponent>(owner->GetComponentByClass(UPrimitiveComponent::StaticClass()));
-}
-
-void USteeringComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
 //to get drift, the velocity alignment should be disabled by a moment (as long as the drifting lasts), maintaining the acceleration of the jet.

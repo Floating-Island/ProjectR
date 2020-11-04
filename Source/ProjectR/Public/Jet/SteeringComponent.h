@@ -31,7 +31,6 @@ protected:
 		float steerRadius;
 	
 public:	
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void steer(float aDirectionMultiplier);
 	float steeringRadius();
