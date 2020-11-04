@@ -1396,6 +1396,53 @@ bool FATrackGeneratorHaveExpectedCollisionsInPIETest::RunTest(const FString& Par
 	return true;
 }
 
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckTrackGeneratorSpawnsTrackManagerInPIECommand, FAutomationTestBase*, test);
+
+bool FCheckTrackGeneratorSpawnsTrackManagerInPIECommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		ATrackGeneratorMOCK* testGenerator = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGeneratorMOCK>();
+		if (testGenerator)
+		{
+			ATrackManager* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackManager>();
+			bool componentsHavedTheirExpectedCollisions = testGenerator->splineMeshComponentsExpectedCollisions();
+			UE_LOG(LogTemp, Log, TEXT("Track generator spawned a track manager: %s."), *FString(testManager ? "true" : "false"));
+
+			test->TestNotNull(TEXT("The track generator should spawn a track manager at begin play."), testManager);
+			testWorld->bDebugFrameStepExecution = true;
+			return true;
+		}
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorSpawnTrackManagerAtBeginPlayTest, "ProjectR.TrackGenerator Tests.Unit.032: Track generator spawns a track manager at begin play", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FATrackGeneratorSpawnTrackManagerAtBeginPlayTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInPIECommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckTrackGeneratorSpawnsTrackManagerInPIECommand(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
 //make the track generator create a track manager after recreating spline meshes on begin play. This way, the track manager is always created after the track generator. Update tests from track manager.
 //But only one track manager should be in the game so the next test is that if there are two track generators, only the first spawns a track manager:
 //1)retrieve all track managers.
