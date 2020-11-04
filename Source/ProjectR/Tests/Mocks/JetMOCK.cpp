@@ -5,30 +5,60 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 
-bool AJetMOCK::hasAStaticMesh()
+AJetMOCK::AJetMOCK()
 {
-	return (meshComponent) ? true : false;
+	alwaysSteerRight = false;
+	alwaysAccelerate = false;
+	alwaysBrake = false;
+	alwaysCancelGravity = false;
 }
 
-bool AJetMOCK::isMeshTheRootComponent()
+void AJetMOCK::Tick(float DeltaTime)
 {
-	return (RootComponent == meshComponent) ? true : false;
+	Super::Tick(DeltaTime);
+	if (alwaysSteerRight)
+	{
+		steer(1);
+	}
+	if (alwaysAccelerate)
+	{
+		accelerate(1);
+	}
+	if (alwaysBrake)
+	{
+		brake(1);
+	}
+	if (alwaysCancelGravity)
+	{
+		float weight = abs(physicsMeshComponent->GetMass() * GetWorld()->GetGravityZ());
+		physicsMeshComponent->AddForce(FVector(0, 0, weight));
+	}
+}
+
+bool AJetMOCK::hasAPhysicsMesh()
+{
+	return (physicsMeshComponent) ? true : false;
+}
+
+bool AJetMOCK::isPhysicsMeshTheRootComponent()
+{
+	return (RootComponent == physicsMeshComponent) ? true : false;
 }
 
 bool AJetMOCK::hasGravityEnabled()
 {
-	return meshComponent->IsGravityEnabled();
+	return physicsMeshComponent->IsGravityEnabled();
 }
 
 bool AJetMOCK::isAffectingNavigation()
 {
-	return meshComponent->CanEverAffectNavigation();
+	return physicsMeshComponent->CanEverAffectNavigation();
 }
 
 void AJetMOCK::setCurrentXVelocityTo(float aDesiredSpeed)
 {
 	FVector newVelocity = FVector(aDesiredSpeed, 0, 0);
-	meshComponent->SetPhysicsLinearVelocity(newVelocity);
+	physicsMeshComponent->SetPhysicsLinearVelocity(newVelocity);
 }
 
 bool AJetMOCK::hasASprinArm()
@@ -58,17 +88,48 @@ bool AJetMOCK::usesAbsoluteRotation()
 
 float AJetMOCK::getZVelocity()
 {
-	return meshComponent->GetComponentVelocity().Z;
+	return GetVelocity().Z;
 }
 
 bool AJetMOCK::generatesOverlapEvents()
 {
-        return meshComponent->GetGenerateOverlapEvents();
+	return physicsMeshComponent->GetGenerateOverlapEvents();
 }
 
 bool AJetMOCK::meshCollisionIsPawn()
 {
-	return meshComponent->GetCollisionObjectType() == ECC_Pawn;
+	return physicsMeshComponent->GetCollisionObjectType() == ECC_Pawn;
+}
+
+bool AJetMOCK::centerOfMassIsLowered()
+{
+	FVector centerOfMassLocation = centerOfMass();
+	return centerOfMassLocation.Z <= centerOfMassHeight;
+}
+
+FVector AJetMOCK::centerOfMass()
+{
+	return physicsMeshComponent->GetCenterOfMass();
+}
+
+void AJetMOCK::steerRightEveryTick()
+{
+	alwaysSteerRight = true;
+}
+
+void AJetMOCK::accelerateOnEveryTick()
+{
+	alwaysAccelerate = true;
+}
+
+void AJetMOCK::brakeOnEveryTick()
+{
+	alwaysBrake = true;
+}
+
+void AJetMOCK::cancelGravityOnEveryTick()
+{
+	alwaysCancelGravity = true;
 }
 
 //bool AJetMOCK::hasAnAntiGravitySystem()

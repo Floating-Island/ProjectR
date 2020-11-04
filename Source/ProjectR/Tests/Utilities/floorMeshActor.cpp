@@ -17,6 +17,8 @@ AFloorMeshActor::AFloorMeshActor()
 
 	UStaticMesh* Mesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), NULL, TEXT("/Engine/EditorMeshes/PhAT_FloorBox")));
 	meshComponent->SetStaticMesh(Mesh);
+
+	meshComponent->SetWorldScale3D(FVector(5,5,1));
 }
 
 void AFloorMeshActor::BeginPlay()

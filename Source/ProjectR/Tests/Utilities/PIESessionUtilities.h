@@ -28,7 +28,7 @@ public:
 	~PIESessionUtilities();
 	UWorld* currentPIEWorld();
 	void processLocalPlayerInputFrom(FName anAxisMappingName);
-	
+
 
 	template <typename anActorDerivedClass>
 	anActorDerivedClass* spawnInPIEAnInstanceOf(FVector atLocation = FVector(0));
@@ -36,6 +36,9 @@ public:
 
 	template <typename anActorDerivedClass>
 	anActorDerivedClass* retrieveFromPIEAnInstanceOf();
+
+	template <typename anActorDerivedClass>
+	TArray<anActorDerivedClass*> retrieveFromPIEAllInstancesOf();
 };
 
 
@@ -50,4 +53,22 @@ template <typename anActorDerivedClass>
 anActorDerivedClass* PIESessionUtilities::retrieveFromPIEAnInstanceOf()
 {
 	return Cast<anActorDerivedClass, AActor>(UGameplayStatics::GetActorOfClass(pieWorld, anActorDerivedClass::StaticClass()));
+}
+
+template <typename anActorDerivedClass>
+TArray<anActorDerivedClass*> PIESessionUtilities::retrieveFromPIEAllInstancesOf()
+{
+	TArray<AActor*> actorsRetrieved = TArray<AActor*>();
+	UGameplayStatics::GetAllActorsOfClass(pieWorld, anActorDerivedClass::StaticClass(), actorsRetrieved);
+
+	TArray<anActorDerivedClass*> actorsDerivedFromClassRetrieved = TArray<anActorDerivedClass*>();
+	for (const auto& actor : actorsRetrieved)
+	{
+		anActorDerivedClass* actorFromDerivedClass = Cast<anActorDerivedClass, AActor>(actor);
+		if (actorFromDerivedClass)
+		{
+			actorsDerivedFromClassRetrieved.Add(actorFromDerivedClass);
+		}
+	}
+	return actorsDerivedFromClassRetrieved;
 }

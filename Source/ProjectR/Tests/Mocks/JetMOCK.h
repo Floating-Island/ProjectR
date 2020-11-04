@@ -14,11 +14,18 @@ class PROJECTR_API AJetMOCK : public AJet
 {
 	GENERATED_BODY()
 
+private:
+	bool alwaysSteerRight;
+	bool alwaysAccelerate;
+	bool alwaysBrake;
+	bool alwaysCancelGravity;
 public:
+	AJetMOCK();
+	virtual void Tick(float DeltaTime) override;
 
-	bool hasAStaticMesh();
+	bool hasAPhysicsMesh();
 
-	bool isMeshTheRootComponent();
+	bool isPhysicsMeshTheRootComponent();
 
 	bool hasGravityEnabled();
 
@@ -43,4 +50,13 @@ public:
     bool generatesOverlapEvents();
 
 	bool meshCollisionIsPawn();
+
+	bool centerOfMassIsLowered();
+
+	FVector centerOfMass();
+
+	void steerRightEveryTick();
+	void accelerateOnEveryTick();
+	void brakeOnEveryTick();
+	void cancelGravityOnEveryTick();
 };

@@ -9,29 +9,31 @@
 #include "Camera/CameraComponent.h"
 #include "Jet/AntiGravityComponent.h"
 #include "Jet/SteeringComponent.h"
+#include "Jet/MotorDriveComponent.h"
 
 
 AJet::AJet()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	bGenerateOverlapEventsDuringLevelStreaming = true;
-	meshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh Component"));
-	RootComponent = meshComponent;
+	physicsMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Physics Mesh Component"));
+	RootComponent = physicsMeshComponent;
 
-	meshComponent->SetSimulatePhysics(true);
-	meshComponent->SetEnableGravity(true);
-	meshComponent->SetCanEverAffectNavigation(false);
+	physicsMeshComponent->SetSimulatePhysics(true);
+	physicsMeshComponent->SetEnableGravity(true);
+	physicsMeshComponent->SetCanEverAffectNavigation(false);
 
-	UStaticMesh* Mesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Engine/EditorMeshes/ArcadeEditorSphere")));
-	meshComponent->SetStaticMesh(Mesh);
+	UStaticMesh* physicsMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/jetMesh")));
+	physicsMeshComponent->SetStaticMesh(physicsMesh);
 
-	accelerationValue = 5000.0f;
-	brakeAbsoluteValue = 1000.0f;
-	topSpeed = 1000.0f;	
+	physicsMeshComponent->SetMassOverrideInKg(NAME_None, 100, true);
 
-	AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
+	physicsMeshComponent->SetGenerateOverlapEvents(true);
+	physicsMeshComponent->SetCollisionObjectType(ECC_Pawn);
 
-
+	centerOfMassHeight = -100;
+	physicsMeshComponent->SetCenterOfMass(FVector(0, 0, centerOfMassHeight));
+	
 	springArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm Component"));
 	springArm->SetupAttachment(RootComponent);
 	/*springArm->SetUsingAbsoluteRotation(true);*/
@@ -39,14 +41,13 @@ AJet::AJet()
 	camera = CreateDefaultSubobject<UCameraComponent>(TEXT("camera"));
 	camera->SetupAttachment(springArm);
 
-	meshComponent->SetMassOverrideInKg(NAME_None, 100, true);
+	AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
 
 	antiGravitySystem = CreateDefaultSubobject<UAntiGravityComponent>(TEXT("Anti-Gravity System"));
 
 	steeringSystem = CreateDefaultSubobject<USteeringComponent>(TEXT("Steering System"));
 
-    meshComponent->SetGenerateOverlapEvents(true);
-	meshComponent->SetCollisionObjectType(ECC_Pawn);
+	motorDriveSystem = CreateDefaultSubobject<UMotorDriveComponent>(TEXT("Motor Drive System"));
 }
 
 void AJet::BeginPlay()
@@ -73,60 +74,119 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 float AJet::currentSpeed()
 {
-	return (meshComponent->GetComponentVelocity().ProjectOnTo(GetActorForwardVector())).Size();//speed is calculated as the forward velocity
+	return motorDriveSystem->currentSpeed();
 }
 
 float AJet::settedTopSpeed()
 {
-	return topSpeed;
+	return motorDriveSystem->settedTopSpeed();
 }
 
 void AJet::accelerate(float anAccelerationMultiplier)
 {
-	if (anAccelerationMultiplier > 0 && currentSpeed() < settedTopSpeed() && !FMath::IsNearlyEqual(currentSpeed(), settedTopSpeed(), 1.0f))
-	{
-		FVector forceToApply = GetActorForwardVector() * acceleration();
-		meshComponent->AddForce(forceToApply * anAccelerationMultiplier, NAME_None, true);
-	}
+	motorDriveSystem->accelerate(anAccelerationMultiplier);
 }
 
 float AJet::acceleration()
 {
-	return accelerationValue;
+	return motorDriveSystem->acceleration();
 }
 
 float AJet::brakeValue()
 {
-	return brakeAbsoluteValue;
+	return motorDriveSystem->brakeValue();
 }
 
 void AJet::brake(float aBrakeMultiplier)
 {
-	if (aBrakeMultiplier > 0)
-	{
-		FVector forceToApply = GetActorForwardVector() * (-brakeValue());//notice the '-' next to brakeValue. Brake value's sign is positive.
-		meshComponent->AddForce(forceToApply * aBrakeMultiplier, NAME_None, true);
-	}
+	motorDriveSystem->brake(aBrakeMultiplier);
 }
 
 bool AJet::goesForward()
 {
-	FVector forwardDirection = GetActorForwardVector();
-	return GetVelocity().ProjectOnTo(forwardDirection).GetSignVector().Equals(
-		forwardDirection.GetSignVector(), 0.1f);
+	return motorDriveSystem->goesForward();
 }
 
 bool AJet::goesBackwards()
 {
-	return !goesForward();
+	return motorDriveSystem->goesBackwards();
 }
 
-float AJet::steerForce()
+float AJet::steerRadius()
 {
-	return steeringSystem->steerForce();
+	return steeringSystem->steeringRadius();
 }
 
 void AJet::steer(float aDirectionMultiplier)
 {
 	steeringSystem->steer(aDirectionMultiplier);
+}
+
+float AJet::antiGravityHeight()
+{
+	return antiGravitySystem->triggerHeight();
+}
+
+FVector AJet::ForwardProjectionOnFloor()
+{
+	FHitResult obstacle;
+	bool nearFloor = traceToFind(obstacle);
+
+	if (nearFloor)
+	{
+		return FVector::VectorPlaneProject(GetActorForwardVector(), obstacle.Normal);
+	}
+	else
+	{
+		return GetActorForwardVector();
+	}
+}
+
+bool AJet::traceToFind(FHitResult& obstacle)
+{
+	FVector jetLocation = GetActorLocation();//should take consideration the actor bounds...
+	float rayExtension = 1000;
+	FVector rayEnd = -GetActorUpVector() * rayExtension;
+
+	FCollisionQueryParams collisionParameters;
+	collisionParameters.AddIgnoredActor(this);
+	collisionParameters.bTraceComplex = false;
+	collisionParameters.bReturnPhysicalMaterial = false;
+
+	return  GetWorld()->LineTraceSingleByChannel(obstacle, jetLocation, rayEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
+}
+
+FVector AJet::forwardVelocity()
+{
+	return GetVelocity().ProjectOnTo(ForwardProjectionOnFloor());
+}
+
+FVector AJet::velocityProjectionOnFloor()
+{
+	FHitResult obstacle;
+	bool nearFloor = traceToFind(obstacle);
+
+	if (nearFloor)
+	{
+		return FVector::VectorPlaneProject(GetVelocity(), obstacle.Normal);
+	}
+	else
+	{
+		return FVector::VectorPlaneProject(GetVelocity(), GetActorUpVector());
+	}
+}
+
+FVector AJet::rightVectorProjectionOnFloor()
+{
+	FHitResult obstacle;
+	bool nearFloor = traceToFind(obstacle);
+
+	if (nearFloor)
+	{
+		return FVector::VectorPlaneProject(GetActorRightVector(), obstacle.Normal);
+	}
+	else
+	{
+		return GetActorRightVector();
+	}
 }

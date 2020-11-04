@@ -7,10 +7,10 @@
 
 USteeringComponent::USteeringComponent()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 	owner = Cast<AJet, AActor>(GetOwner());
-	
-	steerForceValue = 200.0f;
+
+	steerRadius = 2000;
 }
 
 void USteeringComponent::BeginPlay()
@@ -19,19 +19,24 @@ void USteeringComponent::BeginPlay()
 	ownerPrimitiveComponent = Cast<UPrimitiveComponent, UActorComponent>(owner->GetComponentByClass(UPrimitiveComponent::StaticClass()));
 }
 
-void USteeringComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+//to get drift, the velocity alignment should be disabled by a moment (as long as the drifting lasts), maintaining the acceleration of the jet.
+void USteeringComponent::steer(float aDirectionMultiplier)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-}
-
-void USteeringComponent::alignVelocity()
-{
-	FVector alignedVelocity = owner->GetActorForwardVector().GetSafeNormal() * owner->currentSpeed();
-	if (owner->goesBackwards())
+	if (aDirectionMultiplier != 0)
 	{
-		alignedVelocity = -alignedVelocity;//velocity should go backwards then...
+		//if reverse, change directionMultiplier sign.
+		InReverseInverts(aDirectionMultiplier);
+
+		FVector steeringLocation = ownerPrimitiveComponent->GetSocketLocation(FName("FrontSteeringPoint"));
+		float centripetalAcceleration = FMath::Pow(owner->forwardVelocity().Size(), 2) / steerRadius;
+		FVector steerForce = owner->rightVectorProjectionOnFloor() * aDirectionMultiplier * centripetalAcceleration;
+		ownerPrimitiveComponent->AddForceAtLocation(steerForce, steeringLocation);
+
+		FVector currentForwardVector = owner->ForwardProjectionOnFloor();
+		FVector currentLocation = owner->GetActorLocation();
+		FTimerDelegate alignVelocityOnNextTick = FTimerDelegate::CreateUObject(this, &USteeringComponent::alignVelocityFrom, currentForwardVector, currentLocation);
+		owner->GetWorldTimerManager().SetTimerForNextTick(alignVelocityOnNextTick);//the steering is applied on next tick, so we need to also align velocity on next tick.
 	}
-	ownerPrimitiveComponent->SetPhysicsLinearVelocity(alignedVelocity);//this should happen after the jet steers (gets it's torque applied)
 }
 
 void USteeringComponent::InReverseInverts(float& aDirectionMultiplier)
@@ -42,22 +47,30 @@ void USteeringComponent::InReverseInverts(float& aDirectionMultiplier)
 	}
 }
 
-//to get drift, the velocity alignment should be disabled by a moment (as long as the drifting lasts), maintaining the acceleration of the jet.
-void USteeringComponent::steer(float aDirectionMultiplier)
+void USteeringComponent::alignVelocityFrom(FVector aPreviousForwardVector, FVector aPreviousLocation)
 {
-	if (aDirectionMultiplier != 0 && !FMath::IsNearlyZero(owner->currentSpeed(), 0.5f))
-	{
-		//if reverse, change directionMultiplier sign.
-		InReverseInverts(aDirectionMultiplier);
-		FVector torqueToApply = FVector(0, 0, aDirectionMultiplier * steerForce());//directionMultiplier is used to steer right or left and to have a range of steering. Should be changed to get the jet normal instead of the Z axis
-		ownerPrimitiveComponent->AddTorqueInDegrees(torqueToApply, NAME_None, true);
+	FVector currentForwardVelocity = owner->forwardVelocity();
+	FVector currentLocation = owner->GetActorLocation();
 
-		owner->GetWorldTimerManager().SetTimerForNextTick(this, &USteeringComponent::alignVelocity);//the torque is applied on next tick, so we need to align velocity on next tick also.
-	}
+	float mass = ownerPrimitiveComponent->GetMass();
+	float squareVelocityDelta = FMath::Pow(currentForwardVelocity.Size(), 2);
+	float distanceFromTick = (currentLocation - aPreviousLocation).Size();
+
+	//I use the kinetic energy formula into the work formula and get the force applied from there (v1 is zero):
+	float forceMagnitudeToRecreateVelocity = mass * squareVelocityDelta / (static_cast<float>((2 * distanceFromTick)));
+
+	FVector previousBackwardsVector = -aPreviousForwardVector;
+
+	FVector counterForce = previousBackwardsVector * forceMagnitudeToRecreateVelocity;
+
+	ownerPrimitiveComponent->AddForce(counterForce);//we cancel the current velocity.
+
+	FVector alignedForce = owner->ForwardProjectionOnFloor() * forceMagnitudeToRecreateVelocity;
+	ownerPrimitiveComponent->AddForce(alignedForce);//we set the aligned velocity.
 }
 
-float USteeringComponent::steerForce()
+float USteeringComponent::steeringRadius()
 {
-	return steerForceValue;
+	return steerRadius;
 }
 

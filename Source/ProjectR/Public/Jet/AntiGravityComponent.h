@@ -21,17 +21,17 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Settings")
+	UPROPERTY(EditAnywhere, Category = "Anti-Gravity Settings")
 		float levitationHeight;
-	UPROPERTY(EditDefaultsOnly, Category = "Settings")
+	UPROPERTY(EditAnywhere, Category = "Anti-Gravity Settings")
 		float antiGravityForceValue;
 	
 
 public:	
-	void activateAvoidanceTo(FHitResult anObstacle);
+	void activateAvoidanceTo(FHitResult anObstacle, FVector aVertexLocation);
 	void antiGravityLifting();
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	
+	float triggerHeight();
 };

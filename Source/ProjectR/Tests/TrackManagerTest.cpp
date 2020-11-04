@@ -280,7 +280,12 @@ bool FATrackManagerAttractsJetsTowardsTrackGeneratorsTest::RunTest(const FString
 
 
 
-
+//make the track generator create a track manager after recreating spline meshes on begin play. This way, the track manager is always created after the track generator. Update tests from track manager.
+//But only one track manager should be in the game so the next test is that if there are two track generators, only the first spawns a track manager:
+//1)retrieve all track managers.
+//2)If there's none, create one. Tell it to subscribe to this track generator.
+//3)if there's, tell it to subscribe to this track generator.
+//4)If there's more than one, throw an exception.
 
 
 
