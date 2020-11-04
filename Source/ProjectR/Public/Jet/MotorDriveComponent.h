@@ -7,12 +7,15 @@
 #include "MotorDriveComponent.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class PROJECTR_API UMotorDriveComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+private:
+	AActor* jet;
+	UPrimitiveComponent* jetPhysicsComponent;
+public:
 	// Sets default values for this component's properties
 	UMotorDriveComponent();
 
@@ -20,9 +23,46 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
+	UPROPERTY(EditAnywhere, Category = "Motor Settings")
+		float accelerationValue;
+
+	UPROPERTY(EditAnywhere, Category = "Motor Settings")
+		float brakeAbsoluteValue;
+
+	UPROPERTY(EditAnywhere, Category = "Motor Settings")
+		float topSpeed;
+
+	bool traceToFind(FHitResult& obstacle);
+
+	FVector jetVelocity();
+
+public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-		
+	float currentSpeed();
+
+	float settedTopSpeed();
+
+	void accelerate(float anAccelerationMultiplier = 1.0f);
+
+	float acceleration();
+
+	float brakeValue();
+
+	void brake(float aBrakeMultiplier = 1.0f);
+
+	bool goesForward();
+	
+	bool goesBackwards();
+
+	FVector ForwardProjectionOnFloor();
+
+	FVector forwardVelocity();
+
+	FVector rightVectorProjectionOnFloor();
+
+	FVector velocityProjectionOnFloor();
+
+
 };
