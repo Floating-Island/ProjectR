@@ -1414,7 +1414,6 @@ bool FCheckTrackGeneratorSpawnsTrackManagerInPIECommand::Update()
 		if (testGenerator)
 		{
 			ATrackManager* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackManager>();
-			bool componentsHavedTheirExpectedCollisions = testGenerator->splineMeshComponentsExpectedCollisions();
 			UE_LOG(LogTemp, Log, TEXT("Track generator spawned a track manager: %s."), *FString(testManager ? "true" : "false"));
 
 			test->TestNotNull(TEXT("The track generator should spawn a track manager at begin play."), testManager);
