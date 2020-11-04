@@ -59,8 +59,9 @@ bool FSpawningATrackGeneratorCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
+	sessionUtilities.spawnInPIEAnInstanceOf<ATrackGenerator>();
 	sessionUtilities.spawnInPIEAnInstanceOf<ATrackManagerMOCK>();
-
+	
 	return true;
 }
 
@@ -154,7 +155,7 @@ bool FCheckATrackManagerStoresJetsWhenOverlapCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		ATrackManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackManagerMOCK>();
+		ATrackManager* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackManager>();
 		if (testManager)
 		{
 			bool hasJetsStored = testManager->hasJetsStored();
