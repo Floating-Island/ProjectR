@@ -7,10 +7,6 @@
 // Sets default values for this component's properties
 UMotorDriveComponent::UMotorDriveComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
-
 	jet = Cast<AJet, AActor>(GetOwner());
 	accelerationValue = 5000.0f;
 	brakeAbsoluteValue = 5000.0f;
@@ -23,15 +19,6 @@ void UMotorDriveComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	jetPhysicsComponent = Cast<UPrimitiveComponent, UActorComponent>(jet->GetComponentByClass(UPrimitiveComponent::StaticClass()));
-}
-
-
-// Called every frame
-void UMotorDriveComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
 }
 
 float UMotorDriveComponent::currentSpeed()
