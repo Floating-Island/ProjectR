@@ -2005,6 +2005,8 @@ bool FAJetSteersOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters
 
 //jet mesh should be set to collision enabled. (query and physics or physics only).
 //delete tests that check velocity alignment to forward or backwards vectors after steering. Or see if it's possible to remade them.
+//create a state with state factory to handle the direction that the jet is heading (forwards or backwards). It should update itself every time that acceleration or brake is called.
+// maybe move that inReverseInverts method in the steer component to it.
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
