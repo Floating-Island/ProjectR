@@ -5,6 +5,7 @@
 #include "Components/SplineComponent.h"
 #include "Components/SplineMeshComponent.h"
 #include "Track/TrackManager.h"
+#include "Kismet/GameplayStatics.h"
 
 ATrackGenerator::ATrackGenerator()
 {
@@ -33,7 +34,16 @@ void ATrackGenerator::BeginPlay()
 	Super::BeginPlay();
 	collisionsEnabled = true;
 	recreateSplineMeshComponents();
-	GetWorld()->SpawnActor(ATrackManager::StaticClass());//should always be after the spline mesh components are recreated.
+	
+	ATrackManager* worldTrackManager = Cast<ATrackManager,AActor>(UGameplayStatics::GetActorOfClass(GetWorld(),ATrackManager::StaticClass()));
+	if(worldTrackManager)
+	{
+		worldTrackManager->addGeneratorAndSubscribe(this);
+	}
+	else
+	{
+		GetWorld()->SpawnActor(ATrackManager::StaticClass());//should always be after the spline mesh components are recreated.
+	}
 }
 
 void ATrackGenerator::recreateSplineMeshComponents()

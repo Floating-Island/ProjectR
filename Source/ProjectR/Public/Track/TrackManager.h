@@ -47,6 +47,8 @@ public:
 								const FHitResult& SweepResult);
 
 	bool hasJetsStored();
+
+	void addGeneratorAndSubscribe(ATrackGenerator* newGenerator);
 };
 
 
