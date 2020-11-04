@@ -5,7 +5,6 @@
 
 #include "Track/TrackGenerator.h"
 #include "Mocks/TrackGeneratorMOCK.h"
-#include "Track/TrackManager.h"
 
 #include "Misc/AutomationTest.h"
 #include "Tests/AutomationEditorCommon.h"
