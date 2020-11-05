@@ -28,7 +28,7 @@ void USteeringComponent::steer(float aDirectionMultiplier)
 		InReverseInverts(aDirectionMultiplier);
 
 		FVector steeringLocation = ownerPrimitiveComponent->GetSocketLocation(FName("FrontSteeringPoint"));
-		float centripetalAcceleration = FMath::Pow(owner->velocityProjectionOnFloor().Size(), 2) / steerRadius;
+		float centripetalAcceleration = FMath::Pow(owner->forwardVelocity().Size(), 2) / steerRadius;
 		FVector steerForce = owner->rightVectorProjectionOnFloor() * aDirectionMultiplier * centripetalAcceleration;
 		ownerPrimitiveComponent->AddForceAtLocation(steerForce, steeringLocation);
 
@@ -49,11 +49,11 @@ void USteeringComponent::InReverseInverts(float& aDirectionMultiplier)
 
 void USteeringComponent::alignVelocityFrom(FVector aPreviousForwardVector, FVector aPreviousLocation)
 {
-	FVector currentVelocity = owner->velocityProjectionOnFloor();
+	FVector currentForwardVelocity = owner->forwardVelocity();
 	FVector currentLocation = owner->GetActorLocation();
 
 	float mass = ownerPrimitiveComponent->GetMass();
-	float squareVelocityDelta = FMath::Pow(currentVelocity.Size(), 2);
+	float squareVelocityDelta = FMath::Pow(currentForwardVelocity.Size(), 2);
 	float distanceFromTick = (currentLocation - aPreviousLocation).Size();
 
 	//I use the kinetic energy formula into the work formula and get the force applied from there (v1 is zero):
