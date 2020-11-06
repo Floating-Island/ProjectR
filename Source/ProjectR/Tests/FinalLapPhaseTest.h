@@ -7,7 +7,7 @@
 /**
  * 
  */
-class PROJECTR_API Phase2Test
+class PROJECTR_API FinalLapPhaseTest
 {
 public:
 

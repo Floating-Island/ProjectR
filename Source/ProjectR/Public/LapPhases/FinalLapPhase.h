@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "LapPhases/LapPhase.h"
-#include "FinalPhase.generated.h"
+#include "FinalLapPhase.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PROJECTR_API AFinalPhase : public ALapPhase
+class PROJECTR_API AFinalLapPhase : public ALapPhase
 {
 	GENERATED_BODY()
 	

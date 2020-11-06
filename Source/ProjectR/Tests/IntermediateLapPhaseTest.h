@@ -7,7 +7,7 @@
 /**
  * 
  */
-class PROJECTR_API LapTest
+class PROJECTR_API IntermediateLapPhaseTest
 {
 public:
 
