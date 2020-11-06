@@ -34,13 +34,13 @@ bool FALapPhaseIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseHasAStaticMeshTest, "ProjectR.LapPhases Tests.Unit.001: Has a static mesh", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseHasAStaticMeshComponentTest, "ProjectR.LapPhases Tests.Unit.001: Has a static mesh component", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FALapPhaseHasAStaticMeshTest::RunTest(const FString& Parameters)
+bool FALapPhaseHasAStaticMeshComponentTest::RunTest(const FString& Parameters)
 {
 	ALapPhaseMOCK* testLapPhase = NewObject<ALapPhaseMOCK>();
 
-	TestTrue(TEXT("The LapPhase shouldn't be null after instantiating it."), testLapPhase->hasAStaticMesh());
+	TestTrue(TEXT("The LapPhase should have a static mesh component after instantiating it."), testLapPhase->hasAStaticMesh());
 
 	return true;
 }
