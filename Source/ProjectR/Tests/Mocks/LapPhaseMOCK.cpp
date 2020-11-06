@@ -27,3 +27,8 @@ bool ALapPhaseMOCK::overlapsWithPawnChannel()
 {
 	return RootComponent->GetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn) == ECR_Overlap ? true : false;
 }
+
+bool ALapPhaseMOCK::objectTypeIsWorldStatic()
+{
+	return RootComponent->GetCollisionObjectType() == ECollisionChannel::ECC_WorldStatic ? true : false;
+}

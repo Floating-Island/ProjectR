@@ -20,4 +20,5 @@ public:
 	bool phaseWallIsRootComponent();
 	bool hasCollisionEnabledToQueryOnly();
 	bool overlapsWithPawnChannel();
+	bool objectTypeIsWorldStatic();
 };
