@@ -37,3 +37,8 @@ void ALapPhase::Tick(float DeltaTime)
 
 }
 
+ALapPhase* ALapPhase::updateState()
+{
+	return this;
+}
+
