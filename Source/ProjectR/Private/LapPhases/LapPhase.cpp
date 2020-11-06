@@ -20,6 +20,7 @@ ALapPhase::ALapPhase()
 	phaseWall->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	phaseWall->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	phaseWall->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
+	phaseWall->SetGenerateOverlapEvents(true);
 }
 
 // Called when the game starts or when spawned
