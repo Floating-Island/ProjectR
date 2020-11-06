@@ -65,7 +65,7 @@ bool FALapPhaseHasAStaticMeshTest::RunTest(const FString& Parameters)
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseHasPhaseWallAsRootTest, "ProjectR.LapPhases Tests.Unit.002: The phase wall is the root component", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseHasPhaseWallAsRootTest, "ProjectR.LapPhases Tests.Unit.003: The phase wall is the root component", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FALapPhaseHasPhaseWallAsRootTest::RunTest(const FString& Parameters)
 {
