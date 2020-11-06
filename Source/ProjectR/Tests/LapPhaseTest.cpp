@@ -231,4 +231,48 @@ bool FALapPhaseObjectTypeIsWorldStaticTest::RunTest(const FString& Parameters)
 
 
 
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLapPhaseOverlapEventsCommand, FAutomationTestBase*, test);
+
+bool FCheckLapPhaseOverlapEventsCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ALapPhaseMOCK* testPhase = Cast<ALapPhaseMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ALapPhaseMOCK::StaticClass()));
+	if (testPhase)
+	{
+
+		bool generatesOverlapEvents = testPhase->generatesOverlapEvents();
+		UE_LOG(LogTemp, Log, TEXT("The lap phase generates overlap events: %s."), *FString(generatesOverlapEvents ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("At spawning, the lap phase should generate overlap events."), generatesOverlapEvents);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseGeneratesOverlapEventsTest, "ProjectR.LapPhase Tests.Unit.007: Generates overlap events", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FALapPhaseGeneratesOverlapEventsTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnALapPhaseMOCKInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLapPhaseOverlapEventsCommand(this));
+
+	return true;
+}
+
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS
