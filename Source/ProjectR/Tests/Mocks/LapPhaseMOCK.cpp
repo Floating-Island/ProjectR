@@ -10,5 +10,5 @@ bool ALapPhaseMOCK::hasAStaticMesh()
 
 bool ALapPhaseMOCK::hasAStaticMeshAssociated()
 {
-	return phaseWallMesh ? true : false;
+	return phaseWall->GetStaticMesh() ? true : false;
 }
