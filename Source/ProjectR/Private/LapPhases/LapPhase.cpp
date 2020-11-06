@@ -10,6 +10,10 @@ ALapPhase::ALapPhase()
 	PrimaryActorTick.bCanEverTick = true;
 
 	phaseWall = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Phase Wall"));
+
+	phaseWallMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/phaseWallMesh")));
+
+	phaseWall->SetStaticMesh(phaseWallMesh);
 }
 
 // Called when the game starts or when spawned

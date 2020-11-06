@@ -21,6 +21,10 @@ protected:
 
 	UStaticMeshComponent* phaseWall;
 
+	UPROPERTY(EditAnywhere, Category = "Phase Wall Mesh")
+		UStaticMesh* phaseWallMesh;
+	
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
