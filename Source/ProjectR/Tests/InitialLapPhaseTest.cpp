@@ -55,14 +55,14 @@ bool FALapUpdateStateReturnsIntermediateLapPhaseIfItsPassedAsParameterTest::RunT
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapUpdateStateReturnsItselfIfIntermediateLapPhaseIsntPassedAsParameterTest, "ProjectR.InitialLapPhase Tests.Unit.002: Returns itself if a AIntermediateLapPhase instance as parameter in updateState", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapUpdateStateReturnsItselfIfIntermediateLapPhaseIsntPassedAsParameterTest, "ProjectR.InitialLapPhase Tests.Unit.002: Returns itself if a AIntermediateLapPhase instance isn't passed as parameter in updateState", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FALapUpdateStateReturnsItselfIfIntermediateLapPhaseIsntPassedAsParameterTest::RunTest(const FString& Parameters)
 {
 	AInitialLapPhase* testInitialPhase = NewObject<AInitialLapPhase>();
 	AIntermediateLapPhase* testIntermediateLapPhase = NewObject<AIntermediateLapPhase>();
 
-	TestTrue(TEXT("The initial phase should return itself if a IntermediateLapPhase instance ins't passed as parameter of updateState."), testInitialPhase->updatePhase(NewObject<ALapPhase>()) == testIntermediateLapPhase);
+	TestTrue(TEXT("The initial phase should return itself if a IntermediateLapPhase instance isn't passed as parameter of updateState."), testInitialPhase->updatePhase(NewObject<ALapPhase>()) == testInitialPhase);
 
 	return true;
 }
