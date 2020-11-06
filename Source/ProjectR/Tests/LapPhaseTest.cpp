@@ -122,7 +122,7 @@ bool FCheckLapPhaseCollisionEnabledCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseHasCollisionEnabledToQueryOnlyTest, "ProjectR.LapPhase Tests.Unit.004: LapPhase has collision enabled to query only at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseHasCollisionEnabledToQueryOnlyTest, "ProjectR.LapPhase Tests.Unit.004: Has collision enabled to query only at spawning", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FALapPhaseHasCollisionEnabledToQueryOnlyTest::RunTest(const FString& Parameters)
 {
@@ -138,6 +138,50 @@ bool FALapPhaseHasCollisionEnabledToQueryOnlyTest::RunTest(const FString& Parame
 	return true;
 }
 
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLapPhaseCollisionResponseCommand, FAutomationTestBase*, test);
+
+bool FCheckLapPhaseCollisionResponseCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ALapPhaseMOCK* testPhase = Cast<ALapPhaseMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ALapPhaseMOCK::StaticClass()));
+	if (testPhase)
+	{
+
+		bool overlapsWithPawnChannel = testPhase->overlapsWithPawnChannel();
+		UE_LOG(LogTemp, Log, TEXT("The lap phase overlaps with the pawn channel: %s."), *FString(overlapsWithPawnChannel ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("At spawning, the lap phase should overlap with the pawn channel."), overlapsWithPawnChannel);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseOverlapsWithPawnChannelTest, "ProjectR.LapPhase Tests.Unit.005: Overlaps with the pawn channel", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FALapPhaseOverlapsWithPawnChannelTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnALapPhaseMOCKInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLapPhaseCollisionResponseCommand(this));
+
+	return true;
+}
 
 
 
