@@ -47,6 +47,18 @@ bool FALapPhaseHasAStaticMeshComponentTest::RunTest(const FString& Parameters)
 
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseHasAStaticMeshTest, "ProjectR.LapPhases Tests.Unit.002: Has a static mesh associated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FALapPhaseHasAStaticMeshTest::RunTest(const FString& Parameters)
+{
+	ALapPhaseMOCK* testLapPhase = NewObject<ALapPhaseMOCK>();
+
+	TestTrue(TEXT("The LapPhase should have a static mesh set after instantiating it."), testLapPhase->hasAStaticMeshAssociated());
+
+	return true;
+}
+
+
 
 
 
