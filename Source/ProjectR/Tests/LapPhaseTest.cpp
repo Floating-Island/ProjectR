@@ -24,11 +24,9 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseIsntNullWhenInstantiatedTest, "Projec
 
 bool FALapPhaseIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
-
 	ALapPhase* testLapPhase = NewObject<ALapPhase>();
 
 	TestNotNull(TEXT("The LapPhase shouldn't be null after instantiating it."), testLapPhase);
-
 
 	return true;
 }
