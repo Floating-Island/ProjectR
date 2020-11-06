@@ -32,3 +32,8 @@ bool ALapPhaseMOCK::objectTypeIsWorldStatic()
 {
 	return RootComponent->GetCollisionObjectType() == ECollisionChannel::ECC_WorldStatic ? true : false;
 }
+
+bool ALapPhaseMOCK::generatesOverlapEvents()
+{
+	return phaseWall->GetGenerateOverlapEvents();
+}

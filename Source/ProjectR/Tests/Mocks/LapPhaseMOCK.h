@@ -21,4 +21,5 @@ public:
 	bool hasCollisionEnabledToQueryOnly();
 	bool overlapsWithPawnChannel();
 	bool objectTypeIsWorldStatic();
+	bool generatesOverlapEvents();
 };
