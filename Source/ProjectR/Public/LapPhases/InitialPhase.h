@@ -4,14 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "LapPhases/LapPhase.h"
-#include "Phase1.generated.h"
+#include "InitialPhase.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PROJECTR_API APhase1 : public ALapPhase
+class PROJECTR_API AInitialPhase : public ALapPhase
 {
 	GENERATED_BODY()
-	
+
+public:
+	ALapPhase* updatePhase(ALapPhase* anotherPhase) override;
 };

@@ -3,8 +3,8 @@
 
 #include "LapTest.h"
 
-#include "LapPhases/Lap.h"
-#include "LapPhases/Phase1.h"
+#include "LapPhases/InitialPhase.h"
+#include "LapPhases/IntermediatePhase.h"
 #include "Misc/AutomationTest.h"
 
 
@@ -26,7 +26,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapIsntNullWhenInstantiatedTest, "ProjectR.La
 
 bool FALapIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
-	ALap* testLap = NewObject<ALap>();
+	AInitialPhase* testLap = NewObject<AInitialPhase>();
 
 	TestNotNull(TEXT("The lap shouldn't be null after instantiating it."), testLap);
 
@@ -42,8 +42,8 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapUpdateStateReturnsPhase1IfItsPassedAsParam
 
 bool FALapUpdateStateReturnsPhase1IfItsPassedAsParameterTest::RunTest(const FString& Parameters)
 {
-	ALap* testLap = NewObject<ALap>();
-	APhase1* testPhase1 = NewObject<APhase1>();
+	AInitialPhase* testLap = NewObject<AInitialPhase>();
+	AIntermediatePhase* testPhase1 = NewObject<AIntermediatePhase>();
 
 	TestTrue(TEXT("The lap should return the Phase1 instance if that is passed as parameter."), testLap->updatePhase(testPhase1) == testPhase1);
 
@@ -59,8 +59,8 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapUpdateStateReturnsItselfIfPhase1IsntPassed
 
 bool FALapUpdateStateReturnsItselfIfPhase1IsntPassedAsParameterTest::RunTest(const FString& Parameters)
 {
-	ALap* testLap = NewObject<ALap>();
-	APhase1* testPhase1 = NewObject<APhase1>();
+	AInitialPhase* testLap = NewObject<AInitialPhase>();
+	AIntermediatePhase* testPhase1 = NewObject<AIntermediatePhase>();
 
 	TestTrue(TEXT("The lap should return itself if a Phase1 instance ins't passed as parameter of updateState."), testLap->updatePhase(NewObject<ALapPhase>()) == testPhase1);
 
