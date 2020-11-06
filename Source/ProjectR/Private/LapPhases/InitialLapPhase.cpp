@@ -6,7 +6,7 @@
 
 ALapPhase* AInitialLapPhase::updatePhase(ALapPhase* anotherPhase)
 {
-	if(anotherPhase->StaticClass() == AIntermediateLapPhase::StaticClass())
+	if(anotherPhase->GetClass() == AIntermediateLapPhase::StaticClass())
 	{
 		return anotherPhase;
 	}
