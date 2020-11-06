@@ -14,6 +14,8 @@ ALapPhase::ALapPhase()
 	phaseWallMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/phaseWallMesh")));
 
 	phaseWall->SetStaticMesh(phaseWallMesh);
+
+	RootComponent = phaseWall;
 }
 
 // Called when the game starts or when spawned
