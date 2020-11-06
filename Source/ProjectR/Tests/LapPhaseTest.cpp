@@ -3,10 +3,15 @@
 
 #include "LapPhaseTest.h"
 
-#include "Misc/AutomationTest.h"
-
 #include "LapPhases/LapPhase.h"
 #include "Mocks/LapPhaseMOCK.h"
+
+#include "Misc/AutomationTest.h"
+#include "Tests/AutomationEditorCommon.h"
+#include "Editor.h"
+#include "Kismet/GameplayStatics.h"
+#include "Engine/Engine.h"
+
 
 
 
@@ -58,6 +63,18 @@ bool FALapPhaseHasAStaticMeshTest::RunTest(const FString& Parameters)
 	return true;
 }
 
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseHasPhaseWallAsRootTest, "ProjectR.LapPhases Tests.Unit.002: The phase wall is the root component", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FALapPhaseHasPhaseWallAsRootTest::RunTest(const FString& Parameters)
+{
+	ALapPhaseMOCK* testLapPhase = NewObject<ALapPhaseMOCK>();
+
+	TestTrue(TEXT("The LapPhase should have its phase wall as the root component."), testLapPhase->phaseWallIsRootComponent());
+
+	return true;
+}
 
 
 
