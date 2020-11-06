@@ -3,7 +3,7 @@
 
 #include "LapPhaseMOCK.h"
 
-bool ALapPhaseMOCK::hasAStaticMesh()
+bool ALapPhaseMOCK::hasAStaticMeshComponent()
 {
 	return phaseWall ? true : false;
 }

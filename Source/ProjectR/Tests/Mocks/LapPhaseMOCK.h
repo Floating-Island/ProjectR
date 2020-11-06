@@ -15,7 +15,7 @@ class PROJECTR_API ALapPhaseMOCK : public ALapPhase
 	GENERATED_BODY()
 
 public:
-	bool hasAStaticMesh();
+	bool hasAStaticMeshComponent();
 	bool hasAStaticMeshAssociated();
 	bool phaseWallIsRootComponent();
 };

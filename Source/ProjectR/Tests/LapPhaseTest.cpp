@@ -45,7 +45,7 @@ bool FALapPhaseHasAStaticMeshComponentTest::RunTest(const FString& Parameters)
 {
 	ALapPhaseMOCK* testLapPhase = NewObject<ALapPhaseMOCK>();
 
-	TestTrue(TEXT("The LapPhase should have a static mesh component after instantiating it."), testLapPhase->hasAStaticMesh());
+	TestTrue(TEXT("The LapPhase should have a static mesh component after instantiating it."), testLapPhase->hasAStaticMeshComponent());
 
 	return true;
 }
