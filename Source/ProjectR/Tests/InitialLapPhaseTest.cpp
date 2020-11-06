@@ -28,7 +28,7 @@ bool FALapIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
 	AInitialLapPhase* testInitialPhase = NewObject<AInitialLapPhase>();
 
-	TestNotNull(TEXT("The lap shouldn't be null after instantiating it."), testLap);
+	TestNotNull(TEXT("The lap shouldn't be null after instantiating it."), testInitialPhase);
 
 	return true;
 }
