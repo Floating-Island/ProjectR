@@ -19,4 +19,5 @@ public:
 	bool hasAStaticMeshAssociated();
 	bool phaseWallIsRootComponent();
 	bool hasCollisionEnabledToQueryOnly();
+	bool overlapsWithPawnChannel();
 };

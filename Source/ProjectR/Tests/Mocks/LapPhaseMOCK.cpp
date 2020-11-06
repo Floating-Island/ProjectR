@@ -22,3 +22,8 @@ bool ALapPhaseMOCK::hasCollisionEnabledToQueryOnly()
 {
 	return RootComponent->GetCollisionEnabled() == ECollisionEnabled::QueryOnly ? true : false;
 }
+
+bool ALapPhaseMOCK::overlapsWithPawnChannel()
+{
+	return RootComponent->GetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn) == ECR_Overlap ? true : false;
+}
