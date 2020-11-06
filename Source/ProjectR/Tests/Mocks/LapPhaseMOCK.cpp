@@ -12,3 +12,8 @@ bool ALapPhaseMOCK::hasAStaticMeshAssociated()
 {
 	return phaseWall->GetStaticMesh() ? true : false;
 }
+
+bool ALapPhaseMOCK::phaseWallIsRootComponent()
+{
+	return phaseWall == RootComponent ? true : false;
+}
