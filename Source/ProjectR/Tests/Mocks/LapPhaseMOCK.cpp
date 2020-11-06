@@ -7,3 +7,8 @@ bool ALapPhaseMOCK::hasAStaticMesh()
 {
 	return phaseWall ? true : false;
 }
+
+bool ALapPhaseMOCK::hasAStaticMeshAssociated()
+{
+	return phaseWallMesh ? true : false;
+}
