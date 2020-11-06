@@ -187,4 +187,48 @@ bool FALapPhaseOverlapsWithPawnChannelTest::RunTest(const FString& Parameters)
 
 
 
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLapPhaseObjectTypeCommand, FAutomationTestBase*, test);
+
+bool FCheckLapPhaseObjectTypeCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ALapPhaseMOCK* testPhase = Cast<ALapPhaseMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ALapPhaseMOCK::StaticClass()));
+	if (testPhase)
+	{
+
+		bool objectTypeIsWorldStatic = testPhase->objectTypeIsWorldStatic();
+		UE_LOG(LogTemp, Log, TEXT("The lap phase object type is world static: %s."), *FString(objectTypeIsWorldStatic ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("At spawning, the lap phase object type should be world static."), objectTypeIsWorldStatic);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseObjectTypeIsWorldStaticTest, "ProjectR.LapPhase Tests.Unit.006: Its object type is world static", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FALapPhaseObjectTypeIsWorldStaticTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnALapPhaseMOCKInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLapPhaseObjectTypeCommand(this));
+
+	return true;
+}
+
+
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS
