@@ -4,7 +4,7 @@
 #include "LapPhases/Lap.h"
 #include "LapPhases/Phase1.h"
 
-ALapPhase* ALap::updateState(ALapPhase* anotherPhase)
+ALapPhase* ALap::updatePhase(ALapPhase* anotherPhase)
 {
 	if(anotherPhase->StaticClass() == APhase1::StaticClass())
 	{

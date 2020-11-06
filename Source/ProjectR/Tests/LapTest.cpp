@@ -45,7 +45,7 @@ bool FALapUpdateStateReturnsPhase1IfItsPassedAsParameterTest::RunTest(const FStr
 	ALap* testLap = NewObject<ALap>();
 	APhase1* testPhase1 = NewObject<APhase1>();
 
-	TestTrue(TEXT("The lap should return the Phase1 instance if that is passed as parameter."), testLap->updateState(testPhase1) == testPhase1);
+	TestTrue(TEXT("The lap should return the Phase1 instance if that is passed as parameter."), testLap->updatePhase(testPhase1) == testPhase1);
 
 	return true;
 }
@@ -62,7 +62,7 @@ bool FALapUpdateStateReturnsItselfIfPhase1IsntPassedAsParameterTest::RunTest(con
 	ALap* testLap = NewObject<ALap>();
 	APhase1* testPhase1 = NewObject<APhase1>();
 
-	TestTrue(TEXT("The lap should return itself if a Phase1 instance ins't passed as parameter of updateState."), testLap->updateState(NewObject<ALapPhase>()) == testPhase1);
+	TestTrue(TEXT("The lap should return itself if a Phase1 instance ins't passed as parameter of updateState."), testLap->updatePhase(NewObject<ALapPhase>()) == testPhase1);
 
 	return true;
 }

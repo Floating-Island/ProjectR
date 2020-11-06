@@ -38,7 +38,7 @@ void ALapPhase::Tick(float DeltaTime)
 
 }
 
-ALapPhase* ALapPhase::updateState(ALapPhase* anotherPhase)
+ALapPhase* ALapPhase::updatePhase(ALapPhase* anotherPhase)
 {
 	return this;
 }

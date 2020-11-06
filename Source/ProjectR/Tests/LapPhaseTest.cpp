@@ -284,7 +284,7 @@ bool FALapPhaseUpdateStateReturnsItselfTest::RunTest(const FString& Parameters)
 {
 	ALapPhase* testLapPhase = NewObject<ALapPhase>();
 
-	TestTrue(TEXT("The LapPhase should return itself when calling updateState."), testLapPhase->updateState(testLapPhase) == testLapPhase);
+	TestTrue(TEXT("The LapPhase should return itself when calling updateState."), testLapPhase->updatePhase(testLapPhase) == testLapPhase);
 
 	return true;
 }
