@@ -18,4 +18,5 @@ public:
 	bool hasAStaticMeshComponent();
 	bool hasAStaticMeshAssociated();
 	bool phaseWallIsRootComponent();
+	bool hasCollisionEnabledToQueryOnly();
 };

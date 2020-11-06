@@ -17,3 +17,8 @@ bool ALapPhaseMOCK::phaseWallIsRootComponent()
 {
 	return phaseWall == RootComponent ? true : false;
 }
+
+bool ALapPhaseMOCK::hasCollisionEnabledToQueryOnly()
+{
+	return RootComponent->GetCollisionEnabled() == ECollisionEnabled::QueryOnly ? true : false;
+}
