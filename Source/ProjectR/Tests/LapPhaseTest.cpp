@@ -275,4 +275,19 @@ bool FALapPhaseGeneratesOverlapEventsTest::RunTest(const FString& Parameters)
 
 
 
+
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseUpdateStateReturnsItselfTest, "ProjectR.LapPhases Tests.Unit.008: updateState returns itself", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FALapPhaseUpdateStateReturnsItselfTest::RunTest(const FString& Parameters)
+{
+	ALapPhase* testLapPhase = NewObject<ALapPhase>();
+
+	TestTrue(TEXT("The LapPhase should return itself when calling updateState."), testLapPhase->updateState() == testLapPhase);
+
+	return true;
+}
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS
