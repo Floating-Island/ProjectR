@@ -26,7 +26,7 @@
 //Pay attention to the automation flags because they're needed to run the tests without UI errors.
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseIsntNullWhenInstantiatedTest, "ProjectR.LapPhases Tests.Unit.000: Isn't null when instantiated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseIsntNullWhenInstantiatedTest, "ProjectR.LapPhase Tests.Unit.000: Isn't null when instantiated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FALapPhaseIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
@@ -39,7 +39,7 @@ bool FALapPhaseIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseHasAStaticMeshComponentTest, "ProjectR.LapPhases Tests.Unit.001: Has a static mesh component", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseHasAStaticMeshComponentTest, "ProjectR.LapPhase Tests.Unit.001: Has a static mesh component", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FALapPhaseHasAStaticMeshComponentTest::RunTest(const FString& Parameters)
 {
@@ -52,7 +52,7 @@ bool FALapPhaseHasAStaticMeshComponentTest::RunTest(const FString& Parameters)
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseHasAStaticMeshTest, "ProjectR.LapPhases Tests.Unit.002: Has a static mesh associated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseHasAStaticMeshTest, "ProjectR.LapPhase Tests.Unit.002: Has a static mesh associated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FALapPhaseHasAStaticMeshTest::RunTest(const FString& Parameters)
 {
@@ -65,7 +65,7 @@ bool FALapPhaseHasAStaticMeshTest::RunTest(const FString& Parameters)
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseHasPhaseWallAsRootTest, "ProjectR.LapPhases Tests.Unit.003: The phase wall is the root component", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseHasPhaseWallAsRootTest, "ProjectR.LapPhase Tests.Unit.003: The phase wall is the root component", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FALapPhaseHasPhaseWallAsRootTest::RunTest(const FString& Parameters)
 {
@@ -278,7 +278,7 @@ bool FALapPhaseGeneratesOverlapEventsTest::RunTest(const FString& Parameters)
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseUpdateStateReturnsItselfTest, "ProjectR.LapPhases Tests.Unit.008: updateState returns itself", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseUpdateStateReturnsItselfTest, "ProjectR.LapPhase Tests.Unit.008: updateState returns itself", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FALapPhaseUpdateStateReturnsItselfTest::RunTest(const FString& Parameters)
 {
