@@ -16,6 +16,8 @@ ALapPhase::ALapPhase()
 	phaseWall->SetStaticMesh(phaseWallMesh);
 
 	RootComponent = phaseWall;
+
+	phaseWall->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 }
 
 // Called when the game starts or when spawned
