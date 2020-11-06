@@ -7,11 +7,13 @@
 #include "LapPhaseMOCK.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PROJECTR_API ALapPhaseMOCK : public ALapPhase
 {
 	GENERATED_BODY()
-	
+
+public:
+	bool hasAStaticMesh();
 };
