@@ -38,7 +38,7 @@ bool FALapIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapUpdateStateReturnsPhase1IfItsPassedAsParameterTest, "ProjectR.Lap Tests.Unit.001: If a Phase1 instance is passed to updateState, it returns the Phase1 instance", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapUpdateStateReturnsPhase1IfItsPassedAsParameterTest, "ProjectR.Lap Tests.Unit.001: If a APhase1 instance is passed to updateState, it returns the APhase1 instance", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FALapUpdateStateReturnsPhase1IfItsPassedAsParameterTest::RunTest(const FString& Parameters)
 {
@@ -50,5 +50,21 @@ bool FALapUpdateStateReturnsPhase1IfItsPassedAsParameterTest::RunTest(const FStr
 	return true;
 }
 
+
+
+
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapUpdateStateReturnsItselfIfPhase1IsntPassedAsParameterTest, "ProjectR.Lap Tests.Unit.001: Returns itself if a APhase1 instance as parameter in updateState", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FALapUpdateStateReturnsItselfIfPhase1IsntPassedAsParameterTest::RunTest(const FString& Parameters)
+{
+	ALap* testLap = NewObject<ALap>();
+	APhase1* testPhase1 = NewObject<APhase1>();
+
+	TestTrue(TEXT("The lap should return itself if a Phase1 instance ins't passed as parameter of updateState."), testLap->updateState(NewObject<ALapPhase>()) == testPhase1);
+
+	return true;
+}
 
 #endif //WITH_DEV_AUTOMATION_TESTS
