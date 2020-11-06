@@ -10,6 +10,5 @@
 class PROJECTR_API LapTest
 {
 public:
-	LapTest();
-	~LapTest();
+
 };

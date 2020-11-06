@@ -10,6 +10,5 @@
 class PROJECTR_API Phase2Test
 {
 public:
-	Phase2Test();
-	~Phase2Test();
+
 };

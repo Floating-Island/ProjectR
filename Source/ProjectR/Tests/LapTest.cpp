@@ -3,10 +3,3 @@
 
 #include "LapTest.h"
 
-LapTest::LapTest()
-{
-}
-
-LapTest::~LapTest()
-{
-}

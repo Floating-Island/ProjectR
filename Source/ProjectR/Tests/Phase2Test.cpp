@@ -3,10 +3,3 @@
 
 #include "Phase2Test.h"
 
-Phase2Test::Phase2Test()
-{
-}
-
-Phase2Test::~Phase2Test()
-{
-}

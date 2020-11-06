@@ -10,6 +10,5 @@
 class PROJECTR_API Phase1Test
 {
 public:
-	Phase1Test();
-	~Phase1Test();
+
 };
