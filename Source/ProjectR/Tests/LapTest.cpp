@@ -4,6 +4,7 @@
 #include "LapTest.h"
 
 #include "LapPhases/Lap.h"
+#include "LapPhases/Phase1.h"
 #include "Misc/AutomationTest.h"
 
 
@@ -31,5 +32,23 @@ bool FALapIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 
 	return true;
 }
+
+
+
+
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapUpdateStateReturnsPhase1IfItsPassedAsParameterTest, "ProjectR.Lap Tests.Unit.001: If a Phase1 instance is passed to updateState, it returns the Phase1 instance", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FALapUpdateStateReturnsPhase1IfItsPassedAsParameterTest::RunTest(const FString& Parameters)
+{
+	ALap* testLap = NewObject<ALap>();
+	APhase1* testPhase1 = NewObject<APhase1>();
+
+	TestTrue(TEXT("The lap should return the Phase1 instance if that is passed as parameter."), testLap->updateState(testPhase1) == testPhase1);
+
+	return true;
+}
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
