@@ -6,6 +6,7 @@
 #include "Misc/AutomationTest.h"
 
 #include "LapPhases/LapPhase.h"
+#include "Mocks/LapPhaseMOCK.h"
 
 
 
@@ -31,6 +32,18 @@ bool FALapPhaseIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 	return true;
 }
 
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseHasAStaticMeshTest, "ProjectR.LapPhases Tests.Unit.001: Has a static mesh", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FALapPhaseHasAStaticMeshTest::RunTest(const FString& Parameters)
+{
+	ALapPhaseMOCK* testLapPhase = NewObject<ALapPhaseMOCK>();
+
+	TestTrue(TEXT("The LapPhase shouldn't be null after instantiating it."), testLapPhase->hasAStaticMesh());
+
+	return true;
+}
 
 
 
