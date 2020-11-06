@@ -18,6 +18,8 @@ ALapPhase::ALapPhase()
 	RootComponent = phaseWall;
 
 	phaseWall->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	phaseWall->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	phaseWall->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 }
 
 // Called when the game starts or when spawned
