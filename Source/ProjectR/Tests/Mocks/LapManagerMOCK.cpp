@@ -2,8 +2,11 @@
 
 
 #include "LapManagerMOCK.h"
+
+
 #include "Kismet/GameplayStatics.h"
 #include "LapPhases/InitialLapPhase.h"
+#include "LapPhases/IntermediateLapPhase.h"
 
 bool ALapManagerMOCK::defaultLapPhaseIsInitialLapPhase()
 {
@@ -23,6 +26,18 @@ bool ALapManagerMOCK::InitialLapCountSetToOne()
 	for(const auto& jet : jetsInPlay())
 	{
 		if(jet.Value.lap != 1)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+bool ALapManagerMOCK::jetsMovedFromInitialToIntermediatePhase()
+{
+	for(const auto& jet : jetsInPlay())
+	{
+		if(jet.Value.currentLapPhase->GetClass() != AIntermediateLapPhase::StaticClass())
 		{
 			return false;
 		}
