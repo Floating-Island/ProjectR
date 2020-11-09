@@ -51,4 +51,21 @@ bool FAFinalLapPhaseUpdateStateReturnsInitialLapPhaseIfItsPassedAsParameterTest:
 }
 
 
+
+
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAFinalLapPhaseUpdateStateReturnsItselfIfInitialLapPhaseIsntPassedAsParameterTest, "ProjectR.FinalLapPhase Tests.Unit.002: Returns itself if a AFinalLapPhase instance isn't passed as parameter in updateState", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAFinalLapPhaseUpdateStateReturnsItselfIfInitialLapPhaseIsntPassedAsParameterTest::RunTest(const FString& Parameters)
+{
+	AFinalLapPhase* testFinalPhase = NewObject<AFinalLapPhase>();
+	ALapPhase* parameter = NewObject<ALapPhase>();
+	bool isntInitialLapPhase = parameter->GetClass() != AInitialLapPhase::StaticClass();
+
+	TestTrue(TEXT("The final phase should return itself if a InitialLapPhase instance isn't passed as parameter of updateState."), isntInitialLapPhase && testFinalPhase->updatePhase(parameter) == testFinalPhase);
+
+	return true;
+}
+
 #endif //WITH_DEV_AUTOMATION_TESTS
