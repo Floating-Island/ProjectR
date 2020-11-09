@@ -45,7 +45,7 @@ bool FAInitialLapPhaseUpdateStateReturnsIntermediateLapPhaseIfItsPassedAsParamet
 	AInitialLapPhase* testInitialPhase = NewObject<AInitialLapPhase>();
 	AIntermediateLapPhase* testIntermediateLapPhase = NewObject<AIntermediateLapPhase>();
 
-	TestTrue(TEXT("The initial phase should return the IntermediateLapPhase instance if that is passed as parameter."), testInitialPhase->updatePhase(testIntermediateLapPhase) == testIntermediateLapPhase);
+	TestTrue(TEXT("The initial phase should return the IntermediateLapPhase instance if that is passed as parameter of updateState."), testInitialPhase->updatePhase(testIntermediateLapPhase) == testIntermediateLapPhase);
 
 	return true;
 }
