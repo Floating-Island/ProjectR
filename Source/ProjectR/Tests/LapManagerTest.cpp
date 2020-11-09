@@ -80,9 +80,9 @@ bool FCheckALapManagerStoresJetsCommand::Update()
 	return false;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapManagerHasTrackGeneratorsListedWhenSpawnedTest, "ProjectR.LapManager Tests.Integration.001: Has jets listed when spawned", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapManagerHasJetsListedWhenSpawnedTest, "ProjectR.LapManager Tests.Integration.001: Has jets listed when spawned", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FALapManagerHasTrackGeneratorsListedWhenSpawnedTest::RunTest(const FString& Parameters)
+bool FALapManagerHasJetsListedWhenSpawnedTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
