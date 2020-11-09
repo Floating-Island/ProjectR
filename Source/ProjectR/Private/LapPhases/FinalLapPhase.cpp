@@ -4,14 +4,8 @@
 #include "LapPhases/FinalLapPhase.h"
 #include "LapPhases/InitialLapPhase.h"
 
-ALapPhase* AFinalLapPhase::updatePhase(ALapPhase* anotherPhase)
+
+bool AFinalLapPhase::isNextPhase(ALapPhase* aPhase)
 {
-	if (anotherPhase->GetClass() == AInitialLapPhase::StaticClass())
-	{
-		return anotherPhase;
-	}
-	else
-	{
-		return this;
-	}
+	return aPhase->GetClass() == AInitialLapPhase::StaticClass();
 }

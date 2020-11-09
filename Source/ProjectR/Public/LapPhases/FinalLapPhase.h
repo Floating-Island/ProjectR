@@ -15,5 +15,6 @@ class PROJECTR_API AFinalLapPhase : public ALapPhase
 	GENERATED_BODY()
 
 public:
-	ALapPhase* updatePhase(ALapPhase* anotherPhase) override;
+
+	bool isNextPhase(ALapPhase* aPhase) override;
 };

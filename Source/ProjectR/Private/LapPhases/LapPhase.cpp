@@ -40,6 +40,11 @@ void ALapPhase::Tick(float DeltaTime)
 
 ALapPhase* ALapPhase::updatePhase(ALapPhase* anotherPhase)
 {
-	return this;
+	return isNextPhase(anotherPhase)? anotherPhase : this;
+}
+
+bool ALapPhase::isNextPhase(ALapPhase* aPhase)
+{
+	return false;
 }
 

@@ -29,6 +29,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	virtual ALapPhase* updatePhase(ALapPhase* anotherPhase);
+	ALapPhase* updatePhase(ALapPhase* anotherPhase);
+
+	virtual bool isNextPhase(ALapPhase* aPhase);
 
 };
