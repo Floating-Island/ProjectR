@@ -28,6 +28,7 @@ void ALapManager::configureJetLaps()
 
 	TArray<AActor*> worldJets = TArray<AActor*>();
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AJet::StaticClass(), worldJets);
+
 	for (const auto& jet : worldJets)
 	{
 		AJet* castedJet = Cast<AJet, AActor>(jet);
@@ -41,7 +42,6 @@ void ALapManager::configureJetLaps()
 			jetLaps.Add(castedJet, jetLapData);
 		}
 	}
-
 }
 
 // Called every frame
