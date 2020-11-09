@@ -10,7 +10,7 @@ bool ALapManagerMOCK::defaultLapPhaseIsInitialLapPhase()
 	AInitialLapPhase* initialPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(),AInitialLapPhase::StaticClass()));
 	for(const auto& jet : jetsInPlay())
 	{
-		if(jet.Value != initialPhase)
+		if(jet.Value.currentLapPhase != initialPhase)
 		{
 			return false;
 		}
