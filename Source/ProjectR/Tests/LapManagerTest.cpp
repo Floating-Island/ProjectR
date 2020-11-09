@@ -4,6 +4,8 @@
 #include "LapManagerTest.h"
 
 #include "LapManager/LapManager.h"
+#include "Mocks/LapManagerMOCK.h"
+#include "LapPhases/InitialLapPhase.h"
 #include "Jet/Jet.h"
 
 #include "Misc/AutomationTest.h"
@@ -100,6 +102,75 @@ bool FALapManagerHasJetsListedWhenSpawnedTest::RunTest(const FString& Parameters
 	return true;
 }
 
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAInitialLapPhaseAndJetCommand);
+
+bool FSpawningALapManagerAInitialLapPhaseAndJetCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
+	sessionUtilities.spawnInPIEAnInstanceOf<AInitialLapPhase>();
+	sessionUtilities.spawnInPIEAnInstanceOf<ALapManagerMOCK>();
+	
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckJetsInitialLapPhaseCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+
+bool FCheckJetsInitialLapPhaseCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
+		if (testManager)
+		{
+			bool jetsDefaultPhaseIsInitialLapPhase = testManager->defaultLapPhaseIsInitialLapPhase();
+
+			UE_LOG(LogTemp, Log, TEXT("Lap manager jets %s the initial lap phase as default phase."), *FString(jetsDefaultPhaseIsInitialLapPhase ? "have" : "don't have"));
+			
+			++aTickCount;
+			if (aTickCount > aTickLimit)
+			{
+				test->TestTrue(TEXT("The lap manager jets should have the initial lap phase as default phase."), jetsDefaultPhaseIsInitialLapPhase);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapManagerJetsHaveInitialLapPhaseAsDefaultPhaseTest, "ProjectR.LapManager Tests.Integration.002: Jets have the initial lap phase as the default phase", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FALapManagerJetsHaveInitialLapPhaseAsDefaultPhaseTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAInitialLapPhaseAndJetCommand);
+	int tickCount = 0;
+	int tickLimit = 1;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetsInitialLapPhaseCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
 
 
 
