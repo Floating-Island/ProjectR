@@ -3,6 +3,7 @@
 
 #include "LapManagerTest.h"
 
+#include "LapManager/LapManager.h"
 #include "Misc/AutomationTest.h"
 
 
@@ -20,5 +21,15 @@
 //Pay attention to the automation flags because they're needed to run the tests without UI errors.
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapManagerIsntNullWhenInstantiatedTest, "ProjectR.LapManager Tests.Unit.000: Isn't null when instantiated", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FALapManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
+{
+	ALapManager* testLapManager = NewObject<ALapManager>();
+
+	TestNotNull(TEXT("The lap manager shouldn't be null after instantiating it."), testLapManager);
+
+	return true;
+}
 
 #endif //WITH_DEV_AUTOMATION_TESTS
