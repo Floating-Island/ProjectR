@@ -38,9 +38,9 @@ bool FAIntermediateLapPhaseIsntNullWhenInstantiatedTest::RunTest(const FString& 
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAIntermediateLapPhaseUpdateStateReturnsIntermediateLapPhaseIfItsPassedAsParameterTest, "ProjectR.IntermediateLapPhase Tests.Unit.001: If a AFinalLapPhase instance is passed to updateState, it returns that instance", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAIntermediateLapPhaseUpdateStateReturnsFinalLapPhaseIfItsPassedAsParameterTest, "ProjectR.IntermediateLapPhase Tests.Unit.001: If a AFinalLapPhase instance is passed to updateState, it returns that instance", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FAIntermediateLapPhaseUpdateStateReturnsIntermediateLapPhaseIfItsPassedAsParameterTest::RunTest(const FString& Parameters)
+bool FAIntermediateLapPhaseUpdateStateReturnsFinalLapPhaseIfItsPassedAsParameterTest::RunTest(const FString& Parameters)
 {
 	AIntermediateLapPhase* testIntermediateLapPhase = NewObject<AIntermediateLapPhase>();
 	AFinalLapPhase* testFinalLapPhase = NewObject<AFinalLapPhase>();
@@ -55,9 +55,9 @@ bool FAIntermediateLapPhaseUpdateStateReturnsIntermediateLapPhaseIfItsPassedAsPa
 
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAIntermediateLapPhaseUpdateStateReturnsItselfIfIntermediateLapPhaseIsntPassedAsParameterTest, "ProjectR.IntermediateLapPhase Tests.Unit.002: Returns itself if a AFinalLapPhase instance isn't passed as parameter in updateState", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAIntermediateLapPhaseUpdateStateReturnsItselfIfFinalLapPhaseIsntPassedAsParameterTest, "ProjectR.IntermediateLapPhase Tests.Unit.002: Returns itself if a AFinalLapPhase instance isn't passed as parameter in updateState", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FAIntermediateLapPhaseUpdateStateReturnsItselfIfIntermediateLapPhaseIsntPassedAsParameterTest::RunTest(const FString& Parameters)
+bool FAIntermediateLapPhaseUpdateStateReturnsItselfIfFinalLapPhaseIsntPassedAsParameterTest::RunTest(const FString& Parameters)
 {
 	AIntermediateLapPhase* testIntermediatePhase = NewObject<AIntermediateLapPhase>();
 
