@@ -4,6 +4,7 @@
 #include "IntermediateLapPhaseTest.h"
 
 #include "LapPhases/IntermediateLapPhase.h"
+#include "LapPhases/FinalLapPhase.h"
 #include "Misc/AutomationTest.h"
 
 
@@ -32,5 +33,21 @@ bool FAIntermediateLapPhaseIsntNullWhenInstantiatedTest::RunTest(const FString& 
 	return true;
 }
 
+
+
+
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAIntermediateLapPhaseUpdateStateReturnsIntermediateLapPhaseIfItsPassedAsParameterTest, "ProjectR.IntermediateLapPhase Tests.Unit.001: If a AFinalLapPhase instance is passed to updateState, it returns that instance", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAIntermediateLapPhaseUpdateStateReturnsIntermediateLapPhaseIfItsPassedAsParameterTest::RunTest(const FString& Parameters)
+{
+	AIntermediateLapPhase* testIntermediateLapPhase = NewObject<AIntermediateLapPhase>();
+	AFinalLapPhase* testFinalLapPhase = NewObject<AFinalLapPhase>();
+
+	TestTrue(TEXT("The intermediate lap phase should return the FinalLapPhase instance if that is passed as parameter."), testIntermediateLapPhase->updatePhase(testFinalLapPhase) == testFinalLapPhase);
+
+	return true;
+}
 
 #endif //WITH_DEV_AUTOMATION_TESTS
