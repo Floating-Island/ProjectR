@@ -27,7 +27,6 @@ class PROJECTR_API ALapManager : public AActor
 
 private:
 	TMap<AJet*, FLapData> jetLaps;
-	void storeJetsFromWorld();
 
 public:
 	// Sets default values for this actor's properties
@@ -37,6 +36,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	void configureJetLaps();
 
 public:
 	// Called every frame

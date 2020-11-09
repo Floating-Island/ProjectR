@@ -19,27 +19,26 @@ ALapManager::ALapManager()
 void ALapManager::BeginPlay()
 {
 	Super::BeginPlay();
-	storeJetsFromWorld();
-	AInitialLapPhase* initialPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
-	if (initialPhase)
-	{
-		for (auto& jet : jetLaps)
-		{
-			jet.Value.currentLapPhase = initialPhase;
-		}
-	}
+	configureJetLaps();
 }
 
-void ALapManager::storeJetsFromWorld()
+void ALapManager::configureJetLaps()
 {
-	TArray<AActor*> worldJets = TArray<AActor*>();
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AJet::StaticClass(), worldJets);
-	for (const auto& jet : worldJets)
+	AInitialLapPhase* initialPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
+
+	if (initialPhase)
 	{
-		AJet* castedJet = Cast<AJet, AActor>(jet);
-		if (castedJet)
+		TArray<AActor*> worldJets = TArray<AActor*>();
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), AJet::StaticClass(), worldJets);
+		for (const auto& jet : worldJets)
 		{
-			jetLaps.Add(castedJet);
+			AJet* castedJet = Cast<AJet, AActor>(jet);
+			if (castedJet)
+			{
+				FLapData jetLapData = FLapData();
+				jetLapData.currentLapPhase = initialPhase;
+				jetLaps.Add(castedJet, jetLapData);
+			}
 		}
 	}
 }
