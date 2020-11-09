@@ -10,9 +10,9 @@
 // Sets default values
 ALapManager::ALapManager()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	jetLaps = TMap<AJet*, ALapPhase*>();
+	jetLaps = TMap<AJet*, FLapData>();
 }
 
 // Called when the game starts or when spawned
@@ -20,12 +20,12 @@ void ALapManager::BeginPlay()
 {
 	Super::BeginPlay();
 	storeJetsFromWorld();
-	AInitialLapPhase* initialPhase = Cast<AInitialLapPhase,AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
-	if(initialPhase)
+	AInitialLapPhase* initialPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
+	if (initialPhase)
 	{
-		for(auto& jet : jetLaps)
+		for (auto& jet : jetLaps)
 		{
-			jet.Value = initialPhase;
+			jet.Value.currentLapPhase = initialPhase;
 		}
 	}
 }
@@ -33,11 +33,11 @@ void ALapManager::BeginPlay()
 void ALapManager::storeJetsFromWorld()
 {
 	TArray<AActor*> worldJets = TArray<AActor*>();
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(),AJet::StaticClass(),worldJets);
-	for (const auto& jet: worldJets)
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AJet::StaticClass(), worldJets);
+	for (const auto& jet : worldJets)
 	{
-		AJet* castedJet = Cast<AJet,AActor>(jet);
-		if(castedJet)
+		AJet* castedJet = Cast<AJet, AActor>(jet);
+		if (castedJet)
 		{
 			jetLaps.Add(castedJet);
 		}
@@ -51,7 +51,7 @@ void ALapManager::Tick(float DeltaTime)
 
 }
 
-TMap<AJet*, ALapPhase*> ALapManager::jetsInPlay()
+TMap<AJet*, FLapData> ALapManager::jetsInPlay()
 {
 	return jetLaps;
 }

@@ -11,28 +11,37 @@
 class AJet;
 class ALapPhase;
 
+USTRUCT()
+struct FLapData
+{
+	GENERATED_BODY()
+
+	int lap = 1;
+	ALapPhase* currentLapPhase;
+};
+
 UCLASS()
 class PROJECTR_API ALapManager : public AActor
 {
 	GENERATED_BODY()
 
 private:
-	TMap<AJet*, ALapPhase*> jetLaps;
+	TMap<AJet*, FLapData> jetLaps;
 	void storeJetsFromWorld();
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ALapManager();
-	
+
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	TMap<AJet*, ALapPhase*> jetsInPlay();
+	TMap<AJet*, FLapData> jetsInPlay();
 
 };
