@@ -13,5 +13,7 @@ UCLASS()
 class PROJECTR_API AIntermediateLapPhase : public ALapPhase
 {
 	GENERATED_BODY()
-	
+
+public:
+	ALapPhase* updatePhase(ALapPhase* anotherPhase) override;
 };
