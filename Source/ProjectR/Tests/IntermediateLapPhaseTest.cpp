@@ -60,8 +60,10 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAIntermediateLapPhaseUpdateStateReturnsItselfI
 bool FAIntermediateLapPhaseUpdateStateReturnsItselfIfFinalLapPhaseIsntPassedAsParameterTest::RunTest(const FString& Parameters)
 {
 	AIntermediateLapPhase* testIntermediatePhase = NewObject<AIntermediateLapPhase>();
-
-	TestTrue(TEXT("The intermediate phase should return itself if a FinalLapPhase instance isn't passed as parameter of updateState."), testIntermediatePhase->updatePhase(NewObject<ALapPhase>()) == testIntermediatePhase);
+	ALapPhase* parameter = NewObject<ALapPhase>();
+	bool isntFinalLapPhase = parameter->GetClass() != AFinalLapPhase::StaticClass();
+	
+	TestTrue(TEXT("The intermediate phase should return itself if a FinalLapPhase instance isn't passed as parameter of updateState."), isntFinalLapPhase && testIntermediatePhase->updatePhase(parameter) == testIntermediatePhase);
 
 	return true;
 }
