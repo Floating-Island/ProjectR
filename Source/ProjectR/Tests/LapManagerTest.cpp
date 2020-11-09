@@ -3,9 +3,11 @@
 
 #include "LapManagerTest.h"
 
+
 #include "LapManager/LapManager.h"
 #include "Mocks/LapManagerMOCK.h"
 #include "LapPhases/InitialLapPhase.h"
+#include "LapPhases/IntermediateLapPhase.h"
 #include "Jet/Jet.h"
 
 #include "Misc/AutomationTest.h"
@@ -204,7 +206,7 @@ bool FCheckJetsInitialLapCountCommand::Update()
 	return false;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapManagerJetsHaveInitialLapCountSetToOneTest, "ProjectR.LapManager Tests.Integration.002: Jets have the initial lap count set to one", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapManagerJetsHaveInitialLapCountSetToOneTest, "ProjectR.LapManager Tests.Integration.003: Jets have the initial lap count set to one", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FALapManagerJetsHaveInitialLapCountSetToOneTest::RunTest(const FString& Parameters)
 {
@@ -224,5 +226,77 @@ bool FALapManagerJetsHaveInitialLapCountSetToOneTest::RunTest(const FString& Par
 	return true;
 }
 
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerInitalAndIntermediateLapPhasesAndJetCommand);
+
+bool FSpawningALapManagerInitalAndIntermediateLapPhasesAndJetCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	FVector jetLocation = FVector(0,0, -100);
+	sessionUtilities.spawnInPIEAnInstanceOf<AJet>(jetLocation);
+	sessionUtilities.spawnInPIEAnInstanceOf<AInitialLapPhase>();
+	FVector intermediatePhaseLocation = jetLocation+FVector(0,0,-20);
+	sessionUtilities.spawnInPIEAnInstanceOf<AIntermediateLapPhase>(intermediatePhaseLocation);
+	sessionUtilities.spawnInPIEAnInstanceOf<ALapManagerMOCK>();
+	
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckJetChangeFromInitialToIntermediateCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+
+bool FCheckJetChangeFromInitialToIntermediateCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
+		if (testManager)
+		{
+			bool jetsMovedToIntermediatePhase = testManager->jetsMovedFromInitialToIntermediatePhase();
+
+			UE_LOG(LogTemp, Log, TEXT("Jets %s lap phase from initial to intermediate when overlapping intermediate."), *FString(jetsMovedToIntermediatePhase ? "change " : "don't change "));
+			
+			++aTickCount;
+			if (aTickCount > aTickLimit)
+			{
+				test->TestTrue(TEXT("The jets should change their lap phase from initial to intermediate when overlapping intermediate."), jetsMovedToIntermediatePhase);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapManagerJetsOverlappingIntermediateChangesPhaseToItFromInitialTest, "ProjectR.LapManager Tests.Integration.004: Jets that overlap with intermediate phase change to it when coming from initial", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FALapManagerJetsOverlappingIntermediateChangesPhaseToItFromInitialTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerInitalAndIntermediateLapPhasesAndJetCommand);
+	int tickCount = 0;
+	int tickLimit = 1;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetChangeFromInitialToIntermediateCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
 
 #endif //WITH_DEV_AUTOMATION_TESTS
