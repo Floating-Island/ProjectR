@@ -4,11 +4,11 @@
 #include "LapManagerTest.h"
 
 #include "LapManager/LapManager.h"
+#include "Jet/Jet.h"
+
 #include "Misc/AutomationTest.h"
-
-
-
-
+#include "Utilities/PIESessionUtilities.h"
+#include "Tests/AutomationEditorCommon.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -31,5 +31,76 @@ bool FALapManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters
 
 	return true;
 }
+
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAndJetCommand);
+
+bool FSpawningALapManagerAndJetCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
+	sessionUtilities.spawnInPIEAnInstanceOf<ALapManager>();
+	
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckALapManagerStoresJetsCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+
+bool FCheckALapManagerStoresJetsCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		ALapManager* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManager>();
+		if (testManager)
+		{
+			bool hasJetsInWorld = testManager->jetsInPlay().Contains(sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>());
+
+			UE_LOG(LogTemp, Log, TEXT("Lap manager %s the jets listed."), *FString(hasJetsInWorld ? "has" : "doesn't have"));
+			++aTickCount;
+			if (aTickCount > aTickLimit)
+			{
+				test->TestTrue(TEXT("The lap manager should have the jets that are already spawned in world."), hasJetsInWorld);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapManagerHasTrackGeneratorsListedWhenSpawnedTest, "ProjectR.LapManager Tests.Integration.001: Has jets listed when spawned", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FALapManagerHasTrackGeneratorsListedWhenSpawnedTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAndJetCommand);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckALapManagerStoresJetsCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
+
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
