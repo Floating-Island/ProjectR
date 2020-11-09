@@ -260,17 +260,19 @@ bool FCheckJetChangeFromInitialToIntermediateCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
 		if (testManager)
 		{
 			bool jetsMovedToIntermediatePhase = testManager->jetsMovedFromInitialToIntermediatePhase();
 
-			UE_LOG(LogTemp, Log, TEXT("Jets %s lap phase from initial to intermediate when overlapping intermediate."), *FString(jetsMovedToIntermediatePhase ? "change " : "don't change "));
+			UE_LOG(LogTemp, Log, TEXT("Jet location: %s."), *testJet->GetActorLocation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jets %s lap phase from initial to intermediate when overlapping intermediate."), *FString(jetsMovedToIntermediatePhase ? "changes" : "doesn't change"));
 			
 			++aTickCount;
 			if (aTickCount > aTickLimit)
 			{
-				test->TestTrue(TEXT("The jets should change their lap phase from initial to intermediate when overlapping intermediate."), jetsMovedToIntermediatePhase);
+				test->TestTrue(TEXT("The jet should change their lap phase from initial to intermediate when overlapping intermediate."), jetsMovedToIntermediatePhase);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -279,9 +281,9 @@ bool FCheckJetChangeFromInitialToIntermediateCommand::Update()
 	return false;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapManagerJetsOverlappingIntermediateChangesPhaseToItFromInitialTest, "ProjectR.LapManager Tests.Integration.004: Jets that overlap with intermediate phase change to it when coming from initial", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapManagerJetOverlappingIntermediateChangesPhaseToItFromInitialTest, "ProjectR.LapManager Tests.Integration.004: Jet that overlaps with intermediate phase changes to it when coming from initial", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FALapManagerJetsOverlappingIntermediateChangesPhaseToItFromInitialTest::RunTest(const FString& Parameters)
+bool FALapManagerJetOverlappingIntermediateChangesPhaseToItFromInitialTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
