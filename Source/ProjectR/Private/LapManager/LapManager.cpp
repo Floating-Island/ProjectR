@@ -26,21 +26,22 @@ void ALapManager::configureJetLaps()
 {
 	AInitialLapPhase* initialPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
 
-	if (initialPhase)
+	TArray<AActor*> worldJets = TArray<AActor*>();
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AJet::StaticClass(), worldJets);
+	for (const auto& jet : worldJets)
 	{
-		TArray<AActor*> worldJets = TArray<AActor*>();
-		UGameplayStatics::GetAllActorsOfClass(GetWorld(), AJet::StaticClass(), worldJets);
-		for (const auto& jet : worldJets)
+		AJet* castedJet = Cast<AJet, AActor>(jet);
+		if (castedJet)
 		{
-			AJet* castedJet = Cast<AJet, AActor>(jet);
-			if (castedJet)
+			FLapData jetLapData = FLapData();
+			if (initialPhase)
 			{
-				FLapData jetLapData = FLapData();
 				jetLapData.currentLapPhase = initialPhase;
-				jetLaps.Add(castedJet, jetLapData);
 			}
+			jetLaps.Add(castedJet, jetLapData);
 		}
 	}
+
 }
 
 // Called every frame
