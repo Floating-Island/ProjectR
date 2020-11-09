@@ -4,13 +4,15 @@
 #include "LapManager/LapManager.h"
 #include "Jet/Jet.h"
 #include "Kismet/GameplayStatics.h"
+#include "LapPhases/LapPhase.h"
+#include "LapPhases/InitialLapPhase.h"
 
 // Sets default values
 ALapManager::ALapManager()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	jetLaps = TSet<AJet*>();
+	jetLaps = TMap<AJet*, ALapPhase*>();
 }
 
 // Called when the game starts or when spawned
@@ -18,6 +20,14 @@ void ALapManager::BeginPlay()
 {
 	Super::BeginPlay();
 	storeJetsFromWorld();
+	AInitialLapPhase* initialPhase = Cast<AInitialLapPhase,AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
+	if(initialPhase)
+	{
+		for(auto& jet : jetLaps)
+		{
+			jet.Value = initialPhase;
+		}
+	}
 }
 
 void ALapManager::storeJetsFromWorld()
@@ -41,7 +51,7 @@ void ALapManager::Tick(float DeltaTime)
 
 }
 
-TSet<AJet*> ALapManager::jetsInPlay()
+TMap<AJet*, ALapPhase*> ALapManager::jetsInPlay()
 {
 	return jetLaps;
 }

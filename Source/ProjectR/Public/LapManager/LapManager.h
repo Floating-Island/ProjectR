@@ -3,11 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "GameFramework/Actor.h"
 #include "LapManager.generated.h"
 
 
 class AJet;
+class ALapPhase;
 
 UCLASS()
 class PROJECTR_API ALapManager : public AActor
@@ -15,8 +17,9 @@ class PROJECTR_API ALapManager : public AActor
 	GENERATED_BODY()
 
 private:
-	TSet<AJet*> jetLaps;
+	TMap<AJet*, ALapPhase*> jetLaps;
 	void storeJetsFromWorld();
+	
 public:	
 	// Sets default values for this actor's properties
 	ALapManager();
@@ -30,6 +33,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	TSet<AJet*> jetsInPlay();
+	TMap<AJet*, ALapPhase*> jetsInPlay();
 
 };
