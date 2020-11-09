@@ -50,4 +50,20 @@ bool FAIntermediateLapPhaseUpdateStateReturnsIntermediateLapPhaseIfItsPassedAsPa
 	return true;
 }
 
+
+
+
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAIntermediateLapPhaseUpdateStateReturnsItselfIfIntermediateLapPhaseIsntPassedAsParameterTest, "ProjectR.IntermediateLapPhase Tests.Unit.002: Returns itself if a AFinalLapPhase instance isn't passed as parameter in updateState", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FAIntermediateLapPhaseUpdateStateReturnsItselfIfIntermediateLapPhaseIsntPassedAsParameterTest::RunTest(const FString& Parameters)
+{
+	AIntermediateLapPhase* testIntermediatePhase = NewObject<AIntermediateLapPhase>();
+
+	TestTrue(TEXT("The intermediate phase should return itself if a FinalLapPhase instance isn't passed as parameter of updateState."), testIntermediatePhase->updatePhase(NewObject<ALapPhase>()) == testIntermediatePhase);
+
+	return true;
+}
+
 #endif //WITH_DEV_AUTOMATION_TESTS
