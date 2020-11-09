@@ -25,9 +25,9 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FULapPhaseFactoryIsntNullWhenInstantiatedTest, 
 
 bool FULapPhaseFactoryIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
-	ULapPhaseFactory* testInitialPhase = NewObject<ULapPhaseFactory>();
+	ULapPhaseFactory* testLapPhaseFactory = NewObject<ULapPhaseFactory>();
 
-	TestNotNull(TEXT("The lap phase factory shouldn't be null after instantiating it."), testInitialPhase);
+	TestNotNull(TEXT("The lap phase factory shouldn't be null after instantiating it."), testLapPhaseFactory);
 
 	return true;
 }
