@@ -16,4 +16,5 @@ class PROJECTR_API ALapManagerMOCK : public ALapManager
 
 public:
 	bool defaultLapPhaseIsInitialLapPhase();
+	bool InitialLapCountSetToOne();
 };

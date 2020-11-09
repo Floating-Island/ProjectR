@@ -17,3 +17,15 @@ bool ALapManagerMOCK::defaultLapPhaseIsInitialLapPhase()
 	}
 	return true;
 }
+
+bool ALapManagerMOCK::InitialLapCountSetToOne()
+{
+	for(const auto& jet : jetsInPlay())
+	{
+		if(jet.Value.lap != 1)
+		{
+			return false;
+		}
+	}
+	return true;
+}
