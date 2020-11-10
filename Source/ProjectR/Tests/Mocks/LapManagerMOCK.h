@@ -18,4 +18,6 @@ public:
 	bool defaultLapPhaseIsInitialLapPhase();
 	bool InitialLapCountSetToOne();
 	bool jetsMovedFromInitialToIntermediatePhase();
+	void makeJetsPhaseIntermediate();
+	bool jetsMovedFromIntermediateToFinalPhase();
 };
