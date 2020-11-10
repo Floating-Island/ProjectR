@@ -34,14 +34,17 @@ void ALapManager::BeginPlay()
 	{
 		finalPhase->subscribeToOverlap(this);
 	}
+	initialLapPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
+	if(initialLapPhase)
+	{
+		initialLapPhase->subscribeToOverlap(this);
+	}
 
 	configureJetLaps();
 }
 
 void ALapManager::configureJetLaps()
 {
-	initialLapPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
-
 	TArray<AActor*> worldJets = TArray<AActor*>();
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AJet::StaticClass(), worldJets);
 
