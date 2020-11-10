@@ -34,15 +34,14 @@ private:
 public:
 	// Sets default values for this actor's properties
 	ALapManager();
-	void checkPhaseAndSubscribe(ALapPhase* aPhase);
-	void subscribeToLapPhases();
-
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	TMap<AJet*, FLapData> jetLaps;
 	void configureJetLaps();
+	void subscribeToLapPhases();
+	void checkPhaseAndSubscribe(ALapPhase* aPhase);
 
 public:
 	// Called every frame
