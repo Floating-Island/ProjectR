@@ -33,10 +33,25 @@ void ALapPhase::BeginPlay()
 
 ALapPhase* ALapPhase::updatePhase(ALapPhase* anotherPhase)
 {
-	return isNextPhase(anotherPhase)? anotherPhase : this;
+	return nextPhaseIs(anotherPhase)? anotherPhase : this;
 }
 
-bool ALapPhase::isNextPhase(ALapPhase* aPhase)
+bool ALapPhase::nextPhaseIs(ALapPhase* aPhase)
+{
+	return false;
+}
+
+bool ALapPhase::comesFromInitialLapPhase()
+{
+	return false;
+}
+
+bool ALapPhase::comesFromIntermediateLapPhase()
+{
+	return false;
+}
+
+bool ALapPhase::comesFromFinalLapPhase()
 {
 	return false;
 }

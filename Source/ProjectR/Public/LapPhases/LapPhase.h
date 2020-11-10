@@ -30,5 +30,9 @@ public:
 
 	ALapPhase* updatePhase(ALapPhase* anotherPhase);
 
-	virtual bool isNextPhase(ALapPhase* aPhase);
+	virtual bool nextPhaseIs(ALapPhase* aPhase);
+
+	virtual bool comesFromInitialLapPhase();
+	virtual bool comesFromIntermediateLapPhase();
+	virtual bool comesFromFinalLapPhase();
 };

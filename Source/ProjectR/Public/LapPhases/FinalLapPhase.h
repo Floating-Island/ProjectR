@@ -16,5 +16,7 @@ class PROJECTR_API AFinalLapPhase : public ALapPhase
 
 public:
 
-	bool isNextPhase(ALapPhase* aPhase) override;
+	bool nextPhaseIs(ALapPhase* aPhase) override;
+
+	bool comesFromIntermediateLapPhase() override;
 };

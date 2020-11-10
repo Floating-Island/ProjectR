@@ -5,7 +5,13 @@
 #include "LapPhases/IntermediateLapPhase.h"
 
 
-bool AInitialLapPhase::isNextPhase(ALapPhase* aPhase)
+bool AInitialLapPhase::nextPhaseIs(ALapPhase* aPhase)
 {
-	return aPhase->GetClass() == AIntermediateLapPhase::StaticClass();
+	return aPhase->comesFromInitialLapPhase();
 }
+
+bool AInitialLapPhase::comesFromFinalLapPhase()
+{
+	return true;
+}
+
