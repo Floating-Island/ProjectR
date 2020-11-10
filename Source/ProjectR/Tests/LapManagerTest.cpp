@@ -379,4 +379,81 @@ bool FALapManagerJetOverlappingFinalChangesPhaseToItFromIntermediateTest::RunTes
 	return true;
 }
 
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerInitialAndFinalLapPhasesAndJetCommand);
+
+bool FSpawningALapManagerInitialAndFinalLapPhasesAndJetCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	FVector jetLocation = FVector(0,0, -100);
+	sessionUtilities.spawnInPIEAnInstanceOf<AJet>(jetLocation);
+	sessionUtilities.spawnInPIEAnInstanceOf<AFinalLapPhase>();
+	FVector initialPhaseLocation = jetLocation + FVector(0,0,-20);
+	sessionUtilities.spawnInPIEAnInstanceOf<AInitialLapPhase>(initialPhaseLocation);
+	ALapManagerMOCK* testManager = sessionUtilities.spawnInPIEAnInstanceOf<ALapManagerMOCK>();
+	testManager->makeJetsPhaseFinal();
+	
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckJetChangeFromFinalToInitialCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+
+bool FCheckJetChangeFromFinalToInitialCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+		ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
+		if (testManager)
+		{
+			bool jetsMovedToInitialPhase = testManager->jetsMovedFromFinalToInitialPhase();
+
+			UE_LOG(LogTemp, Log, TEXT("Jet location: %s."), *testJet->GetActorLocation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jets %s lap phase from final to initial when overlapping initial."), *FString(jetsMovedToInitialPhase ? "changes" : "doesn't change"));
+			
+			++aTickCount;
+			if (aTickCount > aTickLimit)
+			{
+				test->TestTrue(TEXT("The jet should change their lap phase from final to initial when overlapping initial."), jetsMovedToInitialPhase);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapManagerJetOverlappingInitialChangesPhaseToItFromFinalTest, "ProjectR.LapManager Tests.Integration.006: Jet that overlaps with initial phase changes to it when coming from final", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FALapManagerJetOverlappingInitialChangesPhaseToItFromFinalTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerInitialAndFinalLapPhasesAndJetCommand);
+	int tickCount = 0;
+	int tickLimit = 1;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetChangeFromFinalToInitialCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS
