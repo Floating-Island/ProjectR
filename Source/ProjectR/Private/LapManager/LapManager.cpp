@@ -24,7 +24,10 @@ void ALapManager::BeginPlay()
 	Super::BeginPlay();
 
 	AIntermediateLapPhase* intermediatePhase = Cast<AIntermediateLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AIntermediateLapPhase::StaticClass()));
-	intermediatePhase->subscribeToOverlap(this);
+	if(intermediatePhase)
+	{
+		intermediatePhase->subscribeToOverlap(this);
+	}
 
 	configureJetLaps();
 }
