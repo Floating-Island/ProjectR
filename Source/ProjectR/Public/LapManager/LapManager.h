@@ -27,7 +27,6 @@ class PROJECTR_API ALapManager : public AActor
 	GENERATED_BODY()
 
 private:
-	TMap<AJet*, FLapData> jetLaps;
 	AInitialLapPhase* initialLapPhase;
 
 public:
@@ -38,6 +37,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	TMap<AJet*, FLapData> jetLaps;
 	void configureJetLaps();
 
 public:
