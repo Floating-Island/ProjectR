@@ -456,4 +456,70 @@ bool FALapManagerJetOverlappingInitialChangesPhaseToItFromFinalTest::RunTest(con
 }
 
 
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckJetLapCountChangeFromFinalToInitialCommand, int, aTickCount, int, aTickLimit, int, previousLapCount, FAutomationTestBase*, test);
+
+bool FCheckJetLapCountChangeFromFinalToInitialCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+		ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
+		if (testManager)
+		{
+			int currentLapCount = testManager->currentLapOf(testJet);
+			bool jetsMovedToInitialPhase = testManager->jetsMovedFromFinalToInitialPhase();
+			bool increasedLapCount = currentLapCount == previousLapCount + 1;
+
+			UE_LOG(LogTemp, Log, TEXT("Jet location: %s."), *testJet->GetActorLocation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jets %s lap phase from final to initial when overlapping initial."), *FString(jetsMovedToInitialPhase ? "changes" : "doesn't change"));
+			UE_LOG(LogTemp, Log, TEXT("Jet previous lap count: %d."), previousLapCount);
+			UE_LOG(LogTemp, Log, TEXT("Jet current lap count: %d."), currentLapCount);
+			UE_LOG(LogTemp, Log, TEXT("Jets %s increased its lap count."), *FString(increasedLapCount ? "has" : "hasn't"));
+
+			if (increasedLapCount)
+			{
+				test->TestTrue(TEXT("The jet should increase its lap count from final to initial phase when overlapping initial."), jetsMovedToInitialPhase && increasedLapCount);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+
+			++aTickCount;
+			if (aTickCount > aTickLimit)
+			{
+				test->TestTrue(TEXT("Tick Limit reached. The jet should increase its lap count from final to initial phase when overlapping initial."), jetsMovedToInitialPhase && increasedLapCount);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			previousLapCount = currentLapCount;
+		}
+	}
+	return false;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapManagerJetOverlappingInitialIncreasesLapCountFromFinalTest, "ProjectR.LapManager Tests.Integration.007: Jet that overlaps with initial from final increases lap count", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FALapManagerJetOverlappingInitialIncreasesLapCountFromFinalTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerInitialAndFinalLapPhasesAndJetCommand);
+	int tickCount = 0;
+	int tickLimit = 1;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetLapCountChangeFromFinalToInitialCommand(tickCount, tickLimit, std::numeric_limits<int>::max(), this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
+
 #endif //WITH_DEV_AUTOMATION_TESTS
