@@ -19,28 +19,34 @@ ALapManager::ALapManager()
 	jetLaps = TMap<AJet*, FLapData>();
 }
 
+
 // Called when the game starts or when spawned
 void ALapManager::BeginPlay()
 {
 	Super::BeginPlay();
 
-	AIntermediateLapPhase* intermediatePhase = Cast<AIntermediateLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AIntermediateLapPhase::StaticClass()));
-	if (intermediatePhase)
-	{
-		intermediatePhase->subscribeToOverlap(this);
-	}
-	AFinalLapPhase* finalPhase = Cast<AFinalLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AFinalLapPhase::StaticClass()));
-	if (finalPhase)
-	{
-		finalPhase->subscribeToOverlap(this);
-	}
-	initialLapPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
-	if (initialLapPhase)
-	{
-		initialLapPhase->subscribeToOverlap(this);
-	}
+	subscribeToLapPhases();
 
 	configureJetLaps();
+}
+
+void ALapManager::subscribeToLapPhases()
+{
+	initialLapPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
+	AIntermediateLapPhase* intermediatePhase = Cast<AIntermediateLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AIntermediateLapPhase::StaticClass()));
+	AFinalLapPhase* finalPhase = Cast<AFinalLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AFinalLapPhase::StaticClass()));
+	
+	checkPhaseAndSubscribe(initialLapPhase);
+	checkPhaseAndSubscribe(intermediatePhase);
+	checkPhaseAndSubscribe(finalPhase);
+}
+
+void ALapManager::checkPhaseAndSubscribe(ALapPhase* aPhase)
+{
+	if (aPhase)
+	{
+		aPhase->subscribeToOverlap(this);
+	}
 }
 
 void ALapManager::configureJetLaps()

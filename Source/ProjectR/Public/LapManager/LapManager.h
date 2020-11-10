@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 
+
+#include "../LapPhases/FinalLapPhase.h"
 #include "GameFramework/Actor.h"
 #include "LapManager.generated.h"
 
@@ -32,6 +34,8 @@ private:
 public:
 	// Sets default values for this actor's properties
 	ALapManager();
+	void checkPhaseAndSubscribe(ALapPhase* aPhase);
+	void subscribeToLapPhases();
 
 
 protected:
