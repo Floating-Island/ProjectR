@@ -28,7 +28,7 @@ class PROJECTR_API ALapManager : public AActor
 
 private:
 	TMap<AJet*, FLapData> jetLaps;
-	AInitialLapPhase* initialPhase;
+	AInitialLapPhase* initialLapPhase;
 
 public:
 	// Sets default values for this actor's properties

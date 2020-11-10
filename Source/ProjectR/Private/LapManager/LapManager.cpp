@@ -31,7 +31,7 @@ void ALapManager::BeginPlay()
 
 void ALapManager::configureJetLaps()
 {
-	initialPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
+	initialLapPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
 
 	TArray<AActor*> worldJets = TArray<AActor*>();
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AJet::StaticClass(), worldJets);
@@ -42,9 +42,9 @@ void ALapManager::configureJetLaps()
 		if (castedJet)
 		{
 			FLapData jetLapData = FLapData();
-			if (initialPhase)
+			if (initialLapPhase)
 			{
-				jetLapData.currentLapPhase = initialPhase;
+				jetLapData.currentLapPhase = initialLapPhase;
 			}
 			jetLaps.Add(castedJet, jetLapData);
 		}
