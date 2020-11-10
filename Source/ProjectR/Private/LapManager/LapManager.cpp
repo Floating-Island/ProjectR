@@ -45,7 +45,7 @@ void ALapManager::checkPhaseAndSubscribe(ALapPhase* aPhase)
 {
 	if (aPhase)
 	{
-		aPhase->subscribeToOverlap(this);
+		aPhase->OnActorBeginOverlap.AddDynamic(this, &ALapManager::lapPhaseOverlap);
 	}
 }
 
