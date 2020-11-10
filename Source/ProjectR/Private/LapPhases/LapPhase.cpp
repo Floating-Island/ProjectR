@@ -2,6 +2,7 @@
 
 
 #include "LapPhases/LapPhase.h"
+#include "LapManager/LapManager.h"
 
 // Sets default values
 ALapPhase::ALapPhase()
@@ -39,5 +40,10 @@ ALapPhase* ALapPhase::updatePhase(ALapPhase* anotherPhase)
 bool ALapPhase::isNextPhase(ALapPhase* aPhase)
 {
 	return false;
+}
+
+void ALapPhase::subscribeToOverlap(ALapManager* aManager)
+{
+	OnActorBeginOverlap.AddDynamic(aManager, &ALapManager::lapPhaseOverlap);
 }
 

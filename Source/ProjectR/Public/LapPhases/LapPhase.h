@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "LapPhase.generated.h"
 
+class ALapManager;
 UCLASS()
 class PROJECTR_API ALapPhase : public AActor
 {
@@ -31,4 +32,5 @@ public:
 
 	virtual bool isNextPhase(ALapPhase* aPhase);
 
+	void subscribeToOverlap(ALapManager* aManager);
 };

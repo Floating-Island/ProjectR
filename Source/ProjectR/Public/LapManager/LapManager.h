@@ -10,6 +10,7 @@
 
 class AJet;
 class ALapPhase;
+class AInitialLapPhase;
 
 USTRUCT()
 struct FLapData
@@ -27,6 +28,7 @@ class PROJECTR_API ALapManager : public AActor
 
 private:
 	TMap<AJet*, FLapData> jetLaps;
+	AInitialLapPhase* initialPhase;
 
 public:
 	// Sets default values for this actor's properties
@@ -44,4 +46,11 @@ public:
 
 	TMap<AJet*, FLapData> jetsInPlay();
 
+	UFUNCTION()
+	void lapPhaseOverlap (UPrimitiveComponent* OverlappedComponent,
+							AActor* OtherActor,
+							UPrimitiveComponent* OtherComp,
+							int32 OtherBodyIndex,
+							bool bFromSweep,
+							const FHitResult& SweepResult);
 };

@@ -2,10 +2,13 @@
 
 
 #include "LapManager/LapManager.h"
+
+
 #include "Jet/Jet.h"
 #include "Kismet/GameplayStatics.h"
 #include "LapPhases/LapPhase.h"
 #include "LapPhases/InitialLapPhase.h"
+#include "LapPhases/IntermediateLapPhase.h"
 
 // Sets default values
 ALapManager::ALapManager()
@@ -19,12 +22,16 @@ ALapManager::ALapManager()
 void ALapManager::BeginPlay()
 {
 	Super::BeginPlay();
+
+	AIntermediateLapPhase* intermediatePhase = Cast<AIntermediateLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AIntermediateLapPhase::StaticClass()));
+	intermediatePhase->subscribeToOverlap(this);
+	
 	configureJetLaps();
 }
 
 void ALapManager::configureJetLaps()
 {
-	AInitialLapPhase* initialPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
+	initialPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
 
 	TArray<AActor*> worldJets = TArray<AActor*>();
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AJet::StaticClass(), worldJets);
@@ -54,5 +61,21 @@ void ALapManager::Tick(float DeltaTime)
 TMap<AJet*, FLapData> ALapManager::jetsInPlay()
 {
 	return jetLaps;
+}
+
+void ALapManager::lapPhaseOverlap(UPrimitiveComponent* OverlappedComponent,
+								AActor* OtherActor,
+								UPrimitiveComponent* OtherComp,
+								int32 OtherBodyIndex,
+								bool bFromSweep,
+								const FHitResult& SweepResult)
+{
+	AJet* overlappedJet = Cast<AJet,AActor>(OtherActor);
+	ALapPhase* overlappingPhase = Cast<ALapPhase,AActor>(OverlappedComponent->GetOwner());
+	if(overlappedJet && overlappingPhase)
+	{
+		FLapData* jetLapData = jetLaps.Find(overlappedJet);
+		jetLapData->currentLapPhase = jetLapData->currentLapPhase->updatePhase(overlappingPhase);
+	}
 }
 
