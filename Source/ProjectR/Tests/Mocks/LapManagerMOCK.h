@@ -20,4 +20,6 @@ public:
 	bool jetsMovedFromInitialToIntermediatePhase();
 	void makeJetsPhaseIntermediate();
 	bool jetsMovedFromIntermediateToFinalPhase();
+	void makeJetsPhaseFinal();
+	bool jetsMovedFromFinalToInitialPhase();
 };
