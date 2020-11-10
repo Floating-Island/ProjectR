@@ -25,17 +25,17 @@ void ALapManager::BeginPlay()
 	Super::BeginPlay();
 
 	AIntermediateLapPhase* intermediatePhase = Cast<AIntermediateLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AIntermediateLapPhase::StaticClass()));
-	if(intermediatePhase)
+	if (intermediatePhase)
 	{
 		intermediatePhase->subscribeToOverlap(this);
 	}
 	AFinalLapPhase* finalPhase = Cast<AFinalLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AFinalLapPhase::StaticClass()));
-	if(finalPhase)
+	if (finalPhase)
 	{
 		finalPhase->subscribeToOverlap(this);
 	}
 	initialLapPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
-	if(initialLapPhase)
+	if (initialLapPhase)
 	{
 		initialLapPhase->subscribeToOverlap(this);
 	}
