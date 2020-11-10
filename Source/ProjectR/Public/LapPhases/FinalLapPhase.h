@@ -7,7 +7,7 @@
 #include "FinalLapPhase.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PROJECTR_API AFinalLapPhase : public ALapPhase

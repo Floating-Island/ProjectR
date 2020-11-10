@@ -6,7 +6,7 @@
 // Sets default values
 ALapPhase::ALapPhase()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
 	phaseWall = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Phase Wall"));
@@ -28,12 +28,12 @@ ALapPhase::ALapPhase()
 void ALapPhase::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 ALapPhase* ALapPhase::updatePhase(ALapPhase* anotherPhase)
 {
-	return nextPhaseIs(anotherPhase)? anotherPhase : this;
+	return nextPhaseIs(anotherPhase) ? anotherPhase : this;
 }
 
 bool ALapPhase::nextPhaseIs(ALapPhase* aPhase)

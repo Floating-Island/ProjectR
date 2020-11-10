@@ -7,7 +7,7 @@
 #include "InitialLapPhase.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PROJECTR_API AInitialLapPhase : public ALapPhase

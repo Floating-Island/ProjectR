@@ -11,8 +11,8 @@ UCLASS()
 class PROJECTR_API ALapPhase : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	ALapPhase();
 
@@ -24,9 +24,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Phase Wall Mesh")
 		UStaticMesh* phaseWallMesh;
-	
 
-public:	
+
+public:
 
 	ALapPhase* updatePhase(ALapPhase* anotherPhase);
 

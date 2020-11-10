@@ -7,7 +7,7 @@
 #include "IntermediateLapPhase.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PROJECTR_API AIntermediateLapPhase : public ALapPhase
@@ -15,7 +15,7 @@ class PROJECTR_API AIntermediateLapPhase : public ALapPhase
 	GENERATED_BODY()
 
 public:
-	
+
 	bool nextPhaseIs(ALapPhase* aPhase) override;
 
 	bool comesFromInitialLapPhase() override;
