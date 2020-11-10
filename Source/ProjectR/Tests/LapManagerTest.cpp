@@ -4,10 +4,12 @@
 #include "LapManagerTest.h"
 
 
+
 #include "LapManager/LapManager.h"
 #include "Mocks/LapManagerMOCK.h"
 #include "LapPhases/InitialLapPhase.h"
 #include "LapPhases/IntermediateLapPhase.h"
+#include "LapPhases/FinalLapPhase.h"
 #include "Jet/Jet.h"
 
 #include "Misc/AutomationTest.h"
@@ -245,7 +247,7 @@ bool FSpawningALapManagerInitalAndIntermediateLapPhasesAndJetCommand::Update()
 	FVector jetLocation = FVector(0,0, -100);
 	sessionUtilities.spawnInPIEAnInstanceOf<AJet>(jetLocation);
 	sessionUtilities.spawnInPIEAnInstanceOf<AInitialLapPhase>();
-	FVector intermediatePhaseLocation = jetLocation+FVector(0,0,-20);
+	FVector intermediatePhaseLocation = jetLocation + FVector(0,0,-20);
 	sessionUtilities.spawnInPIEAnInstanceOf<AIntermediateLapPhase>(intermediatePhaseLocation);
 	sessionUtilities.spawnInPIEAnInstanceOf<ALapManagerMOCK>();
 	
@@ -295,6 +297,82 @@ bool FALapManagerJetOverlappingIntermediateChangesPhaseToItFromInitialTest::RunT
 	int tickCount = 0;
 	int tickLimit = 1;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetChangeFromInitialToIntermediateCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
+
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerIntermediateAndFinalLapPhasesAndJetCommand);
+
+bool FSpawningALapManagerIntermediateAndFinalLapPhasesAndJetCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	FVector jetLocation = FVector(0,0, -100);
+	sessionUtilities.spawnInPIEAnInstanceOf<AJet>(jetLocation);
+	sessionUtilities.spawnInPIEAnInstanceOf<AIntermediateLapPhase>();
+	FVector finalPhaseLocation = jetLocation + FVector(0,0,-20);
+	sessionUtilities.spawnInPIEAnInstanceOf<AFinalLapPhase>(finalPhaseLocation);
+	ALapManagerMOCK* testManager = sessionUtilities.spawnInPIEAnInstanceOf<ALapManagerMOCK>();
+	testManager->makeJetsPhaseIntermediate();
+	
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckJetChangeFromIntermediateToFinalCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+
+bool FCheckJetChangeFromIntermediateToFinalCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+		ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
+		if (testManager)
+		{
+			bool jetsMovedToFinalPhase = testManager->jetsMovedFromIntermediateToFinalPhase();
+
+			UE_LOG(LogTemp, Log, TEXT("Jet location: %s."), *testJet->GetActorLocation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jets %s lap phase from intermediate to final when overlapping final."), *FString(jetsMovedToFinalPhase ? "changes" : "doesn't change"));
+			
+			++aTickCount;
+			if (aTickCount > aTickLimit)
+			{
+				test->TestTrue(TEXT("The jet should change their lap phase from intermediate to final when overlapping final."), jetsMovedToFinalPhase);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapManagerJetOverlappingFinalChangesPhaseToItFromIntermediateTest, "ProjectR.LapManager Tests.Integration.005: Jet that overlaps with final phase changes to it when coming from intermediate", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FALapManagerJetOverlappingFinalChangesPhaseToItFromIntermediateTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerIntermediateAndFinalLapPhasesAndJetCommand);
+	int tickCount = 0;
+	int tickLimit = 1;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetChangeFromIntermediateToFinalCommand(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
