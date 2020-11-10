@@ -9,6 +9,7 @@
 #include "LapPhases/LapPhase.h"
 #include "LapPhases/InitialLapPhase.h"
 #include "LapPhases/IntermediateLapPhase.h"
+#include "LapPhases/FinalLapPhase.h"
 
 // Sets default values
 ALapManager::ALapManager()
@@ -27,6 +28,11 @@ void ALapManager::BeginPlay()
 	if(intermediatePhase)
 	{
 		intermediatePhase->subscribeToOverlap(this);
+	}
+	AFinalLapPhase* finalPhase = Cast<AFinalLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AFinalLapPhase::StaticClass()));
+	if(finalPhase)
+	{
+		finalPhase->subscribeToOverlap(this);
 	}
 
 	configureJetLaps();
