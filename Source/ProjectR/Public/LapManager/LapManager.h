@@ -48,4 +48,6 @@ public:
 
 	UFUNCTION()
 		void lapPhaseOverlap(AActor* OverlappedActor, AActor* OtherActor);
+
+	int currentLapOf(AJet* aJet);
 };

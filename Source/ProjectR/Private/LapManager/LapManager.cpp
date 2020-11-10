@@ -86,3 +86,8 @@ void ALapManager::lapPhaseOverlap(AActor* OverlappedActor, AActor* OtherActor)
 	}
 }
 
+int ALapManager::currentLapOf(AJet* aJet)
+{
+	return jetLaps.Find(aJet)->lap;
+}
+
