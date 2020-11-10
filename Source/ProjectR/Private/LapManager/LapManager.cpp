@@ -89,7 +89,7 @@ void ALapManager::lapPhaseOverlap(AActor* OverlappedActor, AActor* OtherActor)
 		
 		if(oldPhase->GetClass() == AFinalLapPhase::StaticClass() && currentPhase->GetClass() == AInitialLapPhase::StaticClass())
 		{
-			++jetLapData->lap;
+			++jetLapData->lap; 
 		}
 	}
 }
