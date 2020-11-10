@@ -82,7 +82,15 @@ void ALapManager::lapPhaseOverlap(AActor* OverlappedActor, AActor* OtherActor)
 	if (overlappedJet && overlappingPhase)
 	{
 		FLapData* jetLapData = jetLaps.Find(overlappedJet);
+		
+		ALapPhase* oldPhase = jetLapData->currentLapPhase;
 		jetLapData->currentLapPhase = jetLapData->currentLapPhase->updatePhase(overlappingPhase);
+		ALapPhase* currentPhase = jetLapData->currentLapPhase;
+		
+		if(oldPhase->GetClass() == AFinalLapPhase::StaticClass() && currentPhase->GetClass() == AInitialLapPhase::StaticClass())
+		{
+			++jetLapData->lap;
+		}
 	}
 }
 
