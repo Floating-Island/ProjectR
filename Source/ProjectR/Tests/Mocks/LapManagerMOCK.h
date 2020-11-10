@@ -7,7 +7,7 @@
 #include "LapManagerMOCK.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PROJECTR_API ALapManagerMOCK : public ALapManager

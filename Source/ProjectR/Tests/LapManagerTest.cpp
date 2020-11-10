@@ -56,7 +56,7 @@ bool FSpawningALapManagerAndJetCommand::Update()
 
 	sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
 	sessionUtilities.spawnInPIEAnInstanceOf<ALapManager>();
-	
+
 	return true;
 }
 
@@ -125,7 +125,7 @@ bool FSpawningALapManagerAInitialLapPhaseAndJetCommand::Update()
 	sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
 	sessionUtilities.spawnInPIEAnInstanceOf<AInitialLapPhase>();
 	sessionUtilities.spawnInPIEAnInstanceOf<ALapManagerMOCK>();
-	
+
 	return true;
 }
 
@@ -143,7 +143,7 @@ bool FCheckJetsInitialLapPhaseCommand::Update()
 			bool jetsDefaultPhaseIsInitialLapPhase = testManager->defaultLapPhaseIsInitialLapPhase();
 
 			UE_LOG(LogTemp, Log, TEXT("Lap manager jets %s the initial lap phase as default phase."), *FString(jetsDefaultPhaseIsInitialLapPhase ? "have" : "don't have"));
-			
+
 			++aTickCount;
 			if (aTickCount > aTickLimit)
 			{
@@ -195,7 +195,7 @@ bool FCheckJetsInitialLapCountCommand::Update()
 			bool jetsInitialLapCountIsOne = testManager->InitialLapCountSetToOne();
 
 			UE_LOG(LogTemp, Log, TEXT("Lap manager jets %s the initial lap count set as one."), *FString(jetsInitialLapCountIsOne ? "have" : "don't have"));
-			
+
 			++aTickCount;
 			if (aTickCount > aTickLimit)
 			{
@@ -244,13 +244,13 @@ bool FSpawningALapManagerInitalAndIntermediateLapPhasesAndJetCommand::Update()
 
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	FVector jetLocation = FVector(0,0, -100);
+	FVector jetLocation = FVector(0, 0, -100);
 	sessionUtilities.spawnInPIEAnInstanceOf<AJet>(jetLocation);
 	sessionUtilities.spawnInPIEAnInstanceOf<AInitialLapPhase>();
-	FVector intermediatePhaseLocation = jetLocation + FVector(0,0,-20);
+	FVector intermediatePhaseLocation = jetLocation + FVector(0, 0, -20);
 	sessionUtilities.spawnInPIEAnInstanceOf<AIntermediateLapPhase>(intermediatePhaseLocation);
 	sessionUtilities.spawnInPIEAnInstanceOf<ALapManagerMOCK>();
-	
+
 	return true;
 }
 
@@ -270,7 +270,7 @@ bool FCheckJetChangeFromInitialToIntermediateCommand::Update()
 
 			UE_LOG(LogTemp, Log, TEXT("Jet location: %s."), *testJet->GetActorLocation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jets %s lap phase from initial to intermediate when overlapping intermediate."), *FString(jetsMovedToIntermediatePhase ? "changes" : "doesn't change"));
-			
+
 			++aTickCount;
 			if (aTickCount > aTickLimit)
 			{
@@ -319,14 +319,14 @@ bool FSpawningALapManagerIntermediateAndFinalLapPhasesAndJetCommand::Update()
 
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	FVector jetLocation = FVector(0,0, -100);
+	FVector jetLocation = FVector(0, 0, -100);
 	sessionUtilities.spawnInPIEAnInstanceOf<AJet>(jetLocation);
 	sessionUtilities.spawnInPIEAnInstanceOf<AIntermediateLapPhase>();
-	FVector finalPhaseLocation = jetLocation + FVector(0,0,-20);
+	FVector finalPhaseLocation = jetLocation + FVector(0, 0, -20);
 	sessionUtilities.spawnInPIEAnInstanceOf<AFinalLapPhase>(finalPhaseLocation);
 	ALapManagerMOCK* testManager = sessionUtilities.spawnInPIEAnInstanceOf<ALapManagerMOCK>();
 	testManager->makeJetsPhaseIntermediate();
-	
+
 	return true;
 }
 
@@ -346,7 +346,7 @@ bool FCheckJetChangeFromIntermediateToFinalCommand::Update()
 
 			UE_LOG(LogTemp, Log, TEXT("Jet location: %s."), *testJet->GetActorLocation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jets %s lap phase from intermediate to final when overlapping final."), *FString(jetsMovedToFinalPhase ? "changes" : "doesn't change"));
-			
+
 			++aTickCount;
 			if (aTickCount > aTickLimit)
 			{
@@ -395,14 +395,14 @@ bool FSpawningALapManagerInitialAndFinalLapPhasesAndJetCommand::Update()
 
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	FVector jetLocation = FVector(0,0, -100);
+	FVector jetLocation = FVector(0, 0, -100);
 	sessionUtilities.spawnInPIEAnInstanceOf<AJet>(jetLocation);
 	sessionUtilities.spawnInPIEAnInstanceOf<AFinalLapPhase>();
-	FVector initialPhaseLocation = jetLocation + FVector(0,0,-20);
+	FVector initialPhaseLocation = jetLocation + FVector(0, 0, -20);
 	sessionUtilities.spawnInPIEAnInstanceOf<AInitialLapPhase>(initialPhaseLocation);
 	ALapManagerMOCK* testManager = sessionUtilities.spawnInPIEAnInstanceOf<ALapManagerMOCK>();
 	testManager->makeJetsPhaseFinal();
-	
+
 	return true;
 }
 
@@ -422,7 +422,7 @@ bool FCheckJetChangeFromFinalToInitialCommand::Update()
 
 			UE_LOG(LogTemp, Log, TEXT("Jet location: %s."), *testJet->GetActorLocation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jets %s lap phase from final to initial when overlapping initial."), *FString(jetsMovedToInitialPhase ? "changes" : "doesn't change"));
-			
+
 			++aTickCount;
 			if (aTickCount > aTickLimit)
 			{
