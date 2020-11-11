@@ -65,7 +65,7 @@ bool FCheckRaceGameModeSetCommand::Update()
 		return false;
 	}
 	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
-	ARaceGameMode* testGameMode = Cast<ARaceGameMode, AGameModeBase>(UGameplayStatics::GetGameMode(testWorld)));
+	ARaceGameMode* testGameMode = Cast<ARaceGameMode, AGameModeBase>(UGameplayStatics::GetGameMode(testWorld));
 	if (testGameMode)
 	{
 		test->TestNotNull(TEXT("Race game mode was succesfully set as game mode in the world."), testGameMode);
