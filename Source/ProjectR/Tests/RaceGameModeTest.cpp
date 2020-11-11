@@ -5,10 +5,11 @@
 
 
 #include "GameMode/RaceGameMode.h"
+#include "Jet/Jet.h"
 
 #include "Misc/AutomationTest.h"
 #include "Tests/AutomationEditorCommon.h"
-#include "Kismet/GameplayStatics.h"
+#include "Utilities/PIESessionUtilities.h"
 
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -45,8 +46,8 @@ bool FCheckRaceGameModeSetCommand::Update()
 	{
 		return false;
 	}
-	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
-	ARaceGameMode* testGameMode = Cast<ARaceGameMode, AGameModeBase>(UGameplayStatics::GetGameMode(testWorld));
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	ARaceGameMode* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameMode>();
 	if (testGameMode)
 	{
 		test->TestNotNull(TEXT("Race game mode was succesfully set as game mode in the world."), testGameMode);
@@ -73,5 +74,69 @@ bool FARaceGameModeIsAbleToBeSetInAWorldTest::RunTest(const FString& Parameters)
 	return true;
 }
 
+
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawnSomeJetsInRaceModeCommand, FAutomationTestBase*, test);
+
+bool FSpawnSomeJetsInRaceModeCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
+	sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
+	
+	return false;
+}
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRaceGameModeHasAllJetsCommand, FAutomationTestBase*, test);
+
+bool FCheckRaceGameModeHasAllJetsCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	
+	ARaceGameMode* testGameMode = Cast<ARaceGameMode, AGameModeBase>(UGameplayStatics::GetGameMode(testWorld));
+	if (testGameMode)
+	{
+		TSet<AJet*> gameModeJets = testGameMode->jetsInPlay();
+		TArray<AJet*> worldJets = sessionUtilities.retrieveFromPIEAllInstancesOf<AJet>();
+		bool sameNumberOfJetsInGameMode = gameModeJets.Num() == worldJets.Num();
+		
+		test->TestTrue(TEXT("Race game mode should have the same number of jets than the world."), sameNumberOfJetsInGameMode);
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeHasTheJetsInPlayTest, "ProjectR.RaceGameMode Tests.Unit.002: Has the jets in play", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FARaceGameModeHasTheJetsInPlayTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeHasAllJetsCommand(this));
+
+	return true;
+}
 
 #endif //WITH_DEV_AUTOMATION_TESTS
