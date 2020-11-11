@@ -3,3 +3,7 @@
 
 #include "GameMode/RaceGameMode.h"
 
+void ARaceGameMode::StartPlay()
+{
+	Super::StartPlay();
+}
