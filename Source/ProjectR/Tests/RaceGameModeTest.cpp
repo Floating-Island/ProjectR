@@ -3,9 +3,12 @@
 
 #include "RaceGameModeTest.h"
 
+
 #include "GameMode/RaceGameMode.h"
 
 #include "Misc/AutomationTest.h"
+#include "Tests/AutomationEditorCommon.h"
+#include "Kismet/GameplayStatics.h"
 
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -29,6 +32,65 @@ bool FARaceGameModeIsntNullWhenInstantiatedTest::RunTest(const FString& Paramete
 	return true;
 }
 
+
+
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSetRaceGameModeInEditorWorldCommand);
+
+bool FSetRaceGameModeInEditorWorldCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	
+	testWorld->SetGameMode(*FString("/Game/Development/GameModes/BP_Race-GameMode"));
+	
+	return true;
+}
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRaceGameModeSetCommand, FAutomationTestBase*, test);
+
+bool FCheckRaceGameModeSetCommand::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ARaceGameMode* testGameMode = Cast<ARaceGameMode, AGameModeBase>(UGameplayStatics::GetGameMode(testWorld)));
+	if (testGameMode)
+	{
+		test->TestNotNull(TEXT("Race game mode was succesfully set as game mode in the world."), testGameMode);
+		return true;
+	}
+	UE_LOG(LogTemp, Log, TEXT("Race game mode not loaded yet."));
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeIsAbleToBeSetInAWorldTest, "ProjectR.RaceGameMode Tests.Unit.001: Is able to be set in a world", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FARaceGameModeIsAbleToBeSetInAWorldTest::RunTest(const FString& Parameters)
+{
+
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSetRaceGameModeInEditorWorldCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeSetCommand(this));
+
+	return true;
+}
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
