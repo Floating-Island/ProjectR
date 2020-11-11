@@ -37,36 +37,15 @@ bool FARaceGameModeIsntNullWhenInstantiatedTest::RunTest(const FString& Paramete
 
 
 
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND(FSetRaceGameModeInEditorWorldCommand);
-
-bool FSetRaceGameModeInEditorWorldCommand::Update()
-{
-	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
-	{
-		return false;
-	}
-
-	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
-
-	const FURL gamemode = FURL(*FString("GAME=/Game/Development/GameModes/BP_Race-GameMode.BP_Race-GameMode_C"));
-	
-	testWorld->SetGameMode(gamemode);
-	
-	return true;
-}
-
-
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRaceGameModeSetCommand, FAutomationTestBase*, test);
 
 bool FCheckRaceGameModeSetCommand::Update()
 {
-	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	if (!GEditor->IsPlayingSessionInEditor())
 	{
 		return false;
 	}
-	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	UWorld* testWorld = GEditor->GetPIEWorldContext()->World();
 	ARaceGameMode* testGameMode = Cast<ARaceGameMode, AGameModeBase>(UGameplayStatics::GetGameMode(testWorld));
 	if (testGameMode)
 	{
@@ -83,11 +62,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeIsAbleToBeSetInAWorldTest, "Proje
 bool FARaceGameModeIsAbleToBeSetInAWorldTest::RunTest(const FString& Parameters)
 {
 
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode");
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSetRaceGameModeInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeSetCommand(this));
 
