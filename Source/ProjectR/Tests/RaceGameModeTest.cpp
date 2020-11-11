@@ -49,8 +49,10 @@ bool FSetRaceGameModeInEditorWorldCommand::Update()
 	}
 
 	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+
+	const FURL gamemode = FURL(*FString("GAME=/Game/Development/GameModes/BP_Race-GameMode.BP_Race-GameMode_C");
 	
-	testWorld->SetGameMode(*FString("GAME=/Game/Development/GameModes/BP_Race-GameMode.BP_Race-GameMode_C"));
+	testWorld->SetGameMode(gamemode);
 	
 	return true;
 }
