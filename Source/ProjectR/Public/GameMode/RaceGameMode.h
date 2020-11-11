@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "RaceGameMode.generated.h"
 
+class AJet;
 /**
  * 
  */
@@ -14,6 +15,9 @@ class PROJECTR_API ARaceGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
+	TSet<AJet*> runningJets;
 public:
 	void StartPlay() override;
+
+	TSet<AJet*> jetsInPlay();
 };
