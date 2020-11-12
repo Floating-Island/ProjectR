@@ -2,24 +2,24 @@
 
 
 #include "GameMode/RaceGameMode.h"
-#include "Kismet/GameplayStatics.h"
 #include "Jet/Jet.h"
 
-void ARaceGameMode::actorReadyToStore(const FActorsInitializedParams& parameters)
-{
-	
-}
 
 ARaceGameMode::ARaceGameMode()
 {
-	
+	numberOfPlayers = 1;
 }
 
 void ARaceGameMode::StartPlay()
 {
 	Super::StartPlay();
-	//let's create some jets
-
+	gameWorld = GetWorld();
+	
+	for(int jetsCreated = 0; jetsCreated < numberOfPlayers; ++jetsCreated)
+	{
+		AJet* newlyCreatedJet = gameWorld->SpawnActor<AJet>();
+		runningJets.Add(newlyCreatedJet);
+	}
 }
 
 int ARaceGameMode::jetsToSpawn()

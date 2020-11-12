@@ -7,7 +7,6 @@
 #include "RaceGameMode.generated.h"
 
 class AJet;
-class FActorsInitializedParams;
 /**
  * 
  */
@@ -21,11 +20,9 @@ class PROJECTR_API ARaceGameMode : public AGameModeBase
 
 protected:
 
-	UPROPERTY()
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
 		int numberOfPlayers;
-	
-	UFUNCTION()
-		void actorReadyToStore(const FActorsInitializedParams& parameters);
+
 public:
 	ARaceGameMode();
 	
