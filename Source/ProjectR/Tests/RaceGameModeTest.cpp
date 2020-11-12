@@ -93,12 +93,12 @@ bool FSpawnSomeJetsInRaceModeCommand::Update()
 
 	sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
 	sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
-	
+
 	return true;
 }
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRaceGameModeHasAllJetsCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckRaceGameModeHasAllJetsCommand, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
 bool FCheckRaceGameModeHasAllJetsCommand::Update()
 {
@@ -108,16 +108,30 @@ bool FCheckRaceGameModeHasAllJetsCommand::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
-	
+
 	ARaceGameMode* testGameMode = Cast<ARaceGameMode, AGameModeBase>(UGameplayStatics::GetGameMode(testWorld));
 	if (testGameMode)
 	{
 		TSet<AJet*> gameModeJets = testGameMode->jetsInPlay();
 		TArray<AJet*> worldJets = sessionUtilities.retrieveFromPIEAllInstancesOf<AJet>();
 		bool sameNumberOfJetsInGameMode = gameModeJets.Num() == worldJets.Num();
+
+		UE_LOG(LogTemp, Log, TEXT("The race game mode %s the jets in the world."), *FString(sameNumberOfJetsInGameMode ? "has" : "doesn't have"));
 		
-		test->TestTrue(TEXT("Race game mode should have the same number of jets than the world."), sameNumberOfJetsInGameMode);
-		return true;
+		if (sameNumberOfJetsInGameMode)
+		{
+			test->TestTrue(TEXT("Race game mode should have the same number of jets than the world."), sameNumberOfJetsInGameMode);
+			testWorld->bDebugFrameStepExecution = true;
+			return true;
+		}
+
+		++tickCount;
+		if (tickCount > tickLimit)
+		{
+			test->TestTrue(TEXT("Tick limit reached. Race game mode should have the same number of jets than the world."), sameNumberOfJetsInGameMode);
+			testWorld->bDebugFrameStepExecution = true;
+			return true;
+		}
 	}
 	return false;
 }
@@ -136,7 +150,11 @@ bool FARaceGameModeHasTheJetsInPlayTest::RunTest(const FString& Parameters)
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnSomeJetsInRaceModeCommand);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeHasAllJetsCommand(this));
+	int tickCount = 0;
+	int tickLimit = 2;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeHasAllJetsCommand(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 
 	return true;
 }
