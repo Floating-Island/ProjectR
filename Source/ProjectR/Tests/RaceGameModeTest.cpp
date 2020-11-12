@@ -80,7 +80,7 @@ bool FARaceGameModeIsAbleToBeSetInAWorldTest::RunTest(const FString& Parameters)
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawnSomeJetsInRaceModeCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnSomeJetsInRaceModeCommand);
 
 bool FSpawnSomeJetsInRaceModeCommand::Update()
 {
@@ -133,6 +133,8 @@ bool FARaceGameModeHasTheJetsInPlayTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnSomeJetsInRaceModeCommand);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeHasAllJetsCommand(this));
 
