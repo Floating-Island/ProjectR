@@ -7,6 +7,7 @@
 #include "RaceGameMode.generated.h"
 
 class AJet;
+class FActorsInitializedParams;
 /**
  * 
  */
@@ -16,8 +17,20 @@ class PROJECTR_API ARaceGameMode : public AGameModeBase
 	GENERATED_BODY()
 
 	TSet<AJet*> runningJets;
+	UWorld* gameWorld;
+
+protected:
+
+	UPROPERTY()
+		int numberOfPlayers;
+	
+	UFUNCTION()
+		void actorReadyToStore(const FActorsInitializedParams& parameters);
 public:
+	ARaceGameMode();
+	
 	void StartPlay() override;
 
+	int jetsToSpawn();
 	TSet<AJet*> jetsInPlay();
 };

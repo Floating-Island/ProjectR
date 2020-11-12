@@ -79,28 +79,9 @@ bool FARaceGameModeIsAbleToBeSetInAWorldTest::RunTest(const FString& Parameters)
 
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckRaceGameModeCreatesAllJetsCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnSomeJetsInRaceModeCommand);
-
-bool FSpawnSomeJetsInRaceModeCommand::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
-	sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
-
-	return true;
-}
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckRaceGameModeHasAllJetsCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
-
-bool FCheckRaceGameModeHasAllJetsCommand::Update()
+bool FCheckRaceGameModeCreatesAllJetsCommand::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -113,9 +94,11 @@ bool FCheckRaceGameModeHasAllJetsCommand::Update()
 	if (testGameMode)
 	{
 		TSet<AJet*> gameModeJets = testGameMode->jetsInPlay();
+		int expectedNumberOfJets = testGameMode->jetsToSpawn();
 		TArray<AJet*> worldJets = sessionUtilities.retrieveFromPIEAllInstancesOf<AJet>();
-		bool sameNumberOfJetsInGameMode = gameModeJets.Num() == worldJets.Num();
+		bool sameNumberOfJetsInGameMode = gameModeJets.Num() == worldJets.Num() && expectedNumberOfJets == worldJets.Num();
 
+		UE_LOG(LogTemp, Log, TEXT("Expected number of jets: %d."), expectedNumberOfJets);
 		UE_LOG(LogTemp, Log, TEXT("Number of race game mode jets: %d."), gameModeJets.Num());
 		UE_LOG(LogTemp, Log, TEXT("Number of world jets: %d."), worldJets.Num());
 		UE_LOG(LogTemp, Log, TEXT("The race game mode %s the jets in the world."), *FString(sameNumberOfJetsInGameMode ? "has" : "doesn't have"));
@@ -139,9 +122,9 @@ bool FCheckRaceGameModeHasAllJetsCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeHasTheJetsInPlayTest, "ProjectR.RaceGameMode Tests.Integration.002: Has the jets in play", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeCreatesExpectedNumberOfJetsTest, "ProjectR.RaceGameMode Tests.Integration.002: Creates the same amount of jets as specified in class settings", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FARaceGameModeHasTheJetsInPlayTest::RunTest(const FString& Parameters)
+bool FARaceGameModeCreatesExpectedNumberOfJetsTest::RunTest(const FString& Parameters)
 {
 
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode");
@@ -149,8 +132,6 @@ bool FARaceGameModeHasTheJetsInPlayTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnSomeJetsInRaceModeCommand);
 
 	int tickCount = 0;
 	int tickLimit = 2;
