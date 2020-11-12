@@ -14,8 +14,8 @@ void ARaceGameMode::StartPlay()
 {
 	Super::StartPlay();
 	gameWorld = GetWorld();
-	
-	for(int jetsCreated = 0; jetsCreated < numberOfPlayers; ++jetsCreated)
+
+	for (int jetsCreated = 0; jetsCreated < numberOfPlayers; ++jetsCreated)
 	{
 		AJet* newlyCreatedJet = gameWorld->SpawnActor<AJet>();
 		runningJets.Add(newlyCreatedJet);

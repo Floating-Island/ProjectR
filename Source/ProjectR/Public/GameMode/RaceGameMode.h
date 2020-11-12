@@ -8,7 +8,7 @@
 
 class AJet;
 /**
- * 
+ *
  */
 UCLASS()
 class PROJECTR_API ARaceGameMode : public AGameModeBase
@@ -25,7 +25,7 @@ protected:
 
 public:
 	ARaceGameMode();
-	
+
 	void StartPlay() override;
 
 	int jetsToSpawn();

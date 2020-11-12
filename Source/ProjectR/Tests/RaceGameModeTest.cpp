@@ -102,7 +102,7 @@ bool FCheckRaceGameModeCreatesAllJetsCommand::Update()
 		UE_LOG(LogTemp, Log, TEXT("Number of race game mode jets: %d."), gameModeJets.Num());
 		UE_LOG(LogTemp, Log, TEXT("Number of world jets: %d."), worldJets.Num());
 		UE_LOG(LogTemp, Log, TEXT("The race game mode %s the jets in the world."), *FString(sameNumberOfJetsInGameMode ? "has" : "doesn't have"));
-		
+
 		if (sameNumberOfJetsInGameMode)
 		{
 			test->TestTrue(TEXT("Race game mode should have the same number of jets than the world."), sameNumberOfJetsInGameMode);
@@ -130,15 +130,13 @@ bool FARaceGameModeCreatesExpectedNumberOfJetsTest::RunTest(const FString& Param
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode");
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
-
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	int tickCount = 0;
 	int tickLimit = 2;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeHasAllJetsCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeCreatesAllJetsCommand(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-
 	return true;
 }
 
