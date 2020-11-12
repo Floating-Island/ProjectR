@@ -139,7 +139,7 @@ bool FCheckRaceGameModeHasAllJetsCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeHasTheJetsInPlayTest, "ProjectR.RaceGameMode Tests.Unit.002: Has the jets in play", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeHasTheJetsInPlayTest, "ProjectR.RaceGameMode Tests.Integration.002: Has the jets in play", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FARaceGameModeHasTheJetsInPlayTest::RunTest(const FString& Parameters)
 {
