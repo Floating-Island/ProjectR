@@ -25,6 +25,7 @@ protected:
 
 public:
 	ARaceGameMode();
+	void createExpectedJets();
 
 	void StartPlay() override;
 

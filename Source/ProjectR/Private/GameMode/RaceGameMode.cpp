@@ -15,6 +15,11 @@ void ARaceGameMode::StartPlay()
 	Super::StartPlay();
 	gameWorld = GetWorld();
 
+	createExpectedJets();
+}
+
+void ARaceGameMode::createExpectedJets()
+{
 	for (int jetsCreated = 0; jetsCreated < numberOfPlayers; ++jetsCreated)
 	{
 		AJet* newlyCreatedJet = gameWorld->SpawnActor<AJet>();
