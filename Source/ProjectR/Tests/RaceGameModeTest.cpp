@@ -116,6 +116,8 @@ bool FCheckRaceGameModeHasAllJetsCommand::Update()
 		TArray<AJet*> worldJets = sessionUtilities.retrieveFromPIEAllInstancesOf<AJet>();
 		bool sameNumberOfJetsInGameMode = gameModeJets.Num() == worldJets.Num();
 
+		UE_LOG(LogTemp, Log, TEXT("Number of race game mode jets: %d."), gameModeJets.Num());
+		UE_LOG(LogTemp, Log, TEXT("Number of world jets: %d."), worldJets.Num());
 		UE_LOG(LogTemp, Log, TEXT("The race game mode %s the jets in the world."), *FString(sameNumberOfJetsInGameMode ? "has" : "doesn't have"));
 		
 		if (sameNumberOfJetsInGameMode)
