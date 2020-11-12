@@ -290,4 +290,19 @@ bool FALapPhaseUpdateStateReturnsItselfTest::RunTest(const FString& Parameters)
 }
 
 
+
+
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseIsHiddenInGameTest, "ProjectR.LapPhase Tests.Unit.009: Is hidden in game", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FALapPhaseIsHiddenInGameTest::RunTest(const FString& Parameters)
+{
+	ALapPhaseMOCK* testLapPhase = NewObject<ALapPhaseMOCK>();
+
+	TestTrue(TEXT("The LapPhase should be hidden in game."), testLapPhase->IsHiddenInGame());
+
+	return true;
+}
+
 #endif //WITH_DEV_AUTOMATION_TESTS
