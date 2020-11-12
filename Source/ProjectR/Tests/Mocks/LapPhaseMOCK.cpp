@@ -37,3 +37,8 @@ bool ALapPhaseMOCK::generatesOverlapEvents()
 {
 	return phaseWall->GetGenerateOverlapEvents();
 }
+
+bool ALapPhaseMOCK::IsHiddenInGame()
+{
+	return phaseWall->bHiddenInGame;
+}

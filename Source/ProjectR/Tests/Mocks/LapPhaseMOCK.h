@@ -22,4 +22,5 @@ public:
 	bool overlapsWithPawnChannel();
 	bool objectTypeIsWorldStatic();
 	bool generatesOverlapEvents();
+	bool IsHiddenInGame();
 };
