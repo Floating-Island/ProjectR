@@ -98,7 +98,7 @@ bool FSpawnSomeJetsInRaceModeCommand::Update()
 }
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckRaceGameModeHasAllJetsCommand, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckRaceGameModeHasAllJetsCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
 
 bool FCheckRaceGameModeHasAllJetsCommand::Update()
 {
@@ -125,8 +125,8 @@ bool FCheckRaceGameModeHasAllJetsCommand::Update()
 			return true;
 		}
 
-		++tickCount;
-		if (tickCount > tickLimit)
+		++aTickCount;
+		if (aTickCount > aTickLimit)
 		{
 			test->TestTrue(TEXT("Tick limit reached. Race game mode should have the same number of jets than the world."), sameNumberOfJetsInGameMode);
 			testWorld->bDebugFrameStepExecution = true;
