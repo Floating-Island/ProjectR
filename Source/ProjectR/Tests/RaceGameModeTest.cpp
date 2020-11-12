@@ -94,7 +94,7 @@ bool FSpawnSomeJetsInRaceModeCommand::Update()
 	sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
 	sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
 	
-	return false;
+	return true;
 }
 
 
