@@ -240,13 +240,12 @@ void ATrackGenerator::toMagnetOverlapSubscribe(ATrackManager* aManager)
 float ATrackGenerator::distanceAlongSplineOf(AActor* anActor)
 {
 	FVector actorLocation = anActor->GetActorLocation();
-	float locationInputKey = splineComponent->FindInputKeyClosestToWorldLocation(actorLocation);
-	float segmentEndParameter = locationInputKey / splineComponent->GetNumberOfSplinePoints();//so it's a value between 0 and 1, the duration of the spline (parametrized curve).
 
-	float distanceAlongSpline = splineComponent->SplineCurves.GetSegmentLength(0, segmentEndParameter);//it gets the length from 0 to t in the parametrized curve.
-	//zero represents the start of the spline.
-	//if you need to calculate distance treating the spline as a closed loop, use:
-	//splineComponent->SplineCurves.GetSegmentLength(0, segmentEndParameter, true);
+	float locationInputKey = splineComponent->FindInputKeyClosestToWorldLocation(actorLocation);
+	float totalDistance = length();
+	float numberOfInputKeys = splineComponent->GetNumberOfSplinePoints();
+
+	float distanceAlongSpline = (totalDistance / numberOfInputKeys) * locationInputKey;
 
 	return distanceAlongSpline;
 }
