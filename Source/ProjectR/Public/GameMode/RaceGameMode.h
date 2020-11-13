@@ -30,6 +30,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
 		float jetSpawnHeight;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
+		float initialLateralDistanceBetweenJets;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
+		float initialForwardDistanceBetweenJets;
+
 public:
 	ARaceGameMode();
 	

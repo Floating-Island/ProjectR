@@ -191,7 +191,3 @@ FVector AJet::rightVectorProjectionOnFloor()
 	}
 }
 
-float AJet::length()
-{
-	return 1000;	
-}

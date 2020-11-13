@@ -15,6 +15,8 @@ ARaceGameMode::ARaceGameMode()
 {
 	numberOfPlayers = 1;
 	jetSpawnHeight = 100;
+	initialForwardDistanceBetweenJets = 2000;
+	initialLateralDistanceBetweenJets = 1000;
 }
 
 void ARaceGameMode::StartPlay()
@@ -34,23 +36,22 @@ void ARaceGameMode::positionExpectedJets()
 {
 	int numberOfJetsToCreate = numberOfPlayers;
 	float distanceToTrackOrigin = track->distanceAlongSplineOf(initialPhase);
-	float jetLength = AJet::length();
 	while (numberOfJetsToCreate > 0)
 	{
-		distanceToTrackOrigin -= jetLength;
+		distanceToTrackOrigin -= initialForwardDistanceBetweenJets;
 		if (distanceToTrackOrigin < 0)
 		{
-			distanceToTrackOrigin = track->length() - jetLength;
+			distanceToTrackOrigin = track->length() - initialForwardDistanceBetweenJets;
 		}
 		FVector segmentRightVector = track->rightVectorAt(distanceToTrackOrigin);
 		FVector segmentLocation = track->locationAt(distanceToTrackOrigin);
 		FVector segmentUpVector = track->upVectorAt(distanceToTrackOrigin);
 
-		FVector jetLocation = segmentLocation + segmentRightVector * jetLength + segmentUpVector * jetSpawnHeight;
+		FVector jetLocation = segmentLocation + segmentRightVector * initialLateralDistanceBetweenJets + segmentUpVector * jetSpawnHeight;
 		createJet(jetLocation, numberOfJetsToCreate);
 		if (numberOfJetsToCreate > 0)
 		{
-			jetLocation = segmentLocation - segmentRightVector * jetLength + segmentUpVector * jetSpawnHeight;
+			jetLocation = segmentLocation - segmentRightVector * initialLateralDistanceBetweenJets + segmentUpVector * jetSpawnHeight;
 			createJet(jetLocation, numberOfJetsToCreate);
 		}
 	}
