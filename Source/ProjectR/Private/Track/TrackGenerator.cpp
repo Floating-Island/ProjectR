@@ -242,8 +242,6 @@ float ATrackGenerator::distanceAlongSplineOf(AActor* anActor)
 	FVector actorLocation = anActor->GetActorLocation();
 
 	float locationInputKey = splineComponent->FindInputKeyClosestToWorldLocation(actorLocation);
-	float totalDistance = length();
-	float numberOfInputKeys = splineComponent->GetNumberOfSplinePoints();
 
 	int reparametrizationStepsPerSegment = 10;
 	float distanceAlongSpline = splineComponent->SplineCurves.ReparamTable.Points[FMath::RoundToInt(locationInputKey * reparametrizationStepsPerSegment)].InVal;
