@@ -265,3 +265,8 @@ FVector ATrackGenerator::locationAt(float aDistanceAlongSpline)
 {
 	return splineComponent->GetLocationAtDistanceAlongSpline(aDistanceAlongSpline, ESplineCoordinateSpace::World);
 }
+
+FVector ATrackGenerator::upVectorAt(float aDistanceAlongSpline)
+{
+	return splineComponent->GetUpVectorAtDistanceAlongSpline(aDistanceAlongSpline, ESplineCoordinateSpace::World);
+}
