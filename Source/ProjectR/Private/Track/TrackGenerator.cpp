@@ -244,9 +244,10 @@ float ATrackGenerator::distanceAlongSplineOf(AActor* anActor)
 	float locationInputKey = splineComponent->FindInputKeyClosestToWorldLocation(actorLocation);
 
 	int reparametrizationStepsPerSegment = 10;
-	float distanceAlongSpline = splineComponent->SplineCurves.ReparamTable.Points[FMath::RoundToInt(locationInputKey * reparametrizationStepsPerSegment)].InVal;
 	//10 is the magic number UE4 uses to make the ReparamStepsPerSegment. It's set at construction and never changed.
-	//this method is based on GetDistanceAlongSplineAtSplinePoint, it uses the same approach.
+	float distanceAlongSpline = splineComponent->SplineCurves.ReparamTable.Points[FMath::RoundToInt(locationInputKey * reparametrizationStepsPerSegment)].InVal;
+	
+	//this is based on GetDistanceAlongSplineAtSplinePoint, it uses the same approach.
 
 	return distanceAlongSpline;
 }
