@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "RaceGameMode.generated.h"
 
+class AInitialLapPhase;
+class ATrackGenerator;
 class AJet;
 /**
  *
@@ -17,6 +19,8 @@ class PROJECTR_API ARaceGameMode : public AGameModeBase
 
 	TSet<AJet*> runningJets;
 	UWorld* gameWorld;
+	ATrackGenerator* track;
+	AInitialLapPhase* initialPhase;
 
 protected:
 
@@ -25,7 +29,9 @@ protected:
 
 public:
 	ARaceGameMode();
-	void createExpectedJets();
+	
+	void positionExpectedJets();
+	void createJet(FVector atLocation, int& aNumberOfremainingJetsToCreate);
 
 	void StartPlay() override;
 

@@ -2,7 +2,13 @@
 
 
 #include "GameMode/RaceGameMode.h"
+
+
+#include "LapPhases/InitialLapPhase.h"
+#include "Track/TrackGenerator.h"
 #include "Jet/Jet.h"
+
+#include "Kismet/GameplayStatics.h"
 
 
 ARaceGameMode::ARaceGameMode()
@@ -14,17 +20,43 @@ void ARaceGameMode::StartPlay()
 {
 	Super::StartPlay();
 	gameWorld = GetWorld();
+	AActor* soonToBeTrack = UGameplayStatics::GetActorOfClass(gameWorld, ATrackGenerator::StaticClass());
+	track = Cast<ATrackGenerator, AActor>(soonToBeTrack);
+	AActor* soonToBeInitialPhase = UGameplayStatics::GetActorOfClass(gameWorld, AInitialLapPhase::StaticClass());
+	initialPhase = Cast<AInitialLapPhase, AActor>(soonToBeInitialPhase);
 
-	createExpectedJets();
+	positionExpectedJets();
 }
 
-void ARaceGameMode::createExpectedJets()
+void ARaceGameMode::positionExpectedJets()
 {
-	for (int jetsCreated = 0; jetsCreated < numberOfPlayers; ++jetsCreated)
+	int numberOfJetsToCreate = numberOfPlayers;
+	float distanceToTrackOrigin = track->distanceAlongSplineOf(initialPhase);
+	float jetLength = AJet::length();
+	while (numberOfJetsToCreate > 0)
 	{
-		AJet* newlyCreatedJet = gameWorld->SpawnActor<AJet>();
-		runningJets.Add(newlyCreatedJet);
+		distanceToTrackOrigin -= jetLength;
+		if (distanceToTrackOrigin < 0)
+		{
+			distanceToTrackOrigin = track->length() - jetLength;
+		}
+		FVector segmentRightVector = track->rightVectorAt(distanceToTrackOrigin);
+		FVector segmentLocation = track->locationAt(distanceToTrackOrigin);
+
+		FVector jetLocation = segmentLocation + segmentRightVector * jetLength;
+		createJet(jetLocation, numberOfJetsToCreate);
+		if (numberOfJetsToCreate > 0)
+		{
+			jetLocation = segmentLocation - segmentRightVector * jetLength;
+			createJet(jetLocation, numberOfJetsToCreate);
+		}
 	}
+}
+
+void ARaceGameMode::createJet(FVector atLocation, int& aNumberOfremainingJetsToCreate)
+{
+	gameWorld->SpawnActor<AJet>(atLocation, FRotator(0));
+	--aNumberOfremainingJetsToCreate;
 }
 
 int ARaceGameMode::jetsToSpawn()
