@@ -166,6 +166,10 @@ bool FCheckRaceGameModeJetsPositioningCommand::Update()
 		ATrackGenerator* testTrack = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
 		AInitialLapPhase* initialPhase = testGameMode->initialLapPhase();
 		float distanceBetweenPhaseAndTrack = testTrack->distanceAlongSplineOf(initialPhase);
+		if(FMath::IsNearlyZero(distanceBetweenPhaseAndTrack))
+		{
+			distanceBetweenPhaseAndTrack = testTrack->length();
+		}
 
 		bool jetsAreBehindInitialPhase = true;
 		for (const auto& jet : gameModeJets)
