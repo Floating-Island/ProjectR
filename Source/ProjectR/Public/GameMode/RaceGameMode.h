@@ -37,4 +37,6 @@ public:
 
 	int jetsToSpawn();
 	TSet<AJet*> jetsInPlay();
+
+	AInitialLapPhase* initialLapPhase();
 };

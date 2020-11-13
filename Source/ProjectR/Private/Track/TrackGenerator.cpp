@@ -35,7 +35,7 @@ void ATrackGenerator::BeginPlay()
 	Super::BeginPlay();
 	collisionsEnabled = true;
 	recreateSplineMeshComponents();
-	
+
 	trackManagerSubscription();//should always be after the spline mesh components are recreated.
 }
 
@@ -160,7 +160,7 @@ void ATrackGenerator::configureComponentPositionsAndTangents(int32 aSplinePointI
 
 void ATrackGenerator::editorCollisionsEnabled(USplineMeshComponent* aSplineMeshComponent)
 {
-	if(!collisionsEnabled)
+	if (!collisionsEnabled)
 	{
 		aSplineMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
@@ -217,8 +217,8 @@ void ATrackGenerator::configureCollisionOf(USplineMeshComponent* aMagnetSpline)
 
 void ATrackGenerator::trackManagerSubscription()
 {
-	ATrackManager* worldTrackManager = Cast<ATrackManager,AActor>(UGameplayStatics::GetActorOfClass(GetWorld(),ATrackManager::StaticClass()));
-	if(worldTrackManager)
+	ATrackManager* worldTrackManager = Cast<ATrackManager, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ATrackManager::StaticClass()));
+	if (worldTrackManager)
 	{
 		worldTrackManager->addGeneratorAndSubscribe(this);
 	}
@@ -243,12 +243,12 @@ float ATrackGenerator::distanceAlongSplineOf(AActor* anActor)
 	float locationInputKey = splineComponent->FindInputKeyClosestToWorldLocation(actorLocation);
 	float segmentEndParameter = locationInputKey / splineComponent->GetNumberOfSplinePoints();//so it's a value between 0 and 1, the duration of the spline (parametrized curve).
 
-    float distanceAlongSpline = splineComponent->SplineCurves.GetSegmentLength(0, segmentEndParameter);//it gets the length from 0 to t in the parametrized curve.
-    //zero represents the start of the spline.
-    //if you need to calculate distance treating the spline as a closed loop, use:
-    //splineComponent->SplineCurves.GetSegmentLength(0, segmentEndParameter, true);
+	float distanceAlongSpline = splineComponent->SplineCurves.GetSegmentLength(0, segmentEndParameter);//it gets the length from 0 to t in the parametrized curve.
+	//zero represents the start of the spline.
+	//if you need to calculate distance treating the spline as a closed loop, use:
+	//splineComponent->SplineCurves.GetSegmentLength(0, segmentEndParameter, true);
 
-    return distanceAlongSpline;
+	return distanceAlongSpline;
 }
 
 float ATrackGenerator::length()
@@ -263,5 +263,5 @@ FVector ATrackGenerator::rightVectorAt(float aDistanceAlongSpline)
 
 FVector ATrackGenerator::locationAt(float aDistanceAlongSpline)
 {
-	return splineComponent->GetLocationAtDistanceAlongSpline(aDistanceAlongSpline);
+	return splineComponent->GetLocationAtDistanceAlongSpline(aDistanceAlongSpline, ESplineCoordinateSpace::World);
 }

@@ -68,3 +68,8 @@ TSet<AJet*> ARaceGameMode::jetsInPlay()
 {
 	return runningJets;
 }
+
+AInitialLapPhase* ARaceGameMode::initialLapPhase()
+{
+	return initialPhase;
+}
