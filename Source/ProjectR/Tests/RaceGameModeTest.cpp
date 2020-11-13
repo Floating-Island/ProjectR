@@ -168,7 +168,9 @@ bool FCheckRaceGameModeJetsPositioningCommand::Update()
 		float distanceBetweenPhaseAndTrack = testTrack->distanceAlongSplineOf(initialPhase);
 		if(FMath::IsNearlyZero(distanceBetweenPhaseAndTrack))
 		{
+			UE_LOG(LogTemp, Log, TEXT("Distance between initial lap phase and track: %f."), distanceBetweenPhaseAndTrack);
 			distanceBetweenPhaseAndTrack = testTrack->length();
+			UE_LOG(LogTemp, Log, TEXT("Distance between initial lap phase and track: %f. If there's difference, the initial phase is at origin."), distanceBetweenPhaseAndTrack);
 		}
 
 		bool jetsAreBehindInitialPhase = true;
@@ -185,7 +187,6 @@ bool FCheckRaceGameModeJetsPositioningCommand::Update()
 
 		UE_LOG(LogTemp, Log, TEXT("Expected number of jets: %d."), expectedNumberOfJets);
 		UE_LOG(LogTemp, Log, TEXT("Number of race game mode jets: %d."), gameModeJets.Num());
-		UE_LOG(LogTemp, Log, TEXT("Distance between initial lap phase and track: %f."), distanceBetweenPhaseAndTrack);
 
 
 		if (sameNumberOfJetsInGameMode && jetsAreBehindInitialPhase)
