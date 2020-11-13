@@ -84,4 +84,6 @@ public:
 	FVector velocityProjectionOnFloor();
 
 	FVector rightVectorProjectionOnFloor();
+
+	static float length();
 };

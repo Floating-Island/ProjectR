@@ -190,3 +190,8 @@ FVector AJet::rightVectorProjectionOnFloor()
 		return GetActorRightVector();
 	}
 }
+
+float AJet::length()
+{
+	return 1000;	
+}
