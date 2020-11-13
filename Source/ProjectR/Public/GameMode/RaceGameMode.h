@@ -27,6 +27,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
 		int numberOfPlayers;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
+		float jetSpawnHeight;
+
 public:
 	ARaceGameMode();
 	
