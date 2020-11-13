@@ -14,6 +14,7 @@
 ARaceGameMode::ARaceGameMode()
 {
 	numberOfPlayers = 1;
+	jetSpawnHeight = 100;
 }
 
 void ARaceGameMode::StartPlay()
@@ -25,7 +26,6 @@ void ARaceGameMode::StartPlay()
 	track = Cast<ATrackGenerator, AActor>(soonToBeTrack);
 	AActor* soonToBeInitialPhase = UGameplayStatics::GetActorOfClass(gameWorld, AInitialLapPhase::StaticClass());
 	initialPhase = Cast<AInitialLapPhase, AActor>(soonToBeInitialPhase);
-	jetSpawnHeight = 100;
 
 	positionExpectedJets();
 }
