@@ -41,7 +41,7 @@ void ARaceGameMode::positionExpectedJets()
 		distanceToTrackOrigin -= initialForwardDistanceBetweenJets;
 		if (distanceToTrackOrigin < 0)
 		{
-			distanceToTrackOrigin = track->length() - initialForwardDistanceBetweenJets;
+			distanceToTrackOrigin = track->length() - distanceToTrackOrigin;
 		}
 		FVector segmentRightVector = track->rightVectorAt(distanceToTrackOrigin);
 		FVector segmentLocation = track->locationAt(distanceToTrackOrigin);
