@@ -49,8 +49,12 @@ bool FSpawnARacePreparationStageCommand::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
-	
-	ARacePreparationStage* testPreparation = sessionUtilities.spawnInPIEAnInstanceOf<ARacePreparationStage>();
+
+	ARacePreparationStage* testPreparation = sessionUtilities.retrieveFromPIEAnInstanceOf<ARacePreparationStage>();
+	if(testPreparation == nullptr)
+	{
+		testPreparation = sessionUtilities.spawnInPIEAnInstanceOf<ARacePreparationStage>();
+	}
 	ARaceBeginningStage* testBeginning = Cast<ARaceBeginningStage,ARaceStage>(testPreparation->nextStage());
 
 	test->TestNotNull(TEXT("The race preparation stage's nextStage should spawn a race beginning stage in the world."), testBeginning);
