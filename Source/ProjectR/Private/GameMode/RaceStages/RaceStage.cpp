@@ -25,3 +25,8 @@ void ARaceStage::Tick(float DeltaTime)
 
 }
 
+ARaceStage* ARaceStage::nextStage()
+{
+	return this;
+}
+
