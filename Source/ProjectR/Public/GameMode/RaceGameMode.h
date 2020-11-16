@@ -40,7 +40,7 @@ public:
 	ARaceGameMode();
 	
 	void positionExpectedJets();
-	void createJet(FVector atLocation, int& aNumberOfremainingJetsToCreate);
+	void createJet(FVector atLocation, int& aNumberOfRemainingJetsToCreate);
 
 	void StartPlay() override;
 

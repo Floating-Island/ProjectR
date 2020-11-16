@@ -14,7 +14,7 @@
 ARaceGameMode::ARaceGameMode()
 {
 	numberOfPlayers = 1;
-	jetSpawnHeight = 100;
+	jetSpawnHeight = 300;
 	initialForwardDistanceBetweenJets = 2000;
 	initialLateralDistanceBetweenJets = 1000;
 }
@@ -57,10 +57,10 @@ void ARaceGameMode::positionExpectedJets()
 	}
 }
 
-void ARaceGameMode::createJet(FVector atLocation, int& aNumberOfremainingJetsToCreate)
+void ARaceGameMode::createJet(FVector atLocation, int& aNumberOfRemainingJetsToCreate)
 {
 	AJet* spawnedJet = gameWorld->SpawnActor<AJet>(atLocation, FRotator(0));
-	--aNumberOfremainingJetsToCreate;
+	--aNumberOfRemainingJetsToCreate;
 	runningJets.Add(spawnedJet);
 }
 
