@@ -50,10 +50,12 @@ bool FCheckRaceGameModeSetCommand::Update()
 		return false;
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 	ARaceGameMode* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameMode>();
 	if (testGameMode)
 	{
 		test->TestNotNull(TEXT("Race game mode was succesfully set as game mode in the world."), testGameMode);
+		testWorld->bDebugFrameStepExecution = true;
 		return true;
 	}
 	UE_LOG(LogTemp, Log, TEXT("Race game mode not loaded yet."));
