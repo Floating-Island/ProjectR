@@ -7,6 +7,10 @@
 #include "RaceStage.generated.h"
 
 class ARaceGameMode;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FStageEndedEvent, ARaceStage*, broadcasterStage);
+
+
 UCLASS()
 class PROJECTR_API ARaceStage : public AActor
 {
@@ -27,4 +31,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual ARaceStage* nextStage();
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+		FStageEndedEvent stageEndedEvent;
 };
