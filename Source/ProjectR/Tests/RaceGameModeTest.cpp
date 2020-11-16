@@ -75,6 +75,7 @@ bool FARaceGameModeIsAbleToBeSetInAWorldTest::RunTest(const FString& Parameters)
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeSetCommand(this));
 
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
 
