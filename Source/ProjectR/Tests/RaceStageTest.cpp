@@ -3,9 +3,13 @@
 
 #include "RaceStageTest.h"
 
+
 #include "GameMode/RaceStages/RaceStage.h"
+#include "Mocks/RaceStageMOCK.h"
 
 #include "Misc/AutomationTest.h"
+#include "Tests/AutomationEditorCommon.h"
+#include "Utilities/PIESessionUtilities.h"
 
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -42,6 +46,66 @@ bool FARaceStageNextStageReturnsItselfTest::RunTest(const FString& Parameters)
 
 	TestTrue(TEXT("The race stage should return itself when calling nextStage."), testRaceStage->nextStage() == testRaceStage);
 
+	return true;
+}
+
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnARaceStageCommand);
+
+bool FSpawnARaceStageCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	sessionUtilities.spawnInPIEAnInstanceOf<ARaceStageMOCK>();
+	
+	return false;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRaceModeSubscribedCommand, FAutomationTestBase*, test);
+
+bool FCheckRaceModeSubscribedCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+	ARaceStageMOCK* testRaceStage = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceStageMOCK>();
+	if (testRaceStage)
+	{
+		test->TestTrue(TEXT("Race game mode should be subscribed to the stageEndedEvent."), testRaceStage->raceModeIsSubscribed());
+		testWorld->bDebugFrameStepExecution = true;
+		return true;
+	}
+	return false;
+}
+
+
+//uses a mock.
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceStageSubscribesRaceModeToStageEndedEventTest, "ProjectR.RaceStage Tests.Integration.002: Subscribes the game mode to stageEndedEvent", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FARaceStageSubscribesRaceModeToStageEndedEventTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARaceStageCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceModeSubscribedCommand(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
 
