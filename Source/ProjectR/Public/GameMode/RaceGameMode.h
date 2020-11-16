@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "RaceGameMode.generated.h"
 
+class ARaceStage;
 class AInitialLapPhase;
 class ATrackGenerator;
 class AJet;
@@ -21,6 +22,7 @@ class PROJECTR_API ARaceGameMode : public AGameModeBase
 	UWorld* gameWorld;
 	ATrackGenerator* track;
 	AInitialLapPhase* initialPhase;
+	ARaceStage* stage;
 
 protected:
 

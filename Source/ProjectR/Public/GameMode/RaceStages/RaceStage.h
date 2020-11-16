@@ -6,10 +6,12 @@
 #include "GameFramework/Actor.h"
 #include "RaceStage.generated.h"
 
+class ARaceGameMode;
 UCLASS()
 class PROJECTR_API ARaceStage : public AActor
 {
 	GENERATED_BODY()
+
 	
 public:	
 	// Sets default values for this actor's properties
@@ -18,6 +20,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	ARaceGameMode* raceMode;
 
 public:	
 	// Called every frame

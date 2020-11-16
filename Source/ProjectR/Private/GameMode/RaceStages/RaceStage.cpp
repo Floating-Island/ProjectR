@@ -2,6 +2,7 @@
 
 
 #include "GameMode/RaceStages/RaceStage.h"
+#include "GameMode/RaceGameMode.h"
 
 // Sets default values
 ARaceStage::ARaceStage()
@@ -15,7 +16,7 @@ ARaceStage::ARaceStage()
 void ARaceStage::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	raceMode = Cast<ARaceGameMode, AGameModeBase>(GetWorld()->GetAuthGameMode());
 }
 
 // Called every frame

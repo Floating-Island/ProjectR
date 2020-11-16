@@ -14,6 +14,8 @@ class PROJECTR_API ARacePreparationStage : public ARaceStage
 {
 	GENERATED_BODY()
 
+protected:
+	virtual void BeginPlay() override;
 public:
 
 	ARaceStage* nextStage() override;

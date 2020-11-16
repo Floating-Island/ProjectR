@@ -4,6 +4,13 @@
 #include "GameMode/RaceStages/RacePreparationStage.h"
 
 #include "GameMode/RaceStages/RaceBeginningStage.h"
+#include "GameMode/RaceGameMode.h"
+
+void ARacePreparationStage::BeginPlay()
+{
+	Super::BeginPlay();
+	raceMode->positionExpectedJets();
+}
 
 ARaceStage* ARacePreparationStage::nextStage()
 {

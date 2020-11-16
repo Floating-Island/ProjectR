@@ -4,9 +4,10 @@
 #include "GameMode/RaceGameMode.h"
 
 
-#include "LapPhases/InitialLapPhase.h"
-#include "Track/TrackGenerator.h"
 #include "Jet/Jet.h"
+#include "Track/TrackGenerator.h"
+#include "LapPhases/InitialLapPhase.h"
+#include "GameMode/RaceStages/RacePreparationStage.h"
 
 #include "Kismet/GameplayStatics.h"
 
@@ -29,7 +30,7 @@ void ARaceGameMode::StartPlay()
 	AActor* soonToBeInitialPhase = UGameplayStatics::GetActorOfClass(gameWorld, AInitialLapPhase::StaticClass());
 	initialPhase = Cast<AInitialLapPhase, AActor>(soonToBeInitialPhase);
 
-	positionExpectedJets();
+	stage = gameWorld->SpawnActor<ARacePreparationStage>();
 }
 
 void ARaceGameMode::positionExpectedJets()
