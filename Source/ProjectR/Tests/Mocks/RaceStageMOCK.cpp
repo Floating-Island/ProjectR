@@ -5,5 +5,5 @@
 
 bool ARaceStageMOCK::raceModeIsSubscribed()
 {
-	return stageEndedEvent.Contains(raceMode, &ARaceGameMode::StateUpate);
+	return stageEndedEvent.Contains(raceMode, &ARaceGameMode::stageUpdate);
 }
