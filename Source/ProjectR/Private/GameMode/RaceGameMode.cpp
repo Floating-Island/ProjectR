@@ -12,6 +12,7 @@
 #include "Kismet/GameplayStatics.h"
 
 
+
 ARaceGameMode::ARaceGameMode()
 {
 	numberOfPlayers = 1;
@@ -78,4 +79,9 @@ TSet<AJet*> ARaceGameMode::jetsInPlay()
 AInitialLapPhase* ARaceGameMode::initialLapPhase()
 {
 	return initialPhase;
+}
+
+void ARaceGameMode::stageUpdate(ARaceStage* broadcasterStage)
+{
+	
 }

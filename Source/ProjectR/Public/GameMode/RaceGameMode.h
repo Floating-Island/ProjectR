@@ -50,4 +50,7 @@ public:
 	TSet<AJet*> jetsInPlay();
 
 	AInitialLapPhase* initialLapPhase();
+
+	UFUNCTION()
+		void stageUpdate(ARaceStage* broadcasterStage);
 };

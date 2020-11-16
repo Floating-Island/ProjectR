@@ -2,8 +2,9 @@
 
 
 #include "RaceStageMOCK.h"
+#include "GameMode/RaceGameMode.h"
 
 bool ARaceStageMOCK::raceModeIsSubscribed()
 {
-	return stageEndedEvent.Contains(raceMode, &ARaceGameMode::stageUpdate);
+	return stageEndedEvent.Contains(raceMode, FName("stageUpdate"));
 }
