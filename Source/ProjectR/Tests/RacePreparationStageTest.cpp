@@ -60,9 +60,9 @@ bool FSpawnARacePreparationStageCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeCreatesExpectedNumberOfJetsTest, "ProjectR.RacePreparationStage Tests.Unit.002: nextStage spawns a race beginning stage", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARacePreparationStageNextStageSpawnsRaceBeginningStageTest, "ProjectR.RacePreparationStage Tests.Unit.002: nextStage spawns a race beginning stage", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-bool FARaceGameModeCreatesExpectedNumberOfJetsTest::RunTest(const FString& Parameters)
+bool FARacePreparationStageNextStageSpawnsRaceBeginningStageTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode");
 
