@@ -44,7 +44,7 @@ public:
 	void positionExpectedJets();
 	void createJet(FVector atLocation, int& aNumberOfRemainingJetsToCreate);
 
-	void StartPlay() override;
+	virtual void StartPlay() override;
 
 	int jetsToSpawn();
 	TSet<AJet*> jetsInPlay();
