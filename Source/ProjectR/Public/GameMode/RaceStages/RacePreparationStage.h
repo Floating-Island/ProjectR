@@ -13,5 +13,8 @@ UCLASS()
 class PROJECTR_API ARacePreparationStage : public ARaceStage
 {
 	GENERATED_BODY()
-	
+
+public:
+
+	ARaceStage* nextStage() override;
 };

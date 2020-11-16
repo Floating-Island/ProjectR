@@ -3,3 +3,9 @@
 
 #include "GameMode/RaceStages/RacePreparationStage.h"
 
+#include "GameMode/RaceStages/RaceBeginningStage.h"
+
+ARaceStage* ARacePreparationStage::nextStage()
+{
+	return GetWorld()->SpawnActor<ARaceBeginningStage>();
+}
