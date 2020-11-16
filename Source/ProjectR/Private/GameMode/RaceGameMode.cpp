@@ -14,7 +14,7 @@
 ARaceGameMode::ARaceGameMode()
 {
 	numberOfPlayers = 1;
-	jetSpawnHeight = 300;
+	jetSpawnHeight = 100;
 	initialForwardDistanceBetweenJets = 2000;
 	initialLateralDistanceBetweenJets = 1000;
 }
@@ -41,7 +41,7 @@ void ARaceGameMode::positionExpectedJets()
 		distanceToTrackOrigin -= initialForwardDistanceBetweenJets;
 		if (distanceToTrackOrigin < 0)
 		{
-			distanceToTrackOrigin = track->length() - distanceToTrackOrigin;
+			distanceToTrackOrigin = track->length() + distanceToTrackOrigin;
 		}
 		FVector segmentRightVector = track->rightVectorAt(distanceToTrackOrigin);
 		FVector segmentLocation = track->locationAt(distanceToTrackOrigin);
