@@ -66,7 +66,7 @@ bool FSpawnARaceStageCommand::Update()
 
 	sessionUtilities.spawnInPIEAnInstanceOf<ARaceStageMOCK>();
 	
-	return false;
+	return true;
 }
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRaceModeSubscribedCommand, FAutomationTestBase*, test);
