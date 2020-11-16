@@ -18,14 +18,16 @@ class PROJECTR_API ARaceGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
+	
+
+protected:
+
 	TSet<AJet*> runningJets;
 	UWorld* gameWorld;
 	ATrackGenerator* track;
 	AInitialLapPhase* initialPhase;
 	ARaceStage* stage;
-
-protected:
-
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
 		int numberOfPlayers;
 
