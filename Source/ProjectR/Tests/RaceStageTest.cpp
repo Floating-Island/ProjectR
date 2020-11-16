@@ -30,4 +30,19 @@ bool FARaceStageIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 }
 
 
+
+
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceStageNextStageReturnsItselfTest, "ProjectR.RaceStage Tests.Unit.001: nextStage returns itself", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FARaceStageNextStageReturnsItselfTest::RunTest(const FString& Parameters)
+{
+	ARaceStage* testRaceStage = NewObject<ARaceStage>();
+
+	TestTrue(TEXT("The race stage should return itself when calling nextStage."), testRaceStage->nextStage() == testRaceStage);
+
+	return true;
+}
+
 #endif //WITH_DEV_AUTOMATION_TESTS
