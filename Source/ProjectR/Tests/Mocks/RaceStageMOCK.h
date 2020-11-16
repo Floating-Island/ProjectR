@@ -13,5 +13,7 @@ UCLASS()
 class PROJECTR_API ARaceStageMOCK : public ARaceStage
 {
 	GENERATED_BODY()
-	
+
+public:
+	bool raceModeIsSubscribed();
 };

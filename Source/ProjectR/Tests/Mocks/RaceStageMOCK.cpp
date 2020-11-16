@@ -3,3 +3,7 @@
 
 #include "RaceStageMOCK.h"
 
+bool ARaceStageMOCK::raceModeIsSubscribed()
+{
+	return stageEndedEvent.Contains(raceMode, &ARaceGameMode::StateUpate);
+}
