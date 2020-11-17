@@ -3,9 +3,13 @@
 
 #include "RaceBeginningStageTest.h"
 
+
+#include "../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Editor/UnrealEd/Public/Tests/AutomationEditorCommon.h"
 #include "GameMode/RaceStages/RaceBeginningStage.h"
+#include "Mocks/RaceBeginningStageMOCK.h"
 
 #include "Misc/AutomationTest.h"
+#include "Utilities/PIESessionUtilities.h"
 
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -30,5 +34,66 @@ bool FARaceBeginningStageIsntNullWhenInstantiatedTest::RunTest(const FString& Pa
 	return true;
 }
 
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnARaceBeginningMOCKCommand);
+
+bool FSpawnARaceBeginningMOCKCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	ARaceBeginningStageMOCK* testBeginning = sessionUtilities.spawnInPIEAnInstanceOf<ARaceBeginningStageMOCK>();
+
+	testBeginning->start();
+	
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckTimerActiveCommand, FAutomationTestBase*, test);
+
+bool FCheckTimerActiveCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+	ARaceBeginningStageMOCK* testBeginning = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceBeginningStageMOCK>();
+	if (testBeginning)
+	{
+		test->TestTrue(TEXT("Race game mode should be subscribed to the stageEndedEvent."), testBeginning->hasTimerActive());
+		testWorld->bDebugFrameStepExecution = true;
+		return true;
+	}
+	return false;
+}
+
+
+//uses a mock.
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceBeginningStageSubscribesRaceModeToStageEndedEventTest, "ProjectR.RaceBeginningStage Tests.Unit.001: Has its timer active at start", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FARaceBeginningStageSubscribesRaceModeToStageEndedEventTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARaceBeginningMOCKCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckTimerActiveCommand(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
 
 #endif //WITH_DEV_AUTOMATION_TESTS
