@@ -32,6 +32,7 @@ void ARaceGameMode::StartPlay()
 	initialPhase = Cast<AInitialLapPhase, AActor>(soonToBeInitialPhase);
 
 	stage = gameWorld->SpawnActor<ARacePreparationStage>();
+	stage->start();
 }
 
 void ARaceGameMode::positionExpectedJets()
@@ -81,7 +82,13 @@ AInitialLapPhase* ARaceGameMode::initialLapPhase()
 	return initialPhase;
 }
 
-void ARaceGameMode::stageUpdate(ARaceStage* broadcasterStage)
+void ARaceGameMode::updateStage(ARaceStage* broadcasterStage)
 {
-	
+	if(broadcasterStage == stage)
+	{
+		ARaceStage* oldStage = stage;
+		stage = stage->nextStage();
+		stage->start();
+		oldStage->Destroy();
+	}
 }

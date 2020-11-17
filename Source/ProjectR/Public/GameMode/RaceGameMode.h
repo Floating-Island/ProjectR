@@ -54,5 +54,5 @@ public:
 	AInitialLapPhase* initialLapPhase();
 
 	UFUNCTION()
-		void stageUpdate(ARaceStage* broadcasterStage);
+		void updateStage(ARaceStage* broadcasterStage);
 };
