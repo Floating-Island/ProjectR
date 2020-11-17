@@ -13,5 +13,13 @@ UCLASS()
 class PROJECTR_API ARaceBeginningStage : public ARaceStage
 {
 	GENERATED_BODY()
+
+protected:
+	FTimerHandle countdownTimer;
+	
+	void countdownToStart(int countdown=3);
+public:
+	virtual void start() override;
+
 	
 };
