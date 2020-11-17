@@ -6,5 +6,5 @@
 
 bool ARaceStageMOCK::raceModeIsSubscribed()
 {
-	return stageEndedEvent.Contains(raceMode, FName("stageUpdate"));
+	return stageEndedEvent.IsBound();
 }
