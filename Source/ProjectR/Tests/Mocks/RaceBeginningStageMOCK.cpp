@@ -2,4 +2,9 @@
 
 
 #include "RaceBeginningStageMOCK.h"
+#include "TimerManager.h"
 
+bool ARaceBeginningStageMOCK::hasTimerActive()
+{
+	return FTimerManager::IsTimerActive(countDownTimer);
+}

@@ -13,5 +13,7 @@ UCLASS()
 class PROJECTR_API ARaceBeginningStageMOCK : public ARaceBeginningStage
 {
 	GENERATED_BODY()
-	
+
+public:
+	bool hasTimerActive();
 };
