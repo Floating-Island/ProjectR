@@ -17,7 +17,7 @@ void ARaceStage::BeginPlay()
 {
 	Super::BeginPlay();
 	raceMode = Cast<ARaceGameMode, AGameModeBase>(GetWorld()->GetAuthGameMode());
-	stageEndedEvent.AddDynamic(raceMode, &ARaceGameMode::stageUpdate);
+	stageEndedEvent.AddDynamic(raceMode, &ARaceGameMode::updateStage);
 }
 
 // Called every frame
