@@ -5,6 +5,7 @@
 
 
 #include "../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Editor/UnrealEd/Public/Tests/AutomationEditorCommon.h"
+#include "../Public/GameMode/RaceStages/RaceRunningStage.h"
 #include "GameMode/RaceStages/RaceBeginningStage.h"
 #include "Mocks/RaceBeginningStageMOCK.h"
 
@@ -70,7 +71,7 @@ bool FCheckTimerActiveCommand::Update()
 	ARaceBeginningStageMOCK* testBeginning = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceBeginningStageMOCK>();
 	if (testBeginning)
 	{
-		test->TestTrue(TEXT("Race game mode should be subscribed to the stageEndedEvent."), testBeginning->hasTimerActive());
+		test->TestTrue(TEXT("Race beginning stage should have its timer active at start."), testBeginning->hasTimerActive());
 		testWorld->bDebugFrameStepExecution = true;
 		return true;
 	}
@@ -95,5 +96,22 @@ bool FARaceBeginningStageSubscribesRaceModeToStageEndedEventTest::RunTest(const 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
