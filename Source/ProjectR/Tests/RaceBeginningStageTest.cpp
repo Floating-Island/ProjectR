@@ -4,12 +4,12 @@
 #include "RaceBeginningStageTest.h"
 
 
-#include "../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Editor/UnrealEd/Public/Tests/AutomationEditorCommon.h"
-#include "../Public/GameMode/RaceStages/RaceRunningStage.h"
 #include "GameMode/RaceStages/RaceBeginningStage.h"
 #include "Mocks/RaceBeginningStageMOCK.h"
+#include "GameMode/RaceStages/RaceRunningStage.h"
 
 #include "Misc/AutomationTest.h"
+#include "Tests/AutomationEditorCommon.h"
 #include "Utilities/PIESessionUtilities.h"
 
 
@@ -102,7 +102,63 @@ bool FARaceBeginningStageSubscribesRaceModeToStageEndedEventTest::RunTest(const 
 
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnARaceBeginningCallCountdownStartCommand);
 
+bool FSpawnARaceBeginningCallCountdownStartCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	
+	ARaceBeginningStage* testBeginning = sessionUtilities.spawnInPIEAnInstanceOf<ARaceBeginningStage>();
+
+	testBeginning->nextStage();
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRunningStageSpawnedCommand, FAutomationTestBase*, test);
+
+bool FCheckRunningStageSpawnedCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+	ARaceBeginningStage* testBeginning = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceBeginningStage>();
+	if (testBeginning)
+	{
+		ARaceRunningStage* testRunning = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceRunningStage>();
+		
+		test->TestNotNull(TEXT("Race beginning next stage should spawn a race running stage."), testRunning);
+		testWorld->bDebugFrameStepExecution = true;
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceBeginningStageNextStageSpawnsRunningStageTest, "ProjectR.RaceBeginningStage Tests.Unit.002: nextStage spawns a race running stage", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FARaceBeginningStageNextStageSpawnsRunningStageTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARaceBeginningCallCountdownStartCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRunningStageSpawnedCommand(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
 
 
 
