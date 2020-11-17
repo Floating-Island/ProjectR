@@ -19,4 +19,6 @@ protected:
 public:
 
 	ARaceStage* nextStage() override;
+
+	void start() override;
 };

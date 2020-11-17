@@ -9,10 +9,15 @@
 void ARacePreparationStage::BeginPlay()
 {
 	Super::BeginPlay();
-	raceMode->positionExpectedJets();
 }
 
 ARaceStage* ARacePreparationStage::nextStage()
 {
 	return GetWorld()->SpawnActor<ARaceBeginningStage>();
+}
+
+void ARacePreparationStage::start()
+{
+	raceMode->positionExpectedJets();
+	stageEndedEvent.Broadcast(this);
 }
