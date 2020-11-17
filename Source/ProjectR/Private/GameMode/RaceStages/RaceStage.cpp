@@ -32,3 +32,8 @@ ARaceStage* ARaceStage::nextStage()
 	return this;
 }
 
+void ARaceStage::start()
+{
+	
+}
+

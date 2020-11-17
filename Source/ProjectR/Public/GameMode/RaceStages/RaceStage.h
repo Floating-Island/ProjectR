@@ -34,4 +34,6 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 		FStageEndedEvent stageEndedEvent;
+
+	virtual void start();
 };
