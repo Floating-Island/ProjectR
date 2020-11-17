@@ -22,5 +22,7 @@ public:
 	virtual void start() override;
 
 	void countdownToStart(int countdown=3);
+
+	virtual ARaceStage* nextStage() override;
 	
 };
