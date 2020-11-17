@@ -6,5 +6,5 @@
 
 bool ARaceBeginningStageMOCK::hasTimerActive()
 {
-	return FTimerManager::IsTimerActive(countDownTimer);
+	return GetWorldTimerManager().IsTimerActive(countdownTimer);
 }
