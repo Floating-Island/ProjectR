@@ -64,7 +64,7 @@ bool FSpawnARacePreparationStageCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARacePreparationStageNextStageSpawnsRaceBeginningStageTest, "ProjectR.RacePreparationStage Tests.Unit.002: nextStage spawns a race beginning stage", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARacePreparationStageNextStageSpawnsRaceBeginningStageTest, "ProjectR.RacePreparationStage Tests.Unit.001: nextStage spawns a race beginning stage", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FARacePreparationStageNextStageSpawnsRaceBeginningStageTest::RunTest(const FString& Parameters)
 {

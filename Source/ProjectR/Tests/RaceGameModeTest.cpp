@@ -264,7 +264,7 @@ bool FCheckRaceGameModeUpdateStageCommand::Update()
 
 
 //uses a mock
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeUpdateStageBringsNextStageTest, "ProjectR.RaceGameMode Tests.Unit.001: updateStage changes the stage to the next stage", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeUpdateStageBringsNextStageTest, "ProjectR.RaceGameMode Tests.Unit.004: updateStage changes the stage to the next stage", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FARaceGameModeUpdateStageBringsNextStageTest::RunTest(const FString& Parameters)
 {
