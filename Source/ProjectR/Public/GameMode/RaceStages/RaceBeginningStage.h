@@ -17,9 +17,10 @@ class PROJECTR_API ARaceBeginningStage : public ARaceStage
 protected:
 	FTimerHandle countdownTimer;
 	
-	void countdownToStart(int countdown=3);
+	
 public:
 	virtual void start() override;
 
+	void countdownToStart(int countdown=3);
 	
 };
