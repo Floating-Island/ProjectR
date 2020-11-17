@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Track/TrackGenerator.h"
 #include "LapPhases/InitialLapPhase.h"
+#include "GameMode/RaceStages/RaceStage.h"
 
 void ARaceGameModeMOCK::StartPlay()
 {
@@ -18,4 +19,16 @@ void ARaceGameModeMOCK::StartPlay()
 	initialPhase = Cast<AInitialLapPhase, AActor>(soonToBeInitialPhase);
 
 	stage = gameWorld->SpawnActor<ARaceStage>();
+}
+
+void ARaceGameModeMOCK::changeStageTo(ARaceStage* anotherStage)
+{
+	ARaceStage* oldStage = stage;
+	stage = anotherStage;
+	oldStage->Destroy();
+}
+
+ARaceStage* ARaceGameModeMOCK::currentStage()
+{
+	return stage;
 }
