@@ -4,11 +4,15 @@
 #include "RaceGameModeTest.h"
 
 
+
+#include "../Public/GameMode/RaceStages/RaceBeginningStage.h"
 #include "GameMode/RaceGameMode.h"
+#include "Mocks/RaceGameModeMOCK.h"
 #include "Jet/Jet.h"
 #include "Track/TrackGenerator.h"
 #include "LapPhases/InitialLapPhase.h"
 #include "LapManager/LapManager.h"
+#include "GameMode/RaceStages/RacePreparationStage.h"
 
 #include "Misc/AutomationTest.h"
 #include "Tests/AutomationEditorCommon.h"
@@ -227,5 +231,55 @@ bool FARaceGameModePositionsJetsBehindTheInitialLapPhaseTest::RunTest(const FStr
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
+
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRaceGameModeUpdateStageCommand, FAutomationTestBase*, test);
+
+bool FCheckRaceGameModeUpdateStageCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	ARaceGameModeMOCK* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameModeMOCK>();
+
+	ARacePreparationStage* testPreparation = sessionUtilities.spawnInPIEAnInstanceOf<ARacePreparationStage>();
+	testGameMode->changeStageTo(testPreparation);
+
+	testGameMode->updateStage(testPreparation);
+
+	bool changedStage = ARaceBeginningStage::StaticClass() == testGameMode->currentStage()->GetClass();
+	
+	test->TestTrue(TEXT("Race game mode changes the stage to the next when calling updateStage."), testGameMode);
+	testWorld->bDebugFrameStepExecution = true;
+	return true;
+	
+}
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeUpdateStageBringsNextStageTest, "ProjectR.RaceGameMode Tests.Unit.001: updateStage changes the stage to the next stage", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FARaceGameModeUpdateStageBringsNextStageTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeUpdateStageCommand(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
