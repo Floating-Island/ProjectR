@@ -6,6 +6,13 @@
 #include "TimerManager.h"
 #include "GameMode/RaceStages/RaceRunningStage.h"
 
+
+void ARaceBeginningStage::start()
+{
+	FTimerDelegate countdownDelegate = FTimerDelegate::CreateUObject(this, &ARaceBeginningStage::countdownToStart, 3);
+	GetWorldTimerManager().SetTimer(countdownTimer, countdownDelegate, 0, false, 1.0f);
+}
+
 void ARaceBeginningStage::countdownToStart(int countdown)
 {
 	if(countdown <= 0)
@@ -15,12 +22,6 @@ void ARaceBeginningStage::countdownToStart(int countdown)
 	}
 	UE_LOG(LogTemp, Log, TEXT("Announcer: %d!"), countdown);
 	FTimerDelegate countdownDelegate = FTimerDelegate::CreateUObject(this, &ARaceBeginningStage::countdownToStart, --countdown);
-	GetWorldTimerManager().SetTimer(countdownTimer, countdownDelegate, 0, false, 1.0f);
-}
-
-void ARaceBeginningStage::start()
-{
-	FTimerDelegate countdownDelegate = FTimerDelegate::CreateUObject(this, &ARaceBeginningStage::countdownToStart, 3);
 	GetWorldTimerManager().SetTimer(countdownTimer, countdownDelegate, 0, false, 1.0f);
 }
 
