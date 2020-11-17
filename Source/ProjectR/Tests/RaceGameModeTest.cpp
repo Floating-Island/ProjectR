@@ -256,7 +256,7 @@ bool FCheckRaceGameModeUpdateStageCommand::Update()
 
 	bool changedStage = ARaceBeginningStage::StaticClass() == testGameMode->currentStage()->GetClass();
 	
-	test->TestTrue(TEXT("Race game mode changes the stage to the next when calling updateStage."), testGameMode);
+	test->TestTrue(TEXT("Race game mode changes the stage to the next when calling updateStage."), changedStage);
 	testWorld->bDebugFrameStepExecution = true;
 	return true;
 	
