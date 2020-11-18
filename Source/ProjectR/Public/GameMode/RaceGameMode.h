@@ -37,7 +37,7 @@ protected:
 		int numberOfPlayers;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
-		int8 numberOfLaps;
+		int numberOfLaps;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
 		float jetSpawnHeight;
@@ -70,7 +70,7 @@ public:
 
 	void updateJetPositions();
 
-	int8 laps();
+	int laps();
 	
 	UFUNCTION()
 		void lapCompletedByJet(AJet* aCrossingJet);

@@ -140,7 +140,7 @@ void ARaceGameMode::updateJetPositions()
 	currentJetPositions = jetPositions();
 }
 
-int8 ARaceGameMode::laps()
+int ARaceGameMode::laps()
 {
 	return numberOfLaps;
 }
