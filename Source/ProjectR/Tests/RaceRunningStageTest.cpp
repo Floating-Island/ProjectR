@@ -66,8 +66,8 @@ bool FCheckEndedStageSpawnedCommand::Update()
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 
-	ARaceRunningStage* testBeginning = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceRunningStage>();
-	if (testBeginning)
+	ARaceRunningStage* testRunning = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceRunningStage>();
+	if (testRunning)
 	{
 		ARaceEndedStage* testEnded = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceEndedStage>();
 		
