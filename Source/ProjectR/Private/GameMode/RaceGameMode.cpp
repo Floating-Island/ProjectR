@@ -78,7 +78,7 @@ int ARaceGameMode::jetsToSpawn()
 	return numberOfPlayers;
 }
 
-TSet<AJet*> ARaceGameMode::jetsInPlay()
+TSet<AJet*> ARaceGameMode::jetsRacing()
 {
 	return runningJets;
 }

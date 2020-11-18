@@ -9,6 +9,7 @@
 #include "GameMode/RaceStages/RaceEndedStage.h"
 
 #include "Misc/AutomationTest.h"
+#include "Mocks/RaceGameModeMOCK.h"
 #include "Tests/AutomationEditorCommon.h"
 #include "Utilities/PIESessionUtilities.h"
 
@@ -80,7 +81,7 @@ bool FCheckEndedStageSpawnedCommand::Update()
 }
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceRunningStageNextStageSpawnsEndedStageTest, "ProjectR.RaceRunningStage Tests.Unit.001: nextStage spawns a race ended stage", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceRunningStageNextStageSpawnsEndedStageTest, "ProjectR.RaceRunningStage Tests.Integration.001: nextStage spawns a race ended stage", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 bool FARaceRunningStageNextStageSpawnsEndedStageTest::RunTest(const FString& Parameters)
 {
@@ -97,4 +98,68 @@ bool FARaceRunningStageNextStageSpawnsEndedStageTest::RunTest(const FString& Par
 	return true;
 }
 
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnARaceRunningCommand);
+
+bool FSpawnARaceRunningCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	
+	ARaceRunningStage* testRunning = sessionUtilities.spawnInPIEAnInstanceOf<ARaceRunningStage>();
+
+	testRunning->nextStage();
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckEndedStageSpawnedWithNoRunningJetsCommand, FAutomationTestBase*, test);
+
+bool FCheckEndedStageSpawnedWithNoRunningJetsCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+	ARaceRunningStage* testRunning = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceRunningStage>();
+	if (testRunning)
+	{
+		ARaceEndedStage* testEnded = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceEndedStage>();
+		bool endedStageSpawned = testEnded? true : false;
+		bool noRunningJets = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameModeMOCK>()->jetsRacing().Num() == 0;
+		
+		test->TestNotNull(TEXT("Race running next stage should spawn a race ended stage if no running jets are present."), testEnded);
+		testWorld->bDebugFrameStepExecution = true;
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceRunningStageSpawnsEndedStageWhenNoRunningJetsTest, "ProjectR.RaceRunningStage Tests.Integration.002: Spawns race ended stage if no running jets", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FARaceRunningStageSpawnsEndedStageWhenNoRunningJetsTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARaceRunningCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckEndedStageSpawnedWithNoRunningJetsCommand(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
 #endif //WITH_DEV_AUTOMATION_TESTS

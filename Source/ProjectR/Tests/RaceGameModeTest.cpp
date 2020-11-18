@@ -105,7 +105,7 @@ bool FCheckRaceGameModeCreatesAllJetsCommand::Update()
 	ARaceGameMode* testGameMode = Cast<ARaceGameMode, AGameModeBase>(UGameplayStatics::GetGameMode(testWorld));
 	if (testGameMode)
 	{
-		TSet<AJet*> gameModeJets = testGameMode->jetsInPlay();
+		TSet<AJet*> gameModeJets = testGameMode->jetsRacing();
 		int expectedNumberOfJets = testGameMode->jetsToSpawn();
 		TArray<AJet*> worldJets = sessionUtilities.retrieveFromPIEAllInstancesOf<AJet>();
 		bool sameNumberOfJetsInGameMode = gameModeJets.Num() == worldJets.Num() && expectedNumberOfJets == worldJets.Num();
@@ -170,7 +170,7 @@ bool FCheckRaceGameModeJetsPositioningCommand::Update()
 	ARaceGameMode* testGameMode = Cast<ARaceGameMode, AGameModeBase>(UGameplayStatics::GetGameMode(testWorld));
 	if (testGameMode)
 	{
-		TSet<AJet*> gameModeJets = testGameMode->jetsInPlay();
+		TSet<AJet*> gameModeJets = testGameMode->jetsRacing();
 		int expectedNumberOfJets = testGameMode->jetsToSpawn();
 		bool sameNumberOfJetsInGameMode = gameModeJets.Num() == expectedNumberOfJets;
 		ATrackGenerator* testTrack = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();

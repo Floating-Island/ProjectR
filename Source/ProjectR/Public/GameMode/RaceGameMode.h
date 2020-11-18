@@ -57,7 +57,7 @@ public:
 	virtual void StartPlay() override;
 
 	int jetsToSpawn();
-	TSet<AJet*> jetsInPlay();
+	TSet<AJet*> jetsRacing();
 
 	AInitialLapPhase* initialLapPhase();
 
