@@ -19,4 +19,6 @@ public:
 	void changeStageTo(ARaceStage* anotherStage);
 
 	ARaceStage* currentStage();
+
+	void addToRunningJets(AJet* aJet);
 };

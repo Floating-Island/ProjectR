@@ -32,3 +32,8 @@ ARaceStage* ARaceGameModeMOCK::currentStage()
 {
 	return stage;
 }
+
+void ARaceGameModeMOCK::addToRunningJets(AJet* aJet)
+{
+	runningJets.Add(aJet);
+}
