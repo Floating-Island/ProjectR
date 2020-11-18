@@ -125,6 +125,7 @@ TMap<AJet*, int8> ARaceGameMode::jetPositions()
 void ARaceGameMode::createLapManager()
 {
 	lapManager = GetWorld()->SpawnActor<ALapManager>();
+	lapManager->subscribeToLapCross(this);
 }
 
 void ARaceGameMode::updateJetPositions()

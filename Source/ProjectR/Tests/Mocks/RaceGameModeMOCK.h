@@ -21,4 +21,6 @@ public:
 	ARaceStage* currentStage();
 
 	void addToRunningJets(AJet* aJet);
+
+	void createLapManagerMOCK();
 };

@@ -7,6 +7,7 @@
 #include "Track/TrackGenerator.h"
 #include "LapPhases/InitialLapPhase.h"
 #include "GameMode/RaceStages/RaceStage.h"
+#include "LapManagerMOCK.h"
 
 void ARaceGameModeMOCK::StartPlay()
 {
@@ -36,4 +37,10 @@ ARaceStage* ARaceGameModeMOCK::currentStage()
 void ARaceGameModeMOCK::addToRunningJets(AJet* aJet)
 {
 	runningJets.Add(aJet);
+}
+
+void ARaceGameModeMOCK::createLapManagerMOCK()
+{
+	lapManager = GetWorld()->SpawnActor<ALapManagerMOCK>();
+	lapManager->subscribeToLapCross(this);
 }
