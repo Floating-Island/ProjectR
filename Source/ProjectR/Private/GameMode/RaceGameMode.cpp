@@ -156,3 +156,8 @@ void ARaceGameMode::lapCompletedByJet(AJet* aCrossingJet)
 		}
 	}
 }
+
+TArray<AJet*> ARaceGameMode::finalistJets()
+{
+	return finalizedJets;
+}

@@ -74,5 +74,7 @@ public:
 	
 	UFUNCTION()
 		void lapCompletedByJet(AJet* aCrossingJet);
+
+	TArray<AJet*> finalistJets();
 	
 };
