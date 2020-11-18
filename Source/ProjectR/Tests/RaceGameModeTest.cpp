@@ -5,7 +5,7 @@
 
 
 
-#include "../Public/GameMode/RaceStages/RaceBeginningStage.h"
+
 #include "GameMode/RaceGameMode.h"
 #include "Mocks/RaceGameModeMOCK.h"
 #include "Jet/Jet.h"
@@ -13,6 +13,8 @@
 #include "LapPhases/InitialLapPhase.h"
 #include "LapManager/LapManager.h"
 #include "GameMode/RaceStages/RacePreparationStage.h"
+#include "GameMode/RaceStages/RaceBeginningStage.h"
+#include "GameMode/RaceStages/RaceRunningStage.h"
 
 #include "Misc/AutomationTest.h"
 #include "Tests/AutomationEditorCommon.h"
@@ -173,7 +175,7 @@ bool FCheckRaceGameModeJetsPositioningCommand::Update()
 		ATrackGenerator* testTrack = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
 		AInitialLapPhase* initialPhase = testGameMode->initialLapPhase();
 		float distanceBetweenPhaseAndTrack = testTrack->distanceAlongSplineOf(initialPhase);
-		if(FMath::IsNearlyZero(distanceBetweenPhaseAndTrack))
+		if (FMath::IsNearlyZero(distanceBetweenPhaseAndTrack))
 		{
 			UE_LOG(LogTemp, Log, TEXT("Distance between initial lap phase and track: %f."), distanceBetweenPhaseAndTrack);
 			distanceBetweenPhaseAndTrack = testTrack->length();
@@ -255,11 +257,11 @@ bool FCheckRaceGameModeUpdateStageCommand::Update()
 	testGameMode->updateStage(testPreparation);
 
 	bool changedStage = ARaceBeginningStage::StaticClass() == testGameMode->currentStage()->GetClass();
-	
+
 	test->TestTrue(TEXT("Race game mode changes the stage to the next when calling updateStage."), changedStage);
 	testWorld->bDebugFrameStepExecution = true;
 	return true;
-	
+
 }
 
 
@@ -280,6 +282,67 @@ bool FARaceGameModeUpdateStageBringsNextStageTest::RunTest(const FString& Parame
 	return true;
 }
 
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawnAJetBehindAnotherCommand, FAutomationTestBase*, test);
+
+bool FSpawnAJetBehindAnotherCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	ARaceGameModeMOCK* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameModeMOCK>();
+
+	ARaceRunningStage* testRunning = sessionUtilities.spawnInPIEAnInstanceOf<ARaceRunningStage>();
+	testGameMode->changeStageTo(testRunning);
+	testRunning->start();
+
+	ATrackGenerator* testTrack = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
+
+	float behindDistance = 300;
+	int height = 200;
+	FVector behind = testTrack->locationAt(behindDistance) + testTrack->upVectorAt(behindDistance) * height;
+	float aheadDistance = 1200;
+	FVector ahead = testTrack->locationAt(aheadDistance) + testTrack->upVectorAt(aheadDistance) * height;;
+
+	AJet* jetBehind = sessionUtilities.spawnInPIEAnInstanceOf<AJet>(behind);
+	AJet* jetAhead = sessionUtilities.spawnInPIEAnInstanceOf<AJet>(ahead);
+
+	testGameMode->addToRunningJets(jetBehind);
+	testGameMode->addToRunningJets(jetAhead);
+
+	TMap<AJet*, int8>* positions = testGameMode->jetPositions();
+
+	bool correctPositions = *positions->Find(jetAhead) < *positions->Find(jetBehind);
+
+	test->TestTrue(TEXT("A jet ahead of another should have its position number lower than the one behind."), correctPositions);
+	testWorld->bDebugFrameStepExecution = true;
+	return true;
+
+}
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModePositionNumberLowerThanTheOneBehindTest, "ProjectR.RaceGameMode Tests.Integration.005: The position number of a jet is lower than the jet behind", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FARaceGameModePositionNumberLowerThanTheOneBehindTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAJetBehindAnotherCommand(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
