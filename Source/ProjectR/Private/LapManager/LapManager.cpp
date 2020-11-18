@@ -93,8 +93,9 @@ void ALapManager::lapPhaseOverlap(AActor* OverlappedActor, AActor* OtherActor)
 		jetLapData->currentLapPhase = jetLapData->currentLapPhase->updatePhase(overlappingPhase);
 		ALapPhase* currentPhase = jetLapData->currentLapPhase;
 		
-		if(oldPhase->GetClass() == AFinalLapPhase::StaticClass() && currentPhase->GetClass() == AInitialLapPhase::StaticClass())
+		if(oldPhase->comesFromIntermediateLapPhase() && currentPhase->comesFromFinalLapPhase())
 		{
+			//oldPhase is then the final phase and the current phase is the initial phase.
 			++jetLapData->lap; 
 		}
 	}
