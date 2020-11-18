@@ -4,6 +4,8 @@
 #include "GameMode/RaceGameMode.h"
 
 
+
+#include "LapManager/LapManager.h"
 #include "Jet/Jet.h"
 #include "Track/TrackGenerator.h"
 #include "LapPhases/InitialLapPhase.h"
@@ -24,12 +26,14 @@ ARaceGameMode::ARaceGameMode()
 void ARaceGameMode::StartPlay()
 {
 	Super::StartPlay();
-	
+
 	gameWorld = GetWorld();
 	AActor* soonToBeTrack = UGameplayStatics::GetActorOfClass(gameWorld, ATrackGenerator::StaticClass());
 	track = Cast<ATrackGenerator, AActor>(soonToBeTrack);
 	AActor* soonToBeInitialPhase = UGameplayStatics::GetActorOfClass(gameWorld, AInitialLapPhase::StaticClass());
 	initialPhase = Cast<AInitialLapPhase, AActor>(soonToBeInitialPhase);
+	AActor* soonToBeLapManager = UGameplayStatics::GetActorOfClass(gameWorld, ALapManager::StaticClass());
+	lapManager = Cast<ALapManager, AActor>(soonToBeLapManager);
 
 	stage = gameWorld->SpawnActor<ARacePreparationStage>();
 	stage->start();
@@ -84,11 +88,36 @@ AInitialLapPhase* ARaceGameMode::initialLapPhase()
 
 void ARaceGameMode::updateStage(ARaceStage* broadcasterStage)
 {
-	if(broadcasterStage == stage)
+	if (broadcasterStage == stage)
 	{
 		ARaceStage* oldStage = stage;
 		stage = stage->nextStage();
 		stage->start();
 		oldStage->Destroy();
 	}
+}
+
+TMap<AJet*, int8> ARaceGameMode::jetPositions()
+{
+	TMap<AJet*, float> scoredPositions = TMap<AJet*, float>();
+
+	for (auto& jet : runningJets)
+	{
+		float scoredPosition = track->distanceAlongSplineOf(jet) + lapManager->currentLapOf(jet) * track->length();
+		scoredPositions.Add(jet, scoredPosition);
+	}
+	
+	scoredPositions.ValueSort([](float ahead, float behind) {return ahead > behind; });//biggest value = jet ahead of the rest.
+
+	TArray<AJet*> orderedJets = TArray<AJet*>();
+	scoredPositions.GenerateKeyArray(orderedJets);
+
+	TMap<AJet*, int8> positions = TMap<AJet*, int8>();
+	int8 position = 1;
+	for (auto& jet : orderedJets)
+	{
+		positions.Add(jet, position);
+		++position;
+	}
+	return positions;
 }

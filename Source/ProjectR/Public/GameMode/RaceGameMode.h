@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "RaceGameMode.generated.h"
 
+class ALapManager;
 class ARaceStage;
 class AInitialLapPhase;
 class ATrackGenerator;
@@ -27,6 +28,7 @@ protected:
 	ATrackGenerator* track;
 	AInitialLapPhase* initialPhase;
 	ARaceStage* stage;
+	ALapManager* lapManager;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
 		int numberOfPlayers;
@@ -55,4 +57,6 @@ public:
 
 	UFUNCTION()
 		void updateStage(ARaceStage* broadcasterStage);
+
+	TMap<AJet*, int8> jetPositions();
 };
