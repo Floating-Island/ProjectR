@@ -29,6 +29,7 @@ protected:
 	AInitialLapPhase* initialPhase;
 	ARaceStage* stage;
 	ALapManager* lapManager;
+	TMap<AJet*, int8> currentJetPositions;
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
 		int numberOfPlayers;
@@ -61,4 +62,6 @@ public:
 	TMap<AJet*, int8> jetPositions();
 
 	void createLapManager();
+
+	void updateJetPositions();
 };

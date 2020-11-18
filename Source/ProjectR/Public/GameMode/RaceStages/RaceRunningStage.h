@@ -16,5 +16,5 @@ class PROJECTR_API ARaceRunningStage : public ARaceStage
 
 public:
 	ARaceStage* nextStage() override;
-
+	void Tick(float DeltaSeconds) override;
 };

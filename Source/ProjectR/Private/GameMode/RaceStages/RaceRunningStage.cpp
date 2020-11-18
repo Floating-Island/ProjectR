@@ -9,3 +9,9 @@ ARaceStage* ARaceRunningStage::nextStage()
 {
 	return GetWorld()->SpawnActor<ARaceEndedStage>();
 }
+
+void ARaceRunningStage::Tick(float DeltaSeconds)
+{
+	Super::Super::Tick(DeltaSeconds);
+	raceMode->updateJetPositions();
+}

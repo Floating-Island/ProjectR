@@ -21,6 +21,8 @@ ARaceGameMode::ARaceGameMode()
 	jetSpawnHeight = 100;
 	initialForwardDistanceBetweenJets = 2000;
 	initialLateralDistanceBetweenJets = 1000;
+
+	currentJetPositions = TMap<AJet*, int8>();
 }
 
 void ARaceGameMode::StartPlay()
@@ -104,7 +106,7 @@ TMap<AJet*, int8> ARaceGameMode::jetPositions()
 		float scoredPosition = track->distanceAlongSplineOf(jet) + lapManager->currentLapOf(jet) * track->length();
 		scoredPositions.Add(jet, scoredPosition);
 	}
-	
+
 	scoredPositions.ValueSort([](float ahead, float behind) {return ahead > behind; });//biggest value = jet ahead of the rest.
 
 	TArray<AJet*> orderedJets = TArray<AJet*>();
@@ -123,4 +125,9 @@ TMap<AJet*, int8> ARaceGameMode::jetPositions()
 void ARaceGameMode::createLapManager()
 {
 	lapManager = GetWorld()->SpawnActor<ALapManager>();
+}
+
+void ARaceGameMode::updateJetPositions()
+{
+	currentJetPositions = jetPositions();
 }
