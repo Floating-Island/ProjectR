@@ -19,5 +19,6 @@ ARaceStage* ARacePreparationStage::nextStage()
 void ARacePreparationStage::start()
 {
 	raceMode->positionExpectedJets();
+	raceMode->createLapManager();
 	stageEndedEvent.Broadcast(this);
 }
