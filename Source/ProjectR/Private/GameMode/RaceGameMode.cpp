@@ -32,8 +32,6 @@ void ARaceGameMode::StartPlay()
 	track = Cast<ATrackGenerator, AActor>(soonToBeTrack);
 	AActor* soonToBeInitialPhase = UGameplayStatics::GetActorOfClass(gameWorld, AInitialLapPhase::StaticClass());
 	initialPhase = Cast<AInitialLapPhase, AActor>(soonToBeInitialPhase);
-	AActor* soonToBeLapManager = UGameplayStatics::GetActorOfClass(gameWorld, ALapManager::StaticClass());
-	lapManager = Cast<ALapManager, AActor>(soonToBeLapManager);
 
 	stage = gameWorld->SpawnActor<ARacePreparationStage>();
 	stage->start();
@@ -120,4 +118,9 @@ TMap<AJet*, int8> ARaceGameMode::jetPositions()
 		++position;
 	}
 	return positions;
+}
+
+void ARaceGameMode::createLapManager()
+{
+	lapManager = GetWorld()->SpawnActor<ALapManager>();
 }

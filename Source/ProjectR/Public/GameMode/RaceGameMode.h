@@ -59,4 +59,6 @@ public:
 		void updateStage(ARaceStage* broadcasterStage);
 
 	TMap<AJet*, int8> jetPositions();
+
+	void createLapManager();
 };
