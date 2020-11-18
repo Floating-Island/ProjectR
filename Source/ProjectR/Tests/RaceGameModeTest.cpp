@@ -316,7 +316,7 @@ bool FSpawnAJetBehindAnotherCommand::Update()
 	testGameMode->addToRunningJets(jetBehind);
 	testGameMode->addToRunningJets(jetAhead);
 
-	TMap<AJet*, int8> positions = testGameMode->jetPositions();
+	TMap<AJet*, int8> positions = testGameMode->calculateJetPositions();
 
 	bool correctPositions = *positions.Find(jetAhead) < *positions.Find(jetBehind);
 

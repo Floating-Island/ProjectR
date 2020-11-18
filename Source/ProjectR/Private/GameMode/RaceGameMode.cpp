@@ -99,7 +99,7 @@ void ARaceGameMode::updateStage(ARaceStage* broadcasterStage)
 	}
 }
 
-TMap<AJet*, int8> ARaceGameMode::jetPositions()
+TMap<AJet*, int8> ARaceGameMode::calculateJetPositions()
 {
 	TMap<AJet*, float> scoredPositions = TMap<AJet*, float>();
 
@@ -137,7 +137,7 @@ void ARaceGameMode::createLapManager()
 
 void ARaceGameMode::updateJetPositions()
 {
-	currentJetPositions = jetPositions();
+	currentJetPositions = calculateJetPositions();
 }
 
 int ARaceGameMode::laps()
@@ -153,6 +153,7 @@ void ARaceGameMode::lapCompletedByJet(AJet* aCrossingJet)
 		{
 			runningJets.Remove(aCrossingJet);
 			finalizedJets.Add(aCrossingJet);
+			UE_LOG(LogTemp, Log, TEXT("A Jet has finished laps!!!"));
 		}
 	}
 }

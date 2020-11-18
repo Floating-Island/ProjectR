@@ -64,7 +64,7 @@ public:
 	UFUNCTION()
 		void updateStage(ARaceStage* broadcasterStage);
 
-	TMap<AJet*, int8> jetPositions();
+	TMap<AJet*, int8> calculateJetPositions();
 
 	void createLapManager();
 
