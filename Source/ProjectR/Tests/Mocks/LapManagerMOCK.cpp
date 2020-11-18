@@ -87,3 +87,9 @@ bool ALapManagerMOCK::jetsMovedFromFinalToInitialPhase()
 	}
 	return true;
 }
+
+void ALapManagerMOCK::changeLapTo(int aLapNumber, AJet* anAffectedJet)
+{
+	FLapData* oldJetData = jetLaps.Find(anAffectedJet);
+	oldJetData->lap = aLapNumber;
+}
