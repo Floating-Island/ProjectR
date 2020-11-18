@@ -9,3 +9,8 @@ ARaceStage* ARaceRunningStage::nextStage()
 {
 	return GetWorld()->SpawnActor<ARaceEndedStage>();
 }
+
+void ARaceRunningStage::start()
+{
+	raceMode->createLapManager();
+}

@@ -16,4 +16,6 @@ class PROJECTR_API ARaceRunningStage : public ARaceStage
 
 public:
 	ARaceStage* nextStage() override;
+
+	void start() override;
 };
