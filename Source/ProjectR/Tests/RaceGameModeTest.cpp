@@ -317,9 +317,9 @@ bool FSpawnAJetBehindAnotherCommand::Update()
 	testGameMode->addToRunningJets(jetBehind);
 	testGameMode->addToRunningJets(jetAhead);
 
-	TMap<AJet*, int8>* positions = testGameMode->jetPositions();
+	TMap<AJet*, int8> positions = testGameMode->jetPositions();
 
-	bool correctPositions = *positions->Find(jetAhead) < *positions->Find(jetBehind);
+	bool correctPositions = *positions.Find(jetAhead) < *positions.Find(jetBehind);
 
 	test->TestTrue(TEXT("A jet ahead of another should have its position number lower than the one behind."), correctPositions);
 	testWorld->bDebugFrameStepExecution = true;
