@@ -145,7 +145,7 @@ int8 ARaceGameMode::laps()
 	return numberOfLaps;
 }
 
-void ARaceGameMode::lapCrossedByJet(AJet* aCrossingJet)
+void ARaceGameMode::lapCompletedByJet(AJet* aCrossingJet)
 {
 	if(runningJets.Contains(aCrossingJet))
 	{

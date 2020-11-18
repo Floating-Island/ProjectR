@@ -97,7 +97,7 @@ void ALapManager::lapPhaseOverlap(AActor* OverlappedActor, AActor* OtherActor)
 		{
 			//oldPhase is then the final phase and the current phase is the initial phase.
 			++jetLapData->lap;
-			lapCrossedEvent.Broadcast(overlappedJet);
+			lapCompletedEvent.Broadcast(overlappedJet);
 		}
 	}
 }
@@ -109,6 +109,6 @@ int ALapManager::currentLapOf(AJet* aJet)
 
 void ALapManager::subscribeToLapCross(ARaceGameMode* aRaceMode)
 {
-	lapCrossedEvent.AddDynamic(aRaceMode, &ARaceGameMode::lapCrossedByJet);
+	lapCompletedEvent.AddDynamic(aRaceMode, &ARaceGameMode::lapCompletedByJet);
 }
 

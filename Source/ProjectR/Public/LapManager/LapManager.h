@@ -15,7 +15,7 @@ class AJet;
 class ALapPhase;
 class AInitialLapPhase;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLapCrossedEvent, AJet*, aCrossingJet);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLapCompletedEvent, AJet*, aCrossingJet);
 
 USTRUCT()
 struct FLapData
@@ -47,7 +47,7 @@ protected:
 	void checkPhaseAndSubscribe(ALapPhase* aPhase);
 
 	UPROPERTY(BlueprintAssignable, Category = "Events")
-		FLapCrossedEvent lapCrossedEvent;
+		FLapCompletedEvent lapCompletedEvent;
 
 public:
 	// Called every frame

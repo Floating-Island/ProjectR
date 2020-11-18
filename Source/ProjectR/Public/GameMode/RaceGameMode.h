@@ -73,6 +73,6 @@ public:
 	int8 laps();
 	
 	UFUNCTION()
-		void lapCrossedByJet(AJet* aCrossingJet);
+		void lapCompletedByJet(AJet* aCrossingJet);
 	
 };
