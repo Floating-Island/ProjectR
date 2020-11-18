@@ -10,9 +10,12 @@
 #include "LapManager.generated.h"
 
 
+class ARaceGameMode;
 class AJet;
 class ALapPhase;
 class AInitialLapPhase;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLapCrossedEvent, AJet*, aCrossingJet);
 
 USTRUCT()
 struct FLapData
@@ -43,6 +46,9 @@ protected:
 	void subscribeToLapPhases();
 	void checkPhaseAndSubscribe(ALapPhase* aPhase);
 
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+		FLapCrossedEvent lapCrossedEvent;
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -53,4 +59,6 @@ public:
 		void lapPhaseOverlap(AActor* OverlappedActor, AActor* OtherActor);
 
 	int currentLapOf(AJet* aJet);
+
+	void subscribeToLapCross(ARaceGameMode* aRaceMode);
 };

@@ -96,7 +96,8 @@ void ALapManager::lapPhaseOverlap(AActor* OverlappedActor, AActor* OtherActor)
 		if(oldPhase->comesFromIntermediateLapPhase() && currentPhase->comesFromFinalLapPhase())
 		{
 			//oldPhase is then the final phase and the current phase is the initial phase.
-			++jetLapData->lap; 
+			++jetLapData->lap;
+			lapCrossedEvent.Broadcast(overlappedJet);
 		}
 	}
 }
@@ -104,5 +105,10 @@ void ALapManager::lapPhaseOverlap(AActor* OverlappedActor, AActor* OtherActor)
 int ALapManager::currentLapOf(AJet* aJet)
 {
 	return jetLaps.Find(aJet)->lap;
+}
+
+void ALapManager::subscribeToLapCross(ARaceGameMode* aRaceMode)
+{
+	lapCrossedEvent.AddDynamic(aRaceMode, &ARaceGameMode::lapCrossedByJet);
 }
 
