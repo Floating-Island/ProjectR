@@ -3,3 +3,9 @@
 
 #include "GameMode/RaceStages/RaceRunningStage.h"
 
+#include "GameMode/RaceStages/RaceEndedStage.h"
+
+ARaceStage* ARaceRunningStage::nextStage()
+{
+	return GetWorld()->SpawnActor<ARaceEndedStage>();
+}
