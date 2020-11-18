@@ -39,9 +39,9 @@ bool FARaceRunningStageIsntNullWhenInstantiatedTest::RunTest(const FString& Para
 
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnARaceRunningCallCountdownStartCommand);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnARaceRunningCallNextStageCommand);
 
-bool FSpawnARaceRunningCallCountdownStartCommand::Update()
+bool FSpawnARaceRunningCallNextStageCommand::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -50,9 +50,9 @@ bool FSpawnARaceRunningCallCountdownStartCommand::Update()
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
 	
-	ARaceRunningStage* testBeginning = sessionUtilities.spawnInPIEAnInstanceOf<ARaceRunningStage>();
+	ARaceRunningStage* testRunning = sessionUtilities.spawnInPIEAnInstanceOf<ARaceRunningStage>();
 
-	testBeginning->nextStage();
+	testRunning->nextStage();
 	return true;
 }
 
@@ -89,7 +89,7 @@ bool FARaceRunningStageNextStageSpawnsEndedStageTest::RunTest(const FString& Par
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARaceRunningCallCountdownStartCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARaceRunningCallNextStageCommand);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckEndedStageSpawnedCommand(this));
 
