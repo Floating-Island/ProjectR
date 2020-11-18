@@ -76,5 +76,7 @@ public:
 		void lapCompletedByJet(AJet* aCrossingJet);
 
 	TArray<AJet*> finalistJets();
+
+	TMap<AJet*, int8> positions();
 	
 };

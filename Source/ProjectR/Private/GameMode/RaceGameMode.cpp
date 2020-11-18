@@ -162,3 +162,8 @@ TArray<AJet*> ARaceGameMode::finalistJets()
 {
 	return finalizedJets;
 }
+
+TMap<AJet*, int8> ARaceGameMode::positions()
+{
+	return currentJetPositions;
+}
