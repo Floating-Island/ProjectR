@@ -18,11 +18,13 @@
 ARaceGameMode::ARaceGameMode()
 {
 	numberOfPlayers = 1;
+	numberOfLaps = 3;
 	jetSpawnHeight = 100;
 	initialForwardDistanceBetweenJets = 2000;
 	initialLateralDistanceBetweenJets = 1000;
 
 	currentJetPositions = TMap<AJet*, int8>();
+	finalizedJets = TArray<AJet*>();
 }
 
 void ARaceGameMode::StartPlay()
@@ -114,6 +116,11 @@ TMap<AJet*, int8> ARaceGameMode::jetPositions()
 
 	TMap<AJet*, int8> positions = TMap<AJet*, int8>();
 	int8 position = 1;
+	for (auto& jet : finalizedJets)
+	{
+		positions.Add(jet, position);
+		++position;
+	}
 	for (auto& jet : orderedJets)
 	{
 		positions.Add(jet, position);
@@ -131,4 +138,21 @@ void ARaceGameMode::createLapManager()
 void ARaceGameMode::updateJetPositions()
 {
 	currentJetPositions = jetPositions();
+}
+
+int8 ARaceGameMode::laps()
+{
+	return numberOfLaps;
+}
+
+void ARaceGameMode::lapCrossedByJet(AJet* aCrossingJet)
+{
+	if(runningJets.Contains(aCrossingJet))
+	{
+		if(lapManager->currentLapOf(aCrossingJet) > laps())
+		{
+			runningJets.Remove(aCrossingJet);
+			finalizedJets.Add(aCrossingJet);
+		}
+	}
 }

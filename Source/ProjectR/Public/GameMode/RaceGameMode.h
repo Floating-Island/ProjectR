@@ -30,9 +30,14 @@ protected:
 	ARaceStage* stage;
 	ALapManager* lapManager;
 	TMap<AJet*, int8> currentJetPositions;
+	TArray<AJet*> finalizedJets;
+	
 	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
 		int numberOfPlayers;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
+		int8 numberOfLaps;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
 		float jetSpawnHeight;
@@ -64,4 +69,10 @@ public:
 	void createLapManager();
 
 	void updateJetPositions();
+
+	int8 laps();
+	
+	UFUNCTION()
+		void lapCrossedByJet(AJet* aCrossingJet);
+	
 };
