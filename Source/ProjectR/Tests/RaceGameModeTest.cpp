@@ -17,6 +17,7 @@
 #include "GameMode/RaceStages/RaceRunningStage.h"
 
 #include "Misc/AutomationTest.h"
+#include "Mocks/LapManagerMOCK.h"
 #include "Tests/AutomationEditorCommon.h"
 #include "Utilities/PIESessionUtilities.h"
 
@@ -311,7 +312,7 @@ bool FSpawnAJetBehindAnotherCommand::Update()
 	AJet* jetAhead = sessionUtilities.spawnInPIEAnInstanceOf<AJet>(ahead);
 
 	testGameMode->createLapManager();
-	
+
 	testGameMode->addToRunningJets(jetBehind);
 	testGameMode->addToRunningJets(jetAhead);
 
@@ -342,5 +343,84 @@ bool FARaceGameModePositionNumberLowerThanTheOneBehindTest::RunTest(const FStrin
 	return true;
 }
 
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAJetOnFinalLapMakeItFinishCommand);
+
+bool FSpawnAJetOnFinalLapMakeItFinishCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	ARaceGameModeMOCK* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameModeMOCK>();
+
+	ATrackGenerator* testTrack = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
+
+	float behindDistance = 700;
+	int height = 200;
+	FVector behind = testTrack->locationAt(testTrack->length() - behindDistance) + testTrack->upVectorAt(behindDistance) * height;
+
+	AJet* jetBehind = sessionUtilities.spawnInPIEAnInstanceOf<AJet>(behind);
+
+	testGameMode->createLapManagerMOCK();
+	testGameMode->addToRunningJets(jetBehind);
+
+	ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
+	testManager->makeJetsPhaseFinal();
+	testManager->changeLapTo(testGameMode->laps(), jetBehind);
+
+	FVector atInitialPhase = sessionUtilities.retrieveFromPIEAnInstanceOf<AInitialLapPhase>()->GetActorLocation() + testTrack->upVectorAt(behindDistance) * height;
+	jetBehind->SetActorLocation(atInitialPhase);
+
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckJetMovedToFinalistJets, FAutomationTestBase*, test);
+
+bool FCheckJetMovedToFinalistJets::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	ARaceGameModeMOCK* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameModeMOCK>();
+	AJet* testjet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+
+	if (testGameMode && testjet)
+	{
+		bool hasMovedAJetToFinalists = testGameMode->finalistJets().Num() == 1;
+
+		test->TestTrue(TEXT("Race game mode should move a jet to the finalist jets if it completes the final lap."), hasMovedAJetToFinalists);
+		testWorld->bDebugFrameStepExecution = true;
+		return true;
+	}
+	return false;
+}
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeMovesFinalistsJetsTest, "ProjectR.RaceGameMode Tests.Integration.006: Moves a jet to the finalist jets if it completes the final lap", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FARaceGameModeMovesFinalistsJetsTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAJetOnFinalLapMakeItFinishCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetMovedToFinalistJets(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
 
 #endif //WITH_DEV_AUTOMATION_TESTS
