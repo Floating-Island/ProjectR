@@ -299,10 +299,6 @@ bool FSpawnAJetBehindAnotherCommand::Update()
 	UWorld* testWorld = sessionUtilities.currentPIEWorld();
 	ARaceGameModeMOCK* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameModeMOCK>();
 
-	ARaceRunningStage* testRunning = sessionUtilities.spawnInPIEAnInstanceOf<ARaceRunningStage>();
-	testGameMode->changeStageTo(testRunning);
-	testRunning->start();
-
 	ATrackGenerator* testTrack = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
 
 	float behindDistance = 300;
@@ -314,6 +310,8 @@ bool FSpawnAJetBehindAnotherCommand::Update()
 	AJet* jetBehind = sessionUtilities.spawnInPIEAnInstanceOf<AJet>(behind);
 	AJet* jetAhead = sessionUtilities.spawnInPIEAnInstanceOf<AJet>(ahead);
 
+	testGameMode->createLapManager();
+	
 	testGameMode->addToRunningJets(jetBehind);
 	testGameMode->addToRunningJets(jetAhead);
 
