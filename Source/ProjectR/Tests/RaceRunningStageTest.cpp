@@ -3,9 +3,13 @@
 
 #include "RaceRunningStageTest.h"
 
+
 #include "GameMode/RaceStages/RaceRunningStage.h"
+#include "GameMode/RaceStages/RaceEndedStage.h"
 
 #include "Misc/AutomationTest.h"
+#include "Tests/AutomationEditorCommon.h"
+#include "Utilities/PIESessionUtilities.h"
 
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -26,6 +30,69 @@ bool FARaceRunningStageIsntNullWhenInstantiatedTest::RunTest(const FString& Para
 
 	TestNotNull(TEXT("The race running stage shouldn't be null after instantiating it."), testRaceRunningStage);
 
+	return true;
+}
+
+
+
+
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnARaceRunningCallCountdownStartCommand);
+
+bool FSpawnARaceRunningCallCountdownStartCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	
+	ARaceRunningStage* testBeginning = sessionUtilities.spawnInPIEAnInstanceOf<ARaceRunningStage>();
+
+	testBeginning->nextStage();
+	return true;
+}
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckEndedStageSpawnedCommand, FAutomationTestBase*, test);
+
+bool FCheckEndedStageSpawnedCommand::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+	ARaceRunningStage* testBeginning = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceRunningStage>();
+	if (testBeginning)
+	{
+		ARaceEndedStage* testEnded = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceEndedStage>();
+		
+		test->TestNotNull(TEXT("Race running next stage should spawn a race ended stage."), testEnded);
+		testWorld->bDebugFrameStepExecution = true;
+		return true;
+	}
+	return false;
+}
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceRunningStageNextStageSpawnsEndedStageTest, "ProjectR.RaceRunningStage Tests.Unit.001: nextStage spawns a race ended stage", EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+bool FARaceRunningStageNextStageSpawnsEndedStageTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARaceRunningCallCountdownStartCommand);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckEndedStageSpawnedCommand(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
 
