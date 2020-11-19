@@ -33,7 +33,7 @@ AJet::AJet()
 
 	centerOfMassHeight = -100;
 	physicsMeshComponent->SetCenterOfMass(FVector(0, 0, centerOfMassHeight));
-	
+
 	springArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm Component"));
 	springArm->SetupAttachment(RootComponent);
 	/*springArm->SetUsingAbsoluteRotation(true);*/

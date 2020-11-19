@@ -7,7 +7,7 @@
 #include "RaceRunningStage.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PROJECTR_API ARaceRunningStage : public ARaceStage

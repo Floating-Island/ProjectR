@@ -19,7 +19,7 @@ class PROJECTR_API ARaceGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
-	
+
 
 protected:
 
@@ -31,8 +31,8 @@ protected:
 	ALapManager* lapManager;
 	TMap<AJet*, int8> currentJetPositions;
 	TArray<AJet*> finalizedJets;
-	
-	
+
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
 		int numberOfPlayers;
 
@@ -50,7 +50,7 @@ protected:
 
 public:
 	ARaceGameMode();
-	
+
 	void positionExpectedJets();
 	void createJet(FVector atLocation, int& aNumberOfRemainingJetsToCreate);
 
@@ -71,12 +71,12 @@ public:
 	void updateJetPositions();
 
 	int laps();
-	
+
 	UFUNCTION()
 		void lapCompletedByJet(AJet* aCrossingJet);
 
 	TArray<AJet*> finalistJets();
 
 	TMap<AJet*, int8> positions();
-	
+
 };

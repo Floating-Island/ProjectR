@@ -15,7 +15,7 @@ void ARaceBeginningStage::start()
 
 void ARaceBeginningStage::countdownToStart(int countdown)
 {
-	if(countdown <= 0)
+	if (countdown <= 0)
 	{
 		UE_LOG(LogTemp, Log, TEXT("Announcer: GO!!!"));
 		stageEndedEvent.Broadcast(this);

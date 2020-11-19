@@ -15,7 +15,7 @@ void ARaceRunningStage::Tick(float DeltaSeconds)
 {
 	Super::Super::Tick(DeltaSeconds);
 	raceMode->updateJetPositions();
-	if(raceMode->jetsRacing().Num() == 0)
+	if (raceMode->jetsRacing().Num() == 0)
 	{
 		stageEndedEvent.Broadcast(this);
 	}

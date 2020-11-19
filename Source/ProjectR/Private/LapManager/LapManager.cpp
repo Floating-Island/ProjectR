@@ -35,7 +35,7 @@ void ALapManager::subscribeToLapPhases()
 	initialLapPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
 	AIntermediateLapPhase* intermediatePhase = Cast<AIntermediateLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AIntermediateLapPhase::StaticClass()));
 	AFinalLapPhase* finalPhase = Cast<AFinalLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AFinalLapPhase::StaticClass()));
-	
+
 	checkPhaseAndSubscribe(initialLapPhase);
 	checkPhaseAndSubscribe(intermediatePhase);
 	checkPhaseAndSubscribe(finalPhase);
@@ -88,12 +88,12 @@ void ALapManager::lapPhaseOverlap(AActor* OverlappedActor, AActor* OtherActor)
 	if (overlappedJet && overlappingPhase)
 	{
 		FLapData* jetLapData = jetLaps.Find(overlappedJet);
-		
+
 		ALapPhase* oldPhase = jetLapData->currentLapPhase;
 		jetLapData->currentLapPhase = jetLapData->currentLapPhase->updatePhase(overlappingPhase);
 		ALapPhase* currentPhase = jetLapData->currentLapPhase;
-		
-		if(oldPhase->comesFromIntermediateLapPhase() && currentPhase->comesFromFinalLapPhase())
+
+		if (oldPhase->comesFromIntermediateLapPhase() && currentPhase->comesFromFinalLapPhase())
 		{
 			//oldPhase is then the final phase and the current phase is the initial phase.
 			++jetLapData->lap;

@@ -50,7 +50,7 @@ bool FSpawnARaceRunningCallNextStageCommand::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	
+
 	ARaceRunningStage* testRunning = sessionUtilities.spawnInPIEAnInstanceOf<ARaceRunningStage>();
 
 	testRunning->nextStage();
@@ -72,7 +72,7 @@ bool FCheckEndedStageSpawnedCommand::Update()
 	if (testRunning)
 	{
 		ARaceEndedStage* testEnded = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceEndedStage>();
-		
+
 		test->TestNotNull(TEXT("Race running next stage should spawn a race ended stage."), testEnded);
 		testWorld->bDebugFrameStepExecution = true;
 		return true;
@@ -113,7 +113,7 @@ bool FSpawnARaceRunningCommand::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	
+
 	ARaceRunningStage* testRunning = sessionUtilities.spawnInPIEAnInstanceOf<ARaceRunningStage>();
 
 	testRunning->nextStage();
@@ -135,9 +135,9 @@ bool FCheckEndedStageSpawnedWithNoRunningJetsCommand::Update()
 	if (testRunning)
 	{
 		ARaceEndedStage* testEnded = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceEndedStage>();
-		bool endedStageSpawned = testEnded? true : false;
+		bool endedStageSpawned = testEnded ? true : false;
 		bool noRunningJets = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameModeMOCK>()->jetsRacing().Num() == 0;
-		
+
 		test->TestNotNull(TEXT("Race running next stage should spawn a race ended stage if no running jets are present."), testEnded);
 		testWorld->bDebugFrameStepExecution = true;
 		return true;
