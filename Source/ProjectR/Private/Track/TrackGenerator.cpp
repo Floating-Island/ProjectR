@@ -35,7 +35,7 @@ void ATrackGenerator::BeginPlay()
 	Super::BeginPlay();
 	collisionsEnabled = true;
 	recreateSplineMeshComponents();
-	
+
 	trackManagerSubscription();//should always be after the spline mesh components are recreated.
 }
 
@@ -160,7 +160,7 @@ void ATrackGenerator::configureComponentPositionsAndTangents(int32 aSplinePointI
 
 void ATrackGenerator::editorCollisionsEnabled(USplineMeshComponent* aSplineMeshComponent)
 {
-	if(!collisionsEnabled)
+	if (!collisionsEnabled)
 	{
 		aSplineMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
@@ -217,8 +217,8 @@ void ATrackGenerator::configureCollisionOf(USplineMeshComponent* aMagnetSpline)
 
 void ATrackGenerator::trackManagerSubscription()
 {
-	ATrackManager* worldTrackManager = Cast<ATrackManager,AActor>(UGameplayStatics::GetActorOfClass(GetWorld(),ATrackManager::StaticClass()));
-	if(worldTrackManager)
+	ATrackManager* worldTrackManager = Cast<ATrackManager, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ATrackManager::StaticClass()));
+	if (worldTrackManager)
 	{
 		worldTrackManager->addGeneratorAndSubscribe(this);
 	}
@@ -235,4 +235,42 @@ void ATrackGenerator::toMagnetOverlapSubscribe(ATrackManager* aManager)
 	{
 		trackSection.magnetSpline->OnComponentBeginOverlap.AddDynamic(aManager, &ATrackManager::addJetToMagnetize);
 	}
+}
+
+float ATrackGenerator::distanceAlongSplineOf(AActor* anActor)
+{
+	FVector actorLocation = anActor->GetActorLocation();
+
+	float locationInputKey = splineComponent->FindInputKeyClosestToWorldLocation(actorLocation);
+
+	int32 splinePointFromInputKey = FMath::TruncToInt(locationInputKey);
+	float remainingSegmentParameter = locationInputKey - splinePointFromInputKey;
+
+	float distanceToSplinePoint = splineComponent->GetDistanceAlongSplineAtSplinePoint(splinePointFromInputKey);
+
+	float remainingSegmentLength = splineComponent->SplineCurves.GetSegmentLength(splinePointFromInputKey, remainingSegmentParameter, true);
+
+	float distanceAlongSpline = distanceToSplinePoint + remainingSegmentLength;
+
+	return distanceAlongSpline;
+}
+
+float ATrackGenerator::length()
+{
+	return splineComponent->GetSplineLength();
+}
+
+FVector ATrackGenerator::rightVectorAt(float aDistanceAlongSpline)
+{
+	return splineComponent->GetRightVectorAtDistanceAlongSpline(aDistanceAlongSpline, ESplineCoordinateSpace::World);
+}
+
+FVector ATrackGenerator::locationAt(float aDistanceAlongSpline)
+{
+	return splineComponent->GetLocationAtDistanceAlongSpline(aDistanceAlongSpline, ESplineCoordinateSpace::World);
+}
+
+FVector ATrackGenerator::upVectorAt(float aDistanceAlongSpline)
+{
+	return splineComponent->GetUpVectorAtDistanceAlongSpline(aDistanceAlongSpline, ESplineCoordinateSpace::World);
 }

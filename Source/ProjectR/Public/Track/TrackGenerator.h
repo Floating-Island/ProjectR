@@ -69,7 +69,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Default Settings")
 		UStaticMesh* defaultMagnetMesh;
-	
+
 	UPROPERTY(EditAnywhere, Category = "Elements", EditFixedSize)
 		TArray<FTrackSectionData> trackSections;
 
@@ -86,6 +86,14 @@ public:
 
 	FVector closestLocationTo(FVector anotherLocation);
 	void toMagnetOverlapSubscribe(ATrackManager* aManager);
+
+	float distanceAlongSplineOf(AActor* anActor);
+
+	float length();
+
+	FVector rightVectorAt(float aDistanceAlongSpline);
+	FVector locationAt(float aDistanceAlongSpline);
+	FVector upVectorAt(float aDistanceAlongSpline);
 
 };
 
