@@ -11,7 +11,6 @@
 bool FUMainMenuIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
 	UMainMenu* testFinalPhase = NewObject<UMainMenu>();
-
 	TestNotNull(TEXT("The main menu phase shouldn't be null after instantiating it."), testFinalPhase);
 
 	return true;
