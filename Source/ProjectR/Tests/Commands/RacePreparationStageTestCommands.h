@@ -2,13 +2,34 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
-
 /**
- * 
+ * This file cointains the latent commands necessary for the tests.
  */
-class PROJECTR_API RacePreparationStageTest
-{
-public:
 
-};
+#include "Misc/AutomationTest.h"
+
+#if WITH_DEV_AUTOMATION_TESTS
+
+
+//Test preparation commands:
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawnARacePreparationStageCommand, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnARacePreparationMakeItStartCommand);
+
+
+
+
+
+
+//Test check commands:
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLapManagerSpawnedCommand, FAutomationTestBase*, test);
+
+
+
+
+
+#endif //WITH_DEV_AUTOMATION_TESTS
