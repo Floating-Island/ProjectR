@@ -1,22 +1,18 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-
-
-
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "LapManagerTestCommands.h"
 #include "LapManager/LapManager.h"
 #include "../Mocks/LapManagerMOCK.h"
+#include "../Utilities/PIESessionUtilities.h"
 #include "LapPhases/InitialLapPhase.h"
 #include "LapPhases/IntermediateLapPhase.h"
 #include "LapPhases/FinalLapPhase.h"
 #include "Jet/Jet.h"
 
-#include "Misc/AutomationTest.h"
-#include "../Utilities/PIESessionUtilities.h"
+
 
 //Test preparation commands:
 
