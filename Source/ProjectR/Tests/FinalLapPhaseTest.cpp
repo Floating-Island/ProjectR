@@ -3,7 +3,6 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-
 #include "FinalLapPhaseTest.h"
 #include "LapPhases/FinalLapPhase.h"
 #include "LapPhases/InitialLapPhase.h"
