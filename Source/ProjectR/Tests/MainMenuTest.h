@@ -2,7 +2,6 @@
 
 #pragma once
 
-#if WITH_DEV_AUTOMATION_TESTS
 
 /**
  * Each one of this tests should test something of the project class that this test class references to.
@@ -15,6 +14,11 @@
 
 #include "Misc/AutomationTest.h"
 
+#if WITH_DEV_AUTOMATION_TESTS
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuIsntNullWhenInstantiatedTest, 
+	"ProjectR.MainMenu Tests.Unit.000: Isn't null when instantiated",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 
