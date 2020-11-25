@@ -13,5 +13,8 @@ UCLASS()
 class PROJECTR_API UMainMenu : public UUserWidget
 {
 	GENERATED_BODY()
+
+public:
+	void quit();
 	
 };
