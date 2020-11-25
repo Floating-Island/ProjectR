@@ -12,7 +12,9 @@ void UMainMenu::quit()
 
 bool UMainMenu::Initialize()
 {
-	Super::Initialize();
+	bool initializeResult = Super::Initialize();
 	quitButton = WidgetTree->ConstructWidget<UButton>(UButton::StaticClass(), TEXT("Quit Button"));
 	quitButton->OnClicked.AddDynamic(this, &UMainMenu::quit);
+
+	return initializeResult;
 }
