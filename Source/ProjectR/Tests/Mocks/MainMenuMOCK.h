@@ -13,5 +13,7 @@ UCLASS()
 class PROJECTR_API UMainMenuMOCK : public UMainMenu
 {
 	GENERATED_BODY()
-	
+
+public:
+	void focusOnQuitButtonAndPressIt();
 };

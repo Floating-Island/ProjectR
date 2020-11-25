@@ -2,4 +2,13 @@
 
 
 #include "MainMenuMOCK.h"
+#include "InputCoreTypes.h"
 
+void UMainMenuMOCK::focusOnQuitButtonAndPressIt()
+{
+	UWorld* currentWorld = GetWorld();
+
+	quitButton->SetFocus();
+	
+	currentWorld->GetFirstPlayerController()->InputKey(EKeys::LeftMouseButton, EInputEvent::IE_DoubleClick, 0.0f, false);
+}
