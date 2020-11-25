@@ -20,8 +20,6 @@ bool FSpawnMainMenuAndPressQuitInPIE::Update()
 		testMenu->AddToViewport();
 
 		testMenu->focusOnQuitButtonAndPressIt();
-
-
 		return true;
 	}
 	return false;	
@@ -43,14 +41,14 @@ bool FCheckMainMenuQuitsCommand::Update()
 	
 	if(hasFinishedRunningPIESession)
 	{
-		test->TestTrue(TEXT("The main menu should quit the game when calling quit."), hasFinishedRunningPIESession);
+		test->TestTrue(TEXT("The main menu should quit the game when pressing the quit button."), hasFinishedRunningPIESession);
 		return true;
 	}
 	
 	++tickCount;
 	if(tickCount > tickLimit)
 	{
-		test->TestTrue(TEXT("The main menu should quit the game when calling quit."), hasFinishedRunningPIESession);
+		test->TestTrue(TEXT("The main menu should quit the game when pressing the quit button."), hasFinishedRunningPIESession);
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 		return true;
