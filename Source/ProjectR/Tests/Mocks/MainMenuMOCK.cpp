@@ -3,6 +3,7 @@
 
 #include "MainMenuMOCK.h"
 #include "InputCoreTypes.h"
+#include "Components/Button.h""
 
 void UMainMenuMOCK::focusOnQuitButtonAndPressIt()
 {
