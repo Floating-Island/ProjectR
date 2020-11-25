@@ -13,7 +13,7 @@
 
 //Test preparation commands:
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnMainMenuAndCallQuitInPIE);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnMainMenuAndPressQuitInPIE);
 
 
 

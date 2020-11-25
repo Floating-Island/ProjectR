@@ -26,7 +26,7 @@ bool FUMainMenuQuitQuitsTheGameTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnMainMenuAndCallQuitInPIE);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnMainMenuAndPressQuitInPIE);
 	int tickCount = 0;
 	int tickLimit = 3;
 	bool inPIE = false;

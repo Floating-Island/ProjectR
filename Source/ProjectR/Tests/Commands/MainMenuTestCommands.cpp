@@ -7,18 +7,20 @@
 #include "MainMenuTestCommands.h"
 #include "../Utilities/PIESessionUtilities.h"
 #include "UI/MainMenu.h"
+#include "../Mocks/MainMenuMOCK.h"
 
 //Test preparation commands:
 
-bool FSpawnMainMenuAndCallQuitInPIE::Update()
+bool FSpawnMainMenuAndPressQuitInPIE::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UMainMenu* testMenu = CreateWidget<UMainMenu>(sessionUtilities.currentPIEWorld(), UMainMenu::StaticClass());
+		UMainMenuMOCK* testMenu = CreateWidget<UMainMenuMOCK>(sessionUtilities.currentPIEWorld(), UMainMenu::StaticClass());
 		testMenu->AddToViewport();
 
-		testMenu->quit();
+		testMenu->focusOnQuitButtonAndPressIt();
+
 
 		return true;
 	}
