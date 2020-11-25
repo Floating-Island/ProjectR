@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "MainMenu.generated.h"
 
+class UButton;
 /**
  * 
  */
@@ -14,7 +15,14 @@ class PROJECTR_API UMainMenu : public UUserWidget
 {
 	GENERATED_BODY()
 
+protected:
+	UFUNCTION()
+		void quit();
+
+	UPROPERTY(meta = (BindWidget))
+		UButton* quitButton;
+
 public:
-	void quit();
+	virtual bool Initialize() override;
 	
 };

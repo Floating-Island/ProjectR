@@ -2,8 +2,17 @@
 
 
 #include "UI/MainMenu.h"
+#include "Components/Button.h"
+#include "Blueprint/WidgetTree.h"
 
 void UMainMenu::quit()
 {
 	GetWorld()->GetFirstPlayerController()->ConsoleCommand("quit");
+}
+
+bool UMainMenu::Initialize()
+{
+	Super::Initialize();
+	quitButton = WidgetTree->ConstructWidget<UButton>(UButton::StaticClass(), TEXT("Quit Button"));
+	quitButton->OnClicked.AddDynamic(this, &UMainMenu::quit);
 }
