@@ -23,7 +23,7 @@ bool FUProjectRGameInstanceIsSetAsProjectGameInstanceTest::RunTest(const FString
 }
 
 
-bool FUProjectRGameInstanceMainMenuInstanceBringsMainMenuTest::RunTest(const FString& Parameters)
+bool FUProjectRGameInstanceLoadMainMenuCreatesMainMenuTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 

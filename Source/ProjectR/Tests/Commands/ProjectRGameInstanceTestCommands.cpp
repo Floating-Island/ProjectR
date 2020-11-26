@@ -46,9 +46,9 @@ bool FCheckCreatesMainMenu::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(UGameplayStatics::GetGameInstance(sessionUtilities.currentPIEWorld()));
 
-		UMainMenu* testMenu = testInstance->mainMenuInstance();
+		UMainMenu* testMenu = testInstance->loadMainMenu();
 		
-		test->TestNotNull(TEXT("mainMenuInstance should bring the main menu instance."), testMenu);
+		test->TestNotNull(TEXT("loadMainMenu should bring the main menu instance."), testMenu);
 		return true;
 	}
 	return false;

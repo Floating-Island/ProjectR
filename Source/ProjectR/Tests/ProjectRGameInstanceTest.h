@@ -20,8 +20,8 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceIsSetAsProjectGameInstanc
 	"ProjectR.ProjectRGameInstance Tests.Unit.000: Is set as the project's game instance",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceMainMenuInstanceBringsMainMenuTest, 
-	"ProjectR.ProjectRGameInstance Tests.Unit.001: mainMenuInstance brings the main menu",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadMainMenuCreatesMainMenuTest, 
+	"ProjectR.ProjectRGameInstance Tests.Unit.001: loadMainMenu creates the main menu",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
