@@ -16,7 +16,9 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceIsSetAsProjectGameInstanceTest, 
+	"ProjectR.ProjectRGameInstance Tests.Unit.000: Is set as the project's game instance",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 
