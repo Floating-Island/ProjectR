@@ -13,7 +13,17 @@
 
 
 
+
+
+
+
+
+
+
 //Test check commands:
+
+
+
 
 bool FCheckIsSetAsProjectGameInstance::Update()
 {
@@ -27,6 +37,23 @@ bool FCheckIsSetAsProjectGameInstance::Update()
 	}
 	return false;
 }
+
+
+bool FCheckCreatesMainMenu::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(UGameplayStatics::GetGameInstance(sessionUtilities.currentPIEWorld()));
+
+		UMainMenu* testMenu = testInstance->mainMenuInstance();
+		
+		test->TestNotNull(TEXT("mainMenuInstance should bring the main menu instance."), testMenu);
+		return true;
+	}
+	return false;
+}
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
