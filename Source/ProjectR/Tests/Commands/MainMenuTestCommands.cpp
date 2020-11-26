@@ -7,7 +7,9 @@
 #include "MainMenuTestCommands.h"
 #include "../Utilities/PIESessionUtilities.h"
 #include "UI/MainMenu.h"
-#include "../Mocks/MainMenuMOCK.h"
+#include "GameInstance/ProjectRGameInstance.h"
+#include "Kismet/GameplayStatics.h"
+#include "InputCoreTypes.h"
 
 //Test preparation commands:
 
@@ -16,10 +18,15 @@ bool FSpawnMainMenuAndPressQuitInPIE::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UMainMenuMOCK* testMenu = CreateWidget<UMainMenuMOCK>(sessionUtilities.currentPIEWorld(), UMainMenu::StaticClass());
-		testMenu->AddToViewport();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(UGameplayStatics::GetGameInstance(sessionUtilities.currentPIEWorld()));
+		UMainMenu* testMenu = testInstance->loadMainMenu();
 
-		testMenu->focusOnQuitButtonAndPressIt();
+		FVector2D quitCoordinates = testMenu->quitButtonPosition();
+
+		APlayerController* testController = sessionUtilities.currentPIEWorld()->GetFirstPlayerController();
+		testController->SetMouseLocation(quitCoordinates.X, quitCoordinates.Y);
+		testController->InputKey(EKeys::LeftMouseButton, EInputEvent::IE_DoubleClick, 0.1f, false);
+
 		return true;
 	}
 	return false;	
