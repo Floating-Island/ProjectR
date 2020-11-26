@@ -16,6 +16,11 @@ bool UMainMenu::Initialize()
 	return initializeResult;
 }
 
+FVector2D UMainMenu::quitButtonPosition()
+{
+	return quitButton->GetCachedGeometry().GetAbsolutePosition();
+}
+
 
 void UMainMenu::quit()
 {
