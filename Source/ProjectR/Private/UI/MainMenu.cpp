@@ -13,13 +13,14 @@ bool UMainMenu::Initialize()
 	{
 		quitButton->OnClicked.AddDynamic(this, &UMainMenu::quit);
 	}
+	bIsFocusable = true;
 	return initializeResult;
 }
 
 FVector2D UMainMenu::quitButtonCenterPosition()
 {
-        FVector2D buttonCenter = GetPaintSpaceGeometry().GetAbsoluteSize() / 2.0f;
-	return quitButton->GetPaintSpaceGeometry().GetAbsolutePosition() + buttonCenter;
+    FVector2D buttonCenter = quitButton->GetTickSpaceGeometry().GetAbsoluteSize() / 2.0f;
+	return quitButton->GetTickSpaceGeometry().GetAbsolutePosition() + buttonCenter;
 }
 
 
