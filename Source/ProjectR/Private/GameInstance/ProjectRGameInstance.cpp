@@ -12,5 +12,15 @@ UMainMenu* UProjectRGameInstance::loadMainMenu()
 		mainMenu = CreateWidget<UMainMenu>(this, mainMenuClass, FName("Main Menu"));
 	}
 	mainMenu->AddToViewport();
+
+	APlayerController* controller = GetWorld()->GetFirstPlayerController();
+
+	FInputModeUIOnly inputData;
+	inputData.SetWidgetToFocus(mainMenu->TakeWidget());
+	inputData.SetLockMouseToViewportBehavior(EMouseLockMode::LockAlways);
+
+	controller->SetInputMode(inputData);
+	controller->bShowMouseCursor = true;
+	
 	return mainMenu;
 }
