@@ -9,16 +9,17 @@
 bool UMainMenu::Initialize()
 {
 	bool initializeResult = Super::Initialize();
-	if(quitButton)
+	if (quitButton)
 	{
 		quitButton->OnClicked.AddDynamic(this, &UMainMenu::quit);
 	}
 	return initializeResult;
 }
 
-FVector2D UMainMenu::quitButtonPosition()
+FVector2D UMainMenu::quitButtonCenterPosition()
 {
-	return quitButton->GetCachedGeometry().GetAbsolutePosition();
+        FVector2D buttonCenter = GetPaintSpaceGeometry().GetAbsoluteSize() / 2.0f;
+	return quitButton->GetPaintSpaceGeometry().GetAbsolutePosition() + buttonCenter;
 }
 
 
