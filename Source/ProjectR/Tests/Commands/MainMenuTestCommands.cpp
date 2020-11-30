@@ -39,7 +39,6 @@ bool FCheckMainMenuClickQuitsCommand::Update()
 		if (inPIE)//first, the game menu instance has to be rendered correctly. This happens on the next frame.
 		{
 			//now I make a click in the button pixel position
-
 			sessionUtilities.processEditorClick(quitCoordinates);
 		}
 		inPIE = true;
