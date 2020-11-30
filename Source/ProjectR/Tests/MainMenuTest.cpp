@@ -31,7 +31,7 @@ bool FUMainMenuClickingQuitButtonQuitsTheGameTest::RunTest(const FString& Parame
 	bool inPIE = false;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickQuitsCommand(inPIE, tickCount, tickLimit, nullptr, this));
 
-	//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
 
