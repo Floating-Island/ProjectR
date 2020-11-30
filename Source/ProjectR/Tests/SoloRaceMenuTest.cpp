@@ -9,6 +9,14 @@
 
 #include "UI/SoloRaceMenu.h"
 
+bool FUSoloRaceMenuIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
+{
+	USoloRaceMenu* testSoloMenu = NewObject<USoloRaceMenu>();
+	TestNotNull(TEXT("The solo race menu shouldn't be null after instantiating it."), testSoloMenu);
+
+	return true;
+}
+
 
 
 
