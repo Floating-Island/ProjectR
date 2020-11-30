@@ -26,13 +26,12 @@ bool FUMainMenuQuitQuitsTheGameTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnMainMenuAndPressQuitInPIE);
 	int tickCount = 0;
 	int tickLimit = 3;
 	bool inPIE = false;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuQuitsCommand(inPIE, tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuQuitsCommand(inPIE, tickCount, tickLimit, nullptr, this));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
 

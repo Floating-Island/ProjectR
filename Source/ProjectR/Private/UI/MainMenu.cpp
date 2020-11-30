@@ -3,6 +3,7 @@
 
 #include "UI/MainMenu.h"
 #include "Components/Button.h"
+#include "Blueprint/SlateBlueprintLibrary.h"
 
 
 
@@ -12,17 +13,12 @@ bool UMainMenu::Initialize()
 	if (quitButton)
 	{
 		quitButton->OnClicked.AddDynamic(this, &UMainMenu::quit);
+		quitButton->OnPressed.AddDynamic(this, &UMainMenu::quit);
+		quitButton->IsFocusable = true;
 	}
 	bIsFocusable = true;
 	return initializeResult;
 }
-
-FVector2D UMainMenu::quitButtonCenterPosition()
-{
-    FVector2D buttonCenter = quitButton->GetTickSpaceGeometry().GetAbsoluteSize() / 2.0f;
-	return quitButton->GetTickSpaceGeometry().GetAbsolutePosition() + buttonCenter;
-}
-
 
 void UMainMenu::quit()
 {

@@ -8,18 +8,18 @@
 
 #include "Misc/AutomationTest.h"
 
+class UMainMenu;
+
 #if WITH_DEV_AUTOMATION_TESTS
 
 
 //Test preparation commands:
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnMainMenuAndPressQuitInPIE);
-
 
 
 //Test check commands:
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMainMenuQuitsCommand, bool, inPIE, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckMainMenuQuitsCommand, bool, inPIE, int, tickCount, int, tickLimit, UMainMenu*, mainMenuInstance, FAutomationTestBase*, test);
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
