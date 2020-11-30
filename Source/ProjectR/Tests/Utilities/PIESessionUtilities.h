@@ -29,6 +29,8 @@ public:
 	UWorld* currentPIEWorld();
 	void processLocalPlayerInputFrom(FName anAxisMappingName);
 
+	void processEditorClick(FVector2D atCoordinates);
+
 
 	template <typename anActorDerivedClass>
 	anActorDerivedClass* spawnInPIEAnInstanceOf(FVector atLocation = FVector(0));

@@ -40,31 +40,7 @@ bool FCheckMainMenuClickQuitsCommand::Update()
 		{
 			//now I make a click in the button pixel position
 
-			//Get our slate application
-			FSlateApplication& slateApplication = FSlateApplication::Get();
-
-			const TSet<FKey> pressedButtons = TSet<FKey>({ EKeys::LeftMouseButton });
-
-			FPointerEvent mouseMoveAndClickEvent(
-				0,
-				slateApplication.CursorPointerIndex,
-				quitCoordinates,
-				FVector2D(0, 0),
-				pressedButtons,
-				EKeys::LeftMouseButton,
-				0,
-				slateApplication.GetPlatformApplication()->GetModifierKeys()
-			);
-			TSharedPtr<FGenericWindow> genericWindow;
-			/*
-			 *It's not necessary to move before clicking because when using process mouse button double click, it also moves the cursor to the desired position.
-			 *UE_LOG(LogTemp, Log, TEXT("Attempting a mouse move:"));
-			 *bool mouseMove = SlateApp.ProcessMouseMoveEvent(mouseMoveAndClickEvent);
-			 *UE_LOG(LogTemp, Log, TEXT("a mouse move %s been done."), *FString(mouseMove ? "has" : "hasn't"));
-			*/
-			UE_LOG(LogTemp, Log, TEXT("Attempting click at coordinates: %s."), *quitCoordinates.ToString());
-			bool mouseClick = slateApplication.ProcessMouseButtonDoubleClickEvent(genericWindow, mouseMoveAndClickEvent);
-			UE_LOG(LogTemp, Log, TEXT("a mouse click %s been done."), *FString(mouseClick ? "has" : "hasn't"));
+			sessionUtilities.processEditorClick(quitCoordinates);
 		}
 		inPIE = true;
 	}
