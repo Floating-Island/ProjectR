@@ -41,7 +41,7 @@ bool FCheckMainMenuClickQuitsCommand::Update()
 			//now I make a click in the button pixel position
 			sessionUtilities.processEditorClick(quitCoordinates);
 		}
-		inPIE = true;
+		inPIE = true; 
 	}
 
 	bool hasFinishedRunningPIESession = inPIE && !GEditor->IsPlayingSessionInEditor();
