@@ -21,8 +21,8 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuIsntNullWhenInstantiatedTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuQuitQuitsTheGameTest, 
-	"ProjectR.MainMenu Tests.Unit.001: Quit quits the game",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingQuitButtonQuitsTheGameTest, 
+	"ProjectR.MainMenu Tests.Unit.001: Clicking the quit button quits the game",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

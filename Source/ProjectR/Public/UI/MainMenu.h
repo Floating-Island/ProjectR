@@ -25,8 +25,5 @@ protected:
 public:
 	virtual bool Initialize() override;
 
-	FVector2D quitButtonLocalCenterPosition();
-
-	FVector2D quitButtonPixelCenterPosition();
-	
+	FVector2D quitButtonAbsouluteCenterPosition();
 };

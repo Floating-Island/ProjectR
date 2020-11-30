@@ -21,19 +21,10 @@ bool UMainMenu::Initialize()
 	return initializeResult;
 }
 
-FVector2D UMainMenu::quitButtonLocalCenterPosition()
+FVector2D UMainMenu::quitButtonAbsouluteCenterPosition()
 {
 	FVector2D buttonCenter = FVector2D(0.5f, 0.5f);
-	return quitButton->GetTickSpaceGeometry().GetLocalPositionAtCoordinates(buttonCenter);
-}
-
-FVector2D UMainMenu::quitButtonPixelCenterPosition()
-{
-	FVector2D viewportPosition = FVector2D();
-	FVector2D pixelPosition = FVector2D();
-	USlateBlueprintLibrary::LocalToViewport(GetWorld(), quitButton->GetTickSpaceGeometry(), FVector2D(0.5f, 0.5f), pixelPosition, viewportPosition);
-	
-	return pixelPosition;
+	return quitButton->GetTickSpaceGeometry().GetAbsolutePositionAtCoordinates(buttonCenter);
 }
 
 

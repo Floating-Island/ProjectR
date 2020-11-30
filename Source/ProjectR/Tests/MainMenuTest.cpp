@@ -19,7 +19,7 @@ bool FUMainMenuIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 }
 
 
-bool FUMainMenuQuitQuitsTheGameTest::RunTest(const FString& Parameters)
+bool FUMainMenuClickingQuitButtonQuitsTheGameTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
@@ -29,7 +29,7 @@ bool FUMainMenuQuitQuitsTheGameTest::RunTest(const FString& Parameters)
 	int tickCount = 0;
 	int tickLimit = 3;
 	bool inPIE = false;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuQuitsCommand(inPIE, tickCount, tickLimit, nullptr, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickQuitsCommand(inPIE, tickCount, tickLimit, nullptr, this));
 
 	//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

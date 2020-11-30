@@ -10,8 +10,6 @@
 #include "GameInstance/ProjectRGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "InputCoreTypes.h"
-#include "GameFramework/GameModeBase.h"
-#include "Kismet/GameplayStatics.h"
 
 //Test preparation commands:
 
@@ -22,11 +20,10 @@
 //Test check commands:
 
 
-bool FCheckMainMenuQuitsCommand::Update()
+bool FCheckMainMenuClickQuitsCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-		
 		GEditor->GetPIEViewport()->SetMouse(547, 307);
 
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
@@ -34,55 +31,39 @@ bool FCheckMainMenuQuitsCommand::Update()
 		if (mainMenuInstance == nullptr)
 		{
 			mainMenuInstance = testInstance->loadMainMenu();
-			sessionUtilities.currentPIEWorld()->GetAuthGameMode()->SpawnPlayerFromSimulate(FVector(0), FRotator(0));//spawns a player controller.
-			APlayerController* testController = testInstance->GetFirstLocalPlayerController();
 		}
 
-		FVector2D quitCoordinates =/* mainMenuInstance->quitButtonPixelCenterPosition()*/  FVector2D(547, 307);
+		FVector2D quitCoordinates = mainMenuInstance->quitButtonAbsouluteCenterPosition();
 		UE_LOG(LogTemp, Log, TEXT("quit button coordinates in viewport: %s"), *quitCoordinates.ToString());
 
-		APlayerController* testController = testInstance->GetFirstLocalPlayerController();
-		//testInstance->GetGameViewportClient()->MouseEnter(testInstance->GetGameViewportClient()->Viewport, quitCoordinates.X, quitCoordinates.Y);
-
-		//testController->SetMouseLocation(quitCoordinates.X, quitCoordinates.Y);
-
-		//FVector2D mousePosition = FVector2D();
-		//bool isAssociated = testController->GetMousePosition(mousePosition.X, mousePosition.Y);
-
-		//UE_LOG(LogTemp, Log, TEXT("a mouse %s associated."), *FString(isAssociated ? "is" : "isn't"));
-		//UE_LOG(LogTemp, Log, TEXT("mouse coordinates: %s"), *mousePosition.ToString());
-
-		if(inPIE)
+		if (inPIE)//first, the game menu instance has to be rendered correctly. This happens on the next frame.
 		{
-			FVector2D viewportSize = FVector2D();
-			sessionUtilities.currentPIEWorld()->GetGameViewport()->GetViewportSize(viewportSize);
-			UE_LOG(LogTemp, Log, TEXT("Viewport size: %s"), *viewportSize.ToString());
-			
-
+			//now I make a click in the button pixel position
 
 			//Get our slate application
-			FSlateApplication& SlateApp = FSlateApplication::Get();
+			FSlateApplication& slateApplication = FSlateApplication::Get();
 
 			const TSet<FKey> pressedButtons = TSet<FKey>({ EKeys::LeftMouseButton });
 
-			FPointerEvent mouseDownEvent(
-                0,
-                SlateApp.CursorPointerIndex,
-                quitCoordinates,
-                FVector2D(0, 0),
-                pressedButtons,
-                EKeys::LeftMouseButton,
-                0,
-                SlateApp.GetPlatformApplication()->GetModifierKeys()
-            );
-
-
-			//send the mouse event to the slate handler
-			TSharedPtr<FGenericWindow> GenWindow;
-			UE_LOG(LogTemp, Log, TEXT("Attempting a mouse move:"));
-			bool mouseMove = SlateApp.ProcessMouseMoveEvent(mouseDownEvent);
-			UE_LOG(LogTemp, Log, TEXT("a mouse move %s been done."), *FString(mouseMove ? "has" : "hasn't"));
-			bool mouseClick = SlateApp.ProcessMouseButtonDoubleClickEvent(GenWindow, mouseDownEvent);
+			FPointerEvent mouseMoveAndClickEvent(
+				0,
+				slateApplication.CursorPointerIndex,
+				quitCoordinates,
+				FVector2D(0, 0),
+				pressedButtons,
+				EKeys::LeftMouseButton,
+				0,
+				slateApplication.GetPlatformApplication()->GetModifierKeys()
+			);
+			TSharedPtr<FGenericWindow> genericWindow;
+			/*
+			 *It's not necessary to move before clicking because when using process mouse button double click, it also moves the cursor to the desired position.
+			 *UE_LOG(LogTemp, Log, TEXT("Attempting a mouse move:"));
+			 *bool mouseMove = SlateApp.ProcessMouseMoveEvent(mouseMoveAndClickEvent);
+			 *UE_LOG(LogTemp, Log, TEXT("a mouse move %s been done."), *FString(mouseMove ? "has" : "hasn't"));
+			*/
+			UE_LOG(LogTemp, Log, TEXT("Attempting click at coordinates: %s."), *quitCoordinates.ToString());
+			bool mouseClick = slateApplication.ProcessMouseButtonDoubleClickEvent(genericWindow, mouseMoveAndClickEvent);
 			UE_LOG(LogTemp, Log, TEXT("a mouse click %s been done."), *FString(mouseClick ? "has" : "hasn't"));
 		}
 		inPIE = true;
@@ -92,14 +73,14 @@ bool FCheckMainMenuQuitsCommand::Update()
 
 	if (hasFinishedRunningPIESession)
 	{
-		test->TestTrue(TEXT("The main menu should quit the game when pressing the quit button."), hasFinishedRunningPIESession);
+		test->TestTrue(TEXT("The main menu should quit the game when clicking the quit button."), hasFinishedRunningPIESession);
 		return true;
 	}
 
 	++tickCount;
 	if (tickCount > tickLimit)
 	{
-		test->TestTrue(TEXT("The main menu should quit the game when pressing the quit button."), hasFinishedRunningPIESession);
+		test->TestTrue(TEXT("The main menu should quit the game when clicking the quit button."), hasFinishedRunningPIESession);
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 		return true;
