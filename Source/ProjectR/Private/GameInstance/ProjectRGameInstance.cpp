@@ -13,14 +13,14 @@ UMainMenu* UProjectRGameInstance::loadMainMenu()
 	}
 	mainMenu->AddToViewport();
 
-	APlayerController* controller = GetWorld()->GetFirstPlayerController();
+	//APlayerController* controller = GetWorld()->GetFirstPlayerController();
 
-	FInputModeUIOnly inputData;
-	inputData.SetWidgetToFocus(mainMenu->TakeWidget());
-	inputData.SetLockMouseToViewportBehavior(EMouseLockMode::LockAlways);
+	//FInputModeUIOnly inputData;
+	//inputData.SetWidgetToFocus(mainMenu->TakeWidget());
+	//inputData.SetLockMouseToViewportBehavior(EMouseLockMode::LockAlways);
 
-	controller->SetInputMode(inputData);
-	controller->bShowMouseCursor = true;
+	//controller->SetInputMode(inputData);
+	//controller->bShowMouseCursor = true;
 	
 	return mainMenu;
 }

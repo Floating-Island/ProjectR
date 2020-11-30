@@ -16,12 +16,17 @@ class PROJECTR_API UMainMenu : public UUserWidget
 	GENERATED_BODY()
 
 protected:
+	UFUNCTION()
+		void quit();
+
 	UPROPERTY(meta = (BindWidget))
 		UButton* quitButton;
 
 public:
 	virtual bool Initialize() override;
+
+	FVector2D quitButtonLocalCenterPosition();
+
+	FVector2D quitButtonPixelCenterPosition();
 	
-	UFUNCTION()
-		void quit();
 };
