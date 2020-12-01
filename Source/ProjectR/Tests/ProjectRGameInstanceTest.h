@@ -26,7 +26,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadMainMenuCreatesMainMe
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadMainMenuCreatesOnlyOneMainMenuTest, 
-	"ProjectR.ProjectRGameInstance Tests.Unit.001: loadMainMenu creates only one main menu",
+	"ProjectR.ProjectRGameInstance Tests.Unit.002: loadMainMenu creates only one main menu",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
