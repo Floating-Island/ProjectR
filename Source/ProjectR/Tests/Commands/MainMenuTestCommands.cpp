@@ -9,7 +9,6 @@
 #include "UI/MainMenu.h"
 #include "GameInstance/ProjectRGameInstance.h"
 #include "Kismet/GameplayStatics.h"
-#include "InputCoreTypes.h"
 
 //Test preparation commands:
 
@@ -28,12 +27,12 @@ bool FCheckMainMenuClickQuitsCommand::Update()
 
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(UGameplayStatics::GetGameInstance(sessionUtilities.currentPIEWorld()));
-		if (mainMenuInstance == nullptr)
+		if (aMainMenuInstance == nullptr)
 		{
-			mainMenuInstance = testInstance->loadMainMenu();
+			aMainMenuInstance = testInstance->loadMainMenu();
 		}
 
-		FVector2D quitCoordinates = mainMenuInstance->quitButtonAbsouluteCenterPosition();
+		FVector2D quitCoordinates = aMainMenuInstance->quitButtonAbsouluteCenterPosition();
 		UE_LOG(LogTemp, Log, TEXT("quit button coordinates in viewport: %s"), *quitCoordinates.ToString());
 
 		if (inPIE)//first, the game menu instance has to be rendered correctly. This happens on the next frame.
@@ -41,21 +40,21 @@ bool FCheckMainMenuClickQuitsCommand::Update()
 			//now I make a click in the button pixel position
 			sessionUtilities.processEditorClick(quitCoordinates);
 		}
-		inPIE = true; 
+		inPIE = true;
 	}
 
 	bool hasFinishedRunningPIESession = inPIE && !GEditor->IsPlayingSessionInEditor();
 
 	if (hasFinishedRunningPIESession)
 	{
-		test->TestTrue(TEXT("The main menu should quit the game when clicking the quit button."), hasFinishedRunningPIESession);
+		aTest->TestTrue(TEXT("The main menu should quit the game when clicking the quit button."), hasFinishedRunningPIESession);
 		return true;
 	}
 
-	++tickCount;
-	if (tickCount > tickLimit)
+	++aTickCount;
+	if (aTickCount > aTickLimit)
 	{
-		test->TestTrue(TEXT("The main menu should quit the game when clicking the quit button."), hasFinishedRunningPIESession);
+		aTest->TestTrue(TEXT("The main menu should quit the game when clicking the quit button."), hasFinishedRunningPIESession);
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 		return true;
