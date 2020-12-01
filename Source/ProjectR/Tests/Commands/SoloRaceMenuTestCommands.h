@@ -27,7 +27,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSoloRaceMenuClickChangesMa
 DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSoloRaceMenuClickGoBackRemovesFromViewportCommand, int, aTickCount, int, aTickLimit, USoloRaceMenu*, aRaceMenuInstance, bool, isMenuInstanciated,  FAutomationTestBase*, aTest);
 
 
-
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSoloRaceMenuClickGoBackBringsMainMenuCommand, int, aTickCount, int, aTickLimit, USoloRaceMenu*, aRaceMenuInstance, bool, isMenuInstanciated,  FAutomationTestBase*, aTest);
 
 
 

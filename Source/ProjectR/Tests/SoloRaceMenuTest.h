@@ -31,5 +31,9 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSoloRaceMenuClickingGoBackButtonRemovesFromVi
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSoloRaceMenuClickingGoBackButtonBringsMainMenuTest, 
+	"ProjectR.SoloRaceMenu Tests.Integration.003: Clicking the go back button brings the mainMenu",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS

@@ -94,6 +94,45 @@ bool FCheckSoloRaceMenuClickGoBackRemovesFromViewportCommand::Update()
 }
 
 
+bool FCheckSoloRaceMenuClickGoBackBringsMainMenuCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+	
+		if(aRaceMenuInstance == nullptr)
+		{
+			aRaceMenuInstance = gameInstance->loadSoloRaceMenu();
+			isMenuInstanciated = true;
+			return false;
+		}
+		
+		if(isMenuInstanciated && aRaceMenuInstance->IsInViewport())
+		{
+			FVector2D goBackButtonCoordinates = aRaceMenuInstance->goBackButtonAbsoluteCenterPosition();
+			sessionUtilities.processEditorClick(goBackButtonCoordinates);
+			return false;
+		}
+		
+		if (isMenuInstanciated && !aRaceMenuInstance->IsInViewport())
+		{
+			aTest->TestTrue(TEXT("The solo race menu should change to the main menu when clicking the go back button."), gameInstance->isMainMenuInViewport());
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+
+		++aTickCount;
+		if (aTickCount > aTickLimit)
+		{
+			aTest->TestTrue(TEXT("The solo race menu should change to the main menu when clicking the go back button."), gameInstance->isMainMenuInViewport());
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+	}
+	return false;
+}
+
 
 
 
