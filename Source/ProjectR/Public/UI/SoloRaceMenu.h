@@ -23,7 +23,7 @@ protected:
 		UButton* playButton;
 
 	UPROPERTY(EditAnywhere, Category="Race Map")
-		ULevel* raceLevel;
+		FName raceLevel;
 
 public:
 	virtual bool Initialize() override;

@@ -8,7 +8,7 @@
 void USoloRaceMenu::play()
 {
 	RemoveFromViewport();
-	UGameplayStatics::OpenLevel(GetWorld(), FName(GetPathNameSafe(raceLevel)));
+	UGameplayStatics::OpenLevel(GetWorld(), raceLevel);
 }
 
 bool USoloRaceMenu::Initialize()
