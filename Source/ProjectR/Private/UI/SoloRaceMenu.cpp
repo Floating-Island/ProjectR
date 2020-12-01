@@ -4,6 +4,7 @@
 #include "UI/SoloRaceMenu.h"
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
+#include "GameInstance/ProjectRGameInstance.h"
 
 void USoloRaceMenu::play()
 {
@@ -14,6 +15,8 @@ void USoloRaceMenu::play()
 void USoloRaceMenu::goBack()
 {
 	RemoveFromViewport();
+	UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance());
+	gameInstance->loadMainMenu();
 }
 
 bool USoloRaceMenu::Initialize()
