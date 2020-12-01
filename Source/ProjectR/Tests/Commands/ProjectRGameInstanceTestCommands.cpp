@@ -54,6 +54,23 @@ bool FCheckCreatesMainMenu::Update()
 }
 
 
+bool FCheckCreatesOneMainMenu::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+
+		UMainMenu* testMenu = testInstance->loadMainMenu();
+		UMainMenu* anotherTestMenu = testInstance->loadMainMenu();
+		
+		aTest->TestTrue(TEXT("loadMainMenu should create only one instance of main menu."), testMenu == anotherTestMenu);
+		return true;
+	}
+	return false;
+}
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
