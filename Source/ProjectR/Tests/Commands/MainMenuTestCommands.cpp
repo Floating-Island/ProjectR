@@ -23,8 +23,6 @@ bool FCheckMainMenuClickQuitsCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-		GEditor->GetPIEViewport()->SetMouse(547, 307);
-
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(UGameplayStatics::GetGameInstance(sessionUtilities.currentPIEWorld()));
 		if (aMainMenuInstance == nullptr)
