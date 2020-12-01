@@ -3,6 +3,7 @@
 
 #include "GameInstance/ProjectRGameInstance.h"
 #include "UI/MainMenu.h"
+#include "UI/SoloRaceMenu.h"
 #include "Blueprint/UserWidget.h"
 
 UMainMenu* UProjectRGameInstance::loadMainMenu()
@@ -23,4 +24,15 @@ UMainMenu* UProjectRGameInstance::loadMainMenu()
 	//controller->bShowMouseCursor = true;
 	
 	return mainMenu;
+}
+
+USoloRaceMenu* UProjectRGameInstance::loadSoloRaceMenu()
+{
+	if(!soloRaceMenu)
+	{
+		soloRaceMenu = CreateWidget<USoloRaceMenu>(this, soloRaceMenuClass, FName("Solo Race Menu"));
+	}
+	soloRaceMenu->AddToViewport();
+	
+	return soloRaceMenu;
 }
