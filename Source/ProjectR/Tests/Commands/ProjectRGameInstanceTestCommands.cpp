@@ -7,6 +7,9 @@
 #include "ProjectRGameInstanceTestCommands.h"
 #include "GameInstance/ProjectRGameInstance.h"
 #include "../Utilities/PIESessionUtilities.h"
+#include "UI/MainMenu.h"
+#include "UI/SoloRaceMenu.h"
+
 
 //Test preparation commands:
 
@@ -47,7 +50,7 @@ bool FCheckCreatesMainMenu::Update()
 
 		UMainMenu* testMenu = testInstance->loadMainMenu();
 		
-		test->TestNotNull(TEXT("loadMainMenu should bring the main menu instance."), testMenu);
+		test->TestTrue(TEXT("loadMainMenu should bring the main menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
 		return true;
 	}
 	return false;
@@ -80,7 +83,7 @@ bool FCheckCreatesSoloRaceMenu::Update()
 
 		USoloRaceMenu* testMenu = testInstance->loadSoloRaceMenu();
 		
-		aTest->TestNotNull(TEXT("loadSoloRaceMenu should bring the solo race menu instance."), testMenu);
+		aTest->TestTrue(TEXT("loadSoloRaceMenu should bring the solo race menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
 		return true;
 	}
 	return false;

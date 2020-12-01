@@ -22,7 +22,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceIsSetAsProjectGameInstanc
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadMainMenuCreatesMainMenuTest, 
-	"ProjectR.ProjectRGameInstance Tests.Unit.001: loadMainMenu creates the main menu",
+	"ProjectR.ProjectRGameInstance Tests.Unit.001: loadMainMenu creates the main menu and adds it to viewport",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
@@ -32,7 +32,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadMainMenuCreatesOnlyOn
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadSoloRaceMenuCreatesSoloRaceMenuTest, 
-	"ProjectR.ProjectRGameInstance Tests.Unit.003: loadSoloRaceMenu creates the solo race menu",
+	"ProjectR.ProjectRGameInstance Tests.Unit.003: loadSoloRaceMenu creates the solo race menu and adds it to viewport",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
