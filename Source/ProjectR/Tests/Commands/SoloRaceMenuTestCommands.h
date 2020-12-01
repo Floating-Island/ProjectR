@@ -24,4 +24,12 @@ class USoloRaceMenu;
 DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSoloRaceMenuClickChangesMapCommand, int, aTickCount, int, aTickLimit, USoloRaceMenu*, aRaceMenuInstance, bool, isMenuInstanciated,  FAutomationTestBase*, aTest);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSoloRaceMenuClickGoBackRemovesFromViewportCommand, int, aTickCount, int, aTickLimit, USoloRaceMenu*, aRaceMenuInstance, bool, isMenuInstanciated,  FAutomationTestBase*, aTest);
+
+
+
+
+
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS

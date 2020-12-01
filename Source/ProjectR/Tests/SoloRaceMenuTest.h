@@ -22,8 +22,14 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSoloRaceMenuIsntNullWhenInstantiatedTest,
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSoloRaceMenuClickingPlayButtonChangesMapTest, 
-	"ProjectR.SoloRaceMenu Tests.Unit.001: Clicking the play button changes the map",
+	"ProjectR.SoloRaceMenu Tests.Integration.001: Clicking the play button changes the map",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSoloRaceMenuClickingGoBackButtonRemovesFromViewportTest, 
+	"ProjectR.SoloRaceMenu Tests.Integration.003: Clicking the go back button removes it from viewport",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
