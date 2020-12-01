@@ -20,13 +20,24 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceIsSetAsProjectGameInstanc
 	"ProjectR.ProjectRGameInstance Tests.Unit.000: Is set as the project's game instance",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadMainMenuCreatesMainMenuTest, 
 	"ProjectR.ProjectRGameInstance Tests.Unit.001: loadMainMenu creates the main menu",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadMainMenuCreatesOnlyOneMainMenuTest, 
-	"ProjectR.ProjectRGameInstance Tests.Unit.002: loadMainMenu creates only one main menu",
+	"ProjectR.ProjectRGameInstance Tests.Unit.001: loadMainMenu creates only one main menu",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadSoloRaceMenuCreatesSoloRaceMenuTest, 
+	"ProjectR.ProjectRGameInstance Tests.Unit.003: loadSoloRaceMenu creates the solo race menu",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadSoloRaceMenuCreatesOnlyOneSoloRaceMenuTest, 
+	"ProjectR.ProjectRGameInstance Tests.Unit.002: loadSoloRaceMenu creates only one solo race menu",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

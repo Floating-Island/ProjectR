@@ -71,6 +71,38 @@ bool FCheckCreatesOneMainMenu::Update()
 }
 
 
+bool FCheckCreatesSoloRaceMenu::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+
+		USoloRaceMenu* testMenu = testInstance->loadSoloRaceMenu();
+		
+		aTest->TestNotNull(TEXT("loadSoloRaceMenu should bring the solo race menu instance."), testMenu);
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckCreatesOneSoloRaceMenu::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+
+		USoloRaceMenu* testMenu = testInstance->loadSoloRaceMenu();
+		USoloRaceMenu* anotherTestMenu = testInstance->loadSoloRaceMenu();
+		
+		aTest->TestTrue(TEXT("loadSoloRaceMenu should create only one instance of solo race menu."), testMenu == anotherTestMenu);
+		return true;
+	}
+	return false;
+}
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
