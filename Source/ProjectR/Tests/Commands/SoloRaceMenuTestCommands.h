@@ -14,10 +14,13 @@
 
 //Test preparation commands:
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FCreateSoloRaceMenu);
 
 
 //Test check commands:
 
+class USoloRaceMenu;
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckSoloRaceMenuClickChangesMapCommand, int, aTickCount, int, aTickLimit, USoloRaceMenu*, aRaceMenuInstance,  FAutomationTestBase*, aTest);
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

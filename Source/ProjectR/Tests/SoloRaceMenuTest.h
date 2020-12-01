@@ -21,6 +21,9 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSoloRaceMenuIsntNullWhenInstantiatedTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSoloRaceMenuClickingPlayButtonChangesMapTest, 
+	"ProjectR.SoloRaceMenu Tests.Unit.001: Clicking the play button changes the map",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
