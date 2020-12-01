@@ -42,3 +42,12 @@ USoloRaceMenu* UProjectRGameInstance::loadSoloRaceMenu()
 
 	return soloRaceMenu;
 }
+
+bool UProjectRGameInstance::isMainMenuInViewport()
+{
+	if(!mainMenu)
+	{
+		return false;
+	}
+	return mainMenu->IsInViewport();
+}

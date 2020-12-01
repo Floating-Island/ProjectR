@@ -31,4 +31,6 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	USoloRaceMenu* loadSoloRaceMenu();
+
+	bool isMainMenuInViewport();
 };
