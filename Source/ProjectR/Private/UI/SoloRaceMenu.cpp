@@ -37,14 +37,18 @@ bool USoloRaceMenu::Initialize()
 	return initializeResult;
 }
 
-FVector2D USoloRaceMenu::playButtonAbsoluteCenterPosition()
+FVector2D USoloRaceMenu::buttonAbsoluteCenterPosition(UButton* aButton)
 {
 	FVector2D buttonCenter = FVector2D(0.5f, 0.5f);
-	return playButton->GetTickSpaceGeometry().GetAbsolutePositionAtCoordinates(buttonCenter);
+	return aButton->GetTickSpaceGeometry().GetAbsolutePositionAtCoordinates(buttonCenter);
+}
+
+FVector2D USoloRaceMenu::playButtonAbsoluteCenterPosition()
+{
+	return buttonAbsoluteCenterPosition(playButton);
 }
 
 FVector2D USoloRaceMenu::goBackButtonAbsoluteCenterPosition()
 {
-	FVector2D buttonCenter = FVector2D(0.5f, 0.5f);
-	return goBackButton->GetTickSpaceGeometry().GetAbsolutePositionAtCoordinates(buttonCenter);
+	return buttonAbsoluteCenterPosition(goBackButton);
 }

@@ -31,6 +31,8 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Race Map")
 		FName raceLevel;
 
+	FVector2D buttonAbsoluteCenterPosition(UButton* aButton);
+
 public:
 	virtual bool Initialize() override;
 
