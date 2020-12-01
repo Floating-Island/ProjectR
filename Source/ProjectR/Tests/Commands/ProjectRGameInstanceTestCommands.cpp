@@ -6,7 +6,6 @@
 
 #include "ProjectRGameInstanceTestCommands.h"
 #include "GameInstance/ProjectRGameInstance.h"
-#include "Kismet/GameplayStatics.h"
 #include "../Utilities/PIESessionUtilities.h"
 
 //Test preparation commands:
@@ -30,7 +29,7 @@ bool FCheckIsSetAsProjectGameInstance::Update()
 	if(GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(UGameplayStatics::GetGameInstance(sessionUtilities.currentPIEWorld()));
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
 
 		test->TestNotNull(TEXT("ProjectR game instance should be set as project instance."), testInstance);
 		return true;
@@ -44,7 +43,7 @@ bool FCheckCreatesMainMenu::Update()
 	if(GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(UGameplayStatics::GetGameInstance(sessionUtilities.currentPIEWorld()));
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
 
 		UMainMenu* testMenu = testInstance->loadMainMenu();
 		
@@ -53,6 +52,7 @@ bool FCheckCreatesMainMenu::Update()
 	}
 	return false;
 }
+
 
 
 
