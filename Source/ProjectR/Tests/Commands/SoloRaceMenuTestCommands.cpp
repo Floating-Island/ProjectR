@@ -7,19 +7,11 @@
 #include "SoloRaceMenuTestCommands.h"
 #include "UI/SoloRaceMenu.h"
 #include "../Utilities/PIESessionUtilities.h"
+#include "GameInstance/ProjectRGameInstance.h"
 
 //Test preparation commands:
 
-bool FCreateSoloRaceMenu::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		sessionUtilities->loadMenu<USoloRaceMenu>();
-		return true;
-	}
-	return false;
-}
+
 
 
 
@@ -39,6 +31,20 @@ bool FCheckSoloRaceMenuClickChangesMapCommand::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		bool isInAnotherWorld = GEditor->GetPIEWorldContext()->World()->GetMapName() != "VoidWorld";
+
+		if(isMenuInstanciated && !isInAnotherWorld)
+		{
+			FVector2D playButtonCoordinates = aRaceMenuInstance->playButtonAbsoluteCenterCoordinates();
+			sessionUtilities.processEditorClick(playButtonCoordinates);
+		}
+		
+		if(aRaceMenuInstance == nullptr)
+		{
+			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+			aRaceMenuInstance = gameInstance->loadSoloRaceMenu();
+			isMenuInstanciated = true;
+			return false;
+		}
 		
 		if (isInAnotherWorld)
 		{
