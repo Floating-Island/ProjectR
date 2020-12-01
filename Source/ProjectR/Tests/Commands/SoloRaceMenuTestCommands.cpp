@@ -34,7 +34,7 @@ bool FCheckSoloRaceMenuClickChangesMapCommand::Update()
 
 		if(isMenuInstanciated && !isInAnotherWorld)
 		{
-			FVector2D playButtonCoordinates = aRaceMenuInstance->playButtonAbsoluteCenterCoordinates();
+			FVector2D playButtonCoordinates = aRaceMenuInstance->playButtonAbsoluteCenterPosition();
 			sessionUtilities.processEditorClick(playButtonCoordinates);
 		}
 		
