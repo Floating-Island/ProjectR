@@ -8,11 +8,14 @@
 
 UMainMenu* UProjectRGameInstance::loadMainMenu()
 {
-	if(!mainMenu)
+	if (!mainMenu)
 	{
 		mainMenu = CreateWidget<UMainMenu>(this, mainMenuClass, FName("Main Menu"));
 	}
-	mainMenu->AddToViewport();
+	if (!mainMenu->IsInViewport())
+	{
+		mainMenu->AddToViewport();
+	}
 
 	//APlayerController* controller = GetWorld()->GetFirstPlayerController();
 
@@ -22,17 +25,20 @@ UMainMenu* UProjectRGameInstance::loadMainMenu()
 
 	//controller->SetInputMode(inputData);
 	//controller->bShowMouseCursor = true;
-	
+
 	return mainMenu;
 }
 
 USoloRaceMenu* UProjectRGameInstance::loadSoloRaceMenu()
 {
-	if(!soloRaceMenu)
+	if (!soloRaceMenu)
 	{
 		soloRaceMenu = CreateWidget<USoloRaceMenu>(this, soloRaceMenuClass, FName("Solo Race Menu"));
 	}
-	soloRaceMenu->AddToViewport();
-	
+	if (!soloRaceMenu->IsInViewport())
+	{
+		soloRaceMenu->AddToViewport();
+	}
+
 	return soloRaceMenu;
 }
