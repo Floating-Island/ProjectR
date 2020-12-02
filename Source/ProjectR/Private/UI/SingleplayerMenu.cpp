@@ -8,6 +8,7 @@
 
 void USingleplayerMenu::play()
 {
+	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
 	UGameplayStatics::OpenLevel(GetWorld(), raceLevel);
 }
 
