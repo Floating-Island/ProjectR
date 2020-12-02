@@ -27,7 +27,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSingleplayerMenuClickingPlayButtonChangesMapT
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSingleplayerMenuClickingGoBackButtonRemovesFromViewportTest, 
-	"ProjectR.SingleplayerMenu Tests.Integration.003: Clicking the go back button removes it from viewport",
+	"ProjectR.SingleplayerMenu Tests.Integration.002: Clicking the go back button removes it from viewport",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
