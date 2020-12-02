@@ -3,7 +3,7 @@
 
 #include "UI/MainMenu.h"
 #include "Components/Button.h"
-
+#include "GameInstance/ProjectRGameInstance.h"
 
 
 bool UMainMenu::Initialize()
@@ -48,4 +48,6 @@ void UMainMenu::quit()
 void UMainMenu::bringSoloRaceMenu()
 {
 	RemoveFromViewport();
+	UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance());
+	gameInstance->loadSoloRaceMenu();
 }
