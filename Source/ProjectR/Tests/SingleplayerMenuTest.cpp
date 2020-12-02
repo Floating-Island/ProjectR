@@ -18,23 +18,6 @@ bool FUSingleplayerMenuIsntNullWhenInstantiatedTest::RunTest(const FString& Para
 }
 
 
-bool FUSingleplayerMenuClickingPlayButtonRemovesFromViewportTest::RunTest(const FString& Parameters)
-{
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
-	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
-
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSingleplayerMenuClickPlayButtonRemovesFromViewportCommand(tickCount, tickLimit, nullptr, false, this));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	return true;
-}
-
-
-
 bool FUSingleplayerMenuClickingPlayButtonChangesMapTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -44,7 +27,23 @@ bool FUSingleplayerMenuClickingPlayButtonChangesMapTest::RunTest(const FString& 
 
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSingleplayerMenuClickChangesMapCommand(tickCount, tickLimit, nullptr, false, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSingleplayerMenuClickPlayButtonChangesMapCommand(tickCount, tickLimit, nullptr, false, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FUSingleplayerMenuClickingPlayButtonHidesMouseCursorTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSingleplayerMenuClickPlayButtonHidesMouseCursorCommand(tickCount, tickLimit, nullptr, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

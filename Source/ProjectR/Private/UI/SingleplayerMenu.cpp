@@ -8,7 +8,6 @@
 
 void USingleplayerMenu::play()
 {
-	RemoveFromViewport();
 	UGameplayStatics::OpenLevel(GetWorld(), raceLevel);
 }
 

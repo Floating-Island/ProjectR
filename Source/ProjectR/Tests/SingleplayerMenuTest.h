@@ -21,13 +21,13 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSingleplayerMenuIsntNullWhenInstantiatedTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSingleplayerMenuClickingPlayButtonRemovesFromViewportTest,
-	"ProjectR.SingleplayerMenu Tests.Integration.001: Clicking the play button removes the menu from viewport",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSingleplayerMenuClickingPlayButtonChangesMapTest,
+	"ProjectR.SingleplayerMenu Tests.Integration.001: Clicking the play button changes the map",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSingleplayerMenuClickingPlayButtonChangesMapTest,
-	"ProjectR.SingleplayerMenu Tests.Integration.002: Clicking the play button changes the map",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSingleplayerMenuClickingPlayButtonHidesMouseCursorTest,
+	"ProjectR.SingleplayerMenu Tests.Integration.002: Clicking the play button hides the mouse cursor",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

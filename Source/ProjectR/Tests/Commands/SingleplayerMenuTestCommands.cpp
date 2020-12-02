@@ -26,48 +26,7 @@
 //Test check commands:
 
 
-bool FCheckSingleplayerMenuClickPlayButtonRemovesFromViewportCommand::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-		if (aSingleplayerMenuInstance == nullptr)
-		{
-			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
-			aSingleplayerMenuInstance = gameInstance->loadSingleplayerMenu();
-			isMenuInstanciated = true;
-			return false;
-		}
-
-		bool isInViewport = aSingleplayerMenuInstance->IsInViewport();
-
-		if (isInViewport)
-		{
-			FVector2D playButtonCoordinates = aSingleplayerMenuInstance->playButtonAbsoluteCenterPosition();
-			sessionUtilities.processEditorClick(playButtonCoordinates);
-		}
-
-		if (!isInViewport)
-		{
-			aTest->TestTrue(TEXT("The singleplayer menu should remove itself from viewport when clicking the play button."), isInViewport);
-			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-			return true;
-		}
-
-		++aTickCount;
-		if (aTickCount > aTickLimit)
-		{
-			aTest->TestTrue(TEXT("The singleplayer menu should remove itself from viewport when clicking the play button."), isInViewport);
-			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-			return true;
-		}
-	}
-	return false;
-}
-
-
-bool FCheckSingleplayerMenuClickChangesMapCommand::Update()
+bool FCheckSingleplayerMenuClickPlayButtonChangesMapCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -99,6 +58,48 @@ bool FCheckSingleplayerMenuClickChangesMapCommand::Update()
 		if (aTickCount > aTickLimit)
 		{
 			aTest->TestTrue(TEXT("The singleplayer menu should change the current map when clicking the play button."), isInAnotherWorld);
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+	}
+	return false;
+}
+
+
+bool FCheckSingleplayerMenuClickPlayButtonHidesMouseCursorCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		bool isInAnotherWorld = GEditor->GetPIEWorldContext()->World()->GetMapName() != "VoidWorld";
+
+		if (isMenuInstanciated && !isInAnotherWorld)
+		{
+			FVector2D playButtonCoordinates = aSingleplayerMenuInstance->playButtonAbsoluteCenterPosition();
+			sessionUtilities.processEditorClick(playButtonCoordinates);
+		}
+
+		if (aSingleplayerMenuInstance == nullptr)
+		{
+			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+			aSingleplayerMenuInstance = gameInstance->loadSingleplayerMenu();
+			isMenuInstanciated = true;
+			return false;
+		}
+
+		bool isShowingMouseCursor = sessionUtilities.currentPIEWorld()->GetFirstPlayerController()->ShouldShowMouseCursor();
+		
+		if (isInAnotherWorld)
+		{	
+			aTest->TestTrue(TEXT("The singleplayer menu should hide the mouse cursor when clicking the play button."), !isShowingMouseCursor);
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+
+		++aTickCount;
+		if (aTickCount > aTickLimit)
+		{
+			aTest->TestTrue(TEXT("The singleplayer menu should hide the mosue cursor when clicking the play button."), !isShowingMouseCursor);
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
