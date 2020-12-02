@@ -27,7 +27,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingQuitButtonQuitsTheGameTest,
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingSingleplayerButtonRemovesMenuFromViewportTest, 
-	"ProjectR.MainMenu Tests.Integration.001: Clicking the singleplayer button removes the menu from viewport",
+	"ProjectR.MainMenu Tests.Integration.002: Clicking the singleplayer button removes the menu from viewport",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
