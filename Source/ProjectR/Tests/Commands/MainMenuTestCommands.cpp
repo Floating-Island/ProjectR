@@ -91,5 +91,46 @@ bool FCheckMainMenuClickSinglePlayerRemovesMenuFromViewportCommand::Update()
 }
 
 
+bool FCheckSoloMainMenuClickSingleplayerBringsSoloRaceMenuCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+	
+		if(aMainMenuInstance == nullptr)
+		{
+			aMainMenuInstance = gameInstance->loadSoloRaceMenu();
+			isMenuInstanciated = true;
+			return false;
+		}
+		
+		if(isMenuInstanciated && aMainMenuInstance->IsInViewport())
+		{
+			FVector2D goBackButtonCoordinates = aMainMenuInstance->singleplayerButtonAbsoluteCenterPosition();
+			sessionUtilities.processEditorClick(goBackButtonCoordinates);
+			return false;
+		}
+		
+		if (isMenuInstanciated && !aMainMenuInstance->IsInViewport())
+		{
+			aTest->TestTrue(TEXT("The main menu should change to the solo race menu when clicking the singleplayer button."), gameInstance->isMainMenuInViewport());
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+
+		++aTickCount;
+		if (aTickCount > aTickLimit)
+		{
+			aTest->TestTrue(TEXT("The main menu should change to the solo race menu when clicking the singleplayer button."), gameInstance->isMainMenuInViewport());
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+	}
+	return false;
+}
+
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
