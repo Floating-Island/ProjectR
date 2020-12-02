@@ -41,6 +41,14 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadSingleplayerMenuCreat
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadMainMenuShowsMouseCursorTest, 
+	"ProjectR.ProjectRGameInstance Tests.Integration.005: loadMainMenu makes the controller to show the mouse cursor",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadSingleplayerMenuShowsMouseCursorTest, 
+	"ProjectR.ProjectRGameInstance Tests.Integration.006: loadSingleplayerMenu makes the controller to show the mouse cursor",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 

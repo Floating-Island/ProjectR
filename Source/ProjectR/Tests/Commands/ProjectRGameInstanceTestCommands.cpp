@@ -107,5 +107,40 @@ bool FCheckCreatesOneSingleplayerMenu::Update()
 }
 
 
+bool FCheckShowsCursorInMainMenu::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+
+		UMainMenu* testMenu = testInstance->loadMainMenu();
+		bool controllerShowsMouseCursor = sessionUtilities.currentPIEWorld()->GetFirstPlayerController()->ShouldShowMouseCursor();
+		
+		aTest->TestTrue(TEXT("loadMainMenu should make the controller show the mouse cursor."), testMenu && controllerShowsMouseCursor);
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckShowsCursorInSingleplayerMenu::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+
+		USingleplayerMenu* testMenu = testInstance->loadSingleplayerMenu();
+		bool controllerShowsMouseCursor = sessionUtilities.currentPIEWorld()->GetFirstPlayerController()->ShouldShowMouseCursor();
+		
+		aTest->TestTrue(TEXT("loadSingleplayerMenu should make the controller show the mouse cursor."), testMenu && controllerShowsMouseCursor);
+		return true;
+	}
+	return false;
+}
+
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
