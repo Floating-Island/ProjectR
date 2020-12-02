@@ -16,15 +16,8 @@ UMainMenu* UProjectRGameInstance::loadMainMenu()
 	{
 		mainMenu->AddToViewport();
 	}
-
-	//APlayerController* controller = GetWorld()->GetFirstPlayerController();
-
-	//FInputModeUIOnly inputData;
-	//inputData.SetWidgetToFocus(mainMenu->TakeWidget());
-	//inputData.SetLockMouseToViewportBehavior(EMouseLockMode::LockAlways);
-
-	//controller->SetInputMode(inputData);
-	//controller->bShowMouseCursor = true;
+	APlayerController* controller = GetWorld()->GetFirstPlayerController();
+	controller->bShowMouseCursor = true;
 
 	return mainMenu;
 }
@@ -39,7 +32,9 @@ USingleplayerMenu* UProjectRGameInstance::loadSingleplayerMenu()
 	{
 		singleplayerMenu->AddToViewport();
 	}
-
+	APlayerController* controller = GetWorld()->GetFirstPlayerController();
+	controller->bShowMouseCursor = true;
+	
 	return singleplayerMenu;
 }
 
