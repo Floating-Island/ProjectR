@@ -100,7 +100,7 @@ bool FCheckSoloMainMenuClickSingleplayerBringsSoloRaceMenuCommand::Update()
 	
 		if(aMainMenuInstance == nullptr)
 		{
-			aMainMenuInstance = gameInstance->loadSoloRaceMenu();
+			aMainMenuInstance = gameInstance->loadMainMenu();
 			isMenuInstanciated = true;
 			return false;
 		}
