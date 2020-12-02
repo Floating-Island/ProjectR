@@ -66,48 +66,6 @@ bool FCheckSingleplayerMenuClickPlayButtonChangesMapCommand::Update()
 }
 
 
-bool FCheckSingleplayerMenuClickPlayButtonHidesMouseCursorCommand::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		bool isInAnotherWorld = GEditor->GetPIEWorldContext()->World()->GetMapName() != "VoidWorld";
-
-		if (isMenuInstanciated && !isInAnotherWorld)
-		{
-			FVector2D playButtonCoordinates = aSingleplayerMenuInstance->playButtonAbsoluteCenterPosition();
-			sessionUtilities.processEditorClick(playButtonCoordinates);
-		}
-
-		if (aSingleplayerMenuInstance == nullptr)
-		{
-			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
-			aSingleplayerMenuInstance = gameInstance->loadSingleplayerMenu();
-			isMenuInstanciated = true;
-			return false;
-		}
-
-		bool isShowingMouseCursor = sessionUtilities.currentPIEWorld()->GetFirstPlayerController()->ShouldShowMouseCursor();
-		
-		if (isInAnotherWorld)
-		{	
-			aTest->TestTrue(TEXT("The singleplayer menu should hide the mouse cursor when clicking the play button."), !isShowingMouseCursor);
-			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-			return true;
-		}
-
-		++aTickCount;
-		if (aTickCount > aTickLimit)
-		{
-			aTest->TestTrue(TEXT("The singleplayer menu should hide the mosue cursor when clicking the play button."), !isShowingMouseCursor);
-			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-			return true;
-		}
-	}
-	return false;
-}
-
-
 bool FCheckSingleplayerMenuClickGoBackRemovesFromViewportCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())

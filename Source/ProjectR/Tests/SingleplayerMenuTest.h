@@ -26,18 +26,13 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSingleplayerMenuClickingPlayButtonChangesMapT
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSingleplayerMenuClickingPlayButtonHidesMouseCursorTest,
-	"ProjectR.SingleplayerMenu Tests.Integration.002: Clicking the play button hides the mouse cursor",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSingleplayerMenuClickingGoBackButtonRemovesFromViewportTest,
-	"ProjectR.SingleplayerMenu Tests.Integration.003: Clicking the go back button removes the menu from viewport",
+	"ProjectR.SingleplayerMenu Tests.Integration.002: Clicking the go back button removes the menu from viewport",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSingleplayerMenuClickingGoBackButtonBringsMainMenuTest,
-	"ProjectR.SingleplayerMenu Tests.Integration.004: Clicking the go back button brings the mainMenu",
+	"ProjectR.SingleplayerMenu Tests.Integration.003: Clicking the go back button brings the mainMenu",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

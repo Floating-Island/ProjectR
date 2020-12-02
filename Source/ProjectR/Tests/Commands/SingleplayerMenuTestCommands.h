@@ -24,9 +24,6 @@ class USingleplayerMenu;
 DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSingleplayerMenuClickPlayButtonChangesMapCommand, int, aTickCount, int, aTickLimit, USingleplayerMenu*, aSingleplayerMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, aTest);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSingleplayerMenuClickPlayButtonHidesMouseCursorCommand, int, aTickCount, int, aTickLimit, USingleplayerMenu*, aSingleplayerMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, aTest);
-
-
 DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSingleplayerMenuClickGoBackRemovesFromViewportCommand, int, aTickCount, int, aTickLimit, USingleplayerMenu*, aSingleplayerMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, aTest);
 
 
