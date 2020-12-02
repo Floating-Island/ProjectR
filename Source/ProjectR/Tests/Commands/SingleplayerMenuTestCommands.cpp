@@ -25,6 +25,49 @@
 
 //Test check commands:
 
+
+bool FCheckSingleplayerMenuClickPlayButtonRemovesFromViewportCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		
+		if(aSingleplayerMenuInstance == nullptr)
+		{
+			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+			aSingleplayerMenuInstance = gameInstance->loadSingleplayerMenu();
+			isMenuInstanciated = true;
+			return false;
+		}
+
+		bool isInViewport = aSingleplayerMenuInstance->IsInViewport();
+		
+		if(isInViewport)
+		{
+			FVector2D playButtonCoordinates = aSingleplayerMenuInstance->playButtonAbsoluteCenterPosition();
+			sessionUtilities.processEditorClick(playButtonCoordinates);
+		}
+		
+		if (!isInViewport)
+		{
+			aTest->TestTrue(TEXT("The singleplayer menu should remove itself from viewport when clicking the play button."), isInViewport);
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+
+		++aTickCount;
+		if (aTickCount > aTickLimit)
+		{
+			aTest->TestTrue(TEXT("The singleplayer menu should remove itself from viewport when clicking the play button."), isInViewport);
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+	}
+	return false;
+}
+
+
+
 bool FCheckSingleplayerMenuClickChangesMapCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())

@@ -21,6 +21,11 @@
 //Test check commands:
 
 class USingleplayerMenu;
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSingleplayerMenuClickPlayButtonRemovesFromViewportCommand, int, aTickCount, int, aTickLimit, USingleplayerMenu*, aSingleplayerMenuInstance, bool, isMenuInstanciated,  FAutomationTestBase*, aTest);
+
+
 DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSingleplayerMenuClickChangesMapCommand, int, aTickCount, int, aTickLimit, USingleplayerMenu*, aSingleplayerMenuInstance, bool, isMenuInstanciated,  FAutomationTestBase*, aTest);
 
 
