@@ -16,5 +16,5 @@ class PROJECTR_API UMenu : public UUserWidget
 	GENERATED_BODY()
 
 protected:
-  FVector2D buttonAbsoluteCenterPosition(UButton* aButton);
+	FVector2D buttonAbsoluteCenterPosition(UButton* aButton);
 };

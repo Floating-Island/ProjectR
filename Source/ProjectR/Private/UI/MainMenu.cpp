@@ -29,7 +29,6 @@ bool UMainMenu::Initialize()
 
 FVector2D UMainMenu::quitButtonAbsoluteCenterPosition()
 {
-	FVector2D buttonCenter = FVector2D(0.5f, 0.5f);
 	return buttonAbsoluteCenterPosition(quitButton);
 }
 
