@@ -31,23 +31,23 @@ bool FCheckSingleplayerMenuClickPlayButtonRemovesFromViewportCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		
-		if(aSingleplayerMenuInstance == nullptr)
+
+		if (aSingleplayerMenuInstance == nullptr)
 		{
-			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
 			aSingleplayerMenuInstance = gameInstance->loadSingleplayerMenu();
 			isMenuInstanciated = true;
 			return false;
 		}
 
 		bool isInViewport = aSingleplayerMenuInstance->IsInViewport();
-		
-		if(isInViewport)
+
+		if (isInViewport)
 		{
 			FVector2D playButtonCoordinates = aSingleplayerMenuInstance->playButtonAbsoluteCenterPosition();
 			sessionUtilities.processEditorClick(playButtonCoordinates);
 		}
-		
+
 		if (!isInViewport)
 		{
 			aTest->TestTrue(TEXT("The singleplayer menu should remove itself from viewport when clicking the play button."), isInViewport);
@@ -67,7 +67,6 @@ bool FCheckSingleplayerMenuClickPlayButtonRemovesFromViewportCommand::Update()
 }
 
 
-
 bool FCheckSingleplayerMenuClickChangesMapCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
@@ -75,20 +74,20 @@ bool FCheckSingleplayerMenuClickChangesMapCommand::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		bool isInAnotherWorld = GEditor->GetPIEWorldContext()->World()->GetMapName() != "VoidWorld";
 
-		if(isMenuInstanciated && !isInAnotherWorld)
+		if (isMenuInstanciated && !isInAnotherWorld)
 		{
 			FVector2D playButtonCoordinates = aSingleplayerMenuInstance->playButtonAbsoluteCenterPosition();
 			sessionUtilities.processEditorClick(playButtonCoordinates);
 		}
-		
-		if(aSingleplayerMenuInstance == nullptr)
+
+		if (aSingleplayerMenuInstance == nullptr)
 		{
-			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
 			aSingleplayerMenuInstance = gameInstance->loadSingleplayerMenu();
 			isMenuInstanciated = true;
 			return false;
 		}
-		
+
 		if (isInAnotherWorld)
 		{
 			aTest->TestTrue(TEXT("The singleplayer menu should change the current map when clicking the play button."), isInAnotherWorld);
@@ -113,22 +112,22 @@ bool FCheckSingleplayerMenuClickGoBackRemovesFromViewportCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	
-		if(aSingleplayerMenuInstance == nullptr)
+
+		if (aSingleplayerMenuInstance == nullptr)
 		{
-			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
 			aSingleplayerMenuInstance = gameInstance->loadSingleplayerMenu();
 			isMenuInstanciated = true;
 			return false;
 		}
-		
-		if(isMenuInstanciated && aSingleplayerMenuInstance->IsInViewport())
+
+		if (isMenuInstanciated && aSingleplayerMenuInstance->IsInViewport())
 		{
 			FVector2D goBackButtonCoordinates = aSingleplayerMenuInstance->goBackButtonAbsoluteCenterPosition();
 			sessionUtilities.processEditorClick(goBackButtonCoordinates);
 			return false;
 		}
-		
+
 		aTest->TestTrue(TEXT("The singleplayer menu should be removed from viewport when clicking the go back button."), !aSingleplayerMenuInstance->IsInViewport());
 		sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 		return true;
@@ -142,22 +141,22 @@ bool FCheckSingleplayerMenuClickGoBackBringsMainMenuCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
-	
-		if(aSingleplayerMenuInstance == nullptr)
+		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+
+		if (aSingleplayerMenuInstance == nullptr)
 		{
 			aSingleplayerMenuInstance = gameInstance->loadSingleplayerMenu();
 			isMenuInstanciated = true;
 			return false;
 		}
-		
-		if(isMenuInstanciated && aSingleplayerMenuInstance->IsInViewport())
+
+		if (isMenuInstanciated && aSingleplayerMenuInstance->IsInViewport())
 		{
 			FVector2D goBackButtonCoordinates = aSingleplayerMenuInstance->goBackButtonAbsoluteCenterPosition();
 			sessionUtilities.processEditorClick(goBackButtonCoordinates);
 			return false;
 		}
-		
+
 		if (isMenuInstanciated && !aSingleplayerMenuInstance->IsInViewport())
 		{
 			aTest->TestTrue(TEXT("The singleplayer menu should change to the main menu when clicking the go back button."), gameInstance->isMainMenuInViewport());

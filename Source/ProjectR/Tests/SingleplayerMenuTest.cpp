@@ -24,7 +24,7 @@ bool FUSingleplayerMenuClickingPlayButtonRemovesFromViewportTest::RunTest(const 
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
-	
+
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckSingleplayerMenuClickPlayButtonRemovesFromViewportCommand(tickCount, tickLimit, nullptr, false, this));
@@ -41,7 +41,7 @@ bool FUSingleplayerMenuClickingPlayButtonChangesMapTest::RunTest(const FString& 
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
-	
+
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckSingleplayerMenuClickChangesMapCommand(tickCount, tickLimit, nullptr, false, this));
@@ -57,7 +57,7 @@ bool FUSingleplayerMenuClickingGoBackButtonRemovesFromViewportTest::RunTest(cons
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
-	
+
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckSingleplayerMenuClickGoBackRemovesFromViewportCommand(tickCount, tickLimit, nullptr, false, this));
@@ -73,7 +73,7 @@ bool FUSingleplayerMenuClickingGoBackButtonBringsMainMenuTest::RunTest(const FSt
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
-	
+
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckSingleplayerMenuClickGoBackBringsMainMenuCommand(tickCount, tickLimit, nullptr, false, this));
