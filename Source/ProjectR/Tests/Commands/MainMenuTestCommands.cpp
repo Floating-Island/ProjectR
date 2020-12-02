@@ -62,5 +62,34 @@ bool FCheckMainMenuClickQuitsCommand::Update()
 }
 
 
+bool FCheckMainMenuClickSinglePlayerRemovesMenuFromViewportCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	
+		if(aMainMenuInstance == nullptr)
+		{
+			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+			aMainMenuInstance = gameInstance->loadMainMenu();
+			isMenuInstanciated = true;
+			return false;
+		}
+		
+		if(isMenuInstanciated && aMainMenuInstance->IsInViewport())
+		{
+			FVector2D singleplayerButtonCoordinates = aMainMenuInstance->singleplayerButtonAbsoluteCenterPosition();
+			sessionUtilities.processEditorClick(singleplayerButtonCoordinates);
+			return false;
+		}
+		
+		aTest->TestTrue(TEXT("The main menu should be removed from viewport when clicking the singleplayer button."), !aMainMenuInstance->IsInViewport());
+		sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+		return true;
+	}
+	return false;
+}
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
