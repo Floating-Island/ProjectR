@@ -19,11 +19,19 @@ protected:
 	UFUNCTION()
 		void quit();
 
+	UFUNCTION()
+		void bringSoloRaceMenu();
+
 	UPROPERTY(meta = (BindWidget))
 		UButton* quitButton;
+
+	UPROPERTY(meta = (BindWidget))
+		UButton* singleplayerButton;
 
 public:
 	virtual bool Initialize() override;
 
 	FVector2D quitButtonAbsouluteCenterPosition();
+
+	FVector2D singleplayerButtonAbsoluteCenterPosition();
 };

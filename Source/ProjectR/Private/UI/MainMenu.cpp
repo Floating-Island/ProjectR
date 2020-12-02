@@ -16,6 +16,13 @@ bool UMainMenu::Initialize()
 		quitButton->IsFocusable = true;
 		quitButton->SetClickMethod(EButtonClickMethod::MouseDown);
 	}
+	if (singleplayerButton)
+	{
+		singleplayerButton->OnClicked.AddDynamic(this, &UMainMenu::bringSoloRaceMenu);
+		singleplayerButton->OnPressed.AddDynamic(this, &UMainMenu::bringSoloRaceMenu);
+		singleplayerButton->IsFocusable = true;
+		singleplayerButton->SetClickMethod(EButtonClickMethod::MouseDown);
+	}
 	bIsFocusable = true;
 	return initializeResult;
 }
@@ -26,8 +33,19 @@ FVector2D UMainMenu::quitButtonAbsouluteCenterPosition()
 	return quitButton->GetTickSpaceGeometry().GetAbsolutePositionAtCoordinates(buttonCenter);
 }
 
+FVector2D UMainMenu::singleplayerButtonAbsoluteCenterPosition()
+{
+	FVector2D buttonCenter = FVector2D(0.5f, 0.5f);
+	return singleplayerButton->GetTickSpaceGeometry().GetAbsolutePositionAtCoordinates(buttonCenter);
+}
+
 
 void UMainMenu::quit()
 {
 	GetWorld()->GetFirstPlayerController()->ConsoleCommand("quit");
+}
+
+void UMainMenu::bringSoloRaceMenu()
+{
+	RemoveFromViewport();
 }
