@@ -37,7 +37,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadSingleplayerMenuCreat
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadSingleplayerMenuCreatesOnlyOneSingleplayerMenuTest, 
-	"ProjectR.ProjectRGameInstance Tests.Unit.002: loadSingleplayerMenu creates only one singleplayer menu",
+	"ProjectR.ProjectRGameInstance Tests.Unit.004: loadSingleplayerMenu creates only one singleplayer menu",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
