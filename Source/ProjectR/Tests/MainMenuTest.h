@@ -31,8 +31,8 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingSingleplayerButtonRemovesMenu
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingSingleplayerButtonBringsSoloRaceMenuTest, 
-	"ProjectR.MainMenu Tests.Integration.003: Clicking the singleplayer button brings the solo race menu",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingSingleplayerButtonBringsSingleplayerMenuTest, 
+	"ProjectR.MainMenu Tests.Integration.003: Clicking the singleplayer button brings the singleplayer menu",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

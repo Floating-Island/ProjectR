@@ -4,8 +4,8 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-#include "SoloRaceMenuTestCommands.h"
-#include "UI/SoloRaceMenu.h"
+#include "SingleplayerMenuTestCommands.h"
+#include "UI/SingleplayerMenu.h"
 #include "../Utilities/PIESessionUtilities.h"
 #include "GameInstance/ProjectRGameInstance.h"
 
@@ -25,7 +25,7 @@
 
 //Test check commands:
 
-bool FCheckSoloRaceMenuClickChangesMapCommand::Update()
+bool FCheckSingleplayerMenuClickChangesMapCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -34,21 +34,21 @@ bool FCheckSoloRaceMenuClickChangesMapCommand::Update()
 
 		if(isMenuInstanciated && !isInAnotherWorld)
 		{
-			FVector2D playButtonCoordinates = aRaceMenuInstance->playButtonAbsoluteCenterPosition();
+			FVector2D playButtonCoordinates = aSingleplayerMenuInstance->playButtonAbsoluteCenterPosition();
 			sessionUtilities.processEditorClick(playButtonCoordinates);
 		}
 		
-		if(aRaceMenuInstance == nullptr)
+		if(aSingleplayerMenuInstance == nullptr)
 		{
 			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
-			aRaceMenuInstance = gameInstance->loadSoloRaceMenu();
+			aSingleplayerMenuInstance = gameInstance->loadSingleplayerMenu();
 			isMenuInstanciated = true;
 			return false;
 		}
 		
 		if (isInAnotherWorld)
 		{
-			aTest->TestTrue(TEXT("The solo race menu should change the current map when clicking the play button."), isInAnotherWorld);
+			aTest->TestTrue(TEXT("The singleplayer menu should change the current map when clicking the play button."), isInAnotherWorld);
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
@@ -56,7 +56,7 @@ bool FCheckSoloRaceMenuClickChangesMapCommand::Update()
 		++aTickCount;
 		if (aTickCount > aTickLimit)
 		{
-			aTest->TestTrue(TEXT("The solo race menu should change the current map when clicking the play button."), isInAnotherWorld);
+			aTest->TestTrue(TEXT("The singleplayer menu should change the current map when clicking the play button."), isInAnotherWorld);
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
@@ -65,28 +65,28 @@ bool FCheckSoloRaceMenuClickChangesMapCommand::Update()
 }
 
 
-bool FCheckSoloRaceMenuClickGoBackRemovesFromViewportCommand::Update()
+bool FCheckSingleplayerMenuClickGoBackRemovesFromViewportCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 	
-		if(aRaceMenuInstance == nullptr)
+		if(aSingleplayerMenuInstance == nullptr)
 		{
 			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
-			aRaceMenuInstance = gameInstance->loadSoloRaceMenu();
+			aSingleplayerMenuInstance = gameInstance->loadSingleplayerMenu();
 			isMenuInstanciated = true;
 			return false;
 		}
 		
-		if(isMenuInstanciated && aRaceMenuInstance->IsInViewport())
+		if(isMenuInstanciated && aSingleplayerMenuInstance->IsInViewport())
 		{
-			FVector2D goBackButtonCoordinates = aRaceMenuInstance->goBackButtonAbsoluteCenterPosition();
+			FVector2D goBackButtonCoordinates = aSingleplayerMenuInstance->goBackButtonAbsoluteCenterPosition();
 			sessionUtilities.processEditorClick(goBackButtonCoordinates);
 			return false;
 		}
 		
-		aTest->TestTrue(TEXT("The solo race menu should be removed from viewport when clicking the go back button."), !aRaceMenuInstance->IsInViewport());
+		aTest->TestTrue(TEXT("The singleplayer menu should be removed from viewport when clicking the go back button."), !aSingleplayerMenuInstance->IsInViewport());
 		sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 		return true;
 	}
@@ -94,30 +94,30 @@ bool FCheckSoloRaceMenuClickGoBackRemovesFromViewportCommand::Update()
 }
 
 
-bool FCheckSoloRaceMenuClickGoBackBringsMainMenuCommand::Update()
+bool FCheckSingleplayerMenuClickGoBackBringsMainMenuCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
 	
-		if(aRaceMenuInstance == nullptr)
+		if(aSingleplayerMenuInstance == nullptr)
 		{
-			aRaceMenuInstance = gameInstance->loadSoloRaceMenu();
+			aSingleplayerMenuInstance = gameInstance->loadSingleplayerMenu();
 			isMenuInstanciated = true;
 			return false;
 		}
 		
-		if(isMenuInstanciated && aRaceMenuInstance->IsInViewport())
+		if(isMenuInstanciated && aSingleplayerMenuInstance->IsInViewport())
 		{
-			FVector2D goBackButtonCoordinates = aRaceMenuInstance->goBackButtonAbsoluteCenterPosition();
+			FVector2D goBackButtonCoordinates = aSingleplayerMenuInstance->goBackButtonAbsoluteCenterPosition();
 			sessionUtilities.processEditorClick(goBackButtonCoordinates);
 			return false;
 		}
 		
-		if (isMenuInstanciated && !aRaceMenuInstance->IsInViewport())
+		if (isMenuInstanciated && !aSingleplayerMenuInstance->IsInViewport())
 		{
-			aTest->TestTrue(TEXT("The solo race menu should change to the main menu when clicking the go back button."), gameInstance->isMainMenuInViewport());
+			aTest->TestTrue(TEXT("The singleplayer menu should change to the main menu when clicking the go back button."), gameInstance->isMainMenuInViewport());
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
@@ -125,7 +125,7 @@ bool FCheckSoloRaceMenuClickGoBackBringsMainMenuCommand::Update()
 		++aTickCount;
 		if (aTickCount > aTickLimit)
 		{
-			aTest->TestTrue(TEXT("The solo race menu should change to the main menu when clicking the go back button."), gameInstance->isMainMenuInViewport());
+			aTest->TestTrue(TEXT("The singleplayer menu should change to the main menu when clicking the go back button."), gameInstance->isMainMenuInViewport());
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}

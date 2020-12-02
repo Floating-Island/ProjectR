@@ -26,9 +26,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesMainMenu, FAutomatio
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesOneMainMenu, FAutomationTestBase*, aTest);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesSoloRaceMenu, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesSingleplayerMenu, FAutomationTestBase*, aTest);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesOneSoloRaceMenu, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesOneSingleplayerMenu, FAutomationTestBase*, aTest);
 
 #endif //WITH_DEV_AUTOMATION_TESTS

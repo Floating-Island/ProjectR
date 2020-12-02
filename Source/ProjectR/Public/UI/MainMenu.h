@@ -20,7 +20,7 @@ protected:
 		void quit();
 
 	UFUNCTION()
-		void bringSoloRaceMenu();
+		void bringSingleplayerMenu();
 
 	UPROPERTY(meta = (BindWidget))
 		UButton* quitButton;
@@ -31,7 +31,7 @@ protected:
 public:
 	virtual bool Initialize() override;
 
-	FVector2D quitButtonAbsouluteCenterPosition();
+	FVector2D quitButtonAbsoluteCenterPosition();
 
 	FVector2D singleplayerButtonAbsoluteCenterPosition();
 };

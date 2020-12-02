@@ -8,7 +8,7 @@
 #include "GameInstance/ProjectRGameInstance.h"
 #include "../Utilities/PIESessionUtilities.h"
 #include "UI/MainMenu.h"
-#include "UI/SoloRaceMenu.h"
+#include "UI/SingleplayerMenu.h"
 
 
 //Test preparation commands:
@@ -74,33 +74,33 @@ bool FCheckCreatesOneMainMenu::Update()
 }
 
 
-bool FCheckCreatesSoloRaceMenu::Update()
+bool FCheckCreatesSingleplayerMenu::Update()
 {
 	if(GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
 
-		USoloRaceMenu* testMenu = testInstance->loadSoloRaceMenu();
+		USingleplayerMenu* testMenu = testInstance->loadSingleplayerMenu();
 		
-		aTest->TestTrue(TEXT("loadSoloRaceMenu should bring the solo race menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
+		aTest->TestTrue(TEXT("loadSingleplayerMenu should bring the singleplayer menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
 		return true;
 	}
 	return false;
 }
 
 
-bool FCheckCreatesOneSoloRaceMenu::Update()
+bool FCheckCreatesOneSingleplayerMenu::Update()
 {
 	if(GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
 
-		USoloRaceMenu* testMenu = testInstance->loadSoloRaceMenu();
-		USoloRaceMenu* anotherTestMenu = testInstance->loadSoloRaceMenu();
+		USingleplayerMenu* testMenu = testInstance->loadSingleplayerMenu();
+		USingleplayerMenu* anotherTestMenu = testInstance->loadSingleplayerMenu();
 		
-		aTest->TestTrue(TEXT("loadSoloRaceMenu should create only one instance of solo race menu."), testMenu == anotherTestMenu);
+		aTest->TestTrue(TEXT("loadSingleplayerMenu should create only one instance of singleplayer menu."), testMenu == anotherTestMenu);
 		return true;
 	}
 	return false;

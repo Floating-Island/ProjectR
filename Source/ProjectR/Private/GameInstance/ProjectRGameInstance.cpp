@@ -3,7 +3,7 @@
 
 #include "GameInstance/ProjectRGameInstance.h"
 #include "UI/MainMenu.h"
-#include "UI/SoloRaceMenu.h"
+#include "UI/SingleplayerMenu.h"
 #include "Blueprint/UserWidget.h"
 
 UMainMenu* UProjectRGameInstance::loadMainMenu()
@@ -29,18 +29,18 @@ UMainMenu* UProjectRGameInstance::loadMainMenu()
 	return mainMenu;
 }
 
-USoloRaceMenu* UProjectRGameInstance::loadSoloRaceMenu()
+USingleplayerMenu* UProjectRGameInstance::loadSingleplayerMenu()
 {
-	if (!soloRaceMenu)
+	if (!singleplayerMenu)
 	{
-		soloRaceMenu = CreateWidget<USoloRaceMenu>(this, soloRaceMenuClass, FName("Solo Race Menu"));
+		singleplayerMenu = CreateWidget<USingleplayerMenu>(this, singleplayerMenuClass, FName("Solo Race Menu"));
 	}
-	if (!soloRaceMenu->IsInViewport())
+	if (!singleplayerMenu->IsInViewport())
 	{
-		soloRaceMenu->AddToViewport();
+		singleplayerMenu->AddToViewport();
 	}
 
-	return soloRaceMenu;
+	return singleplayerMenu;
 }
 
 bool UProjectRGameInstance::isMainMenuInViewport()
@@ -52,11 +52,11 @@ bool UProjectRGameInstance::isMainMenuInViewport()
 	return mainMenu->IsInViewport();
 }
 
-bool UProjectRGameInstance::isSoloRaceMenuInViewport()
+bool UProjectRGameInstance::isSingleplayerMenuInViewport()
 {
-	if(!soloRaceMenu)
+	if(!singleplayerMenu)
 	{
 		return false;
 	}
-	return soloRaceMenu->IsInViewport();
+	return singleplayerMenu->IsInViewport();
 }

@@ -51,7 +51,8 @@ bool FUMainMenuClickingSingleplayerButtonRemovesMenuFromViewportTest::RunTest(co
 	return true;
 }
 
-bool FUMainMenuClickingSingleplayerButtonBringsSoloRaceMenuTest::RunTest(const FString& Parameters)
+
+bool FUMainMenuClickingSingleplayerButtonBringsSingleplayerMenuTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
@@ -60,7 +61,7 @@ bool FUMainMenuClickingSingleplayerButtonBringsSoloRaceMenuTest::RunTest(const F
 	
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSoloMainMenuClickSingleplayerBringsSoloRaceMenuCommand(tickCount, tickLimit, nullptr, false, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSoloMainMenuClickSingleplayerBringsSingleplayerMenuCommand(tickCount, tickLimit, nullptr, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

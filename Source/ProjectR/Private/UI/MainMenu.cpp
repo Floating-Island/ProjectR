@@ -18,8 +18,8 @@ bool UMainMenu::Initialize()
 	}
 	if (singleplayerButton)
 	{
-		singleplayerButton->OnClicked.AddDynamic(this, &UMainMenu::bringSoloRaceMenu);
-		singleplayerButton->OnPressed.AddDynamic(this, &UMainMenu::bringSoloRaceMenu);
+		singleplayerButton->OnClicked.AddDynamic(this, &UMainMenu::bringSingleplayerMenu);
+		singleplayerButton->OnPressed.AddDynamic(this, &UMainMenu::bringSingleplayerMenu);
 		singleplayerButton->IsFocusable = true;
 		singleplayerButton->SetClickMethod(EButtonClickMethod::MouseDown);
 	}
@@ -27,7 +27,7 @@ bool UMainMenu::Initialize()
 	return initializeResult;
 }
 
-FVector2D UMainMenu::quitButtonAbsouluteCenterPosition()
+FVector2D UMainMenu::quitButtonAbsoluteCenterPosition()
 {
 	FVector2D buttonCenter = FVector2D(0.5f, 0.5f);
 	return quitButton->GetTickSpaceGeometry().GetAbsolutePositionAtCoordinates(buttonCenter);
@@ -45,9 +45,9 @@ void UMainMenu::quit()
 	GetWorld()->GetFirstPlayerController()->ConsoleCommand("quit");
 }
 
-void UMainMenu::bringSoloRaceMenu()
+void UMainMenu::bringSingleplayerMenu()
 {
 	RemoveFromViewport();
 	UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance());
-	gameInstance->loadSoloRaceMenu();
+	gameInstance->loadSingleplayerMenu();
 }

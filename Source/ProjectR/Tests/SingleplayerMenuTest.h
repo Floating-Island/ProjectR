@@ -16,23 +16,23 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSoloRaceMenuIsntNullWhenInstantiatedTest, 
-	"ProjectR.SoloRaceMenu Tests.Unit.000: Isn't null when instantiated",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSingleplayerMenuIsntNullWhenInstantiatedTest, 
+	"ProjectR.SingleplayerMenu Tests.Unit.000: Isn't null when instantiated",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSoloRaceMenuClickingPlayButtonChangesMapTest, 
-	"ProjectR.SoloRaceMenu Tests.Integration.001: Clicking the play button changes the map",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSingleplayerMenuClickingPlayButtonChangesMapTest, 
+	"ProjectR.SingleplayerMenu Tests.Integration.001: Clicking the play button changes the map",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSoloRaceMenuClickingGoBackButtonRemovesFromViewportTest, 
-	"ProjectR.SoloRaceMenu Tests.Integration.003: Clicking the go back button removes it from viewport",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSingleplayerMenuClickingGoBackButtonRemovesFromViewportTest, 
+	"ProjectR.SingleplayerMenu Tests.Integration.003: Clicking the go back button removes it from viewport",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSoloRaceMenuClickingGoBackButtonBringsMainMenuTest, 
-	"ProjectR.SoloRaceMenu Tests.Integration.003: Clicking the go back button brings the mainMenu",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSingleplayerMenuClickingGoBackButtonBringsMainMenuTest, 
+	"ProjectR.SingleplayerMenu Tests.Integration.003: Clicking the go back button brings the mainMenu",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

@@ -31,13 +31,13 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadMainMenuCreatesOnlyOn
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadSoloRaceMenuCreatesSoloRaceMenuTest, 
-	"ProjectR.ProjectRGameInstance Tests.Integration.003: loadSoloRaceMenu creates the solo race menu and adds it to viewport",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadSingleplayerMenuCreatesSingleplayerMenuTest, 
+	"ProjectR.ProjectRGameInstance Tests.Integration.003: loadSingleplayerMenu creates the singleplayer menu and adds it to viewport",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadSoloRaceMenuCreatesOnlyOneSoloRaceMenuTest, 
-	"ProjectR.ProjectRGameInstance Tests.Unit.002: loadSoloRaceMenu creates only one solo race menu",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadSingleplayerMenuCreatesOnlyOneSingleplayerMenuTest, 
+	"ProjectR.ProjectRGameInstance Tests.Unit.002: loadSingleplayerMenu creates only one singleplayer menu",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

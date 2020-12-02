@@ -6,7 +6,7 @@
 #include "Engine/GameInstance.h"
 #include "ProjectRGameInstance.generated.h"
 
-class USoloRaceMenu;
+class USingleplayerMenu;
 class UMainMenu;
 /**
  * 
@@ -18,20 +18,20 @@ class PROJECTR_API UProjectRGameInstance : public UGameInstance
 
 protected:
 	UMainMenu* mainMenu;
-	USoloRaceMenu* soloRaceMenu;
+	USingleplayerMenu* singleplayerMenu;
 public:
 	UPROPERTY(EditDefaultsOnly, Category= "Menus")
 		TSubclassOf<UMainMenu> mainMenuClass;
 
 	UPROPERTY(EditDefaultsOnly, Category= "Menus")
-		TSubclassOf<USoloRaceMenu> soloRaceMenuClass;
+		TSubclassOf<USingleplayerMenu> singleplayerMenuClass;
 	
 	UFUNCTION(BlueprintCallable)
 	UMainMenu* loadMainMenu();
 	
 	UFUNCTION(BlueprintCallable)
-	USoloRaceMenu* loadSoloRaceMenu();
+	USingleplayerMenu* loadSingleplayerMenu();
 
 	bool isMainMenuInViewport();
-	bool isSoloRaceMenuInViewport();
+	bool isSingleplayerMenuInViewport();
 };

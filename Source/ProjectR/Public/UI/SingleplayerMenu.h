@@ -4,14 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "SoloRaceMenu.generated.h"
+#include "SingleplayerMenu.generated.h"
 
 class UButton;
 /**
  * 
  */
 UCLASS()
-class PROJECTR_API USoloRaceMenu : public UUserWidget
+class PROJECTR_API USingleplayerMenu : public UUserWidget
 {
 	GENERATED_BODY()
 

@@ -30,7 +30,7 @@ bool FCheckMainMenuClickQuitsCommand::Update()
 			aMainMenuInstance = testInstance->loadMainMenu();
 		}
 
-		FVector2D quitCoordinates = aMainMenuInstance->quitButtonAbsouluteCenterPosition();
+		FVector2D quitCoordinates = aMainMenuInstance->quitButtonAbsoluteCenterPosition();
 		UE_LOG(LogTemp, Log, TEXT("quit button coordinates in viewport: %s"), *quitCoordinates.ToString());
 
 		if (inPIE)//first, the game menu instance has to be rendered correctly. This happens on the next frame.
@@ -91,7 +91,7 @@ bool FCheckMainMenuClickSinglePlayerRemovesMenuFromViewportCommand::Update()
 }
 
 
-bool FCheckSoloMainMenuClickSingleplayerBringsSoloRaceMenuCommand::Update()
+bool FCheckSoloMainMenuClickSingleplayerBringsSingleplayerMenuCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -114,7 +114,7 @@ bool FCheckSoloMainMenuClickSingleplayerBringsSoloRaceMenuCommand::Update()
 		
 		if (isMenuInstanciated && !aMainMenuInstance->IsInViewport())
 		{
-			aTest->TestTrue(TEXT("The main menu should change to the solo race menu when clicking the singleplayer button."), gameInstance->isSoloRaceMenuInViewport());
+			aTest->TestTrue(TEXT("The main menu should change to the solo race menu when clicking the singleplayer button."), gameInstance->isSingleplayerMenuInViewport());
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
@@ -122,7 +122,7 @@ bool FCheckSoloMainMenuClickSingleplayerBringsSoloRaceMenuCommand::Update()
 		++aTickCount;
 		if (aTickCount > aTickLimit)
 		{
-			aTest->TestTrue(TEXT("The main menu should change to the solo race menu when clicking the singleplayer button."), gameInstance->isSoloRaceMenuInViewport());
+			aTest->TestTrue(TEXT("The main menu should change to the solo race menu when clicking the singleplayer button."), gameInstance->isSingleplayerMenuInViewport());
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}

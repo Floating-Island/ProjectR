@@ -3,22 +3,22 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-#include "SoloRaceMenuTest.h"
-#include "Commands/SoloRaceMenuTestCommands.h"
+#include "SingleplayerMenuTest.h"
+#include "Commands/SingleplayerMenuTestCommands.h"
 #include "Tests/AutomationEditorCommon.h"
 
-#include "UI/SoloRaceMenu.h"
+#include "UI/SingleplayerMenu.h"
 
-bool FUSoloRaceMenuIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
+bool FUSingleplayerMenuIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
-	USoloRaceMenu* testSoloMenu = NewObject<USoloRaceMenu>();
-	TestNotNull(TEXT("The solo race menu shouldn't be null after instantiating it."), testSoloMenu);
+	USingleplayerMenu* testSoloMenu = NewObject<USingleplayerMenu>();
+	TestNotNull(TEXT("The singleplayer menu shouldn't be null after instantiating it."), testSoloMenu);
 
 	return true;
 }
 
 
-bool FUSoloRaceMenuClickingPlayButtonChangesMapTest::RunTest(const FString& Parameters)
+bool FUSingleplayerMenuClickingPlayButtonChangesMapTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
@@ -27,14 +27,14 @@ bool FUSoloRaceMenuClickingPlayButtonChangesMapTest::RunTest(const FString& Para
 	
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSoloRaceMenuClickChangesMapCommand(tickCount, tickLimit, nullptr, false, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSingleplayerMenuClickChangesMapCommand(tickCount, tickLimit, nullptr, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
 
 
-bool FUSoloRaceMenuClickingGoBackButtonRemovesFromViewportTest::RunTest(const FString& Parameters)
+bool FUSingleplayerMenuClickingGoBackButtonRemovesFromViewportTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
@@ -43,14 +43,14 @@ bool FUSoloRaceMenuClickingGoBackButtonRemovesFromViewportTest::RunTest(const FS
 	
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSoloRaceMenuClickGoBackRemovesFromViewportCommand(tickCount, tickLimit, nullptr, false, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSingleplayerMenuClickGoBackRemovesFromViewportCommand(tickCount, tickLimit, nullptr, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
 
 
-bool FUSoloRaceMenuClickingGoBackButtonBringsMainMenuTest::RunTest(const FString& Parameters)
+bool FUSingleplayerMenuClickingGoBackButtonBringsMainMenuTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
@@ -59,7 +59,7 @@ bool FUSoloRaceMenuClickingGoBackButtonBringsMainMenuTest::RunTest(const FString
 	
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSoloRaceMenuClickGoBackBringsMainMenuCommand(tickCount, tickLimit, nullptr, false, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSingleplayerMenuClickGoBackBringsMainMenuCommand(tickCount, tickLimit, nullptr, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
