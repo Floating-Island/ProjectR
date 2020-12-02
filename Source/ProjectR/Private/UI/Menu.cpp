@@ -10,7 +10,3 @@ FVector2D UMenu::buttonAbsoluteCenterPosition(UButton *aButton)
 	return aButton->GetTickSpaceGeometry().GetAbsolutePositionAtCoordinates(buttonCenter);
 }
 
-bool UMenu::Initialize()
-{
-	return Super::Initialize();
-}

@@ -17,8 +17,4 @@ class PROJECTR_API UMenu : public UUserWidget
 
 protected:
   FVector2D buttonAbsoluteCenterPosition(UButton* aButton);
-
-
-public:
-      virtual bool Initialize() override;
 };

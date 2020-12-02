@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "UI/Menu.h"
 #include "SingleplayerMenu.generated.h"
 
 class UButton;
@@ -11,7 +11,7 @@ class UButton;
  * 
  */
 UCLASS()
-class PROJECTR_API USingleplayerMenu : public UUserWidget
+class PROJECTR_API USingleplayerMenu : public UMenu
 {
 	GENERATED_BODY()
 
@@ -30,8 +30,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category="Race Map")
 		FName raceLevel;
-
-	FVector2D buttonAbsoluteCenterPosition(UButton* aButton);
 
 public:
 	virtual bool Initialize() override;

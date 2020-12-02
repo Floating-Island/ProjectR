@@ -30,13 +30,12 @@ bool UMainMenu::Initialize()
 FVector2D UMainMenu::quitButtonAbsoluteCenterPosition()
 {
 	FVector2D buttonCenter = FVector2D(0.5f, 0.5f);
-	return quitButton->GetTickSpaceGeometry().GetAbsolutePositionAtCoordinates(buttonCenter);
+	return buttonAbsoluteCenterPosition(quitButton);
 }
 
 FVector2D UMainMenu::singleplayerButtonAbsoluteCenterPosition()
 {
-	FVector2D buttonCenter = FVector2D(0.5f, 0.5f);
-	return singleplayerButton->GetTickSpaceGeometry().GetAbsolutePositionAtCoordinates(buttonCenter);
+	return buttonAbsoluteCenterPosition(singleplayerButton);
 }
 
 

@@ -40,12 +40,6 @@ bool USingleplayerMenu::Initialize()
 	return initializeResult;
 }
 
-FVector2D USingleplayerMenu::buttonAbsoluteCenterPosition(UButton* aButton)
-{
-	FVector2D buttonCenter = FVector2D(0.5f, 0.5f);
-	return aButton->GetTickSpaceGeometry().GetAbsolutePositionAtCoordinates(buttonCenter);
-}
-
 FVector2D USingleplayerMenu::playButtonAbsoluteCenterPosition()
 {
 	return buttonAbsoluteCenterPosition(playButton);
