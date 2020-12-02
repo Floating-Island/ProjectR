@@ -114,7 +114,7 @@ bool FCheckSoloMainMenuClickSingleplayerBringsSoloRaceMenuCommand::Update()
 		
 		if (isMenuInstanciated && !aMainMenuInstance->IsInViewport())
 		{
-			aTest->TestTrue(TEXT("The main menu should change to the solo race menu when clicking the singleplayer button."), gameInstance->isMainMenuInViewport());
+			aTest->TestTrue(TEXT("The main menu should change to the solo race menu when clicking the singleplayer button."), gameInstance->isSoloRaceMenuInViewport());
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
@@ -122,7 +122,7 @@ bool FCheckSoloMainMenuClickSingleplayerBringsSoloRaceMenuCommand::Update()
 		++aTickCount;
 		if (aTickCount > aTickLimit)
 		{
-			aTest->TestTrue(TEXT("The main menu should change to the solo race menu when clicking the singleplayer button."), gameInstance->isMainMenuInViewport());
+			aTest->TestTrue(TEXT("The main menu should change to the solo race menu when clicking the singleplayer button."), gameInstance->isSoloRaceMenuInViewport());
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
