@@ -51,3 +51,12 @@ bool UProjectRGameInstance::isMainMenuInViewport()
 	}
 	return mainMenu->IsInViewport();
 }
+
+bool UProjectRGameInstance::isSoloRaceMenuInViewport()
+{
+	if(!soloRaceMenu)
+	{
+		return false;
+	}
+	return soloRaceMenu->IsInViewport();
+}

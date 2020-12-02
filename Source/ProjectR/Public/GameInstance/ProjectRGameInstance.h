@@ -33,4 +33,5 @@ public:
 	USoloRaceMenu* loadSoloRaceMenu();
 
 	bool isMainMenuInViewport();
+	bool isSoloRaceMenuInViewport();
 };
