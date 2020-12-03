@@ -6,15 +6,15 @@
 #include "UI/PauseMenu.h"
 
 
-UPauseMenu* AProjectRGameState::loadPauseMenu()
-{
-	if (!pauseMenu)
-	{
-		pauseMenu = CreateWidget<UPauseMenu>(GetWorld()->GetGameInstance(), pauseMenuClass, FName("Pause Menu"));
-	}
-	if (!pauseMenu->IsInViewport())
-	{
-		pauseMenu->AddToViewport();
-	}
-	return pauseMenu;
-}
+//UPauseMenu* AProjectRGameState::loadPauseMenu()
+//{
+//	if (!pauseMenu)
+//	{
+//		pauseMenu = CreateWidget<UPauseMenu>(GetWorld()->GetGameInstance(), pauseMenuClass, FName("Pause Menu"));
+//	}
+//	if (!pauseMenu->IsInViewport())
+//	{
+//		pauseMenu->AddToViewport();
+//	}
+//	return pauseMenu;
+//}

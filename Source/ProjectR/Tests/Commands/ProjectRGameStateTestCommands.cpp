@@ -26,20 +26,20 @@
 //Test check commands:
 
 
-bool FCheckGameStateBringsPauseMenu::Update()
-{
-	if(GEditor->IsPlayingSessionInEditor())
-	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		AProjectRGameState* testGameState = Cast<AProjectRGameState, AGameStateBase>(sessionUtilities.currentPIEWorld()->GetGameState());
-
-		UPauseMenu* testMenu = testGameState->loadPauseMenu();
-		
-		aTest->TestTrue(TEXT("loadPauseMenu should bring the pause menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
-		return true;
-	}
-	return false;
-}
+//bool FCheckGameStateBringsPauseMenu::Update()
+//{
+//	if(GEditor->IsPlayingSessionInEditor())
+//	{
+//		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+//		AProjectRGameState* testGameState = Cast<AProjectRGameState, AGameStateBase>(sessionUtilities.currentPIEWorld()->GetGameState());
+//
+//		UPauseMenu* testMenu = testGameState->loadPauseMenu();
+//		
+//		aTest->TestTrue(TEXT("loadPauseMenu should bring the pause menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
+//		return true;
+//	}
+//	return false;
+//}
 
 
 

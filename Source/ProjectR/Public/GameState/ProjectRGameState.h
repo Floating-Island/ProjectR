@@ -15,12 +15,12 @@ class PROJECTR_API AProjectRGameState : public AGameStateBase
 {
 	GENERATED_BODY()
 
-protected:
-		UPauseMenu* pauseMenu;
-public:
-	UPROPERTY(EditDefaultsOnly, Category= "Menus")
-		TSubclassOf<UPauseMenu> pauseMenuClass;
-	
-public:
-	UPauseMenu* loadPauseMenu();
+//protected:
+//		UPauseMenu* pauseMenu;
+//public:
+//	UPROPERTY(EditDefaultsOnly, Category= "Menus")
+//		TSubclassOf<UPauseMenu> pauseMenuClass;
+//	
+//public:
+//	UPauseMenu* loadPauseMenu();
 };
