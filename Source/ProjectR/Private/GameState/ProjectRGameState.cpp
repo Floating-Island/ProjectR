@@ -16,4 +16,5 @@ UPauseMenu* AProjectRGameState::loadPauseMenu()
 	{
 		pauseMenu->AddToViewport();
 	}
+	return pauseMenu;
 }
