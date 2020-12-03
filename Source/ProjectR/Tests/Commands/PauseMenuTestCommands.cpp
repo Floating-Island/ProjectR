@@ -31,7 +31,7 @@ bool FCheckPauseMenuClickReturnButtonChangesToMainMenuMap::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		bool isInAnotherWorld = GEditor->GetPIEWorldContext()->World()->GetMapName() != "VoidWorld-PlayerController";
+		bool isInAnotherWorld = !GEditor->GetPIEWorldContext()->World()->GetMapName().Contains("VoidWorld-PlayerController");
 
 		UE_LOG(LogTemp, Log, TEXT("this is %s world"), *GEditor->GetPIEWorldContext()->World()->GetMapName());
 
@@ -53,7 +53,6 @@ bool FCheckPauseMenuClickReturnButtonChangesToMainMenuMap::Update()
 			UE_LOG(LogTemp, Log, TEXT("pause menu is instantiated"));
 			if (!isInAnotherWorld)
 			{
-				
 				FVector2D returnButtonCoordinates = aPauseMenuInstance->returnButtonAbsoluteCenterPosition();
 				UE_LOG(LogTemp, Log, TEXT("return button coordinates in viewport: %s"), *returnButtonCoordinates.ToString());
 				UE_LOG(LogTemp, Log, TEXT("attempting click"));
@@ -63,7 +62,7 @@ bool FCheckPauseMenuClickReturnButtonChangesToMainMenuMap::Update()
 
 			if (isInAnotherWorld)
 			{
-				bool inMainMenuMap = sessionUtilities.currentPIEWorld()->GetMapName() == "MainMenu";
+				bool inMainMenuMap = GEditor->GetPIEWorldContext()->World()->GetMapName().Contains("MainMenu");
 				aTest->TestTrue(TEXT("The singleplayer menu should change the current map when clicking the play button."), inMainMenuMap);
 				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 				return true;

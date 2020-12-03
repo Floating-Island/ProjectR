@@ -25,7 +25,7 @@ bool UPauseMenu::Initialize()
 		returnButton->OnPressed.AddDynamic(this, &UPauseMenu::returnToMainMenu);
 		bIsFocusable = true;
 	}
-
+	bIsFocusable = true;
 
 	return initializeResult;
 }
