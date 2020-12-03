@@ -21,6 +21,9 @@ protected:
 
 	UFUNCTION()
 		void returnToMainMenu();
+
+	UPROPERTY(EditAnywhere, Category="Menu Map")
+		FName mainMenuLevel;
 	
 	
 public:

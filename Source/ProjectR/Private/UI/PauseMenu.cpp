@@ -7,7 +7,7 @@
 
 void UPauseMenu::returnToMainMenu()
 {
-	UGameplayStatics::OpenLevel(this, FName("MainMenu"));
+	UGameplayStatics::OpenLevel(GetWorld(), mainMenuLevel);
 }
 
 FVector2D UPauseMenu::returnButtonAbsoluteCenterPosition()
