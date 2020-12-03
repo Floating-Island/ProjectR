@@ -50,7 +50,10 @@ bool FCheckPauseMenuClickReturnButtonChangesToMainMenuMap::Update()
 		{
 			if (!isInAnotherWorld)
 			{
+				
 				FVector2D returnButtonCoordinates = aPauseMenuInstance->returnButtonAbsoluteCenterPosition();
+				UE_LOG(LogTemp, Log, TEXT("return button coordinates in viewport: %s"), *returnButtonCoordinates.ToString());
+				UE_LOG(LogTemp, Log, TEXT("attempting click"));
 				sessionUtilities.processEditorClick(returnButtonCoordinates);
 				return false;
 			}
