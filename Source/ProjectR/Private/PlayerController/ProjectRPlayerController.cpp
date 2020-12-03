@@ -15,6 +15,7 @@ UPauseMenu* AProjectRPlayerController::loadPauseMenu()
 	{
 		pauseMenu->AddToViewport();
 	}
+	bShowMouseCursor = true;
 
 	return pauseMenu;
 }
