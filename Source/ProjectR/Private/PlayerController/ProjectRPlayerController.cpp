@@ -2,4 +2,16 @@
 
 
 #include "PlayerController/ProjectRPlayerController.h"
+#include "UI/PauseMenu.h"
+#include "Components/Widget.h"
 
+UPauseMenu* AProjectRPlayerController::loadPauseMenu()
+{
+	if(!pauseMenu)
+	{
+		pauseMenu = CreateWidget<UPauseMenu>(GetWorld()->GetGameInstance(), pauseMenuClass, FName("Pause Menu"));
+	}
+	pauseMenu->AddToViewport();
+
+	return pauseMenu;
+}
