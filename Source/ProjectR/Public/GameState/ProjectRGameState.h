@@ -6,6 +6,7 @@
 #include "GameFramework/GameStateBase.h"
 #include "ProjectRGameState.generated.h"
 
+class UPauseMenu;
 /**
  * 
  */
@@ -13,5 +14,13 @@ UCLASS()
 class PROJECTR_API AProjectRGameState : public AGameStateBase
 {
 	GENERATED_BODY()
+
+protected:
+		UPauseMenu* pauseMenu;
+public:
+	UPROPERTY(EditDefaultsOnly, Category= "Menus")
+		TSubclassOf<UPauseMenu> pauseMenuClass;
 	
+public:
+	UPauseMenu* loadPauseMenu();
 };
