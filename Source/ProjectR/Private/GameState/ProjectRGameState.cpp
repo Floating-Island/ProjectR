@@ -10,7 +10,7 @@ UPauseMenu* AProjectRGameState::loadPauseMenu()
 {
 	if (!pauseMenu)
 	{
-		pauseMenu = CreateWidget<UPauseMenu>(this, pauseMenuClass, FName("Pause Menu"));
+		pauseMenu = CreateWidget<UPauseMenu>(GetWorld()->GetGameInstance(), pauseMenuClass, FName("Pause Menu"));
 	}
 	if (!pauseMenu->IsInViewport())
 	{
