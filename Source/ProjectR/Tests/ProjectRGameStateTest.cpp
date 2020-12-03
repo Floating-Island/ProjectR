@@ -6,6 +6,7 @@
 #include "ProjectRGameStateTest.h"
 #include "Commands/ProjectRGameStateTestCommands.h"
 #include "GameState/ProjectRGameState.h"
+#include "Tests/AutomationEditorCommon.h"
 
 
 
@@ -18,6 +19,21 @@ bool FAProjectRGameStateIsntNullWhenInstantiatedTest::RunTest(const FString& Par
 
 	return true;
 }
+
+
+bool FAProjectRGameStateLoadPauseMenuAddsItToViewportTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckGameStateBringsPauseMenu(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
 
 
 
