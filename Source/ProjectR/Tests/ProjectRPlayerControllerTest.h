@@ -21,5 +21,9 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerIsntNullWhenInstantia
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerLoadPauseMenuAddsItToViewportTest,
+	"ProjectR.ProjectRPlayerController Tests.Integration.001: loadPauseMenu adds the pause menu to viewport",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
