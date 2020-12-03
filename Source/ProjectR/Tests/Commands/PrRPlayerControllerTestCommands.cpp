@@ -31,22 +31,44 @@
 
 bool FCheckPlayerControllerBringsPauseMenu::Update()
 {
-	if(GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		sessionUtilities.currentPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
 		AProjectRPlayerController* testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
 
-		if(testPlayerController)
+		if (testPlayerController)
 		{
 			UPauseMenu* testMenu = testPlayerController->loadPauseMenu();
-		
+
 			aTest->TestTrue(TEXT("loadPauseMenu should bring the pause menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
 			return true;
 		}
 	}
 	return false;
 }
+
+
+bool FCheckPlayerControllerCreatesUniquePauseMenuInstance::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		sessionUtilities.currentPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
+		AProjectRPlayerController* testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
+
+		if (testPlayerController)
+		{
+			UPauseMenu* testMenu = testPlayerController->loadPauseMenu();
+			UPauseMenu* anotherTestMenu = testPlayerController->loadPauseMenu();
+
+			aTest->TestTrue(TEXT("loadPauseMenu should bring the pause menu instance and add it to viewport."), testMenu == anotherTestMenu);
+			return true;
+		}
+	}
+	return false;
+}
+
 
 
 
