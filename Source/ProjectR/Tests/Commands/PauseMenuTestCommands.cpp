@@ -37,17 +37,20 @@ bool FCheckPauseMenuClickReturnButtonChangesToMainMenuMap::Update()
 
 		if (aPauseMenuInstance == nullptr)
 		{
+			UE_LOG(LogTemp, Log, TEXT("attempting pause menu instantiation..."));
 			sessionUtilities.currentPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
 			AProjectRPlayerController* testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
 
 			if (testPlayerController)
 			{
+				UE_LOG(LogTemp, Log, TEXT("controller instantiated, attempting pause menu load..."));
 				aPauseMenuInstance = testPlayerController->loadPauseMenu();
 			}
 			return false;
 		}
 		else
 		{
+			UE_LOG(LogTemp, Log, TEXT("pause menu is instantiated"));
 			if (!isInAnotherWorld)
 			{
 				
