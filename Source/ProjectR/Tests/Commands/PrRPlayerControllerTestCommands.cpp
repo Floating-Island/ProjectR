@@ -62,12 +62,14 @@ bool FCheckPlayerControllerCreatesUniquePauseMenuInstance::Update()
 			UPauseMenu* testMenu = testPlayerController->loadPauseMenu();
 			UPauseMenu* anotherTestMenu = testPlayerController->loadPauseMenu();
 
-			aTest->TestTrue(TEXT("loadPauseMenu should bring the pause menu instance and add it to viewport."), testMenu == anotherTestMenu);
+			aTest->TestTrue(TEXT("loadPauseMenu should create only one instance of the pause menu."), testMenu == anotherTestMenu);
 			return true;
 		}
 	}
 	return false;
 }
+
+
 
 
 
