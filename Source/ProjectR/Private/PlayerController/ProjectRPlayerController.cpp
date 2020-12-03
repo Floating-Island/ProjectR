@@ -7,11 +7,14 @@
 
 UPauseMenu* AProjectRPlayerController::loadPauseMenu()
 {
-	if(!pauseMenu)
+	if (!pauseMenu)
 	{
 		pauseMenu = CreateWidget<UPauseMenu>(GetWorld()->GetGameInstance(), pauseMenuClass, FName("Pause Menu"));
 	}
-	pauseMenu->AddToViewport();
+	if (!pauseMenu->IsInViewport())
+	{
+		pauseMenu->AddToViewport();
+	}
 
 	return pauseMenu;
 }
