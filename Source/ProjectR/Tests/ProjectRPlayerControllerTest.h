@@ -27,7 +27,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerLoadPauseMenuAddsItTo
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerLoadPauseMenuCreatesOnlyOneInstanceTest,
-	"ProjectR.ProjectRPlayerController Tests.Integration.001: loadPauseMenu creates only one instance of pause menu",
+	"ProjectR.ProjectRPlayerController Tests.Integration.002: loadPauseMenu creates only one instance of pause menu",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
