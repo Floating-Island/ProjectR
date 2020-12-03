@@ -20,7 +20,8 @@
 
  //Test check commands:
 
-
+class UPauseMenu;
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckPauseMenuClickReturnButtonChangesToMainMenuMap, int, aTickCount, int, aTickLimit, UPauseMenu*, aPauseMenuInstance, FAutomationTestBase*, aTest);
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

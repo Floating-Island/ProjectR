@@ -21,5 +21,9 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUPauseMenuIsntNullWhenInstantiatedTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUPauseMenuClickingReturnButtonChangesToMainMenuMapTest,
+	"ProjectR.PauseMenu Tests.Integration.001: Clicking the return button travels to main menu map",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
