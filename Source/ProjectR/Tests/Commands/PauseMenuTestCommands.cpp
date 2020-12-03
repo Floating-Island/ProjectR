@@ -31,7 +31,7 @@ bool FCheckPauseMenuClickReturnButtonChangesToMainMenuMap::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		bool isInAnotherWorld = sessionUtilities.currentPIEWorld()->GetMapName() != "VoidWorld";
+		bool isInAnotherWorld = sessionUtilities.currentPIEWorld()->GetMapName() != "VoidWorld-PlayerController";
 
 
 
