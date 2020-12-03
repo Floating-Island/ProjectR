@@ -31,9 +31,9 @@ bool FCheckPauseMenuClickReturnButtonChangesToMainMenuMap::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		bool isInAnotherWorld = sessionUtilities.currentPIEWorld()->GetMapName() != "VoidWorld-PlayerController";
+		bool isInAnotherWorld = GEditor->GetPIEWorldContext()->World()->GetMapName() != "VoidWorld-PlayerController";
 
-
+		UE_LOG(LogTemp, Log, TEXT("this is %s world"), *GEditor->GetPIEWorldContext()->World()->GetMapName());
 
 		if (aPauseMenuInstance == nullptr)
 		{
