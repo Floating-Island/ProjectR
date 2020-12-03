@@ -31,7 +31,7 @@
 //	if(GEditor->IsPlayingSessionInEditor())
 //	{
 //		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-//		AProjectRGameState* testGameState = Cast<AProjectRGameState, AGameStateBase>(sessionUtilities.currentPIEWorld()->GetGameState());
+//		AProjectRGameState* testGameState = Cast<AProjectRGameState, AGameStateBase>(sessionUtilities.defaultPIEWorld()->GetGameState());
 //
 //		UPauseMenu* testMenu = testGameState->loadPauseMenu();
 //		

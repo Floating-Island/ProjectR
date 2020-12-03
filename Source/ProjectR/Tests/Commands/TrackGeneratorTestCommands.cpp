@@ -687,7 +687,7 @@ bool FCheckComponentsExpectedCollisionInPIECommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		ATrackGeneratorMOCK* testGenerator = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGeneratorMOCK>();
 		if (testGenerator)
 		{
@@ -708,7 +708,7 @@ bool FCheckTrackGeneratorSpawnsTrackManagerInPIECommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		ATrackGeneratorMOCK* testGenerator = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGeneratorMOCK>();
 		if (testGenerator)
 		{
@@ -729,7 +729,7 @@ bool FCheckTrackGeneratorsSpawnOneTrackManagerInPIECommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		TArray<ATrackGenerator*> testGenerators = sessionUtilities.retrieveFromPIEAllInstancesOf<ATrackGenerator>();
 		for (const auto& generator : testGenerators)
 		{

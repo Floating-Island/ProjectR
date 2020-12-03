@@ -38,7 +38,7 @@ bool FCheckPauseMenuClickReturnButtonChangesToMainMenuMap::Update()
 		if (aPauseMenuInstance == nullptr)
 		{
 			UE_LOG(LogTemp, Log, TEXT("attempting pause menu instantiation..."));
-			sessionUtilities.currentPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
+			sessionUtilities.defaultPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
 			AProjectRPlayerController* testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
 
 			if (testPlayerController)
@@ -64,7 +64,7 @@ bool FCheckPauseMenuClickReturnButtonChangesToMainMenuMap::Update()
 			{
 				bool inMainMenuMap = GEditor->GetPIEWorldContext()->World()->GetMapName().Contains("MainMenu");
 				aTest->TestTrue(TEXT("The singleplayer menu should change the current map when clicking the play button."), inMainMenuMap);
-				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 				return true;
 			}
 
@@ -72,7 +72,7 @@ bool FCheckPauseMenuClickReturnButtonChangesToMainMenuMap::Update()
 			if (aTickCount > aTickLimit)
 			{
 				aTest->TestTrue(TEXT("The singleplayer menu should change the current map when clicking the play button."), isInAnotherWorld);
-				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 				return true;
 			}
 		}

@@ -24,7 +24,7 @@ bool FCheckMainMenuClickQuitsCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(UGameplayStatics::GetGameInstance(sessionUtilities.currentPIEWorld()));
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(UGameplayStatics::GetGameInstance(sessionUtilities.defaultPIEWorld()));
 		if (aMainMenuInstance == nullptr)
 		{
 			aMainMenuInstance = testInstance->loadMainMenu();
@@ -54,7 +54,7 @@ bool FCheckMainMenuClickQuitsCommand::Update()
 	{
 		aTest->TestTrue(TEXT("The main menu should quit the game when clicking the quit button."), hasFinishedRunningPIESession);
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+		sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 		return true;
 	}
 
@@ -70,7 +70,7 @@ bool FCheckMainMenuClickSinglePlayerRemovesMenuFromViewportCommand::Update()
 	
 		if(aMainMenuInstance == nullptr)
 		{
-			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 			aMainMenuInstance = gameInstance->loadMainMenu();
 			isMenuInstanciated = true;
 			return false;
@@ -84,7 +84,7 @@ bool FCheckMainMenuClickSinglePlayerRemovesMenuFromViewportCommand::Update()
 		}
 		
 		aTest->TestTrue(TEXT("The main menu should be removed from viewport when clicking the singleplayer button."), !aMainMenuInstance->IsInViewport());
-		sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+		sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 		return true;
 	}
 	return false;
@@ -96,7 +96,7 @@ bool FCheckSoloMainMenuClickSingleplayerBringsSingleplayerMenuCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 	
 		if(aMainMenuInstance == nullptr)
 		{
@@ -115,7 +115,7 @@ bool FCheckSoloMainMenuClickSingleplayerBringsSingleplayerMenuCommand::Update()
 		if (isMenuInstanciated && !aMainMenuInstance->IsInViewport())
 		{
 			aTest->TestTrue(TEXT("The main menu should change to the solo race menu when clicking the singleplayer button."), gameInstance->isSingleplayerMenuInViewport());
-			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
 
@@ -123,7 +123,7 @@ bool FCheckSoloMainMenuClickSingleplayerBringsSingleplayerMenuCommand::Update()
 		if (aTickCount > aTickLimit)
 		{
 			aTest->TestTrue(TEXT("The main menu should change to the solo race menu when clicking the singleplayer button."), gameInstance->isSingleplayerMenuInViewport());
-			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
 	}
