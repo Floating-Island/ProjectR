@@ -37,7 +37,6 @@ bool FCheckPauseMenuClickReturnButtonChangesToMainMenuMap::Update()
 
 		if (aPauseMenuInstance == nullptr)
 		{
-			PIESessionUtilities sessionUtilities = PIESessionUtilities();
 			sessionUtilities.currentPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
 			AProjectRPlayerController* testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
 
