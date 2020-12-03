@@ -1,0 +1,57 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "GameInstance/ProjectRGameInstance.h"
+#include "UI/MainMenu.h"
+#include "UI/SingleplayerMenu.h"
+#include "Blueprint/UserWidget.h"
+
+UMainMenu* UProjectRGameInstance::loadMainMenu()
+{
+	if (!mainMenu)
+	{
+		mainMenu = CreateWidget<UMainMenu>(this, mainMenuClass, FName("Main Menu"));
+	}
+	if (!mainMenu->IsInViewport())
+	{
+		mainMenu->AddToViewport();
+	}
+	APlayerController* controller = GetWorld()->GetFirstPlayerController();
+	controller->bShowMouseCursor = true;
+
+	return mainMenu;
+}
+
+USingleplayerMenu* UProjectRGameInstance::loadSingleplayerMenu()
+{
+	if (!singleplayerMenu)
+	{
+		singleplayerMenu = CreateWidget<USingleplayerMenu>(this, singleplayerMenuClass, FName("Solo Race Menu"));
+	}
+	if (!singleplayerMenu->IsInViewport())
+	{
+		singleplayerMenu->AddToViewport();
+	}
+	APlayerController* controller = GetWorld()->GetFirstPlayerController();
+	controller->bShowMouseCursor = true;
+	
+	return singleplayerMenu;
+}
+
+bool UProjectRGameInstance::isMainMenuInViewport()
+{
+	if(!mainMenu)
+	{
+		return false;
+	}
+	return mainMenu->IsInViewport();
+}
+
+bool UProjectRGameInstance::isSingleplayerMenuInViewport()
+{
+	if(!singleplayerMenu)
+	{
+		return false;
+	}
+	return singleplayerMenu->IsInViewport();
+}

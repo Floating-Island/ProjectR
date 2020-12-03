@@ -6,6 +6,8 @@
  * This file cointains the latent commands necessary for the tests.
  */
 
+#include "Misc/AutomationTest.h"
+
 #if WITH_DEV_AUTOMATION_TESTS
 
 
