@@ -31,7 +31,7 @@ bool FCheckSingleplayerMenuClickPlayButtonChangesMapCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		bool isInAnotherWorld = GEditor->GetPIEWorldContext()->World()->GetMapName() != "VoidWorld";
+		bool isInAnotherWorld = !sessionUtilities.currentPIEWorld()->GetMapName().Contains("VoidWorld");
 
 		if (isMenuInstanciated && !isInAnotherWorld)
 		{
