@@ -8,6 +8,7 @@
 #include "../Utilities/PIESessionUtilities.h"
 #include "PlayerController/ProjectRPlayerController.h"
 #include "UI/PauseMenu.h"
+#include "GameFramework/GameModeBase.h"
 
 
 //Test preparation commands:
@@ -33,12 +34,16 @@ bool FCheckPlayerControllerBringsPauseMenu::Update()
 	if(GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		AProjectRPlayerController* testPlayerController = Cast<AProjectRPlayerController, APlayerController>(sessionUtilities.currentPIEWorld()->GetFirstPlayerController());
+		sessionUtilities.currentPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
+		AProjectRPlayerController* testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
 
-		UPauseMenu* testMenu = testPlayerController->loadPauseMenu();
+		if(testPlayerController)
+		{
+			UPauseMenu* testMenu = testPlayerController->loadPauseMenu();
 		
-		aTest->TestTrue(TEXT("loadPauseMenu should bring the pause menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
-		return true;
+			aTest->TestTrue(TEXT("loadPauseMenu should bring the pause menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
+			return true;
+		}
 	}
 	return false;
 }
