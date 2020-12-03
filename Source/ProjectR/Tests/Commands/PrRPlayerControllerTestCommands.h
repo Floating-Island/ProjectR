@@ -26,5 +26,8 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckPlayerControllerBringsPause
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckPlayerControllerCreatesUniquePauseMenuInstance, FAutomationTestBase*, aTest);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckPlayerControllerShowsMouseCursor, FAutomationTestBase*, aTest);
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS

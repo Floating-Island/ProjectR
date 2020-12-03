@@ -50,6 +50,21 @@ bool FAProjectRPlayerControllerLoadPauseMenuCreatesOnlyOneInstanceTest::RunTest(
 }
 
 
+bool FAProjectRPlayerControllerLoadPauseMenuShowsMouseCursorTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-PlayerController");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerControllerShowsMouseCursor(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+
 
 
 

@@ -70,6 +70,25 @@ bool FCheckPlayerControllerCreatesUniquePauseMenuInstance::Update()
 }
 
 
+bool FCheckPlayerControllerShowsMouseCursor::Update()
+{
+		if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		sessionUtilities.currentPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
+		AProjectRPlayerController* testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
+
+		if (testPlayerController)
+		{
+			UPauseMenu* testMenu = testPlayerController->loadPauseMenu();
+
+			aTest->TestTrue(TEXT("loadPauseMenu should make the controller show the mouse cursor."), testPlayerController->ShouldShowMouseCursor());
+			return true;
+		}
+	}
+	return false;
+}
+
 
 
 
