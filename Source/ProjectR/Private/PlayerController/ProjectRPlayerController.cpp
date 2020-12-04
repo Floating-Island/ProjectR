@@ -26,6 +26,7 @@ UPauseMenu* AProjectRPlayerController::loadPauseMenu()
 	}
 	else
 	{
+		UGameplayStatics::SetGamePaused(GetWorld(), false);
 		pauseMenu->RemoveFromViewport();
 		bShowMouseCursor = false;
 	}
