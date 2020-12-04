@@ -57,7 +57,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerLoadPauseMenuUnPauses
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerFullyTicksWhenGamePausedTest,
-	"ProjectR.ProjectRPlayerController Tests.Integration.008: Fully ticks when game is paused",
+	"ProjectR.ProjectRPlayerController Tests.Integration.008: Is set to fully tick when game is paused",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
