@@ -120,6 +120,15 @@ bool FAProjectRPlayerControllerLoadPauseMenuUnPausesTheGameIfInViewportTest::Run
 }
 
 
+bool FAProjectRPlayerControllerFullyTicksWhenGamePausedTest::RunTest(const FString& Parameters)
+{
+	AProjectRPlayerController* testController = NewObject<AProjectRPlayerController>();
+
+	TestTrue(TEXT("The controller should be set to fully tick when game is paused"), testController->ShouldPerformFullTickWhenPaused());
+}
+
+
+
 
 
 

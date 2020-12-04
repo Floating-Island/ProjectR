@@ -52,7 +52,12 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerLoadPauseMenuPausesTh
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerLoadPauseMenuUnPausesTheGameIfInViewportTest,
-	"ProjectR.ProjectRPlayerController Tests.Integration.006: loadPauseMenu unpauses the game if the pause menu is already in viewport",
+	"ProjectR.ProjectRPlayerController Tests.Integration.007: loadPauseMenu unpauses the game if the pause menu is already in viewport",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerFullyTicksWhenGamePausedTest,
+	"ProjectR.ProjectRPlayerController Tests.Integration.008: Fully ticks when game is paused",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
