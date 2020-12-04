@@ -156,7 +156,7 @@ bool FCheckPlayerControllerLoadPauseMenuPausesTheGame::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		sessionUtilities.defaultPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
-		AProjectRPlayerController* testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
+		testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
 
 		if (testPlayerController)
 		{
