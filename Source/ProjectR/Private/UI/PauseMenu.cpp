@@ -13,8 +13,7 @@ void UPauseMenu::returnToMainMenu()
 void UPauseMenu::removeFromViewportAndResumeGame()
 {
 	RemoveFromViewport();
-	
-	
+	focusOnGame(); 
 }
 
 void UPauseMenu::focusOnGame()
