@@ -101,8 +101,6 @@ bool FCheckPlayerControllerPressEscBringsPauseMenu::Update()
 			PIESessionUtilities sessionUtilities = PIESessionUtilities();
 			sessionUtilities.defaultPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
 			testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerControllerMOCK>();
-
-			return false;
 		}
 		else
 		{
@@ -129,15 +127,12 @@ bool FCheckPlayerControllerPressEscRemovesPauseMenuInViewport::Update()
 			sessionUtilities.defaultPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
 			testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerControllerMOCK>();
 			testPlayerController->loadPauseMenu();
-
-			return false;
 		}
 		else
 		{
 			if (testPlayerController->pauseMenuIsInViewport())
 			{
 				testPlayerController->InputKey(EKeys::Escape, EInputEvent::IE_Pressed, 5.0f, false);
-				return false;
 			}
 			else
 			{
@@ -156,7 +151,7 @@ bool FCheckPlayerControllerLoadPauseMenuPausesTheGame::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		sessionUtilities.defaultPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
-		testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
+		testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerControllerMOCK>();
 
 		if (testPlayerController)
 		{
@@ -186,15 +181,12 @@ bool FCheckPlayerControllerLoadPauseMenuUnPausesTheGameIfInViewport::Update()
 			sessionUtilities.defaultPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
 			testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerControllerMOCK>();
 			testPlayerController->loadPauseMenu();
-
-			return false;
 		}
 		else
 		{
 			if (testPlayerController->pauseMenuIsInViewport())
 			{
 				testPlayerController->loadPauseMenu();
-				return false;
 			}
 			else
 			{
