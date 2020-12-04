@@ -29,7 +29,7 @@ UPauseMenu* AProjectRPlayerController::loadPauseMenu()
 	}
 	else
 	{
-		focusOnGame();
+		focusOnGame(); 
 	}
 
 	return pauseMenu;
