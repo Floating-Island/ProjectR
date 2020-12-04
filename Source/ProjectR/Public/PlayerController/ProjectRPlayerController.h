@@ -21,6 +21,8 @@ protected:
 	virtual void SetupInputComponent() override;
 
 public:
+	AProjectRPlayerController(const FObjectInitializer& ObjectInitializer);
+	
 	UPROPERTY(EditDefaultsOnly, Category= "Menus")
 		TSubclassOf<UPauseMenu> pauseMenuClass;
 

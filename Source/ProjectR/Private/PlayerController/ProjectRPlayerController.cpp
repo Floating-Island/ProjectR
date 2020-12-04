@@ -12,6 +12,11 @@ void AProjectRPlayerController::SetupInputComponent()
 	InputComponent->BindKey(EKeys::Escape, IE_Pressed, this, &AProjectRPlayerController::loadPauseMenuWrapper);
 }
 
+AProjectRPlayerController::AProjectRPlayerController(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+{
+	bShouldPerformFullTickWhenPaused = true;	
+}
+
 UPauseMenu* AProjectRPlayerController::loadPauseMenu()
 {
 	if (!pauseMenu)
