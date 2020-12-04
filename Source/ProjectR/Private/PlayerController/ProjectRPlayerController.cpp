@@ -18,7 +18,7 @@ AProjectRPlayerController::AProjectRPlayerController(const FObjectInitializer& O
 }
 
 UPauseMenu* AProjectRPlayerController::loadPauseMenu()
-{
+{//if someday there's a crash when bringing up the pause menu, look at the main menu and singleplayer menu instantiation in the game instance.
 	if (!pauseMenu || pauseMenu->IsUnreachable())
 	{
 		pauseMenu = CreateWidget<UPauseMenu>(GetWorld(), pauseMenuClass, FName("Pause Menu"));
