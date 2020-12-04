@@ -31,6 +31,11 @@ FVector2D UPauseMenu::returnButtonAbsoluteCenterPosition()
 	return buttonAbsoluteCenterPosition(returnButton);
 }
 
+FVector2D UPauseMenu::resumeButtonAbsoluteCenterPosition()
+{
+	return buttonAbsoluteCenterPosition(resumeButton);
+}
+
 bool UPauseMenu::Initialize()
 {
 	bool initializeResult = Super::Initialize();

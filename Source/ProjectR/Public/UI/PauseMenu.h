@@ -36,5 +36,7 @@ protected:
 public:
 	FVector2D returnButtonAbsoluteCenterPosition();
 
+	FVector2D resumeButtonAbsoluteCenterPosition();
+
 	virtual bool Initialize() override;
 };
