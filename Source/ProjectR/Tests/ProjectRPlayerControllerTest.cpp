@@ -125,6 +125,7 @@ bool FAProjectRPlayerControllerFullyTicksWhenGamePausedTest::RunTest(const FStri
 	AProjectRPlayerController* testController = NewObject<AProjectRPlayerController>();
 
 	TestTrue(TEXT("The controller should be set to fully tick when game is paused"), testController->ShouldPerformFullTickWhenPaused());
+	return true;
 }
 
 

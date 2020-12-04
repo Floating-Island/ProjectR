@@ -14,7 +14,7 @@ void AProjectRPlayerController::SetupInputComponent()
 
 AProjectRPlayerController::AProjectRPlayerController(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
-	bShouldPerformFullTickWhenPaused = true;	
+	bShouldPerformFullTickWhenPaused = true;
 }
 
 UPauseMenu* AProjectRPlayerController::loadPauseMenu()
