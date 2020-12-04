@@ -24,7 +24,14 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category="Menu Map")
 		FName mainMenuLevel;
+
+	UPROPERTY(meta = (BindWidget))
+		UButton* resumeButton;
+
+	UFUNCTION()
+		void removeFromViewportAndResumeGame();
 	
+	void focusOnGame();
 	
 public:
 	FVector2D returnButtonAbsoluteCenterPosition();
