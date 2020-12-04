@@ -18,9 +18,14 @@ class PROJECTR_API AProjectRPlayerController : public APlayerController
 protected:
 	UPauseMenu* pauseMenu;
 
+	virtual void SetupInputComponent() override;
+
 public:
-		UPROPERTY(EditDefaultsOnly, Category= "Menus")
+	UPROPERTY(EditDefaultsOnly, Category= "Menus")
 		TSubclassOf<UPauseMenu> pauseMenuClass;
-	
+
 	UPauseMenu* loadPauseMenu();
+
+	UFUNCTION()
+		void loadPauseMenuWrapper();
 };

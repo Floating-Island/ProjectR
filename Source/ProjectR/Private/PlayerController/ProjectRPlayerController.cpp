@@ -5,6 +5,13 @@
 #include "UI/PauseMenu.h"
 #include "Components/Widget.h"
 
+void AProjectRPlayerController::SetupInputComponent()
+{
+	Super::SetupInputComponent();
+
+	InputComponent->BindKey(EKeys::Escape, IE_Pressed, this, &AProjectRPlayerController::loadPauseMenuWrapper);
+}
+
 UPauseMenu* AProjectRPlayerController::loadPauseMenu()
 {
 	if (!pauseMenu)
@@ -18,4 +25,9 @@ UPauseMenu* AProjectRPlayerController::loadPauseMenu()
 	bShowMouseCursor = true;
 
 	return pauseMenu;
+}
+
+void AProjectRPlayerController::loadPauseMenuWrapper()
+{
+	loadPauseMenu();
 }
