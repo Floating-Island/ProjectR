@@ -7,6 +7,8 @@
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 
+
+
 UMainMenu* UProjectRGameInstance::loadMainMenu()
 {
 	UMainMenu* mainMenuInstance = Cast<UMainMenu, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), UMainMenu::StaticClass()));
@@ -22,15 +24,21 @@ UMainMenu* UProjectRGameInstance::loadMainMenu()
 	if (!mainMenu->IsInViewport())
 	{
 		mainMenu->AddToViewport();
-		FInputModeUIOnly inputModeData;
-		inputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-		inputModeData.SetWidgetToFocus(mainMenu->TakeWidget());
-		GetFirstLocalPlayerController(GetWorld())->SetInputMode(inputModeData);
+		lockMouseToWidget(mainMenu);
 	}
-	APlayerController* controller = GetWorld()->GetFirstPlayerController();
-	controller->bShowMouseCursor = true;
+	
 
 	return mainMenu;
+}
+
+void UProjectRGameInstance::lockMouseToWidget(UMenu* menu)
+{
+	FInputModeUIOnly inputModeData;
+	inputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+	inputModeData.SetWidgetToFocus(menu->TakeWidget());
+	APlayerController* controller = GetWorld()->GetFirstPlayerController();
+	controller->SetInputMode(inputModeData);
+	controller->bShowMouseCursor = true;
 }
 
 USingleplayerMenu* UProjectRGameInstance::loadSingleplayerMenu()
@@ -47,14 +55,8 @@ USingleplayerMenu* UProjectRGameInstance::loadSingleplayerMenu()
 	if (!singleplayerMenu->IsInViewport())
 	{
 		singleplayerMenu->AddToViewport();
-		FInputModeUIOnly inputModeData;
-		inputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-		inputModeData.SetWidgetToFocus(mainMenu->TakeWidget());
-		GetFirstLocalPlayerController(GetWorld())->SetInputMode(inputModeData);
+		lockMouseToWidget(singleplayerMenu);
 	}
-	APlayerController* controller = GetWorld()->GetFirstPlayerController();
-	controller->bShowMouseCursor = true;
-	
 	return singleplayerMenu;
 }
 

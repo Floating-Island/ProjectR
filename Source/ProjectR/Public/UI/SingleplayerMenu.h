@@ -16,6 +16,7 @@ class PROJECTR_API USingleplayerMenu : public UMenu
 	GENERATED_BODY()
 
 protected:
+	void focusOnGame();
 	UFUNCTION()
 		void play();
 

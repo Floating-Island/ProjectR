@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "../UI/Menu.h"
 #include "Engine/GameInstance.h"
 #include "ProjectRGameInstance.generated.h"
 
@@ -19,13 +21,14 @@ class PROJECTR_API UProjectRGameInstance : public UGameInstance
 protected:
 	UMainMenu* mainMenu;
 	USingleplayerMenu* singleplayerMenu;
+	void lockMouseToWidget(UMenu* menu);
 public:
 	UPROPERTY(EditDefaultsOnly, Category= "Menus")
 		TSubclassOf<UMainMenu> mainMenuClass;
 
 	UPROPERTY(EditDefaultsOnly, Category= "Menus")
 		TSubclassOf<USingleplayerMenu> singleplayerMenuClass;
-	
+
 	UFUNCTION(BlueprintCallable)
 	UMainMenu* loadMainMenu();
 	

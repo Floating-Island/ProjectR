@@ -22,7 +22,9 @@ protected:
 
 public:
 	AProjectRPlayerController(const FObjectInitializer& ObjectInitializer);
-	
+	void focusOnGame();
+	void focusOnPauseMenu();
+
 	UPROPERTY(EditDefaultsOnly, Category= "Menus")
 		TSubclassOf<UPauseMenu> pauseMenuClass;
 

@@ -25,25 +25,35 @@ UPauseMenu* AProjectRPlayerController::loadPauseMenu()
 	}
 	if (!pauseMenu->IsInViewport())
 	{
-		UGameplayStatics::SetGamePaused(GetWorld(), true);
-		pauseMenu->AddToViewport();
-		FInputModeGameAndUI inputModeData;
-		inputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-		inputModeData.SetWidgetToFocus(pauseMenu->TakeWidget());
-		SetInputMode(inputModeData);
-		bShowMouseCursor = true;
+		focusOnPauseMenu();
 	}
 	else
 	{
-		UGameplayStatics::SetGamePaused(GetWorld(), false);
-		pauseMenu->RemoveFromViewport();
-		FInputModeGameOnly inputModeData;
-		inputModeData.SetConsumeCaptureMouseDown(true);
-		SetInputMode(inputModeData);
-		bShowMouseCursor = false;
+		focusOnGame();
 	}
 
 	return pauseMenu;
+}
+
+void AProjectRPlayerController::focusOnPauseMenu()
+{
+	UGameplayStatics::SetGamePaused(GetWorld(), true);
+	pauseMenu->AddToViewport();
+	FInputModeGameAndUI inputModeData;
+	inputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+	inputModeData.SetWidgetToFocus(pauseMenu->TakeWidget());
+	SetInputMode(inputModeData);
+	bShowMouseCursor = true;
+}
+
+void AProjectRPlayerController::focusOnGame()
+{
+	UGameplayStatics::SetGamePaused(GetWorld(), false);
+	pauseMenu->RemoveFromViewport();
+	FInputModeGameOnly inputModeData;
+	inputModeData.SetConsumeCaptureMouseDown(true);
+	SetInputMode(inputModeData);
+	bShowMouseCursor = false;
 }
 
 void AProjectRPlayerController::loadPauseMenuWrapper()
