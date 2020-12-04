@@ -26,7 +26,6 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUPauseMenuClickingReturnButtonChangesToMainMen
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-//make the Esc key to trigger the pause menu load.
 //pause the game when loading the pause menu.
 
 
