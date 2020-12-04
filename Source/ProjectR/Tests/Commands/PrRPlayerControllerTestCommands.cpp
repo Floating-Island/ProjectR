@@ -72,7 +72,7 @@ bool FCheckPlayerControllerCreatesUniquePauseMenuInstance::Update()
 
 bool FCheckPlayerControllerShowsMouseCursor::Update()
 {
-		if (GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		sessionUtilities.defaultPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
@@ -88,6 +88,8 @@ bool FCheckPlayerControllerShowsMouseCursor::Update()
 	}
 	return false;
 }
+
+
 
 
 
