@@ -8,6 +8,9 @@
 
 void USingleplayerMenu::play()
 {
+	FInputModeGameOnly inputModeData;
+	inputModeData.SetConsumeCaptureMouseDown(true);
+	GetWorld()->GetFirstPlayerController()->SetInputMode(inputModeData);
 	UGameplayStatics::OpenLevel(GetWorld(), raceLevel);
 }
 

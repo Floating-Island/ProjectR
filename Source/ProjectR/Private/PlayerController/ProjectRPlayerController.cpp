@@ -27,12 +27,19 @@ UPauseMenu* AProjectRPlayerController::loadPauseMenu()
 	{
 		UGameplayStatics::SetGamePaused(GetWorld(), true);
 		pauseMenu->AddToViewport();
+		FInputModeGameAndUI inputModeData;
+		inputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		inputModeData.SetWidgetToFocus(pauseMenu->TakeWidget());
+		SetInputMode(inputModeData);
 		bShowMouseCursor = true;
 	}
 	else
 	{
 		UGameplayStatics::SetGamePaused(GetWorld(), false);
 		pauseMenu->RemoveFromViewport();
+		FInputModeGameOnly inputModeData;
+		inputModeData.SetConsumeCaptureMouseDown(true);
+		SetInputMode(inputModeData);
 		bShowMouseCursor = false;
 	}
 
