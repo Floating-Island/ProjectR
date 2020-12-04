@@ -13,5 +13,7 @@ UCLASS()
 class PROJECTR_API AProjectRPlayerControllerMOCK : public AProjectRPlayerController
 {
 	GENERATED_BODY()
+public:
+	bool pauseMenuIsInViewport();
 	
 };
