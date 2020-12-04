@@ -66,7 +66,7 @@ bool FAProjectRPlayerControllerLoadPauseMenuShowsMouseCursorTest::RunTest(const 
 
 bool FAProjectRPlayerControllerEscKeyLoadsPauseMenuTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-PlayerController");
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-PlayerControllerMOCK");
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));

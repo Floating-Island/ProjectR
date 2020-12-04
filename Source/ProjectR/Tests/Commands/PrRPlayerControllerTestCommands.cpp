@@ -7,6 +7,7 @@
 #include "PrRPlayerControllerTestCommands.h"
 #include "../Utilities/PIESessionUtilities.h"
 #include "PlayerController/ProjectRPlayerController.h"
+#include "../Mocks/ProjectRPlayerControllerMOCK.h"
 #include "UI/PauseMenu.h"
 #include "GameFramework/GameModeBase.h"
 
@@ -96,13 +97,13 @@ bool FCheckPlayerControllerPressEscBringsPauseMenu::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		sessionUtilities.defaultPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
-		AProjectRPlayerController* testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
+		AProjectRPlayerControllerMOCK* testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerControllerMOCK>();
 
 		if (testPlayerController)
 		{
-			UPauseMenu* testMenu = testPlayerController->loadPauseMenu();
+			testPlayerController->InputKey(EKeys::Escape, EInputEvent::IE_Pressed, 0.1f, false);
 
-			aTest->TestTrue(TEXT("loadPauseMenu should make the controller show the mouse cursor."), testPlayerController->ShouldShowMouseCursor());
+			aTest->TestTrue(TEXT("loadPauseMenu should make the controller show the mouse cursor."), testPlayerController->pauseMenuIsInViewport());
 			return true;
 		}
 	}
