@@ -45,7 +45,8 @@ void UMainMenu::quit()
 
 void UMainMenu::bringSingleplayerMenu()
 {
-	RemoveFromViewport();
+	RemoveFromParent();
 	UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance());
+	
 	gameInstance->loadSingleplayerMenu();
 }

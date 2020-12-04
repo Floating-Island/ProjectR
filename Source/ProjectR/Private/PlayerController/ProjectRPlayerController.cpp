@@ -19,9 +19,9 @@ AProjectRPlayerController::AProjectRPlayerController(const FObjectInitializer& O
 
 UPauseMenu* AProjectRPlayerController::loadPauseMenu()
 {
-	if (!pauseMenu)
+	if (!pauseMenu || pauseMenu->IsUnreachable())
 	{
-		pauseMenu = CreateWidget<UPauseMenu>(GetWorld()->GetGameInstance(), pauseMenuClass, FName("Pause Menu"));
+		pauseMenu = CreateWidget<UPauseMenu>(GetWorld(), pauseMenuClass, FName("Pause Menu"));
 	}
 	if (!pauseMenu->IsInViewport())
 	{
