@@ -40,6 +40,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerEscKeyLoadsPauseMenuT
 	"ProjectR.ProjectRPlayerController Tests.Integration.004: Pressing the Esc key brings the pause menu",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-//don't bring the pause menu when in main menu map.
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerEscKeyRemovesPauseMenuIfInViewportTest,
+	"ProjectR.ProjectRPlayerController Tests.Integration.004: Pressing the Esc key removes the pause menu if it's already in viewport",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS

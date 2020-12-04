@@ -32,6 +32,8 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckPlayerControllerShowsMouseC
 class AProjectRPlayerControllerMOCK;
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerControllerPressEscBringsPauseMenu, AProjectRPlayerControllerMOCK*, testPlayerController, FAutomationTestBase*, aTest);
 
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerControllerPressEscRemovesPauseMenuInViewport, AProjectRPlayerControllerMOCK*, testPlayerController, FAutomationTestBase*, aTest);
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

@@ -78,6 +78,20 @@ bool FAProjectRPlayerControllerEscKeyLoadsPauseMenuTest::RunTest(const FString& 
 }
 
 
+bool FAProjectRPlayerControllerEscKeyRemovesPauseMenuIfInViewportTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-PlayerControllerMOCK");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerControllerPressEscRemovesPauseMenuInViewport(nullptr, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 
 
 

@@ -110,7 +110,38 @@ bool FCheckPlayerControllerPressEscBringsPauseMenu::Update()
 			
 			if (testPlayerController->pauseMenuIsInViewport())
 			{
-				aTest->TestTrue(TEXT("loadPauseMenu should make the controller show the mouse cursor."), testPlayerController->pauseMenuIsInViewport());
+				aTest->TestTrue(TEXT("Esc key makes the controller load the pause menu."), testPlayerController->pauseMenuIsInViewport());
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FCheckPlayerControllerPressEscRemovesPauseMenuInViewport::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		if (testPlayerController == nullptr)
+		{
+			PIESessionUtilities sessionUtilities = PIESessionUtilities();
+			sessionUtilities.defaultPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
+			testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerControllerMOCK>();
+			testPlayerController->loadPauseMenu();
+
+			return false;
+		}
+		else
+		{
+			if(testPlayerController->pauseMenuIsInViewport())
+			{
+				testPlayerController->InputKey(EKeys::Escape, EInputEvent::IE_Pressed, 5.0f, false);
+				return false;
+			}
+			else
+			{
+				aTest->TestTrue(TEXT("Esc key makes the controller remove the pause menu present in viewport."), !testPlayerController->pauseMenuIsInViewport());
 				return true;
 			}
 		}
