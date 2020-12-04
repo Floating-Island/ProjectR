@@ -107,7 +107,7 @@ bool FCheckPlayerControllerPressEscBringsPauseMenu::Update()
 		else
 		{
 			testPlayerController->InputKey(EKeys::Escape, EInputEvent::IE_Pressed, 5.0f, false);
-			
+
 			if (testPlayerController->pauseMenuIsInViewport())
 			{
 				aTest->TestTrue(TEXT("Esc key makes the controller load the pause menu."), testPlayerController->pauseMenuIsInViewport());
@@ -134,7 +134,7 @@ bool FCheckPlayerControllerPressEscRemovesPauseMenuInViewport::Update()
 		}
 		else
 		{
-			if(testPlayerController->pauseMenuIsInViewport())
+			if (testPlayerController->pauseMenuIsInViewport())
 			{
 				testPlayerController->InputKey(EKeys::Escape, EInputEvent::IE_Pressed, 5.0f, false);
 				return false;
@@ -148,6 +148,33 @@ bool FCheckPlayerControllerPressEscRemovesPauseMenuInViewport::Update()
 	}
 	return false;
 }
+
+
+bool FCheckPlayerControllerLoadPauseMenuPausesTheGame::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		sessionUtilities.defaultPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
+		AProjectRPlayerController* testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
+
+		if (testPlayerController)
+		{
+			bool gameIsPaused = UGameplayStatics::IsGamePaused(sessionUtilities.defaultPIEWorld());
+			if (!gameIsPaused)
+			{
+				UPauseMenu* testMenu = testPlayerController->loadPauseMenu();
+			}
+			else
+			{
+				aTest->TestTrue(TEXT("loadPauseMenu should pause the game."), gameIsPaused);
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 
 
 

@@ -35,5 +35,8 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerControllerPressEscBri
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerControllerPressEscRemovesPauseMenuInViewport, AProjectRPlayerControllerMOCK*, testPlayerController, FAutomationTestBase*, aTest);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerControllerLoadPauseMenuPausesTheGame, AProjectRPlayerControllerMOCK*, testPlayerController, FAutomationTestBase*, aTest);
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS

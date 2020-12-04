@@ -46,5 +46,10 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerEscKeyRemovesPauseMen
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerLoadPauseMenuPausesTheGameTest,
+	"ProjectR.ProjectRPlayerController Tests.Integration.006: loadPauseMenu pauses the game",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
