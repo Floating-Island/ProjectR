@@ -3,7 +3,7 @@
 
 #include "PlayerController/ProjectRPlayerController.h"
 #include "UI/PauseMenu.h"
-#include "Components/Widget.h"
+#include "Kismet/GameplayStatics.h"
 
 void AProjectRPlayerController::SetupInputComponent()
 {
@@ -20,6 +20,7 @@ UPauseMenu* AProjectRPlayerController::loadPauseMenu()
 	}
 	if (!pauseMenu->IsInViewport())
 	{
+		UGameplayStatics::SetGamePaused(GetWorld(), true);
 		pauseMenu->AddToViewport();
 		bShowMouseCursor = true;
 	}
