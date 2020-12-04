@@ -176,6 +176,38 @@ bool FCheckPlayerControllerLoadPauseMenuPausesTheGame::Update()
 }
 
 
+bool FCheckPlayerControllerLoadPauseMenuUnPausesTheGameIfInViewport::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		if (testPlayerController == nullptr)
+		{
+			sessionUtilities.defaultPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
+			testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerControllerMOCK>();
+			testPlayerController->loadPauseMenu();
+
+			return false;
+		}
+		else
+		{
+			if (testPlayerController->pauseMenuIsInViewport())
+			{
+				testPlayerController->loadPauseMenu();
+				return false;
+			}
+			else
+			{
+				aTest->TestTrue(TEXT("Loading the pause menu when already in viewport unpauses the game."), !UGameplayStatics::IsGamePaused(sessionUtilities.defaultPIEWorld()));
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+
 
 
 
