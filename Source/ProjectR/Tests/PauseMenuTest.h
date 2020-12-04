@@ -26,6 +26,12 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUPauseMenuClickingReturnButtonChangesToMainMen
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUPauseMenuClickingResumeButtonRemovesMenuFromViewportAndResumeTest,
+	"ProjectR.PauseMenu Tests.Integration.002: Clicking the resume button removes the menu from viewport and unpauses the game",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+
 //pause the game when loading the pause menu.
 
 
