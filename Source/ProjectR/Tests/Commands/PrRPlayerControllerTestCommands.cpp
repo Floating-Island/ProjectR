@@ -10,6 +10,7 @@
 #include "../Mocks/ProjectRPlayerControllerMOCK.h"
 #include "UI/PauseMenu.h"
 #include "GameFramework/GameModeBase.h"
+#include "GameFramework/PlayerInput.h"
 
 
 //Test preparation commands:
@@ -95,16 +96,23 @@ bool FCheckPlayerControllerPressEscBringsPauseMenu::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		sessionUtilities.defaultPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
-		AProjectRPlayerControllerMOCK* testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerControllerMOCK>();
-
-		if (testPlayerController)
+		if (testPlayerController == nullptr)
 		{
-			testPlayerController->InputKey(EKeys::Escape, EInputEvent::IE_Pressed, 0.1f, false);
+			PIESessionUtilities sessionUtilities = PIESessionUtilities();
+			sessionUtilities.defaultPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
+			testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerControllerMOCK>();
 
-			aTest->TestTrue(TEXT("loadPauseMenu should make the controller show the mouse cursor."), testPlayerController->pauseMenuIsInViewport());
-			return true;
+			return false;
+		}
+		else
+		{
+			testPlayerController->InputKey(EKeys::Escape, EInputEvent::IE_Pressed, 5.0f, false);
+			
+			if (testPlayerController->pauseMenuIsInViewport())
+			{
+				aTest->TestTrue(TEXT("loadPauseMenu should make the controller show the mouse cursor."), testPlayerController->pauseMenuIsInViewport());
+				return true;
+			}
 		}
 	}
 	return false;

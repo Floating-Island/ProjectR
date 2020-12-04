@@ -71,7 +71,7 @@ bool FAProjectRPlayerControllerEscKeyLoadsPauseMenuTest::RunTest(const FString& 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerControllerPressEscBringsPauseMenu(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerControllerPressEscBringsPauseMenu(nullptr, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
