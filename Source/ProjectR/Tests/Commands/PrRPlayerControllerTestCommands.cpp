@@ -141,7 +141,7 @@ bool FCheckPlayerControllerPressEscRemovesPauseMenuInViewport::Update()
 			}
 			else
 			{
-				aTest->TestTrue(TEXT("Esc key makes the controller remove the pause menu present in viewport."), !testPlayerController->pauseMenuIsInViewport());
+				aTest->TestTrue(TEXT("Esc key makes the controller remove the pause menu present in viewport and hide the mouse cursor."), !testPlayerController->pauseMenuIsInViewport() && !testPlayerController->ShouldShowMouseCursor());
 				return true;
 			}
 		}

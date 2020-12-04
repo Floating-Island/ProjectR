@@ -42,7 +42,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerEscKeyLoadsPauseMenuT
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerEscKeyRemovesPauseMenuIfInViewportTest,
-	"ProjectR.ProjectRPlayerController Tests.Integration.004: Pressing the Esc key removes the pause menu if it's already in viewport",
+	"ProjectR.ProjectRPlayerController Tests.Integration.004: Pressing the Esc key removes the pause menu if it's already in viewport and hide the mouse cursor",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

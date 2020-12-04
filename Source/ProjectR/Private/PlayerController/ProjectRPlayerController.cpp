@@ -21,8 +21,13 @@ UPauseMenu* AProjectRPlayerController::loadPauseMenu()
 	if (!pauseMenu->IsInViewport())
 	{
 		pauseMenu->AddToViewport();
+		bShowMouseCursor = true;
 	}
-	bShowMouseCursor = true;
+	else
+	{
+		pauseMenu->RemoveFromViewport();
+		bShowMouseCursor = false;
+	}
 
 	return pauseMenu;
 }
