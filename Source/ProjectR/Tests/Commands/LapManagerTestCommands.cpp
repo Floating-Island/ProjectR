@@ -127,7 +127,7 @@ bool FCheckALapManagerStoresJetsCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		ALapManager* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManager>();
 		if (testManager)
 		{
@@ -152,7 +152,7 @@ bool FCheckJetsInitialLapPhaseCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
 		if (testManager)
 		{
@@ -178,7 +178,7 @@ bool FCheckJetsInitialLapCountCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
 		if (testManager)
 		{
@@ -204,7 +204,7 @@ bool FCheckJetChangeFromInitialToIntermediateCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
 		if (testManager)
@@ -232,7 +232,7 @@ bool FCheckJetChangeFromIntermediateToFinalCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
 		if (testManager)
@@ -260,7 +260,7 @@ bool FCheckJetChangeFromFinalToInitialCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
 		if (testManager)
@@ -288,7 +288,7 @@ bool FCheckJetLapCountChangeFromFinalToInitialCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
 		if (testManager)

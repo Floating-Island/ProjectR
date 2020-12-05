@@ -34,7 +34,7 @@ bool FSpawnAJetBehindAnotherCommand::Update()
 		return false;
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 	ARaceGameModeMOCK* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameModeMOCK>();
 
 	ATrackGenerator* testTrack = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
@@ -70,7 +70,7 @@ bool FSpawnAJetOnFinalLapMakeItFinishCommand::Update()
 		return false;
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 	ARaceGameModeMOCK* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameModeMOCK>();
 
 	ATrackGenerator* testTrack = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
@@ -112,7 +112,7 @@ bool FCheckRaceGameModeSetCommand::Update()
 		return false;
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 	ARaceGameMode* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameMode>();
 	if (testGameMode)
 	{
@@ -132,7 +132,7 @@ bool FCheckRaceGameModeCreatesAllJetsCommand::Update()
 		return false;
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	ARaceGameMode* testGameMode = Cast<ARaceGameMode, AGameModeBase>(UGameplayStatics::GetGameMode(testWorld));
 	if (testGameMode)
@@ -173,7 +173,7 @@ bool FCheckRaceGameModeJetsPositioningCommand::Update()
 		return false;
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	ARaceGameMode* testGameMode = Cast<ARaceGameMode, AGameModeBase>(UGameplayStatics::GetGameMode(testWorld));
 	if (testGameMode)
@@ -233,7 +233,7 @@ bool FCheckRaceGameModeUpdateStageCommand::Update()
 		return false;
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 	ARaceGameModeMOCK* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameModeMOCK>();
 
 	ARacePreparationStage* testPreparation = sessionUtilities.spawnInPIEAnInstanceOf<ARacePreparationStage>();
@@ -256,7 +256,7 @@ bool FCheckJetMovedToFinalistJets::Update()
 		return false;
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 	ARaceGameModeMOCK* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameModeMOCK>();
 	AJet* testjet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 

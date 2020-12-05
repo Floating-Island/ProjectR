@@ -53,7 +53,7 @@ bool FCheckEndedStageSpawnedCommand::Update()
 		return false;
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	ARaceRunningStage* testRunning = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceRunningStage>();
 	if (testRunning)
@@ -75,7 +75,7 @@ bool FCheckEndedStageSpawnedWithNoRunningJetsCommand::Update()
 		return false;
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	ARaceRunningStage* testRunning = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceRunningStage>();
 	if (testRunning)

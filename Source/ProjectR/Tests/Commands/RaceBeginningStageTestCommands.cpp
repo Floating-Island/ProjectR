@@ -58,7 +58,7 @@ bool FCheckTimerActiveCommand::Update()
 		return false;
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	ARaceBeginningStageMOCK* testBeginning = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceBeginningStageMOCK>();
 	if (testBeginning)
@@ -78,7 +78,7 @@ bool FCheckRunningStageSpawnedCommand::Update()
 		return false;
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	ARaceBeginningStage* testBeginning = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceBeginningStage>();
 	if (testBeginning)

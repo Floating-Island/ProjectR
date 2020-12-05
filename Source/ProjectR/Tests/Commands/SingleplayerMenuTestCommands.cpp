@@ -31,7 +31,7 @@ bool FCheckSingleplayerMenuClickPlayButtonChangesMapCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		bool isInAnotherWorld = GEditor->GetPIEWorldContext()->World()->GetMapName() != "VoidWorld";
+		bool isInAnotherWorld = !sessionUtilities.currentPIEWorld()->GetMapName().Contains("VoidWorld");
 
 		if (isMenuInstanciated && !isInAnotherWorld)
 		{
@@ -41,7 +41,7 @@ bool FCheckSingleplayerMenuClickPlayButtonChangesMapCommand::Update()
 
 		if (aSingleplayerMenuInstance == nullptr)
 		{
-			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 			aSingleplayerMenuInstance = gameInstance->loadSingleplayerMenu();
 			isMenuInstanciated = true;
 			return false;
@@ -50,7 +50,7 @@ bool FCheckSingleplayerMenuClickPlayButtonChangesMapCommand::Update()
 		if (isInAnotherWorld)
 		{
 			aTest->TestTrue(TEXT("The singleplayer menu should change the current map when clicking the play button."), isInAnotherWorld);
-			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
 
@@ -58,7 +58,7 @@ bool FCheckSingleplayerMenuClickPlayButtonChangesMapCommand::Update()
 		if (aTickCount > aTickLimit)
 		{
 			aTest->TestTrue(TEXT("The singleplayer menu should change the current map when clicking the play button."), isInAnotherWorld);
-			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
 	}
@@ -74,7 +74,7 @@ bool FCheckSingleplayerMenuClickGoBackRemovesFromViewportCommand::Update()
 
 		if (aSingleplayerMenuInstance == nullptr)
 		{
-			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 			aSingleplayerMenuInstance = gameInstance->loadSingleplayerMenu();
 			isMenuInstanciated = true;
 			return false;
@@ -88,7 +88,7 @@ bool FCheckSingleplayerMenuClickGoBackRemovesFromViewportCommand::Update()
 		}
 
 		aTest->TestTrue(TEXT("The singleplayer menu should be removed from viewport when clicking the go back button."), !aSingleplayerMenuInstance->IsInViewport());
-		sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+		sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 		return true;
 	}
 	return false;
@@ -100,7 +100,7 @@ bool FCheckSingleplayerMenuClickGoBackBringsMainMenuCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
 		if (aSingleplayerMenuInstance == nullptr)
 		{
@@ -119,7 +119,7 @@ bool FCheckSingleplayerMenuClickGoBackBringsMainMenuCommand::Update()
 		if (isMenuInstanciated && !aSingleplayerMenuInstance->IsInViewport())
 		{
 			aTest->TestTrue(TEXT("The singleplayer menu should change to the main menu when clicking the go back button."), gameInstance->isMainMenuInViewport());
-			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
 
@@ -127,7 +127,7 @@ bool FCheckSingleplayerMenuClickGoBackBringsMainMenuCommand::Update()
 		if (aTickCount > aTickLimit)
 		{
 			aTest->TestTrue(TEXT("The singleplayer menu should change to the main menu when clicking the go back button."), gameInstance->isMainMenuInViewport());
-			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
 	}

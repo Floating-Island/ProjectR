@@ -39,7 +39,7 @@ bool FCheckRaceModeSubscribedCommand::Update()
 		return false;
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	ARaceStageMOCK* testRaceStage = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceStageMOCK>();
 	if (testRaceStage)

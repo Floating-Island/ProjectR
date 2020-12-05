@@ -32,7 +32,7 @@ bool FCheckIsSetAsProjectGameInstance::Update()
 	if(GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
 		test->TestNotNull(TEXT("ProjectR game instance should be set as project instance."), testInstance);
 		return true;
@@ -46,7 +46,7 @@ bool FCheckCreatesMainMenu::Update()
 	if(GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
 		UMainMenu* testMenu = testInstance->loadMainMenu();
 		
@@ -62,7 +62,7 @@ bool FCheckCreatesOneMainMenu::Update()
 	if(GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
 		UMainMenu* testMenu = testInstance->loadMainMenu();
 		UMainMenu* anotherTestMenu = testInstance->loadMainMenu();
@@ -79,7 +79,7 @@ bool FCheckCreatesSingleplayerMenu::Update()
 	if(GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
 		USingleplayerMenu* testMenu = testInstance->loadSingleplayerMenu();
 		
@@ -95,7 +95,7 @@ bool FCheckCreatesOneSingleplayerMenu::Update()
 	if(GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
 		USingleplayerMenu* testMenu = testInstance->loadSingleplayerMenu();
 		USingleplayerMenu* anotherTestMenu = testInstance->loadSingleplayerMenu();
@@ -112,10 +112,10 @@ bool FCheckShowsCursorInMainMenu::Update()
 	if(GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
 		UMainMenu* testMenu = testInstance->loadMainMenu();
-		bool controllerShowsMouseCursor = sessionUtilities.currentPIEWorld()->GetFirstPlayerController()->ShouldShowMouseCursor();
+		bool controllerShowsMouseCursor = sessionUtilities.defaultPIEWorld()->GetFirstPlayerController()->ShouldShowMouseCursor();
 		
 		aTest->TestTrue(TEXT("loadMainMenu should make the controller show the mouse cursor."), testMenu && controllerShowsMouseCursor);
 		return true;
@@ -129,10 +129,10 @@ bool FCheckShowsCursorInSingleplayerMenu::Update()
 	if(GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
 		USingleplayerMenu* testMenu = testInstance->loadSingleplayerMenu();
-		bool controllerShowsMouseCursor = sessionUtilities.currentPIEWorld()->GetFirstPlayerController()->ShouldShowMouseCursor();
+		bool controllerShowsMouseCursor = sessionUtilities.defaultPIEWorld()->GetFirstPlayerController()->ShouldShowMouseCursor();
 		
 		aTest->TestTrue(TEXT("loadSingleplayerMenu should make the controller show the mouse cursor."), testMenu && controllerShowsMouseCursor);
 		return true;

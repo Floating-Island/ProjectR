@@ -26,7 +26,7 @@ bool FSpawningATrackGeneratorCommand::Update()
 		return false;
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	sessionUtilities.spawnInPIEAnInstanceOf<ATrackGenerator>();
 	sessionUtilities.spawnInPIEAnInstanceOf<ATrackManagerMOCK>();
@@ -45,7 +45,7 @@ bool FSpawningARotatedTrackGeneratorAndJetCloseToItCommand::Update()
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
 
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	ATrackGenerator* testGenerator = sessionUtilities.spawnInPIEAnInstanceOf<ATrackGenerator>();
 
@@ -74,7 +74,7 @@ bool FCheckATrackManagerTrackGeneratorsCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		ATrackManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackManagerMOCK>();
 		if (testManager)
 		{
@@ -99,7 +99,7 @@ bool FCheckATrackManagerStoresJetsWhenOverlapCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		ATrackManager* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackManager>();
 		if (testManager)
 		{
@@ -131,7 +131,7 @@ bool FCheckATrackManagerAttractsJetsCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		ATrackGenerator* testGenerator = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
 		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		if (testGenerator && testJet)

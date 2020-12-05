@@ -6,9 +6,18 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameInstance/ProjectRGameInstance.h"
 
+
 void USingleplayerMenu::play()
 {
+	focusOnGame();
 	UGameplayStatics::OpenLevel(GetWorld(), raceLevel);
+}
+
+void USingleplayerMenu::focusOnGame()
+{
+	FInputModeGameOnly inputModeData;
+	inputModeData.SetConsumeCaptureMouseDown(true);
+	GetWorld()->GetFirstPlayerController()->SetInputMode(inputModeData);
 }
 
 void USingleplayerMenu::goBack()

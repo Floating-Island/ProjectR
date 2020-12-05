@@ -20,9 +20,14 @@ PIESessionUtilities::~PIESessionUtilities()
 {
 }
 
-UWorld* PIESessionUtilities::currentPIEWorld()
+UWorld* PIESessionUtilities::defaultPIEWorld()
 {
 	return pieWorld;
+}
+
+UWorld* PIESessionUtilities::currentPIEWorld()
+{
+	return GEditor->GetPIEWorldContext()->World();
 }
 
 void PIESessionUtilities::processLocalPlayerInputFrom(FName anAxisMappingName)

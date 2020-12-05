@@ -30,7 +30,7 @@ bool FSpawningAJetMakeItAccelerateCommand::Update()
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
 
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
 
@@ -48,7 +48,7 @@ bool FSpawningAJetMakeItBrakeCommand::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
 
@@ -66,7 +66,7 @@ bool FSpawningAJetSetVelocityToTopSpeedCommand::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
 
@@ -85,7 +85,7 @@ bool FSpawningAJetMakeItSteerRightCommand::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
 
@@ -104,7 +104,7 @@ bool FSpawningAJetPressAccelerationKeyCommand::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
 
@@ -122,7 +122,7 @@ bool FSpawningAJetPressSteerRightKeyCommand::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
 
@@ -141,7 +141,7 @@ bool FSpawningAJetPressBrakeKeyCommand::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
 
@@ -159,7 +159,7 @@ bool FSpawningAJetSnapedToFloorCommand::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	AFloorMeshActor* meshActor = sessionUtilities.spawnInPIEAnInstanceOf<AFloorMeshActor>();
 
@@ -183,7 +183,7 @@ bool FSpawningAJetRotateAndAccelerateCommand::Update()
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
 
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
 
@@ -205,7 +205,7 @@ bool FSpawningAJetRotateAndBrakeCommand::Update()
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
 
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
 
@@ -225,7 +225,7 @@ bool FSpawningAJetRotateAndBrakeCommand::Update()
 //	}
 //	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 //
-//	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+//	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 //
 //	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
 //
@@ -261,7 +261,7 @@ bool FSpawningAJeSteerRightWhenIdleCommand::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 
 	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
@@ -315,7 +315,7 @@ bool FSpawningAJetTiltItAndMakeItSteerRightCommand::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
 
@@ -337,7 +337,7 @@ bool FSpawningAJetRotatedOverFloorAndAccelerateItCommand::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	AFloorMeshActor* meshActor = sessionUtilities.spawnInPIEAnInstanceOf<AFloorMeshActor>();
 
@@ -390,7 +390,7 @@ bool FSpawningAJetRotatedOverFloorAndBrakeItCommand::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	AFloorMeshActor* meshActor = sessionUtilities.spawnInPIEAnInstanceOf<AFloorMeshActor>();
 
@@ -417,7 +417,7 @@ bool FSpawningAJetRotatedOverFloorAccelerateAndSteerItRightCommand::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = sessionUtilities.currentPIEWorld();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	AFloorMeshActor* meshActor = sessionUtilities.spawnInPIEAnInstanceOf<AFloorMeshActor>();
 
@@ -455,7 +455,7 @@ bool FCheckAJetLocationCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		if (testJet)
 		{
@@ -493,7 +493,7 @@ bool FCheckAJetSpeedIncreaseCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		if (testJet)
 		{
@@ -537,7 +537,7 @@ bool FCheckAJetVelocityDecreaseCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		if (testJet)
 		{
@@ -579,7 +579,7 @@ bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 		if (testJet)
 		{
@@ -608,7 +608,7 @@ bool FCheckAJetRotatedYawCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 		if (testJet)
 		{
@@ -645,7 +645,7 @@ bool FCheckAJetZLocationCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 		if (testJet)
 		{
@@ -683,7 +683,7 @@ bool FCheckAJetLocationCoincidentToForwardVectorCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		if (testJet)
 		{
@@ -725,7 +725,7 @@ bool FCheckAJetLocationParallelToForwardVectorCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		if (testJet)
 		{
@@ -767,7 +767,7 @@ bool FCheckAJetLocationParallelToForwardVectorCommand::Update()
 //	if (GEditor->IsPlayingSessionInEditor())
 //	{
 //		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-//		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+//		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 //		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 //		if (testJet)
 //		{
@@ -804,7 +804,7 @@ bool FCheckAJetInvertSteeringWhenInReverseCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		if (testJet)
 		{
@@ -849,7 +849,7 @@ bool FCheckAJetUnableToSteerWhenIdleCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		if (testJet)
 		{
@@ -883,7 +883,7 @@ bool FCheckAJetCenterOfMassCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 		if (testJet)
 		{
@@ -908,7 +908,7 @@ bool FCheckAJetFallSpeedCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		TArray<AJetMOCK*> testJets = sessionUtilities.retrieveFromPIEAllInstancesOf<AJetMOCK>();
 
 		for (const auto& testJet : testJets)
@@ -952,7 +952,7 @@ bool FCheckAJetSteersAroundUpVectorCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 		if (testJet)
 		{
@@ -990,7 +990,7 @@ bool FCheckAJetSpeedOrthogonalityToFloorCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 		AFloorMeshActor* testFloor = sessionUtilities.retrieveFromPIEAnInstanceOf<AFloorMeshActor>();
 		if (testJet)
@@ -1034,7 +1034,7 @@ bool FCheckAJetSidewaysRejectsFloorCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		AFloorMeshActor* testFloor = sessionUtilities.retrieveFromPIEAnInstanceOf<AFloorMeshActor>();
 
@@ -1081,7 +1081,7 @@ bool FCheckAJetVelocityMagnitudeOrthogonalityToFloorCommand::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 		AFloorMeshActor* testFloor = sessionUtilities.retrieveFromPIEAnInstanceOf<AFloorMeshActor>();
 		if (testJet)

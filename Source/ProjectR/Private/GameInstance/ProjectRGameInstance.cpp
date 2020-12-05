@@ -5,36 +5,58 @@
 #include "UI/MainMenu.h"
 #include "UI/SingleplayerMenu.h"
 #include "Blueprint/UserWidget.h"
+#include "Kismet/GameplayStatics.h"
+
+
 
 UMainMenu* UProjectRGameInstance::loadMainMenu()
 {
-	if (!mainMenu)
+	UMainMenu* mainMenuInstance = Cast<UMainMenu, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), UMainMenu::StaticClass()));
+	if (!mainMenuInstance)
 	{
-		mainMenu = CreateWidget<UMainMenu>(this, mainMenuClass, FName("Main Menu"));
+		mainMenu = CreateWidget<UMainMenu>(GetWorld(), mainMenuClass, FName("Main Menu"));
 	}
+	else
+	{
+		mainMenu = mainMenuInstance;
+	}
+	UE_LOG(LogTemp, Log, TEXT("attempting to add main menu to viewport"));
 	if (!mainMenu->IsInViewport())
 	{
 		mainMenu->AddToViewport();
+		lockMouseToWidget(mainMenu);
 	}
-	APlayerController* controller = GetWorld()->GetFirstPlayerController();
-	controller->bShowMouseCursor = true;
+	
 
 	return mainMenu;
 }
 
+void UProjectRGameInstance::lockMouseToWidget(UMenu* menu)
+{
+	FInputModeUIOnly inputModeData;
+	inputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+	inputModeData.SetWidgetToFocus(menu->TakeWidget());
+	APlayerController* controller = GetWorld()->GetFirstPlayerController();
+	controller->SetInputMode(inputModeData);
+	controller->bShowMouseCursor = true;
+}
+
 USingleplayerMenu* UProjectRGameInstance::loadSingleplayerMenu()
 {
-	if (!singleplayerMenu)
+	USingleplayerMenu* singleplayerMenuInstance = Cast<USingleplayerMenu, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), USingleplayerMenu::StaticClass()));
+	if (!singleplayerMenuInstance)
 	{
-		singleplayerMenu = CreateWidget<USingleplayerMenu>(this, singleplayerMenuClass, FName("Solo Race Menu"));
+		singleplayerMenu = CreateWidget<USingleplayerMenu>(GetWorld(), singleplayerMenuClass, FName("Singleplayer Menu"));
+	}
+	else
+	{
+		singleplayerMenu = singleplayerMenuInstance;
 	}
 	if (!singleplayerMenu->IsInViewport())
 	{
 		singleplayerMenu->AddToViewport();
+		lockMouseToWidget(singleplayerMenu);
 	}
-	APlayerController* controller = GetWorld()->GetFirstPlayerController();
-	controller->bShowMouseCursor = true;
-	
 	return singleplayerMenu;
 }
 
