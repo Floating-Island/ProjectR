@@ -28,7 +28,8 @@ public:
 	~PIESessionUtilities();
 	UWorld* defaultPIEWorld();
 	UWorld* currentPIEWorld();
-	
+
+	void spawnLocalPlayer();
 	void processLocalPlayerInputFrom(FName anAxisMappingName);
 
 	void processEditorClick(FVector2D atCoordinates);
