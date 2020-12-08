@@ -106,7 +106,7 @@ bool FSpawningAJetPressAccelerationKeyCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
-	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
+	
 
 	sessionUtilities.processLocalPlayerInputFrom(FName(TEXT("AccelerateAction")));
 
@@ -143,7 +143,7 @@ bool FSpawningAJetPressBrakeKeyCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
-	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
+	
 
 	sessionUtilities.processLocalPlayerInputFrom(FName(TEXT("BrakeAction")));
 
