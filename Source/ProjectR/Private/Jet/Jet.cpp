@@ -41,8 +41,6 @@ AJet::AJet()
 	camera = CreateDefaultSubobject<UCameraComponent>(TEXT("camera"));
 	camera->SetupAttachment(springArm);
 
-	AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
-
 	antiGravitySystem = CreateDefaultSubobject<UAntiGravityComponent>(TEXT("Anti-Gravity System"));
 
 	steeringSystem = CreateDefaultSubobject<USteeringComponent>(TEXT("Steering System"));
