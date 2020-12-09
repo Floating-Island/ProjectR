@@ -34,7 +34,7 @@ protected:
 
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
-		int numberOfPlayers;
+		int expectedNumberOfJets;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
 		int numberOfLaps;
