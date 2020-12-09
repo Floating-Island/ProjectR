@@ -68,7 +68,7 @@ void ARaceGameMode::positionExpectedJets()
 
 void ARaceGameMode::createJet(FVector atLocation, int& aNumberOfRemainingJetsToCreate)
 {
-	AJet* spawnedJet = gameWorld->SpawnActor<AJet>(atLocation, FRotator(0));
+	AJet* spawnedJet = gameWorld->SpawnActor<AJet>(DefaultPawnClass, atLocation, FRotator(0));
 	--aNumberOfRemainingJetsToCreate;
 	runningJets.Add(spawnedJet);
 }
