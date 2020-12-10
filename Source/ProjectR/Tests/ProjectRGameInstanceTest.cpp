@@ -4,11 +4,10 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-#include "GameInstance/ProjectRGameInstance.h"
-
 #include "ProjectRGameInstanceTest.h"
 #include "Commands/ProjectRGameInstanceTestCommands.h"
 #include "Tests/AutomationEditorCommon.h"
+#include "GameInstance/ProjectRGameInstance.h"
 
 bool FUProjectRGameInstanceIsSetAsProjectGameInstanceTest::RunTest(const FString& Parameters)
 {
