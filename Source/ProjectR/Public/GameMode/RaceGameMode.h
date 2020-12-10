@@ -83,5 +83,7 @@ public:
 	TMap<AJet*, int8> positions();
 
 	void playersToCreate(int aPlayerQuantity);
+
+	void achieveNecessaryPlayersQuantity();
 	
 };

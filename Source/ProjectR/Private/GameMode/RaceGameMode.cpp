@@ -10,6 +10,7 @@
 #include "Track/TrackGenerator.h"
 #include "LapPhases/InitialLapPhase.h"
 #include "GameMode/RaceStages/RacePreparationStage.h"
+#include "GameInstance/ProjectRGameInstance.h"
 
 #include "Kismet/GameplayStatics.h"
 
@@ -171,8 +172,16 @@ TMap<AJet*, int8> ARaceGameMode::positions()
 
 void ARaceGameMode::playersToCreate(int aPlayerQuantity)
 {
-	for(int index = 0; index < aPlayerQuantity; ++index)
+	for (int playersCreated = 0; playersCreated < aPlayerQuantity; ++playersCreated)
 	{
 		UGameplayStatics::CreatePlayer(GetWorld());
 	}
+}
+
+void ARaceGameMode::achieveNecessaryPlayersQuantity()
+{
+	int necessaryPlayers = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance())->necessaryPlayers();
+	int currentPlayers = GetNumPlayers();
+	int playersNeeded = necessaryPlayers - currentPlayers;
+	playersToCreate(playersNeeded);
 }
