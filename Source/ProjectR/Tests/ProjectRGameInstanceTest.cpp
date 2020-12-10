@@ -4,6 +4,7 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
+#include "GameInstance/ProjectRGameInstance.h"
 
 #include "ProjectRGameInstanceTest.h"
 #include "Commands/ProjectRGameInstanceTestCommands.h"
@@ -109,14 +110,24 @@ bool FUProjectRGameInstanceLoadSingleplayerMenuShowsMouseCursorTest::RunTest(con
 
 bool FUProjectRGameInstanceNecessaryPlayersReturnsAsExpectedTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	UProjectRGameInstance* testInstance = NewObject<UProjectRGameInstance>();
+	
+	int expectedPlayers = 4;
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
-	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	testInstance->expectedPlayers(expectedPlayers);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckNecessaryPlayersAreTheExpected(this));
+	int necessaryPlayers = testInstance->necessaryPlayers();
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	TestTrue(TEXT("necessaryPlayers returns the expected number of players in the game."), necessaryPlayers == expectedPlayers);
+	return true;
+}
+
+
+bool FUProjectRGameInstanceNecessaryPlayersOneAsDefaultTest::RunTest(const FString& Parameters)
+{
+	UProjectRGameInstance* testInstance = NewObject<UProjectRGameInstance>();
+
+	TestTrue(TEXT("necessaryPlayers returns 1 as default."), testInstance->necessaryPlayers() == 1);
 	return true;
 }
 

@@ -141,26 +141,6 @@ bool FCheckShowsCursorInSingleplayerMenu::Update()
 }
 
 
-bool FCheckNecessaryPlayersAreTheExpected::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
-
-		int expectedPlayers = 4;
-
-		testInstance->expectedPlayers(expectedPlayers);
-
-		int necessaryPlayers = testInstance->necessaryPlayers();
-
-		aTest->TestTrue(TEXT("necessaryPlayers returns the expected number of players in the game."), necessaryPlayers == expectedPlayers);
-		return true;
-	}
-	return false;
-}
-
-
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
