@@ -48,6 +48,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
 		float initialForwardDistanceBetweenJets;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
+		TSubclassOf<AJet> jetClass;
+
 public:
 	ARaceGameMode();
 

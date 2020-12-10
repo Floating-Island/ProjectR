@@ -23,6 +23,7 @@ ARaceGameMode::ARaceGameMode()
 	initialForwardDistanceBetweenJets = 2000;
 	initialLateralDistanceBetweenJets = 1000;
 
+	jetClass = AJet::StaticClass();
 	currentJetPositions = TMap<AJet*, int8>();
 	finalizedJets = TArray<AJet*>();
 }
@@ -68,7 +69,7 @@ void ARaceGameMode::positionExpectedJets()
 
 void ARaceGameMode::createJet(FVector atLocation, int& aNumberOfRemainingJetsToCreate)
 {
-	AJet* spawnedJet = gameWorld->SpawnActor<AJet>(DefaultPawnClass, atLocation, FRotator(0));
+	AJet* spawnedJet = gameWorld->SpawnActor<AJet>(jetClass, atLocation, FRotator(0));
 	--aNumberOfRemainingJetsToCreate;
 	runningJets.Add(spawnedJet);
 }
