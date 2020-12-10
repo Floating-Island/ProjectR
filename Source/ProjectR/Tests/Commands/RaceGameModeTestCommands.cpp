@@ -272,5 +272,41 @@ bool FCheckJetMovedToFinalistJets::Update()
 }
 
 
+bool FCheckCreatesTheExpectedPlayers::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+	ARaceGameModeMOCK* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameModeMOCK>();
+	AJet* testjet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+
+	if (testGameMode && testjet)
+	{
+		bool hasMovedAJetToFinalists = testGameMode->finalistJets().Num() == 1;
+
+		int initialPlayerQuantity = testGameMode->GetNumPlayers();
+		
+		int playersQuantity = 3;
+		
+		testGameMode->playersToCreate(playersQuantity);
+
+		int totalPlayerQuantity = testGameMode->GetNumPlayers();
+
+		bool playerQuantityAsExpected = totalPlayerQuantity - initialPlayerQuantity == playersQuantity;
+
+		test->TestTrue(TEXT("Race game mode should create the expected number of players when calling playersToCreate."), playerQuantityAsExpected);
+		testWorld->bDebugFrameStepExecution = true;
+		return true;
+	}
+	return false;
+}
+
+
+
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
