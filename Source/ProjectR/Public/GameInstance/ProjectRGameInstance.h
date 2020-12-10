@@ -19,6 +19,7 @@ class PROJECTR_API UProjectRGameInstance : public UGameInstance
 	GENERATED_BODY()
 
 protected:
+	int numberOfPlayers;
 	UMainMenu* mainMenu;
 	USingleplayerMenu* singleplayerMenu;
 	void lockMouseToWidget(UMenu* menu);
@@ -37,4 +38,7 @@ public:
 
 	bool isMainMenuInViewport();
 	bool isSingleplayerMenuInViewport();
+
+	void expectedPlayers(int aQuantity);
+	int necessaryPlayers();
 };

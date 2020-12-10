@@ -77,3 +77,13 @@ bool UProjectRGameInstance::isSingleplayerMenuInViewport()
 	}
 	return singleplayerMenu->IsInViewport();
 }
+
+void UProjectRGameInstance::expectedPlayers(int aQuantity)
+{
+	numberOfPlayers = aQuantity;
+}
+
+int UProjectRGameInstance::necessaryPlayers()
+{
+	return numberOfPlayers;
+}
