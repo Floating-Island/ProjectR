@@ -51,6 +51,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadSingleplayerMenuShows
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceNecessaryPlayersReturnsAsExpectedTest, 
+	"ProjectR.ProjectRGameInstance Tests.Unit.007: necessaryPlayers returns what expectedPlayers sets",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 
