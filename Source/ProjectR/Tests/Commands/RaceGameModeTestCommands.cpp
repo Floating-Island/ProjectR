@@ -284,10 +284,7 @@ bool FCheckCreatesTheExpectedPlayers::Update()
 
 	if (testGameMode)
 	{
-		bool hasMovedAJetToFinalists = testGameMode->finalistJets().Num() == 1;
-
 		int initialPlayerQuantity = testGameMode->GetNumPlayers();
-		
 		int playersQuantity = 3;
 		
 		testGameMode->playersToCreate(playersQuantity);
