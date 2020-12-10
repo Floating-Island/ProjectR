@@ -168,3 +168,11 @@ TMap<AJet*, int8> ARaceGameMode::positions()
 {
 	return currentJetPositions;
 }
+
+void ARaceGameMode::playersToCreate(int aPlayerQuantity)
+{
+	for(int index = 0; index < aPlayerQuantity; ++index)
+	{
+		UGameplayStatics::CreatePlayer(GetWorld());
+	}
+}
