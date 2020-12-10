@@ -61,6 +61,12 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModePlayersToCreateCreatesThatNumberO
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeCreatesTheNecessaryGamePlayersTest, 
+	"ProjectR.RaceGameMode Tests.Integration.008: Creates the necessary number of players for the game instance", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

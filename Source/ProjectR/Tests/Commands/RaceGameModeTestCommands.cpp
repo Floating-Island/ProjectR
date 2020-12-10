@@ -17,7 +17,7 @@
 #include "GameMode/RaceStages/RacePreparationStage.h"
 #include "GameMode/RaceStages/RaceBeginningStage.h"
 #include "GameMode/RaceStages/RaceRunningStage.h"
-
+#include "GameInstance/ProjectRGameInstance.h"
 
 #include "../Mocks/LapManagerMOCK.h"
 #include "Tests/AutomationEditorCommon.h"
@@ -286,7 +286,7 @@ bool FCheckCreatesTheExpectedPlayers::Update()
 	{
 		int initialPlayerQuantity = testGameMode->GetNumPlayers();
 		int playersQuantity = 3;
-		
+
 		testGameMode->playersToCreate(playersQuantity);
 
 		int totalPlayerQuantity = testGameMode->GetNumPlayers();
@@ -294,6 +294,37 @@ bool FCheckCreatesTheExpectedPlayers::Update()
 		bool playerQuantityAsExpected = totalPlayerQuantity - initialPlayerQuantity == playersQuantity;
 
 		test->TestTrue(TEXT("Race game mode should create the expected number of players when calling playersToCreate."), playerQuantityAsExpected);
+		testWorld->bDebugFrameStepExecution = true;
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckCreatesTheNecessaryPlayers::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+	ARaceGameModeMOCK* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameModeMOCK>();
+	UProjectRGameInstance* testGameInstance = Cast<UProjectRGameInstance, UGameInstance>(testWorld->GetGameInstance());
+
+	if (testGameInstance && testGameMode)
+	{
+		int quantityOfPlayers = 3;
+		testGameInstance->expectedPlayers(quantityOfPlayers);
+		int necessaryPlayerQuantity = testGameInstance->necessaryPlayers();
+
+		testGameMode->achieveNecessaryPlayersQuantity();
+
+		int totalPlayerQuantity = testGameMode->GetNumPlayers();
+
+		bool playerQuantityAsExpected = totalPlayerQuantity == necessaryPlayerQuantity;
+
+		test->TestTrue(TEXT("Race game mode should create the necessary number of players expected from the game instance."), playerQuantityAsExpected);
 		testWorld->bDebugFrameStepExecution = true;
 		return true;
 	}
