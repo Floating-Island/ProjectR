@@ -281,9 +281,8 @@ bool FCheckCreatesTheExpectedPlayers::Update()
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 	ARaceGameModeMOCK* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameModeMOCK>();
-	AJet* testjet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 
-	if (testGameMode && testjet)
+	if (testGameMode)
 	{
 		bool hasMovedAJetToFinalists = testGameMode->finalistJets().Num() == 1;
 
