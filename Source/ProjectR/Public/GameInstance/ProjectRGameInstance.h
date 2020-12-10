@@ -24,6 +24,8 @@ protected:
 	USingleplayerMenu* singleplayerMenu;
 	void lockMouseToWidget(UMenu* menu);
 public:
+	UProjectRGameInstance();
+	
 	UPROPERTY(EditDefaultsOnly, Category= "Menus")
 		TSubclassOf<UMainMenu> mainMenuClass;
 

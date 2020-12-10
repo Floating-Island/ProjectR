@@ -26,7 +26,6 @@ UMainMenu* UProjectRGameInstance::loadMainMenu()
 		mainMenu->AddToViewport();
 		lockMouseToWidget(mainMenu);
 	}
-	
 
 	return mainMenu;
 }
@@ -39,6 +38,11 @@ void UProjectRGameInstance::lockMouseToWidget(UMenu* menu)
 	APlayerController* controller = GetWorld()->GetFirstPlayerController();
 	controller->SetInputMode(inputModeData);
 	controller->bShowMouseCursor = true;
+}
+
+UProjectRGameInstance::UProjectRGameInstance()
+{
+	numberOfPlayers = 1;
 }
 
 USingleplayerMenu* UProjectRGameInstance::loadSingleplayerMenu()
@@ -62,7 +66,7 @@ USingleplayerMenu* UProjectRGameInstance::loadSingleplayerMenu()
 
 bool UProjectRGameInstance::isMainMenuInViewport()
 {
-	if(!mainMenu)
+	if (!mainMenu)
 	{
 		return false;
 	}
@@ -71,7 +75,7 @@ bool UProjectRGameInstance::isMainMenuInViewport()
 
 bool UProjectRGameInstance::isSingleplayerMenuInViewport()
 {
-	if(!singleplayerMenu)
+	if (!singleplayerMenu)
 	{
 		return false;
 	}
