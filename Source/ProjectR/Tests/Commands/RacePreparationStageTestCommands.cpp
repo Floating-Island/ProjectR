@@ -103,6 +103,9 @@ bool FCheckPlayersQuantityOnStartCommand::Update()
 			}
 			else
 			{
+				int expectedPlayersInGame = 3;
+				UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(testWorld->GetGameInstance());
+				gameInstance->expectedPlayers(expectedPlayersInGame);
 				testPreparation->start();
 				stageHasStarted = true;
 			}
