@@ -149,7 +149,7 @@ bool FChecklocalMultiplayerMenuClickPlayButtonChangesMapCommand::Update()
 		if (isInAnotherWorld)
 		{
 			aTest->TestTrue(TEXT("The local multiplayer menu should change the current map when clicking the play button."), isInAnotherWorld);
-			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
 
@@ -157,7 +157,7 @@ bool FChecklocalMultiplayerMenuClickPlayButtonChangesMapCommand::Update()
 		if (aTickCount > aTickLimit)
 		{
 			aTest->TestTrue(TEXT("The local multiplayer menu should change the current map when clicking the play button."), isInAnotherWorld);
-			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
 	}
