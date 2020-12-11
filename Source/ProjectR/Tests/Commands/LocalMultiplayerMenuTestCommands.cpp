@@ -95,7 +95,7 @@ bool FCheckLocalMultiplayerMenuClickPlaySetsPlayers::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
-		bool isInInitialWorld = sessionUtilities.currentPIEWorld()->GetMapName().Contains("VoidWorld");
+		bool isInInitialWorld = sessionUtilities.currentPIEWorld()->GetMapName().Contains("VoidWorld");//beware of map changes. The current world changes so the menu becomes unavailable...
 
 		if(isInInitialWorld)
 		{
