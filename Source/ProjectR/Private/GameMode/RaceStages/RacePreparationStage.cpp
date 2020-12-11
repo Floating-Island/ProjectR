@@ -18,6 +18,7 @@ ARaceStage* ARacePreparationStage::nextStage()
 
 void ARacePreparationStage::start()
 {
+	raceMode->achieveNecessaryPlayersQuantity();
 	raceMode->positionExpectedJets();
 	raceMode->createLapManager();
 	stageEndedEvent.Broadcast(this);
