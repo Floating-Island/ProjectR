@@ -284,7 +284,7 @@ bool FCheckCreatesTheExpectedPlayers::Update()
 
 	if (testGameMode)
 	{
-		int initialPlayerQuantity = testGameMode->GetNumPlayers();
+		int initialPlayerQuantity = testWorld->GetNumPlayerControllers();
 		int playersQuantity = 3;
 
 		testGameMode->playersToCreate(playersQuantity);
