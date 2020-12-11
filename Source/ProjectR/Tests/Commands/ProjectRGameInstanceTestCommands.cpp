@@ -191,6 +191,25 @@ bool FCheckShowsCursorInSplitscreenMenu::Update()
 	return false;
 }
 
+bool FCheckLoadMainMenuSetsExpectedPlayersToOne::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		int arbitraryExpectedJets = 2;
+		testInstance->expectedPlayers(arbitraryExpectedJets);
+		
+		UMainMenu* testMenu = testInstance->loadMainMenu();
+
+		aTest->TestTrue(TEXT("loadMainMenu should set the expected players to one."), testInstance->necessaryPlayers() == 1);
+		return true;
+	}
+	return false;
+}
+
+
 
 
 

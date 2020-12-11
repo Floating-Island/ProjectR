@@ -76,6 +76,10 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadSplitscreenMenuShowsM
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadMainMenuSetsExpectedPlayersToOneTest, 
+	"ProjectR.ProjectRGameInstance Tests.Integration.012: loadMainMenu sets the expected players to 1",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
 
 
 
