@@ -94,14 +94,25 @@ bool FCheckLocalMultiplayerMenuClickPlaySetsPlayers::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
+		bool isInInitialWorld = sessionUtilities.currentPIEWorld()->GetMapName().Contains("VoidWorld");
 
-		if (aLocalMultiplayerMenuInstance == nullptr)
+		if(isInInitialWorld)
 		{
-			aLocalMultiplayerMenuInstance = gameInstance->loadLocalMultiplayerMenu();
-			return false;
+			if (aLocalMultiplayerMenuInstance == nullptr)
+			{
+				aLocalMultiplayerMenuInstance = gameInstance->loadLocalMultiplayerMenu();
+				return false;
+			}
+			if (aLocalMultiplayerMenuInstance->IsInViewport())
+			{
+				aSelectedNumberOfPlayers = aLocalMultiplayerMenuInstance->selectedPlayerQuantity();
+				FVector2D playButtonCoordinates = aLocalMultiplayerMenuInstance->playButtonAbsoluteCenterPosition();
+				sessionUtilities.processEditorClick(playButtonCoordinates);
+				return false;
+			}
 		}
-
+		
 		bool expectedPlayersAreSelectedPlayersQuantity = gameInstance->necessaryPlayers() == aSelectedNumberOfPlayers;
 		++aTickCount;
 		if (aTickCount > aTickLimit)
@@ -109,13 +120,6 @@ bool FCheckLocalMultiplayerMenuClickPlaySetsPlayers::Update()
 			aTest->TestTrue(TEXT("The local multiplayer menu should set the expected players set in the combo box."), expectedPlayersAreSelectedPlayersQuantity);
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
-		}
-		if (aLocalMultiplayerMenuInstance->IsInViewport())
-		{
-			aSelectedNumberOfPlayers = aLocalMultiplayerMenuInstance->selectedPlayerQuantity();
-			FVector2D playButtonCoordinates = aLocalMultiplayerMenuInstance->playButtonAbsoluteCenterPosition();
-			sessionUtilities.processEditorClick(playButtonCoordinates);
-			return false;
 		}
 		aTest->TestTrue(TEXT("The local multiplayer menu should set the expected players set in the combo box."), expectedPlayersAreSelectedPlayersQuantity);
 		sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
