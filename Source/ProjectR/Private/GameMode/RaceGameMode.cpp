@@ -195,5 +195,5 @@ void ARaceGameMode::possessJets()
 		AJet* unPossessedJet = unPossessedJets.Pop();
 		unPossessedJet->SetOwner(controller);
 		controller->Possess(unPossessedJet);
-	}
+	}//if when testing the splitscreen only the first player moves, try to spawn more players.
 }
