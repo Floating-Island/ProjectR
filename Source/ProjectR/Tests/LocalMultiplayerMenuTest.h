@@ -36,6 +36,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FULocalMultiplayerMenuClickingPlayButtonSetsPla
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FULocalMultiplayerMenuClickingPlayButtonChangesMapTest,
+	"ProjectR.LocalMultiplayerMenu Tests.Integration.004: Clicking the play button changes the map",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

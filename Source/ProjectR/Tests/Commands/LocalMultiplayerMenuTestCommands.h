@@ -27,4 +27,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckLocalMultiplayerMenuClickG
 
 DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckLocalMultiplayerMenuClickPlaySetsPlayers, int, aTickCount, int, aTickLimit, ULocalMultiplayerMenu*, aLocalMultiplayerMenuInstance, int, aSelectedNumberOfPlayers, FAutomationTestBase*, aTest);
 
+
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FChecklocalMultiplayerMenuClickPlayButtonChangesMapCommand, int, aTickCount, int, aTickLimit, ULocalMultiplayerMenu*, aLocalMultiplayerMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, aTest);
+
 #endif //WITH_DEV_AUTOMATION_TESTS

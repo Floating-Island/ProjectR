@@ -125,4 +125,45 @@ bool FCheckLocalMultiplayerMenuClickPlaySetsPlayers::Update()
 }
 
 
+bool FChecklocalMultiplayerMenuClickPlayButtonChangesMapCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		bool isInAnotherWorld = !sessionUtilities.currentPIEWorld()->GetMapName().Contains("VoidWorld");
+
+		if (isMenuInstanciated && !isInAnotherWorld)
+		{
+			FVector2D playButtonCoordinates = aLocalMultiplayerMenuInstance->playButtonAbsoluteCenterPosition();
+			sessionUtilities.processEditorClick(playButtonCoordinates);
+		}
+
+		if (aLocalMultiplayerMenuInstance == nullptr)
+		{
+			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+			aLocalMultiplayerMenuInstance = gameInstance->loadLocalMultiplayerMenu();
+			isMenuInstanciated = true;
+			return false;
+		}
+
+		if (isInAnotherWorld)
+		{
+			aTest->TestTrue(TEXT("The local multiplayer menu should change the current map when clicking the play button."), isInAnotherWorld);
+			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+
+		++aTickCount;
+		if (aTickCount > aTickLimit)
+		{
+			aTest->TestTrue(TEXT("The local multiplayer menu should change the current map when clicking the play button."), isInAnotherWorld);
+			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+	}
+	return false;
+}
+
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS
