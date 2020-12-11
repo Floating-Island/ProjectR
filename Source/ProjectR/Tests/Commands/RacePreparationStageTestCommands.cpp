@@ -150,7 +150,7 @@ bool FCheckPlayersPossessingJets::Update()
 
 				for(auto iterator = testWorld->GetPlayerControllerIterator(); iterator; ++iterator )
 				{
-					APlayerController* controller = *iterator;
+					APlayerController* controller = iterator->Get();
 					AJet* controlledJet = Cast<AJet, AActor>(controller->AcknowledgedPawn);
 					if(!controlledJet)
 					{
