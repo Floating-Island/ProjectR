@@ -181,7 +181,7 @@ void ARaceGameMode::playersToCreate(int aPlayerQuantity)
 void ARaceGameMode::achieveNecessaryPlayersQuantity()
 {
 	int necessaryPlayers = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance())->necessaryPlayers();
-	int currentPlayers = GetNumPlayers();
+	int currentPlayers = GetWorld()->GetNumPlayerControllers();
 	int playersNeeded = necessaryPlayers - currentPlayers;
 	playersToCreate(playersNeeded);
 }
