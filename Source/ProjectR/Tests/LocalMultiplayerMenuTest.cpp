@@ -50,4 +50,21 @@ bool FULocalMultiplayerMenuClickingGoBackButtonBringsMainMenuTest::RunTest(const
 }
 
 
+bool FULocalMultiplayerMenuClickingPlayButtonSetsPlayerQuantityTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	int tickCount = 0;
+	int tickLimit = 3;
+	int numberOfPlayers = 0;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLocalMultiplayerMenuClickPlaySetsPlayers(tickCount, tickLimit, nullptr, numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS

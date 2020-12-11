@@ -31,6 +31,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FULocalMultiplayerMenuClickingGoBackButtonBring
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FULocalMultiplayerMenuClickingPlayButtonSetsPlayerQuantityTest,
+	"ProjectR.LocalMultiplayerMenu Tests.Integration.003: Clicking the play button sets the expected local players in a game",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 
