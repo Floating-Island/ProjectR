@@ -9,6 +9,7 @@
 #include "../Utilities/PIESessionUtilities.h"
 #include "UI/MainMenu.h"
 #include "UI/SingleplayerMenu.h"
+#include "UI/SplitscreenMenu.h"
 
 
 //Test preparation commands:
@@ -135,6 +136,56 @@ bool FCheckShowsCursorInSingleplayerMenu::Update()
 		bool controllerShowsMouseCursor = sessionUtilities.defaultPIEWorld()->GetFirstPlayerController()->ShouldShowMouseCursor();
 
 		aTest->TestTrue(TEXT("loadSingleplayerMenu should make the controller show the mouse cursor."), testMenu && controllerShowsMouseCursor);
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckCreatesSplitscreenMenu::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		USplitscreenMenu* testMenu = testInstance->loadSplitscreenMenu();
+
+		aTest->TestTrue(TEXT("loadSplitscreenMenu should bring the splitscreen menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckCreatesOneSplitscreenMenu::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		USplitscreenMenu* testMenu = testInstance->loadSplitscreenMenu();
+		USplitscreenMenu* anotherTestMenu = testInstance->loadSplitscreenMenu();
+
+		aTest->TestTrue(TEXT("loadSplitscreenMenu should create only one instance of splitscreen menu."), testMenu == anotherTestMenu);
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckShowsCursorInSplitscreenMenu::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		USplitscreenMenu* testMenu = testInstance->loadSplitscreenMenu();
+		bool controllerShowsMouseCursor = sessionUtilities.defaultPIEWorld()->GetFirstPlayerController()->ShouldShowMouseCursor();
+
+		aTest->TestTrue(TEXT("loadSplitscreenMenu should make the controller show the mouse cursor."), testMenu && controllerShowsMouseCursor);
 		return true;
 	}
 	return false;

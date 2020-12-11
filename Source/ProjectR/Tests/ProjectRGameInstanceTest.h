@@ -57,9 +57,23 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceNecessaryPlayersReturnsAs
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceNecessaryPlayersOneAsDefaultTest, 
-	"ProjectR.ProjectRGameInstance Tests.Unit.007: necessaryPlayers returns as default",
+	"ProjectR.ProjectRGameInstance Tests.Unit.008: necessaryPlayers returns as default",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadSplitscreenMenuCreatesSplitscreenMenuTest, 
+	"ProjectR.ProjectRGameInstance Tests.Integration.009: loadSplitscreenMenu creates the splitscreen menu and adds it to viewport",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadSplitscreenMenuCreatesOnlyOneSplitscreenMenuTest, 
+	"ProjectR.ProjectRGameInstance Tests.Unit.010: loadSplitscreenMenu creates only one splitscreen menu",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadSplitscreenMenuShowsMouseCursorTest, 
+	"ProjectR.ProjectRGameInstance Tests.Integration.011: loadSplitscreenMenu makes the controller to show the mouse cursor",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 
