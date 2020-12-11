@@ -103,7 +103,7 @@ bool FCheckPlayersQuantityOnStartCommand::Update()
 
 				if(requiredPlayerQuantityAchieved)
 				{
-					aTest->TestTrue(TEXT("Race preparation start should generate the remaining necessary players in the game."), numberOfPlayers == necessaryPlayers);
+					aTest->TestTrue(TEXT("Race preparation start should generate the remaining necessary players in the game."), requiredPlayerQuantityAchieved);
 					testWorld->bDebugFrameStepExecution = true;
 					return true;
 				}
@@ -111,7 +111,7 @@ bool FCheckPlayersQuantityOnStartCommand::Update()
 				++aTickCount;
 				if(aTickCount > aTickLimit)
 				{
-					aTest->TestTrue(TEXT("Tick limit reached, race preparation start should generate the remaining necessary players in the game."), numberOfPlayers == necessaryPlayers);
+					aTest->TestTrue(TEXT("Tick limit reached, race preparation start should generate the remaining necessary players in the game."), requiredPlayerQuantityAchieved);
 					testWorld->bDebugFrameStepExecution = true;
 					return true;
 				}
@@ -121,6 +121,68 @@ bool FCheckPlayersQuantityOnStartCommand::Update()
 				int expectedPlayersInGame = 3;
 				UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(testWorld->GetGameInstance());
 				gameInstance->expectedPlayers(expectedPlayersInGame);
+				testPreparation->start();
+				stageHasStarted = true;
+			}
+		}
+		else
+		{
+			sessionUtilities.spawnInPIEAnInstanceOf<ARacePreparationStage>();
+		}
+	}
+	return false;
+}
+
+
+bool FCheckPlayersPossessingJets::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+		ARacePreparationStage* testPreparation = sessionUtilities.retrieveFromPIEAnInstanceOf<ARacePreparationStage>();
+		if (testPreparation)
+		{
+			if (stageHasStarted)
+			{
+				bool controllersPossessJets = true;
+
+				for(auto iterator = testWorld->GetPlayerControllerIterator(); iterator; ++iterator )
+				{
+					APlayerController* controller = *iterator;
+					AJet* controlledJet = Cast<AJet, AActor>(controller->AcknowledgedPawn);
+					if(!controlledJet)
+					{
+						controllersPossessJets = false;
+						break;
+					}
+				}
+				
+				int numberOfPlayers = testWorld->GetNumPlayerControllers();
+				UE_LOG(LogTemp, Log, TEXT("number of player controllers in world: %d."), numberOfPlayers);
+				int necessaryPlayers = Cast<UProjectRGameInstance, UGameInstance>(testWorld->GetGameInstance())->necessaryPlayers();
+				UE_LOG(LogTemp, Log, TEXT("number of necessary player controllers in world: %d."), necessaryPlayers);
+
+				
+
+				if(controllersPossessJets)
+				{
+					aTest->TestTrue(TEXT("Race preparation start should make the controllers possess the jets."), controllersPossessJets);
+					testWorld->bDebugFrameStepExecution = true;
+					return true;
+				}
+
+				++aTickCount;
+				if(aTickCount > aTickLimit)
+				{
+					aTest->TestTrue(TEXT("Tick limit reached, race preparation start should generate the remaining necessary players in the game."), controllersPossessJets);
+					testWorld->bDebugFrameStepExecution = true;
+					return true;
+				}
+			}
+			else
+			{
 				testPreparation->start();
 				stageHasStarted = true;
 			}

@@ -50,6 +50,7 @@ bool FARacePreparationStagStartSpawnsLapManagerTest::RunTest(const FString& Para
 	return true;
 }
 
+
 bool FARacePreparationStagStartCreatesNecessaryPlayersTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK");
@@ -60,6 +61,22 @@ bool FARacePreparationStagStartCreatesNecessaryPlayersTest::RunTest(const FStrin
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayersQuantityOnStartCommand(tickCount, tickLimit, false, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FARacePreparationStagStartMakesControllersPossessJetsTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayersPossessingJets(tickCount, tickLimit, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

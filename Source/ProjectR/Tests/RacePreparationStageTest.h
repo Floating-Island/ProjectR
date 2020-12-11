@@ -36,6 +36,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARacePreparationStagStartCreatesNecessaryPlaye
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARacePreparationStagStartMakesControllersPossessJetsTest, 
+	"ProjectR.RacePreparationStage Tests.Unit.004: start makes controllers possess the jets", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 
