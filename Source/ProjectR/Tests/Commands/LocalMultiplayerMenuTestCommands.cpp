@@ -107,7 +107,7 @@ bool FCheckLocalMultiplayerMenuClickPlaySetsPlayers::Update()
 		if (aTickCount > aTickLimit)
 		{
 			aTest->TestTrue(TEXT("The local multiplayer menu should set the expected players set in the combo box."), expectedPlayersAreSelectedPlayersQuantity);
-			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
 		if (aLocalMultiplayerMenuInstance->IsInViewport())
@@ -118,7 +118,7 @@ bool FCheckLocalMultiplayerMenuClickPlaySetsPlayers::Update()
 			return false;
 		}
 		aTest->TestTrue(TEXT("The local multiplayer menu should set the expected players set in the combo box."), expectedPlayersAreSelectedPlayersQuantity);
-		sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+		sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 		return true;
 	}
 	return false;
