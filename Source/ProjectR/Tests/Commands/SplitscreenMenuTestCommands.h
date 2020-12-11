@@ -19,4 +19,9 @@
 
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSplitscreenMenuClickGoBackRemovesFromViewportCommand, int, aTickCount, int, aTickLimit, USplitscreenMenu*, aSplitscreenMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, aTest);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSplitscreenMenuClickGoBackBringsMainMenuCommand, int, aTickCount, int, aTickLimit, USplitscreenMenu*, aSplitscreenMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, aTest);
+
 #endif //WITH_DEV_AUTOMATION_TESTS

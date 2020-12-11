@@ -21,6 +21,15 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSplitscreenMenuIsntNullWhenInstantiatedTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSplitscreenMenuClickingGoBackButtonRemovesFromViewportTest,
+	"ProjectR.SplitscreenMenu Tests.Integration.001: Clicking the go back button removes the menu from viewport",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSplitscreenMenuClickingGoBackButtonBringsMainMenuTest,
+	"ProjectR.SplitscreenMenu Tests.Integration.002: Clicking the go back button brings the mainMenu",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
 
 
 

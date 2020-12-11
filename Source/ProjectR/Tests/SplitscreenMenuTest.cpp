@@ -19,5 +19,36 @@ bool FUSplitscreenMenuIsntNullWhenInstantiatedTest::RunTest(const FString& Param
 }
 
 
+bool FUSplitscreenMenuClickingGoBackButtonRemovesFromViewportTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplitscreenMenuClickGoBackRemovesFromViewportCommand(tickCount, tickLimit, nullptr, false, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FUSplitscreenMenuClickingGoBackButtonBringsMainMenuTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplitscreenMenuClickGoBackBringsMainMenuCommand(tickCount, tickLimit, nullptr, false, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
