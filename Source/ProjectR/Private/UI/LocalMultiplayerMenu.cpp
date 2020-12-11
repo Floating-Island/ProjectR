@@ -5,6 +5,7 @@
 
 #include "Components/Button.h"
 #include "GameInstance/ProjectRGameInstance.h"
+#include "Components/ComboBoxString.h"
 
 
 void ULocalMultiplayerMenu::goBack()
@@ -12,6 +13,12 @@ void ULocalMultiplayerMenu::goBack()
 	RemoveFromViewport();
 	UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance());
 	gameInstance->loadMainMenu();
+}
+
+void ULocalMultiplayerMenu::play()
+{
+	UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance());
+	gameInstance->expectedPlayers(selectedPlayerQuantity());
 }
 
 bool ULocalMultiplayerMenu::Initialize()
@@ -25,6 +32,13 @@ bool ULocalMultiplayerMenu::Initialize()
 		goBackButton->IsFocusable = true;
 		goBackButton->SetClickMethod(EButtonClickMethod::MouseDown);
 	}
+	if (playButton)
+	{
+		playButton->OnClicked.AddDynamic(this, &ULocalMultiplayerMenu::play);
+		playButton->OnPressed.AddDynamic(this, &ULocalMultiplayerMenu::play);
+		playButton->IsFocusable = true;
+		playButton->SetClickMethod(EButtonClickMethod::MouseDown);
+	}
 	bIsFocusable = true;
 	return initializeResult;
 }
@@ -32,4 +46,14 @@ bool ULocalMultiplayerMenu::Initialize()
 FVector2D ULocalMultiplayerMenu::goBackButtonAbsoluteCenterPosition()
 {
 	return buttonAbsoluteCenterPosition(goBackButton);
+}
+
+FVector2D ULocalMultiplayerMenu::playButtonAbsoluteCenterPosition()
+{
+	return buttonAbsoluteCenterPosition(playButton);
+}
+
+int ULocalMultiplayerMenu::selectedPlayerQuantity()
+{
+	return FCString::Atoi(*playersQuantitySelection->GetSelectedOption());
 }

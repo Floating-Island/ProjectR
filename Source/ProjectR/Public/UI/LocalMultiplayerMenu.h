@@ -6,6 +6,7 @@
 #include "UI/Menu.h"
 #include "LocalMultiplayerMenu.generated.h"
 
+class UComboBoxString;
 /**
  * 
  */
@@ -19,11 +20,24 @@ protected:
 	UFUNCTION()
 		void goBack();
 
+	UFUNCTION()
+		void play();
+
 	UPROPERTY(meta = (BindWidget))
 		UButton* goBackButton;
+
+	UPROPERTY(meta = (BindWidget))
+		UButton* playButton;
+
+	UPROPERTY(meta = (BindWidget))
+		UComboBoxString* playersQuantitySelection;
 
 public:
 	virtual bool Initialize() override;
 	
 	FVector2D goBackButtonAbsoluteCenterPosition();
+
+	FVector2D playButtonAbsoluteCenterPosition();
+
+	int selectedPlayerQuantity();
 };
