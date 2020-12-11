@@ -3,6 +3,8 @@
 
 #include "UI/LocalMultiplayerMenu.h"
 
+
+#include "Kismet/GameplayStatics.h"
 #include "Components/Button.h"
 #include "GameInstance/ProjectRGameInstance.h"
 #include "Components/ComboBoxString.h"
@@ -19,6 +21,15 @@ void ULocalMultiplayerMenu::play()
 {
 	UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance());
 	gameInstance->expectedPlayers(selectedPlayerQuantity());
+	focusOnGame();
+	UGameplayStatics::OpenLevel(GetWorld(), raceLevel);
+}
+
+void ULocalMultiplayerMenu::focusOnGame()
+{
+	FInputModeGameOnly inputModeData;
+	inputModeData.SetConsumeCaptureMouseDown(true);
+	GetWorld()->GetFirstPlayerController()->SetInputMode(inputModeData);
 }
 
 bool ULocalMultiplayerMenu::Initialize()
