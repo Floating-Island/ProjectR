@@ -27,7 +27,8 @@ UMainMenu* UProjectRGameInstance::loadMainMenu()
 		mainMenu->AddToViewport();
 		lockMouseToWidget(mainMenu);
 	}
-
+	expectedPlayers(1);//obscure. Necessary to set the number of players when coming from a pause or going back to main menu from the local multiplayer menu.
+	
 	return mainMenu;
 }
 
