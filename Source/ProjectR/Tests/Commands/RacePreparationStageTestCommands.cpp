@@ -8,6 +8,8 @@
 #include "GameMode/RaceStages/RacePreparationStage.h"
 #include "GameMode/RaceStages/RaceBeginningStage.h"
 #include "GameInstance/ProjectRGameInstance.h"
+#include "Jet/Jet.h"
+#include "GameFramework/PlayerController.h"
 
 #include "Tests/AutomationEditorCommon.h"
 #include "../Utilities/PIESessionUtilities.h"
@@ -151,7 +153,8 @@ bool FCheckPlayersPossessingJets::Update()
 				for(auto iterator = testWorld->GetPlayerControllerIterator(); iterator; ++iterator )
 				{
 					APlayerController* controller = iterator->Get();
-					AJet* controlledJet = Cast<AJet, AActor>(controller->AcknowledgedPawn);
+					AJet* controlledJet = Cast<AJet, APawn>(controller->GetPawn());
+					UE_LOG(LogTemp, Log, TEXT("this pawn %s a jet."), *FString(controlledJet? "is": "isn't"));
 					if(!controlledJet)
 					{
 						controllersPossessJets = false;
@@ -183,6 +186,7 @@ bool FCheckPlayersPossessingJets::Update()
 			}
 			else
 			{
+				sessionUtilities.spawnLocalPlayer();//if expectedPlayers in game instance is set to 1. If more, spawn more.
 				testPreparation->start();
 				stageHasStarted = true;
 			}
