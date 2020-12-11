@@ -185,3 +185,15 @@ void ARaceGameMode::achieveNecessaryPlayersQuantity()
 	int playersNeeded = necessaryPlayers - currentPlayers;
 	playersToCreate(playersNeeded);
 }
+
+void ARaceGameMode::possessJets()
+{
+	TArray<AJet*> unPossessedJets = runningJets.Array();
+	for(auto iterator = GetWorld()->GetPlayerControllerIterator(); iterator; ++iterator )
+	{
+		APlayerController* controller = iterator->Get();
+		AJet* unPossessedJet = unPossessedJets.Pop();
+		unPossessedJet->SetOwner(controller);
+		controller->Possess(unPossessedJet);
+	}
+}
