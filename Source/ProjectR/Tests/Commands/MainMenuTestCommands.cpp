@@ -62,7 +62,7 @@ bool FCheckMainMenuClickQuitsCommand::Update()
 }
 
 
-bool FCheckMainMenuClickSinglePlayerRemovesMenuFromViewportCommand::Update()
+bool FCheckMainMenuClickSingleplayerRemovesMenuFromViewportCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -91,7 +91,7 @@ bool FCheckMainMenuClickSinglePlayerRemovesMenuFromViewportCommand::Update()
 }
 
 
-bool FCheckSoloMainMenuClickSingleplayerBringsSingleplayerMenuCommand::Update()
+bool FCheckMainMenuClickSingleplayerBringsSingleplayerMenuCommand::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -107,14 +107,14 @@ bool FCheckSoloMainMenuClickSingleplayerBringsSingleplayerMenuCommand::Update()
 		
 		if(isMenuInstanciated && aMainMenuInstance->IsInViewport())
 		{
-			FVector2D goBackButtonCoordinates = aMainMenuInstance->singleplayerButtonAbsoluteCenterPosition();
-			sessionUtilities.processEditorClick(goBackButtonCoordinates);
+			FVector2D singleplayerButtonCoordinates = aMainMenuInstance->singleplayerButtonAbsoluteCenterPosition();
+			sessionUtilities.processEditorClick(singleplayerButtonCoordinates);
 			return false;
 		}
 		
 		if (isMenuInstanciated && !aMainMenuInstance->IsInViewport())
 		{
-			aTest->TestTrue(TEXT("The main menu should change to the solo race menu when clicking the singleplayer button."), gameInstance->isSingleplayerMenuInViewport());
+			aTest->TestTrue(TEXT("The main menu should change to the singleplayer menu when clicking the singleplayer button."), gameInstance->isSingleplayerMenuInViewport());
 			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
@@ -122,7 +122,76 @@ bool FCheckSoloMainMenuClickSingleplayerBringsSingleplayerMenuCommand::Update()
 		++aTickCount;
 		if (aTickCount > aTickLimit)
 		{
-			aTest->TestTrue(TEXT("The main menu should change to the solo race menu when clicking the singleplayer button."), gameInstance->isSingleplayerMenuInViewport());
+			aTest->TestTrue(TEXT("The main menu should change to the singleplayer menu when clicking the singleplayer button."), gameInstance->isSingleplayerMenuInViewport());
+			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+	}
+	return false;
+}
+
+
+bool FCheckMainMenuClickLocalMultiplayerRemovesMenuFromViewportCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	
+		if(aMainMenuInstance == nullptr)
+		{
+			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+			aMainMenuInstance = gameInstance->loadMainMenu();
+			isMenuInstanciated = true;
+			return false;
+		}
+		
+		if(isMenuInstanciated && aMainMenuInstance->IsInViewport())
+		{
+			FVector2D localMultiplayerButtonCoordinates = aMainMenuInstance->localMultiplayerButtonAbsoluteCenterPosition();
+			sessionUtilities.processEditorClick(localMultiplayerButtonCoordinates);
+			return false;
+		}
+		
+		aTest->TestTrue(TEXT("The main menu should be removed from viewport when clicking the local multiplayer button."), !aMainMenuInstance->IsInViewport());
+		sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckSoloMainMenuClickLocalMultiplayerBringsLocalMultiplayerMenuCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+	
+		if(aMainMenuInstance == nullptr)
+		{
+			aMainMenuInstance = gameInstance->loadMainMenu();
+			isMenuInstanciated = true;
+			return false;
+		}
+		
+		if(isMenuInstanciated && aMainMenuInstance->IsInViewport())
+		{
+			FVector2D localMultiplayerButtonCoordinates = aMainMenuInstance->localMultiplayerButtonAbsoluteCenterPosition();
+			sessionUtilities.processEditorClick(localMultiplayerButtonCoordinates);
+			return false;
+		}
+		
+		if (isMenuInstanciated && !aMainMenuInstance->IsInViewport())
+		{
+			aTest->TestTrue(TEXT("The main menu should change to the local multiplayer menu when clicking the local multiplayer button."), gameInstance->isLocalMultiplayerMenuInViewport());
+			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+
+		++aTickCount;
+		if (aTickCount > aTickLimit)
+		{
+			aTest->TestTrue(TEXT("The main menu should change to the local multiplayer menu when clicking the local multiplayer button."), gameInstance->isLocalMultiplayerMenuInViewport());
 			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}

@@ -45,7 +45,7 @@ bool FUMainMenuClickingSingleplayerButtonRemovesMenuFromViewportTest::RunTest(co
 	
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickSinglePlayerRemovesMenuFromViewportCommand(tickCount, tickLimit, nullptr, false, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickSingleplayerRemovesMenuFromViewportCommand(tickCount, tickLimit, nullptr, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -61,7 +61,39 @@ bool FUMainMenuClickingSingleplayerButtonBringsSingleplayerMenuTest::RunTest(con
 	
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSoloMainMenuClickSingleplayerBringsSingleplayerMenuCommand(tickCount, tickLimit, nullptr, false, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickSingleplayerBringsSingleplayerMenuCommand(tickCount, tickLimit, nullptr, false, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FUMainMenuClickingLocalMultiplayerButtonRemovesMenuFromViewportTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickLocalMultiplayerRemovesMenuFromViewportCommand(tickCount, tickLimit, nullptr, false, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FUMainMenuClickingLocalMultiplayerButtonBringsLocalMultiplayerMenuTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSoloMainMenuClickLocalMultiplayerBringsLocalMultiplayerMenuCommand(tickCount, tickLimit, nullptr, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
