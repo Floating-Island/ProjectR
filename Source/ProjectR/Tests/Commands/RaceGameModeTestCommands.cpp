@@ -289,7 +289,7 @@ bool FCheckCreatesTheExpectedPlayers::Update()
 
 		testGameMode->playersToCreate(playersQuantity);
 
-		int totalPlayerQuantity = testGameMode->GetNumPlayers();
+		int totalPlayerQuantity = testWorld->GetNumPlayerControllers();
 
 		bool playerQuantityAsExpected = totalPlayerQuantity - initialPlayerQuantity == playersQuantity;
 
@@ -320,7 +320,7 @@ bool FCheckCreatesTheNecessaryPlayers::Update()
 
 		testGameMode->achieveNecessaryPlayersQuantity();
 
-		int totalPlayerQuantity = testGameMode->GetNumPlayers();
+		int totalPlayerQuantity = testWorld->GetNumPlayerControllers();
 
 		bool playerQuantityAsExpected = totalPlayerQuantity == necessaryPlayerQuantity;
 

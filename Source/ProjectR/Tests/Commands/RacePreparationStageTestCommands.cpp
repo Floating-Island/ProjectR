@@ -95,11 +95,26 @@ bool FCheckPlayersQuantityOnStartCommand::Update()
 			if (stageHasStarted)
 			{
 				int numberOfPlayers = testWorld->GetNumPlayerControllers();
+				UE_LOG(LogTemp, Log, TEXT("number of player controllers in world: %d."), numberOfPlayers);
 				int necessaryPlayers = Cast<UProjectRGameInstance, UGameInstance>(testWorld->GetGameInstance())->necessaryPlayers();
+				UE_LOG(LogTemp, Log, TEXT("number of necessary player controllers in world: %d."), necessaryPlayers);
 
-				aTest->TestTrue(TEXT("Race preparation start should generate the remaining necessary players in the game."), numberOfPlayers == necessaryPlayers);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
+				bool requiredPlayerQuantityAchieved = numberOfPlayers == necessaryPlayers;
+
+				if(requiredPlayerQuantityAchieved)
+				{
+					aTest->TestTrue(TEXT("Race preparation start should generate the remaining necessary players in the game."), numberOfPlayers == necessaryPlayers);
+					testWorld->bDebugFrameStepExecution = true;
+					return true;
+				}
+
+				++aTickCount;
+				if(aTickCount > aTickLimit)
+				{
+					aTest->TestTrue(TEXT("Tick limit reached, race preparation start should generate the remaining necessary players in the game."), numberOfPlayers == necessaryPlayers);
+					testWorld->bDebugFrameStepExecution = true;
+					return true;
+				}
 			}
 			else
 			{
