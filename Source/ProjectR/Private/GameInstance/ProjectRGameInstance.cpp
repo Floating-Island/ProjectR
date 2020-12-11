@@ -4,6 +4,7 @@
 #include "GameInstance/ProjectRGameInstance.h"
 #include "UI/MainMenu.h"
 #include "UI/SingleplayerMenu.h"
+#include "UI/SplitscreenMenu.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -62,6 +63,25 @@ USingleplayerMenu* UProjectRGameInstance::loadSingleplayerMenu()
 		lockMouseToWidget(singleplayerMenu);
 	}
 	return singleplayerMenu;
+}
+
+USplitscreenMenu* UProjectRGameInstance::loadSplitscreenMenu()
+{
+	USplitscreenMenu* splitscreenMenuInstance = Cast<USplitscreenMenu, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), USplitscreenMenu::StaticClass()));
+	if (!splitscreenMenuInstance)
+	{
+		splitscreenMenu = CreateWidget<USplitscreenMenu>(GetWorld(), splitscreenMenuClass, FName("Splitscreen Menu"));
+	}
+	else
+	{
+		splitscreenMenu = splitscreenMenuInstance;
+	}
+	if (!splitscreenMenu->IsInViewport())
+	{
+		splitscreenMenu->AddToViewport();
+		lockMouseToWidget(splitscreenMenu);
+	}
+	return splitscreenMenu;
 }
 
 bool UProjectRGameInstance::isMainMenuInViewport()

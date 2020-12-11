@@ -8,6 +8,7 @@
 #include "Engine/GameInstance.h"
 #include "ProjectRGameInstance.generated.h"
 
+class USplitscreenMenu;
 class USingleplayerMenu;
 class UMainMenu;
 /**
@@ -22,6 +23,7 @@ protected:
 	int numberOfPlayers;
 	UMainMenu* mainMenu;
 	USingleplayerMenu* singleplayerMenu;
+	USplitscreenMenu* splitscreenMenu;
 	void lockMouseToWidget(UMenu* menu);
 public:
 	UProjectRGameInstance();
@@ -32,11 +34,17 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category= "Menus")
 		TSubclassOf<USingleplayerMenu> singleplayerMenuClass;
 
+	UPROPERTY(EditDefaultsOnly, Category= "Menus")
+		TSubclassOf<USplitscreenMenu> splitscreenMenuClass;
+
 	UFUNCTION(BlueprintCallable)
 	UMainMenu* loadMainMenu();
 	
 	UFUNCTION(BlueprintCallable)
 	USingleplayerMenu* loadSingleplayerMenu();
+
+	UFUNCTION(BlueprintCallable)
+	USplitscreenMenu* loadSplitscreenMenu();
 
 	bool isMainMenuInViewport();
 	bool isSingleplayerMenuInViewport();
