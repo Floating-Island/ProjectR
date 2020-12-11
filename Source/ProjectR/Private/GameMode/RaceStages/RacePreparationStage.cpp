@@ -20,6 +20,7 @@ void ARacePreparationStage::start()
 {
 	raceMode->achieveNecessaryPlayersQuantity();
 	raceMode->positionExpectedJets();
+	raceMode->possessJets();
 	raceMode->createLapManager();
 	stageEndedEvent.Broadcast(this);
 }
