@@ -48,6 +48,7 @@ public:
 
 	bool isMainMenuInViewport();
 	bool isSingleplayerMenuInViewport();
+	bool isLocalMultiplayerMenuInViewport();
 
 	void expectedPlayers(int aQuantity);
 	int necessaryPlayers();

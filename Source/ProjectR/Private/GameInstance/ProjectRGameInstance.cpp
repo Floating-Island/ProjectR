@@ -102,6 +102,15 @@ bool UProjectRGameInstance::isSingleplayerMenuInViewport()
 	return singleplayerMenu->IsInViewport();
 }
 
+bool UProjectRGameInstance::isLocalMultiplayerMenuInViewport()
+{
+	if (!localMultiplayerMenu)
+	{
+		return false;
+	}
+	return localMultiplayerMenu->IsInViewport();
+}
+
 void UProjectRGameInstance::expectedPlayers(int aQuantity)
 {
 	numberOfPlayers = aQuantity;
