@@ -29,6 +29,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnARacePreparationMakeItStartCommand);
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLapManagerSpawnedCommand, FAutomationTestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayersQuantityOnStartCommand, bool, stageHasStarted, FAutomationTestBase*, aTest);
+
+
 
 
 

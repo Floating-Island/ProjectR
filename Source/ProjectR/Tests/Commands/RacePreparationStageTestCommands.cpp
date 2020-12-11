@@ -7,6 +7,7 @@
 #include "LapManager/LapManager.h"
 #include "GameMode/RaceStages/RacePreparationStage.h"
 #include "GameMode/RaceStages/RaceBeginningStage.h"
+#include "GameInstance/ProjectRGameInstance.h"
 
 #include "Tests/AutomationEditorCommon.h"
 #include "../Utilities/PIESessionUtilities.h"
@@ -24,11 +25,11 @@ bool FSpawnARacePreparationStageCommand::Update()
 	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	ARacePreparationStage* testPreparation = sessionUtilities.retrieveFromPIEAnInstanceOf<ARacePreparationStage>();
-	if(testPreparation == nullptr)
+	if (testPreparation == nullptr)
 	{
 		testPreparation = sessionUtilities.spawnInPIEAnInstanceOf<ARacePreparationStage>();
 	}
-	ARaceBeginningStage* testBeginning = Cast<ARaceBeginningStage,ARaceStage>(testPreparation->nextStage());
+	ARaceBeginningStage* testBeginning = Cast<ARaceBeginningStage, ARaceStage>(testPreparation->nextStage());
 
 	test->TestNotNull(TEXT("The race preparation stage's nextStage should spawn a race beginning stage in the world."), testBeginning);
 	testWorld->bDebugFrameStepExecution = true;
@@ -72,13 +73,48 @@ bool FCheckLapManagerSpawnedCommand::Update()
 	if (testPreparation)
 	{
 		ALapManager* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManager>();
-		
-		test->TestNotNull(TEXT("Race running start should spawn a lap manager."), testManager);
+
+		test->TestNotNull(TEXT("Race preparation start should spawn a lap manager."), testManager);
 		testWorld->bDebugFrameStepExecution = true;
 		return true;
 	}
 	return false;
 }
+
+
+bool FCheckPlayersQuantityOnStartCommand::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+		ARacePreparationStage* testPreparation = sessionUtilities.retrieveFromPIEAnInstanceOf<ARacePreparationStage>();
+		if (testPreparation)
+		{
+			if (stageHasStarted)
+			{
+				int numberOfPlayers = testWorld->GetNumPlayerControllers();
+				int necessaryPlayers = Cast<UProjectRGameInstance, UGameInstance>(testWorld->GetGameInstance())->necessaryPlayers();
+
+				aTest->TestTrue(TEXT("Race preparation start should generate the remaining necessary players in the game."), numberOfPlayers == necessaryPlayers);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			else
+			{
+				testPreparation->start();
+				stageHasStarted = true;
+			}
+		}
+		else
+		{
+			sessionUtilities.spawnInPIEAnInstanceOf<ARacePreparationStage>();
+		}
+	}
+	return false;
+}
+
 
 
 

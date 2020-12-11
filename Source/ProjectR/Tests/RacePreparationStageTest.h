@@ -31,6 +31,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARacePreparationStagStartSpawnsLapManagerTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARacePreparationStagStartCreatesNecessaryPlayersTest, 
+	"ProjectR.RacePreparationStage Tests.Unit.003: start creates the necessary players", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 
