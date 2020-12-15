@@ -28,7 +28,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeIsAbleToBeSetInAWorldTest,
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeCreatesExpectedNumberOfJetsTest, 
-	"ProjectR.RaceGameMode Tests.Integration.002: Creates the same amount of jets as specified in class settings", 
+	"ProjectR.RaceGameMode Tests.Integration.002: Creates the same amount of jets as expected", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
