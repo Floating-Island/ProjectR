@@ -389,9 +389,9 @@ bool FCheckJetsSameRotationAsTrack::Update()
 		{
 			float distanceBetweenJetAndTrack = testTrack->distanceAlongSplineOf(jet);
 			FRotator trackSectionRotation = testTrack->rotationAt(distanceBetweenJetAndTrack);
-			UE_LOG(LogTemp, Log, TEXT("track section rotation: %s."), trackSectionRotation.ToString());
+			UE_LOG(LogTemp, Log, TEXT("track section rotation: %s."), *trackSectionRotation.ToString());
 			FRotator jetRotation = jet->GetActorRotation();
-			UE_LOG(LogTemp, Log, TEXT("jet rotation: %s."), jetRotation.ToString());
+			UE_LOG(LogTemp, Log, TEXT("jet rotation: %s."), *jetRotation.ToString());
 			if (!jetRotation.Equals(trackSectionRotation))
 			{
 				jetsWithSameRotationAsTrackSections = false;
