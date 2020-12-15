@@ -58,18 +58,19 @@ void ARaceGameMode::positionExpectedJets()
 		FVector segmentUpVector = track->upVectorAt(distanceToTrackOrigin);
 
 		FVector jetLocation = segmentLocation + segmentRightVector * initialLateralDistanceBetweenJets + segmentUpVector * jetSpawnHeight;
-		createJet(jetLocation, numberOfJetsToCreate);
+		FRotator jetRotation = track->rotationAt(distanceToTrackOrigin);
+		createJet(jetLocation, jetRotation, numberOfJetsToCreate);
 		if (numberOfJetsToCreate > 0)
 		{
 			jetLocation = segmentLocation - segmentRightVector * initialLateralDistanceBetweenJets + segmentUpVector * jetSpawnHeight;
-			createJet(jetLocation, numberOfJetsToCreate);
+			createJet(jetLocation, jetRotation, numberOfJetsToCreate);
 		}
 	}
 }
 
-void ARaceGameMode::createJet(FVector atLocation, int& aNumberOfRemainingJetsToCreate)
+void ARaceGameMode::createJet(FVector atLocation, FRotator atRotation, int& aNumberOfRemainingJetsToCreate)
 {
-	AJet* spawnedJet = gameWorld->SpawnActor<AJet>(jetClass, atLocation, FRotator(0));
+	AJet* spawnedJet = gameWorld->SpawnActor<AJet>(jetClass, atLocation, atRotation);
 	--aNumberOfRemainingJetsToCreate;
 	runningJets.Add(spawnedJet);
 }
