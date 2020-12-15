@@ -94,6 +94,7 @@ public:
 	FVector rightVectorAt(float aDistanceAlongSpline);
 	FVector locationAt(float aDistanceAlongSpline);
 	FVector upVectorAt(float aDistanceAlongSpline);
+	FRotator rotationAt(float aDistanceAlongSpline);
 
 };
 
