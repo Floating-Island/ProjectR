@@ -48,6 +48,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesTheExpectedPlayers, 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesTheNecessaryPlayers, FAutomationTestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesSameOrMoreJetsThanPlayers, FAutomationTestBase*, test);
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

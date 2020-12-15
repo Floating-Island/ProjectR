@@ -332,6 +332,32 @@ bool FCheckCreatesTheNecessaryPlayers::Update()
 }
 
 
+bool FCheckCreatesSameOrMoreJetsThanPlayers::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+	ARaceGameModeMOCK* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameModeMOCK>();
+
+	if (testGameMode)
+	{
+		int totalJetsQuantity = sessionUtilities.retrieveFromPIEAllInstancesOf<AJet>().Num();
+
+		int totalPlayerQuantity = testWorld->GetNumPlayerControllers();
+
+		bool playerQuantityAsExpected = totalJetsQuantity >= totalPlayerQuantity;
+
+		test->TestTrue(TEXT("Race game mode should create the same or more jets than players."), playerQuantityAsExpected);
+		testWorld->bDebugFrameStepExecution = true;
+		return true;
+	}
+	return false;
+}
+
+
 
 
 
