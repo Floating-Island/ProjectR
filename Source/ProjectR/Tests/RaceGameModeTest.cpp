@@ -158,7 +158,7 @@ bool FARaceGameModeSameOrMoreNumberOfJetsAsPlayersTest::RunTest(const FString& P
 
 bool FARaceGameModeSpawnedJetsWithTrackRotationTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK");
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode");
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
