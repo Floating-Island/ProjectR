@@ -386,8 +386,6 @@ bool FCheckJetsSameRotationAsTrack::Update()
 	ARaceGameMode* testGameMode = Cast<ARaceGameMode, AGameModeBase>(UGameplayStatics::GetGameMode(testWorld));
 	if (testGameMode)
 	{
-		testGameMode->achieveNecessaryPlayersQuantity();
-		testGameMode->positionExpectedJets();
 		
 		TSet<AJet*> gameModeJets = testGameMode->jetsRacing();
 		ATrackGenerator* testTrack = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
@@ -400,7 +398,7 @@ bool FCheckJetsSameRotationAsTrack::Update()
 			UE_LOG(LogTemp, Log, TEXT("track section rotation: %s."), *trackSectionRotation.ToString());
 			FRotator jetRotation = jet->GetActorRotation();
 			UE_LOG(LogTemp, Log, TEXT("jet rotation: %s."), *jetRotation.ToString());
-			if (!jetRotation.Equals(trackSectionRotation))
+			if (!jetRotation.Equals(trackSectionRotation, 0.01))
 			{
 				jetsWithSameRotationAsTrackSections = false;
 				break;
