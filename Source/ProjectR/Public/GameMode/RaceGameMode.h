@@ -32,10 +32,6 @@ protected:
 	TMap<AJet*, int8> currentJetPositions;
 	TArray<AJet*> finalizedJets;
 
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
-		int expectedNumberOfJets;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
 		int numberOfLaps;
 

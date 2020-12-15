@@ -18,7 +18,6 @@
 
 ARaceGameMode::ARaceGameMode()
 {
-	expectedNumberOfJets = 1;
 	numberOfLaps = 3;
 	jetSpawnHeight = 100;
 	initialForwardDistanceBetweenJets = 2000;
@@ -45,7 +44,7 @@ void ARaceGameMode::StartPlay()
 
 void ARaceGameMode::positionExpectedJets()
 {
-	int numberOfJetsToCreate = expectedNumberOfJets;
+	int numberOfJetsToCreate = jetsToSpawn();
 	float distanceToTrackOrigin = track->distanceAlongSplineOf(initialPhase);
 	while (numberOfJetsToCreate > 0)
 	{
@@ -77,7 +76,7 @@ void ARaceGameMode::createJet(FVector atLocation, int& aNumberOfRemainingJetsToC
 
 int ARaceGameMode::jetsToSpawn()
 {
-	return expectedNumberOfJets;
+	return GetWorld()->GetNumPlayerControllers();
 }
 
 TSet<AJet*> ARaceGameMode::jetsRacing()
