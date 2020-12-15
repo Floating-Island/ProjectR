@@ -147,7 +147,9 @@ bool FARaceGameModeSameOrMoreNumberOfJetsAsPlayersTest::RunTest(const FString& P
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckCreatesSameOrMoreJetsThanPlayers(this));
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckCreatesSameOrMoreJetsThanPlayers(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -160,7 +162,6 @@ bool FARaceGameModeSpawnedJetsWithTrackRotationTest::RunTest(const FString& Para
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
-
 
 	int tickCount = 0;
 	int tickLimit = 3;
