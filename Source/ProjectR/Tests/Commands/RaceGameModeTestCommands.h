@@ -17,6 +17,9 @@
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawnAJetBehindAnotherCommand, FAutomationTestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAJetOnFinalLapMakeItFinishCommand);
+
+
 
 
 
