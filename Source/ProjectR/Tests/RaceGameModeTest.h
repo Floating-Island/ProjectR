@@ -68,7 +68,9 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeCreatesTheNecessaryGamePlayersTes
 
 
 
-
+// disable controllers before starting the race and enable them when it starts.
+// the quantity of jets to make has to be the same than the number of players (it will be the addition of players plus AI in the future).
+// jets should be created taking into account the track section roll.
 
 
 
