@@ -344,9 +344,14 @@ bool FCheckCreatesSameOrMoreJetsThanPlayers::Update()
 
 	if (testGameMode)
 	{
+		testGameMode->achieveNecessaryPlayersQuantity();
+		testGameMode->positionExpectedJets();
+		
 		int totalJetsQuantity = sessionUtilities.retrieveFromPIEAllInstancesOf<AJet>().Num();
+		UE_LOG(LogTemp, Log, TEXT("number of jets: %d."), totalJetsQuantity);
 
 		int totalPlayerQuantity = testWorld->GetNumPlayerControllers();
+		UE_LOG(LogTemp, Log, TEXT("number of players: %d."), totalPlayerQuantity);
 
 		bool playerQuantityAsExpected = totalJetsQuantity >= totalPlayerQuantity;
 
@@ -381,6 +386,9 @@ bool FCheckJetsSameRotationAsTrack::Update()
 	ARaceGameMode* testGameMode = Cast<ARaceGameMode, AGameModeBase>(UGameplayStatics::GetGameMode(testWorld));
 	if (testGameMode)
 	{
+		testGameMode->achieveNecessaryPlayersQuantity();
+		testGameMode->positionExpectedJets();
+		
 		TSet<AJet*> gameModeJets = testGameMode->jetsRacing();
 		ATrackGenerator* testTrack = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
 
