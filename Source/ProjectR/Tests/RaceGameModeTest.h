@@ -83,7 +83,6 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeSpawnedJetsWithTrackRotationTest,
 
 
 // disable controllers before starting the race and enable them when it starts.
-// jets should be created taking into account the track section roll.
 
 
 

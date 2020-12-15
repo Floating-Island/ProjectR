@@ -83,5 +83,5 @@ public:
 	void achieveNecessaryPlayersQuantity();
 
 	void possessJets();
-	
+
 };

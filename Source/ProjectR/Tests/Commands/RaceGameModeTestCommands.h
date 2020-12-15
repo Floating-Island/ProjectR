@@ -11,13 +11,10 @@
 #if WITH_DEV_AUTOMATION_TESTS
 
 
-//Test preparation commands:
+ //Test preparation commands:
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawnAJetBehindAnotherCommand, FAutomationTestBase*, test);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAJetOnFinalLapMakeItFinishCommand);
 
 
 
