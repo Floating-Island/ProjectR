@@ -69,13 +69,20 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeCreatesTheNecessaryGamePlayersTes
 
 //uses a mock
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeSameOrMoreNumberOfJetsAsPlayersTest, 
-	"ProjectR.RaceGameMode Tests.Integration.008: The number of jets created is the same or more than the number of players", 
+	"ProjectR.RaceGameMode Tests.Integration.009: The number of jets created is the same or more than the number of players", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+//
+////uses a mock
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeSpawnedJetsWithTrackRotationTest, 
+//	"ProjectR.RaceGameMode Tests.Integration.010: Each spawned jet has the rotation of the track section where it's at", 
+//	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 
 // disable controllers before starting the race and enable them when it starts.
-// the quantity of jets to make has to be the same than the number of players (it will be the addition of players plus AI in the future).
 // jets should be created taking into account the track section roll.
 
 
