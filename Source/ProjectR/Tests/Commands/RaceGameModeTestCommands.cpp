@@ -368,56 +368,56 @@ bool FCheckCreatesSameOrMoreJetsThanPlayers::Update()
 	return false;
 }
 
-//
-//bool FCheckJetsSameRotationAsTrack::Update()
-//{
-//	if (!GEditor->IsPlayingSessionInEditor())
-//	{
-//		return false;
-//	}
-//	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-//	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-//
-//	ARaceGameMode* testGameMode = Cast<ARaceGameMode, AGameModeBase>(UGameplayStatics::GetGameMode(testWorld));
-//	if (testGameMode)
-//	{
-//		TSet<AJet*> gameModeJets = testGameMode->jetsRacing();
-//		ATrackGenerator* testTrack = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
-//
-//		bool jetsWithSameRotationAsTrackSections = true;
-//		for (const auto& jet : gameModeJets)
-//		{
-//			float distanceBetweenJetAndTrack = testTrack->distanceAlongSplineOf(jet);
-//			FRotator trackSectionRotation = testTrack->rotationAt(distanceBetweenJetAndTrack);
-//			UE_LOG(LogTemp, Log, TEXT("track section rotation: %f."), trackSectionRotation);
-//			FRotator jetRotation = jet->GetActorRotation();
-//			UE_LOG(LogTemp, Log, TEXT("jet rotation: %f."), jetRotation);
-//			if (!jetRotation.Equals(trackSectionRotation))
-//			{
-//				jetsWithSameRotationAsTrackSections = false;
-//				break;
-//			}
-//		}
-//		UE_LOG(LogTemp, Log, TEXT("Number of race game mode jets: %d."), gameModeJets.Num());
-//
-//
-//		if (jetsWithSameRotationAsTrackSections)
-//		{
-//			aTest->TestTrue(TEXT("Race game mode should coincede jets rotation with their track section rotation."), jetsWithSameRotationAsTrackSections);
-//			testWorld->bDebugFrameStepExecution = true;
-//			return true;
-//		}
-//
-//		++aTickCount;
-//		if (aTickCount > aTickLimit)
-//		{
-//			aTest->TestTrue(TEXT("Tick limit reached. Race game mode should coincede jets rotation with their track section rotation."), jetsWithSameRotationAsTrackSections);
-//			testWorld->bDebugFrameStepExecution = true;
-//			return true;
-//		}
-//	}
-//	return false;
-//}
+
+bool FCheckJetsSameRotationAsTrack::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+	ARaceGameMode* testGameMode = Cast<ARaceGameMode, AGameModeBase>(UGameplayStatics::GetGameMode(testWorld));
+	if (testGameMode)
+	{
+		TSet<AJet*> gameModeJets = testGameMode->jetsRacing();
+		ATrackGenerator* testTrack = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
+
+		bool jetsWithSameRotationAsTrackSections = true;
+		for (const auto& jet : gameModeJets)
+		{
+			float distanceBetweenJetAndTrack = testTrack->distanceAlongSplineOf(jet);
+			FRotator trackSectionRotation = testTrack->rotationAt(distanceBetweenJetAndTrack);
+			UE_LOG(LogTemp, Log, TEXT("track section rotation: %f."), trackSectionRotation);
+			FRotator jetRotation = jet->GetActorRotation();
+			UE_LOG(LogTemp, Log, TEXT("jet rotation: %f."), jetRotation);
+			if (!jetRotation.Equals(trackSectionRotation))
+			{
+				jetsWithSameRotationAsTrackSections = false;
+				break;
+			}
+		}
+		UE_LOG(LogTemp, Log, TEXT("Number of race game mode jets: %d."), gameModeJets.Num());
+
+
+		if (jetsWithSameRotationAsTrackSections)
+		{
+			aTest->TestTrue(TEXT("Race game mode should coincede jets rotation with their track section rotation."), jetsWithSameRotationAsTrackSections);
+			testWorld->bDebugFrameStepExecution = true;
+			return true;
+		}
+
+		++aTickCount;
+		if (aTickCount > aTickLimit)
+		{
+			aTest->TestTrue(TEXT("Tick limit reached. Race game mode should coincede jets rotation with their track section rotation."), jetsWithSameRotationAsTrackSections);
+			testWorld->bDebugFrameStepExecution = true;
+			return true;
+		}
+	}
+	return false;
+}
 
 
 
