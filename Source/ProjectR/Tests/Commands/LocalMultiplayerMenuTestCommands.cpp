@@ -20,7 +20,7 @@
 
 
 
-bool FCheckLocalMultiplayerMenuClickGoBackRemovesFromViewportCommand::Update()
+bool FCheckLocalMultiplayerMenuClickGoBackRemovesFromViewport::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -49,7 +49,7 @@ bool FCheckLocalMultiplayerMenuClickGoBackRemovesFromViewportCommand::Update()
 }
 
 
-bool FCheckLocalMultiplayerMenuClickGoBackBringsMainMenuCommand::Update()
+bool FCheckLocalMultiplayerMenuClickGoBackBringsMainMenu::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -129,7 +129,7 @@ bool FCheckLocalMultiplayerMenuClickPlaySetsPlayers::Update()
 }
 
 
-bool FChecklocalMultiplayerMenuClickPlayButtonChangesMapCommand::Update()
+bool FChecklocalMultiplayerMenuClickPlayButtonChangesMap::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
