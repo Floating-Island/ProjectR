@@ -203,7 +203,10 @@ void ARaceGameMode::disableJetsInput()
 {
 	for (auto& jet : runningJets)
 	{
-		jet->DisableInput(Cast<APlayerController, AActor>(jet->GetOwner()));
+		if(jet->IsPlayerControlled())
+		{
+			jet->DisableInput(Cast<APlayerController,AController>(jet->GetController()));
+		}
 	}
 }
 
@@ -211,6 +214,9 @@ void ARaceGameMode::enableJetsInput()
 {
 	for (auto& jet : runningJets)
 	{
-		jet->EnableInput(Cast<APlayerController, AActor>(jet->GetOwner()));
+		if(jet->IsPlayerControlled())
+		{
+			jet->EnableInput(Cast<APlayerController,AController>(jet->GetController()));
+		}
 	}
 }
