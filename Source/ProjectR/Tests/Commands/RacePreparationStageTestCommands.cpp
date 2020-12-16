@@ -18,7 +18,7 @@
 //Test preparation commands:
 
 
-bool FSpawnARacePreparationStageCommand::Update()
+bool FSpawnARacePreparationStage::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -40,7 +40,7 @@ bool FSpawnARacePreparationStageCommand::Update()
 }
 
 
-bool FSpawnARacePreparationMakeItStartCommand::Update()
+bool FSpawnARacePreparationMakeItStart::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -63,7 +63,7 @@ bool FSpawnARacePreparationMakeItStartCommand::Update()
 //Test check commands:
 
 
-bool FCheckLapManagerSpawnedCommand::Update()
+bool FCheckLapManagerSpawned::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -85,7 +85,7 @@ bool FCheckLapManagerSpawnedCommand::Update()
 }
 
 
-bool FCheckPlayersQuantityOnStartCommand::Update()
+bool FCheckPlayersQuantityOnStart::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
