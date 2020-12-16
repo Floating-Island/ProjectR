@@ -26,10 +26,10 @@ bool FATrackManagerHasTrackGeneratorsListedWhenSpawnedTest::RunTest(const FStrin
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningATrackGeneratorCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningATrackGenerator);
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackManagerTrackGeneratorsCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackManagerTrackGenerators(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -43,10 +43,10 @@ bool FATrackManagerStoresJetsOverlappingWithTrackGeneratorsTest::RunTest(const F
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningARotatedTrackGeneratorAndJetCloseToItCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningARotatedTrackGeneratorAndJetCloseToIt);
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackManagerStoresJetsWhenOverlapCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackManagerStoresJetsWhenOverlap(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -60,10 +60,10 @@ bool FATrackManagerAttractsJetsTowardsTrackGeneratorsTest::RunTest(const FString
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningARotatedTrackGeneratorAndJetCloseToItCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningARotatedTrackGeneratorAndJetCloseToIt);
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackManagerAttractsJetsCommand(tickCount, tickLimit, std::numeric_limits<float>::min(), this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackManagerAttractsJets(tickCount, tickLimit, std::numeric_limits<float>::min(), this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

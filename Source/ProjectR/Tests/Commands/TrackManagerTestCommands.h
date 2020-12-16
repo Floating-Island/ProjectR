@@ -13,10 +13,10 @@
 
 //Test preparation commands:
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningATrackGeneratorCommand);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningATrackGenerator);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningARotatedTrackGeneratorAndJetCloseToItCommand);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningARotatedTrackGeneratorAndJetCloseToIt);
 
 
 
@@ -24,13 +24,13 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningARotatedTrackGeneratorAndJetCloseToItC
 
 //Test check commands:
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckATrackManagerTrackGeneratorsCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckATrackManagerTrackGenerators, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckATrackManagerStoresJetsWhenOverlapCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckATrackManagerStoresJetsWhenOverlap, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckATrackManagerAttractsJetsCommand, int, aTickCount, int, aTickLimit, float, aPreviousDistance, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckATrackManagerAttractsJets, int, aTickCount, int, aTickLimit, float, aPreviousDistance, FAutomationTestBase*, test);
 
 
 

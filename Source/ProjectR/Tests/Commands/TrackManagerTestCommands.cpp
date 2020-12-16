@@ -19,7 +19,7 @@
 
 //Test preparation commands:
 
-bool FSpawningATrackGeneratorCommand::Update()
+bool FSpawningATrackGenerator::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -35,7 +35,7 @@ bool FSpawningATrackGeneratorCommand::Update()
 }
 
 
-bool FSpawningARotatedTrackGeneratorAndJetCloseToItCommand::Update()
+bool FSpawningARotatedTrackGeneratorAndJetCloseToIt::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -69,7 +69,7 @@ bool FSpawningARotatedTrackGeneratorAndJetCloseToItCommand::Update()
 
 //Test check commands:
 
-bool FCheckATrackManagerTrackGeneratorsCommand::Update()
+bool FCheckATrackManagerTrackGenerators::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -94,7 +94,7 @@ bool FCheckATrackManagerTrackGeneratorsCommand::Update()
 }
 
 
-bool FCheckATrackManagerStoresJetsWhenOverlapCommand::Update()
+bool FCheckATrackManagerStoresJetsWhenOverlap::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -126,7 +126,7 @@ bool FCheckATrackManagerStoresJetsWhenOverlapCommand::Update()
 }
 
 
-bool FCheckATrackManagerAttractsJetsCommand::Update()
+bool FCheckATrackManagerAttractsJets::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
