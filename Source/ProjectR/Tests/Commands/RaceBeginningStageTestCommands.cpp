@@ -14,7 +14,7 @@
 
 //Test preparation commands:
 
-bool FSpawnARaceBeginningMOCKCommand::Update()
+bool FSpawnARaceBeginningMOCK::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -28,7 +28,7 @@ bool FSpawnARaceBeginningMOCKCommand::Update()
 }
 
 
-bool FSpawnARaceBeginningCallCountdownStartCommand::Update()
+bool FSpawnARaceBeginningCallCountdownStart::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -51,7 +51,7 @@ bool FSpawnARaceBeginningCallCountdownStartCommand::Update()
 
 //Test check commands:
 
-bool FCheckTimerActiveCommand::Update()
+bool FCheckTimerActive::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -71,7 +71,7 @@ bool FCheckTimerActiveCommand::Update()
 }
 
 
-bool FCheckRunningStageSpawnedCommand::Update()
+bool FCheckRunningStageSpawned::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
