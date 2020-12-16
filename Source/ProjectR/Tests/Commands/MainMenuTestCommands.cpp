@@ -19,7 +19,7 @@
 //Test check commands:
 
 
-bool FCheckMainMenuClickQuitsCommand::Update()
+bool FCheckMainMenuClickQuits::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -62,7 +62,7 @@ bool FCheckMainMenuClickQuitsCommand::Update()
 }
 
 
-bool FCheckMainMenuClickSingleplayerRemovesMenuFromViewportCommand::Update()
+bool FCheckMainMenuClickSingleplayerRemovesMenuFromViewport::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -91,7 +91,7 @@ bool FCheckMainMenuClickSingleplayerRemovesMenuFromViewportCommand::Update()
 }
 
 
-bool FCheckMainMenuClickSingleplayerBringsSingleplayerMenuCommand::Update()
+bool FCheckMainMenuClickSingleplayerBringsSingleplayerMenu::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -131,7 +131,7 @@ bool FCheckMainMenuClickSingleplayerBringsSingleplayerMenuCommand::Update()
 }
 
 
-bool FCheckMainMenuClickLocalMultiplayerRemovesMenuFromViewportCommand::Update()
+bool FCheckMainMenuClickLocalMultiplayerRemovesMenuFromViewport::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -160,7 +160,7 @@ bool FCheckMainMenuClickLocalMultiplayerRemovesMenuFromViewportCommand::Update()
 }
 
 
-bool FCheckSoloMainMenuClickLocalMultiplayerBringsLocalMultiplayerMenuCommand::Update()
+bool FCheckSoloMainMenuClickLocalMultiplayerBringsLocalMultiplayerMenu::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{

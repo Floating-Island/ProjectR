@@ -19,19 +19,19 @@ class UMainMenu;
 
 //Test check commands:
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckMainMenuClickQuitsCommand, bool, inPIE, int, aTickCount, int, aTickLimit, UMainMenu*, aMainMenuInstance, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckMainMenuClickQuits, bool, inPIE, int, aTickCount, int, aTickLimit, UMainMenu*, aMainMenuInstance, FAutomationTestBase*, aTest);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckMainMenuClickSingleplayerRemovesMenuFromViewportCommand, int, aTickCount, int, aTickLimit, UMainMenu*, aMainMenuInstance, bool, isMenuInstanciated,  FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckMainMenuClickSingleplayerRemovesMenuFromViewport, int, aTickCount, int, aTickLimit, UMainMenu*, aMainMenuInstance, bool, isMenuInstanciated,  FAutomationTestBase*, aTest);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckMainMenuClickSingleplayerBringsSingleplayerMenuCommand, int, aTickCount, int, aTickLimit, UMainMenu*, aMainMenuInstance, bool, isMenuInstanciated,  FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckMainMenuClickSingleplayerBringsSingleplayerMenu, int, aTickCount, int, aTickLimit, UMainMenu*, aMainMenuInstance, bool, isMenuInstanciated,  FAutomationTestBase*, aTest);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckMainMenuClickLocalMultiplayerRemovesMenuFromViewportCommand, int, aTickCount, int, aTickLimit, UMainMenu*, aMainMenuInstance, bool, isMenuInstanciated,  FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckMainMenuClickLocalMultiplayerRemovesMenuFromViewport, int, aTickCount, int, aTickLimit, UMainMenu*, aMainMenuInstance, bool, isMenuInstanciated,  FAutomationTestBase*, aTest);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSoloMainMenuClickLocalMultiplayerBringsLocalMultiplayerMenuCommand, int, aTickCount, int, aTickLimit, UMainMenu*, aMainMenuInstance, bool, isMenuInstanciated,  FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSoloMainMenuClickLocalMultiplayerBringsLocalMultiplayerMenu, int, aTickCount, int, aTickLimit, UMainMenu*, aMainMenuInstance, bool, isMenuInstanciated,  FAutomationTestBase*, aTest);
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
