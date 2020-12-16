@@ -20,3 +20,8 @@ void ARaceRunningStage::Tick(float DeltaSeconds)
 		stageEndedEvent.Broadcast(this);
 	}
 }
+
+void ARaceRunningStage::start()
+{
+	raceMode->enableJetsInput();
+}
