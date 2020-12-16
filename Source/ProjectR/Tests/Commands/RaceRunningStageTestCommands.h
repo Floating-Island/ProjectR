@@ -14,10 +14,10 @@
 //Test preparation commands:
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnARaceRunningCallNextStageCommand);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnARaceRunningCallNextStage);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnARaceRunningCommand);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnARaceRunning);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnARaceRunningAndStart);
@@ -28,10 +28,10 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnARaceRunningAndStart);
 //Test check commands:
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckEndedStageSpawnedCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckEndedStageSpawned, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckEndedStageSpawnedWithNoRunningJetsCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckEndedStageSpawnedWithNoRunningJets, FAutomationTestBase*, test);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckARaceRunningStartEnablesJetsInput, int, aTickCount, int, aTickLimit,  FAutomationTestBase*, aTest);

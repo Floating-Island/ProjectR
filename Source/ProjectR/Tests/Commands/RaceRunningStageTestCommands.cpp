@@ -14,7 +14,7 @@
 
 //Test preparation commands:
 
-bool FSpawnARaceRunningCallNextStageCommand::Update()
+bool FSpawnARaceRunningCallNextStage::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -28,7 +28,7 @@ bool FSpawnARaceRunningCallNextStageCommand::Update()
 }
 
 
-bool FSpawnARaceRunningCommand::Update()
+bool FSpawnARaceRunning::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -67,7 +67,7 @@ bool FSpawnARaceRunningAndStart::Update()
 //Test check commands:
 
 
-bool FCheckEndedStageSpawnedCommand::Update()
+bool FCheckEndedStageSpawned::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -89,7 +89,7 @@ bool FCheckEndedStageSpawnedCommand::Update()
 }
 
 
-bool FCheckEndedStageSpawnedWithNoRunningJetsCommand::Update()
+bool FCheckEndedStageSpawnedWithNoRunningJets::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
