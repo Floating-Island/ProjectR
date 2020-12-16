@@ -16,7 +16,7 @@
 
 //Test preparation commands:
 
-bool FSpawningALapManagerAndJetCommand::Update()
+bool FSpawningALapManagerAndJet::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -32,7 +32,7 @@ bool FSpawningALapManagerAndJetCommand::Update()
 }
 
 
-bool FSpawningALapManagerAInitialLapPhaseAndJetCommand::Update()
+bool FSpawningALapManagerAInitialLapPhaseAndJet::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -49,7 +49,7 @@ bool FSpawningALapManagerAInitialLapPhaseAndJetCommand::Update()
 }
 
 
-bool FSpawningALapManagerInitalAndIntermediateLapPhasesAndJetCommand::Update()
+bool FSpawningALapManagerInitalAndIntermediateLapPhasesAndJet::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -69,7 +69,7 @@ bool FSpawningALapManagerInitalAndIntermediateLapPhasesAndJetCommand::Update()
 }
 
 
-bool FSpawningALapManagerIntermediateAndFinalLapPhasesAndJetCommand::Update()
+bool FSpawningALapManagerIntermediateAndFinalLapPhasesAndJet::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -90,7 +90,7 @@ bool FSpawningALapManagerIntermediateAndFinalLapPhasesAndJetCommand::Update()
 }
 
 
-bool FSpawningALapManagerInitialAndFinalLapPhasesAndJetCommand::Update()
+bool FSpawningALapManagerInitialAndFinalLapPhasesAndJet::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -122,7 +122,7 @@ bool FSpawningALapManagerInitialAndFinalLapPhasesAndJetCommand::Update()
 //Test check commands:
 
 
-bool FCheckALapManagerStoresJetsCommand::Update()
+bool FCheckALapManagerStoresJets::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -147,7 +147,7 @@ bool FCheckALapManagerStoresJetsCommand::Update()
 }
 
 
-bool FCheckJetsInitialLapPhaseCommand::Update()
+bool FCheckJetsInitialLapPhase::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -173,7 +173,7 @@ bool FCheckJetsInitialLapPhaseCommand::Update()
 }
 
 
-bool FCheckJetsInitialLapCountCommand::Update()
+bool FCheckJetsInitialLapCount::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -199,7 +199,7 @@ bool FCheckJetsInitialLapCountCommand::Update()
 }
 
 
-bool FCheckJetChangeFromInitialToIntermediateCommand::Update()
+bool FCheckJetChangeFromInitialToIntermediate::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -227,7 +227,7 @@ bool FCheckJetChangeFromInitialToIntermediateCommand::Update()
 }
 
 
-bool FCheckJetChangeFromIntermediateToFinalCommand::Update()
+bool FCheckJetChangeFromIntermediateToFinal::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -255,7 +255,7 @@ bool FCheckJetChangeFromIntermediateToFinalCommand::Update()
 }
 
 
-bool FCheckJetChangeFromFinalToInitialCommand::Update()
+bool FCheckJetChangeFromFinalToInitial::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -283,7 +283,7 @@ bool FCheckJetChangeFromFinalToInitialCommand::Update()
 }
 
 
-bool FCheckJetLapCountChangeFromFinalToInitialCommand::Update()
+bool FCheckJetLapCountChangeFromFinalToInitial::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
