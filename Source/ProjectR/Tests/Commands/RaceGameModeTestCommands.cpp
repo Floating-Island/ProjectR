@@ -27,7 +27,7 @@
 //Test preparation commands:
 
 
-bool FSpawnAJetBehindAnotherCommand::Update()
+bool FSpawnAJetBehindAnother::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -63,7 +63,7 @@ bool FSpawnAJetBehindAnotherCommand::Update()
 }
 
 
-bool FSpawnAJetOnFinalLapMakeItFinishCommand::Update()
+bool FSpawnAJetOnFinalLapMakeItFinish::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -105,7 +105,7 @@ bool FSpawnAJetOnFinalLapMakeItFinishCommand::Update()
 //Test check commands:
 
 
-bool FCheckRaceGameModeSetCommand::Update()
+bool FCheckRaceGameModeSet::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -125,7 +125,7 @@ bool FCheckRaceGameModeSetCommand::Update()
 }
 
 
-bool FCheckRaceGameModeCreatesAllJetsCommand::Update()
+bool FCheckRaceGameModeCreatesAllJets::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -166,7 +166,7 @@ bool FCheckRaceGameModeCreatesAllJetsCommand::Update()
 }
 
 
-bool FCheckRaceGameModeJetsPositioningCommand::Update()
+bool FCheckRaceGameModeJetsPositioning::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -226,7 +226,7 @@ bool FCheckRaceGameModeJetsPositioningCommand::Update()
 }
 
 
-bool FCheckRaceGameModeUpdateStageCommand::Update()
+bool FCheckRaceGameModeUpdateStage::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
