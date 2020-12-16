@@ -26,7 +26,7 @@
 //Test check commands:
 
 
-bool FCheckSingleplayerMenuClickPlayButtonChangesMapCommand::Update()
+bool FCheckSingleplayerMenuClickPlayButtonChangesMap::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -66,7 +66,7 @@ bool FCheckSingleplayerMenuClickPlayButtonChangesMapCommand::Update()
 }
 
 
-bool FCheckSingleplayerMenuClickGoBackRemovesFromViewportCommand::Update()
+bool FCheckSingleplayerMenuClickGoBackRemovesFromViewport::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -95,7 +95,7 @@ bool FCheckSingleplayerMenuClickGoBackRemovesFromViewportCommand::Update()
 }
 
 
-bool FCheckSingleplayerMenuClickGoBackBringsMainMenuCommand::Update()
+bool FCheckSingleplayerMenuClickGoBackBringsMainMenu::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
