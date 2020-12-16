@@ -20,7 +20,7 @@
 
 //Test preparation commands:
 
-bool FSpawningAJetMakeItAccelerateCommand::Update()
+bool FSpawningAJetMakeItAccelerate::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
 	{
@@ -40,7 +40,7 @@ bool FSpawningAJetMakeItAccelerateCommand::Update()
 }
 
 
-bool FSpawningAJetMakeItBrakeCommand::Update()
+bool FSpawningAJetMakeItBrake::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -58,7 +58,7 @@ bool FSpawningAJetMakeItBrakeCommand::Update()
 }
 
 
-bool FSpawningAJetSetVelocityToTopSpeedCommand::Update()
+bool FSpawningAJetSetVelocityToTopSpeed::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -77,7 +77,7 @@ bool FSpawningAJetSetVelocityToTopSpeedCommand::Update()
 }
 
 
-bool FSpawningAJetMakeItSteerRightCommand::Update()
+bool FSpawningAJetMakeItSteerRight::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -96,7 +96,7 @@ bool FSpawningAJetMakeItSteerRightCommand::Update()
 }
 
 
-bool FSpawningAJetPressAccelerationKeyCommand::Update()
+bool FSpawningAJetPressAccelerationKey::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -114,7 +114,7 @@ bool FSpawningAJetPressAccelerationKeyCommand::Update()
 }
 
 
-bool FSpawningAJetPressSteerRightKeyCommand::Update()
+bool FSpawningAJetPressSteerRightKey::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -135,7 +135,7 @@ bool FSpawningAJetPressSteerRightKeyCommand::Update()
 }
 
 
-bool FSpawningAJetPressBrakeKeyCommand::Update()
+bool FSpawningAJetPressBrakeKey::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -153,7 +153,7 @@ bool FSpawningAJetPressBrakeKeyCommand::Update()
 }
 
 
-bool FSpawningAJetSnapedToFloorCommand::Update()
+bool FSpawningAJetSnapedToFloor::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -175,7 +175,7 @@ bool FSpawningAJetSnapedToFloorCommand::Update()
 }
 
 
-bool FSpawningAJetRotateAndAccelerateCommand::Update()
+bool FSpawningAJetRotateAndAccelerate::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -197,7 +197,7 @@ bool FSpawningAJetRotateAndAccelerateCommand::Update()
 }
 
 
-bool FSpawningAJetRotateAndBrakeCommand::Update()
+bool FSpawningAJetRotateAndBrake::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -219,7 +219,7 @@ bool FSpawningAJetRotateAndBrakeCommand::Update()
 }
 
 
-//bool FSpawningAJetAccelerateAndSteerRightCommand::Update()
+//bool FSpawningAJetAccelerateAndSteerRight::Update()
 //{
 //	if (!GEditor->IsPlayingSessionInEditor())
 //	{
@@ -238,7 +238,7 @@ bool FSpawningAJetRotateAndBrakeCommand::Update()
 //}
 
 
-bool FSpawningAJetBrakeAndSteerRightCommand::Update()
+bool FSpawningAJetBrakeAndSteerRight::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -255,7 +255,7 @@ bool FSpawningAJetBrakeAndSteerRightCommand::Update()
 }
 
 
-bool FSpawningAJeSteerRightWhenIdleCommand::Update()
+bool FSpawningAJeSteerRightWhenIdle::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -276,7 +276,7 @@ bool FSpawningAJeSteerRightWhenIdleCommand::Update()
 }
 
 
-bool FSpawningAJetCommand::Update()
+bool FSpawningAJet::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -289,7 +289,7 @@ bool FSpawningAJetCommand::Update()
 }
 
 
-bool FSpawningTwoJetsMakeOneOfThemItAccelerateAndSteerRightCommand::Update()
+bool FSpawningTwoJetsMakeOneOfThemItAccelerateAndSteerRight::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -309,7 +309,7 @@ bool FSpawningTwoJetsMakeOneOfThemItAccelerateAndSteerRightCommand::Update()
 }
 
 
-bool FSpawningAJetTiltItAndMakeItSteerRightCommand::Update()
+bool FSpawningAJetTiltItAndMakeItSteerRight::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -331,7 +331,7 @@ bool FSpawningAJetTiltItAndMakeItSteerRightCommand::Update()
 }
 
 
-bool FSpawningAJetRotatedOverFloorAndAccelerateItCommand::Update()
+bool FSpawningAJetRotatedOverFloorAndAccelerateIt::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -358,7 +358,7 @@ bool FSpawningAJetRotatedOverFloorAndAccelerateItCommand::Update()
 }
 
 
-bool FSpawningAJetAndFloorSideWaysCommand::Update()
+bool FSpawningAJetAndFloorSideWays::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -384,7 +384,7 @@ bool FSpawningAJetAndFloorSideWaysCommand::Update()
 }
 
 
-bool FSpawningAJetRotatedOverFloorAndBrakeItCommand::Update()
+bool FSpawningAJetRotatedOverFloorAndBrakeIt::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -411,7 +411,7 @@ bool FSpawningAJetRotatedOverFloorAndBrakeItCommand::Update()
 }
 
 
-bool FSpawningAJetRotatedOverFloorAccelerateAndSteerItRightCommand::Update()
+bool FSpawningAJetRotatedOverFloorAccelerateAndSteerItRight::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -452,7 +452,7 @@ bool FSpawningAJetRotatedOverFloorAccelerateAndSteerItRightCommand::Update()
 
 
 
-bool FCheckAJetLocationCommand::Update()
+bool FCheckAJetLocation::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -490,7 +490,7 @@ bool FCheckAJetLocationCommand::Update()
 }
 
 
-bool FCheckAJetSpeedIncreaseCommand::Update()
+bool FCheckAJetSpeedIncrease::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -534,7 +534,7 @@ bool FCheckAJetSpeedIncreaseCommand::Update()
 }
 
 
-bool FCheckAJetVelocityDecreaseCommand::Update()
+bool FCheckAJetVelocityDecrease::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -576,7 +576,7 @@ bool FCheckAJetVelocityDecreaseCommand::Update()
 }
 
 
-bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
+bool FCheckAJetSpeedAgainstTopSpeed::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -605,7 +605,7 @@ bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
 }
 
 
-bool FCheckAJetRotatedYawCommand::Update()
+bool FCheckAJetRotatedYaw::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -642,7 +642,7 @@ bool FCheckAJetRotatedYawCommand::Update()
 }
 
 
-bool FCheckAJetZLocationCommand::Update()
+bool FCheckAJetZLocation::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -680,7 +680,7 @@ bool FCheckAJetZLocationCommand::Update()
 }
 
 
-bool FCheckAJetLocationCoincidentToForwardVectorCommand::Update()
+bool FCheckAJetLocationCoincidentToForwardVector::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -722,7 +722,7 @@ bool FCheckAJetLocationCoincidentToForwardVectorCommand::Update()
 }
 
 
-bool FCheckAJetLocationParallelToForwardVectorCommand::Update()
+bool FCheckAJetLocationParallelToForwardVector::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -764,7 +764,7 @@ bool FCheckAJetLocationParallelToForwardVectorCommand::Update()
 }
 
 
-//bool FCheckAJetUpdatedVelocityWhenAfterSteeringCommand::Update()
+//bool FCheckAJetUpdatedVelocityWhenAfterSteering::Update()
 //{
 //	if (GEditor->IsPlayingSessionInEditor())
 //	{
@@ -801,7 +801,7 @@ bool FCheckAJetLocationParallelToForwardVectorCommand::Update()
 //}
 
 
-bool FCheckAJetInvertSteeringWhenInReverseCommand::Update()
+bool FCheckAJetInvertSteeringWhenInReverse::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -846,7 +846,7 @@ bool FCheckAJetInvertSteeringWhenInReverseCommand::Update()
 }
 
 
-bool FCheckAJetUnableToSteerWhenIdleCommand::Update()
+bool FCheckAJetUnableToSteerWhenIdle::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -880,7 +880,7 @@ bool FCheckAJetUnableToSteerWhenIdleCommand::Update()
 }
 
 
-bool FCheckAJetCenterOfMassCommand::Update()
+bool FCheckAJetCenterOfMass::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -905,7 +905,7 @@ bool FCheckAJetCenterOfMassCommand::Update()
 }
 
 
-bool FCheckAJetFallSpeedCommand::Update()
+bool FCheckAJetFallSpeed::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -949,7 +949,7 @@ bool FCheckAJetFallSpeedCommand::Update()
 }
 
 
-bool FCheckAJetSteersAroundUpVectorCommand::Update()
+bool FCheckAJetSteersAroundUpVector::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -987,7 +987,7 @@ bool FCheckAJetSteersAroundUpVectorCommand::Update()
 }
 
 
-bool FCheckAJetSpeedOrthogonalityToFloorCommand::Update()
+bool FCheckAJetSpeedOrthogonalityToFloor::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -1031,7 +1031,7 @@ bool FCheckAJetSpeedOrthogonalityToFloorCommand::Update()
 }
 
 
-bool FCheckAJetSidewaysRejectsFloorCommand::Update()
+bool FCheckAJetSidewaysRejectsFloor::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -1078,7 +1078,7 @@ bool FCheckAJetSidewaysRejectsFloorCommand::Update()
 }
 
 
-bool FCheckAJetVelocityMagnitudeOrthogonalityToFloorCommand::Update()
+bool FCheckAJetVelocityMagnitudeOrthogonalityToFloor::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
