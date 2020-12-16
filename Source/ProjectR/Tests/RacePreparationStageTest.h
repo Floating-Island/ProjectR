@@ -41,6 +41,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARacePreparationStagStartMakesControllersPosse
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARacePreparationStagStartDisablesJetsInputTest, 
+	"ProjectR.RacePreparationStage Tests.Unit.005: start disables jets input", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

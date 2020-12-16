@@ -7,6 +7,7 @@
 #include "LapManager/LapManager.h"
 #include "GameMode/RaceStages/RacePreparationStage.h"
 #include "GameMode/RaceStages/RaceBeginningStage.h"
+#include "GameMode/RaceGameMode.h"
 #include "GameInstance/ProjectRGameInstance.h"
 #include "Jet/Jet.h"
 #include "GameFramework/PlayerController.h"
@@ -103,7 +104,7 @@ bool FCheckPlayersQuantityOnStartCommand::Update()
 
 				bool requiredPlayerQuantityAchieved = numberOfPlayers == necessaryPlayers;
 
-				if(requiredPlayerQuantityAchieved)
+				if (requiredPlayerQuantityAchieved)
 				{
 					aTest->TestTrue(TEXT("Race preparation start should generate the remaining necessary players in the game."), requiredPlayerQuantityAchieved);
 					testWorld->bDebugFrameStepExecution = true;
@@ -111,7 +112,7 @@ bool FCheckPlayersQuantityOnStartCommand::Update()
 				}
 
 				++aTickCount;
-				if(aTickCount > aTickLimit)
+				if (aTickCount > aTickLimit)
 				{
 					aTest->TestTrue(TEXT("Tick limit reached, race preparation start should generate the remaining necessary players in the game."), requiredPlayerQuantityAchieved);
 					testWorld->bDebugFrameStepExecution = true;
@@ -150,26 +151,26 @@ bool FCheckPlayersPossessingJets::Update()
 			{
 				bool controllersPossessJets = true;
 
-				for(auto iterator = testWorld->GetPlayerControllerIterator(); iterator; ++iterator )
+				for (auto iterator = testWorld->GetPlayerControllerIterator(); iterator; ++iterator)
 				{
 					APlayerController* controller = iterator->Get();
 					AJet* controlledJet = Cast<AJet, APawn>(controller->GetPawn());
-					UE_LOG(LogTemp, Log, TEXT("this pawn %s a jet."), *FString(controlledJet? "is": "isn't"));
-					if(!controlledJet)
+					UE_LOG(LogTemp, Log, TEXT("this pawn %s a jet."), *FString(controlledJet ? "is" : "isn't"));
+					if (!controlledJet)
 					{
 						controllersPossessJets = false;
 						break;
 					}
 				}
-				
+
 				int numberOfPlayers = testWorld->GetNumPlayerControllers();
 				UE_LOG(LogTemp, Log, TEXT("number of player controllers in world: %d."), numberOfPlayers);
 				int necessaryPlayers = Cast<UProjectRGameInstance, UGameInstance>(testWorld->GetGameInstance())->necessaryPlayers();
 				UE_LOG(LogTemp, Log, TEXT("number of necessary player controllers in world: %d."), necessaryPlayers);
 
-				
 
-				if(controllersPossessJets)
+
+				if (controllersPossessJets)
 				{
 					aTest->TestTrue(TEXT("Race preparation start should make the controllers possess the jets."), controllersPossessJets);
 					testWorld->bDebugFrameStepExecution = true;
@@ -177,9 +178,65 @@ bool FCheckPlayersPossessingJets::Update()
 				}
 
 				++aTickCount;
-				if(aTickCount > aTickLimit)
+				if (aTickCount > aTickLimit)
 				{
 					aTest->TestTrue(TEXT("Tick limit reached, race preparation start should generate the remaining necessary players in the game."), controllersPossessJets);
+					testWorld->bDebugFrameStepExecution = true;
+					return true;
+				}
+			}
+			else
+			{
+				sessionUtilities.spawnLocalPlayer();//if expectedPlayers in game instance is set to 1. If more, spawn more.
+				testPreparation->start();
+				stageHasStarted = true;
+			}
+		}
+		else
+		{
+			sessionUtilities.spawnInPIEAnInstanceOf<ARacePreparationStage>();
+		}
+	}
+	return false;
+}
+
+
+bool FCheckJetsInputDisabled::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+		ARacePreparationStage* testPreparation = sessionUtilities.retrieveFromPIEAnInstanceOf<ARacePreparationStage>();
+		if (testPreparation)
+		{
+			if (stageHasStarted)
+			{
+				bool jetsHaveInputDisabled = true;
+
+				TArray<AJet*> jets = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameMode>()->jetsRacing().Array();
+
+				for (auto jet : jets)
+				{
+					if (!jet->InputEnabled())
+					{
+						jetsHaveInputDisabled = false;
+						break;
+					}
+				}
+				
+				if (jetsHaveInputDisabled)
+				{
+					aTest->TestTrue(TEXT("Race preparation start should disable the jets input."), jetsHaveInputDisabled);
+					testWorld->bDebugFrameStepExecution = true;
+					return true;
+				}
+
+				++aTickCount;
+				if (aTickCount > aTickLimit)
+				{
+					aTest->TestTrue(TEXT("Tick limit reached, race preparation start should disable the jets input."), jetsHaveInputDisabled);
 					testWorld->bDebugFrameStepExecution = true;
 					return true;
 				}

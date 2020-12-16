@@ -35,6 +35,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckPlayersQuantityOnStartComm
 DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckPlayersPossessingJets, int, aTickCount, int, aTickLimit, bool, stageHasStarted, FAutomationTestBase*, aTest);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckJetsInputDisabled, int, aTickCount, int, aTickLimit, bool, stageHasStarted, FAutomationTestBase*, aTest);
+
+
 
 
 
