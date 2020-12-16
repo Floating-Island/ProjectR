@@ -32,6 +32,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceRunningStageSpawnsEndedStageWhenNoRunning
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceRunningStageEnablesJetsInputOnStartTest, 
+	"ProjectR.RaceRunningStage Tests.Integration.003: Enables jets input on start", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

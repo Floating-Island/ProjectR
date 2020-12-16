@@ -32,10 +32,6 @@ protected:
 	TMap<AJet*, int8> currentJetPositions;
 	TArray<AJet*> finalizedJets;
 
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
-		int numberOfPlayers;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
 		int numberOfLaps;
 
@@ -48,11 +44,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
 		float initialForwardDistanceBetweenJets;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
+		TSubclassOf<AJet> jetClass;
+
 public:
 	ARaceGameMode();
 
 	void positionExpectedJets();
-	void createJet(FVector atLocation, int& aNumberOfRemainingJetsToCreate);
+	void createJet(FVector atLocation, FRotator atRotation, int& aNumberOfRemainingJetsToCreate);
 
 	virtual void StartPlay() override;
 
@@ -78,5 +77,15 @@ public:
 	TArray<AJet*> finalistJets();
 
 	TMap<AJet*, int8> positions();
+
+	void playersToCreate(int aPlayerQuantity);
+
+	void achieveNecessaryPlayersQuantity();
+
+	void possessJets();
+
+	void disableJetsInput();
+	void enableJetsInput();
+	
 
 };

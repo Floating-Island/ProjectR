@@ -8,6 +8,7 @@
 #include "Engine/GameInstance.h"
 #include "ProjectRGameInstance.generated.h"
 
+class ULocalMultiplayerMenu;
 class USingleplayerMenu;
 class UMainMenu;
 /**
@@ -19,15 +20,22 @@ class PROJECTR_API UProjectRGameInstance : public UGameInstance
 	GENERATED_BODY()
 
 protected:
+	int numberOfPlayers;
 	UMainMenu* mainMenu;
 	USingleplayerMenu* singleplayerMenu;
+	ULocalMultiplayerMenu* localMultiplayerMenu;
 	void lockMouseToWidget(UMenu* menu);
 public:
+	UProjectRGameInstance();
+	
 	UPROPERTY(EditDefaultsOnly, Category= "Menus")
 		TSubclassOf<UMainMenu> mainMenuClass;
 
 	UPROPERTY(EditDefaultsOnly, Category= "Menus")
 		TSubclassOf<USingleplayerMenu> singleplayerMenuClass;
+
+	UPROPERTY(EditDefaultsOnly, Category= "Menus")
+		TSubclassOf<ULocalMultiplayerMenu> localMultiplayerMenuClass;
 
 	UFUNCTION(BlueprintCallable)
 	UMainMenu* loadMainMenu();
@@ -35,6 +43,13 @@ public:
 	UFUNCTION(BlueprintCallable)
 	USingleplayerMenu* loadSingleplayerMenu();
 
+	UFUNCTION(BlueprintCallable)
+	ULocalMultiplayerMenu* loadLocalMultiplayerMenu();
+
 	bool isMainMenuInViewport();
 	bool isSingleplayerMenuInViewport();
+	bool isLocalMultiplayerMenuInViewport();
+
+	void expectedPlayers(int aQuantity);
+	int necessaryPlayers();
 };

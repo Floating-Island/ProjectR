@@ -106,7 +106,7 @@ bool FSpawningAJetPressAccelerationKeyCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
-	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
+	sessionUtilities.spawnLocalPlayer();
 
 	sessionUtilities.processLocalPlayerInputFrom(FName(TEXT("AccelerateAction")));
 
@@ -124,7 +124,9 @@ bool FSpawningAJetPressSteerRightKeyCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
-	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
+	sessionUtilities.spawnLocalPlayer();
+
+	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 
 	testJet->setCurrentXVelocityTo(10000);//we should set the speed to 1 first so the jet is able to steer.
 	sessionUtilities.processLocalPlayerInputFrom(FName(TEXT("SteerAction")));
@@ -143,7 +145,7 @@ bool FSpawningAJetPressBrakeKeyCommand::Update()
 
 	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
-	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
+	sessionUtilities.spawnLocalPlayer();
 
 	sessionUtilities.processLocalPlayerInputFrom(FName(TEXT("BrakeAction")));
 

@@ -4,10 +4,10 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-
 #include "ProjectRGameInstanceTest.h"
 #include "Commands/ProjectRGameInstanceTestCommands.h"
 #include "Tests/AutomationEditorCommon.h"
+#include "GameInstance/ProjectRGameInstance.h"
 
 bool FUProjectRGameInstanceIsSetAsProjectGameInstanceTest::RunTest(const FString& Parameters)
 {
@@ -106,6 +106,85 @@ bool FUProjectRGameInstanceLoadSingleplayerMenuShowsMouseCursorTest::RunTest(con
 	return true;
 }
 
+
+bool FUProjectRGameInstanceNecessaryPlayersReturnsAsExpectedTest::RunTest(const FString& Parameters)
+{
+	UProjectRGameInstance* testInstance = NewObject<UProjectRGameInstance>();
+	
+	int expectedPlayers = 4;
+
+	testInstance->expectedPlayers(expectedPlayers);
+
+	int necessaryPlayers = testInstance->necessaryPlayers();
+
+	TestTrue(TEXT("necessaryPlayers returns the expected number of players in the game."), necessaryPlayers == expectedPlayers);
+	return true;
+}
+
+
+bool FUProjectRGameInstanceNecessaryPlayersOneAsDefaultTest::RunTest(const FString& Parameters)
+{
+	UProjectRGameInstance* testInstance = NewObject<UProjectRGameInstance>();
+
+	TestTrue(TEXT("necessaryPlayers returns 1 as default."), testInstance->necessaryPlayers() == 1);
+	return true;
+}
+
+
+bool FUProjectRGameInstanceLoadSplitscreenMenuCreatesSplitscreenMenuTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckCreatesSplitscreenMenu(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FUProjectRGameInstanceLoadSplitscreenMenuCreatesOnlyOneSplitscreenMenuTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckCreatesOneSplitscreenMenu(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FUProjectRGameInstanceLoadSplitscreenMenuShowsMouseCursorTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckShowsCursorInSplitscreenMenu(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FUProjectRGameInstanceLoadMainMenuSetsExpectedPlayersToOneTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLoadMainMenuSetsExpectedPlayersToOne(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
 
 
 

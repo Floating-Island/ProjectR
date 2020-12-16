@@ -17,7 +17,7 @@
 #include "GameMode/RaceStages/RacePreparationStage.h"
 #include "GameMode/RaceStages/RaceBeginningStage.h"
 #include "GameMode/RaceStages/RaceRunningStage.h"
-
+#include "GameInstance/ProjectRGameInstance.h"
 
 #include "../Mocks/LapManagerMOCK.h"
 #include "Tests/AutomationEditorCommon.h"
@@ -270,6 +270,160 @@ bool FCheckJetMovedToFinalistJets::Update()
 	}
 	return false;
 }
+
+
+bool FCheckCreatesTheExpectedPlayers::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+	ARaceGameModeMOCK* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameModeMOCK>();
+
+	if (testGameMode)
+	{
+		int initialPlayerQuantity = testWorld->GetNumPlayerControllers();
+		int playersQuantity = 3;
+
+		testGameMode->playersToCreate(playersQuantity);
+
+		int totalPlayerQuantity = testWorld->GetNumPlayerControllers();
+
+		bool playerQuantityAsExpected = totalPlayerQuantity - initialPlayerQuantity == playersQuantity;
+
+		test->TestTrue(TEXT("Race game mode should create the expected number of players when calling playersToCreate."), playerQuantityAsExpected);
+		testWorld->bDebugFrameStepExecution = true;
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckCreatesTheNecessaryPlayers::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+	ARaceGameModeMOCK* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameModeMOCK>();
+	UProjectRGameInstance* testGameInstance = Cast<UProjectRGameInstance, UGameInstance>(testWorld->GetGameInstance());
+
+	if (testGameInstance && testGameMode)
+	{
+		int quantityOfPlayers = 3;
+		testGameInstance->expectedPlayers(quantityOfPlayers);
+		int necessaryPlayerQuantity = testGameInstance->necessaryPlayers();
+
+		testGameMode->achieveNecessaryPlayersQuantity();
+
+		int totalPlayerQuantity = testWorld->GetNumPlayerControllers();
+
+		bool playerQuantityAsExpected = totalPlayerQuantity == necessaryPlayerQuantity;
+
+		test->TestTrue(TEXT("Race game mode should create the necessary number of players expected from the game instance."), playerQuantityAsExpected);
+		testWorld->bDebugFrameStepExecution = true;
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckCreatesSameOrMoreJetsThanPlayers::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+	ARaceGameModeMOCK* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameModeMOCK>();
+
+	if (testGameMode)
+	{
+		testGameMode->achieveNecessaryPlayersQuantity();
+		testGameMode->positionExpectedJets();
+
+		int totalJetsQuantity = sessionUtilities.retrieveFromPIEAllInstancesOf<AJet>().Num();
+		UE_LOG(LogTemp, Log, TEXT("number of jets: %d."), totalJetsQuantity);
+
+		int totalPlayerQuantity = testWorld->GetNumPlayerControllers();
+		UE_LOG(LogTemp, Log, TEXT("number of players: %d."), totalPlayerQuantity);
+
+		bool playerQuantityAsExpected = totalJetsQuantity >= totalPlayerQuantity;
+
+		if (playerQuantityAsExpected)
+		{
+			aTest->TestTrue(TEXT("Race game mode should create the same or more jets than players."), playerQuantityAsExpected);
+			testWorld->bDebugFrameStepExecution = true;
+			return true;
+		}
+
+		++aTickCount;
+		if (aTickCount > aTickLimit)
+		{
+			aTest->TestTrue(TEXT("Race game mode should create the same or more jets than players."), playerQuantityAsExpected);
+			testWorld->bDebugFrameStepExecution = true;
+			return true;
+		}
+	}
+	return false;
+}
+
+
+bool FCheckJetsSameRotationAsTrack::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+	ARaceGameMode* testGameMode = Cast<ARaceGameMode, AGameModeBase>(UGameplayStatics::GetGameMode(testWorld));
+	if (testGameMode)
+	{
+		TSet<AJet*> gameModeJets = testGameMode->jetsRacing();
+		ATrackGenerator* testTrack = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
+
+		bool jetsWithSameRotationAsTrackSections = false;
+		for (const auto& jet : gameModeJets)
+		{
+			float distanceBetweenJetAndTrack = testTrack->distanceAlongSplineOf(jet);
+			FRotator trackSectionRotation = testTrack->rotationAt(distanceBetweenJetAndTrack);
+			FRotator jetRotation = jet->GetActorRotation();
+
+			jetsWithSameRotationAsTrackSections = true;
+			if (!jetRotation.Equals(trackSectionRotation, 0.01))
+			{
+				jetsWithSameRotationAsTrackSections = false;
+				break;
+			}
+		}
+
+		if (jetsWithSameRotationAsTrackSections)
+		{
+			aTest->TestTrue(TEXT("Race game mode should coincede jets rotation with their track section rotation."), jetsWithSameRotationAsTrackSections);
+			testWorld->bDebugFrameStepExecution = true;
+			return true;
+		}
+
+		++aTickCount;
+		if (aTickCount > aTickLimit)
+		{
+			aTest->TestTrue(TEXT("Tick limit reached. Race game mode should coincede jets rotation with their track section rotation."), jetsWithSameRotationAsTrackSections);
+			testWorld->bDebugFrameStepExecution = true;
+			return true;
+		}
+	}
+	return false;
+}
+
+
+
 
 
 

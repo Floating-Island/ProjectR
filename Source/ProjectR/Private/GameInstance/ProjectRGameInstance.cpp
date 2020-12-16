@@ -4,6 +4,7 @@
 #include "GameInstance/ProjectRGameInstance.h"
 #include "UI/MainMenu.h"
 #include "UI/SingleplayerMenu.h"
+#include "UI/LocalMultiplayerMenu.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -26,8 +27,8 @@ UMainMenu* UProjectRGameInstance::loadMainMenu()
 		mainMenu->AddToViewport();
 		lockMouseToWidget(mainMenu);
 	}
+	expectedPlayers(1);//obscure. Necessary to set the number of players when coming from a pause or going back to main menu from the local multiplayer menu.
 	
-
 	return mainMenu;
 }
 
@@ -39,6 +40,11 @@ void UProjectRGameInstance::lockMouseToWidget(UMenu* menu)
 	APlayerController* controller = GetWorld()->GetFirstPlayerController();
 	controller->SetInputMode(inputModeData);
 	controller->bShowMouseCursor = true;
+}
+
+UProjectRGameInstance::UProjectRGameInstance()
+{
+	numberOfPlayers = 1;
 }
 
 USingleplayerMenu* UProjectRGameInstance::loadSingleplayerMenu()
@@ -60,9 +66,28 @@ USingleplayerMenu* UProjectRGameInstance::loadSingleplayerMenu()
 	return singleplayerMenu;
 }
 
+ULocalMultiplayerMenu* UProjectRGameInstance::loadLocalMultiplayerMenu()
+{
+	ULocalMultiplayerMenu* localMultiplayerMenuInstance = Cast<ULocalMultiplayerMenu, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ULocalMultiplayerMenu::StaticClass()));
+	if (!localMultiplayerMenuInstance)
+	{
+		localMultiplayerMenu = CreateWidget<ULocalMultiplayerMenu>(GetWorld(), localMultiplayerMenuClass, FName("Splitscreen Menu"));
+	}
+	else
+	{
+		localMultiplayerMenu = localMultiplayerMenuInstance;
+	}
+	if (!localMultiplayerMenu->IsInViewport())
+	{
+		localMultiplayerMenu->AddToViewport();
+		lockMouseToWidget(localMultiplayerMenu);
+	}
+	return localMultiplayerMenu;
+}
+
 bool UProjectRGameInstance::isMainMenuInViewport()
 {
-	if(!mainMenu)
+	if (!mainMenu)
 	{
 		return false;
 	}
@@ -71,9 +96,28 @@ bool UProjectRGameInstance::isMainMenuInViewport()
 
 bool UProjectRGameInstance::isSingleplayerMenuInViewport()
 {
-	if(!singleplayerMenu)
+	if (!singleplayerMenu)
 	{
 		return false;
 	}
 	return singleplayerMenu->IsInViewport();
+}
+
+bool UProjectRGameInstance::isLocalMultiplayerMenuInViewport()
+{
+	if (!localMultiplayerMenu)
+	{
+		return false;
+	}
+	return localMultiplayerMenu->IsInViewport();
+}
+
+void UProjectRGameInstance::expectedPlayers(int aQuantity)
+{
+	numberOfPlayers = aQuantity;
+}
+
+int UProjectRGameInstance::necessaryPlayers()
+{
+	return numberOfPlayers;
 }

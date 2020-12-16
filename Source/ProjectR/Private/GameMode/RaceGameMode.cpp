@@ -10,6 +10,7 @@
 #include "Track/TrackGenerator.h"
 #include "LapPhases/InitialLapPhase.h"
 #include "GameMode/RaceStages/RacePreparationStage.h"
+#include "GameInstance/ProjectRGameInstance.h"
 
 #include "Kismet/GameplayStatics.h"
 
@@ -17,12 +18,12 @@
 
 ARaceGameMode::ARaceGameMode()
 {
-	numberOfPlayers = 1;
 	numberOfLaps = 3;
 	jetSpawnHeight = 100;
 	initialForwardDistanceBetweenJets = 2000;
 	initialLateralDistanceBetweenJets = 1000;
 
+	jetClass = AJet::StaticClass();
 	currentJetPositions = TMap<AJet*, int8>();
 	finalizedJets = TArray<AJet*>();
 }
@@ -43,7 +44,7 @@ void ARaceGameMode::StartPlay()
 
 void ARaceGameMode::positionExpectedJets()
 {
-	int numberOfJetsToCreate = numberOfPlayers;
+	int numberOfJetsToCreate = jetsToSpawn();
 	float distanceToTrackOrigin = track->distanceAlongSplineOf(initialPhase);
 	while (numberOfJetsToCreate > 0)
 	{
@@ -57,25 +58,27 @@ void ARaceGameMode::positionExpectedJets()
 		FVector segmentUpVector = track->upVectorAt(distanceToTrackOrigin);
 
 		FVector jetLocation = segmentLocation + segmentRightVector * initialLateralDistanceBetweenJets + segmentUpVector * jetSpawnHeight;
-		createJet(jetLocation, numberOfJetsToCreate);
+		FRotator jetRotation = track->rotationAt(distanceToTrackOrigin);
+
+		createJet(jetLocation, jetRotation, numberOfJetsToCreate);
 		if (numberOfJetsToCreate > 0)
 		{
 			jetLocation = segmentLocation - segmentRightVector * initialLateralDistanceBetweenJets + segmentUpVector * jetSpawnHeight;
-			createJet(jetLocation, numberOfJetsToCreate);
+			createJet(jetLocation, jetRotation, numberOfJetsToCreate);
 		}
 	}
 }
 
-void ARaceGameMode::createJet(FVector atLocation, int& aNumberOfRemainingJetsToCreate)
+void ARaceGameMode::createJet(FVector atLocation, FRotator atRotation, int& aNumberOfRemainingJetsToCreate)
 {
-	AJet* spawnedJet = gameWorld->SpawnActor<AJet>(atLocation, FRotator(0));
+	AJet* spawnedJet = gameWorld->SpawnActor<AJet>(jetClass, atLocation, atRotation);
 	--aNumberOfRemainingJetsToCreate;
 	runningJets.Add(spawnedJet);
 }
 
 int ARaceGameMode::jetsToSpawn()
 {
-	return numberOfPlayers;
+	return GetWorld()->GetNumPlayerControllers();
 }
 
 TSet<AJet*> ARaceGameMode::jetsRacing()
@@ -166,4 +169,54 @@ TArray<AJet*> ARaceGameMode::finalistJets()
 TMap<AJet*, int8> ARaceGameMode::positions()
 {
 	return currentJetPositions;
+}
+
+void ARaceGameMode::playersToCreate(int aPlayerQuantity)
+{
+	for (int playersCreated = 0; playersCreated < aPlayerQuantity; ++playersCreated)
+	{
+		UGameplayStatics::CreatePlayer(GetWorld());
+	}
+}
+
+void ARaceGameMode::achieveNecessaryPlayersQuantity()
+{
+	int necessaryPlayers = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance())->necessaryPlayers();
+	int currentPlayers = GetWorld()->GetNumPlayerControllers();
+	int playersNeeded = necessaryPlayers - currentPlayers;
+	playersToCreate(playersNeeded);
+}
+
+void ARaceGameMode::possessJets()
+{
+	TArray<AJet*> unPossessedJets = runningJets.Array();
+	for (auto iterator = GetWorld()->GetPlayerControllerIterator(); iterator; ++iterator)
+	{
+		APlayerController* controller = iterator->Get();
+		AJet* unPossessedJet = unPossessedJets.Pop();
+		unPossessedJet->SetOwner(controller);
+		controller->Possess(unPossessedJet);
+	}//if when testing the splitscreen only the first player moves, try to spawn more players.
+}
+
+void ARaceGameMode::disableJetsInput()
+{
+	for (auto& jet : runningJets)
+	{
+		if(jet->IsPlayerControlled())
+		{
+			jet->DisableInput(Cast<APlayerController,AController>(jet->GetController()));
+		}
+	}
+}
+
+void ARaceGameMode::enableJetsInput()
+{
+	for (auto& jet : runningJets)
+	{
+		if(jet->IsPlayerControlled())
+		{
+			jet->EnableInput(Cast<APlayerController,AController>(jet->GetController()));
+		}
+	}
 }

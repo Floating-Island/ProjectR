@@ -31,6 +31,21 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARacePreparationStagStartSpawnsLapManagerTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARacePreparationStagStartCreatesNecessaryPlayersTest, 
+	"ProjectR.RacePreparationStage Tests.Unit.003: start creates the necessary players", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARacePreparationStagStartMakesControllersPossessJetsTest, 
+	"ProjectR.RacePreparationStage Tests.Unit.004: start makes controllers possess the jets", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARacePreparationStagStartDisablesJetsInputTest, 
+	"ProjectR.RacePreparationStage Tests.Unit.005: start disables jets input", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

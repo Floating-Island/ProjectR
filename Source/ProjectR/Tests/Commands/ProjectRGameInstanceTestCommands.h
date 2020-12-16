@@ -37,4 +37,16 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckShowsCursorInMainMenu, FAut
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckShowsCursorInSingleplayerMenu, FAutomationTestBase*, aTest);
 
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesSplitscreenMenu, FAutomationTestBase*, aTest);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesOneSplitscreenMenu, FAutomationTestBase*, aTest);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckShowsCursorInSplitscreenMenu, FAutomationTestBase*, aTest);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLoadMainMenuSetsExpectedPlayersToOne, FAutomationTestBase*, aTest);
+
 #endif //WITH_DEV_AUTOMATION_TESTS

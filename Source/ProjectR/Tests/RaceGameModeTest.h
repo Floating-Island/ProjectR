@@ -28,7 +28,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeIsAbleToBeSetInAWorldTest,
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeCreatesExpectedNumberOfJetsTest, 
-	"ProjectR.RaceGameMode Tests.Integration.002: Creates the same amount of jets as specified in class settings", 
+	"ProjectR.RaceGameMode Tests.Integration.002: Creates the same amount of jets as expected", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
@@ -55,9 +55,34 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeMovesFinalistsJetsTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModePlayersToCreateCreatesThatNumberOfPlayersTest, 
+	"ProjectR.RaceGameMode Tests.Integration.007: PlayersToCreate creates that number of players", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeCreatesTheNecessaryGamePlayersTest, 
+	"ProjectR.RaceGameMode Tests.Integration.008: Creates the necessary number of players for the game instance", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeSameOrMoreNumberOfJetsAsPlayersTest, 
+	"ProjectR.RaceGameMode Tests.Integration.009: The number of jets created is the same or more than the number of players", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeSpawnedJetsWithTrackRotationTest, 
+	"ProjectR.RaceGameMode Tests.Integration.010: Each spawned jet has the rotation of the track section where it's at", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 
+
+
+// disable controllers before starting the race and enable them when it starts.
 
 
 

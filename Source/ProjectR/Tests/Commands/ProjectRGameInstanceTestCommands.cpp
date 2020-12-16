@@ -9,6 +9,7 @@
 #include "../Utilities/PIESessionUtilities.h"
 #include "UI/MainMenu.h"
 #include "UI/SingleplayerMenu.h"
+#include "UI/LocalMultiplayerMenu.h"
 
 
 //Test preparation commands:
@@ -29,7 +30,7 @@
 
 bool FCheckIsSetAsProjectGameInstance::Update()
 {
-	if(GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
@@ -43,13 +44,13 @@ bool FCheckIsSetAsProjectGameInstance::Update()
 
 bool FCheckCreatesMainMenu::Update()
 {
-	if(GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
 		UMainMenu* testMenu = testInstance->loadMainMenu();
-		
+
 		test->TestTrue(TEXT("loadMainMenu should bring the main menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
 		return true;
 	}
@@ -59,14 +60,14 @@ bool FCheckCreatesMainMenu::Update()
 
 bool FCheckCreatesOneMainMenu::Update()
 {
-	if(GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
 		UMainMenu* testMenu = testInstance->loadMainMenu();
 		UMainMenu* anotherTestMenu = testInstance->loadMainMenu();
-		
+
 		aTest->TestTrue(TEXT("loadMainMenu should create only one instance of main menu."), testMenu == anotherTestMenu);
 		return true;
 	}
@@ -76,13 +77,13 @@ bool FCheckCreatesOneMainMenu::Update()
 
 bool FCheckCreatesSingleplayerMenu::Update()
 {
-	if(GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
 		USingleplayerMenu* testMenu = testInstance->loadSingleplayerMenu();
-		
+
 		aTest->TestTrue(TEXT("loadSingleplayerMenu should bring the singleplayer menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
 		return true;
 	}
@@ -92,14 +93,14 @@ bool FCheckCreatesSingleplayerMenu::Update()
 
 bool FCheckCreatesOneSingleplayerMenu::Update()
 {
-	if(GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
 		USingleplayerMenu* testMenu = testInstance->loadSingleplayerMenu();
 		USingleplayerMenu* anotherTestMenu = testInstance->loadSingleplayerMenu();
-		
+
 		aTest->TestTrue(TEXT("loadSingleplayerMenu should create only one instance of singleplayer menu."), testMenu == anotherTestMenu);
 		return true;
 	}
@@ -109,14 +110,14 @@ bool FCheckCreatesOneSingleplayerMenu::Update()
 
 bool FCheckShowsCursorInMainMenu::Update()
 {
-	if(GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
 		UMainMenu* testMenu = testInstance->loadMainMenu();
 		bool controllerShowsMouseCursor = sessionUtilities.defaultPIEWorld()->GetFirstPlayerController()->ShouldShowMouseCursor();
-		
+
 		aTest->TestTrue(TEXT("loadMainMenu should make the controller show the mouse cursor."), testMenu && controllerShowsMouseCursor);
 		return true;
 	}
@@ -126,19 +127,88 @@ bool FCheckShowsCursorInMainMenu::Update()
 
 bool FCheckShowsCursorInSingleplayerMenu::Update()
 {
-	if(GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
 		USingleplayerMenu* testMenu = testInstance->loadSingleplayerMenu();
 		bool controllerShowsMouseCursor = sessionUtilities.defaultPIEWorld()->GetFirstPlayerController()->ShouldShowMouseCursor();
-		
+
 		aTest->TestTrue(TEXT("loadSingleplayerMenu should make the controller show the mouse cursor."), testMenu && controllerShowsMouseCursor);
 		return true;
 	}
 	return false;
 }
+
+
+bool FCheckCreatesSplitscreenMenu::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		ULocalMultiplayerMenu* testMenu = testInstance->loadLocalMultiplayerMenu();
+
+		aTest->TestTrue(TEXT("loadLocalMultiplayerMenu should bring the splitscreen menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckCreatesOneSplitscreenMenu::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		ULocalMultiplayerMenu* testMenu = testInstance->loadLocalMultiplayerMenu();
+		ULocalMultiplayerMenu* anotherTestMenu = testInstance->loadLocalMultiplayerMenu();
+
+		aTest->TestTrue(TEXT("loadLocalMultiplayerMenu should create only one instance of splitscreen menu."), testMenu == anotherTestMenu);
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckShowsCursorInSplitscreenMenu::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		ULocalMultiplayerMenu* testMenu = testInstance->loadLocalMultiplayerMenu();
+		bool controllerShowsMouseCursor = sessionUtilities.defaultPIEWorld()->GetFirstPlayerController()->ShouldShowMouseCursor();
+
+		aTest->TestTrue(TEXT("loadLocalMultiplayerMenu should make the controller show the mouse cursor."), testMenu && controllerShowsMouseCursor);
+		return true;
+	}
+	return false;
+}
+
+bool FCheckLoadMainMenuSetsExpectedPlayersToOne::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		int arbitraryExpectedJets = 2;
+		testInstance->expectedPlayers(arbitraryExpectedJets);
+		
+		UMainMenu* testMenu = testInstance->loadMainMenu();
+
+		aTest->TestTrue(TEXT("loadMainMenu should set the expected players to one."), testInstance->necessaryPlayers() == 1);
+		return true;
+	}
+	return false;
+}
+
 
 
 

@@ -30,11 +30,16 @@ UWorld* PIESessionUtilities::currentPIEWorld()
 	return GEditor->GetPIEWorldContext()->World();
 }
 
-void PIESessionUtilities::processLocalPlayerInputFrom(FName anAxisMappingName)
+void PIESessionUtilities::spawnLocalPlayer()
 {
 	AGameModeBase* testGameMode = pieWorld->GetAuthGameMode();
 
-	testGameMode->SpawnPlayerFromSimulate(FVector(0), FRotator(0));//spawns a player controller.
+	testGameMode->SpawnPlayerFromSimulate(FVector(0), FRotator(0));//spawns a player with controller and the default pawn set in the world game mode.
+}
+
+void PIESessionUtilities::processLocalPlayerInputFrom(FName anAxisMappingName)
+{
+	AGameModeBase* testGameMode = pieWorld->GetAuthGameMode();
 
 	APlayerController* controller = Cast<APlayerController, AActor>(testGameMode->GetGameInstance()->GetFirstLocalPlayerController(pieWorld));
 

@@ -6,6 +6,8 @@
 #include "RaceRunningStageTestCommands.h"
 #include "GameMode/RaceStages/RaceRunningStage.h"
 #include "GameMode/RaceStages/RaceEndedStage.h"
+#include "GameMode/RaceStages/RacePreparationStage.h"
+#include "Jet/Jet.h"
 
 #include "../Mocks/RaceGameModeMOCK.h"
 #include "../Utilities/PIESessionUtilities.h"
@@ -36,6 +38,25 @@ bool FSpawnARaceRunningCommand::Update()
 	ARaceRunningStage* testRunning = sessionUtilities.spawnInPIEAnInstanceOf<ARaceRunningStage>();
 
 	testRunning->nextStage();
+	return true;
+}
+
+
+bool FSpawnARaceRunningAndStart::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	sessionUtilities.spawnLocalPlayer();
+	ARacePreparationStage* testPreparation = sessionUtilities.spawnInPIEAnInstanceOf<ARacePreparationStage>();
+	testPreparation->start();
+	testPreparation->Destroy();
+	
+	ARaceRunningStage* testRunning = sessionUtilities.spawnInPIEAnInstanceOf<ARaceRunningStage>();
+	sessionUtilities.spawnLocalPlayer();//falta deshabilitarlos primero...
+	testRunning->start();
 	return true;
 }
 
@@ -90,6 +111,52 @@ bool FCheckEndedStageSpawnedWithNoRunningJetsCommand::Update()
 	}
 	return false;
 }
+
+
+bool FCheckARaceRunningStartEnablesJetsInput::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+	ARaceRunningStage* testRunning = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceRunningStage>();
+	if (testRunning)
+	{
+		bool jetsHaveInputEnabled = false;
+
+		TArray<AJet*> jets = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameMode>()->jetsRacing().Array();
+
+		for (auto jet : jets)
+		{
+			jetsHaveInputEnabled = true;
+			if (!jet->InputEnabled())
+			{
+				jetsHaveInputEnabled = false;
+				break;
+			}
+		}
+
+		if (jetsHaveInputEnabled)
+		{
+			aTest->TestTrue(TEXT("Race running start should enable jets input."), jetsHaveInputEnabled);
+			testWorld->bDebugFrameStepExecution = true;
+			return true;
+		}
+
+		++aTickCount;
+		if (aTickCount > aTickLimit)
+		{
+			aTest->TestTrue(TEXT("Race running start should enable jets input."), jetsHaveInputEnabled);
+			testWorld->bDebugFrameStepExecution = true;
+			return true;
+		}
+	}
+	return false;
+}
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

@@ -36,6 +36,16 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingSingleplayerButtonBringsSingl
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingLocalMultiplayerButtonRemovesMenuFromViewportTest, 
+	"ProjectR.MainMenu Tests.Integration.004: Clicking the local multiplayer button removes the menu from viewport",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingLocalMultiplayerButtonBringsLocalMultiplayerMenuTest, 
+	"ProjectR.MainMenu Tests.Integration.005: Clicking the local multiplayer button brings the singleplayer menu",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
