@@ -20,7 +20,7 @@
 
 //Test preparation commands:
 
-bool FSpawnTrackGeneratorInEditorWorldCommand::Update()
+bool FSpawnTrackGeneratorInEditorWorld::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -33,7 +33,7 @@ bool FSpawnTrackGeneratorInEditorWorldCommand::Update()
 }
 
 
-bool FSpawnTrackGeneratorInEditorWorldRollSplineComponentsCommand::Update()
+bool FSpawnTrackGeneratorInEditorWorldRollSplineComponents::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -48,7 +48,7 @@ bool FSpawnTrackGeneratorInEditorWorldRollSplineComponentsCommand::Update()
 }
 
 
-bool FSpawnTrackGeneratorInEditorWorldWidenSplineComponentsCommand::Update()
+bool FSpawnTrackGeneratorInEditorWorldWidenSplineComponents::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -63,7 +63,7 @@ bool FSpawnTrackGeneratorInEditorWorldWidenSplineComponentsCommand::Update()
 }
 
 
-bool FSpawnTrackGeneratorInEditorWorldDisableCollisionsCommand::Update()
+bool FSpawnTrackGeneratorInEditorWorldDisableCollisions::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -78,7 +78,7 @@ bool FSpawnTrackGeneratorInEditorWorldDisableCollisionsCommand::Update()
 }
 
 
-bool FSpawnTrackGeneratorInPIECommand::Update()
+bool FSpawnTrackGeneratorInPIE::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -91,7 +91,7 @@ bool FSpawnTrackGeneratorInPIECommand::Update()
 }
 
 
-bool FSpawnTwoTrackGeneratorsInPIECommand::Update()
+bool FSpawnTwoTrackGeneratorsInPIE::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -113,7 +113,7 @@ bool FSpawnTwoTrackGeneratorsInPIECommand::Update()
 //Test check commands:
 
 
-bool FCheckRoadSplinesQuantityCommand::Update()
+bool FCheckRoadSplinesQuantity::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -138,7 +138,7 @@ bool FCheckRoadSplinesQuantityCommand::Update()
 }
 
 
-bool FCheckRoadSplinesStartPositionsCommand::Update()
+bool FCheckRoadSplinesStartPositions::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -160,7 +160,7 @@ bool FCheckRoadSplinesStartPositionsCommand::Update()
 }
 
 
-bool FCheckRoadSplinesEndPositionsCommand::Update()
+bool FCheckRoadSplinesEndPositions::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -182,7 +182,7 @@ bool FCheckRoadSplinesEndPositionsCommand::Update()
 }
 
 
-bool FCheckRoadSplinesStartTangentsCommand::Update()
+bool FCheckRoadSplinesStartTangents::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -204,7 +204,7 @@ bool FCheckRoadSplinesStartTangentsCommand::Update()
 }
 
 
-bool FCheckRoadSplinesEndTangentsCommand::Update()
+bool FCheckRoadSplinesEndTangents::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -226,7 +226,7 @@ bool FCheckRoadSplinesEndTangentsCommand::Update()
 }
 
 
-bool FCheckRoadSplinesMeshesCommand::Update()
+bool FCheckRoadSplinesMeshes::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -248,7 +248,7 @@ bool FCheckRoadSplinesMeshesCommand::Update()
 }
 
 
-bool FCheckRoadSplinesMeshesAreRoadMeshCommand::Update()
+bool FCheckRoadSplinesMeshesAreRoadMesh::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -270,7 +270,7 @@ bool FCheckRoadSplinesMeshesAreRoadMeshCommand::Update()
 }
 
 
-bool FCheckSplineMagnetSplinesQuantityCommand::Update()
+bool FCheckSplineMagnetSplinesQuantity::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -292,7 +292,7 @@ bool FCheckSplineMagnetSplinesQuantityCommand::Update()
 }
 
 
-bool FCheckRoadSplinesCollisionEnabledCommand::Update()
+bool FCheckRoadSplinesCollisionEnabled::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -314,7 +314,7 @@ bool FCheckRoadSplinesCollisionEnabledCommand::Update()
 }
 
 
-bool FCheckRoadSplinesCollisionObjectTypeCommand::Update()
+bool FCheckRoadSplinesCollisionObjectType::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -336,7 +336,7 @@ bool FCheckRoadSplinesCollisionObjectTypeCommand::Update()
 }
 
 
-bool FCheckRoadSplinesAttachToRootCommand::Update()
+bool FCheckRoadSplinesAttachToRoot::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -358,7 +358,7 @@ bool FCheckRoadSplinesAttachToRootCommand::Update()
 }
 
 
-bool FCheckRoadSplinesMobilityCommand::Update()
+bool FCheckRoadSplinesMobility::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -380,7 +380,7 @@ bool FCheckRoadSplinesMobilityCommand::Update()
 }
 
 
-bool FCheckMagnetSplinesMobilityCommand::Update()
+bool FCheckMagnetSplinesMobility::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -402,7 +402,7 @@ bool FCheckMagnetSplinesMobilityCommand::Update()
 }
 
 
-bool FCheckMagnetSplinesAttachToRoadSplinesCommand::Update()
+bool FCheckMagnetSplinesAttachToRoadSplines::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -424,7 +424,7 @@ bool FCheckMagnetSplinesAttachToRoadSplinesCommand::Update()
 }
 
 
-bool FCheckMagnetSplinesOnTopRoadSplinesCommand::Update()
+bool FCheckMagnetSplinesOnTopRoadSplines::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -446,7 +446,7 @@ bool FCheckMagnetSplinesOnTopRoadSplinesCommand::Update()
 }
 
 
-bool FCheckMagnetSplinesTangentsCommand::Update()
+bool FCheckMagnetSplinesTangents::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -468,7 +468,7 @@ bool FCheckMagnetSplinesTangentsCommand::Update()
 }
 
 
-bool FCheckMagnetSplinesMeshesCommand::Update()
+bool FCheckMagnetSplinesMeshes::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -490,7 +490,7 @@ bool FCheckMagnetSplinesMeshesCommand::Update()
 }
 
 
-bool FCheckMagnetSplinesVisibilityCommand::Update()
+bool FCheckMagnetSplinesVisibility::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -512,7 +512,7 @@ bool FCheckMagnetSplinesVisibilityCommand::Update()
 }
 
 
-bool FCheckMagnetSplinesCollisionResponseCommand::Update()
+bool FCheckMagnetSplinesCollisionResponse::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -534,7 +534,7 @@ bool FCheckMagnetSplinesCollisionResponseCommand::Update()
 }
 
 
-bool FCheckMagnetSplinesResponseToPawnChannelCommand::Update()
+bool FCheckMagnetSplinesResponseToPawnChannel::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -556,7 +556,7 @@ bool FCheckMagnetSplinesResponseToPawnChannelCommand::Update()
 }
 
 
-bool FCheckMagnetSplinesGenerateOverlapEventsCommand::Update()
+bool FCheckMagnetSplinesGenerateOverlapEvents::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -578,7 +578,7 @@ bool FCheckMagnetSplinesGenerateOverlapEventsCommand::Update()
 }
 
 
-bool FCheckComponentsSmoothInterpolationCommand::Update()
+bool FCheckComponentsSmoothInterpolation::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -600,7 +600,7 @@ bool FCheckComponentsSmoothInterpolationCommand::Update()
 }
 
 
-bool FCheckTrackSectionsArrayQuantityAdjustedToNumberOfSplinePointsCommand::Update()
+bool FCheckTrackSectionsArrayQuantityAdjustedToNumberOfSplinePoints::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -622,7 +622,7 @@ bool FCheckTrackSectionsArrayQuantityAdjustedToNumberOfSplinePointsCommand::Upda
 }
 
 
-bool FCheckComponentsRollCommand::Update()
+bool FCheckComponentsRoll::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -642,7 +642,7 @@ bool FCheckComponentsRollCommand::Update()
 }
 
 
-bool FCheckComponentsWidthCommand::Update()
+bool FCheckComponentsWidth::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -662,7 +662,7 @@ bool FCheckComponentsWidthCommand::Update()
 }
 
 
-bool FCheckComponentsCollisionCommand::Update()
+bool FCheckComponentsCollision::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -682,7 +682,7 @@ bool FCheckComponentsCollisionCommand::Update()
 }
 
 
-bool FCheckComponentsExpectedCollisionInPIECommand::Update()
+bool FCheckComponentsExpectedCollisionInPIE::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -703,7 +703,7 @@ bool FCheckComponentsExpectedCollisionInPIECommand::Update()
 }
 
 
-bool FCheckTrackGeneratorSpawnsTrackManagerInPIECommand::Update()
+bool FCheckTrackGeneratorSpawnsTrackManagerInPIE::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -724,7 +724,7 @@ bool FCheckTrackGeneratorSpawnsTrackManagerInPIECommand::Update()
 }
 
 
-bool FCheckTrackGeneratorsSpawnOneTrackManagerInPIECommand::Update()
+bool FCheckTrackGeneratorsSpawnOneTrackManagerInPIE::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
