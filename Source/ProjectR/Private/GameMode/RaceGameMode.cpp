@@ -201,8 +201,16 @@ void ARaceGameMode::possessJets()
 
 void ARaceGameMode::disableJetsInput()
 {
-	for (auto jet : runningJets)
+	for (auto& jet : runningJets)
 	{
 		jet->DisableInput(Cast<APlayerController, AActor>(jet->GetOwner()));
+	}
+}
+
+void ARaceGameMode::enableJetsInput()
+{
+	for (auto& jet : runningJets)
+	{
+		jet->EnableInput(Cast<APlayerController, AActor>(jet->GetOwner()));
 	}
 }
