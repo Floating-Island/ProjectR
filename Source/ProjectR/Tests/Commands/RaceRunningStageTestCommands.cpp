@@ -6,6 +6,7 @@
 #include "RaceRunningStageTestCommands.h"
 #include "GameMode/RaceStages/RaceRunningStage.h"
 #include "GameMode/RaceStages/RaceEndedStage.h"
+#include "GameMode/RaceStages/RacePreparationStage.h"
 #include "Jet/Jet.h"
 
 #include "../Mocks/RaceGameModeMOCK.h"
@@ -48,6 +49,11 @@ bool FSpawnARaceRunningAndStart::Update()
 		return false;
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	sessionUtilities.spawnLocalPlayer();
+	ARacePreparationStage* testPreparation = sessionUtilities.spawnInPIEAnInstanceOf<ARacePreparationStage>();
+	testPreparation->start();
+	testPreparation->Destroy();
+	
 	ARaceRunningStage* testRunning = sessionUtilities.spawnInPIEAnInstanceOf<ARaceRunningStage>();
 	sessionUtilities.spawnLocalPlayer();//falta deshabilitarlos primero...
 	testRunning->start();

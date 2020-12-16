@@ -149,13 +149,14 @@ bool FCheckPlayersPossessingJets::Update()
 		{
 			if (stageHasStarted)
 			{
-				bool controllersPossessJets = true;
+				bool controllersPossessJets = false;
 
 				for (auto iterator = testWorld->GetPlayerControllerIterator(); iterator; ++iterator)
 				{
 					APlayerController* controller = iterator->Get();
 					AJet* controlledJet = Cast<AJet, APawn>(controller->GetPawn());
-					UE_LOG(LogTemp, Log, TEXT("this pawn %s a jet."), *FString(controlledJet ? "is" : "isn't"));
+
+					controllersPossessJets = true;
 					if (!controlledJet)
 					{
 						controllersPossessJets = false;
