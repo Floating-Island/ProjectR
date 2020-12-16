@@ -84,4 +84,6 @@ public:
 
 	void possessJets();
 
+	void disableJetsInput();
+
 };

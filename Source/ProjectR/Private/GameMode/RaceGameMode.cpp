@@ -198,3 +198,11 @@ void ARaceGameMode::possessJets()
 		controller->Possess(unPossessedJet);
 	}//if when testing the splitscreen only the first player moves, try to spawn more players.
 }
+
+void ARaceGameMode::disableJetsInput()
+{
+	for (auto jet : runningJets)
+	{
+		jet->DisableInput(Cast<APlayerController, AActor>(jet->GetOwner()));
+	}
+}
