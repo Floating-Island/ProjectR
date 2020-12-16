@@ -219,7 +219,7 @@ bool FCheckJetsInputDisabled::Update()
 
 				for (auto jet : jets)
 				{
-					if (!jet->InputEnabled())
+					if (jet->InputEnabled())
 					{
 						jetsHaveInputDisabled = false;
 						break;
