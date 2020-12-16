@@ -55,7 +55,7 @@ bool FSpawnARaceRunningAndStart::Update()
 	testPreparation->Destroy();
 	
 	ARaceRunningStage* testRunning = sessionUtilities.spawnInPIEAnInstanceOf<ARaceRunningStage>();
-	sessionUtilities.spawnLocalPlayer();//falta deshabilitarlos primero...
+	sessionUtilities.spawnLocalPlayer();
 	testRunning->start();
 	return true;
 }
