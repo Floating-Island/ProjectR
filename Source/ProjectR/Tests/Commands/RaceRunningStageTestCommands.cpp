@@ -49,7 +49,7 @@ bool FSpawnARaceRunningAndStart::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 	ARaceRunningStage* testRunning = sessionUtilities.spawnInPIEAnInstanceOf<ARaceRunningStage>();
-
+	sessionUtilities.spawnLocalPlayer();//falta deshabilitarlos primero...
 	testRunning->start();
 	return true;
 }
@@ -119,12 +119,13 @@ bool FCheckARaceRunningStartEnablesJetsInput::Update()
 	ARaceRunningStage* testRunning = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceRunningStage>();
 	if (testRunning)
 	{
-		bool jetsHaveInputEnabled = true;
+		bool jetsHaveInputEnabled = false;
 
 		TArray<AJet*> jets = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameMode>()->jetsRacing().Array();
 
 		for (auto jet : jets)
 		{
+			jetsHaveInputEnabled = true;
 			if (!jet->InputEnabled())
 			{
 				jetsHaveInputEnabled = false;

@@ -213,12 +213,13 @@ bool FCheckJetsInputDisabled::Update()
 		{
 			if (stageHasStarted)
 			{
-				bool jetsHaveInputDisabled = true;
+				bool jetsHaveInputDisabled = false;
 
 				TArray<AJet*> jets = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameMode>()->jetsRacing().Array();
 
 				for (auto jet : jets)
 				{
+					jetsHaveInputDisabled = true;
 					if (jet->InputEnabled())
 					{
 						jetsHaveInputDisabled = false;

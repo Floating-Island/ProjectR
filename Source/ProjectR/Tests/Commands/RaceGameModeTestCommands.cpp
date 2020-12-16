@@ -389,21 +389,20 @@ bool FCheckJetsSameRotationAsTrack::Update()
 		TSet<AJet*> gameModeJets = testGameMode->jetsRacing();
 		ATrackGenerator* testTrack = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
 
-		bool jetsWithSameRotationAsTrackSections = true;
+		bool jetsWithSameRotationAsTrackSections = false;
 		for (const auto& jet : gameModeJets)
 		{
 			float distanceBetweenJetAndTrack = testTrack->distanceAlongSplineOf(jet);
 			FRotator trackSectionRotation = testTrack->rotationAt(distanceBetweenJetAndTrack);
-			UE_LOG(LogTemp, Log, TEXT("track section rotation: %s."), *trackSectionRotation.ToString());
 			FRotator jetRotation = jet->GetActorRotation();
-			UE_LOG(LogTemp, Log, TEXT("jet rotation: %s."), *jetRotation.ToString());
+
+			jetsWithSameRotationAsTrackSections = true;
 			if (!jetRotation.Equals(trackSectionRotation, 0.01))
 			{
 				jetsWithSameRotationAsTrackSections = false;
 				break;
 			}
 		}
-		UE_LOG(LogTemp, Log, TEXT("Number of race game mode jets: %d."), gameModeJets.Num());
 
 		if (jetsWithSameRotationAsTrackSections)
 		{
