@@ -14,7 +14,7 @@
 //Test preparation commands:
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnARaceStageCommand);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnARaceStage);
 
 
 
@@ -23,7 +23,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnARaceStageCommand);
 //Test check commands:
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRaceModeSubscribedCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRaceModeSubscribed, FAutomationTestBase*, test);
 
 
 

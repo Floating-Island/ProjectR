@@ -16,7 +16,7 @@
 
 //Test preparation commands:
 
-bool FSpawnARaceStageCommand::Update()
+bool FSpawnARaceStage::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -32,7 +32,7 @@ bool FSpawnARaceStageCommand::Update()
 //Test check commands:
 
 
-bool FCheckRaceModeSubscribedCommand::Update()
+bool FCheckRaceModeSubscribed::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
