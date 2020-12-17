@@ -68,7 +68,7 @@ bool FCheckCreatesOneMainMenu::Update()
 		UMainMenu* testMenu = testInstance->loadMainMenu();
 		UMainMenu* anotherTestMenu = testInstance->loadMainMenu();
 
-		aTest->TestTrue(TEXT("loadMainMenu should create only one instance of main menu."), testMenu == anotherTestMenu);
+		test->TestTrue(TEXT("loadMainMenu should create only one instance of main menu."), testMenu == anotherTestMenu);
 		return true;
 	}
 	return false;
@@ -84,7 +84,7 @@ bool FCheckCreatesSingleplayerMenu::Update()
 
 		USingleplayerMenu* testMenu = testInstance->loadSingleplayerMenu();
 
-		aTest->TestTrue(TEXT("loadSingleplayerMenu should bring the singleplayer menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
+		test->TestTrue(TEXT("loadSingleplayerMenu should bring the singleplayer menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
 		return true;
 	}
 	return false;
@@ -101,7 +101,7 @@ bool FCheckCreatesOneSingleplayerMenu::Update()
 		USingleplayerMenu* testMenu = testInstance->loadSingleplayerMenu();
 		USingleplayerMenu* anotherTestMenu = testInstance->loadSingleplayerMenu();
 
-		aTest->TestTrue(TEXT("loadSingleplayerMenu should create only one instance of singleplayer menu."), testMenu == anotherTestMenu);
+		test->TestTrue(TEXT("loadSingleplayerMenu should create only one instance of singleplayer menu."), testMenu == anotherTestMenu);
 		return true;
 	}
 	return false;
@@ -118,7 +118,7 @@ bool FCheckShowsCursorInMainMenu::Update()
 		UMainMenu* testMenu = testInstance->loadMainMenu();
 		bool controllerShowsMouseCursor = sessionUtilities.defaultPIEWorld()->GetFirstPlayerController()->ShouldShowMouseCursor();
 
-		aTest->TestTrue(TEXT("loadMainMenu should make the controller show the mouse cursor."), testMenu && controllerShowsMouseCursor);
+		test->TestTrue(TEXT("loadMainMenu should make the controller show the mouse cursor."), testMenu && controllerShowsMouseCursor);
 		return true;
 	}
 	return false;
@@ -135,7 +135,7 @@ bool FCheckShowsCursorInSingleplayerMenu::Update()
 		USingleplayerMenu* testMenu = testInstance->loadSingleplayerMenu();
 		bool controllerShowsMouseCursor = sessionUtilities.defaultPIEWorld()->GetFirstPlayerController()->ShouldShowMouseCursor();
 
-		aTest->TestTrue(TEXT("loadSingleplayerMenu should make the controller show the mouse cursor."), testMenu && controllerShowsMouseCursor);
+		test->TestTrue(TEXT("loadSingleplayerMenu should make the controller show the mouse cursor."), testMenu && controllerShowsMouseCursor);
 		return true;
 	}
 	return false;
@@ -151,7 +151,7 @@ bool FCheckCreatesSplitscreenMenu::Update()
 
 		ULocalMultiplayerMenu* testMenu = testInstance->loadLocalMultiplayerMenu();
 
-		aTest->TestTrue(TEXT("loadLocalMultiplayerMenu should bring the splitscreen menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
+		test->TestTrue(TEXT("loadLocalMultiplayerMenu should bring the splitscreen menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
 		return true;
 	}
 	return false;
@@ -168,7 +168,7 @@ bool FCheckCreatesOneSplitscreenMenu::Update()
 		ULocalMultiplayerMenu* testMenu = testInstance->loadLocalMultiplayerMenu();
 		ULocalMultiplayerMenu* anotherTestMenu = testInstance->loadLocalMultiplayerMenu();
 
-		aTest->TestTrue(TEXT("loadLocalMultiplayerMenu should create only one instance of splitscreen menu."), testMenu == anotherTestMenu);
+		test->TestTrue(TEXT("loadLocalMultiplayerMenu should create only one instance of splitscreen menu."), testMenu == anotherTestMenu);
 		return true;
 	}
 	return false;
@@ -185,7 +185,7 @@ bool FCheckShowsCursorInSplitscreenMenu::Update()
 		ULocalMultiplayerMenu* testMenu = testInstance->loadLocalMultiplayerMenu();
 		bool controllerShowsMouseCursor = sessionUtilities.defaultPIEWorld()->GetFirstPlayerController()->ShouldShowMouseCursor();
 
-		aTest->TestTrue(TEXT("loadLocalMultiplayerMenu should make the controller show the mouse cursor."), testMenu && controllerShowsMouseCursor);
+		test->TestTrue(TEXT("loadLocalMultiplayerMenu should make the controller show the mouse cursor."), testMenu && controllerShowsMouseCursor);
 		return true;
 	}
 	return false;
@@ -203,7 +203,7 @@ bool FCheckLoadMainMenuSetsExpectedPlayersToOne::Update()
 		
 		UMainMenu* testMenu = testInstance->loadMainMenu();
 
-		aTest->TestTrue(TEXT("loadMainMenu should set the expected players to one."), testInstance->necessaryPlayers() == 1);
+		test->TestTrue(TEXT("loadMainMenu should set the expected players to one."), testInstance->necessaryPlayers() == 1);
 		return true;
 	}
 	return false;

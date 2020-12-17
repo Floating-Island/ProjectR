@@ -19,15 +19,15 @@
 
 
 class ULocalMultiplayerMenu;
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckLocalMultiplayerMenuClickGoBackRemovesFromViewport, int, aTickCount, int, aTickLimit, ULocalMultiplayerMenu*, aLocalMultiplayerMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckLocalMultiplayerMenuClickGoBackRemovesFromViewport, int, tickCount, int, tickLimit, ULocalMultiplayerMenu*, localMultiplayerMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckLocalMultiplayerMenuClickGoBackBringsMainMenu, int, aTickCount, int, aTickLimit, ULocalMultiplayerMenu*, aLocalMultiplayerMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckLocalMultiplayerMenuClickGoBackBringsMainMenu, int, tickCount, int, tickLimit, ULocalMultiplayerMenu*, localMultiplayerMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckLocalMultiplayerMenuClickPlaySetsPlayers, int, aTickCount, int, aTickLimit, ULocalMultiplayerMenu*, aLocalMultiplayerMenuInstance, int, aSelectedNumberOfPlayers, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckLocalMultiplayerMenuClickPlaySetsPlayers, int, tickCount, int, tickLimit, ULocalMultiplayerMenu*, localMultiplayerMenuInstance, int, aSelectedNumberOfPlayers, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FChecklocalMultiplayerMenuClickPlayButtonChangesMap, int, aTickCount, int, aTickLimit, ULocalMultiplayerMenu*, aLocalMultiplayerMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FChecklocalMultiplayerMenuClickPlayButtonChangesMap, int, tickCount, int, tickLimit, ULocalMultiplayerMenu*, localMultiplayerMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, test);
 
 #endif //WITH_DEV_AUTOMATION_TESTS

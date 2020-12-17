@@ -476,11 +476,11 @@ bool FCheckAJetLocation::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet X Location never changed from zero."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet X Location never changed from zero."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -520,11 +520,11 @@ bool FCheckAJetSpeedIncrease::Update()
 				return true;
 			}
 
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from zero."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from zero."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -562,11 +562,11 @@ bool FCheckAJetVelocityDecrease::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet velocity never changed from zero."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet velocity never changed from zero."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -591,9 +591,9 @@ bool FCheckAJetSpeedAgainstTopSpeed::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet speed: %f"), currentSpeed);
 			UE_LOG(LogTemp, Log, TEXT("Jet top speed: %f"), testJet->settedTopSpeed());
 			UE_LOG(LogTemp, Log, TEXT("Jet %s at currentSpeed"), *FString(isAtTopSpeed ? "is" : "isn't"));
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
 				test->TestTrue(TEXT("If a jet is at top speed, it should never increase it after an acceleration is added (after ticking)."), isAtTopSpeed);
 				testWorld->bDebugFrameStepExecution = true;
@@ -628,11 +628,11 @@ bool FCheckAJetRotatedYaw::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet yaw rotation (around Z axis) never changed from zero."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet yaw rotation (around Z axis) never changed from zero."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -666,11 +666,11 @@ bool FCheckAJetZLocation::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet never lifted from the ground."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet never lifted from the ground."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -708,11 +708,11 @@ bool FCheckAJetLocationCoincidentToForwardVector::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet acceleration wasn't aligned to it's forward vector."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet acceleration wasn't aligned to it's forward vector."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -750,11 +750,11 @@ bool FCheckAJetLocationParallelToForwardVector::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet acceleration wasn't aligned to it's forward vector."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet acceleration wasn't aligned to it's forward vector."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -779,7 +779,7 @@ bool FCheckAJetLocationParallelToForwardVector::Update()
 //			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
 //			bool velocityAlignedToPreviousForwardVector = FVector::Coincident(currentVelocity, previousForwardVector);
 //
-//			UE_LOG(LogTemp, Log, TEXT("Tick: %d"), aTickCount);
+//			UE_LOG(LogTemp, Log, TEXT("Tick: %d"), tickCount);
 //			UE_LOG(LogTemp, Log, TEXT("Jet previous forward vector: %s"), *previousForwardVector.ToString());
 //			UE_LOG(LogTemp, Log, TEXT("Jet current forward vector: %s"), *jetForwardsVector.ToString());
 //			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *currentVelocity.ToString());
@@ -787,8 +787,8 @@ bool FCheckAJetLocationParallelToForwardVector::Update()
 //			UE_LOG(LogTemp, Log, TEXT("Jet velocity %s aligned to previous forward vector."), *FString(velocityAlignedToPreviousForwardVector ? "is" : "isn't"));
 //			UE_LOG(LogTemp, Log, TEXT("End of tick."));
 //
-//			++aTickCount;
-//			if (aTickCount > aTickLimit)
+//			++tickCount;
+//			if (tickCount > tickLimit)
 //			{
 //				test->TestTrue(TEXT("The Jet should update it's velocity to match the direction of the forward vector after steering."), !speedNearlyZero && velocityAlignedToPreviousForwardVector);
 //				testWorld->bDebugFrameStepExecution = true;
@@ -832,11 +832,11 @@ bool FCheckAJetInvertSteeringWhenInReverse::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet didn't steer right counterclockwise in reverse."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet didn't steer right counterclockwise in reverse."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -866,8 +866,8 @@ bool FCheckAJetUnableToSteerWhenIdle::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet speed %s nearly zero."), *FString(speedNearlyZero ? "is" : "isn't"));
 			UE_LOG(LogTemp, Log, TEXT("Jet %s rotated from previous rotation."), *FString(hasRotatedFromPreviousRotation ? "has" : "hasn't"));
 
-			++aTickCount;
-			if (aTickCount > aTickLimit || hasRotatedFromPreviousRotation)
+			++tickCount;
+			if (tickCount > tickLimit || hasRotatedFromPreviousRotation)
 			{
 				test->TestTrue(TEXT("The Jet should update it's velocity to match the direction of the forward vector after steering."), speedNearlyZero && !hasRotatedFromPreviousRotation);
 				testWorld->bDebugFrameStepExecution = true;
@@ -937,8 +937,8 @@ bool FCheckAJetFallSpeed::Update()
 		bool fallAtSameSpeed = FMath::IsNearlyEqual(jetAFallSpeed, jetBFallSpeed, 0.01f);
 		UE_LOG(LogTemp, Log, TEXT("Jets %s fall at same speed."), *FString(fallAtSameSpeed ? "do" : "don't"));
 
-		++aTickCount;
-		if (aTickCount > aTickLimit)
+		++tickCount;
+		if (tickCount > tickLimit)
 		{
 			test->TestTrue(TEXT("The Jet should keep falling even if it's steering."), fallAtSameSpeed);
 			testWorld->bDebugFrameStepExecution = true;
@@ -973,11 +973,11 @@ bool FCheckAJetSteersAroundUpVector::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet pitch rotation never changed from zero."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet pitch rotation never changed from zero."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -1017,9 +1017,9 @@ bool FCheckAJetSpeedOrthogonalityToFloor::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet %s moving."), *FString(isMoving ? "is" : "isn't"));
 			UE_LOG(LogTemp, Log, TEXT("Jet %s parallel to floor up vector."), *FString(speedOnFloorIsSameAsJetSpeed ? "moves" : "doesn't move"));
 
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
 				test->TestTrue(TEXT("The Jet should move parallel to the floor. Then, the speed, floor speed and velocity magnitude (gravity is being canceled) should be the same."), isMoving && speedOnFloorIsSameAsJetSpeed && speedOnFloorIsSameAsJetVelocityMagnitude);
 				testWorld->bDebugFrameStepExecution = true;
@@ -1064,10 +1064,10 @@ bool FCheckAJetSidewaysRejectsFloor::Update()
 				return true;
 			}
 
-			++aTickCount;
-			if (aTickCount > aTickLimit)
+			++tickCount;
+			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The jet didn't reject the nearest floor along the floor up vector."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The jet didn't reject the nearest floor along the floor up vector."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -1106,9 +1106,9 @@ bool FCheckAJetVelocityMagnitudeOrthogonalityToFloor::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet %s moving."), *FString(isMoving ? "is" : "isn't"));
 			UE_LOG(LogTemp, Log, TEXT("Jet %s parallel to floor up vector."), *FString(speedOnFloorIsSameAsJetVelocityMagnitude ? "moves" : "doesn't move"));
 
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
 				test->TestTrue(TEXT("The Jet should move parallel to the floor. Then, the floor speed and velocity magnitude (gravity is being canceled) should be the same."), isMoving && speedOnFloorIsSameAsJetVelocityMagnitude);
 				testWorld->bDebugFrameStepExecution = true;

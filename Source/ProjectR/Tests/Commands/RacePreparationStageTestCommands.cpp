@@ -106,15 +106,15 @@ bool FCheckPlayersQuantityOnStart::Update()
 
 				if (requiredPlayerQuantityAchieved)
 				{
-					aTest->TestTrue(TEXT("Race preparation start should generate the remaining necessary players in the game."), requiredPlayerQuantityAchieved);
+					test->TestTrue(TEXT("Race preparation start should generate the remaining necessary players in the game."), requiredPlayerQuantityAchieved);
 					testWorld->bDebugFrameStepExecution = true;
 					return true;
 				}
 
-				++aTickCount;
-				if (aTickCount > aTickLimit)
+				++tickCount;
+				if (tickCount > tickLimit)
 				{
-					aTest->TestTrue(TEXT("Tick limit reached, race preparation start should generate the remaining necessary players in the game."), requiredPlayerQuantityAchieved);
+					test->TestTrue(TEXT("Tick limit reached, race preparation start should generate the remaining necessary players in the game."), requiredPlayerQuantityAchieved);
 					testWorld->bDebugFrameStepExecution = true;
 					return true;
 				}
@@ -173,15 +173,15 @@ bool FCheckPlayersPossessingJets::Update()
 
 				if (controllersPossessJets)
 				{
-					aTest->TestTrue(TEXT("Race preparation start should make the controllers possess the jets."), controllersPossessJets);
+					test->TestTrue(TEXT("Race preparation start should make the controllers possess the jets."), controllersPossessJets);
 					testWorld->bDebugFrameStepExecution = true;
 					return true;
 				}
 
-				++aTickCount;
-				if (aTickCount > aTickLimit)
+				++tickCount;
+				if (tickCount > tickLimit)
 				{
-					aTest->TestTrue(TEXT("Tick limit reached, race preparation start should generate the remaining necessary players in the game."), controllersPossessJets);
+					test->TestTrue(TEXT("Tick limit reached, race preparation start should generate the remaining necessary players in the game."), controllersPossessJets);
 					testWorld->bDebugFrameStepExecution = true;
 					return true;
 				}
@@ -230,15 +230,15 @@ bool FCheckJetsInputDisabled::Update()
 				
 				if (jetsHaveInputDisabled)
 				{
-					aTest->TestTrue(TEXT("Race preparation start should disable the jets input."), jetsHaveInputDisabled);
+					test->TestTrue(TEXT("Race preparation start should disable the jets input."), jetsHaveInputDisabled);
 					testWorld->bDebugFrameStepExecution = true;
 					return true;
 				}
 
-				++aTickCount;
-				if (aTickCount > aTickLimit)
+				++tickCount;
+				if (tickCount > tickLimit)
 				{
-					aTest->TestTrue(TEXT("Tick limit reached, race preparation start should disable the jets input."), jetsHaveInputDisabled);
+					test->TestTrue(TEXT("Tick limit reached, race preparation start should disable the jets input."), jetsHaveInputDisabled);
 					testWorld->bDebugFrameStepExecution = true;
 					return true;
 				}

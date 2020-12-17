@@ -29,13 +29,13 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnARacePreparationMakeItStart);
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLapManagerSpawned, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckPlayersQuantityOnStart, int, aTickCount, int, aTickLimit, bool, stageHasStarted, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckPlayersQuantityOnStart, int, tickCount, int, tickLimit, bool, stageHasStarted, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckPlayersPossessingJets, int, aTickCount, int, aTickLimit, bool, stageHasStarted, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckPlayersPossessingJets, int, tickCount, int, tickLimit, bool, stageHasStarted, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckJetsInputDisabled, int, aTickCount, int, aTickLimit, bool, stageHasStarted, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckJetsInputDisabled, int, tickCount, int, tickLimit, bool, stageHasStarted, FAutomationTestBase*, test);
 
 
 

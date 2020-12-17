@@ -34,7 +34,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckEndedStageSpawned, FAutomat
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckEndedStageSpawnedWithNoRunningJets, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckARaceRunningStartEnablesJetsInput, int, aTickCount, int, aTickLimit,  FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckARaceRunningStartEnablesJetsInput, int, tickCount, int, tickLimit,  FAutomationTestBase*, test);
 
 
 
