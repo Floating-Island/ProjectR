@@ -18,7 +18,7 @@
 //Test preparation commands:
 
 
-bool FSpawnALapPhaseMOCKInEditorWorldCommand::Update()
+bool FSpawnALapPhaseMOCKInEditorWorld::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -43,7 +43,7 @@ bool FSpawnALapPhaseMOCKInEditorWorldCommand::Update()
 //Test check commands:
 
 
-bool FCheckLapPhaseCollisionEnabledCommand::Update()
+bool FCheckLapPhaseCollisionEnabled::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -65,7 +65,7 @@ bool FCheckLapPhaseCollisionEnabledCommand::Update()
 }
 
 
-bool FCheckLapPhaseCollisionResponseCommand::Update()
+bool FCheckLapPhaseCollisionResponse::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -87,7 +87,7 @@ bool FCheckLapPhaseCollisionResponseCommand::Update()
 }
 
 
-bool FCheckLapPhaseObjectTypeCommand::Update()
+bool FCheckLapPhaseObjectType::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{
@@ -109,7 +109,7 @@ bool FCheckLapPhaseObjectTypeCommand::Update()
 }
 
 
-bool FCheckLapPhaseOverlapEventsCommand::Update()
+bool FCheckLapPhaseOverlapEvents::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
 	{

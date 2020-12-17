@@ -14,22 +14,22 @@
 //Test preparation commands:
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawnTrackGeneratorInEditorWorldRollSplineComponentsCommand, float, rollValue);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawnTrackGeneratorInEditorWorldRollSplineComponents, float, rollValue);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawnTrackGeneratorInEditorWorldWidenSplineComponentsCommand, float, widthValue);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawnTrackGeneratorInEditorWorldWidenSplineComponents, float, widthValue);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldDisableCollisionsCommand);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldDisableCollisions);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInPIECommand);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInPIE);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnTwoTrackGeneratorsInPIECommand);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnTwoTrackGeneratorsInPIE);
 
 
 
@@ -38,91 +38,91 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnTwoTrackGeneratorsInPIECommand);
 //Test check commands:
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesQuantityCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesQuantity, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesStartPositionsCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesStartPositions, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesEndPositionsCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesEndPositions, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesStartTangentsCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesStartTangents, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesEndTangentsCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesEndTangents, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesMeshesCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesMeshes, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesMeshesAreRoadMeshCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesMeshesAreRoadMesh, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMagnetSplinesQuantityCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSplineMagnetSplinesQuantity, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesCollisionEnabledCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesCollisionEnabled, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesCollisionObjectTypeCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesCollisionObjectType, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesAttachToRootCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesAttachToRoot, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesMobilityCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRoadSplinesMobility, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesMobilityCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesMobility, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesAttachToRoadSplinesCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesAttachToRoadSplines, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesOnTopRoadSplinesCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesOnTopRoadSplines, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesTangentsCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesTangents, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesMeshesCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesMeshes, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesVisibilityCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesVisibility, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesCollisionResponseCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesCollisionResponse, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesResponseToPawnChannelCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesResponseToPawnChannel, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesGenerateOverlapEventsCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMagnetSplinesGenerateOverlapEvents, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckComponentsSmoothInterpolationCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckComponentsSmoothInterpolation, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckTrackSectionsArrayQuantityAdjustedToNumberOfSplinePointsCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckTrackSectionsArrayQuantityAdjustedToNumberOfSplinePoints, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckComponentsRollCommand, float, rollValue, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckComponentsRoll, float, rollValue, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckComponentsWidthCommand, float, widthValue, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckComponentsWidth, float, widthValue, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckComponentsCollisionCommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckComponentsCollision, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckComponentsExpectedCollisionInPIECommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckComponentsExpectedCollisionInPIE, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckTrackGeneratorSpawnsTrackManagerInPIECommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckTrackGeneratorSpawnsTrackManagerInPIE, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckTrackGeneratorsSpawnOneTrackManagerInPIECommand, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckTrackGeneratorsSpawnOneTrackManagerInPIE, FAutomationTestBase*, test);
 
 
 

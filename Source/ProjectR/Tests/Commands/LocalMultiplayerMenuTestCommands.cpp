@@ -20,28 +20,28 @@
 
 
 
-bool FCheckLocalMultiplayerMenuClickGoBackRemovesFromViewportCommand::Update()
+bool FCheckLocalMultiplayerMenuClickGoBackRemovesFromViewport::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-		if (aLocalMultiplayerMenuInstance == nullptr)
+		if (localMultiplayerMenuInstance == nullptr)
 		{
 			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
-			aLocalMultiplayerMenuInstance = gameInstance->loadLocalMultiplayerMenu();
+			localMultiplayerMenuInstance = gameInstance->loadLocalMultiplayerMenu();
 			isMenuInstanciated = true;
 			return false;
 		}
 
-		if (isMenuInstanciated && aLocalMultiplayerMenuInstance->IsInViewport())
+		if (isMenuInstanciated && localMultiplayerMenuInstance->IsInViewport())
 		{
-			FVector2D goBackButtonCoordinates = aLocalMultiplayerMenuInstance->goBackButtonAbsoluteCenterPosition();
+			FVector2D goBackButtonCoordinates = localMultiplayerMenuInstance->goBackButtonAbsoluteCenterPosition();
 			sessionUtilities.processEditorClick(goBackButtonCoordinates);
 			return false;
 		}
 
-		aTest->TestTrue(TEXT("The local multiplayer menu should be removed from viewport when clicking the go back button."), !aLocalMultiplayerMenuInstance->IsInViewport());
+		test->TestTrue(TEXT("The local multiplayer menu should be removed from viewport when clicking the go back button."), !localMultiplayerMenuInstance->IsInViewport());
 		sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 		return true;
 	}
@@ -49,38 +49,38 @@ bool FCheckLocalMultiplayerMenuClickGoBackRemovesFromViewportCommand::Update()
 }
 
 
-bool FCheckLocalMultiplayerMenuClickGoBackBringsMainMenuCommand::Update()
+bool FCheckLocalMultiplayerMenuClickGoBackBringsMainMenu::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
-		if (aLocalMultiplayerMenuInstance == nullptr)
+		if (localMultiplayerMenuInstance == nullptr)
 		{
-			aLocalMultiplayerMenuInstance = gameInstance->loadLocalMultiplayerMenu();
+			localMultiplayerMenuInstance = gameInstance->loadLocalMultiplayerMenu();
 			isMenuInstanciated = true;
 			return false;
 		}
 
-		if (isMenuInstanciated && aLocalMultiplayerMenuInstance->IsInViewport())
+		if (isMenuInstanciated && localMultiplayerMenuInstance->IsInViewport())
 		{
-			FVector2D goBackButtonCoordinates = aLocalMultiplayerMenuInstance->goBackButtonAbsoluteCenterPosition();
+			FVector2D goBackButtonCoordinates = localMultiplayerMenuInstance->goBackButtonAbsoluteCenterPosition();
 			sessionUtilities.processEditorClick(goBackButtonCoordinates);
 			return false;
 		}
 
-		if (isMenuInstanciated && !aLocalMultiplayerMenuInstance->IsInViewport())
+		if (isMenuInstanciated && !localMultiplayerMenuInstance->IsInViewport())
 		{
-			aTest->TestTrue(TEXT("The local multiplayer menu should change to the main menu when clicking the go back button."), gameInstance->isMainMenuInViewport());
+			test->TestTrue(TEXT("The local multiplayer menu should change to the main menu when clicking the go back button."), gameInstance->isMainMenuInViewport());
 			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
 
-		++aTickCount;
-		if (aTickCount > aTickLimit)
+		++tickCount;
+		if (tickCount > tickLimit)
 		{
-			aTest->TestTrue(TEXT("The local multiplayer menu should change to the main menu when clicking the go back button."), gameInstance->isMainMenuInViewport());
+			test->TestTrue(TEXT("The local multiplayer menu should change to the main menu when clicking the go back button."), gameInstance->isMainMenuInViewport());
 			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
@@ -99,29 +99,29 @@ bool FCheckLocalMultiplayerMenuClickPlaySetsPlayers::Update()
 
 		if(isInInitialWorld)
 		{
-			if (aLocalMultiplayerMenuInstance == nullptr)
+			if (localMultiplayerMenuInstance == nullptr)
 			{
-				aLocalMultiplayerMenuInstance = gameInstance->loadLocalMultiplayerMenu();
+				localMultiplayerMenuInstance = gameInstance->loadLocalMultiplayerMenu();
 				return false;
 			}
-			if (aLocalMultiplayerMenuInstance->IsInViewport())
+			if (localMultiplayerMenuInstance->IsInViewport())
 			{
-				aSelectedNumberOfPlayers = aLocalMultiplayerMenuInstance->selectedPlayerQuantity();
-				FVector2D playButtonCoordinates = aLocalMultiplayerMenuInstance->playButtonAbsoluteCenterPosition();
+				aSelectedNumberOfPlayers = localMultiplayerMenuInstance->selectedPlayerQuantity();
+				FVector2D playButtonCoordinates = localMultiplayerMenuInstance->playButtonAbsoluteCenterPosition();
 				sessionUtilities.processEditorClick(playButtonCoordinates);
 				return false;
 			}
 		}
 		
 		bool expectedPlayersAreSelectedPlayersQuantity = gameInstance->necessaryPlayers() == aSelectedNumberOfPlayers;
-		++aTickCount;
-		if (aTickCount > aTickLimit)
+		++tickCount;
+		if (tickCount > tickLimit)
 		{
-			aTest->TestTrue(TEXT("The local multiplayer menu should set the expected players set in the combo box."), expectedPlayersAreSelectedPlayersQuantity);
+			test->TestTrue(TEXT("The local multiplayer menu should set the expected players set in the combo box."), expectedPlayersAreSelectedPlayersQuantity);
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
-		aTest->TestTrue(TEXT("The local multiplayer menu should set the expected players set in the combo box."), expectedPlayersAreSelectedPlayersQuantity);
+		test->TestTrue(TEXT("The local multiplayer menu should set the expected players set in the combo box."), expectedPlayersAreSelectedPlayersQuantity);
 		sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 		return true;
 	}
@@ -129,7 +129,7 @@ bool FCheckLocalMultiplayerMenuClickPlaySetsPlayers::Update()
 }
 
 
-bool FChecklocalMultiplayerMenuClickPlayButtonChangesMapCommand::Update()
+bool FChecklocalMultiplayerMenuClickPlayButtonChangesMap::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -138,29 +138,29 @@ bool FChecklocalMultiplayerMenuClickPlayButtonChangesMapCommand::Update()
 
 		if (isMenuInstanciated && !isInAnotherWorld)
 		{
-			FVector2D playButtonCoordinates = aLocalMultiplayerMenuInstance->playButtonAbsoluteCenterPosition();
+			FVector2D playButtonCoordinates = localMultiplayerMenuInstance->playButtonAbsoluteCenterPosition();
 			sessionUtilities.processEditorClick(playButtonCoordinates);
 		}
 
-		if (aLocalMultiplayerMenuInstance == nullptr)
+		if (localMultiplayerMenuInstance == nullptr)
 		{
 			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
-			aLocalMultiplayerMenuInstance = gameInstance->loadLocalMultiplayerMenu();
+			localMultiplayerMenuInstance = gameInstance->loadLocalMultiplayerMenu();
 			isMenuInstanciated = true;
 			return false;
 		}
 
 		if (isInAnotherWorld)
 		{
-			aTest->TestTrue(TEXT("The local multiplayer menu should change the current map when clicking the play button."), isInAnotherWorld);
+			test->TestTrue(TEXT("The local multiplayer menu should change the current map when clicking the play button."), isInAnotherWorld);
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
 
-		++aTickCount;
-		if (aTickCount > aTickLimit)
+		++tickCount;
+		if (tickCount > tickLimit)
 		{
-			aTest->TestTrue(TEXT("The local multiplayer menu should change the current map when clicking the play button."), isInAnotherWorld);
+			test->TestTrue(TEXT("The local multiplayer menu should change the current map when clicking the play button."), isInAnotherWorld);
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}

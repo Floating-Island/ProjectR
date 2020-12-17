@@ -27,7 +27,7 @@ bool FULocalMultiplayerMenuClickingGoBackButtonRemovesFromViewportTest::RunTest(
 
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckLocalMultiplayerMenuClickGoBackRemovesFromViewportCommand(tickCount, tickLimit, nullptr, false, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLocalMultiplayerMenuClickGoBackRemovesFromViewport(tickCount, tickLimit, nullptr, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -43,7 +43,7 @@ bool FULocalMultiplayerMenuClickingGoBackButtonBringsMainMenuTest::RunTest(const
 
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckLocalMultiplayerMenuClickGoBackBringsMainMenuCommand(tickCount, tickLimit, nullptr, false, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLocalMultiplayerMenuClickGoBackBringsMainMenu(tickCount, tickLimit, nullptr, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -76,7 +76,7 @@ bool FULocalMultiplayerMenuClickingPlayButtonChangesMapTest::RunTest(const FStri
 
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FChecklocalMultiplayerMenuClickPlayButtonChangesMapCommand(tickCount, tickLimit, nullptr, false, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FChecklocalMultiplayerMenuClickPlayButtonChangesMap(tickCount, tickLimit, nullptr, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

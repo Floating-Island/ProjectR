@@ -16,7 +16,7 @@
 
 //Test preparation commands:
 
-bool FSpawningALapManagerAndJetCommand::Update()
+bool FSpawningALapManagerAndJet::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -32,7 +32,7 @@ bool FSpawningALapManagerAndJetCommand::Update()
 }
 
 
-bool FSpawningALapManagerAInitialLapPhaseAndJetCommand::Update()
+bool FSpawningALapManagerAInitialLapPhaseAndJet::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -49,7 +49,7 @@ bool FSpawningALapManagerAInitialLapPhaseAndJetCommand::Update()
 }
 
 
-bool FSpawningALapManagerInitalAndIntermediateLapPhasesAndJetCommand::Update()
+bool FSpawningALapManagerInitalAndIntermediateLapPhasesAndJet::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -69,7 +69,7 @@ bool FSpawningALapManagerInitalAndIntermediateLapPhasesAndJetCommand::Update()
 }
 
 
-bool FSpawningALapManagerIntermediateAndFinalLapPhasesAndJetCommand::Update()
+bool FSpawningALapManagerIntermediateAndFinalLapPhasesAndJet::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -90,7 +90,7 @@ bool FSpawningALapManagerIntermediateAndFinalLapPhasesAndJetCommand::Update()
 }
 
 
-bool FSpawningALapManagerInitialAndFinalLapPhasesAndJetCommand::Update()
+bool FSpawningALapManagerInitialAndFinalLapPhasesAndJet::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -122,7 +122,7 @@ bool FSpawningALapManagerInitialAndFinalLapPhasesAndJetCommand::Update()
 //Test check commands:
 
 
-bool FCheckALapManagerStoresJetsCommand::Update()
+bool FCheckALapManagerStoresJets::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -134,8 +134,8 @@ bool FCheckALapManagerStoresJetsCommand::Update()
 			bool hasJetsInWorld = testManager->jetsInPlay().Contains(sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>());
 
 			UE_LOG(LogTemp, Log, TEXT("Lap manager %s the jets listed."), *FString(hasJetsInWorld ? "has" : "doesn't have"));
-			++aTickCount;
-			if (aTickCount > aTickLimit)
+			++tickCount;
+			if (tickCount > tickLimit)
 			{
 				test->TestTrue(TEXT("The lap manager should have the jets that are already spawned in world."), hasJetsInWorld);
 				testWorld->bDebugFrameStepExecution = true;
@@ -147,7 +147,7 @@ bool FCheckALapManagerStoresJetsCommand::Update()
 }
 
 
-bool FCheckJetsInitialLapPhaseCommand::Update()
+bool FCheckJetsInitialLapPhase::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -160,8 +160,8 @@ bool FCheckJetsInitialLapPhaseCommand::Update()
 
 			UE_LOG(LogTemp, Log, TEXT("Lap manager jets %s the initial lap phase as default phase."), *FString(jetsDefaultPhaseIsInitialLapPhase ? "have" : "don't have"));
 
-			++aTickCount;
-			if (aTickCount > aTickLimit)
+			++tickCount;
+			if (tickCount > tickLimit)
 			{
 				test->TestTrue(TEXT("The lap manager jets should have the initial lap phase as default phase."), jetsDefaultPhaseIsInitialLapPhase);
 				testWorld->bDebugFrameStepExecution = true;
@@ -173,7 +173,7 @@ bool FCheckJetsInitialLapPhaseCommand::Update()
 }
 
 
-bool FCheckJetsInitialLapCountCommand::Update()
+bool FCheckJetsInitialLapCount::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -186,8 +186,8 @@ bool FCheckJetsInitialLapCountCommand::Update()
 
 			UE_LOG(LogTemp, Log, TEXT("Lap manager jets %s the initial lap count set as one."), *FString(jetsInitialLapCountIsOne ? "have" : "don't have"));
 
-			++aTickCount;
-			if (aTickCount > aTickLimit)
+			++tickCount;
+			if (tickCount > tickLimit)
 			{
 				test->TestTrue(TEXT("The lap manager jets should have the initial lap count set to one."), jetsInitialLapCountIsOne);
 				testWorld->bDebugFrameStepExecution = true;
@@ -199,7 +199,7 @@ bool FCheckJetsInitialLapCountCommand::Update()
 }
 
 
-bool FCheckJetChangeFromInitialToIntermediateCommand::Update()
+bool FCheckJetChangeFromInitialToIntermediate::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -214,8 +214,8 @@ bool FCheckJetChangeFromInitialToIntermediateCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet location: %s."), *testJet->GetActorLocation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jets %s lap phase from initial to intermediate when overlapping intermediate."), *FString(jetsMovedToIntermediatePhase ? "changes" : "doesn't change"));
 
-			++aTickCount;
-			if (aTickCount > aTickLimit)
+			++tickCount;
+			if (tickCount > tickLimit)
 			{
 				test->TestTrue(TEXT("The jet should change their lap phase from initial to intermediate when overlapping intermediate."), jetsMovedToIntermediatePhase);
 				testWorld->bDebugFrameStepExecution = true;
@@ -227,7 +227,7 @@ bool FCheckJetChangeFromInitialToIntermediateCommand::Update()
 }
 
 
-bool FCheckJetChangeFromIntermediateToFinalCommand::Update()
+bool FCheckJetChangeFromIntermediateToFinal::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -242,8 +242,8 @@ bool FCheckJetChangeFromIntermediateToFinalCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet location: %s."), *testJet->GetActorLocation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jets %s lap phase from intermediate to final when overlapping final."), *FString(jetsMovedToFinalPhase ? "changes" : "doesn't change"));
 
-			++aTickCount;
-			if (aTickCount > aTickLimit)
+			++tickCount;
+			if (tickCount > tickLimit)
 			{
 				test->TestTrue(TEXT("The jet should change their lap phase from intermediate to final when overlapping final."), jetsMovedToFinalPhase);
 				testWorld->bDebugFrameStepExecution = true;
@@ -255,7 +255,7 @@ bool FCheckJetChangeFromIntermediateToFinalCommand::Update()
 }
 
 
-bool FCheckJetChangeFromFinalToInitialCommand::Update()
+bool FCheckJetChangeFromFinalToInitial::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -270,8 +270,8 @@ bool FCheckJetChangeFromFinalToInitialCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet location: %s."), *testJet->GetActorLocation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jets %s lap phase from final to initial when overlapping initial."), *FString(jetsMovedToInitialPhase ? "changes" : "doesn't change"));
 
-			++aTickCount;
-			if (aTickCount > aTickLimit)
+			++tickCount;
+			if (tickCount > tickLimit)
 			{
 				test->TestTrue(TEXT("The jet should change their lap phase from final to initial when overlapping initial."), jetsMovedToInitialPhase);
 				testWorld->bDebugFrameStepExecution = true;
@@ -283,7 +283,7 @@ bool FCheckJetChangeFromFinalToInitialCommand::Update()
 }
 
 
-bool FCheckJetLapCountChangeFromFinalToInitialCommand::Update()
+bool FCheckJetLapCountChangeFromFinalToInitial::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -310,8 +310,8 @@ bool FCheckJetLapCountChangeFromFinalToInitialCommand::Update()
 				return true;
 			}
 
-			++aTickCount;
-			if (aTickCount > aTickLimit)
+			++tickCount;
+			if (tickCount > tickLimit)
 			{
 				test->TestTrue(TEXT("Tick Limit reached. The jet should increase its lap count from final to initial phase when overlapping initial."), jetsMovedToInitialPhase && increasedLapCount);
 				testWorld->bDebugFrameStepExecution = true;

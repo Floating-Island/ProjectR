@@ -28,9 +28,9 @@ bool FARaceBeginningStageSubscribesRaceModeToStageEndedEventTest::RunTest(const 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARaceBeginningMOCKCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARaceBeginningMOCK);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckTimerActiveCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckTimerActive(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -44,9 +44,9 @@ bool FARaceBeginningStageNextStageSpawnsRunningStageTest::RunTest(const FString&
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARaceBeginningCallCountdownStartCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARaceBeginningCallCountdownStart);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckRunningStageSpawnedCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRunningStageSpawned(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

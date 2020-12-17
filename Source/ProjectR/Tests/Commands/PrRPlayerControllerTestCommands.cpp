@@ -43,7 +43,7 @@ bool FCheckPlayerControllerBringsPauseMenu::Update()
 		{
 			UPauseMenu* testMenu = testPlayerController->loadPauseMenu();
 
-			aTest->TestTrue(TEXT("loadPauseMenu should bring the pause menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
+			test->TestTrue(TEXT("loadPauseMenu should bring the pause menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
 			return true;
 		}
 	}
@@ -64,7 +64,7 @@ bool FCheckPlayerControllerCreatesUniquePauseMenuInstance::Update()
 			UPauseMenu* testMenu = testPlayerController->loadPauseMenu();
 			UPauseMenu* anotherTestMenu = testPlayerController->loadPauseMenu();
 
-			aTest->TestTrue(TEXT("loadPauseMenu should create only one instance of the pause menu."), testMenu == anotherTestMenu);
+			test->TestTrue(TEXT("loadPauseMenu should create only one instance of the pause menu."), testMenu == anotherTestMenu);
 			return true;
 		}
 	}
@@ -84,7 +84,7 @@ bool FCheckPlayerControllerShowsMouseCursor::Update()
 		{
 			UPauseMenu* testMenu = testPlayerController->loadPauseMenu();
 
-			aTest->TestTrue(TEXT("loadPauseMenu should make the controller show the mouse cursor."), testPlayerController->ShouldShowMouseCursor());
+			test->TestTrue(TEXT("loadPauseMenu should make the controller show the mouse cursor."), testPlayerController->ShouldShowMouseCursor());
 			return true;
 		}
 	}
@@ -108,7 +108,7 @@ bool FCheckPlayerControllerPressEscBringsPauseMenu::Update()
 
 			if (testPlayerController->pauseMenuIsInViewport())
 			{
-				aTest->TestTrue(TEXT("Esc key makes the controller load the pause menu."), testPlayerController->pauseMenuIsInViewport());
+				test->TestTrue(TEXT("Esc key makes the controller load the pause menu."), testPlayerController->pauseMenuIsInViewport());
 				return true;
 			}
 		}
@@ -136,7 +136,7 @@ bool FCheckPlayerControllerPressEscRemovesPauseMenuInViewport::Update()
 			}
 			else
 			{
-				aTest->TestTrue(TEXT("Esc key makes the controller remove the pause menu present in viewport and hide the mouse cursor."), !testPlayerController->pauseMenuIsInViewport() && !testPlayerController->ShouldShowMouseCursor());
+				test->TestTrue(TEXT("Esc key makes the controller remove the pause menu present in viewport and hide the mouse cursor."), !testPlayerController->pauseMenuIsInViewport() && !testPlayerController->ShouldShowMouseCursor());
 				return true;
 			}
 		}
@@ -162,7 +162,7 @@ bool FCheckPlayerControllerLoadPauseMenuPausesTheGame::Update()
 			}
 			else
 			{
-				aTest->TestTrue(TEXT("loadPauseMenu should pause the game."), gameIsPaused);
+				test->TestTrue(TEXT("loadPauseMenu should pause the game."), gameIsPaused);
 				return true;
 			}
 		}
@@ -190,7 +190,7 @@ bool FCheckPlayerControllerLoadPauseMenuUnPausesTheGameIfInViewport::Update()
 			}
 			else
 			{
-				aTest->TestTrue(TEXT("Loading the pause menu when already in viewport unpauses the game."), !UGameplayStatics::IsGamePaused(sessionUtilities.defaultPIEWorld()));
+				test->TestTrue(TEXT("Loading the pause menu when already in viewport unpauses the game."), !UGameplayStatics::IsGamePaused(sessionUtilities.defaultPIEWorld()));
 				return true;
 			}
 		}

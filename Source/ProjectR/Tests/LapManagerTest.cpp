@@ -27,10 +27,10 @@ bool FALapManagerHasJetsListedWhenSpawnedTest::RunTest(const FString& Parameters
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAndJetCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAndJet);
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckALapManagerStoresJetsCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckALapManagerStoresJets(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -44,10 +44,10 @@ bool FALapManagerJetsHaveInitialLapPhaseAsDefaultPhaseTest::RunTest(const FStrin
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAInitialLapPhaseAndJetCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAInitialLapPhaseAndJet);
 	int tickCount = 0;
 	int tickLimit = 1;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetsInitialLapPhaseCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetsInitialLapPhase(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -61,10 +61,10 @@ bool FALapManagerJetsHaveInitialLapCountSetToOneTest::RunTest(const FString& Par
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAInitialLapPhaseAndJetCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAInitialLapPhaseAndJet);
 	int tickCount = 0;
 	int tickLimit = 1;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetsInitialLapCountCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetsInitialLapCount(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -78,10 +78,10 @@ bool FALapManagerJetOverlappingIntermediateChangesPhaseToItFromInitialTest::RunT
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerInitalAndIntermediateLapPhasesAndJetCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerInitalAndIntermediateLapPhasesAndJet);
 	int tickCount = 0;
 	int tickLimit = 1;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetChangeFromInitialToIntermediateCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetChangeFromInitialToIntermediate(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -95,10 +95,10 @@ bool FALapManagerJetOverlappingFinalChangesPhaseToItFromIntermediateTest::RunTes
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerIntermediateAndFinalLapPhasesAndJetCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerIntermediateAndFinalLapPhasesAndJet);
 	int tickCount = 0;
 	int tickLimit = 1;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetChangeFromIntermediateToFinalCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetChangeFromIntermediateToFinal(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -112,10 +112,10 @@ bool FALapManagerJetOverlappingInitialChangesPhaseToItFromFinalTest::RunTest(con
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerInitialAndFinalLapPhasesAndJetCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerInitialAndFinalLapPhasesAndJet);
 	int tickCount = 0;
 	int tickLimit = 1;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetChangeFromFinalToInitialCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetChangeFromFinalToInitial(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -129,10 +129,10 @@ bool FALapManagerJetOverlappingInitialIncreasesLapCountFromFinalTest::RunTest(co
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerInitialAndFinalLapPhasesAndJetCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerInitialAndFinalLapPhasesAndJet);
 	int tickCount = 0;
 	int tickLimit = 1;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetLapCountChangeFromFinalToInitialCommand(tickCount, tickLimit, std::numeric_limits<int>::max(), this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetLapCountChangeFromFinalToInitial(tickCount, tickLimit, std::numeric_limits<int>::max(), this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

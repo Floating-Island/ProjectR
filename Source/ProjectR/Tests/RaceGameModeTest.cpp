@@ -29,7 +29,7 @@ bool FARaceGameModeIsAbleToBeSetInAWorldTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeSetCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeSet(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -45,7 +45,7 @@ bool FARaceGameModeCreatesExpectedNumberOfJetsTest::RunTest(const FString& Param
 
 	int tickCount = 0;
 	int tickLimit = 2;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeCreatesAllJetsCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeCreatesAllJets(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -61,7 +61,7 @@ bool FARaceGameModePositionsJetsBehindTheInitialLapPhaseTest::RunTest(const FStr
 
 	int tickCount = 0;
 	int tickLimit = 2;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeJetsPositioningCommand(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeJetsPositioning(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -75,7 +75,7 @@ bool FARaceGameModeUpdateStageBringsNextStageTest::RunTest(const FString& Parame
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeUpdateStageCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeUpdateStage(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -89,7 +89,7 @@ bool FARaceGameModePositionNumberLowerThanTheOneBehindTest::RunTest(const FStrin
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAJetBehindAnotherCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAJetBehindAnother(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -103,7 +103,7 @@ bool FARaceGameModeMovesFinalistsJetsTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAJetOnFinalLapMakeItFinishCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAJetOnFinalLapMakeItFinish);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetMovedToFinalistJets(this));
 

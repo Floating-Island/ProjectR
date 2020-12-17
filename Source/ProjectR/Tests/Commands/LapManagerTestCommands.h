@@ -13,44 +13,44 @@
 
 //Test preparation commands:
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAndJetCommand);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAndJet);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAInitialLapPhaseAndJetCommand);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAInitialLapPhaseAndJet);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerInitalAndIntermediateLapPhasesAndJetCommand);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerInitalAndIntermediateLapPhasesAndJet);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerIntermediateAndFinalLapPhasesAndJetCommand);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerIntermediateAndFinalLapPhasesAndJet);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerInitialAndFinalLapPhasesAndJetCommand);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerInitialAndFinalLapPhasesAndJet);
 
 
 
 //Test check commands:
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckALapManagerStoresJetsCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckALapManagerStoresJets, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckJetsInitialLapPhaseCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckJetsInitialLapPhase, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckJetsInitialLapCountCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckJetsInitialLapCount, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckJetChangeFromInitialToIntermediateCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckJetChangeFromInitialToIntermediate, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckJetChangeFromIntermediateToFinalCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckJetChangeFromIntermediateToFinal, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckJetChangeFromFinalToInitialCommand, int, aTickCount, int, aTickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckJetChangeFromFinalToInitial, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckJetLapCountChangeFromFinalToInitialCommand, int, aTickCount, int, aTickLimit, int, previousLapCount, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckJetLapCountChangeFromFinalToInitial, int, tickCount, int, tickLimit, int, previousLapCount, FAutomationTestBase*, test);
 
 
 

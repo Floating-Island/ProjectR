@@ -29,7 +29,7 @@ bool FUMainMenuClickingQuitButtonQuitsTheGameTest::RunTest(const FString& Parame
 	int tickCount = 0;
 	int tickLimit = 3;
 	bool inPIE = false;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickQuitsCommand(inPIE, tickCount, tickLimit, nullptr, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickQuits(inPIE, tickCount, tickLimit, nullptr, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -45,7 +45,7 @@ bool FUMainMenuClickingSingleplayerButtonRemovesMenuFromViewportTest::RunTest(co
 	
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickSingleplayerRemovesMenuFromViewportCommand(tickCount, tickLimit, nullptr, false, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickSingleplayerRemovesMenuFromViewport(tickCount, tickLimit, nullptr, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -61,7 +61,7 @@ bool FUMainMenuClickingSingleplayerButtonBringsSingleplayerMenuTest::RunTest(con
 	
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickSingleplayerBringsSingleplayerMenuCommand(tickCount, tickLimit, nullptr, false, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickSingleplayerBringsSingleplayerMenu(tickCount, tickLimit, nullptr, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -77,7 +77,7 @@ bool FUMainMenuClickingLocalMultiplayerButtonRemovesMenuFromViewportTest::RunTes
 	
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickLocalMultiplayerRemovesMenuFromViewportCommand(tickCount, tickLimit, nullptr, false, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickLocalMultiplayerRemovesMenuFromViewport(tickCount, tickLimit, nullptr, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -93,7 +93,7 @@ bool FUMainMenuClickingLocalMultiplayerButtonBringsLocalMultiplayerMenuTest::Run
 	
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSoloMainMenuClickLocalMultiplayerBringsLocalMultiplayerMenuCommand(tickCount, tickLimit, nullptr, false, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSoloMainMenuClickLocalMultiplayerBringsLocalMultiplayerMenu(tickCount, tickLimit, nullptr, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

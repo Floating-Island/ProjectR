@@ -51,9 +51,9 @@ bool FATrackGeneratorRoadSplinesQuantityIsTheSameAsSplinePointsAtSpawningTest::R
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesQuantityCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesQuantity(this));
 
 	return true;
 }
@@ -65,9 +65,9 @@ bool FATrackGeneratorRoadSplinesStartPositionsAreTheSameAsSplinePointsAtSpawning
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesStartPositionsCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesStartPositions(this));
 
 	return true;
 }
@@ -80,9 +80,9 @@ bool FATrackGeneratorRoadSplinesEndPositionsAreTheSameAsNextSplinePointsAtSpawni
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesEndPositionsCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesEndPositions(this));
 
 	return true;
 }
@@ -94,9 +94,9 @@ bool FATrackGeneratorRoadSplinesStartTangentsAreTheSameAsSplinePointsAtSpawningT
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesStartTangentsCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesStartTangents(this));
 
 	return true;
 }
@@ -108,9 +108,9 @@ bool FATrackGeneratorRoadSplinesEndTangentsAreTheSameAsNextSplinePointsAtSpawnin
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesEndTangentsCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesEndTangents(this));
 
 	return true;
 }
@@ -122,9 +122,9 @@ bool FATrackGeneratorRoadSplinesMeshesAreSetAtSpawningTest::RunTest(const FStrin
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesMeshesCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesMeshes(this));
 
 	return true;
 }
@@ -136,9 +136,9 @@ bool FATrackGeneratorRoadSplinesMeshesAreTheRoadMeshAtSpawningTest::RunTest(cons
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesMeshesAreRoadMeshCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesMeshesAreRoadMesh(this));
 
 	return true;
 }
@@ -150,9 +150,9 @@ bool FATrackGeneratorHasTheSameAmountOfMagnetSplinesAsSplinePointsAtSpawningTest
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMagnetSplinesQuantityCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMagnetSplinesQuantity(this));
 
 	return true;
 }
@@ -164,9 +164,9 @@ bool FATrackGeneratorMeshesHaveCollisionEnabledAtSpawningTest::RunTest(const FSt
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesCollisionEnabledCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesCollisionEnabled(this));
 
 	return true;
 }
@@ -178,9 +178,9 @@ bool FATrackGeneratorMeshesHaveCollisionObjectTypeWorldStaticAtSpawningTest::Run
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesCollisionObjectTypeCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesCollisionObjectType(this));
 
 	return true;
 }
@@ -192,9 +192,9 @@ bool FATrackGeneratorMeshesAreAttachedToRootAtSpawningTest::RunTest(const FStrin
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesAttachToRootCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesAttachToRoot(this));
 
 	return true;
 }
@@ -206,9 +206,9 @@ bool FATrackGeneratorMeshesHaveSameMobilityAsRootAtSpawningTest::RunTest(const F
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesMobilityCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesMobility(this));
 
 	return true;
 }
@@ -229,9 +229,9 @@ bool FATrackGeneratorMagnetSplinesHaveTheSameMobilityAsRoadSplinesAtSpawningTest
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesMobilityCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesMobility(this));
 
 	return true;
 }
@@ -243,9 +243,9 @@ bool FATrackGeneratorMagnetSplinesAreAttachedToRoadSplinesAtSpawningTest::RunTes
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesAttachToRoadSplinesCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesAttachToRoadSplines(this));
 
 	return true;
 }
@@ -257,9 +257,9 @@ bool FATrackGeneratorMagnetSplinesAreOnTopOfRoadSplinesAtSpawningTest::RunTest(c
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesOnTopRoadSplinesCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesOnTopRoadSplines(this));
 
 	return true;
 }
@@ -271,9 +271,9 @@ bool FATrackGeneratorMagnetSplinesTangentsAreTheSameAsSplinePointsAtSpawningTest
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesTangentsCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesTangents(this));
 
 	return true;
 }
@@ -285,9 +285,9 @@ bool FATrackGeneratorMagnetSplinesMeshesAreSetAtSpawningTest::RunTest(const FStr
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesMeshesCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesMeshes(this));
 
 	return true;
 }
@@ -299,9 +299,9 @@ bool FATrackGeneratorMagnetSplinesAreHiddenInGameTest::RunTest(const FString& Pa
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesVisibilityCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesVisibility(this));
 
 	return true;
 }
@@ -313,9 +313,9 @@ bool FATrackGeneratorMagnetSplinesHaveCollisionEnabledToQueryOnlyTest::RunTest(c
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesCollisionResponseCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesCollisionResponse(this));
 
 	return true;
 }
@@ -327,9 +327,9 @@ bool FATrackGeneratorMagnetSplinesOverlapWithPawnChannelTest::RunTest(const FStr
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesResponseToPawnChannelCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesResponseToPawnChannel(this));
 
 	return true;
 }
@@ -341,9 +341,9 @@ bool FATrackGeneratorMagnetSplinesGenerateOverlapEventsTest::RunTest(const FStri
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesGenerateOverlapEventsCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesGenerateOverlapEvents(this));
 
 	return true;
 }
@@ -355,9 +355,9 @@ bool FATrackGeneratorSplineMeshComponentsHaveSmoothInterpolationEnabledTest::Run
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsSmoothInterpolationCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsSmoothInterpolation(this));
 
 	return true;
 }
@@ -378,9 +378,9 @@ bool FATrackGeneratorTrackSectionsQuantityMatchesSplinePointsNumberTest::RunTest
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckTrackSectionsArrayQuantityAdjustedToNumberOfSplinePointsCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckTrackSectionsArrayQuantityAdjustedToNumberOfSplinePoints(this));
 
 	return true;
 }
@@ -393,9 +393,9 @@ bool FATrackGeneratorSplineMeshComponentsRollAfterSettingRollInEditorTest::RunTe
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
 	float rollValue = 30.0f;
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldRollSplineComponentsCommand(rollValue));
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldRollSplineComponents(rollValue));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsRollCommand(rollValue, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsRoll(rollValue, this));
 
 	return true;
 }
@@ -408,9 +408,9 @@ bool FATrackGeneratorSplineMeshComponentsWidenAfterSettingWidenInEditorTest::Run
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
 	float widthValue = 30.0f;
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldWidenSplineComponentsCommand(widthValue));
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldWidenSplineComponents(widthValue));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsWidthCommand(widthValue, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsWidth(widthValue, this));
 
 	return true;
 }
@@ -423,9 +423,9 @@ bool FATrackGeneratorAllowsDisableCollisionsInEditorTest::RunTest(const FString&
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
 	float widthValue = 30.0f;
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldDisableCollisionsCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldDisableCollisions);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsCollisionCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsCollision(this));
 
 	return true;
 }
@@ -438,9 +438,9 @@ bool FATrackGeneratorHaveExpectedCollisionsInPIETest::RunTest(const FString& Par
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInPIECommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInPIE);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsExpectedCollisionInPIECommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsExpectedCollisionInPIE(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -454,9 +454,9 @@ bool FATrackGeneratorSpawnTrackManagerAtBeginPlayTest::RunTest(const FString& Pa
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInPIECommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInPIE);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckTrackGeneratorSpawnsTrackManagerInPIECommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckTrackGeneratorSpawnsTrackManagerInPIE(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -470,9 +470,9 @@ bool FATrackGeneratorsSpawnOnlyOneTrackManagerAtBeginPlayTest::RunTest(const FSt
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTwoTrackGeneratorsInPIECommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTwoTrackGeneratorsInPIE);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckTrackGeneratorsSpawnOneTrackManagerInPIECommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckTrackGeneratorsSpawnOneTrackManagerInPIE(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

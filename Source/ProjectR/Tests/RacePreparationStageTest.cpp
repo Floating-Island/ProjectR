@@ -28,7 +28,7 @@ bool FARacePreparationStageNextStageSpawnsRaceBeginningStageTest::RunTest(const 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARacePreparationStageCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARacePreparationStage(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -42,9 +42,9 @@ bool FARacePreparationStagStartSpawnsLapManagerTest::RunTest(const FString& Para
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARacePreparationMakeItStartCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARacePreparationMakeItStart);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckLapManagerSpawnedCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLapManagerSpawned(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -60,7 +60,7 @@ bool FARacePreparationStagStartCreatesNecessaryPlayersTest::RunTest(const FStrin
 
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayersQuantityOnStartCommand(tickCount, tickLimit, false, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayersQuantityOnStart(tickCount, tickLimit, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

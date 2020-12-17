@@ -21,13 +21,13 @@
  //Test check commands:
 
 class USingleplayerMenu;
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSingleplayerMenuClickPlayButtonChangesMapCommand, int, aTickCount, int, aTickLimit, USingleplayerMenu*, aSingleplayerMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSingleplayerMenuClickPlayButtonChangesMap, int, tickCount, int, tickLimit, USingleplayerMenu*, singleplayerMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSingleplayerMenuClickGoBackRemovesFromViewportCommand, int, aTickCount, int, aTickLimit, USingleplayerMenu*, aSingleplayerMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSingleplayerMenuClickGoBackRemovesFromViewport, int, tickCount, int, tickLimit, USingleplayerMenu*, singleplayerMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSingleplayerMenuClickGoBackBringsMainMenuCommand, int, aTickCount, int, aTickLimit, USingleplayerMenu*, aSingleplayerMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSingleplayerMenuClickGoBackBringsMainMenu, int, tickCount, int, tickLimit, USingleplayerMenu*, singleplayerMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, test);
 
 
 

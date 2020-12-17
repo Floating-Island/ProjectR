@@ -14,7 +14,7 @@
 
 //Test preparation commands:
 
-bool FSpawnARaceRunningCallNextStageCommand::Update()
+bool FSpawnARaceRunningCallNextStage::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -28,7 +28,7 @@ bool FSpawnARaceRunningCallNextStageCommand::Update()
 }
 
 
-bool FSpawnARaceRunningCommand::Update()
+bool FSpawnARaceRunning::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -55,7 +55,7 @@ bool FSpawnARaceRunningAndStart::Update()
 	testPreparation->Destroy();
 	
 	ARaceRunningStage* testRunning = sessionUtilities.spawnInPIEAnInstanceOf<ARaceRunningStage>();
-	sessionUtilities.spawnLocalPlayer();//falta deshabilitarlos primero...
+	sessionUtilities.spawnLocalPlayer();
 	testRunning->start();
 	return true;
 }
@@ -67,7 +67,7 @@ bool FSpawnARaceRunningAndStart::Update()
 //Test check commands:
 
 
-bool FCheckEndedStageSpawnedCommand::Update()
+bool FCheckEndedStageSpawned::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -89,7 +89,7 @@ bool FCheckEndedStageSpawnedCommand::Update()
 }
 
 
-bool FCheckEndedStageSpawnedWithNoRunningJetsCommand::Update()
+bool FCheckEndedStageSpawnedWithNoRunningJets::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -141,15 +141,15 @@ bool FCheckARaceRunningStartEnablesJetsInput::Update()
 
 		if (jetsHaveInputEnabled)
 		{
-			aTest->TestTrue(TEXT("Race running start should enable jets input."), jetsHaveInputEnabled);
+			test->TestTrue(TEXT("Race running start should enable jets input."), jetsHaveInputEnabled);
 			testWorld->bDebugFrameStepExecution = true;
 			return true;
 		}
 
-		++aTickCount;
-		if (aTickCount > aTickLimit)
+		++tickCount;
+		if (tickCount > tickLimit)
 		{
-			aTest->TestTrue(TEXT("Race running start should enable jets input."), jetsHaveInputEnabled);
+			test->TestTrue(TEXT("Race running start should enable jets input."), jetsHaveInputEnabled);
 			testWorld->bDebugFrameStepExecution = true;
 			return true;
 		}

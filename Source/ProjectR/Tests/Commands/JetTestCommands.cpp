@@ -20,7 +20,7 @@
 
 //Test preparation commands:
 
-bool FSpawningAJetMakeItAccelerateCommand::Update()
+bool FSpawningAJetMakeItAccelerate::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
 	{
@@ -40,7 +40,7 @@ bool FSpawningAJetMakeItAccelerateCommand::Update()
 }
 
 
-bool FSpawningAJetMakeItBrakeCommand::Update()
+bool FSpawningAJetMakeItBrake::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -58,7 +58,7 @@ bool FSpawningAJetMakeItBrakeCommand::Update()
 }
 
 
-bool FSpawningAJetSetVelocityToTopSpeedCommand::Update()
+bool FSpawningAJetSetVelocityToTopSpeed::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -77,7 +77,7 @@ bool FSpawningAJetSetVelocityToTopSpeedCommand::Update()
 }
 
 
-bool FSpawningAJetMakeItSteerRightCommand::Update()
+bool FSpawningAJetMakeItSteerRight::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -96,7 +96,7 @@ bool FSpawningAJetMakeItSteerRightCommand::Update()
 }
 
 
-bool FSpawningAJetPressAccelerationKeyCommand::Update()
+bool FSpawningAJetPressAccelerationKey::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -114,7 +114,7 @@ bool FSpawningAJetPressAccelerationKeyCommand::Update()
 }
 
 
-bool FSpawningAJetPressSteerRightKeyCommand::Update()
+bool FSpawningAJetPressSteerRightKey::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -135,7 +135,7 @@ bool FSpawningAJetPressSteerRightKeyCommand::Update()
 }
 
 
-bool FSpawningAJetPressBrakeKeyCommand::Update()
+bool FSpawningAJetPressBrakeKey::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -153,7 +153,7 @@ bool FSpawningAJetPressBrakeKeyCommand::Update()
 }
 
 
-bool FSpawningAJetSnapedToFloorCommand::Update()
+bool FSpawningAJetSnapedToFloor::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -175,7 +175,7 @@ bool FSpawningAJetSnapedToFloorCommand::Update()
 }
 
 
-bool FSpawningAJetRotateAndAccelerateCommand::Update()
+bool FSpawningAJetRotateAndAccelerate::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -197,7 +197,7 @@ bool FSpawningAJetRotateAndAccelerateCommand::Update()
 }
 
 
-bool FSpawningAJetRotateAndBrakeCommand::Update()
+bool FSpawningAJetRotateAndBrake::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -219,7 +219,7 @@ bool FSpawningAJetRotateAndBrakeCommand::Update()
 }
 
 
-//bool FSpawningAJetAccelerateAndSteerRightCommand::Update()
+//bool FSpawningAJetAccelerateAndSteerRight::Update()
 //{
 //	if (!GEditor->IsPlayingSessionInEditor())
 //	{
@@ -238,7 +238,7 @@ bool FSpawningAJetRotateAndBrakeCommand::Update()
 //}
 
 
-bool FSpawningAJetBrakeAndSteerRightCommand::Update()
+bool FSpawningAJetBrakeAndSteerRight::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -255,7 +255,7 @@ bool FSpawningAJetBrakeAndSteerRightCommand::Update()
 }
 
 
-bool FSpawningAJeSteerRightWhenIdleCommand::Update()
+bool FSpawningAJeSteerRightWhenIdle::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -276,7 +276,7 @@ bool FSpawningAJeSteerRightWhenIdleCommand::Update()
 }
 
 
-bool FSpawningAJetCommand::Update()
+bool FSpawningAJet::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -289,7 +289,7 @@ bool FSpawningAJetCommand::Update()
 }
 
 
-bool FSpawningTwoJetsMakeOneOfThemItAccelerateAndSteerRightCommand::Update()
+bool FSpawningTwoJetsMakeOneOfThemItAccelerateAndSteerRight::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -309,7 +309,7 @@ bool FSpawningTwoJetsMakeOneOfThemItAccelerateAndSteerRightCommand::Update()
 }
 
 
-bool FSpawningAJetTiltItAndMakeItSteerRightCommand::Update()
+bool FSpawningAJetTiltItAndMakeItSteerRight::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -331,7 +331,7 @@ bool FSpawningAJetTiltItAndMakeItSteerRightCommand::Update()
 }
 
 
-bool FSpawningAJetRotatedOverFloorAndAccelerateItCommand::Update()
+bool FSpawningAJetRotatedOverFloorAndAccelerateIt::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -358,7 +358,7 @@ bool FSpawningAJetRotatedOverFloorAndAccelerateItCommand::Update()
 }
 
 
-bool FSpawningAJetAndFloorSideWaysCommand::Update()
+bool FSpawningAJetAndFloorSideWays::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -384,7 +384,7 @@ bool FSpawningAJetAndFloorSideWaysCommand::Update()
 }
 
 
-bool FSpawningAJetRotatedOverFloorAndBrakeItCommand::Update()
+bool FSpawningAJetRotatedOverFloorAndBrakeIt::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -411,7 +411,7 @@ bool FSpawningAJetRotatedOverFloorAndBrakeItCommand::Update()
 }
 
 
-bool FSpawningAJetRotatedOverFloorAccelerateAndSteerItRightCommand::Update()
+bool FSpawningAJetRotatedOverFloorAccelerateAndSteerItRight::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -452,7 +452,7 @@ bool FSpawningAJetRotatedOverFloorAccelerateAndSteerItRightCommand::Update()
 
 
 
-bool FCheckAJetLocationCommand::Update()
+bool FCheckAJetLocation::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -476,11 +476,11 @@ bool FCheckAJetLocationCommand::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet X Location never changed from zero."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet X Location never changed from zero."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -490,7 +490,7 @@ bool FCheckAJetLocationCommand::Update()
 }
 
 
-bool FCheckAJetSpeedIncreaseCommand::Update()
+bool FCheckAJetSpeedIncrease::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -520,11 +520,11 @@ bool FCheckAJetSpeedIncreaseCommand::Update()
 				return true;
 			}
 
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from zero."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from zero."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -534,7 +534,7 @@ bool FCheckAJetSpeedIncreaseCommand::Update()
 }
 
 
-bool FCheckAJetVelocityDecreaseCommand::Update()
+bool FCheckAJetVelocityDecrease::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -562,11 +562,11 @@ bool FCheckAJetVelocityDecreaseCommand::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet velocity never changed from zero."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet velocity never changed from zero."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -576,7 +576,7 @@ bool FCheckAJetVelocityDecreaseCommand::Update()
 }
 
 
-bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
+bool FCheckAJetSpeedAgainstTopSpeed::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -591,9 +591,9 @@ bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet speed: %f"), currentSpeed);
 			UE_LOG(LogTemp, Log, TEXT("Jet top speed: %f"), testJet->settedTopSpeed());
 			UE_LOG(LogTemp, Log, TEXT("Jet %s at currentSpeed"), *FString(isAtTopSpeed ? "is" : "isn't"));
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
 				test->TestTrue(TEXT("If a jet is at top speed, it should never increase it after an acceleration is added (after ticking)."), isAtTopSpeed);
 				testWorld->bDebugFrameStepExecution = true;
@@ -605,7 +605,7 @@ bool FCheckAJetSpeedAgainstTopSpeedCommand::Update()
 }
 
 
-bool FCheckAJetRotatedYawCommand::Update()
+bool FCheckAJetRotatedYaw::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -628,11 +628,11 @@ bool FCheckAJetRotatedYawCommand::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet yaw rotation (around Z axis) never changed from zero."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet yaw rotation (around Z axis) never changed from zero."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -642,7 +642,7 @@ bool FCheckAJetRotatedYawCommand::Update()
 }
 
 
-bool FCheckAJetZLocationCommand::Update()
+bool FCheckAJetZLocation::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -666,11 +666,11 @@ bool FCheckAJetZLocationCommand::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet never lifted from the ground."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet never lifted from the ground."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -680,7 +680,7 @@ bool FCheckAJetZLocationCommand::Update()
 }
 
 
-bool FCheckAJetLocationCoincidentToForwardVectorCommand::Update()
+bool FCheckAJetLocationCoincidentToForwardVector::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -708,11 +708,11 @@ bool FCheckAJetLocationCoincidentToForwardVectorCommand::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet acceleration wasn't aligned to it's forward vector."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet acceleration wasn't aligned to it's forward vector."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -722,7 +722,7 @@ bool FCheckAJetLocationCoincidentToForwardVectorCommand::Update()
 }
 
 
-bool FCheckAJetLocationParallelToForwardVectorCommand::Update()
+bool FCheckAJetLocationParallelToForwardVector::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -750,11 +750,11 @@ bool FCheckAJetLocationParallelToForwardVectorCommand::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet acceleration wasn't aligned to it's forward vector."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet acceleration wasn't aligned to it's forward vector."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -764,7 +764,7 @@ bool FCheckAJetLocationParallelToForwardVectorCommand::Update()
 }
 
 
-//bool FCheckAJetUpdatedVelocityWhenAfterSteeringCommand::Update()
+//bool FCheckAJetUpdatedVelocityWhenAfterSteering::Update()
 //{
 //	if (GEditor->IsPlayingSessionInEditor())
 //	{
@@ -779,7 +779,7 @@ bool FCheckAJetLocationParallelToForwardVectorCommand::Update()
 //			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
 //			bool velocityAlignedToPreviousForwardVector = FVector::Coincident(currentVelocity, previousForwardVector);
 //
-//			UE_LOG(LogTemp, Log, TEXT("Tick: %d"), aTickCount);
+//			UE_LOG(LogTemp, Log, TEXT("Tick: %d"), tickCount);
 //			UE_LOG(LogTemp, Log, TEXT("Jet previous forward vector: %s"), *previousForwardVector.ToString());
 //			UE_LOG(LogTemp, Log, TEXT("Jet current forward vector: %s"), *jetForwardsVector.ToString());
 //			UE_LOG(LogTemp, Log, TEXT("Jet velocity: %s"), *currentVelocity.ToString());
@@ -787,8 +787,8 @@ bool FCheckAJetLocationParallelToForwardVectorCommand::Update()
 //			UE_LOG(LogTemp, Log, TEXT("Jet velocity %s aligned to previous forward vector."), *FString(velocityAlignedToPreviousForwardVector ? "is" : "isn't"));
 //			UE_LOG(LogTemp, Log, TEXT("End of tick."));
 //
-//			++aTickCount;
-//			if (aTickCount > aTickLimit)
+//			++tickCount;
+//			if (tickCount > tickLimit)
 //			{
 //				test->TestTrue(TEXT("The Jet should update it's velocity to match the direction of the forward vector after steering."), !speedNearlyZero && velocityAlignedToPreviousForwardVector);
 //				testWorld->bDebugFrameStepExecution = true;
@@ -801,7 +801,7 @@ bool FCheckAJetLocationParallelToForwardVectorCommand::Update()
 //}
 
 
-bool FCheckAJetInvertSteeringWhenInReverseCommand::Update()
+bool FCheckAJetInvertSteeringWhenInReverse::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -832,11 +832,11 @@ bool FCheckAJetInvertSteeringWhenInReverseCommand::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet didn't steer right counterclockwise in reverse."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet didn't steer right counterclockwise in reverse."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -846,7 +846,7 @@ bool FCheckAJetInvertSteeringWhenInReverseCommand::Update()
 }
 
 
-bool FCheckAJetUnableToSteerWhenIdleCommand::Update()
+bool FCheckAJetUnableToSteerWhenIdle::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -866,8 +866,8 @@ bool FCheckAJetUnableToSteerWhenIdleCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet speed %s nearly zero."), *FString(speedNearlyZero ? "is" : "isn't"));
 			UE_LOG(LogTemp, Log, TEXT("Jet %s rotated from previous rotation."), *FString(hasRotatedFromPreviousRotation ? "has" : "hasn't"));
 
-			++aTickCount;
-			if (aTickCount > aTickLimit || hasRotatedFromPreviousRotation)
+			++tickCount;
+			if (tickCount > tickLimit || hasRotatedFromPreviousRotation)
 			{
 				test->TestTrue(TEXT("The Jet should update it's velocity to match the direction of the forward vector after steering."), speedNearlyZero && !hasRotatedFromPreviousRotation);
 				testWorld->bDebugFrameStepExecution = true;
@@ -880,7 +880,7 @@ bool FCheckAJetUnableToSteerWhenIdleCommand::Update()
 }
 
 
-bool FCheckAJetCenterOfMassCommand::Update()
+bool FCheckAJetCenterOfMass::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -905,7 +905,7 @@ bool FCheckAJetCenterOfMassCommand::Update()
 }
 
 
-bool FCheckAJetFallSpeedCommand::Update()
+bool FCheckAJetFallSpeed::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -937,8 +937,8 @@ bool FCheckAJetFallSpeedCommand::Update()
 		bool fallAtSameSpeed = FMath::IsNearlyEqual(jetAFallSpeed, jetBFallSpeed, 0.01f);
 		UE_LOG(LogTemp, Log, TEXT("Jets %s fall at same speed."), *FString(fallAtSameSpeed ? "do" : "don't"));
 
-		++aTickCount;
-		if (aTickCount > aTickLimit)
+		++tickCount;
+		if (tickCount > tickLimit)
 		{
 			test->TestTrue(TEXT("The Jet should keep falling even if it's steering."), fallAtSameSpeed);
 			testWorld->bDebugFrameStepExecution = true;
@@ -949,7 +949,7 @@ bool FCheckAJetFallSpeedCommand::Update()
 }
 
 
-bool FCheckAJetSteersAroundUpVectorCommand::Update()
+bool FCheckAJetSteersAroundUpVector::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -973,11 +973,11 @@ bool FCheckAJetSteersAroundUpVectorCommand::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet pitch rotation never changed from zero."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet pitch rotation never changed from zero."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -987,7 +987,7 @@ bool FCheckAJetSteersAroundUpVectorCommand::Update()
 }
 
 
-bool FCheckAJetSpeedOrthogonalityToFloorCommand::Update()
+bool FCheckAJetSpeedOrthogonalityToFloor::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -1017,9 +1017,9 @@ bool FCheckAJetSpeedOrthogonalityToFloorCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet %s moving."), *FString(isMoving ? "is" : "isn't"));
 			UE_LOG(LogTemp, Log, TEXT("Jet %s parallel to floor up vector."), *FString(speedOnFloorIsSameAsJetSpeed ? "moves" : "doesn't move"));
 
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
 				test->TestTrue(TEXT("The Jet should move parallel to the floor. Then, the speed, floor speed and velocity magnitude (gravity is being canceled) should be the same."), isMoving && speedOnFloorIsSameAsJetSpeed && speedOnFloorIsSameAsJetVelocityMagnitude);
 				testWorld->bDebugFrameStepExecution = true;
@@ -1031,7 +1031,7 @@ bool FCheckAJetSpeedOrthogonalityToFloorCommand::Update()
 }
 
 
-bool FCheckAJetSidewaysRejectsFloorCommand::Update()
+bool FCheckAJetSidewaysRejectsFloor::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -1064,10 +1064,10 @@ bool FCheckAJetSidewaysRejectsFloorCommand::Update()
 				return true;
 			}
 
-			++aTickCount;
-			if (aTickCount > aTickLimit)
+			++tickCount;
+			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The jet didn't reject the nearest floor along the floor up vector."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The jet didn't reject the nearest floor along the floor up vector."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -1078,7 +1078,7 @@ bool FCheckAJetSidewaysRejectsFloorCommand::Update()
 }
 
 
-bool FCheckAJetVelocityMagnitudeOrthogonalityToFloorCommand::Update()
+bool FCheckAJetVelocityMagnitudeOrthogonalityToFloor::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -1106,9 +1106,9 @@ bool FCheckAJetVelocityMagnitudeOrthogonalityToFloorCommand::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet %s moving."), *FString(isMoving ? "is" : "isn't"));
 			UE_LOG(LogTemp, Log, TEXT("Jet %s parallel to floor up vector."), *FString(speedOnFloorIsSameAsJetVelocityMagnitude ? "moves" : "doesn't move"));
 
-			++aTickCount;
+			++tickCount;
 
-			if (aTickCount > aTickLimit)
+			if (tickCount > tickLimit)
 			{
 				test->TestTrue(TEXT("The Jet should move parallel to the floor. Then, the floor speed and velocity magnitude (gravity is being canceled) should be the same."), isMoving && speedOnFloorIsSameAsJetVelocityMagnitude);
 				testWorld->bDebugFrameStepExecution = true;

@@ -29,9 +29,9 @@ bool FARaceRunningStageNextStageSpawnsEndedStageTest::RunTest(const FString& Par
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARaceRunningCallNextStageCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARaceRunningCallNextStage);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckEndedStageSpawnedCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckEndedStageSpawned(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -45,9 +45,9 @@ bool FARaceRunningStageSpawnsEndedStageWhenNoRunningJetsTest::RunTest(const FStr
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARaceRunningCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARaceRunning);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckEndedStageSpawnedWithNoRunningJetsCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckEndedStageSpawnedWithNoRunningJets(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

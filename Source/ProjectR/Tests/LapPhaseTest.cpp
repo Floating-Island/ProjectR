@@ -60,9 +60,9 @@ bool FALapPhaseHasCollisionEnabledToQueryOnlyTest::RunTest(const FString& Parame
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnALapPhaseMOCKInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnALapPhaseMOCKInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckLapPhaseCollisionEnabledCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLapPhaseCollisionEnabled(this));
 
 	return true;
 }
@@ -74,9 +74,9 @@ bool FALapPhaseOverlapsWithPawnChannelTest::RunTest(const FString& Parameters)
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnALapPhaseMOCKInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnALapPhaseMOCKInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckLapPhaseCollisionResponseCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLapPhaseCollisionResponse(this));
 
 	return true;
 }
@@ -88,9 +88,9 @@ bool FALapPhaseObjectTypeIsWorldStaticTest::RunTest(const FString& Parameters)
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnALapPhaseMOCKInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnALapPhaseMOCKInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckLapPhaseObjectTypeCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLapPhaseObjectType(this));
 
 	return true;
 }
@@ -102,9 +102,9 @@ bool FALapPhaseGeneratesOverlapEventsTest::RunTest(const FString& Parameters)
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnALapPhaseMOCKInEditorWorldCommand);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnALapPhaseMOCKInEditorWorld);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckLapPhaseOverlapEventsCommand(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLapPhaseOverlapEvents(this));
 
 	return true;
 }

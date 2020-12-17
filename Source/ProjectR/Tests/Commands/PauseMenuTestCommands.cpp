@@ -36,7 +36,7 @@ bool FCheckPauseMenuClickReturnButtonChangesToMainMenuMap::Update()
 
 		UE_LOG(LogTemp, Log, TEXT("this is %s world"), *GEditor->GetPIEWorldContext()->World()->GetMapName());
 
-		if (aPauseMenuInstance == nullptr)
+		if (pauseMenuInstance == nullptr)
 		{
 			UE_LOG(LogTemp, Log, TEXT("attempting pause menu instantiation..."));
 			sessionUtilities.defaultPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
@@ -45,7 +45,7 @@ bool FCheckPauseMenuClickReturnButtonChangesToMainMenuMap::Update()
 			if (testPlayerController)
 			{
 				UE_LOG(LogTemp, Log, TEXT("controller instantiated, attempting pause menu load..."));
-				aPauseMenuInstance = testPlayerController->loadPauseMenu();
+				pauseMenuInstance = testPlayerController->loadPauseMenu();
 			}
 			return false;
 		}
@@ -54,7 +54,7 @@ bool FCheckPauseMenuClickReturnButtonChangesToMainMenuMap::Update()
 			UE_LOG(LogTemp, Log, TEXT("pause menu is instantiated"));
 			if (!isInAnotherWorld)
 			{
-				FVector2D returnButtonCoordinates = aPauseMenuInstance->returnButtonAbsoluteCenterPosition();
+				FVector2D returnButtonCoordinates = pauseMenuInstance->returnButtonAbsoluteCenterPosition();
 				UE_LOG(LogTemp, Log, TEXT("return button coordinates in viewport: %s"), *returnButtonCoordinates.ToString());
 				UE_LOG(LogTemp, Log, TEXT("attempting click"));
 				sessionUtilities.processEditorClick(returnButtonCoordinates);
@@ -64,15 +64,15 @@ bool FCheckPauseMenuClickReturnButtonChangesToMainMenuMap::Update()
 			if (isInAnotherWorld)
 			{
 				bool inMainMenuMap = GEditor->GetPIEWorldContext()->World()->GetMapName().Contains("MainMenu");
-				aTest->TestTrue(TEXT("The pause menu should change to the main menu map when clicking the return button."), inMainMenuMap);
+				test->TestTrue(TEXT("The pause menu should change to the main menu map when clicking the return button."), inMainMenuMap);
 				sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 				return true;
 			}
 
-			++aTickCount;
-			if (aTickCount > aTickLimit)
+			++tickCount;
+			if (tickCount > tickLimit)
 			{
-				aTest->TestTrue(TEXT("The pause menu should change to the main menu map when clicking the return button."), isInAnotherWorld);
+				test->TestTrue(TEXT("The pause menu should change to the main menu map when clicking the return button."), isInAnotherWorld);
 				sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -90,14 +90,14 @@ bool FCheckPauseMenuClickResumeButtonRemovesMenuAndResumes::Update()
 		sessionUtilities.defaultPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
 		AProjectRPlayerControllerMOCK* testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerControllerMOCK>();
 		
-		if (aPauseMenuInstance == nullptr)
+		if (pauseMenuInstance == nullptr)
 		{
 			UE_LOG(LogTemp, Log, TEXT("attempting pause menu instantiation..."));
 
 			if (testPlayerController)
 			{
 				UE_LOG(LogTemp, Log, TEXT("controller instantiated, attempting pause menu load..."));
-				aPauseMenuInstance = testPlayerController->loadPauseMenu();
+				pauseMenuInstance = testPlayerController->loadPauseMenu();
 			}
 			return false;
 		}
@@ -107,7 +107,7 @@ bool FCheckPauseMenuClickResumeButtonRemovesMenuAndResumes::Update()
 			UE_LOG(LogTemp, Log, TEXT("pause menu is instantiated"));
 			if (isPaused)
 			{
-				FVector2D resumeButtonCoordinates = aPauseMenuInstance->resumeButtonAbsoluteCenterPosition();
+				FVector2D resumeButtonCoordinates = pauseMenuInstance->resumeButtonAbsoluteCenterPosition();
 				UE_LOG(LogTemp, Log, TEXT("resume button coordinates in viewport: %s"), *resumeButtonCoordinates.ToString());
 				UE_LOG(LogTemp, Log, TEXT("attempting click"));
 				sessionUtilities.processEditorClick(resumeButtonCoordinates);
@@ -117,15 +117,15 @@ bool FCheckPauseMenuClickResumeButtonRemovesMenuAndResumes::Update()
 			bool gameResumedAndNoMenu = !isPaused && !testPlayerController->pauseMenuIsInViewport();
 			if (gameResumedAndNoMenu)
 			{
-				aTest->TestTrue(TEXT("The pause menu should be removed from viewport and reusme the game when clicking on the resume button."), gameResumedAndNoMenu);
+				test->TestTrue(TEXT("The pause menu should be removed from viewport and resume the game when clicking on the resume button."), gameResumedAndNoMenu);
 				sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 				return true;
 			}
 
-			++aTickCount;
-			if (aTickCount > aTickLimit)
+			++tickCount;
+			if (tickCount > tickLimit)
 			{
-				aTest->TestTrue(TEXT("The pause menu should be removed from viewport and reusme the game when clicking on the resume button."), gameResumedAndNoMenu);
+				test->TestTrue(TEXT("The pause menu should be removed from viewport and resume the game when clicking on the resume button."), gameResumedAndNoMenu);
 				sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 				return true;
 			}

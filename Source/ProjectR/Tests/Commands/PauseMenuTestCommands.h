@@ -21,10 +21,10 @@
  //Test check commands:
 
 class UPauseMenu;
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckPauseMenuClickReturnButtonChangesToMainMenuMap, int, aTickCount, int, aTickLimit, UPauseMenu*, aPauseMenuInstance, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckPauseMenuClickReturnButtonChangesToMainMenuMap, int, tickCount, int, tickLimit, UPauseMenu*, pauseMenuInstance, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckPauseMenuClickResumeButtonRemovesMenuAndResumes, int, aTickCount, int, aTickLimit, UPauseMenu*, aPauseMenuInstance, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckPauseMenuClickResumeButtonRemovesMenuAndResumes, int, tickCount, int, tickLimit, UPauseMenu*, pauseMenuInstance, FAutomationTestBase*, test);
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

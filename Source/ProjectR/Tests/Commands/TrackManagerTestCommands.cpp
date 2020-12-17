@@ -19,7 +19,7 @@
 
 //Test preparation commands:
 
-bool FSpawningATrackGeneratorCommand::Update()
+bool FSpawningATrackGenerator::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -35,7 +35,7 @@ bool FSpawningATrackGeneratorCommand::Update()
 }
 
 
-bool FSpawningARotatedTrackGeneratorAndJetCloseToItCommand::Update()
+bool FSpawningARotatedTrackGeneratorAndJetCloseToIt::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -69,7 +69,7 @@ bool FSpawningARotatedTrackGeneratorAndJetCloseToItCommand::Update()
 
 //Test check commands:
 
-bool FCheckATrackManagerTrackGeneratorsCommand::Update()
+bool FCheckATrackManagerTrackGenerators::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -81,8 +81,8 @@ bool FCheckATrackManagerTrackGeneratorsCommand::Update()
 			bool spawnedTrackGeneratorInTrackManager = testManager->trackGenerators().Contains(Cast<ATrackGenerator, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGenerator::StaticClass())));
 
 			UE_LOG(LogTemp, Log, TEXT("Track manager %s the track generator listed."), *FString(spawnedTrackGeneratorInTrackManager ? "has" : "doesn't have"));
-			++aTickCount;
-			if (aTickCount > aTickLimit)
+			++tickCount;
+			if (tickCount > tickLimit)
 			{
 				test->TestTrue(TEXT("The track manager should have track generators already spawned in world."), spawnedTrackGeneratorInTrackManager);
 				testWorld->bDebugFrameStepExecution = true;
@@ -94,7 +94,7 @@ bool FCheckATrackManagerTrackGeneratorsCommand::Update()
 }
 
 
-bool FCheckATrackManagerStoresJetsWhenOverlapCommand::Update()
+bool FCheckATrackManagerStoresJetsWhenOverlap::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -113,10 +113,10 @@ bool FCheckATrackManagerStoresJetsWhenOverlapCommand::Update()
 				return true;
 			}
 
-			++aTickCount;
-			if (aTickCount > aTickLimit)
+			++tickCount;
+			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The track manager didn't store the jets that overlapped with a track generator's magnet box."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The track manager didn't store the jets that overlapped with a track generator's magnet box."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -126,7 +126,7 @@ bool FCheckATrackManagerStoresJetsWhenOverlapCommand::Update()
 }
 
 
-bool FCheckATrackManagerAttractsJetsCommand::Update()
+bool FCheckATrackManagerAttractsJets::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -159,10 +159,10 @@ bool FCheckATrackManagerAttractsJetsCommand::Update()
 				return true;
 			}
 
-			++aTickCount;
-			if (aTickCount > aTickLimit)
+			++tickCount;
+			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The track generator didn't attract the jet along the track normal vector when a track manager was present."), aTickCount > aTickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The track generator didn't attract the jet along the track normal vector when a track manager was present."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}

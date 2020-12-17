@@ -23,30 +23,30 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckIsSetAsProjectGameInstance,
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesMainMenu, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesOneMainMenu, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesOneMainMenu, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesSingleplayerMenu, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesSingleplayerMenu, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesOneSingleplayerMenu, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesOneSingleplayerMenu, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckShowsCursorInMainMenu, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckShowsCursorInMainMenu, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckShowsCursorInSingleplayerMenu, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckShowsCursorInSingleplayerMenu, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesSplitscreenMenu, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesSplitscreenMenu, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesOneSplitscreenMenu, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesOneSplitscreenMenu, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckShowsCursorInSplitscreenMenu, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckShowsCursorInSplitscreenMenu, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLoadMainMenuSetsExpectedPlayersToOne, FAutomationTestBase*, aTest);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLoadMainMenuSetsExpectedPlayersToOne, FAutomationTestBase*, test);
 
 #endif //WITH_DEV_AUTOMATION_TESTS

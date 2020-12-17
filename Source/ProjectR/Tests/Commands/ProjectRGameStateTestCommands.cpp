@@ -35,7 +35,7 @@
 //
 //		UPauseMenu* testMenu = testGameState->loadPauseMenu();
 //		
-//		aTest->TestTrue(TEXT("loadPauseMenu should bring the pause menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
+//		test->TestTrue(TEXT("loadPauseMenu should bring the pause menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
 //		return true;
 //	}
 //	return false;

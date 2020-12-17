@@ -21,7 +21,7 @@
  //Test check commands:
 
 
-//DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckGameStateBringsPauseMenu, FAutomationTestBase*, aTest);
+//DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckGameStateBringsPauseMenu, FAutomationTestBase*, test);
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
