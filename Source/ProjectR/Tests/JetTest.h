@@ -231,6 +231,21 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetReplicatesMovementTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+namespace NetworkTestRoles
+{
+	enum Type
+	{
+		Host = 0,
+		Client = 1,
+		twoParticipantsSession = 2,
+	};
+};
+
+IMPLEMENT_NETWORKED_AUTOMATION_TEST(FAJetServerAccelerateReplicatesAccelerationTest, 
+	"ProjectR.Jet Tests.Integration.039: serverAccelerate replicates acceleration to other clients", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter, NetworkTestRoles::twoParticipantsSession)
+
+
 
 //jet mesh should be set to collision enabled. (query and physics or physics only).
 //delete tests that check velocity alignment to forward or backwards vectors after steering. Or see if it's possible to remade them.
