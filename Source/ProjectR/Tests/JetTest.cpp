@@ -568,7 +568,7 @@ bool FAJetServerAccelerateReplicatesAccelerationTest::RunTest(const FString& Par
 	{
 		int tickCount = 0;
 		int tickLimit = 3;
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocation(tickCount, tickLimit, associatedTest()));
+		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocation(tickCount, tickLimit, this->associatedtest()));
 	}
 	END_NETWORK_AUTOMATION_COMMAND_WITH_TEST_ASSOCIATED(CheckJetAcceleratesInServer, NetworkTestRoles::Host, this)
 
