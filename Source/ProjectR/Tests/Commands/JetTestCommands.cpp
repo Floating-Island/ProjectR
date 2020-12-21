@@ -448,7 +448,8 @@ bool FServerAccelerateAJet::Update()
 		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 		if (testJet)
 		{
-			testJet->serverAccelerate();
+		        int accelerationMultiplier = 1;
+			testJet->serverAccelerate(accelerationMultiplier);
 			return true;
 		}
 	}

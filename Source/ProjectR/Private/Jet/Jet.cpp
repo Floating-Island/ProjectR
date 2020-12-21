@@ -192,3 +192,18 @@ FVector AJet::rightVectorProjectionOnFloor()
 	}
 }
 
+void AJet::serverAccelerate_Implementation(float anAccelerationMultiplier)
+{
+  if(GetLocalRole() == ROLE_Authority)
+  {
+    accelerate(anAccelerationMultiplier);
+  }
+}
+
+bool AJet::serverAccelerate_Validate(float anAccelerationMultiplier)
+{
+  return true;
+}
+
+
+
