@@ -23,5 +23,5 @@ public: \
         FAutomationTestBase* associatedtest() { return test; }
 
 //close the class and add to the framework
-#define END_NETWORK_AUTOMATION_COMMAND(ClassDeclaration,InRoleIndex, aTest) }; \
+#define END_NETWORK_AUTOMATION_COMMAND_WITH_TEST_ASSOCIATED(ClassDeclaration,InRoleIndex, aTest) }; \
 	FAutomationTestFramework::Get().EnqueueNetworkCommand(MakeShareable(new F##ClassDeclaration(InRoleIndex, aTest))); \
