@@ -46,6 +46,8 @@ AJet::AJet()
 	steeringSystem = CreateDefaultSubobject<USteeringComponent>(TEXT("Steering System"));
 
 	motorDriveSystem = CreateDefaultSubobject<UMotorDriveComponent>(TEXT("Motor Drive System"));
+
+    SetReplicates(true);
 }
 
 void AJet::BeginPlay()
