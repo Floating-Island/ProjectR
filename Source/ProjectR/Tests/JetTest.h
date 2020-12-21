@@ -242,7 +242,7 @@ namespace NetworkTestRoles
 };
 
 IMPLEMENT_NETWORKED_AUTOMATION_TEST(FAJetServerAccelerateReplicatesAccelerationTest, 
-	"ProjectR.Jet Tests.Integration.039: serverAccelerate replicates acceleration to other clients", 
+	"ProjectR.Jet Tests.Integration.040: serverAccelerate replicates acceleration to other clients", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter, NetworkTestRoles::twoParticipantsSession)
 
 
