@@ -19,8 +19,9 @@ public: \
 	F##ClassDeclaration(int32 InRoleIndex, FAutomationTestBase* aTest) : RoleIndex(InRoleIndex), test(aTest) {} \
 	virtual ~F##ClassDeclaration() {} \
 	virtual uint32 GetRoleIndex() const override { return RoleIndex; } \
-	virtual void Run() override \
-        FAutomationTestBase* associatedtest() { return test; }
+        FAutomationTestBase* associatedtest() { return test; } \
+        virtual void Run() override 
+        
 
 //close the class and add to the framework
 #define END_NETWORK_AUTOMATION_COMMAND_WITH_TEST_ASSOCIATED(ClassDeclaration,InRoleIndex, aTest) }; \
