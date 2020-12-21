@@ -47,7 +47,8 @@ AJet::AJet()
 
 	motorDriveSystem = CreateDefaultSubobject<UMotorDriveComponent>(TEXT("Motor Drive System"));
 
-    SetReplicates(true);
+	SetReplicates(true);
+	SetReplicateMovement(true);
 }
 
 void AJet::BeginPlay()
