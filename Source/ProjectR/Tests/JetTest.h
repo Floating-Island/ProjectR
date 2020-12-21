@@ -226,6 +226,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetReplicatesTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetReplicatesMovementTest, 
+	"ProjectR.Jet Tests.Integration.039: Replicates movement to other clients", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 //jet mesh should be set to collision enabled. (query and physics or physics only).
 //delete tests that check velocity alignment to forward or backwards vectors after steering. Or see if it's possible to remade them.

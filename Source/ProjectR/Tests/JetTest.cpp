@@ -528,12 +528,21 @@ bool FAJetSteersOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters
 }
 
 
-bool FAJetReplicatesTest::RunTest(const FString &Parameters)
+bool FAJetReplicatesTest::RunTest(const FString& Parameters)
 {
-    AJet* testJet = NewObject<AJet>();
-    TestTrue(TEXT("Jet should replicate to other objects."), testJet->GetIsReplicated());
+	AJet* testJet = NewObject<AJet>();
+	TestTrue(TEXT("Jet should replicate to other objects."), testJet->GetIsReplicated());
 
-    return true;
+	return true;
+}
+
+
+bool FAJetReplicatesMovementTest::RunTest(const FString& Parameters)
+{
+	AJet* testJet = NewObject<AJet>();
+	TestTrue(TEXT("Jet should replicate to other objects."), testJet->IsReplicatingMovement());
+
+	return true;
 }
 
 
