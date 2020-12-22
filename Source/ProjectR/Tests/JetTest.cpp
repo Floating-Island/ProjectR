@@ -547,34 +547,5 @@ bool FAJetReplicatesMovementTest::RunTest(const FString& Parameters)
 }
 
 
-bool FAJetServerAccelerateReplicatesAccelerationTest::RunTest(const FString& Parameters)
-{
-	START_NETWORK_AUTOMATION_COMMAND(OpenMapAndSpawnJet)
-	{
-		FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-		ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
-		ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
-		ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJet);
-	}
-	END_NETWORK_AUTOMATION_COMMAND(OpenMapAndSpawnJet, NetworkTestRoles::Host)
-
-	START_NETWORK_AUTOMATION_COMMAND(accelerateJetFromClient)
-	{
-		ADD_LATENT_AUTOMATION_COMMAND(FServerAccelerateAJet);
-	}
-	END_NETWORK_AUTOMATION_COMMAND(accelerateJetFromClient, NetworkTestRoles::Client)
-
-	START_NETWORK_AUTOMATION_COMMAND_WITH_TEST_ASSOCIATED(CheckJetAcceleratesInServer)
-	{
-		int tickCount = 0;
-		int tickLimit = 3;
-		ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocation(tickCount, tickLimit, this->associatedtest()));
-	}
-	END_NETWORK_AUTOMATION_COMMAND_WITH_TEST_ASSOCIATED(CheckJetAcceleratesInServer, NetworkTestRoles::Host, this)
-
-        return true;
-}
-
-
 
 #endif //WITH_DEV_AUTOMATION_TESTS

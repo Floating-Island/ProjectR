@@ -439,23 +439,6 @@ bool FSpawningAJetRotatedOverFloorAccelerateAndSteerItRight::Update()
 }
 
 
-bool FServerAccelerateAJet::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
-		if (testJet)
-		{
-		        int accelerationMultiplier = 1;
-			testJet->serverAccelerate(accelerationMultiplier);
-			return true;
-		}
-	}
-	return false;
-}
-
 
 
 

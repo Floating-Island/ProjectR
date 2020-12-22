@@ -72,8 +72,6 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotatedOverFloorAndBrakeIt);
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotatedOverFloorAccelerateAndSteerItRight);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FServerAccelerateAJet);
-
 
 
 
