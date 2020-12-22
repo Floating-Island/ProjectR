@@ -7,7 +7,6 @@
 #include "Commands/JetTestCommands.h"
 #include "Jet/Jet.h"
 #include "Mocks/JetMOCK.h"
-#include "Utilities/NetworkCommandsMACROS.h"
 
 //to be able to simulate:
 #include "Tests/AutomationEditorCommon.h"
