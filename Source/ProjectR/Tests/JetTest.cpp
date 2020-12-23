@@ -565,7 +565,7 @@ bool FAJetserverAccelerateReplicatesAccelerationTest::RunTest(const FString& Par
 	FVector previousLocation = FVector(1000);
 	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetMoved(tickCount, tickLimit, numberOfPlayers, previousLocation, this));
 
-	
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
 
