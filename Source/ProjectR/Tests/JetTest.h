@@ -222,12 +222,17 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSteersOrthogonalToSurfaceNormalTest,
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetReplicatesTest, 
-	"ProjectR.Jet Tests.Integration.038: Replicates to other clients", 
+	"ProjectR.Jet Tests.Replication.038: Replicates to other clients", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetReplicatesMovementTest, 
-	"ProjectR.Jet Tests.Integration.039: Replicates movement to other clients", 
+	"ProjectR.Jet Tests.Replication.039: Replicates movement to other clients", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetserverAccelerateReplicatesAccelerationTest, 
+	"ProjectR.Jet Tests.Replication.040: serverAccelerate replicates acceleration to other clients", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
@@ -236,7 +241,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetReplicatesMovementTest,
 //jet mesh should be set to collision enabled. (query and physics or physics only).
 //delete tests that check velocity alignment to forward or backwards vectors after steering. Or see if it's possible to remade them.
 //create a state with state factory to handle the direction that the jet is heading (forwards or backwards). It should update itself every time that acceleration or brake is called.
-// maybe move that inReverseInverts method in the steer component to it.
+// maybe move the inReverseInverts method located in the steer component to the state factory.
 
 
 

@@ -10,6 +10,7 @@
 
 //to be able to simulate:
 #include "Tests/AutomationEditorCommon.h"
+#include "Commands/NetworkCommands.h"
 
 
 
@@ -523,7 +524,6 @@ bool FAJetSteersOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetVelocityMagnitudeOrthogonalityToFloor(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-
 	return true;
 }
 
@@ -544,6 +544,31 @@ bool FAJetReplicatesMovementTest::RunTest(const FString& Parameters)
 
 	return true;
 }
+
+
+bool FAJetserverAccelerateReplicatesAccelerationTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJet);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientAccelerateJet);
+
+	int tickCount = 0;
+	int tickLimit = 3;
+	FVector previousLocation = FVector();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetMoved(tickCount, tickLimit, previousLocation, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
 
 
 

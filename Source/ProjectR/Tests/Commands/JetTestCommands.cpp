@@ -439,6 +439,36 @@ bool FSpawningAJetRotatedOverFloorAccelerateAndSteerItRight::Update()
 }
 
 
+bool FServerSpawnJet::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		FEditorViewportClient* serverViewport = GEditor->GetAllViewportClients()[0];
+		serverViewport->GetWorld()->SpawnActor<AJet>();
+		return true;
+	}
+	return false;
+}
+
+
+bool FClientAccelerateJet::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		FEditorViewportClient* clientViewport = GEditor->GetAllViewportClients()[1];
+		if (clientViewport)
+		{
+			AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(clientViewport->GetWorld(), AJet::StaticClass()));
+			if (testJet)
+			{
+				testJet->serverAccelerate();
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 
 
 
@@ -1120,6 +1150,46 @@ bool FCheckAJetVelocityMagnitudeOrthogonalityToFloor::Update()
 	}
 	return false;
 }
+
+
+bool FServerCheckJetMoved::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FEditorViewportClient* serverViewport = GEditor->GetAllViewportClients()[0];
+		AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(serverViewport->GetWorld(), AJet::StaticClass()));
+		if(testJet)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Previous jet location: %s"), *previousLocation.ToString());
+			UE_LOG(LogTemp, Log, TEXT("Current jet location: %s"), *testJet->GetActorLocation().ToString());
+			bool hasMovedX = !FMath::IsNearlyEqual(previousLocation.X, testJet->GetActorLocation().X);
+
+			if(hasMovedX)
+			{
+				test->TestTrue(TEXT("The Jet should replicate its acceleration action to other clients when using serverAccelerate."), hasMovedX);
+				for(auto viewport : GEditor->GetAllViewportClients())
+				{
+					viewport->GetWorld()->bDebugFrameStepExecution = true;
+				}
+				return true;
+			}
+			previousLocation = testJet->GetActorLocation();
+
+			++tickCount;
+			if(tickCount > tickLimit)
+			{
+				test->TestTrue(TEXT("The Jet should replicate its acceleration action to other clients when using serverAccelerate."), hasMovedX);
+				for(auto viewport : GEditor->GetAllViewportClients())
+				{
+					viewport->GetWorld()->bDebugFrameStepExecution = true;
+				}
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 
 
 
