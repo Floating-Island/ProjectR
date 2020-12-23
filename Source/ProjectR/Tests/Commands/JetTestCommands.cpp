@@ -15,6 +15,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/GameModeBase.h"
 
+
 #include "../Utilities/PIESessionUtilities.h"
 #include "../Utilities/FloorMeshActor.h"
 
@@ -443,9 +444,33 @@ bool FServerSpawnJet::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-		FEditorViewportClient* serverViewport = GEditor->GetAllViewportClients()[0];
-		serverViewport->GetWorld()->SpawnActor<AJet>();
-		return true;
+		FWorldContext serverContext = GEditor->GetWorldContexts()[1];//0 is editor, 1 is server, 2->N is clients
+
+		if(serverContext.World()->GetNumPlayerControllers() == clientQuantity)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Creating jet..."));
+			FActorSpawnParameters spawnParameters = FActorSpawnParameters();
+			spawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+			AJet* testJet = serverContext.World()->SpawnActor<AJet>(FVector(1000), FRotator(0), spawnParameters);
+
+			APlayerController* clientController = nullptr;
+			for (auto controllerIterator = serverContext.World()->GetPlayerControllerIterator(); controllerIterator; ++controllerIterator)
+			{
+				if(controllerIterator.GetIndex() == 1)
+				{
+					clientController = controllerIterator->Get();
+					break;
+				}
+			}
+			if(clientController)
+			{
+				testJet->SetOwner(clientController);
+				clientController->Possess(testJet);
+			}
+			
+			
+			return true;
+		}
 	}
 	return false;
 }
@@ -454,13 +479,16 @@ bool FServerSpawnJet::Update()
 bool FClientAccelerateJet::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
-	{
-		FEditorViewportClient* clientViewport = GEditor->GetAllViewportClients()[1];
-		if (clientViewport)
+	{		
+		FWorldContext serverContext = GEditor->GetWorldContexts()[1];//0 is editor, 1 is server, 2->N is clients
+		if (serverContext.World()->GetNumPlayerControllers() == clientQuantity)
 		{
-			AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(clientViewport->GetWorld(), AJet::StaticClass()));
+			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
+			UE_LOG(LogTemp, Log, TEXT("retrieving jet..."));
+			AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AJet::StaticClass()));
 			if (testJet)
 			{
+				UE_LOG(LogTemp, Log, TEXT("accelerating jet..."));
 				testJet->serverAccelerate();
 				return true;
 			}
@@ -468,6 +496,12 @@ bool FClientAccelerateJet::Update()
 	}
 	return false;
 }
+
+
+
+
+
+
 
 
 
@@ -1156,20 +1190,20 @@ bool FServerCheckJetMoved::Update()
 {
 	if(GEditor->IsPlayingSessionInEditor())
 	{
-		FEditorViewportClient* serverViewport = GEditor->GetAllViewportClients()[0];
-		AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(serverViewport->GetWorld(), AJet::StaticClass()));
-		if(testJet)
+		FWorldContext serverContext = GEditor->GetWorldContexts()[1];
+		AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(serverContext.World(), AJet::StaticClass()));
+		if(serverContext.World()->GetNumPlayerControllers() == clientQuantity && testJet)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Previous jet location: %s"), *previousLocation.ToString());
 			UE_LOG(LogTemp, Log, TEXT("Current jet location: %s"), *testJet->GetActorLocation().ToString());
-			bool hasMovedX = !FMath::IsNearlyEqual(previousLocation.X, testJet->GetActorLocation().X);
+			bool hasMovedX = !FMath::IsNearlyEqual(previousLocation.X, testJet->GetActorLocation().X, 0.01f);
 
 			if(hasMovedX)
 			{
 				test->TestTrue(TEXT("The Jet should replicate its acceleration action to other clients when using serverAccelerate."), hasMovedX);
-				for(auto viewport : GEditor->GetAllViewportClients())
+				for(auto context : GEditor->GetWorldContexts())
 				{
-					viewport->GetWorld()->bDebugFrameStepExecution = true;
+					context.World()->bDebugFrameStepExecution = true;
 				}
 				return true;
 			}
@@ -1179,9 +1213,9 @@ bool FServerCheckJetMoved::Update()
 			if(tickCount > tickLimit)
 			{
 				test->TestTrue(TEXT("The Jet should replicate its acceleration action to other clients when using serverAccelerate."), hasMovedX);
-				for(auto viewport : GEditor->GetAllViewportClients())
+				for(auto context : GEditor->GetWorldContexts())
 				{
-					viewport->GetWorld()->bDebugFrameStepExecution = true;
+					context.World()->bDebugFrameStepExecution = true;
 				}
 				return true;
 			}
@@ -1189,8 +1223,6 @@ bool FServerCheckJetMoved::Update()
 	}
 	return false;
 }
-
-
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

@@ -556,16 +556,16 @@ bool FAJetserverAccelerateReplicatesAccelerationTest::RunTest(const FString& Par
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJet);
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJet(numberOfPlayers));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FClientAccelerateJet);
+	ADD_LATENT_AUTOMATION_COMMAND(FClientAccelerateJet(numberOfPlayers));
 
 	int tickCount = 0;
-	int tickLimit = 3;
-	FVector previousLocation = FVector();
-	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetMoved(tickCount, tickLimit, previousLocation, this));
+	int tickLimit = 5;
+	FVector previousLocation = FVector(1000);
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetMoved(tickCount, tickLimit, numberOfPlayers, previousLocation, this));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	
 	return true;
 }
 

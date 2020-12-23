@@ -72,10 +72,10 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotatedOverFloorAndBrakeIt);
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotatedOverFloorAccelerateAndSteerItRight);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FServerSpawnJet);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FServerSpawnJet, int, clientQuantity);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FClientAccelerateJet);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientAccelerateJet, int, clientQuantity);
 
 
 
@@ -137,7 +137,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckAJetSidewaysRejectsFloor, 
 DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetVelocityMagnitudeOrthogonalityToFloor, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FServerCheckJetMoved, int, tickCount, int, tickLimit, FVector, previousLocation, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FServerCheckJetMoved, int, tickCount, int, tickLimit, int, clientQuantity, FVector, previousLocation, FAutomationTestBase*, test);
 
 
 
