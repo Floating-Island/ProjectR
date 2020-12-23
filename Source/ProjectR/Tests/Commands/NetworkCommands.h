@@ -25,4 +25,4 @@ public:
 /**
 * Start a networked PIE session (non simulated)
 */
-DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FStartNetworkedPIECommand, int32, numParticipants, EPlayNetMode, netMode);
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FStartNetworkedPIESession, int32, numParticipants, EPlayNetMode, netMode);

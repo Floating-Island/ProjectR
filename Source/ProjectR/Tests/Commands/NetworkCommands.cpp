@@ -22,7 +22,7 @@ NetworkCommands::~NetworkCommands()
 
 
 
-bool FStartNetworkedPIECommand::Update()
+bool FStartNetworkedPIESession::Update()
 {
 	FLevelEditorModule& LevelEditorModule = FModuleManager::Get().GetModuleChecked<FLevelEditorModule>(TEXT("LevelEditor"));
 	
