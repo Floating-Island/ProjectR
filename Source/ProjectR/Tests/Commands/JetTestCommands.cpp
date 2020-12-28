@@ -521,6 +521,7 @@ bool FClientPressAccelerationKey::Update()
 			}
 
 			controller->InputKey(actionKey, EInputEvent::IE_Repeat, 5.0f, false);
+			return true;
 		}
 	}
 	return false;
