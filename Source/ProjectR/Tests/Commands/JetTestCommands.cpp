@@ -1,10 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-
-
-
-
+#include "../../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/GameFramework/PlayerInput.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "JetTestCommands.h"
@@ -492,6 +489,36 @@ bool FClientAccelerateJet::Update()
 				testJet->serverAccelerate();
 				return true;
 			}
+		}
+	}
+	return false;
+}
+
+
+bool FClientPressAccelerationKey::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{		
+		FWorldContext serverContext = GEditor->GetWorldContexts()[1];//0 is editor, 1 is server, 2->N is clients
+		if (serverContext.World()->GetNumPlayerControllers() == clientQuantity)
+		{
+			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
+			APlayerController* controller = clientContext.World()->GetFirstPlayerController();
+
+			FName const actionName = FName(TEXT("AccelerateAction"));
+			TArray<FInputAxisKeyMapping> axisMappings = controller->PlayerInput->GetKeysForAxis(actionName);
+
+			FKey actionKey;
+			for (auto axisMap : axisMappings)
+			{
+				if (axisMap.Scale > 0)
+				{
+					actionKey = axisMap.Key;
+					break;
+				}
+			}
+
+			controller->InputKey(actionKey, EInputEvent::IE_Repeat, 5.0f, false);
 		}
 	}
 	return false;

@@ -78,6 +78,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FServerSpawnJet, int, clientQuant
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientAccelerateJet, int, clientQuantity);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientPressAccelerationKey, int, clientQuantity);
+
+
 
 
 
