@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "../../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/GameFramework/PlayerInput.h"
+
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "JetTestCommands.h"
@@ -11,6 +11,8 @@
 #include "Editor.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/GameModeBase.h"
+
+#include "GameFramework/PlayerInput.h"
 
 
 #include "../Utilities/PIESessionUtilities.h"
