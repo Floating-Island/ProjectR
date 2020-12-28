@@ -65,7 +65,7 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis("AccelerateAction", this, &AJet::accelerate);
+	PlayerInputComponent->BindAxis("AccelerateAction", this, &AJet::serverAccelerate);
 
 	PlayerInputComponent->BindAxis("SteerAction", this, &AJet::steer);
 
