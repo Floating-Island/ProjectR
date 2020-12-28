@@ -12,8 +12,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/GameModeBase.h"
 
-#include "GameFramework/PlayerInput.h"
-
 
 #include "../Utilities/PIESessionUtilities.h"
 #include "../Utilities/FloorMeshActor.h"
@@ -505,22 +503,10 @@ bool FClientPressAccelerationKey::Update()
 		if (serverContext.World()->GetNumPlayerControllers() == clientQuantity)
 		{
 			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
-			APlayerController* controller = clientContext.World()->GetFirstPlayerController();
-
-			FName const actionName = FName(TEXT("AccelerateAction"));
-			TArray<FInputAxisKeyMapping> axisMappings = controller->PlayerInput->GetKeysForAxis(actionName);
-
-			FKey actionKey;
-			for (auto axisMap : axisMappings)
-			{
-				if (axisMap.Scale > 0)
-				{
-					actionKey = axisMap.Key;
-					break;
-				}
-			}
-
-			controller->InputKey(actionKey, EInputEvent::IE_Repeat, 5.0f, false);
+			PIESessionUtilities sessionUtilities = PIESessionUtilities();
+			sessionUtilities.setDefaultPIEWorld(clientContext.World());
+			sessionUtilities.spawnLocalPlayer();
+			sessionUtilities.processLocalPlayerInputFrom("AccelerateAction");
 			return true;
 		}
 	}
