@@ -90,8 +90,3 @@ void PIESessionUtilities::processEditorClick(FVector2D atCoordinates)
 	bool mouseClick = slateApplication.ProcessMouseButtonDoubleClickEvent(genericWindow, mouseMoveAndClickEvent);
 	UE_LOG(LogTemp, Log, TEXT("a mouse click %s been done."), *FString(mouseClick ? "has" : "hasn't"));
 }
-
-void PIESessionUtilities::setDefaultPIEWorld(UWorld* aWorld)
-{
-	pieWorld = aWorld;
-}
