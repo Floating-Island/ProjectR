@@ -85,6 +85,6 @@ public:
 
 	FVector rightVectorProjectionOnFloor();
 
-    UFUNCTION(Server, Unreliable, WithValidation)
+    UFUNCTION(Server, Reliable, WithValidation)
         void serverAccelerate(float anAccelerationMultiplier = 1.0f);
 };
