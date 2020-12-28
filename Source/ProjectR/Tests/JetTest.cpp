@@ -561,7 +561,7 @@ bool FAJetServerAccelerateReplicatesAccelerationTest::RunTest(const FString& Par
 	ADD_LATENT_AUTOMATION_COMMAND(FClientAccelerateJet(numberOfPlayers));
 
 	int tickCount = 0;
-	int tickLimit = 5;
+	int tickLimit = 10;
 	FVector previousLocation = FVector(1000);
 	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetMoved(tickCount, tickLimit, numberOfPlayers, previousLocation, this));
 
@@ -585,7 +585,7 @@ bool FAJetServerAcceleratesWhenPressingAccelerationKeyTest::RunTest(const FStrin
 	ADD_LATENT_AUTOMATION_COMMAND(FClientPressAccelerationKey(numberOfPlayers));
 
 	int tickCount = 0;
-	int tickLimit = 5;
+	int tickLimit = 10;
 	FVector previousLocation = FVector(1000);
 	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetMoved(tickCount, tickLimit, numberOfPlayers, previousLocation, this));
 
