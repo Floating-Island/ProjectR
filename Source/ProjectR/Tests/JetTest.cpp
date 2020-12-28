@@ -546,7 +546,7 @@ bool FAJetReplicatesMovementTest::RunTest(const FString& Parameters)
 }
 
 
-bool FAJetserverAccelerateReplicatesAccelerationTest::RunTest(const FString& Parameters)
+bool FAJetServerAccelerateReplicatesAccelerationTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 

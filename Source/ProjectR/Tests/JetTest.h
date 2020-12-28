@@ -231,10 +231,9 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetReplicatesMovementTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetserverAccelerateReplicatesAccelerationTest, 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerAccelerateReplicatesAccelerationTest, 
 	"ProjectR.Jet Tests.Replication.040: serverAccelerate replicates acceleration to other clients", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
 
 
 
