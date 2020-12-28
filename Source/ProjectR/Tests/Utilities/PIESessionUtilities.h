@@ -34,6 +34,7 @@ public:
 
 	void processEditorClick(FVector2D atCoordinates);
 
+	void setDefaultPIEWorld(UWorld* aWorld);
 
 	template <typename anActorDerivedClass>
 	anActorDerivedClass* spawnInPIEAnInstanceOf(FVector atLocation = FVector(0));
