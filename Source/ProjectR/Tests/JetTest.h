@@ -237,7 +237,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerAccelerateReplicatesAccelerationTest
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerAcceleratesWhenPressingAccelerationKeyTest, 
-	"ProjectR.Jet Tests.Unit.041: server accelerates when client pressess acceleration key", 
+	"ProjectR.Jet Tests.Replication.041: server accelerates when client pressess acceleration key", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
