@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "JetTestCommands.h"
@@ -11,6 +10,9 @@
 #include "Editor.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/GameModeBase.h"
+
+#include "GameFramework/PlayerInput.h"
+#include "GameFramework/PlayerState.h"
 
 
 #include "../Utilities/PIESessionUtilities.h"
@@ -463,8 +465,8 @@ bool FServerSpawnJet::Update()
 			{
 				testJet->SetOwner(clientController);
 				clientController->Possess(testJet);
+				clientController->PlayerState->SetIsSpectator(false);
 			}
-			
 			
 			return true;
 		}
@@ -503,11 +505,29 @@ bool FClientPressAccelerationKey::Update()
 		if (serverContext.World()->GetNumPlayerControllers() == clientQuantity)
 		{
 			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
-			PIESessionUtilities sessionUtilities = PIESessionUtilities();
-			sessionUtilities.setDefaultPIEWorld(clientContext.World());
-			sessionUtilities.spawnLocalPlayer();
-			sessionUtilities.processLocalPlayerInputFrom("AccelerateAction");
-			return true;
+			AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AJet::StaticClass()));
+			if(testJet)
+			{
+				APlayerController* controller = clientContext.World()->GetFirstPlayerController();
+				if(controller->AcknowledgedPawn == testJet)
+				{
+					FName const actionName = FName(TEXT("AccelerateAction"));
+					TArray<FInputAxisKeyMapping> axisMappings = controller->PlayerInput->GetKeysForAxis(actionName);
+
+					FKey actionKey;
+					for (auto axisMap : axisMappings)
+					{
+						if (axisMap.Scale > 0)
+						{
+							actionKey = axisMap.Key;
+							break;
+						}
+					}
+					controller->InputKey(actionKey, EInputEvent::IE_Repeat, 5.0f, false);
+			
+					return true;
+				}
+			}
 		}
 	}
 	return false;
