@@ -511,20 +511,7 @@ bool FClientPressAccelerationKey::Update()
 				APlayerController* controller = clientContext.World()->GetFirstPlayerController();
 				if(controller->AcknowledgedPawn == testJet)
 				{
-					FName const actionName = FName(TEXT("AccelerateAction"));
-					TArray<FInputAxisKeyMapping> axisMappings = controller->PlayerInput->GetKeysForAxis(actionName);
-
-					FKey actionKey;
-					for (auto axisMap : axisMappings)
-					{
-						if (axisMap.Scale > 0)
-						{
-							actionKey = axisMap.Key;
-							break;
-						}
-					}
-					controller->InputKey(actionKey, EInputEvent::IE_Repeat, 5.0f, false);
-			
+					PIESessionUtilities::processKeyPressFrom(FName(TEXT("AccelerateAction")), controller);
 					return true;
 				}
 			}
