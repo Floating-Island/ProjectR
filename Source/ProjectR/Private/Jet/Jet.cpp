@@ -69,7 +69,7 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAxis("SteerAction", this, &AJet::steer);
 
-	PlayerInputComponent->BindAxis("BrakeAction", this, &AJet::brake);
+	PlayerInputComponent->BindAxis("BrakeAction", this, &AJet::serverBrake);
 }
 
 
