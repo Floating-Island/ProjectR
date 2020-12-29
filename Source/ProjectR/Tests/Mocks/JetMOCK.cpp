@@ -11,6 +11,7 @@ AJetMOCK::AJetMOCK()
 	alwaysAccelerate = false;
 	alwaysBrake = false;
 	alwaysCancelGravity = false;
+	serverSteerAlways = false;
 }
 
 void AJetMOCK::Tick(float DeltaTime)
@@ -32,6 +33,10 @@ void AJetMOCK::Tick(float DeltaTime)
 	{
 		float weight = abs(physicsMeshComponent->GetMass() * GetWorld()->GetGravityZ());
 		physicsMeshComponent->AddForce(FVector(0, 0, weight));
+	}
+	if(serverSteerAlways)
+	{
+		serverSteer(1);
 	}
 }
 
@@ -130,6 +135,11 @@ void AJetMOCK::brakeOnEveryTick()
 void AJetMOCK::cancelGravityOnEveryTick()
 {
 	alwaysCancelGravity = true;
+}
+
+void AJetMOCK::serverAlwaysSteer()
+{
+	serverSteerAlways = true;
 }
 
 //bool AJetMOCK::hasAnAntiGravitySystem()

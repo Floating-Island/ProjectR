@@ -19,6 +19,7 @@ private:
 	bool alwaysAccelerate;
 	bool alwaysBrake;
 	bool alwaysCancelGravity;
+	bool serverSteerAlways;
 public:
 	AJetMOCK();
 	virtual void Tick(float DeltaTime) override;
@@ -59,4 +60,6 @@ public:
 	void accelerateOnEveryTick();
 	void brakeOnEveryTick();
 	void cancelGravityOnEveryTick();
+
+	void serverAlwaysSteer();
 };
