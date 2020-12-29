@@ -87,4 +87,7 @@ public:
 
     UFUNCTION(Server, Reliable, WithValidation)
         void serverAccelerate(float anAccelerationMultiplier = 1.0f);
+	
+    UFUNCTION(Server, Reliable, WithValidation)
+        void serverBrake(float anAccelerationMultiplier = 1.0f);
 };
