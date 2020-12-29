@@ -1240,11 +1240,11 @@ bool FServerCheckJetAccelerated::Update()
 			FVector currentLocation = testJet->GetActorLocation();
 			UE_LOG(LogTemp, Log, TEXT("Current jet location: %s"), *currentLocation.ToString());
 			float currentXLocation = currentLocation.X;
-			bool hasMovedX = !FMath::IsNearlyEqual(previousLocation.X, currentXLocation, 0.01f) && currentXLocation > previousLocation.X;
+			bool hasAcceleratedAlongX = !FMath::IsNearlyEqual(previousLocation.X, currentXLocation, 0.01f) && currentXLocation > previousLocation.X;
 
-			if(hasMovedX)
+			if(hasAcceleratedAlongX)
 			{
-				test->TestTrue(TEXT("The Jet should replicate its acceleration action to other clients when using serverAccelerate."), hasMovedX);
+				test->TestTrue(TEXT("The Jet should replicate its acceleration action to other clients when using serverAccelerate."), hasAcceleratedAlongX);
 				for(auto context : GEditor->GetWorldContexts())
 				{
 					context.World()->bDebugFrameStepExecution = true;
@@ -1256,7 +1256,7 @@ bool FServerCheckJetAccelerated::Update()
 			++tickCount;
 			if(tickCount > tickLimit)
 			{
-				test->TestTrue(TEXT("The Jet should replicate its acceleration action to other clients when using serverAccelerate."), hasMovedX);
+				test->TestTrue(TEXT("The Jet should replicate its acceleration action to other clients when using serverAccelerate."), hasAcceleratedAlongX);
 				for(auto context : GEditor->GetWorldContexts())
 				{
 					context.World()->bDebugFrameStepExecution = true;
