@@ -31,6 +31,7 @@ public:
 
 	void spawnLocalPlayer();
 	void processLocalPlayerInputFrom(FName anAxisMappingName);
+	static void processKeyPressFrom(FName anAxisMappingName, APlayerController* aController);
 
 	void processEditorClick(FVector2D atCoordinates);
 
