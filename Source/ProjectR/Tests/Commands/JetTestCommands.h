@@ -81,6 +81,12 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientAccelerateJet, int, client
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientPressAccelerationKey, int, clientQuantity);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientBrakeJet, int, clientQuantity);
+
+
+
+
+
 
 
 
@@ -141,6 +147,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetVelocityMagnitudeOrth
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FServerCheckJetAccelerated, int, tickCount, int, tickLimit, int, clientQuantity, FVector, previousLocation, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FServerCheckJetBrake, int, tickCount, int, tickLimit, int, clientQuantity, FVector, previousLocation, FAutomationTestBase*, test);
 
 
 

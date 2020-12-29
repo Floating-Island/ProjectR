@@ -521,7 +521,26 @@ bool FClientPressAccelerationKey::Update()
 }
 
 
-
+bool FClientBrakeJet::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{		
+		FWorldContext serverContext = GEditor->GetWorldContexts()[1];//0 is editor, 1 is server, 2->N is clients
+		if (serverContext.World()->GetNumPlayerControllers() == clientQuantity)
+		{
+			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
+			UE_LOG(LogTemp, Log, TEXT("retrieving jet..."));
+			AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AJet::StaticClass()));
+			if (testJet)
+			{
+				UE_LOG(LogTemp, Log, TEXT("braking jet..."));
+				testJet->serverBrake();
+				return true;
+			}
+		}
+	}
+	return false;
+}
 
 
 
@@ -1238,6 +1257,47 @@ bool FServerCheckJetAccelerated::Update()
 			if(tickCount > tickLimit)
 			{
 				test->TestTrue(TEXT("The Jet should replicate its acceleration action to other clients when using serverAccelerate."), hasMovedX);
+				for(auto context : GEditor->GetWorldContexts())
+				{
+					context.World()->bDebugFrameStepExecution = true;
+				}
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FServerCheckJetBrake::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = GEditor->GetWorldContexts()[1];
+		AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(serverContext.World(), AJet::StaticClass()));
+		if(serverContext.World()->GetNumPlayerControllers() == clientQuantity && testJet)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Previous jet location: %s"), *previousLocation.ToString());
+			FVector currentLocation = testJet->GetActorLocation();
+			UE_LOG(LogTemp, Log, TEXT("Current jet location: %s"), *currentLocation.ToString());
+			float currentXLocation = currentLocation.X;
+			bool hasBrakedAlongX = !FMath::IsNearlyEqual(previousLocation.X, currentXLocation, 0.01f) && currentXLocation < previousLocation.X;
+
+			if(hasBrakedAlongX)
+			{
+				test->TestTrue(TEXT("The Jet should replicate its braking action to other clients when using serverBrake."), hasBrakedAlongX);
+				for(auto context : GEditor->GetWorldContexts())
+				{
+					context.World()->bDebugFrameStepExecution = true;
+				}
+				return true;
+			}
+			previousLocation = currentLocation;
+
+			++tickCount;
+			if(tickCount > tickLimit)
+			{
+				test->TestTrue(TEXT("The Jet should replicate its braking action to other clients when using serverBrake."), hasBrakedAlongX);
 				for(auto context : GEditor->GetWorldContexts())
 				{
 					context.World()->bDebugFrameStepExecution = true;
