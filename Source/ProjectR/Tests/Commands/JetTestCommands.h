@@ -84,6 +84,11 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FClientPressKey, FName, keyName, 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientBrakeJet, int, clientQuantity);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FServerSpawnJetToSteer, int, clientQuantity);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientSteerJet, int, clientQuantity);
+
 
 
 
@@ -150,6 +155,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FServerCheckJetAccelerated, int,
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FServerCheckJetBrake, int, tickCount, int, tickLimit, int, clientQuantity, FVector, previousLocation, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FServerCheckJetSteer, int, tickCount, int, tickLimit, int, clientQuantity, FVector, previousLocation, FAutomationTestBase*, test);
 
 
 
