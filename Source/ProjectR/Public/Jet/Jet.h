@@ -89,5 +89,8 @@ public:
         void serverAccelerate(float anAccelerationMultiplier = 1.0f);
 	
     UFUNCTION(Server, Reliable, WithValidation)
-        void serverBrake(float anAccelerationMultiplier = 1.0f);
+        void serverBrake(float aBrakeMultiplier = 1.0f);
+	
+    UFUNCTION(Server, Reliable, WithValidation)
+        void serverSteer(float aSteerDirection);
 };

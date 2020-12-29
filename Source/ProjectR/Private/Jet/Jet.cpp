@@ -192,15 +192,28 @@ FVector AJet::rightVectorProjectionOnFloor()
 	}
 }
 
-void AJet::serverBrake_Implementation(float anAccelerationMultiplier)
+void AJet::serverSteer_Implementation(float aSteerDirection)
 {
 	if(GetLocalRole() == ROLE_Authority)
 	{
-		brake(anAccelerationMultiplier);
+		steer(aSteerDirection);
 	}
 }
 
-bool AJet::serverBrake_Validate(float anAccelerationMultiplier)
+bool AJet::serverSteer_Validate(float aSteerDirection)
+{
+	return true;
+}
+
+void AJet::serverBrake_Implementation(float aBrakeMultiplier)
+{
+	if(GetLocalRole() == ROLE_Authority)
+	{
+		brake(aBrakeMultiplier);
+	}
+}
+
+bool AJet::serverBrake_Validate(float aBrakeMultiplier)
 {
 	return true;
 }
