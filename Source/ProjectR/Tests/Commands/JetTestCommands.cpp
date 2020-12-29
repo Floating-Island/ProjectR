@@ -1209,7 +1209,7 @@ bool FCheckAJetVelocityMagnitudeOrthogonalityToFloor::Update()
 }
 
 
-bool FServerCheckJetMoved::Update()
+bool FServerCheckJetAccelerated::Update()
 {
 	if(GEditor->IsPlayingSessionInEditor())
 	{
@@ -1218,8 +1218,10 @@ bool FServerCheckJetMoved::Update()
 		if(serverContext.World()->GetNumPlayerControllers() == clientQuantity && testJet)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Previous jet location: %s"), *previousLocation.ToString());
-			UE_LOG(LogTemp, Log, TEXT("Current jet location: %s"), *testJet->GetActorLocation().ToString());
-			bool hasMovedX = !FMath::IsNearlyEqual(previousLocation.X, testJet->GetActorLocation().X, 0.01f);
+			FVector currentLocation = testJet->GetActorLocation();
+			UE_LOG(LogTemp, Log, TEXT("Current jet location: %s"), *currentLocation.ToString());
+			float currentXLocation = currentLocation.X;
+			bool hasMovedX = !FMath::IsNearlyEqual(previousLocation.X, currentXLocation, 0.01f) && currentXLocation > previousLocation.X;
 
 			if(hasMovedX)
 			{
@@ -1230,7 +1232,7 @@ bool FServerCheckJetMoved::Update()
 				}
 				return true;
 			}
-			previousLocation = testJet->GetActorLocation();
+			previousLocation = currentLocation;
 
 			++tickCount;
 			if(tickCount > tickLimit)

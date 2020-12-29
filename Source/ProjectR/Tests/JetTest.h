@@ -241,6 +241,10 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerAcceleratesWhenPressingAccelerationK
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerBrakeReplicatesBrakingTest, 
+	"ProjectR.Jet Tests.Replication.042: serverBrake replicates braking to other clients", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
 
 //jet mesh should be set to collision enabled. (query and physics or physics only).
 //delete tests that check velocity alignment to forward or backwards vectors after steering. Or see if it's possible to remade them.
