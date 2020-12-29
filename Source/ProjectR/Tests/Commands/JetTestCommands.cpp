@@ -497,7 +497,7 @@ bool FClientAccelerateJet::Update()
 }
 
 
-bool FClientPressAccelerationKey::Update()
+bool FClientPressKey::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{		
@@ -511,7 +511,7 @@ bool FClientPressAccelerationKey::Update()
 				APlayerController* controller = clientContext.World()->GetFirstPlayerController();
 				if(controller->AcknowledgedPawn == testJet)
 				{
-					PIESessionUtilities::processKeyPressFrom(FName(TEXT("AccelerateAction")), controller);
+					PIESessionUtilities::processKeyPressFrom(keyName, controller);
 					return true;
 				}
 			}

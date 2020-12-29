@@ -582,7 +582,7 @@ bool FAJetServerAcceleratesWhenPressingAccelerationKeyTest::RunTest(const FStrin
 
 	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJet(numberOfPlayers));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FClientPressAccelerationKey(numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FClientPressKey(FName(TEXT("AccelerateAction")), numberOfPlayers));
 
 	int tickCount = 0;
 	int tickLimit = 10;
@@ -607,6 +607,30 @@ bool FAJetServerBrakeReplicatesBrakingTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJet(numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientBrakeJet(numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	FVector previousLocation = FVector(1000);
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetBrake(tickCount, tickLimit, numberOfPlayers, previousLocation, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerBrakseWhenPressingBrakeKeyTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJet(numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientPressKey(FName(TEXT("brakeAction")), numberOfPlayers));
 
 	int tickCount = 0;
 	int tickLimit = 10;
