@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "MotorState.generated.h"
 
+class UMotorDriveComponent;
+
 UCLASS()
 class PROJECTR_API AMotorState : public AActor
 {
@@ -20,6 +22,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-
-
+	virtual bool isAccelerating() =0;
+	virtual bool isReversing() =0;
+	virtual void activate(UMotorDriveComponent* aMotorDriveComponent) =0;
 };
