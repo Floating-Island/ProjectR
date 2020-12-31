@@ -8,7 +8,7 @@
 
 class UMotorDriveComponent;
 
-UCLASS()
+UCLASS(Abstract)
 class PROJECTR_API AMotorState : public AActor
 {
 	GENERATED_BODY()
@@ -22,7 +22,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-	virtual bool isAccelerating() =0;
-	virtual bool isReversing() =0;
-	virtual void activate(UMotorDriveComponent* aMotorDriveComponent) =0;
+	virtual bool isAccelerating() PURE_VIRTUAL(AMotorState::isAccelerating, return false; );//I don't like this. It should be =0 instead of a macro...
+	virtual bool isReversing() PURE_VIRTUAL(AMotorState::isReversing, return false; );//I don't like this. It should be =0 instead of a macro...
+	virtual void activate(UMotorDriveComponent* aMotorDriveComponent) PURE_VIRTUAL(AMotorState::activate, ; );//I don't like this. It should be =0 instead of a macro...
 };
