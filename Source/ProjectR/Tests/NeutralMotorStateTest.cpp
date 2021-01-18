@@ -21,7 +21,7 @@ bool FANeutralMotorStateIsntAcceleratingTest::RunTest(const FString& Parameters)
 {
 	ANeutralMotorState* testNeutral = NewObject<ANeutralMotorState>();
 
-	TestFalse(TEXT("isNeutral should return false"), testNeutral->isAccelerating());
+	TestFalse(TEXT("isAccelerating should return false"), testNeutral->isAccelerating());
 	
 	return true;
 }
