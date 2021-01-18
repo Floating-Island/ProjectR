@@ -24,6 +24,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerIsntNullWhenInstantiatedTest
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerDefaultStateIsNeutralTest, 
+	"ProjectR.MotorStateManager Tests.Unit.001: The default state is NeutralMotorState", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

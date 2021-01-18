@@ -14,9 +14,14 @@
 //Test preparation commands:
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManager);
+
+
 
 //Test check commands:
 
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMotorStateManagerDefaultState, FAutomationTestBase*, test);
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
