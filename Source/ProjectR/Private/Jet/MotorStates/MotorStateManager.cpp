@@ -41,6 +41,10 @@ void AMotorStateManager::accelerate()
 
 void AMotorStateManager::brake()
 {
+	if(motorState->isReversing())
+	{
+		return;
+	}
 	updateStateTo<AReversingMotorState>();
 }
 
