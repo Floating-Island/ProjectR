@@ -49,6 +49,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerAccelerateKeepsStateIfAlread
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerBrakeKeepsStateIfAlreadyReversingingTest, 
+	"ProjectR.MotorStateManager Tests.Unit.006: brake keeps the state if it's already Reversing", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

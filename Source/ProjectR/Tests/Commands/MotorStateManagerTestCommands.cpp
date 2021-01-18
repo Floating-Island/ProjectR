@@ -182,6 +182,39 @@ bool FCheckMotorStateManagerAccelerateKeepsStateIfAccelerating::Update()
 }
 
 
+bool FCheckMotorStateManagerBrakeKeepsStateIfReversing::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
+		if(testManager)
+		{
+			testManager->brake();
+			AMotorState* currentState = testManager->currentState();
+			bool statesMatch = previousState == currentState;
+			
+			if(statesMatch)
+			{
+				test->TestTrue(TEXT("Should keep its state if brake when already Reversing"), statesMatch );
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;	
+			}
+
+			++tickCount;
+			if(tickCount > tickLimit)
+			{
+				test->TestTrue(TEXT("Should keep its state if brake when already Reversing"), statesMatch );
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+
 
 
 

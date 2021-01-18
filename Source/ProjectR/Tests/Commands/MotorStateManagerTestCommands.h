@@ -46,4 +46,7 @@ class AMotorState;
 DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerAccelerateKeepsStateIfAccelerating, int, tickCount, int, tickLimit, AMotorState*, previousState, FAutomationTestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerBrakeKeepsStateIfReversing, int, tickCount, int, tickLimit, AMotorState*, previousState, FAutomationTestBase*, test);
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS
