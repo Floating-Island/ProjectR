@@ -13,5 +13,9 @@ UCLASS()
 class PROJECTR_API ANeutralMotorState : public AMotorState
 {
 	GENERATED_BODY()
-	
+
+public:
+	virtual bool isAccelerating() override;
+	virtual bool isReversing() override;
+	virtual void activate(UMotorDriveComponent* aMotorDriveComponent) override;
 };
