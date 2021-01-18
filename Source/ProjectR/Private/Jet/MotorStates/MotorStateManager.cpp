@@ -2,20 +2,21 @@
 
 
 #include "Jet/MotorStates/MotorStateManager.h"
+#include "Jet/MotorStates/NeutralMotorState.h"
 
 // Sets default values
 AMotorStateManager::AMotorStateManager()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	motorState = nullptr;
 }
 
 // Called when the game starts or when spawned
 void AMotorStateManager::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	motorState = GetWorld()->SpawnActor<ANeutralMotorState>();
 }
 
 // Called every frame

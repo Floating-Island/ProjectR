@@ -6,10 +6,13 @@
 #include "GameFramework/Actor.h"
 #include "MotorStateManager.generated.h"
 
+class AMotorState;
+
 UCLASS()
 class PROJECTR_API AMotorStateManager : public AActor
 {
 	GENERATED_BODY()
+	
 	
 public:	
 	// Sets default values for this actor's properties
@@ -18,6 +21,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	AMotorState* motorState;
 
 public:	
 	// Called every frame

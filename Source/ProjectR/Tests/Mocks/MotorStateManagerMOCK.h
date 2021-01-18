@@ -6,7 +6,7 @@
 #include "Jet/MotorStates/MotorStateManager.h"
 #include "MotorStateManagerMOCK.generated.h"
 
-class AMotorState;
+
 /**
  * 
  */
