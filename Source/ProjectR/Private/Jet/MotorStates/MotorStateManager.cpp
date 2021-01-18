@@ -7,6 +7,7 @@
 #include "Jet/MotorStates/NeutralMotorState.h"
 #include "Jet/MotorStates/AcceleratingMotorState.h"
 #include "Jet/MotorStates/ReversingMotorState.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values
 AMotorStateManager::AMotorStateManager()
@@ -37,7 +38,21 @@ void AMotorStateManager::accelerate()
 	{
 		return;
 	}
-	updateStateTo<AAcceleratingMotorState>();
+	serverAccelerate();
+}
+
+
+void AMotorStateManager::serverAccelerate_Implementation()
+{
+	if(GetLocalRole() == ROLE_Authority)
+	{
+		updateStateTo<AAcceleratingMotorState>();
+	}
+}
+
+bool AMotorStateManager::serverAccelerate_Validate()
+{
+	return true;
 }
 
 void AMotorStateManager::brake()
@@ -57,3 +72,9 @@ void AMotorStateManager::neutralize()
 	}
 }
 
+void AMotorStateManager::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AMotorStateManager, motorState);
+}

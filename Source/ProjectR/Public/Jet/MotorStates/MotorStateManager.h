@@ -21,7 +21,11 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	AMotorState* motorState;
+	UPROPERTY(Replicated);
+		AMotorState* motorState;
+
+	UFUNCTION(Server, Reliable, WithValidation)
+		void serverAccelerate();
 
 public:	
 	// Called every frame
