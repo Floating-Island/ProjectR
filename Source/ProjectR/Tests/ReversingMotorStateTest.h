@@ -32,6 +32,10 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAReversingMotorStateIsReversingTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAReversingMotorStateActivateReversesMotorDriveTest, 
+	"ProjectR.ReversingMotorState Tests.Integration.003: activate reverses the motor drive component passed as parameter ", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
 
 
 
