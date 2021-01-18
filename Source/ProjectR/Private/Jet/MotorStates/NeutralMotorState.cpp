@@ -5,7 +5,7 @@
 
 bool ANeutralMotorState::isAccelerating()
 {
-	return true;
+	return false;
 }
 
 bool ANeutralMotorState::isReversing()
