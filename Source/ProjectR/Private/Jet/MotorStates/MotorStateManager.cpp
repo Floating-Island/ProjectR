@@ -50,6 +50,9 @@ void AMotorStateManager::brake()
 
 void AMotorStateManager::neutralize()
 {
-	updateStateTo<ANeutralMotorState>();
+	if(motorState->isAccelerating() || motorState->isReversing())
+	{
+		updateStateTo<ANeutralMotorState>();
+	}
 }
 
