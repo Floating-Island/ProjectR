@@ -7,6 +7,7 @@
 #include "Jet/MotorStates/ReversingMotorState.h"
 
 
+
 bool FAReversingMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
 	AReversingMotorState* testReversing = NewObject<AReversingMotorState>();
@@ -22,6 +23,16 @@ bool FAReversingMotorStateIsntAcceleratingTest::RunTest(const FString& Parameter
 	AReversingMotorState* testReversing = NewObject<AReversingMotorState>();
 
 	TestFalse(TEXT("isAccelerating should return false"), testReversing->isAccelerating());
+	
+	return true;
+}
+
+
+bool FAReversingMotorStateIsReversingTest::RunTest(const FString& Parameters)
+{
+	AReversingMotorState* testReversing = NewObject<AReversingMotorState>();
+
+	TestTrue(TEXT("isReversing should return true"), testReversing->isReversing());
 	
 	return true;
 }
