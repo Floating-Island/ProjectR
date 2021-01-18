@@ -16,4 +16,5 @@ class PROJECTR_API AAcceleratingMotorState : public AMotorState
 
 public:
 	virtual bool isAccelerating() override;
+	virtual bool isReversing() override;
 };

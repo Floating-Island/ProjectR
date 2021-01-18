@@ -7,3 +7,8 @@ bool AAcceleratingMotorState::isAccelerating()
 {
 	return true;
 }
+
+bool AAcceleratingMotorState::isReversing()
+{
+	return false;
+}
