@@ -65,7 +65,12 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerNeutralizeAccelerateAndBrake
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerReplicatesTest, 
-	"ProjectR.MotorStateManager Tests.Unit.009: Replicates", 
+	"ProjectR.MotorStateManager Tests.Replication.009: Replicates", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerReplicatesStateWhenCallingAccelerateTest, 
+	"ProjectR.MotorStateManager Tests.Replication.010: Replicates state when calling accelerate", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

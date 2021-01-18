@@ -9,6 +9,7 @@
 
 #include "Tests/AutomationEditorCommon.h"
 #include "Commands/MotorStateManagerTestCommands.h"
+#include "Commands/NetworkCommands.h"
 
 
 bool FAMotorStateManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
@@ -154,6 +155,30 @@ bool FAMotorStateManagerReplicatesTest::RunTest(const FString& Parameters)
 
 	return true;
 }
+
+
+bool FAMotorStateManagerReplicatesStateWhenCallingAccelerateTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnMotorStateManager(numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientAccelerateMotorStateManager(numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerServerAndClientAcceleratingState(tickCount, tickLimit, numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
 
 
 

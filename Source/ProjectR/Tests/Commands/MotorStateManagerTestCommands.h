@@ -29,6 +29,12 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManagerAndNeutralizeIt);
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManagerBrakeAccelerateAndNeutralizeIt);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FServerSpawnMotorStateManager, int, clientQuantity);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientAccelerateMotorStateManager, int, clientQuantity);
+
+
 
 //Test check commands:
 
@@ -56,5 +62,11 @@ DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerNeutraliz
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMotorStateManagerLeavesOneStateInWorld, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerServerAndClientAcceleratingState, int, tickCount, int, tickLimit, int, clientQuantity, FAutomationTestBase*, test);
+
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
