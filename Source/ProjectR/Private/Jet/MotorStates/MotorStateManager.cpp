@@ -2,7 +2,9 @@
 
 
 #include "Jet/MotorStates/MotorStateManager.h"
+
 #include "Jet/MotorStates/NeutralMotorState.h"
+#include "Jet/MotorStates/AcceleratingMotorState.h"
 
 // Sets default values
 AMotorStateManager::AMotorStateManager()
@@ -24,5 +26,12 @@ void AMotorStateManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AMotorStateManager::accelerate()
+{
+	AMotorState* oldState = motorState;
+	motorState = GetWorld()->SpawnActor<AAcceleratingMotorState>();
+	oldState->Destroy();
 }
 
