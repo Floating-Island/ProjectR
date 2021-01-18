@@ -59,6 +59,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerNeutralizeKeepsStateIfAlread
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerNeutralizeAccelerateAndBrakeOnlyLeaveOneStateInMemoryTest, 
+	"ProjectR.MotorStateManager Tests.Unit.008: neutralize, accelerate and/or brake keep only one state in memory", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

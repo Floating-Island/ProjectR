@@ -26,6 +26,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManagerAndBrakeIt);
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManagerAndNeutralizeIt);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManagerBrakeAccelerateAndNeutralizeIt);
+
+
 
 //Test check commands:
 
@@ -51,5 +54,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerBrakeKeep
 
 DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerNeutralizeKeepsStateIfNeutral, int, tickCount, int, tickLimit, AMotorState*, previousState, FAutomationTestBase*, test);
 
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMotorStateManagerLeavesOneStateInWorld, FAutomationTestBase*, test);
 
 #endif //WITH_DEV_AUTOMATION_TESTS

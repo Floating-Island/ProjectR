@@ -76,6 +76,25 @@ bool FSpawnAMotorStateManagerAndNeutralizeIt::Update()
 }
 
 
+bool FSpawnAMotorStateManagerBrakeAccelerateAndNeutralizeIt::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		AMotorStateManagerMOCK* testManager = sessionUtilities.spawnInPIEAnInstanceOf<AMotorStateManagerMOCK>();
+
+		testManager->brake();
+		testManager->accelerate();
+		testManager->neutralize();
+		
+		return true;
+	}
+
+	return false;
+}
+
+
+
 
 
 
@@ -246,6 +265,22 @@ bool FCheckMotorStateManagerNeutralizeKeepsStateIfNeutral::Update()
 }
 
 
+bool FCheckMotorStateManagerLeavesOneStateInWorld::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
+		if(testManager)
+		{
+			int statesInWorld = sessionUtilities.retrieveFromPIEAllInstancesOf<AMotorState>().Num();	
+			test->TestTrue(TEXT("After accelerating, braking and/or neutralizing, only one motor state remains in the world"), statesInWorld == 1 );
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;	
+		}
+	}
+	return false;	
+}
 
 
 
