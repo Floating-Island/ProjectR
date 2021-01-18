@@ -39,6 +39,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerBrakeChangesStateToReversing
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerNeutralizeChangesStateToNeutralTest, 
+	"ProjectR.MotorStateManager Tests.Unit.004: neutralize changes the motor state to Neutral", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

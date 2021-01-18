@@ -59,6 +59,24 @@ bool FSpawnAMotorStateManagerAndBrakeIt::Update()
 }
 
 
+bool FSpawnAMotorStateManagerAndNeutralizeIt::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		AMotorStateManagerMOCK* testManager = sessionUtilities.spawnInPIEAnInstanceOf<AMotorStateManagerMOCK>();
+
+		testManager->brake();//first change it to another state.
+		testManager->neutralize();
+		
+		return true;
+	}
+
+	return false;
+}
+
+
+
 
 
 //Test check commands:
@@ -107,6 +125,23 @@ bool FCheckMotorStateManagerStateChangesToReversing::Update()
 		if(testManager)
 		{
 			test->TestTrue(TEXT("After brake, the motorState should be Reversing"), testManager->currentState()->GetClass() == AReversingMotorState::StaticClass() );
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;	
+		}
+	}
+	return false;
+}
+
+
+bool FCheckMotorStateManagerStateChangesToNeutral::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
+		if(testManager)
+		{
+			test->TestTrue(TEXT("After neutralize, the motorState should be Neutral"), testManager->currentState()->GetClass() == ANeutralMotorState::StaticClass() );
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;	
 		}
