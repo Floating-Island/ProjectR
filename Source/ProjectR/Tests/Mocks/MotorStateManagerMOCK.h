@@ -6,6 +6,7 @@
 #include "Jet/MotorStates/MotorStateManager.h"
 #include "MotorStateManagerMOCK.generated.h"
 
+class AMotorState;
 /**
  * 
  */
@@ -13,5 +14,7 @@ UCLASS()
 class PROJECTR_API AMotorStateManagerMOCK : public AMotorStateManager
 {
 	GENERATED_BODY()
-	
+
+public:
+	AMotorState* currentState();
 };
