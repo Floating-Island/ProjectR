@@ -27,6 +27,10 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FANeutralMotorStateIsntAcceleratingTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FANeutralMotorStateIsntReversingTest, 
+	"ProjectR.Jet Tests.Unit.002: isReversing returns false", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
 
 
 

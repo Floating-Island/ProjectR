@@ -27,5 +27,14 @@ bool FANeutralMotorStateIsntAcceleratingTest::RunTest(const FString& Parameters)
 }
 
 
+bool FANeutralMotorStateIsntReversingTest::RunTest(const FString& Parameters)
+{
+	ANeutralMotorState* testNeutral = NewObject<ANeutralMotorState>();
+
+	TestFalse(TEXT("isReversing should return false"), testNeutral->isReversing());
+	
+	return true;
+}
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
