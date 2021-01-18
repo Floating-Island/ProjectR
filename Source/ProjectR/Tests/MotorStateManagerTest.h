@@ -44,6 +44,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerNeutralizeChangesStateToNeut
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerAccelerateKeepsStateIfAlreadyAcceleratingTest, 
+	"ProjectR.MotorStateManager Tests.Unit.005: accelerate keeps the state if it's already Accelerating", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

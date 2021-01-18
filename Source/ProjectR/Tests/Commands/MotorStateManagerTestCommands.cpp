@@ -150,6 +150,39 @@ bool FCheckMotorStateManagerStateChangesToNeutral::Update()
 }
 
 
+bool FCheckMotorStateManagerAccelerateKeepsStateIfAccelerating::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
+		if(testManager)
+		{
+			testManager->accelerate();
+			AMotorState* currentState = testManager->currentState();
+			bool statesMatch = previousState == currentState;
+			
+			if(statesMatch)
+			{
+				test->TestTrue(TEXT("Should keep its state if accelerate when already Accelerating"), statesMatch );
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;	
+			}
+
+			++tickCount;
+			if(tickCount > tickLimit)
+			{
+				test->TestTrue(TEXT("Should keep its state if accelerate when already Accelerating"), statesMatch );
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
