@@ -28,7 +28,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAAcceleratingMotorStateIsAcceleratingTest,
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAAcceleratingMotorStateIsntReversingTest, 
-	"ProjectR.Jet Tests.Unit.002: isReversing returns false", 
+	"ProjectR.AcceleratingMotorState Tests.Unit.002: isReversing returns false", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
