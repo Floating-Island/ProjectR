@@ -19,6 +19,10 @@
 
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerIsntNullWhenInstantiatedTest, 
+	"ProjectR.MotorStateManager Tests.Unit.000: Isn't null when instantiated", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
 
 
 

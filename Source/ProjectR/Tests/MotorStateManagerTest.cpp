@@ -5,6 +5,16 @@
 
 
 #include "MotorStateManagerTest.h"
+#include "Jet/MotorStates/MotorStateManager.h"
+
+
+bool FAMotorStateManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
+{
+	AMotorStateManager* testManager = NewObject<AMotorStateManager>();
+
+	TestNotNull(TEXT("MotorStateManager shouldn't be null when instantiated"), testManager);
+}
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
