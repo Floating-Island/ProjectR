@@ -32,6 +32,10 @@ void AMotorStateManager::Tick(float DeltaTime)
 
 void AMotorStateManager::accelerate()
 {
+	if(motorState->isAccelerating())
+	{
+		return;
+	}
 	updateStateTo<AAcceleratingMotorState>();
 }
 
