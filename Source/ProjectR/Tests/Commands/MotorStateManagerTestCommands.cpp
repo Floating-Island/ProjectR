@@ -103,7 +103,23 @@ bool FServerSpawnMotorStateManager::Update()
 		if(serverContext.World()->GetNumPlayerControllers() == clientQuantity)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Creating motor state manager..."));
-			AMotorStateManager* testManager = serverContext.World()->SpawnActor<AMotorStateManager>();
+			AMotorStateManagerMOCK* testManager = serverContext.World()->SpawnActor<AMotorStateManagerMOCK>();
+
+			APlayerController* clientController = nullptr;
+			for (auto controllerIterator = serverContext.World()->GetPlayerControllerIterator(); controllerIterator; ++controllerIterator)
+			{
+				if(controllerIterator.GetIndex() == 1)
+				{
+					clientController = controllerIterator->Get();
+					break;
+				}
+			}
+			if(clientController)
+			{
+				testManager->SetOwner(clientController);
+				UE_LOG(LogTemp, Log, TEXT("motor state manager owner set..."));
+			}
+
 			
 			return true;
 		}
@@ -338,7 +354,7 @@ bool FCheckMotorStateManagerServerAndClientAcceleratingState::Update()
 		if(serverContext.World()->GetNumPlayerControllers() == clientQuantity && testServerManager)
 		{
 			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
-			UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager..."));
+			UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager for checking..."));
 			AMotorStateManagerMOCK* testClientManager = Cast<AMotorStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AMotorStateManagerMOCK::StaticClass()));
 
 			bool clientStateIsAccelerating = testClientManager->currentState()->GetClass() == AAcceleratingMotorState::StaticClass();
