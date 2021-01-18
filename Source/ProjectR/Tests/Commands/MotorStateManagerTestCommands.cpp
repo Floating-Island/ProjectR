@@ -187,6 +187,7 @@ bool FCheckMotorStateManagerAccelerateKeepsStateIfAccelerating::Update()
 				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 				return true;	
 			}
+			previousState = currentState;
 
 			++tickCount;
 			if(tickCount > tickLimit)
@@ -219,7 +220,8 @@ bool FCheckMotorStateManagerBrakeKeepsStateIfReversing::Update()
 				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 				return true;	
 			}
-
+			previousState = currentState;
+			
 			++tickCount;
 			if(tickCount > tickLimit)
 			{
@@ -251,7 +253,8 @@ bool FCheckMotorStateManagerNeutralizeKeepsStateIfNeutral::Update()
 				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 				return true;	
 			}
-
+			previousState = currentState;
+			
 			++tickCount;
 			if(tickCount > tickLimit)
 			{
