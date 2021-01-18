@@ -10,7 +10,7 @@ bool ANeutralMotorState::isAccelerating()
 
 bool ANeutralMotorState::isReversing()
 {
-	return true;
+	return false;
 }
 
 void ANeutralMotorState::activate(UMotorDriveComponent* aMotorDriveComponent)
