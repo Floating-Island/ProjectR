@@ -17,4 +17,14 @@ bool FAReversingMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& P
 }
 
 
+bool FAReversingMotorStateIsntAcceleratingTest::RunTest(const FString& Parameters)
+{
+	AReversingMotorState* testReversing = NewObject<AReversingMotorState>();
+
+	TestFalse(TEXT("isAccelerating should return false"), testReversing->isAccelerating());
+	
+	return true;
+}
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS

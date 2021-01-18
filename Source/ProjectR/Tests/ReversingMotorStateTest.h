@@ -22,6 +22,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAReversingMotorStateIsntNullWhenInstantiatedTe
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAReversingMotorStateIsntAcceleratingTest, 
+	"ProjectR.ReversingMotorState Tests.Unit.001: isAccelerating returns false", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 
