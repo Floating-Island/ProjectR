@@ -15,6 +15,8 @@ bool FAAcceleratingMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString
 	AAcceleratingMotorState* testAccelerating = NewObject<AAcceleratingMotorState>();
 
 	TestNotNull(TEXT("The Accelerating motor state shouldn't be null when instantiated"), testAccelerating);
+
+	return true;
 }
 
 
@@ -23,6 +25,8 @@ bool FAAcceleratingMotorStateIsAcceleratingTest::RunTest(const FString& Paramete
 	AAcceleratingMotorState* testAccelerating = NewObject<AAcceleratingMotorState>();
 
 	TestTrue(TEXT("isAccelerating should return true"), testAccelerating->isAccelerating());
+	
+	return true;
 }
 
 
@@ -31,6 +35,8 @@ bool FAAcceleratingMotorStateIsntReversingTest::RunTest(const FString& Parameter
 	AAcceleratingMotorState* testAccelerating = NewObject<AAcceleratingMotorState>();
 
 	TestFalse(TEXT("isReversing should return false"), testAccelerating->isReversing());
+	
+	return true;
 }
 
 
