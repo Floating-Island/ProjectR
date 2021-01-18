@@ -146,6 +146,17 @@ bool FAMotorStateManagerNeutralizeAccelerateAndBrakeOnlyLeaveOneStateInMemoryTes
 }
 
 
+bool FAMotorStateManagerReplicatesTest::RunTest(const FString& Parameters)
+{
+	AMotorStateManager* testManager = NewObject<AMotorStateManager>();
+
+	TestTrue(TEXT("Should be able to replicate"), testManager->GetIsReplicated());
+
+	return true;
+}
+
+
+
 
 
 
