@@ -62,4 +62,6 @@ public:
 	void cancelGravityOnEveryTick();
 
 	void serverAlwaysSteer();
+
+	UMotorDriveComponent* motorDriveComponent();
 };

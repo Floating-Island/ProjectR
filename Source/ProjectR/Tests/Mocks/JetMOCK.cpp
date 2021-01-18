@@ -142,6 +142,11 @@ void AJetMOCK::serverAlwaysSteer()
 	serverSteerAlways = true;
 }
 
+UMotorDriveComponent* AJetMOCK::motorDriveComponent()
+{
+	return motorDriveSystem;
+}
+
 //bool AJetMOCK::hasAnAntiGravitySystem()
 //{
 //	return antiGravitySystem? true : false;
