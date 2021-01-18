@@ -17,5 +17,15 @@ bool FANeutralMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& Par
 }
 
 
+bool FANeutralMotorStateIsntAcceleratingTest::RunTest(const FString& Parameters)
+{
+	ANeutralMotorState* testNeutral = NewObject<ANeutralMotorState>();
+
+	TestFalse(TEXT("isNeutral should return false"), testNeutral->isAccelerating());
+	
+	return true;
+}
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS

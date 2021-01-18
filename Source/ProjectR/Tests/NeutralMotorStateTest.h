@@ -22,6 +22,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FANeutralMotorStateIsntNullWhenInstantiatedTest
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FANeutralMotorStateIsntAcceleratingTest, 
+	"ProjectR.NeutralMotorState Tests.Unit.001: isAccelerating returns false", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 
