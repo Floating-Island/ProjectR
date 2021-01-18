@@ -2,6 +2,7 @@
 
 
 #include "Jet/MotorStates/AcceleratingMotorState.h"
+#include "Jet/MotorDriveComponent.h"
 
 bool AAcceleratingMotorState::isAccelerating()
 {
@@ -11,4 +12,9 @@ bool AAcceleratingMotorState::isAccelerating()
 bool AAcceleratingMotorState::isReversing()
 {
 	return false;
+}
+
+void AAcceleratingMotorState::activate(UMotorDriveComponent* aMotorDriveComponent)
+{
+	aMotorDriveComponent->accelerate();
 }
