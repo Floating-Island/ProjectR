@@ -8,6 +8,7 @@
 #include "../Mocks/MotorStateManagerMOCK.h"
 #include "Jet/MotorStates/NeutralMotorState.h"
 #include "Jet/MotorStates/AcceleratingMotorState.h"
+#include "Jet/MotorStates/ReversingMotorState.h"
 
 
 //Test preparation commands:
@@ -40,6 +41,23 @@ bool FSpawnAMotorStateManagerAndAccelerateIt::Update()
 
 	return false;
 }
+
+
+bool FSpawnAMotorStateManagerAndBrakeIt::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		AMotorStateManagerMOCK* testManager = sessionUtilities.spawnInPIEAnInstanceOf<AMotorStateManagerMOCK>();
+
+		testManager->brake();
+		
+		return true;
+	}
+
+	return false;
+}
+
 
 
 
@@ -79,6 +97,22 @@ bool FCheckMotorStateManagerStateChangesToAccelerating::Update()
 	return false;
 }
 
+
+bool FCheckMotorStateManagerStateChangesToReversing::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
+		if(testManager)
+		{
+			test->TestTrue(TEXT("After brake, the motorState should be Reversing"), testManager->currentState()->GetClass() == AReversingMotorState::StaticClass() );
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;	
+		}
+	}
+	return false;
+}
 
 
 

@@ -34,6 +34,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerAccelerateChangesStateToAcce
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerBrakeChangesStateToReversingTest, 
+	"ProjectR.MotorStateManager Tests.Unit.003: brake changes the motor state to Reversing", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 
