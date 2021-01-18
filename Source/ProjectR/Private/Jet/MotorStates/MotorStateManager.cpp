@@ -44,4 +44,10 @@ void AMotorStateManager::brake()
 	oldState->Destroy();
 }
 
+void AMotorStateManager::neutralize()
+{
+	AMotorState* oldState = motorState;
+	motorState = GetWorld()->SpawnActor<ANeutralMotorState>();
+	oldState->Destroy();
+}
 

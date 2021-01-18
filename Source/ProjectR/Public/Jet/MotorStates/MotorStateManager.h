@@ -30,4 +30,5 @@ public:
 
 	void accelerate();
 	void brake();
+	void neutralize();
 };
