@@ -3,8 +3,10 @@
 
 #include "Jet/MotorStates/MotorStateManager.h"
 
+
 #include "Jet/MotorStates/NeutralMotorState.h"
 #include "Jet/MotorStates/AcceleratingMotorState.h"
+#include "Jet/MotorStates/ReversingMotorState.h"
 
 // Sets default values
 AMotorStateManager::AMotorStateManager()
@@ -34,4 +36,12 @@ void AMotorStateManager::accelerate()
 	motorState = GetWorld()->SpawnActor<AAcceleratingMotorState>();
 	oldState->Destroy();
 }
+
+void AMotorStateManager::brake()
+{
+	AMotorState* oldState = motorState;
+	motorState = GetWorld()->SpawnActor<AReversingMotorState>();
+	oldState->Destroy();
+}
+
 
