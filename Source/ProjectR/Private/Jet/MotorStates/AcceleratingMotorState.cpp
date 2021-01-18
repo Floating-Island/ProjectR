@@ -3,3 +3,7 @@
 
 #include "Jet/MotorStates/AcceleratingMotorState.h"
 
+bool AAcceleratingMotorState::isAccelerating()
+{
+	return true;
+}

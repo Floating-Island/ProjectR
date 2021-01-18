@@ -22,6 +22,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAAcceleratingMotorStateIsntNullWhenInstantiate
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAAcceleratingMotorStateIsAcceleratingTest, 
+	"ProjectR.Jet Tests.Unit.001: isAccelerating returns true", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

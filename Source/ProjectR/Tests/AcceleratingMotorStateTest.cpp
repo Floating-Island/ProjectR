@@ -15,4 +15,13 @@ bool FAAcceleratingMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString
 }
 
 
+bool FAAcceleratingMotorStateIsAcceleratingTest::RunTest(const FString& Parameters)
+{
+	AAcceleratingMotorState* testAccelerating = NewObject<AAcceleratingMotorState>();
+
+	TestTrue(TEXT("The Accelerating motor state shouldn't be null when instantiated"), testAccelerating->isAccelerating());
+}
+
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS

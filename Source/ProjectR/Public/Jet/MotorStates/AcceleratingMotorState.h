@@ -13,5 +13,7 @@ UCLASS()
 class PROJECTR_API AAcceleratingMotorState : public AMotorState
 {
 	GENERATED_BODY()
-	
+
+public:
+	virtual bool isAccelerating() override;
 };
