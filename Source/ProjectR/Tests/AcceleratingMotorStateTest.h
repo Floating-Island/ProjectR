@@ -18,12 +18,12 @@
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAAcceleratingMotorStateIsntNullWhenInstantiatedTest, 
-	"ProjectR.Jet Tests.Unit.000: Isn't null when instantiated", 
+	"ProjectR.AcceleratingMotorState Tests.Unit.000: Isn't null when instantiated", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAAcceleratingMotorStateIsAcceleratingTest, 
-	"ProjectR.Jet Tests.Unit.001: isAccelerating returns true", 
+	"ProjectR.AcceleratingMotorState Tests.Unit.001: isAccelerating returns true", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
@@ -33,7 +33,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAAcceleratingMotorStateIsntReversingTest,
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAAcceleratingMotorStateActivateAcceleratesMotorDriveTest, 
-	"ProjectR.Jet Tests.Integration.003: activate accelerates the motor drive component passed as parameter ", 
+	"ProjectR.AcceleratingMotorState Tests.Integration.003: activate accelerates the motor drive component passed as parameter ", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
