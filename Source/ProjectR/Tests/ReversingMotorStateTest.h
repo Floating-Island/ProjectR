@@ -17,6 +17,10 @@
 #if WITH_DEV_AUTOMATION_TESTS
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAReversingMotorStateIsntNullWhenInstantiatedTest, 
+	"ProjectR.ReversingMotorState Tests.Unit.000: Isn't null when instantiated", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
 
 
 
