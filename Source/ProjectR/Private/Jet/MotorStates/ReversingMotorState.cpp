@@ -10,7 +10,7 @@ bool AReversingMotorState::isAccelerating()
 
 bool AReversingMotorState::isReversing()
 {
-	return false;
+	return true;
 }
 
 void AReversingMotorState::activate(UMotorDriveComponent* aMotorDriveComponent)
