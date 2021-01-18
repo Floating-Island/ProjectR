@@ -19,7 +19,15 @@ bool FAAcceleratingMotorStateIsAcceleratingTest::RunTest(const FString& Paramete
 {
 	AAcceleratingMotorState* testAccelerating = NewObject<AAcceleratingMotorState>();
 
-	TestTrue(TEXT("The Accelerating motor state shouldn't be null when instantiated"), testAccelerating->isAccelerating());
+	TestTrue(TEXT("isAccelerating should return true"), testAccelerating->isAccelerating());
+}
+
+
+bool FAAcceleratingMotorStateIsntReversingTest::RunTest(const FString& Parameters)
+{
+	AAcceleratingMotorState* testAccelerating = NewObject<AAcceleratingMotorState>();
+
+	TestFalse(TEXT("isReversing should return false"), testAccelerating->isReversing());
 }
 
 
