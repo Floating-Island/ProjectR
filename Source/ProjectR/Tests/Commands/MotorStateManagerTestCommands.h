@@ -17,11 +17,17 @@
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManager);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManagerAndAccelerateIt);
+
+
 
 //Test check commands:
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMotorStateManagerDefaultState, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMotorStateManagerStateChangesToAccelerating, FAutomationTestBase*, test);
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

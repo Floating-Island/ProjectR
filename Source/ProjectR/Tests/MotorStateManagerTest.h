@@ -29,6 +29,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerDefaultStateIsNeutralTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerAccelerateChangesStateToAcceleratingTest, 
+	"ProjectR.MotorStateManager Tests.Unit.002: accelerate changes the motor state to Accelerating", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

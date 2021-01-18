@@ -7,6 +7,7 @@
 #include "../Utilities/PIESessionUtilities.h"
 #include "../Mocks/MotorStateManagerMOCK.h"
 #include "Jet/MotorStates/NeutralMotorState.h"
+#include "Jet/MotorStates/AcceleratingMotorState.h"
 
 
 //Test preparation commands:
@@ -23,6 +24,23 @@ bool FSpawnAMotorStateManager::Update()
 
 	return false;
 }
+
+
+bool FSpawnAMotorStateManagerAndAccelerateIt::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		AMotorStateManagerMOCK* testManager = sessionUtilities.spawnInPIEAnInstanceOf<AMotorStateManagerMOCK>();
+
+		testManager->accelerate();
+		
+		return true;
+	}
+
+	return false;
+}
+
 
 
 //Test check commands:
@@ -43,6 +61,26 @@ bool FCheckMotorStateManagerDefaultState::Update()
 	}
 	return false;
 }
+
+
+bool FCheckMotorStateManagerStateChangesToAccelerating::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
+		if(testManager)
+		{
+			test->TestTrue(TEXT("After accelerate, the motorState should be Accelerating"), testManager->currentState()->GetClass() == AAcceleratingMotorState::StaticClass() );
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;	
+		}
+	}
+	return false;
+}
+
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
