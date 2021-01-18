@@ -114,6 +114,23 @@ bool FAMotorStateManagerBrakeKeepsStateIfAlreadyReversingingTest::RunTest(const 
 }
 
 
+bool FAMotorStateManagerNeutralizeKeepsStateIfAlreadyNeutralTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManagerAndAccelerateIt);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerNeutralizeKeepsStateIfNeutral(tickCount, tickLimit, nullptr, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 
 
 

@@ -54,6 +54,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerBrakeKeepsStateIfAlreadyReve
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerNeutralizeKeepsStateIfAlreadyNeutralTest, 
+	"ProjectR.MotorStateManager Tests.Unit.007: neutralize keeps the state if it's already Neutral", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

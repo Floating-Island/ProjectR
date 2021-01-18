@@ -214,6 +214,39 @@ bool FCheckMotorStateManagerBrakeKeepsStateIfReversing::Update()
 }
 
 
+bool FCheckMotorStateManagerNeutralizeKeepsStateIfNeutral::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
+		if(testManager)
+		{
+			testManager->neutralize();
+			AMotorState* currentState = testManager->currentState();
+			bool statesMatch = previousState == currentState;
+			
+			if(statesMatch)
+			{
+				test->TestTrue(TEXT("Should keep its state if neutralize when already Neutral"), statesMatch );
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;	
+			}
+
+			++tickCount;
+			if(tickCount > tickLimit)
+			{
+				test->TestTrue(TEXT("Should keep its state if neutralize when already Neutral"), statesMatch );
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+
 
 
 
