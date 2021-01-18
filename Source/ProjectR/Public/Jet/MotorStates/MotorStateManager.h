@@ -4,9 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Jet/MotorStates/MotorState.h"
 #include "MotorStateManager.generated.h"
-
-class AMotorState;
 
 UCLASS()
 class PROJECTR_API AMotorStateManager : public AActor
@@ -27,8 +26,18 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	template<class aMotorStateType>
+	void updateStateTo();
 
 	void accelerate();
 	void brake();
 	void neutralize();
 };
+
+template <class aMotorStateType>
+void AMotorStateManager::updateStateTo()
+{
+	AMotorState* oldState = motorState;
+	motorState = GetWorld()->SpawnActor<aMotorStateType>();
+	oldState->Destroy();
+}

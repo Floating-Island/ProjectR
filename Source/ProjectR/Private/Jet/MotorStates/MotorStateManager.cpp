@@ -32,22 +32,16 @@ void AMotorStateManager::Tick(float DeltaTime)
 
 void AMotorStateManager::accelerate()
 {
-	AMotorState* oldState = motorState;
-	motorState = GetWorld()->SpawnActor<AAcceleratingMotorState>();
-	oldState->Destroy();
+	updateStateTo<AAcceleratingMotorState>();
 }
 
 void AMotorStateManager::brake()
 {
-	AMotorState* oldState = motorState;
-	motorState = GetWorld()->SpawnActor<AReversingMotorState>();
-	oldState->Destroy();
+	updateStateTo<AReversingMotorState>();
 }
 
 void AMotorStateManager::neutralize()
 {
-	AMotorState* oldState = motorState;
-	motorState = GetWorld()->SpawnActor<ANeutralMotorState>();
-	oldState->Destroy();
+	updateStateTo<ANeutralMotorState>();
 }
 
