@@ -13,7 +13,10 @@ bool FAMotorStateManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Par
 	AMotorStateManager* testManager = NewObject<AMotorStateManager>();
 
 	TestNotNull(TEXT("MotorStateManager shouldn't be null when instantiated"), testManager);
+
+	return true;
 }
+
 
 
 
