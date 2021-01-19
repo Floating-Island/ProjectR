@@ -47,4 +47,14 @@ bool FANeutralMotorStateReplicatesTest::RunTest(const FString& Parameters)
 }
 
 
+bool FANeutralMotorStateIsAlwaysRelevantTest::RunTest(const FString& Parameters)
+{
+	ANeutralMotorState* testNeutral = NewObject<ANeutralMotorState>();
+
+	TestTrue(TEXT("Should have bAlwaysRelevant set to true"), testNeutral->bAlwaysRelevant);
+	
+	return true;
+}
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS

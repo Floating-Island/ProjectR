@@ -37,6 +37,12 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FANeutralMotorStateReplicatesTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FANeutralMotorStateIsAlwaysRelevantTest, 
+	"ProjectR.NeutralMotorState Tests.Replication.004: Is always relevant to the network", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+
 
 
 
