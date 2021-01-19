@@ -55,7 +55,7 @@ void AMotorStateManager::neutralize()
 {
 	if (motorState->isAccelerating() || motorState->isReversing())
 	{
-		updateStateTo<ANeutralMotorState>();
+		serverNeutralize();
 	}
 }
 
@@ -82,6 +82,19 @@ void AMotorStateManager::serverBrake_Implementation()
 }
 
 bool AMotorStateManager::serverBrake_Validate()
+{
+	return true;
+}
+
+void AMotorStateManager::serverNeutralize_Implementation()
+{
+	if(GetLocalRole() == ROLE_Authority)
+	{
+		updateStateTo<ANeutralMotorState>();
+	}
+}
+
+bool AMotorStateManager::serverNeutralize_Validate()
 {
 	return true;
 }

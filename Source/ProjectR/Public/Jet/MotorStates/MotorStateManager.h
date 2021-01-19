@@ -30,6 +30,9 @@ protected:
 	UFUNCTION(Server, Reliable, WithValidation)
 		void serverBrake();
 
+	UFUNCTION(Server, Reliable, WithValidation)
+		void serverNeutralize();
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
