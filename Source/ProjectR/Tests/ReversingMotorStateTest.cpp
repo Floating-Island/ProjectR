@@ -69,4 +69,13 @@ bool FAReversingMotorStateReplicatesTest::RunTest(const FString& Parameters)
 }
 
 
+bool FAReversingMotorStateIsAlwaysRelevantTest::RunTest(const FString& Parameters)
+{
+	AReversingMotorState* testReversing = NewObject<AReversingMotorState>();
+
+	TestTrue(TEXT("Should have bAlwaysRelevant set to true"), testReversing->bAlwaysRelevant);
+	
+	return true;
+}
+
 #endif //WITH_DEV_AUTOMATION_TESTS

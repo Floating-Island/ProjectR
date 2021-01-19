@@ -42,6 +42,12 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAReversingMotorStateReplicatesTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAReversingMotorStateIsAlwaysRelevantTest, 
+	"ProjectR.ReversingMotorState Tests.Replication.005: Is always relevant to the network", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+
 
 
 
