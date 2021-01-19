@@ -42,6 +42,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAAcceleratingMotorStateReplicatesTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAAcceleratingMotorStateIsAlwaysRelevantTest, 
+	"ProjectR.AcceleratingMotorState Tests.Replication.005: Is always relevant to the network", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

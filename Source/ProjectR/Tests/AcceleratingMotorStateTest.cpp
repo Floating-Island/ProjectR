@@ -69,6 +69,17 @@ bool FAAcceleratingMotorStateReplicatesTest::RunTest(const FString& Parameters)
 }
 
 
+bool FAAcceleratingMotorStateIsAlwaysRelevantTest::RunTest(const FString& Parameters)
+{
+	AAcceleratingMotorState* testAccelerating = NewObject<AAcceleratingMotorState>();
+
+	TestTrue(TEXT("Should have bAlwaysRelevant set to true"), testAccelerating->bAlwaysRelevant);
+	
+	return true;
+}
+
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
