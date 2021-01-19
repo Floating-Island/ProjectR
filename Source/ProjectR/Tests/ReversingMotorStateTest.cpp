@@ -58,4 +58,15 @@ bool FAReversingMotorStateActivateReversesMotorDriveTest::RunTest(const FString&
 	return true;
 }
 
+
+bool FAReversingMotorStateReplicatesTest::RunTest(const FString& Parameters)
+{
+	AReversingMotorState* testReversing = NewObject<AReversingMotorState>();
+
+	TestTrue(TEXT("Should have SetReplicates set to true"), testReversing->GetIsReplicated());
+	
+	return true;
+}
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS

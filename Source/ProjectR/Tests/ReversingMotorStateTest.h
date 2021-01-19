@@ -37,6 +37,9 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAReversingMotorStateActivateReversesMotorDrive
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAReversingMotorStateReplicatesTest, 
+	"ProjectR.ReversingMotorState Tests.Replication.004: Replicates", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 
