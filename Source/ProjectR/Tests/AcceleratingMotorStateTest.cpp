@@ -59,5 +59,16 @@ bool FAAcceleratingMotorStateActivateAcceleratesMotorDriveTest::RunTest(const FS
 }
 
 
+bool FAAcceleratingMotorStateReplicatesTest::RunTest(const FString& Parameters)
+{
+	AAcceleratingMotorState* testAccelerating = NewObject<AAcceleratingMotorState>();
+
+	TestTrue(TEXT("Should have SetReplicates set to true"), testAccelerating->GetIsReplicated());
+	
+	return true;
+}
+
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
