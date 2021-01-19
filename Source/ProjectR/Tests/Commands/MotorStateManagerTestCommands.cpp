@@ -357,9 +357,13 @@ bool FCheckMotorStateManagerServerAndClientAcceleratingState::Update()
 			UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager for checking..."));
 			AMotorStateManagerMOCK* testClientManager = Cast<AMotorStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AMotorStateManagerMOCK::StaticClass()));
 
-			bool clientStateIsAccelerating = testClientManager->currentState()->GetClass() == AAcceleratingMotorState::StaticClass();
-			bool serverStateIsAccelerating = testServerManager->currentState()->GetClass() == AAcceleratingMotorState::StaticClass();
-			bool bothAccelerating = serverStateIsAccelerating && clientStateIsAccelerating;
+			bool bothAccelerating = false;
+			if(testClientManager)
+			{
+				bool clientStateIsAccelerating = testClientManager->currentState()->GetClass() == AAcceleratingMotorState::StaticClass();
+				bool serverStateIsAccelerating = testServerManager->currentState()->GetClass() == AAcceleratingMotorState::StaticClass();
+				bothAccelerating = serverStateIsAccelerating && clientStateIsAccelerating;
+			}
 
 			if(bothAccelerating)
 			{
