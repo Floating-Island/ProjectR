@@ -12,7 +12,7 @@
 // Sets default values
 AMotorStateManager::AMotorStateManager()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	SetReplicates(true);
 	bAlwaysRelevant = true;
@@ -35,7 +35,7 @@ void AMotorStateManager::Tick(float DeltaTime)
 
 void AMotorStateManager::accelerate()
 {
-	if(motorState->isAccelerating())
+	if (motorState->isAccelerating())
 	{
 		return;
 	}
@@ -44,7 +44,7 @@ void AMotorStateManager::accelerate()
 
 void AMotorStateManager::brake()
 {
-	if(motorState->isReversing())
+	if (motorState->isReversing())
 	{
 		return;
 	}
@@ -53,7 +53,7 @@ void AMotorStateManager::brake()
 
 void AMotorStateManager::neutralize()
 {
-	if(motorState->isAccelerating() || motorState->isReversing())
+	if (motorState->isAccelerating() || motorState->isReversing())
 	{
 		updateStateTo<ANeutralMotorState>();
 	}
@@ -61,7 +61,7 @@ void AMotorStateManager::neutralize()
 
 void AMotorStateManager::serverAccelerate_Implementation()
 {
-	if(GetLocalRole() == ROLE_Authority)
+	if (GetLocalRole() == ROLE_Authority)
 	{
 		updateStateTo<AAcceleratingMotorState>();
 	}
