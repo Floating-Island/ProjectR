@@ -42,20 +42,6 @@ void AMotorStateManager::accelerate()
 	serverAccelerate();
 }
 
-
-void AMotorStateManager::serverAccelerate_Implementation()
-{
-	if(GetLocalRole() == ROLE_Authority)
-	{
-		updateStateTo<AAcceleratingMotorState>();
-	}
-}
-
-bool AMotorStateManager::serverAccelerate_Validate()
-{
-	return true;
-}
-
 void AMotorStateManager::brake()
 {
 	if(motorState->isReversing())
@@ -71,6 +57,19 @@ void AMotorStateManager::neutralize()
 	{
 		updateStateTo<ANeutralMotorState>();
 	}
+}
+
+void AMotorStateManager::serverAccelerate_Implementation()
+{
+	if(GetLocalRole() == ROLE_Authority)
+	{
+		updateStateTo<AAcceleratingMotorState>();
+	}
+}
+
+bool AMotorStateManager::serverAccelerate_Validate()
+{
+	return true;
 }
 
 void AMotorStateManager::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
