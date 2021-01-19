@@ -32,6 +32,9 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FANeutralMotorStateIsntReversingTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FANeutralMotorStateReplicatesTest, 
+	"ProjectR.NeutralMotorState Tests.Replication.003: Replicates", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 

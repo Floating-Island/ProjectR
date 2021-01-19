@@ -37,4 +37,14 @@ bool FANeutralMotorStateIsntReversingTest::RunTest(const FString& Parameters)
 }
 
 
+bool FANeutralMotorStateReplicatesTest::RunTest(const FString& Parameters)
+{
+	ANeutralMotorState* testNeutral = NewObject<ANeutralMotorState>();
+
+	TestTrue(TEXT("Should have SetReplicates set to true"), testNeutral->GetIsReplicated());
+	
+	return true;
+}
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS
