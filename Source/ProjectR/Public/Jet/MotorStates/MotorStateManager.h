@@ -11,9 +11,9 @@ UCLASS()
 class PROJECTR_API AMotorStateManager : public AActor
 {
 	GENERATED_BODY()
-	
-	
-public:	
+
+
+public:
 	// Sets default values for this actor's properties
 	AMotorStateManager();
 
@@ -27,9 +27,10 @@ protected:
 	UFUNCTION(Server, Reliable, WithValidation)
 		void serverAccelerate();
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
 	template<class aMotorStateType>
 	void updateStateTo();
 
