@@ -69,8 +69,13 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerReplicatesTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerAlwaysRelevantTest, 
+	"ProjectR.MotorStateManager Tests.Replication.010: Is always relevant for network", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerReplicatesStateWhenCallingAccelerateTest, 
-	"ProjectR.MotorStateManager Tests.Replication.010: Replicates state when calling accelerate", 
+	"ProjectR.MotorStateManager Tests.Replication.011: Replicates state when calling accelerate", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

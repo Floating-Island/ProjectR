@@ -157,6 +157,17 @@ bool FAMotorStateManagerReplicatesTest::RunTest(const FString& Parameters)
 }
 
 
+bool FAMotorStateManagerAlwaysRelevantTest::RunTest(const FString& Parameters)
+{
+	AMotorStateManager* testManager = NewObject<AMotorStateManager>();
+
+	TestTrue(TEXT("Should be always relevant for network"), testManager->bAlwaysRelevant);
+
+	return true;
+}
+
+
+
 bool FAMotorStateManagerReplicatesStateWhenCallingAccelerateTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
