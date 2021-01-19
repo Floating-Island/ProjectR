@@ -35,6 +35,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FServerSpawnMotorStateManager, in
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientAccelerateMotorStateManager, int, clientQuantity);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientBrakeMotorStateManager, int, clientQuantity);
+
+
 
 //Test check commands:
 
@@ -65,6 +68,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMotorStateManagerLeavesOneS
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerServerAndClientAcceleratingState, int, tickCount, int, tickLimit, int, clientQuantity, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerServerAndClientReversingState, int, tickCount, int, tickLimit, int, clientQuantity, FAutomationTestBase*, test);
 
 
 

@@ -150,6 +150,28 @@ bool FClientAccelerateMotorStateManager::Update()
 }
 
 
+bool FClientBrakeMotorStateManager::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{		
+		FWorldContext serverContext = GEditor->GetWorldContexts()[1];//0 is editor, 1 is server, 2->N is clients
+		if (serverContext.World()->GetNumPlayerControllers() == clientQuantity)
+		{
+			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
+			UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager..."));
+			AMotorStateManager* testClientManager = Cast<AMotorStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AMotorStateManager::StaticClass()));
+			if (testClientManager)
+			{
+				UE_LOG(LogTemp, Log, TEXT("reversing motor state manager..."));
+				testClientManager->brake();
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
 
 
 
@@ -379,6 +401,52 @@ bool FCheckMotorStateManagerServerAndClientAcceleratingState::Update()
 			if(tickCount > tickLimit)
 			{
 				test->TestTrue(TEXT("The server should replicate its state when calling accelerate."), bothAccelerating);
+				for(auto context : GEditor->GetWorldContexts())
+				{
+					context.World()->bDebugFrameStepExecution = true;
+				}
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FCheckMotorStateManagerServerAndClientReversingState::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = GEditor->GetWorldContexts()[1];
+		AMotorStateManagerMOCK* testServerManager = Cast<AMotorStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(serverContext.World(), AMotorStateManagerMOCK::StaticClass()));
+		if(serverContext.World()->GetNumPlayerControllers() == clientQuantity && testServerManager)
+		{
+			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
+			UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager for checking..."));
+			AMotorStateManagerMOCK* testClientManager = Cast<AMotorStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AMotorStateManagerMOCK::StaticClass()));
+
+			bool bothReversing = false;
+			if(testClientManager)
+			{
+				bool clientStateIsReversing = testClientManager->currentState()->GetClass() == AReversingMotorState::StaticClass();
+				bool serverStateIsReversing = testServerManager->currentState()->GetClass() == AReversingMotorState::StaticClass();
+				bothReversing = serverStateIsReversing && clientStateIsReversing;
+			}
+
+			if(bothReversing)
+			{
+				test->TestTrue(TEXT("The server should replicate its state when calling brake."), bothReversing);
+				for(auto context : GEditor->GetWorldContexts())
+				{
+					context.World()->bDebugFrameStepExecution = true;
+				}
+				return true;
+			}
+
+			++tickCount;
+			if(tickCount > tickLimit)
+			{
+				test->TestTrue(TEXT("The server should replicate its state when calling brake."), bothReversing);
 				for(auto context : GEditor->GetWorldContexts())
 				{
 					context.World()->bDebugFrameStepExecution = true;
