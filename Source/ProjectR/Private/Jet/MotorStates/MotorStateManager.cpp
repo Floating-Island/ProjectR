@@ -48,7 +48,7 @@ void AMotorStateManager::brake()
 	{
 		return;
 	}
-	updateStateTo<AReversingMotorState>();
+	serverBrake();
 }
 
 void AMotorStateManager::neutralize()
@@ -68,6 +68,20 @@ void AMotorStateManager::serverAccelerate_Implementation()
 }
 
 bool AMotorStateManager::serverAccelerate_Validate()
+{
+	return true;
+}
+
+
+void AMotorStateManager::serverBrake_Implementation()
+{
+	if(GetLocalRole() == ROLE_Authority)
+	{
+		updateStateTo<AReversingMotorState>();
+	}
+}
+
+bool AMotorStateManager::serverBrake_Validate()
 {
 	return true;
 }

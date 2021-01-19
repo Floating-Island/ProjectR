@@ -27,6 +27,9 @@ protected:
 	UFUNCTION(Server, Reliable, WithValidation)
 		void serverAccelerate();
 
+	UFUNCTION(Server, Reliable, WithValidation)
+		void serverBrake();
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
