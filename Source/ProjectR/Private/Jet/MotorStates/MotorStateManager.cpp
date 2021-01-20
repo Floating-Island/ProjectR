@@ -61,7 +61,7 @@ void AMotorStateManager::neutralize()
 
 void AMotorStateManager::serverAccelerate_Implementation()
 {
-	if (GetLocalRole() == ROLE_Authority)
+	if (HasAuthority())
 	{
 		updateStateTo<AAcceleratingMotorState>();
 	}
@@ -75,7 +75,7 @@ bool AMotorStateManager::serverAccelerate_Validate()
 
 void AMotorStateManager::serverBrake_Implementation()
 {
-	if(GetLocalRole() == ROLE_Authority)
+	if(HasAuthority())
 	{
 		updateStateTo<AReversingMotorState>();
 	}
@@ -88,7 +88,7 @@ bool AMotorStateManager::serverBrake_Validate()
 
 void AMotorStateManager::serverNeutralize_Implementation()
 {
-	if(GetLocalRole() == ROLE_Authority)
+	if(HasAuthority())
 	{
 		updateStateTo<ANeutralMotorState>();
 	}

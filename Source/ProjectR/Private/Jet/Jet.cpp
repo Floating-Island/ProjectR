@@ -194,7 +194,7 @@ FVector AJet::rightVectorProjectionOnFloor()
 
 void AJet::serverSteer_Implementation(float aSteerDirection)
 {
-	if(GetLocalRole() == ROLE_Authority)
+	if(HasAuthority())
 	{
 		steer(aSteerDirection);
 	}
@@ -207,7 +207,7 @@ bool AJet::serverSteer_Validate(float aSteerDirection)
 
 void AJet::serverBrake_Implementation(float aBrakeMultiplier)
 {
-	if(GetLocalRole() == ROLE_Authority)
+	if(HasAuthority())
 	{
 		brake(aBrakeMultiplier);
 	}
@@ -220,7 +220,7 @@ bool AJet::serverBrake_Validate(float aBrakeMultiplier)
 
 void AJet::serverAccelerate_Implementation(float anAccelerationMultiplier)
 {
-  if(GetLocalRole() == ROLE_Authority)
+  if(HasAuthority())
   {
     accelerate(anAccelerationMultiplier);
   }
