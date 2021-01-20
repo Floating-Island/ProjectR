@@ -49,6 +49,12 @@ template <class aMotorStateType>
 void AMotorStateManager::updateStateTo()
 {
 	AMotorState* oldState = motorState;
-	motorState = GetWorld()->SpawnActor<aMotorStateType>();
+	FActorSpawnParameters spawnParameters = FActorSpawnParameters();
+	spawnParameters.Owner = this;
+	motorState = GetWorld()->SpawnActor<aMotorStateType>(spawnParameters);
+	if(!motorState)
+	{
+		UE_LOG(LogTemp, Log, TEXT("couldn't create new motor state"));
+	}
 	oldState->Destroy();
 }
