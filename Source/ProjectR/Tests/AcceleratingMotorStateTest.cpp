@@ -10,7 +10,7 @@
 #include "Commands/AcceleratingMotorStateTestCommands.h"
 #include "Commands/JetTestCommands.h"
 
-bool FAAcceleratingMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
+bool FUAcceleratingMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
 	UAcceleratingMotorState* testAccelerating = NewObject<UAcceleratingMotorState>();
 
@@ -20,7 +20,7 @@ bool FAAcceleratingMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString
 }
 
 
-bool FAAcceleratingMotorStateIsAcceleratingTest::RunTest(const FString& Parameters)
+bool FUAcceleratingMotorStateIsAcceleratingTest::RunTest(const FString& Parameters)
 {
 	UAcceleratingMotorState* testAccelerating = NewObject<UAcceleratingMotorState>();
 
@@ -30,7 +30,7 @@ bool FAAcceleratingMotorStateIsAcceleratingTest::RunTest(const FString& Paramete
 }
 
 
-bool FAAcceleratingMotorStateIsntReversingTest::RunTest(const FString& Parameters)
+bool FUAcceleratingMotorStateIsntReversingTest::RunTest(const FString& Parameters)
 {
 	UAcceleratingMotorState* testAccelerating = NewObject<UAcceleratingMotorState>();
 
@@ -40,7 +40,7 @@ bool FAAcceleratingMotorStateIsntReversingTest::RunTest(const FString& Parameter
 }
 
 
-bool FAAcceleratingMotorStateActivateAcceleratesMotorDriveTest::RunTest(const FString& Parameters)
+bool FUAcceleratingMotorStateActivateAcceleratesMotorDriveTest::RunTest(const FString& Parameters)
 {
 	
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -59,7 +59,7 @@ bool FAAcceleratingMotorStateActivateAcceleratesMotorDriveTest::RunTest(const FS
 }
 
 
-bool FAAcceleratingMotorStateSupportsNetworkingTest::RunTest(const FString& Parameters)
+bool FUAcceleratingMotorStateSupportsNetworkingTest::RunTest(const FString& Parameters)
 {
 	UAcceleratingMotorState* testAccelerating = NewObject<UAcceleratingMotorState>();
 

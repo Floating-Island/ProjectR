@@ -10,7 +10,7 @@
 #include "Commands/ReversingMotorStateTestCommands.h"
 #include "Commands/JetTestCommands.h"
 
-bool FAReversingMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
+bool FUReversingMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
 	UReversingMotorState* testReversing = NewObject<UReversingMotorState>();
 
@@ -20,7 +20,7 @@ bool FAReversingMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& P
 }
 
 
-bool FAReversingMotorStateIsntAcceleratingTest::RunTest(const FString& Parameters)
+bool FUReversingMotorStateIsntAcceleratingTest::RunTest(const FString& Parameters)
 {
 	UReversingMotorState* testReversing = NewObject<UReversingMotorState>();
 
@@ -30,7 +30,7 @@ bool FAReversingMotorStateIsntAcceleratingTest::RunTest(const FString& Parameter
 }
 
 
-bool FAReversingMotorStateIsReversingTest::RunTest(const FString& Parameters)
+bool FUReversingMotorStateIsReversingTest::RunTest(const FString& Parameters)
 {
 	UReversingMotorState* testReversing = NewObject<UReversingMotorState>();
 
@@ -40,7 +40,7 @@ bool FAReversingMotorStateIsReversingTest::RunTest(const FString& Parameters)
 }
 
 
-bool FAReversingMotorStateActivateReversesMotorDriveTest::RunTest(const FString& Parameters)
+bool FUReversingMotorStateActivateReversesMotorDriveTest::RunTest(const FString& Parameters)
 {
 	
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
@@ -59,7 +59,7 @@ bool FAReversingMotorStateActivateReversesMotorDriveTest::RunTest(const FString&
 }
 
 
-bool FAReversingMotorStateSupportsNetworkingTest::RunTest(const FString& Parameters)
+bool FUReversingMotorStateSupportsNetworkingTest::RunTest(const FString& Parameters)
 {
 	UReversingMotorState* testReversing = NewObject<UReversingMotorState>();
 

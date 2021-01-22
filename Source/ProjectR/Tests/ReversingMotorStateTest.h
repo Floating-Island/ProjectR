@@ -17,27 +17,27 @@
 #if WITH_DEV_AUTOMATION_TESTS
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAReversingMotorStateIsntNullWhenInstantiatedTest, 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUReversingMotorStateIsntNullWhenInstantiatedTest, 
 	"ProjectR.ReversingMotorState Tests.Unit.000: Isn't null when instantiated", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAReversingMotorStateIsntAcceleratingTest, 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUReversingMotorStateIsntAcceleratingTest, 
 	"ProjectR.ReversingMotorState Tests.Unit.001: isAccelerating returns false", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAReversingMotorStateIsReversingTest, 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUReversingMotorStateIsReversingTest, 
 	"ProjectR.ReversingMotorState Tests.Unit.002: isReversing returns true", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAReversingMotorStateActivateReversesMotorDriveTest, 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUReversingMotorStateActivateReversesMotorDriveTest, 
 	"ProjectR.ReversingMotorState Tests.Integration.003: activate reverses the motor drive component passed as parameter ", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAReversingMotorStateSupportsNetworkingTest, 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUReversingMotorStateSupportsNetworkingTest, 
 	"ProjectR.ReversingMotorState Tests.Replication.004: Supports networking", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 

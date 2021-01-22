@@ -7,7 +7,7 @@
 #include "NeutralMotorStateTest.h"
 #include "Jet/MotorStates/NeutralMotorState.h"
 
-bool FANeutralMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
+bool FUNeutralMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
 	UNeutralMotorState* testNeutral = NewObject<UNeutralMotorState>();
 
@@ -17,7 +17,7 @@ bool FANeutralMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& Par
 }
 
 
-bool FANeutralMotorStateIsntAcceleratingTest::RunTest(const FString& Parameters)
+bool FUNeutralMotorStateIsntAcceleratingTest::RunTest(const FString& Parameters)
 {
 	UNeutralMotorState* testNeutral = NewObject<UNeutralMotorState>();
 
@@ -27,7 +27,7 @@ bool FANeutralMotorStateIsntAcceleratingTest::RunTest(const FString& Parameters)
 }
 
 
-bool FANeutralMotorStateIsntReversingTest::RunTest(const FString& Parameters)
+bool FUNeutralMotorStateIsntReversingTest::RunTest(const FString& Parameters)
 {
 	UNeutralMotorState* testNeutral = NewObject<UNeutralMotorState>();
 
@@ -37,7 +37,7 @@ bool FANeutralMotorStateIsntReversingTest::RunTest(const FString& Parameters)
 }
 
 
-bool FANeutralMotorStateSupportsNetworkingTest::RunTest(const FString& Parameters)
+bool FUNeutralMotorStateSupportsNetworkingTest::RunTest(const FString& Parameters)
 {
 	UNeutralMotorState* testNeutral = NewObject<UNeutralMotorState>();
 
