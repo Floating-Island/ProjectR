@@ -12,7 +12,7 @@
 
 bool FAReversingMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
-	AReversingMotorState* testReversing = NewObject<AReversingMotorState>();
+	UReversingMotorState* testReversing = NewObject<UReversingMotorState>();
 
 	TestNotNull(TEXT("The Reversing motor state shouldn't be null when instantiated"), testReversing);
 
@@ -22,7 +22,7 @@ bool FAReversingMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& P
 
 bool FAReversingMotorStateIsntAcceleratingTest::RunTest(const FString& Parameters)
 {
-	AReversingMotorState* testReversing = NewObject<AReversingMotorState>();
+	UReversingMotorState* testReversing = NewObject<UReversingMotorState>();
 
 	TestFalse(TEXT("isAccelerating should return false"), testReversing->isAccelerating());
 	
@@ -32,7 +32,7 @@ bool FAReversingMotorStateIsntAcceleratingTest::RunTest(const FString& Parameter
 
 bool FAReversingMotorStateIsReversingTest::RunTest(const FString& Parameters)
 {
-	AReversingMotorState* testReversing = NewObject<AReversingMotorState>();
+	UReversingMotorState* testReversing = NewObject<UReversingMotorState>();
 
 	TestTrue(TEXT("isReversing should return true"), testReversing->isReversing());
 	
@@ -59,23 +59,15 @@ bool FAReversingMotorStateActivateReversesMotorDriveTest::RunTest(const FString&
 }
 
 
-bool FAReversingMotorStateReplicatesTest::RunTest(const FString& Parameters)
+bool FAReversingMotorStateSupportsNetworkingTest::RunTest(const FString& Parameters)
 {
-	AReversingMotorState* testReversing = NewObject<AReversingMotorState>();
+	UReversingMotorState* testReversing = NewObject<UReversingMotorState>();
 
-	TestTrue(TEXT("Should have SetReplicates set to true"), testReversing->GetIsReplicated());
+	TestTrue(TEXT("Should support networking"), testReversing->IsSupportedForNetworking());
 	
 	return true;
 }
 
 
-bool FAReversingMotorStateIsAlwaysRelevantTest::RunTest(const FString& Parameters)
-{
-	AReversingMotorState* testReversing = NewObject<AReversingMotorState>();
-
-	TestTrue(TEXT("Should have bAlwaysRelevant set to true"), testReversing->bAlwaysRelevant);
-	
-	return true;
-}
 
 #endif //WITH_DEV_AUTOMATION_TESTS

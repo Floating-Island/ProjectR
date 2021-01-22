@@ -37,13 +37,8 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAAcceleratingMotorStateActivateAcceleratesMoto
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAAcceleratingMotorStateReplicatesTest, 
-	"ProjectR.AcceleratingMotorState Tests.Replication.004: Replicates", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAAcceleratingMotorStateIsAlwaysRelevantTest, 
-	"ProjectR.AcceleratingMotorState Tests.Replication.005: Is always relevant to the network", 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAAcceleratingMotorStateSupportsNetworkingTest, 
+	"ProjectR.AcceleratingMotorState Tests.Replication.004: Supports networking", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

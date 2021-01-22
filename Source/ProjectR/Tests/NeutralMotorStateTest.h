@@ -30,15 +30,10 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FANeutralMotorStateIsntAcceleratingTest,
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FANeutralMotorStateIsntReversingTest, 
 	"ProjectR.NeutralMotorState Tests.Unit.002: isReversing returns false", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	
 
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FANeutralMotorStateReplicatesTest, 
-	"ProjectR.NeutralMotorState Tests.Replication.003: Replicates", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FANeutralMotorStateIsAlwaysRelevantTest, 
-	"ProjectR.NeutralMotorState Tests.Replication.004: Is always relevant to the network", 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FANeutralMotorStateSupportsNetworkingTest, 
+	"ProjectR.NeutralMotorState Tests.Replication.003: Supports networking", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

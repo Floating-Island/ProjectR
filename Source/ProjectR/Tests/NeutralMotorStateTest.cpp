@@ -9,7 +9,7 @@
 
 bool FANeutralMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
-	ANeutralMotorState* testNeutral = NewObject<ANeutralMotorState>();
+	UNeutralMotorState* testNeutral = NewObject<UNeutralMotorState>();
 
 	TestNotNull(TEXT("The Neutral motor state shouldn't be null when instantiated"), testNeutral);
 
@@ -19,7 +19,7 @@ bool FANeutralMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& Par
 
 bool FANeutralMotorStateIsntAcceleratingTest::RunTest(const FString& Parameters)
 {
-	ANeutralMotorState* testNeutral = NewObject<ANeutralMotorState>();
+	UNeutralMotorState* testNeutral = NewObject<UNeutralMotorState>();
 
 	TestFalse(TEXT("isAccelerating should return false"), testNeutral->isAccelerating());
 	
@@ -29,7 +29,7 @@ bool FANeutralMotorStateIsntAcceleratingTest::RunTest(const FString& Parameters)
 
 bool FANeutralMotorStateIsntReversingTest::RunTest(const FString& Parameters)
 {
-	ANeutralMotorState* testNeutral = NewObject<ANeutralMotorState>();
+	UNeutralMotorState* testNeutral = NewObject<UNeutralMotorState>();
 
 	TestFalse(TEXT("isReversing should return false"), testNeutral->isReversing());
 	
@@ -37,24 +37,15 @@ bool FANeutralMotorStateIsntReversingTest::RunTest(const FString& Parameters)
 }
 
 
-bool FANeutralMotorStateReplicatesTest::RunTest(const FString& Parameters)
+bool FANeutralMotorStateSupportsNetworkingTest::RunTest(const FString& Parameters)
 {
-	ANeutralMotorState* testNeutral = NewObject<ANeutralMotorState>();
+	UNeutralMotorState* testNeutral = NewObject<UNeutralMotorState>();
 
-	TestTrue(TEXT("Should have SetReplicates set to true"), testNeutral->GetIsReplicated());
+	TestTrue(TEXT("Should support networking"), testNeutral->IsSupportedForNetworking());
 	
-	return true;
+	return true;	
 }
 
-
-bool FANeutralMotorStateIsAlwaysRelevantTest::RunTest(const FString& Parameters)
-{
-	ANeutralMotorState* testNeutral = NewObject<ANeutralMotorState>();
-
-	TestTrue(TEXT("Should have bAlwaysRelevant set to true"), testNeutral->bAlwaysRelevant);
-	
-	return true;
-}
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

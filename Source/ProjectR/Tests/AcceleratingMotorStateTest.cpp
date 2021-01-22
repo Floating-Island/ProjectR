@@ -12,7 +12,7 @@
 
 bool FAAcceleratingMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
-	AAcceleratingMotorState* testAccelerating = NewObject<AAcceleratingMotorState>();
+	UAcceleratingMotorState* testAccelerating = NewObject<UAcceleratingMotorState>();
 
 	TestNotNull(TEXT("The Accelerating motor state shouldn't be null when instantiated"), testAccelerating);
 
@@ -22,7 +22,7 @@ bool FAAcceleratingMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString
 
 bool FAAcceleratingMotorStateIsAcceleratingTest::RunTest(const FString& Parameters)
 {
-	AAcceleratingMotorState* testAccelerating = NewObject<AAcceleratingMotorState>();
+	UAcceleratingMotorState* testAccelerating = NewObject<UAcceleratingMotorState>();
 
 	TestTrue(TEXT("isAccelerating should return true"), testAccelerating->isAccelerating());
 	
@@ -32,7 +32,7 @@ bool FAAcceleratingMotorStateIsAcceleratingTest::RunTest(const FString& Paramete
 
 bool FAAcceleratingMotorStateIsntReversingTest::RunTest(const FString& Parameters)
 {
-	AAcceleratingMotorState* testAccelerating = NewObject<AAcceleratingMotorState>();
+	UAcceleratingMotorState* testAccelerating = NewObject<UAcceleratingMotorState>();
 
 	TestFalse(TEXT("isReversing should return false"), testAccelerating->isReversing());
 	
@@ -59,24 +59,17 @@ bool FAAcceleratingMotorStateActivateAcceleratesMotorDriveTest::RunTest(const FS
 }
 
 
-bool FAAcceleratingMotorStateReplicatesTest::RunTest(const FString& Parameters)
+bool FAAcceleratingMotorStateSupportsNetworkingTest::RunTest(const FString& Parameters)
 {
-	AAcceleratingMotorState* testAccelerating = NewObject<AAcceleratingMotorState>();
+	UAcceleratingMotorState* testAccelerating = NewObject<UAcceleratingMotorState>();
 
-	TestTrue(TEXT("Should have SetReplicates set to true"), testAccelerating->GetIsReplicated());
+	TestTrue(TEXT("Should support networking"), testAccelerating->IsSupportedForNetworking());
 	
 	return true;
 }
 
 
-bool FAAcceleratingMotorStateIsAlwaysRelevantTest::RunTest(const FString& Parameters)
-{
-	AAcceleratingMotorState* testAccelerating = NewObject<AAcceleratingMotorState>();
 
-	TestTrue(TEXT("Should have bAlwaysRelevant set to true"), testAccelerating->bAlwaysRelevant);
-	
-	return true;
-}
 
 
 

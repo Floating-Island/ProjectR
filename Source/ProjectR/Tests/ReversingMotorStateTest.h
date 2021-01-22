@@ -37,13 +37,8 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAReversingMotorStateActivateReversesMotorDrive
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAReversingMotorStateReplicatesTest, 
-	"ProjectR.ReversingMotorState Tests.Replication.004: Replicates", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAReversingMotorStateIsAlwaysRelevantTest, 
-	"ProjectR.ReversingMotorState Tests.Replication.005: Is always relevant to the network", 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAReversingMotorStateSupportsNetworkingTest, 
+	"ProjectR.ReversingMotorState Tests.Replication.004: Supports networking", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
