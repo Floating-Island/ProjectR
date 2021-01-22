@@ -16,5 +16,5 @@ class PROJECTR_API AMotorStateManagerMOCK : public AMotorStateManager
 	GENERATED_BODY()
 
 public:
-	AMotorState* currentState();
+	UMotorState* currentState();
 };

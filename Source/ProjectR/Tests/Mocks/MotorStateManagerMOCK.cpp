@@ -3,7 +3,7 @@
 
 #include "MotorStateManagerMOCK.h"
 
-AMotorState* AMotorStateManagerMOCK::currentState()
+UMotorState* AMotorStateManagerMOCK::currentState()
 {
 	return motorState;
 }
