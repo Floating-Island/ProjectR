@@ -24,7 +24,7 @@ bool FSpawningAJetAndActivateAcceleratingMotorState::Update()
 
 		AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
 
-		AAcceleratingMotorState* testState = NewObject<AAcceleratingMotorState>();
+		UAcceleratingMotorState* testState = NewObject<UAcceleratingMotorState>();
 
 		testState->activate(testJet->motorDriveComponent());
 

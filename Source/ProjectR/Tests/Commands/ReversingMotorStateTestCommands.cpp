@@ -24,7 +24,7 @@ bool FSpawningAJetAndActivateReversingMotorState::Update()
 
 		AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
 
-		AReversingMotorState* testState = NewObject<AReversingMotorState>();
+		UReversingMotorState* testState = NewObject<UReversingMotorState>();
 
 		testState->activate(testJet->motorDriveComponent());
 
