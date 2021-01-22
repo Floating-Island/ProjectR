@@ -49,6 +49,8 @@ template <class aMotorStateType>
 void AMotorStateManager::updateStateTo()
 {
 	AMotorState* oldState = motorState;
-	motorState = GetWorld()->SpawnActor<aMotorStateType>();
+	FActorSpawnParameters spawnParameters = FActorSpawnParameters();
+	spawnParameters.Owner = this;
+	motorState = GetWorld()->SpawnActor<aMotorStateType>(spawnParameters);
 	oldState->Destroy();
 }
