@@ -3,17 +3,17 @@
 
 #include "Jet/MotorStates/NeutralMotorState.h"
 
-bool ANeutralMotorState::isAccelerating()
+bool UNeutralMotorState::isAccelerating()
 {
 	return false;
 }
 
-bool ANeutralMotorState::isReversing()
+bool UNeutralMotorState::isReversing()
 {
 	return false;
 }
 
-void ANeutralMotorState::activate(UMotorDriveComponent* aMotorDriveComponent)
+void UNeutralMotorState::activate(UMotorDriveComponent* aMotorDriveComponent)
 {
 	//it's neutral so it doesn't do anything.
 }

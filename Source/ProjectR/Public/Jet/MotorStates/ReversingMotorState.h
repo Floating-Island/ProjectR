@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class PROJECTR_API AReversingMotorState : public AMotorState
+class PROJECTR_API UReversingMotorState : public UMotorState
 {
 	GENERATED_BODY()
 
