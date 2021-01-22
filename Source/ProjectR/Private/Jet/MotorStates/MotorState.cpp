@@ -5,16 +5,6 @@
 
 
 // Sets default values
-AMotorState::AMotorState()
+UMotorState::UMotorState()
 {
-	PrimaryActorTick.bCanEverTick = false;
-	SetReplicates(true);//make test.
-	bAlwaysRelevant = true;//make test.
 }
-
-// Called when the game starts or when spawned
-void AMotorState::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
