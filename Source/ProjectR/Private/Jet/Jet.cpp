@@ -10,6 +10,8 @@
 #include "Jet/AntiGravityComponent.h"
 #include "Jet/SteeringComponent.h"
 #include "Jet/MotorDriveComponent.h"
+#include "Jet/MotorStates/MotorStateManager.h"
+#include "Net/UnrealNetwork.h"
 
 
 AJet::AJet()
@@ -49,27 +51,41 @@ AJet::AJet()
 
 	SetReplicates(true);
 	SetReplicateMovement(true);
+	motorManager = nullptr;
 }
 
 void AJet::BeginPlay()
 {
 	Super::BeginPlay();
+
 }
 
 void AJet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if(motorManager)
+	{
+		motorManager->activate(motorDriveSystem);
+	}
+}
+
+void AJet::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	FActorSpawnParameters spawnParameters = FActorSpawnParameters();
+	spawnParameters.Owner = this;
+	motorManager = GetWorld()->SpawnActor<AMotorStateManager>(spawnParameters);
 }
 
 void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis("AccelerateAction", this, &AJet::serverAccelerate);
+	PlayerInputComponent->BindAxis("AccelerateAction", this, &AJet::accelerate);
 
 	PlayerInputComponent->BindAxis("SteerAction", this, &AJet::serverSteer);
 
-	PlayerInputComponent->BindAxis("BrakeAction", this, &AJet::serverBrake);
+	PlayerInputComponent->BindAxis("BrakeAction", this, &AJet::brake);
 }
 
 
@@ -85,7 +101,13 @@ float AJet::settedTopSpeed()
 
 void AJet::accelerate(float anAccelerationMultiplier)
 {
-	motorDriveSystem->accelerate(anAccelerationMultiplier);
+	if(anAccelerationMultiplier > 0)
+	{
+		if(motorManager)
+		{
+			motorManager->accelerate();
+		}
+	}
 }
 
 float AJet::acceleration()
@@ -100,7 +122,13 @@ float AJet::brakeValue()
 
 void AJet::brake(float aBrakeMultiplier)
 {
-	motorDriveSystem->brake(aBrakeMultiplier);
+	if(aBrakeMultiplier > 0)
+	{
+		if(motorManager)
+		{
+			motorManager->brake();
+		}
+	}
 }
 
 bool AJet::goesForward()
@@ -205,31 +233,9 @@ bool AJet::serverSteer_Validate(float aSteerDirection)
 	return true;
 }
 
-void AJet::serverBrake_Implementation(float aBrakeMultiplier)
+void AJet::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
 {
-	if(HasAuthority())
-	{
-		brake(aBrakeMultiplier);
-	}
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+    DOREPLIFETIME(AJet, motorManager);
 }
-
-bool AJet::serverBrake_Validate(float aBrakeMultiplier)
-{
-	return true;
-}
-
-void AJet::serverAccelerate_Implementation(float anAccelerationMultiplier)
-{
-  if(HasAuthority())
-  {
-    accelerate(anAccelerationMultiplier);
-  }
-}
-
-bool AJet::serverAccelerate_Validate(float anAccelerationMultiplier)
-{
-  return true;
-}
-
-
-

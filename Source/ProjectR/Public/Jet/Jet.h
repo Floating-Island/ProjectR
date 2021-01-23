@@ -13,6 +13,7 @@ class UCameraComponent;
 class UAntiGravityComponent;
 class USteeringComponent;
 class UMotorDriveComponent;
+class AMotorStateManager;
 
 UCLASS()
 class PROJECTR_API AJet : public APawn
@@ -49,9 +50,14 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 		UMotorDriveComponent* motorDriveSystem;
+
+	UPROPERTY(Replicated)
+		AMotorStateManager* motorManager;
 	
 public:
 	virtual void Tick(float DeltaTime) override;
+	virtual void PostInitializeComponents() override;
+	
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
@@ -84,12 +90,6 @@ public:
 	FVector velocityProjectionOnFloor();
 
 	FVector rightVectorProjectionOnFloor();
-
-    UFUNCTION(Server, Reliable, WithValidation)
-        void serverAccelerate(float anAccelerationMultiplier = 1.0f);
-	
-    UFUNCTION(Server, Reliable, WithValidation)
-        void serverBrake(float aBrakeMultiplier = 1.0f);
 	
     UFUNCTION(Server, Reliable, WithValidation)
         void serverSteer(float aSteerDirection);
