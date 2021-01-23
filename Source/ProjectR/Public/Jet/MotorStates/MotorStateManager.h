@@ -23,7 +23,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(Replicated);
+	UPROPERTY(Replicated)
 		UMotorState* motorState;
 
 	UFUNCTION(Server, Reliable, WithValidation)
@@ -45,12 +45,9 @@ public:
 	virtual void PostInitializeComponents() override;
 	virtual bool ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags) override;
 
-
 	void accelerate();
 	void brake();
 	void neutralize();
-
-
 
 	void activate(UMotorDriveComponent* aMotorDrive);
 };
