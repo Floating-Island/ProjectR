@@ -58,10 +58,10 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerNeutralizeKeepsStateIfAlread
 	"ProjectR.MotorStateManager Tests.Unit.007: neutralize keeps the state if it's already Neutral", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerNeutralizeAccelerateAndBrakeOnlyLeaveOneStateInMemoryTest, 
-	"ProjectR.MotorStateManager Tests.Unit.008: neutralize, accelerate and/or brake keep only one state in memory", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//this test is commented because after making the motor state a UObject I have to rely solely on the garbage collector.
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerNeutralizeAccelerateAndBrakeOnlyLeaveOneStateInMemoryTest, 
+//	"ProjectR.MotorStateManager Tests.Unit.008: neutralize, accelerate and/or brake keep only one state in memory", 
+//	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerReplicatesTest, 

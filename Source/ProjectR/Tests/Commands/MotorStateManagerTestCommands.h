@@ -57,14 +57,14 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMotorStateManagerStateChang
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMotorStateManagerStateChangesToNeutral, FAutomationTestBase*, test);
 
 
-class AMotorState;
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerAccelerateKeepsStateIfAccelerating, int, tickCount, int, tickLimit, AMotorState*, previousState, FAutomationTestBase*, test);
+class UMotorState;
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerAccelerateKeepsStateIfAccelerating, int, tickCount, int, tickLimit, UMotorState*, previousState, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerBrakeKeepsStateIfReversing, int, tickCount, int, tickLimit, AMotorState*, previousState, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerBrakeKeepsStateIfReversing, int, tickCount, int, tickLimit, UMotorState*, previousState, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerNeutralizeKeepsStateIfNeutral, int, tickCount, int, tickLimit, AMotorState*, previousState, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerNeutralizeKeepsStateIfNeutral, int, tickCount, int, tickLimit, UMotorState*, previousState, FAutomationTestBase*, test);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMotorStateManagerLeavesOneStateInWorld, FAutomationTestBase*, test);

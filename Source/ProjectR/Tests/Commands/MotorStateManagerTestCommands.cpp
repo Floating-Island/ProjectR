@@ -76,22 +76,22 @@ bool FSpawnAMotorStateManagerAndNeutralizeIt::Update()
 }
 
 
-bool FSpawnAMotorStateManagerBrakeAccelerateAndNeutralizeIt::Update()
-{
-	if(GEditor->IsPlayingSessionInEditor())
-	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		AMotorStateManagerMOCK* testManager = sessionUtilities.spawnInPIEAnInstanceOf<AMotorStateManagerMOCK>();
-
-		testManager->brake();
-		testManager->accelerate();
-		testManager->neutralize();
-		
-		return true;
-	}
-
-	return false;
-}
+//bool FSpawnAMotorStateManagerBrakeAccelerateAndNeutralizeIt::Update()//relying on the garbage collector to destroy the replaced objects
+//{
+//	if(GEditor->IsPlayingSessionInEditor())
+//	{
+//		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+//		AMotorStateManagerMOCK* testManager = sessionUtilities.spawnInPIEAnInstanceOf<AMotorStateManagerMOCK>();
+//
+//		testManager->brake();
+//		testManager->accelerate();
+//		testManager->neutralize();
+//		
+//		return true;
+//	}
+//
+//	return false;
+//}
 
 
 bool FServerSpawnMotorStateManager::Update()
@@ -212,7 +212,7 @@ bool FCheckMotorStateManagerDefaultState::Update()
 		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
 		if(testManager)
 		{
-			test->TestTrue(TEXT("The default state should be NeutralMotorState"), testManager->currentState()->GetClass() == ANeutralMotorState::StaticClass() );
+			test->TestTrue(TEXT("The default state should be NeutralMotorState"), testManager->currentState()->GetClass() == UNeutralMotorState::StaticClass() );
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;	
 		}
@@ -229,7 +229,7 @@ bool FCheckMotorStateManagerStateChangesToAccelerating::Update()
 		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
 		if(testManager)
 		{
-			test->TestTrue(TEXT("After accelerate, the motorState should be Accelerating"), testManager->currentState()->GetClass() == AAcceleratingMotorState::StaticClass() );
+			test->TestTrue(TEXT("After accelerate, the motorState should be Accelerating"), testManager->currentState()->GetClass() == UAcceleratingMotorState::StaticClass() );
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;	
 		}
@@ -246,7 +246,7 @@ bool FCheckMotorStateManagerStateChangesToReversing::Update()
 		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
 		if(testManager)
 		{
-			test->TestTrue(TEXT("After brake, the motorState should be Reversing"), testManager->currentState()->GetClass() == AReversingMotorState::StaticClass() );
+			test->TestTrue(TEXT("After brake, the motorState should be Reversing"), testManager->currentState()->GetClass() == UReversingMotorState::StaticClass() );
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;	
 		}
@@ -263,7 +263,7 @@ bool FCheckMotorStateManagerStateChangesToNeutral::Update()
 		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
 		if(testManager)
 		{
-			test->TestTrue(TEXT("After neutralize, the motorState should be Neutral"), testManager->currentState()->GetClass() == ANeutralMotorState::StaticClass() );
+			test->TestTrue(TEXT("After neutralize, the motorState should be Neutral"), testManager->currentState()->GetClass() == UNeutralMotorState::StaticClass() );
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;	
 		}
@@ -281,7 +281,7 @@ bool FCheckMotorStateManagerAccelerateKeepsStateIfAccelerating::Update()
 		if(testManager)
 		{
 			testManager->accelerate();
-			AMotorState* currentState = testManager->currentState();
+			UMotorState* currentState = testManager->currentState();
 			bool statesMatch = previousState == currentState;
 			
 			if(statesMatch)
@@ -314,7 +314,7 @@ bool FCheckMotorStateManagerBrakeKeepsStateIfReversing::Update()
 		if(testManager)
 		{
 			testManager->brake();
-			AMotorState* currentState = testManager->currentState();
+			UMotorState* currentState = testManager->currentState();
 			bool statesMatch = previousState == currentState;
 			
 			if(statesMatch)
@@ -347,7 +347,7 @@ bool FCheckMotorStateManagerNeutralizeKeepsStateIfNeutral::Update()
 		if(testManager)
 		{
 			testManager->neutralize();
-			AMotorState* currentState = testManager->currentState();
+			UMotorState* currentState = testManager->currentState();
 			bool statesMatch = previousState == currentState;
 			
 			if(statesMatch)
@@ -371,22 +371,22 @@ bool FCheckMotorStateManagerNeutralizeKeepsStateIfNeutral::Update()
 }
 
 
-bool FCheckMotorStateManagerLeavesOneStateInWorld::Update()
-{
-	if(GEditor->IsPlayingSessionInEditor())
-	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
-		if(testManager)
-		{
-			int statesInWorld = sessionUtilities.retrieveFromPIEAllInstancesOf<AMotorState>().Num();	
-			test->TestTrue(TEXT("After accelerating, braking and/or neutralizing, only one motor state remains in the world"), statesInWorld == 1 );
-			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-			return true;	
-		}
-	}
-	return false;	
-}
+//bool FCheckMotorStateManagerLeavesOneStateInWorld::Update()//after changing the motor state to a uobject, I have to rely on the garbage collector to destroy them
+//{
+//	if(GEditor->IsPlayingSessionInEditor())
+//	{
+//		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+//		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
+//		if(testManager)
+//		{
+//			int statesInWorld = sessionUtilities.retrieveFromPIEAllInstancesOf<UMotorState>().Num();	
+//			test->TestTrue(TEXT("After accelerating, braking and/or neutralizing, only one motor state remains in the world"), statesInWorld == 1 );
+//			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+//			return true;	
+//		}
+//	}
+//	return false;	
+//}
 
 
 bool FCheckMotorStateManagerServerAndClientAcceleratingState::Update()
@@ -404,8 +404,8 @@ bool FCheckMotorStateManagerServerAndClientAcceleratingState::Update()
 			bool bothAccelerating = false;
 			if(testClientManager)
 			{
-				bool clientStateIsAccelerating = testClientManager->currentState()->GetClass() == AAcceleratingMotorState::StaticClass();
-				bool serverStateIsAccelerating = testServerManager->currentState()->GetClass() == AAcceleratingMotorState::StaticClass();
+				bool clientStateIsAccelerating = testClientManager->currentState()->GetClass() == UAcceleratingMotorState::StaticClass();
+				bool serverStateIsAccelerating = testServerManager->currentState()->GetClass() == UAcceleratingMotorState::StaticClass();
 				bothAccelerating = serverStateIsAccelerating && clientStateIsAccelerating;
 			}
 
@@ -450,8 +450,8 @@ bool FCheckMotorStateManagerServerAndClientReversingState::Update()
 			bool bothReversing = false;
 			if(testClientManager)
 			{
-				bool clientStateIsReversing = testClientManager->currentState()->GetClass() == AReversingMotorState::StaticClass();
-				bool serverStateIsReversing = testServerManager->currentState()->GetClass() == AReversingMotorState::StaticClass();
+				bool clientStateIsReversing = testClientManager->currentState()->GetClass() == UReversingMotorState::StaticClass();
+				bool serverStateIsReversing = testServerManager->currentState()->GetClass() == UReversingMotorState::StaticClass();
 				bothReversing = serverStateIsReversing && clientStateIsReversing;
 			}
 
@@ -496,8 +496,8 @@ bool FCheckMotorStateManagerServerAndClientNeutralState::Update()
 			bool bothNeutral = false;
 			if(testClientManager)
 			{
-				bool clientStateIsNeutral = testClientManager->currentState()->GetClass() == ANeutralMotorState::StaticClass();
-				bool serverStateIsNeutral = testServerManager->currentState()->GetClass() == ANeutralMotorState::StaticClass();
+				bool clientStateIsNeutral = testClientManager->currentState()->GetClass() == UNeutralMotorState::StaticClass();
+				bool serverStateIsNeutral = testServerManager->currentState()->GetClass() == UNeutralMotorState::StaticClass();
 				bothNeutral = serverStateIsNeutral && clientStateIsNeutral;
 			}
 
