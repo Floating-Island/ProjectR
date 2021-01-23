@@ -7,6 +7,8 @@
 #include "Jet/MotorStates/MotorState.h"
 #include "MotorStateManager.generated.h"
 
+class UMotorDriveComponent;
+
 UCLASS()
 class PROJECTR_API AMotorStateManager : public AActor
 {
@@ -22,7 +24,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(Replicated);
-		AMotorState* motorState;
+		UMotorState* motorState;
 
 	UFUNCTION(Server, Reliable, WithValidation)
 		void serverAccelerate();
@@ -33,24 +35,31 @@ protected:
 	UFUNCTION(Server, Reliable, WithValidation)
 		void serverNeutralize();
 
+	
+	template<class aMotorStateType>
+	void updateStateTo();
+	
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	virtual void PostInitializeComponents() override;
+	virtual bool ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags) override;
 
-	template<class aMotorStateType>
-	void updateStateTo();
 
 	void accelerate();
 	void brake();
 	void neutralize();
+
+
+
+	void activate(UMotorDriveComponent* aMotorDrive);
 };
 
 template <class aMotorStateType>
 void AMotorStateManager::updateStateTo()
 {
-	AMotorState* oldState = motorState;
-	FActorSpawnParameters spawnParameters = FActorSpawnParameters();
-	spawnParameters.Owner = this;
-	motorState = GetWorld()->SpawnActor<aMotorStateType>(spawnParameters);
-	oldState->Destroy();
+	if(!motorState || motorState->GetClass() != aMotorStateType::StaticClass())
+	{
+		motorState = NewObject<aMotorStateType>(this, aMotorStateType::StaticClass()->GetFName());
+	}
 }

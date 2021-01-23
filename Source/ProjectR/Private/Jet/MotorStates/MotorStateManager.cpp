@@ -8,6 +8,7 @@
 #include "Jet/MotorStates/AcceleratingMotorState.h"
 #include "Jet/MotorStates/ReversingMotorState.h"
 #include "Net/UnrealNetwork.h"
+#include "Engine/ActorChannel.h"
 
 // Sets default values
 AMotorStateManager::AMotorStateManager()
@@ -23,7 +24,6 @@ AMotorStateManager::AMotorStateManager()
 void AMotorStateManager::BeginPlay()
 {
 	Super::BeginPlay();
-	motorState = GetWorld()->SpawnActor<ANeutralMotorState>();
 }
 
 // Called every frame
@@ -33,9 +33,30 @@ void AMotorStateManager::Tick(float DeltaTime)
 
 }
 
+void AMotorStateManager::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	if(HasAuthority())
+	{
+		motorState = NewObject<UNeutralMotorState>(this, FName("UNeutralMotorState"));
+	}
+}
+
+bool AMotorStateManager::ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags)
+{
+	bool hasReplicated = Super::ReplicateSubobjects(Channel, Bunch, RepFlags);
+
+    if (motorState != nullptr)
+    {
+        hasReplicated |= Channel->ReplicateSubobject(motorState, *Bunch, *RepFlags);
+    }
+
+    return hasReplicated;
+}
+
 void AMotorStateManager::accelerate()
 {
-	if (motorState->isAccelerating())
+	if (motorState && motorState->isAccelerating())
 	{
 		return;
 	}
@@ -44,7 +65,7 @@ void AMotorStateManager::accelerate()
 
 void AMotorStateManager::brake()
 {
-	if (motorState->isReversing())
+	if (motorState && motorState->isReversing())
 	{
 		return;
 	}
@@ -53,9 +74,17 @@ void AMotorStateManager::brake()
 
 void AMotorStateManager::neutralize()
 {
-	if (motorState->isAccelerating() || motorState->isReversing())
+	if (!motorState || motorState->isAccelerating() || motorState->isReversing())
 	{
 		serverNeutralize();
+	}
+}
+
+void AMotorStateManager::activate(UMotorDriveComponent* aMotorDrive)
+{
+	if(motorState)
+	{
+		motorState->activate(aMotorDrive);
 	}
 }
 
@@ -63,7 +92,7 @@ void AMotorStateManager::serverAccelerate_Implementation()
 {
 	if (HasAuthority())
 	{
-		updateStateTo<AAcceleratingMotorState>();
+		updateStateTo<UAcceleratingMotorState>();
 	}
 }
 
@@ -77,7 +106,7 @@ void AMotorStateManager::serverBrake_Implementation()
 {
 	if(HasAuthority())
 	{
-		updateStateTo<AReversingMotorState>();
+		updateStateTo<UReversingMotorState>();
 	}
 }
 
@@ -90,7 +119,7 @@ void AMotorStateManager::serverNeutralize_Implementation()
 {
 	if(HasAuthority())
 	{
-		updateStateTo<ANeutralMotorState>();
+		updateStateTo<UNeutralMotorState>();
 	}
 }
 
