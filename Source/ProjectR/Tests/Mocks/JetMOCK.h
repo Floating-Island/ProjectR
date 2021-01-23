@@ -16,8 +16,6 @@ class PROJECTR_API AJetMOCK : public AJet
 
 private:
 	bool alwaysSteerRight;
-	bool alwaysAccelerate;
-	bool alwaysBrake;
 	bool alwaysCancelGravity;
 	bool serverSteerAlways;
 public:
@@ -57,8 +55,6 @@ public:
 	FVector centerOfMass();
 
 	void steerRightEveryTick();
-	void accelerateOnEveryTick();
-	void brakeOnEveryTick();
 	void cancelGravityOnEveryTick();
 
 	void serverAlwaysSteer();

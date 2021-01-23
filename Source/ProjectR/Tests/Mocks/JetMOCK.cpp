@@ -8,8 +8,6 @@
 AJetMOCK::AJetMOCK()
 {
 	alwaysSteerRight = false;
-	alwaysAccelerate = false;
-	alwaysBrake = false;
 	alwaysCancelGravity = false;
 	serverSteerAlways = false;
 }
@@ -20,14 +18,6 @@ void AJetMOCK::Tick(float DeltaTime)
 	if (alwaysSteerRight)
 	{
 		steer(1);
-	}
-	if (alwaysAccelerate)
-	{
-		accelerate(1);
-	}
-	if (alwaysBrake)
-	{
-		brake(1);
 	}
 	if (alwaysCancelGravity)
 	{
@@ -120,16 +110,6 @@ FVector AJetMOCK::centerOfMass()
 void AJetMOCK::steerRightEveryTick()
 {
 	alwaysSteerRight = true;
-}
-
-void AJetMOCK::accelerateOnEveryTick()
-{
-	alwaysAccelerate = true;
-}
-
-void AJetMOCK::brakeOnEveryTick()
-{
-	alwaysBrake = true;
 }
 
 void AJetMOCK::cancelGravityOnEveryTick()

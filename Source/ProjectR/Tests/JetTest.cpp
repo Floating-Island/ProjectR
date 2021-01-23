@@ -558,8 +558,6 @@ bool FAJetServerAccelerateReplicatesAccelerationTest::RunTest(const FString& Par
 
 	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJet(numberOfPlayers));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FClientAccelerateJet(numberOfPlayers));
-
 	int tickCount = 0;
 	int tickLimit = 10;
 	FVector previousLocation = FVector(1000);
@@ -605,8 +603,6 @@ bool FAJetServerBrakeReplicatesBrakingTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJet(numberOfPlayers));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FClientBrakeJet(numberOfPlayers));
 
 	int tickCount = 0;
 	int tickLimit = 10;
