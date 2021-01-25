@@ -83,6 +83,10 @@ void AMotorStateManager::neutralize()
 
 void AMotorStateManager::mix()
 {
+	if (motorStateIsOfType<UMixedMotorState>())
+	{
+		return;
+	}
 	updateStateTo<UMixedMotorState>();
 }
 
