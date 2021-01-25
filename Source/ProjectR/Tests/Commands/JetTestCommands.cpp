@@ -8,6 +8,7 @@
 #include "../Mocks/JetMOCK.h"
 #include "Jet/MotorStates/MotorState.h"
 #include "Jet/MotorStates/NeutralMotorState.h"
+#include "Jet/MotorStates/AcceleratingMotorState.h"
 
 #include "Editor.h"
 #include "Kismet/GameplayStatics.h"
@@ -597,6 +598,7 @@ bool FSpawningAJetReleaseAccelerationKey::Update()
 
 	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 	testJet->setMotorManagerMOCK();
+	testJet->changeMotorStateTo<UAcceleratingMotorState>();
 	
 	sessionUtilities.processLocalPlayerActionInputReleaseFrom(FName(TEXT("AccelerateAction")));
 

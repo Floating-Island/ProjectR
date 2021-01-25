@@ -17,4 +17,13 @@ class PROJECTR_API AMotorStateManagerMOCK : public AMotorStateManager
 
 public:
 	UMotorState* currentState();
+
+	template<class aMotorStateType>
+	void changeMotorStateTo();
 };
+
+template <class aMotorStateType>
+void AMotorStateManagerMOCK::changeMotorStateTo()
+{
+	updateStateTo<aMotorStateType>();
+}

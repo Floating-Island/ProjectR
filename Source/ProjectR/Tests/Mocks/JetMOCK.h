@@ -66,4 +66,18 @@ public:
 	void setMotorManagerMOCK();
 
 	UMotorState* currentMotorState();
+
+	template<class aMotorStateType>
+	void changeMotorStateTo();
+	
 };
+
+template <class aMotorStateType>
+void AJetMOCK::changeMotorStateTo()
+{
+	AMotorStateManagerMOCK* motorManagerMock = Cast<AMotorStateManagerMOCK, AMotorStateManager>(motorManager);
+	if(motorManagerMock)
+	{
+		motorManagerMock->changeMotorStateTo<aMotorStateType>();
+	}
+}
