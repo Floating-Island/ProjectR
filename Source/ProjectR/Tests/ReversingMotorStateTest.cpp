@@ -20,26 +20,6 @@ bool FUReversingMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& P
 }
 
 
-bool FUReversingMotorStateIsntAcceleratingTest::RunTest(const FString& Parameters)
-{
-	UReversingMotorState* testReversing = NewObject<UReversingMotorState>();
-
-	TestFalse(TEXT("isAccelerating should return false"), testReversing->isAccelerating());
-	
-	return true;
-}
-
-
-bool FUReversingMotorStateIsReversingTest::RunTest(const FString& Parameters)
-{
-	UReversingMotorState* testReversing = NewObject<UReversingMotorState>();
-
-	TestTrue(TEXT("isReversing should return true"), testReversing->isReversing());
-	
-	return true;
-}
-
-
 bool FUReversingMotorStateActivateReversesMotorDriveTest::RunTest(const FString& Parameters)
 {
 	

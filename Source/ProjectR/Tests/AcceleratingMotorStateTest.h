@@ -22,23 +22,13 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUAcceleratingMotorStateIsntNullWhenInstantiate
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUAcceleratingMotorStateIsAcceleratingTest, 
-	"ProjectR.AcceleratingMotorState Tests.Unit.001: isAccelerating returns true", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUAcceleratingMotorStateIsntReversingTest, 
-	"ProjectR.AcceleratingMotorState Tests.Unit.002: isReversing returns false", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUAcceleratingMotorStateActivateAcceleratesMotorDriveTest, 
-	"ProjectR.AcceleratingMotorState Tests.Integration.003: activate accelerates the motor drive component passed as parameter", 
+	"ProjectR.AcceleratingMotorState Tests.Integration.001: activate accelerates the motor drive component passed as parameter", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUAcceleratingMotorStateSupportsNetworkingTest, 
-	"ProjectR.AcceleratingMotorState Tests.Replication.004: Supports networking", 
+	"ProjectR.AcceleratingMotorState Tests.Replication.002: Supports networking", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

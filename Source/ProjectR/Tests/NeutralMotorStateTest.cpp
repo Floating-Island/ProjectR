@@ -17,26 +17,6 @@ bool FUNeutralMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& Par
 }
 
 
-bool FUNeutralMotorStateIsntAcceleratingTest::RunTest(const FString& Parameters)
-{
-	UNeutralMotorState* testNeutral = NewObject<UNeutralMotorState>();
-
-	TestFalse(TEXT("isAccelerating should return false"), testNeutral->isAccelerating());
-	
-	return true;
-}
-
-
-bool FUNeutralMotorStateIsntReversingTest::RunTest(const FString& Parameters)
-{
-	UNeutralMotorState* testNeutral = NewObject<UNeutralMotorState>();
-
-	TestFalse(TEXT("isReversing should return false"), testNeutral->isReversing());
-	
-	return true;
-}
-
-
 bool FUNeutralMotorStateSupportsNetworkingTest::RunTest(const FString& Parameters)
 {
 	UNeutralMotorState* testNeutral = NewObject<UNeutralMotorState>();

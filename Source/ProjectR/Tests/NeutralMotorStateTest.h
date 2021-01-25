@@ -20,20 +20,10 @@
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUNeutralMotorStateIsntNullWhenInstantiatedTest, 
 	"ProjectR.NeutralMotorState Tests.Unit.000: Isn't null when instantiated", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUNeutralMotorStateIsntAcceleratingTest, 
-	"ProjectR.NeutralMotorState Tests.Unit.001: isAccelerating returns false", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUNeutralMotorStateIsntReversingTest, 
-	"ProjectR.NeutralMotorState Tests.Unit.002: isReversing returns false", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 	
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUNeutralMotorStateSupportsNetworkingTest, 
-	"ProjectR.NeutralMotorState Tests.Replication.003: Supports networking", 
+	"ProjectR.NeutralMotorState Tests.Replication.001: Supports networking", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

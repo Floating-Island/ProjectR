@@ -15,7 +15,5 @@ class PROJECTR_API UReversingMotorState : public UMotorState
 	GENERATED_BODY()
 
 public:
-	virtual bool isAccelerating() override;
-	virtual bool isReversing() override;
 	virtual void activate(UMotorDriveComponent* aMotorDriveComponent) override;
 };
