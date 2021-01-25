@@ -147,7 +147,7 @@ bool FSpawningAJetPressBrakeKey::Update()
 
 	sessionUtilities.spawnLocalPlayer();
 
-	sessionUtilities.processLocalPlayerInputFrom(FName(TEXT("BrakeAction")));
+	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("BrakeAction")));
 
 	return true;
 }
