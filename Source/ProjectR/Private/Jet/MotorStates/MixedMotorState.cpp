@@ -3,3 +3,7 @@
 
 #include "Jet/MotorStates/MixedMotorState.h"
 
+void UMixedMotorState::activate(UMotorDriveComponent* aMotorDriveComponent)
+{
+	
+}

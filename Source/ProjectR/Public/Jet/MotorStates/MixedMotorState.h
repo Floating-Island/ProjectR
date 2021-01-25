@@ -13,5 +13,7 @@ UCLASS()
 class PROJECTR_API UMixedMotorState : public UMotorState
 {
 	GENERATED_BODY()
-	
+
+public:
+	virtual void activate(UMotorDriveComponent* aMotorDriveComponent) override;
 };
