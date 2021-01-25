@@ -565,6 +565,40 @@ bool FCheckMotorStateManagerStateChangesToMixed::Update()
 }
 
 
+bool FCheckMotorStateManagerMixKeepsStateIfMixed::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
+		if(testManager)
+		{
+			testManager->mix();
+			UMotorState* currentState = testManager->currentState();
+			bool statesMatch = previousState == currentState;
+			
+			if(statesMatch)
+			{
+				test->TestTrue(TEXT("Should keep its state if mix when already Mixed"), statesMatch );
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;	
+			}
+			previousState = currentState;
+
+			++tickCount;
+			if(tickCount > tickLimit)
+			{
+				test->TestTrue(TEXT("Should keep its state if mix when already Mixed"), statesMatch );
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+
 
 
 

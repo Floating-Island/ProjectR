@@ -84,4 +84,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerServerAnd
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMotorStateManagerStateChangesToMixed, FAutomationTestBase*, test);
 
+
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerMixKeepsStateIfMixed, int, tickCount, int, tickLimit, UMotorState*, previousState, FAutomationTestBase*, test);
+
 #endif //WITH_DEV_AUTOMATION_TESTS

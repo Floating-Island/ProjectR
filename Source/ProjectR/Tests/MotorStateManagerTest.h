@@ -92,7 +92,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerReplicatesStateWhenCallingNe
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerMixChangesStateToMixedTest, 
 	"ProjectR.MotorStateManager Tests.Unit.014: mix changes the motor state to Mixed", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerMixKeepsStateIfAlreadyMixedTest, 
+	"ProjectR.MotorStateManager Tests.Unit.015: mix keeps the state if it's already Mixed", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 
