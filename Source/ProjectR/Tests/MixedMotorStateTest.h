@@ -22,6 +22,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMixedMotorStateIsntNullWhenInstantiatedTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMixedMotorStateActivateAcceleratesMotorDriveTest, 
+	"ProjectR.MixedMotorState Tests.Integration.001: activate makes the motor drive component passed as parameter add force combining acceleration and brake values", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 
