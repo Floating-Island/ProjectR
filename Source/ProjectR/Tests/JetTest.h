@@ -257,8 +257,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerSteerReplicatesSteeringTest,
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerSteersWhenPressingSteerKeyTest, 
-	"ProjectR.Jet Tests.Replication.044: server steers when client pressess steer key", 
+	"ProjectR.Jet Tests.Replication.045: server steers when client pressess steer key", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+
 
 
 //jet mesh should be set to collision enabled. (query and physics or physics only).
