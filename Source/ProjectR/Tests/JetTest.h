@@ -232,7 +232,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetReplicatesMovementTest,
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerAccelerateReplicatesAccelerationTest, 
-	"ProjectR.Jet Tests.Replication.040: serverAccelerate replicates acceleration to other clients", 
+	"ProjectR.Jet Tests.Replication.040: accelerate replicates acceleration to other clients", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
@@ -242,7 +242,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerAcceleratesWhenPressingAccelerationK
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerBrakeReplicatesBrakingTest, 
-	"ProjectR.Jet Tests.Replication.042: serverBrake replicates braking to other clients", 
+	"ProjectR.Jet Tests.Replication.042: brake replicates braking to other clients", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
