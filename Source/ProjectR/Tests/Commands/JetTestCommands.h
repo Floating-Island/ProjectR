@@ -87,6 +87,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FServerSpawnJetToSteer, int, clie
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientSteerJet, int, clientQuantity);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseAccelerationKey);
+
+
 
 
 
@@ -155,6 +158,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FServerCheckJetBrake, int, tickC
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FServerCheckJetSteer, int, tickCount, int, tickLimit, int, clientQuantity, FVector, previousLocation, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetToNeutralMotorState, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
 
 

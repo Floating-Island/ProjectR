@@ -6,6 +6,8 @@
 #include "JetTestCommands.h"
 #include "Jet/Jet.h"
 #include "../Mocks/JetMOCK.h"
+#include "Jet/MotorStates/MotorState.h"
+#include "Jet/MotorStates/NeutralMotorState.h"
 
 #include "Editor.h"
 #include "Kismet/GameplayStatics.h"
@@ -580,6 +582,26 @@ bool FClientSteerJet::Update()
 	return false;
 }
 
+
+bool FSpawningAJetReleaseAccelerationKey::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+	sessionUtilities.spawnLocalPlayer();
+
+	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+	testJet->setMotorManagerMOCK();
+	
+	sessionUtilities.processLocalPlayerActionInputReleaseFrom(FName(TEXT("AccelerateAction")));
+
+	return true;
+}
 
 
 
@@ -1397,5 +1419,40 @@ bool FServerCheckJetSteer::Update()
 	return false;
 }
 
+
+bool FCheckAJetToNeutralMotorState::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+		if (testJet)
+		{
+			UMotorState* currentMotorState = testJet->currentMotorState();
+			bool isNeutralState = currentMotorState->GetClass() == UNeutralMotorState::StaticClass(); 
+
+			UE_LOG(LogTemp, Log, TEXT("Jet current motor state: %s"), *currentMotorState->GetName());
+			UE_LOG(LogTemp, Log, TEXT("Jet current motor state %s a neutral motor state."), *FString(isNeutralState ? "is" : "isn't"));
+
+			if (isNeutralState)
+			{
+				test->TestTrue(TEXT("The Jet speed should increase after accelerating (after ticking)."), isNeutralState);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+
+			++tickCount;
+
+			if (tickCount > tickLimit)
+			{
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from zero."), tickCount > tickLimit);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
 
 #endif //WITH_DEV_AUTOMATION_TESTS

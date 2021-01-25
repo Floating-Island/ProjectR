@@ -261,7 +261,10 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerSteersWhenPressingSteerKeyTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetNeutralizesMotorManagerWhenReleasingAccelerateKeyTest, 
+	"ProjectR.Jet Tests.Unit.046: Neutralizes when releasing acceleration key", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 //jet mesh should be set to collision enabled. (query and physics or physics only).
