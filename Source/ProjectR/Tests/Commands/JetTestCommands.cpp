@@ -108,7 +108,7 @@ bool FSpawningAJetPressAccelerationKey::Update()
 
 	sessionUtilities.spawnLocalPlayer();
 
-	sessionUtilities.processLocalPlayerInputFrom(FName(TEXT("AccelerateAction")));
+	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("AccelerateAction")));
 
 	return true;
 }
