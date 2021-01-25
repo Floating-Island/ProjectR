@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "../../Public/Jet/MotorStates/MotorState.h"
 #include "Jet/Jet.h"
 #include "JetMOCK.generated.h"
 
@@ -60,4 +62,8 @@ public:
 	void serverAlwaysSteer();
 
 	UMotorDriveComponent* motorDriveComponent();
+
+	void setMotorManagerMOCK();
+
+	UMotorState* currentMotorState();
 };

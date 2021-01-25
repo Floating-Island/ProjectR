@@ -2,6 +2,10 @@
 
 
 #include "JetMOCK.h"
+
+
+#include "MotorStateManagerMOCK.h"
+#include "Jet/MotorStates/MotorStateManager.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 
@@ -125,6 +129,28 @@ void AJetMOCK::serverAlwaysSteer()
 UMotorDriveComponent* AJetMOCK::motorDriveComponent()
 {
 	return motorDriveSystem;
+}
+
+void AJetMOCK::setMotorManagerMOCK()
+{
+	motorManager->Destroy();
+	FActorSpawnParameters spawnParameters = FActorSpawnParameters();
+	spawnParameters.Owner = this;
+	motorManager = GetWorld()->SpawnActor<AMotorStateManagerMOCK>(spawnParameters);
+}
+
+UMotorState* AJetMOCK::currentMotorState()
+{
+	AMotorStateManagerMOCK* motorManagerMock = Cast<AMotorStateManagerMOCK, AMotorStateManager>(motorManager);
+	if(motorManagerMock)
+	{
+		return motorManagerMock->currentState();
+	}
+	else
+	{
+		return nullptr;
+	}
+	
 }
 
 //bool AJetMOCK::hasAnAntiGravitySystem()

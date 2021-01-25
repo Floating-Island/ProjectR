@@ -89,6 +89,28 @@ void PIESessionUtilities::processActionKeyPressFrom(FName anActionMappingName, A
 	aController->InputKey(actionKey, EInputEvent::IE_Pressed, 5.0f, false);
 }
 
+void PIESessionUtilities::processLocalPlayerActionInputReleaseFrom(FName anActionMappingName)
+{
+	AGameModeBase* testGameMode = pieWorld->GetAuthGameMode();
+
+	APlayerController* controller = Cast<APlayerController, AActor>(testGameMode->GetGameInstance()->GetFirstLocalPlayerController(pieWorld));
+
+	processActionKeyReleaseFrom(anActionMappingName, controller);
+}
+
+void PIESessionUtilities::processActionKeyReleaseFrom(FName anActionMappingName, APlayerController* aController)
+{
+	FName const actionName = anActionMappingName;
+	TArray<FInputActionKeyMapping> actionMappings = aController->PlayerInput->GetKeysForAction(actionName);//in the editor, we are going to add a new action mapping inside Project settings -> Input
+	//in the pawn class, we are going to add a player input binding with:
+	//	PlayerInputComponent->BindAction("ActionMappingName", EInputEvent::IE_Released, this, &YourPawn::actionToBind);
+	//and in the constructor:
+	//AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
+	FKey actionKey = actionMappings[0].Key;
+
+	aController->InputKey(actionKey, EInputEvent::IE_Released, 5.0f, false);
+}
+
 void PIESessionUtilities::processEditorClick(FVector2D atCoordinates)
 {
 	//Get our slate application
