@@ -65,7 +65,7 @@ public:
 
 	float settedTopSpeed();
 
-	void accelerate(float anAccelerationMultiplier = 1.0f);
+	void accelerate();
 
 	float acceleration();
 

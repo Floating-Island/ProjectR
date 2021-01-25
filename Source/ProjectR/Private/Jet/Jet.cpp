@@ -81,7 +81,7 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis("AccelerateAction", this, &AJet::accelerate);
+	PlayerInputComponent->BindAction("AccelerateAction", EInputEvent::IE_Pressed, this, &AJet::accelerate);
 
 	PlayerInputComponent->BindAxis("SteerAction", this, &AJet::serverSteer);
 
@@ -99,14 +99,11 @@ float AJet::settedTopSpeed()
 	return motorDriveSystem->settedTopSpeed();
 }
 
-void AJet::accelerate(float anAccelerationMultiplier)
+void AJet::accelerate()
 {
-	if(anAccelerationMultiplier > 0)
+	if(motorManager)
 	{
-		if(motorManager)
-		{
-			motorManager->accelerate();
-		}
+		motorManager->accelerate();
 	}
 }
 
