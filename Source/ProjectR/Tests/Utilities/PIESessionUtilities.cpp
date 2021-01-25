@@ -67,13 +67,13 @@ void PIESessionUtilities::processKeyPressFrom(FName anAxisMappingName, APlayerCo
 	aController->InputKey(actionKey, EInputEvent::IE_Repeat, 5.0f, false);
 }
 
-void PIESessionUtilities::processLocalPlayerActionInputFrom(FName anAxisMappingName)
+void PIESessionUtilities::processLocalPlayerActionInputFrom(FName anActionMappingName)
 {
 	AGameModeBase* testGameMode = pieWorld->GetAuthGameMode();
 
 	APlayerController* controller = Cast<APlayerController, AActor>(testGameMode->GetGameInstance()->GetFirstLocalPlayerController(pieWorld));
 
-	processActionKeyPressFrom(anAxisMappingName, controller);
+	processActionKeyPressFrom(anActionMappingName, controller);
 }
 
 void PIESessionUtilities::processActionKeyPressFrom(FName anActionMappingName, APlayerController* aController)
@@ -86,7 +86,7 @@ void PIESessionUtilities::processActionKeyPressFrom(FName anActionMappingName, A
 	//AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
 	FKey actionKey = actionMappings[0].Key;
 
-	aController->InputKey(actionKey, EInputEvent::IE_Repeat, 5.0f, false);
+	aController->InputKey(actionKey, EInputEvent::IE_Pressed, 5.0f, false);
 }
 
 void PIESessionUtilities::processEditorClick(FVector2D atCoordinates)
