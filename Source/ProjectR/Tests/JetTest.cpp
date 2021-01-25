@@ -580,7 +580,7 @@ bool FAJetServerAcceleratesWhenPressingAccelerationKeyTest::RunTest(const FStrin
 
 	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJet(numberOfPlayers));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FClientPressKey(FName(TEXT("AccelerateAction")), numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("AccelerateAction")), numberOfPlayers));
 
 	int tickCount = 0;
 	int tickLimit = 10;
