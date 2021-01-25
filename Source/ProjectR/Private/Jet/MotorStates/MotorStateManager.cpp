@@ -7,6 +7,7 @@
 #include "Jet/MotorStates/NeutralMotorState.h"
 #include "Jet/MotorStates/AcceleratingMotorState.h"
 #include "Jet/MotorStates/ReversingMotorState.h"
+#include "Jet/MotorStates/MixedMotorState.h"
 #include "Net/UnrealNetwork.h"
 #include "Engine/ActorChannel.h"
 
@@ -78,6 +79,11 @@ void AMotorStateManager::neutralize()
 	{
 		serverNeutralize();
 	}
+}
+
+void AMotorStateManager::mix()
+{
+	updateStateTo<UMixedMotorState>();
 }
 
 void AMotorStateManager::activate(UMotorDriveComponent* aMotorDrive)

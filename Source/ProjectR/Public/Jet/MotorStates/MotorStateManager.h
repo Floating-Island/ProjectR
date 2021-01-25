@@ -51,6 +51,7 @@ public:
 	void accelerate();
 	void brake();
 	void neutralize();
+	void mix();
 
 	void activate(UMotorDriveComponent* aMotorDrive);
 };
