@@ -85,7 +85,7 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAxis("SteerAction", this, &AJet::serverSteer);
 
-	PlayerInputComponent->BindAxis("BrakeAction", this, &AJet::brake);
+	PlayerInputComponent->BindAction("BrakeAction", EInputEvent::IE_Pressed, this, &AJet::brake);
 }
 
 
@@ -117,14 +117,11 @@ float AJet::brakeValue()
 	return motorDriveSystem->brakeValue();
 }
 
-void AJet::brake(float aBrakeMultiplier)
+void AJet::brake()
 {
-	if(aBrakeMultiplier > 0)
+	if(motorManager)
 	{
-		if(motorManager)
-		{
-			motorManager->brake();
-		}
+		motorManager->brake();
 	}
 }
 

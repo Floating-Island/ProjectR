@@ -71,7 +71,7 @@ public:
 
 	float brakeValue();
 
-	void brake(float aBrakeMultiplier = 1.0f);
+	void brake();
 
 	bool goesForward();
 	bool goesBackwards();
