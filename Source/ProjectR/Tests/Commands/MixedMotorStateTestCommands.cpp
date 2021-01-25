@@ -58,7 +58,8 @@ bool FCheckMixedStateActivation::Update()
 		{
 			float currentSpeed = testJet->currentSpeed();
 			bool sumIsBiggerThanZero = testJet->acceleration() - testJet->brakeValue() > 0;
-			bool speedHasBeenUpdated = (sumIsBiggerThanZero? currentSpeed > previousSpeed : currentSpeed < previousSpeed)  && !FMath::IsNearlyEqual(currentSpeed, previousSpeed, 0.1f);
+			bool speedHasBeenUpdated = (sumIsBiggerThanZero ? currentSpeed > previousSpeed : currentSpeed < previousSpeed) && !FMath::IsNearlyEqual(currentSpeed, previousSpeed, 0.1f);
+			speedHasBeenUpdated = (FMath::IsNearlyEqual(testJet->acceleration(), testJet->brakeValue())) ? true : speedHasBeenUpdated;// if they're the same value, assume that the speed has been updated.
 
 			UE_LOG(LogTemp, Log, TEXT("previous distance between floor and jet: %f"), previousSpeed);
 			UE_LOG(LogTemp, Log, TEXT("current distance between floor and jet: %f"), currentSpeed);
