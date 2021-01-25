@@ -38,6 +38,9 @@ protected:
 	
 	template<class aMotorStateType>
 	void updateStateTo();
+
+	template<class aMotorStateType>
+	bool isMotorStateOfType();
 	
 public:
 	// Called every frame
@@ -59,4 +62,10 @@ void AMotorStateManager::updateStateTo()
 	{
 		motorState = NewObject<aMotorStateType>(this, aMotorStateType::StaticClass()->GetFName());
 	}
+}
+
+template <class aMotorStateType>
+bool AMotorStateManager::isMotorStateOfType()
+{
+	return motorState->GetClass() == aMotorStateType::StaticClass() ? true : false;
 }

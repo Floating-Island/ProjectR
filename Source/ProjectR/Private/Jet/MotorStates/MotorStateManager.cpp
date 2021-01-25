@@ -56,7 +56,7 @@ bool AMotorStateManager::ReplicateSubobjects(UActorChannel* Channel, FOutBunch* 
 
 void AMotorStateManager::accelerate()
 {
-	if (motorState && motorState->isAccelerating())
+	if (motorState && isMotorStateOfType<UAcceleratingMotorState>())
 	{
 		return;
 	}
@@ -65,7 +65,7 @@ void AMotorStateManager::accelerate()
 
 void AMotorStateManager::brake()
 {
-	if (motorState && motorState->isReversing())
+	if (motorState && isMotorStateOfType<UReversingMotorState>())
 	{
 		return;
 	}
@@ -74,7 +74,7 @@ void AMotorStateManager::brake()
 
 void AMotorStateManager::neutralize()
 {
-	if (!motorState || motorState->isAccelerating() || motorState->isReversing())
+	if (!motorState || !isMotorStateOfType<UNeutralMotorState>())
 	{
 		serverNeutralize();
 	}
