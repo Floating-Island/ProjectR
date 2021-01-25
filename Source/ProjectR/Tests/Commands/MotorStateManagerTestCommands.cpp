@@ -9,6 +9,7 @@
 #include "Jet/MotorStates/NeutralMotorState.h"
 #include "Jet/MotorStates/AcceleratingMotorState.h"
 #include "Jet/MotorStates/ReversingMotorState.h"
+#include "Jet/MotorStates/MixedMotorState.h"
 
 
 //Test preparation commands:
@@ -192,6 +193,23 @@ bool FClientNeutralizeMotorStateManager::Update()
 	}
 	return false;
 }
+
+
+bool FSpawnAMotorStateManagerAndMixIt::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		AMotorStateManagerMOCK* testManager = sessionUtilities.spawnInPIEAnInstanceOf<AMotorStateManagerMOCK>();
+
+		testManager->mix();
+		
+		return true;
+	}
+
+	return false;
+}
+
 
 
 
@@ -526,6 +544,25 @@ bool FCheckMotorStateManagerServerAndClientNeutralState::Update()
 	return false;
 }
 
+
+
+
+
+bool FCheckMotorStateManagerStateChangesToMixed::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
+		if(testManager)
+		{
+			test->TestTrue(TEXT("After mix, the motorState should be Mixed"), testManager->currentState()->GetClass() == UMixedMotorState::StaticClass() );
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;	
+		}
+	}
+	return false;
+}
 
 
 
