@@ -13,7 +13,7 @@ bool FUMixedMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& Param
 {
 	UMixedMotorState* testMixed = NewObject<UMixedMotorState>();
 
-	TestNotNull(TEXT("The Mixed motor state shouldn't be null when instantiated"), testMixed);
+	TestNotNull(TEXT("The Mixed motor state shouldn't be null when instantiated."), testMixed);
 
 	return true;
 }
@@ -37,6 +37,17 @@ bool FUMixedMotorStateActivateAcceleratesMotorDriveTest::RunTest(const FString& 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
+
+
+bool FUMixedMotorStateSupportsNetworkingTest::RunTest(const FString& Parameters)
+{
+	UMixedMotorState* testMixed = NewObject<UMixedMotorState>();
+
+	TestTrue(TEXT("The Mixed motor state should support networking."), testMixed->IsSupportedForNetworking());
+
+	return true;
+}
+
 
 
 
