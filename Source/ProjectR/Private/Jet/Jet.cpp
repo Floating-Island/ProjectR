@@ -82,6 +82,7 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAction("AccelerateAction", EInputEvent::IE_Pressed, this, &AJet::accelerate);
+	PlayerInputComponent->BindAction("AccelerateAction", EInputEvent::IE_Released, this, &AJet::neutralize);
 
 	PlayerInputComponent->BindAxis("SteerAction", this, &AJet::serverSteer);
 
@@ -122,6 +123,14 @@ void AJet::brake()
 	if(motorManager)
 	{
 		motorManager->brake();
+	}
+}
+
+void AJet::neutralize()
+{
+	if(motorManager)
+	{
+		motorManager->neutralize();
 	}
 }
 

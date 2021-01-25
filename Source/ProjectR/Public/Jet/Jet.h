@@ -73,6 +73,8 @@ public:
 
 	void brake();
 
+	void neutralize();
+
 	bool goesForward();
 	bool goesBackwards();
 
