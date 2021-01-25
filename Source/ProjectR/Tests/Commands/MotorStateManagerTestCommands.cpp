@@ -211,6 +211,29 @@ bool FSpawnAMotorStateManagerAndMixIt::Update()
 }
 
 
+bool FClientMixMotorStateManager::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{		
+		FWorldContext serverContext = GEditor->GetWorldContexts()[1];//0 is editor, 1 is server, 2->N is clients
+		if (serverContext.World()->GetNumPlayerControllers() == clientQuantity)
+		{
+			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
+			UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager..."));
+			AMotorStateManager* testClientManager = Cast<AMotorStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AMotorStateManager::StaticClass()));
+			if (testClientManager)
+			{
+				UE_LOG(LogTemp, Log, TEXT("mixing motor state manager..."));
+				testClientManager->mix();
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+
 
 
 
@@ -596,6 +619,53 @@ bool FCheckMotorStateManagerMixKeepsStateIfMixed::Update()
 	}
 	return false;
 }
+
+
+bool FCheckMotorStateManagerServerAndClientMixedState::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = GEditor->GetWorldContexts()[1];
+		AMotorStateManagerMOCK* testServerManager = Cast<AMotorStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(serverContext.World(), AMotorStateManagerMOCK::StaticClass()));
+		if(serverContext.World()->GetNumPlayerControllers() == clientQuantity && testServerManager)
+		{
+			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
+			UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager for checking..."));
+			AMotorStateManagerMOCK* testClientManager = Cast<AMotorStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AMotorStateManagerMOCK::StaticClass()));
+
+			bool bothMixed = false;
+			if(testClientManager)
+			{
+				bool clientStateIsMixed = testClientManager->currentState()->GetClass() == UMixedMotorState::StaticClass();
+				bool serverStateIsMixed = testServerManager->currentState()->GetClass() == UMixedMotorState::StaticClass();
+				bothMixed = serverStateIsMixed && clientStateIsMixed;
+			}
+
+			if(bothMixed)
+			{
+				test->TestTrue(TEXT("The server should replicate its state when calling mix."), bothMixed);
+				for(auto context : GEditor->GetWorldContexts())
+				{
+					context.World()->bDebugFrameStepExecution = true;
+				}
+				return true;
+			}
+
+			++tickCount;
+			if(tickCount > tickLimit)
+			{
+				test->TestTrue(TEXT("The server should replicate its state when calling mix."), bothMixed);
+				for(auto context : GEditor->GetWorldContexts())
+				{
+					context.World()->bDebugFrameStepExecution = true;
+				}
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 
 
 

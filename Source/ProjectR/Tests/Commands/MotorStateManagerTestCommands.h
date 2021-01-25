@@ -44,6 +44,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientNeutralizeMotorStateManage
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManagerAndMixIt);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientMixMotorStateManager, int, clientQuantity);
+
+
 
 //Test check commands:
 
@@ -86,5 +89,8 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMotorStateManagerStateChang
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerMixKeepsStateIfMixed, int, tickCount, int, tickLimit, UMotorState*, previousState, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerServerAndClientMixedState, int, tickCount, int, tickLimit, int, clientQuantity, FAutomationTestBase*, test);
 
 #endif //WITH_DEV_AUTOMATION_TESTS

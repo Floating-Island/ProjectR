@@ -99,6 +99,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerMixKeepsStateIfAlreadyMixedT
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerReplicatesStateWhenCallingMixTest, 
+	"ProjectR.MotorStateManager Tests.Replication.016: Replicates state when calling mix", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 
