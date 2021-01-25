@@ -35,6 +35,9 @@ protected:
 	UFUNCTION(Server, Reliable, WithValidation)
 		void serverNeutralize();
 
+	UFUNCTION(Server, Reliable, WithValidation)
+		void serverMix();
+
 	
 	template<class aMotorStateType>
 	void updateStateTo();

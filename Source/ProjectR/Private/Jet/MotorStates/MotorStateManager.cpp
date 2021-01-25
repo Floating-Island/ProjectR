@@ -83,11 +83,10 @@ void AMotorStateManager::neutralize()
 
 void AMotorStateManager::mix()
 {
-	if (motorStateIsOfType<UMixedMotorState>())
+	if (!motorState || !motorStateIsOfType<UMixedMotorState>())
 	{
-		return;
+		serverMix();
 	}
-	updateStateTo<UMixedMotorState>();
 }
 
 void AMotorStateManager::activate(UMotorDriveComponent* aMotorDrive)
@@ -134,6 +133,19 @@ void AMotorStateManager::serverNeutralize_Implementation()
 }
 
 bool AMotorStateManager::serverNeutralize_Validate()
+{
+	return true;
+}
+
+void AMotorStateManager::serverMix_Implementation()
+{
+	if(HasAuthority())
+	{
+		updateStateTo<UMixedMotorState>();
+	}
+}
+
+bool AMotorStateManager::serverMix_Validate()
 {
 	return true;
 }
