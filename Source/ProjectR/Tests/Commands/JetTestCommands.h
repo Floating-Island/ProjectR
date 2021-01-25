@@ -90,6 +90,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientSteerJet, int, clientQuant
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseAccelerationKey);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseBrakeKey);
+
+
 
 
 

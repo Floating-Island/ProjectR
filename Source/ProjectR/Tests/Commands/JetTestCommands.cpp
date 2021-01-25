@@ -606,6 +606,28 @@ bool FSpawningAJetReleaseAccelerationKey::Update()
 }
 
 
+bool FSpawningAJetReleaseBrakeKey::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+	sessionUtilities.spawnLocalPlayer();
+
+	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+	testJet->setMotorManagerMOCK();
+	testJet->changeMotorStateTo<UAcceleratingMotorState>();
+	
+	sessionUtilities.processLocalPlayerActionInputReleaseFrom(FName(TEXT("BrakeAction")));
+
+	return true;
+}
+
+
 
 
 
