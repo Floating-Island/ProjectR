@@ -2,8 +2,10 @@
 
 
 #include "Jet/MotorStates/MixedMotorState.h"
+#include "Jet/MotorDriveComponent.h"
 
 void UMixedMotorState::activate(UMotorDriveComponent* aMotorDriveComponent)
 {
-	
+	aMotorDriveComponent->accelerate();
+	aMotorDriveComponent->brake();
 }
