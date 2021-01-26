@@ -273,6 +273,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetNeutralizesMotorManagerWhenReleasingBrakeK
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerNeutralizesWhenReleasingAccelerationKeyTest, 
+	"ProjectR.Jet Tests.Replication.048: server neutralizes motor state when client releases acceleration key", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
 
 //jet mesh should be set to collision enabled. (query and physics or physics only).
 //delete tests that check velocity alignment to forward or backwards vectors after steering. Or see if it's possible to remade them.

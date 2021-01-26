@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "../Mocks/MotorStateManagerMOCK.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "JetTestCommands.h"
@@ -625,6 +626,30 @@ bool FSpawningAJetReleaseBrakeKey::Update()
 	sessionUtilities.processLocalPlayerActionInputReleaseFrom(FName(TEXT("BrakeAction")));
 
 	return true;
+}
+
+
+bool FClientReleaseActionKey::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{		
+		FWorldContext serverContext = GEditor->GetWorldContexts()[1];//0 is editor, 1 is server, 2->N is clients
+		if (serverContext.World()->GetNumPlayerControllers() == clientQuantity)
+		{
+			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
+			AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AJet::StaticClass()));
+			if(testJet)
+			{
+				APlayerController* controller = clientContext.World()->GetFirstPlayerController();
+				if(controller->AcknowledgedPawn == testJet)
+				{
+					PIESessionUtilities::processActionKeyReleaseFrom(keyName, controller);
+					return true;
+				}
+			}
+		}
+	}
+	return false;
 }
 
 
@@ -1478,5 +1503,52 @@ bool FCheckAJetToNeutralMotorState::Update()
 	}
 	return false;
 }
+
+
+bool FServerCheckJetNeutralMotorState::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = GEditor->GetWorldContexts()[1];
+		AJetMOCK* testServerJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(serverContext.World(), AJetMOCK::StaticClass()));
+		if(serverContext.World()->GetNumPlayerControllers() == clientQuantity && testServerJet)
+		{
+			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
+			UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager for checking..."));
+			AJetMOCK* testClientJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AJetMOCK::StaticClass()));
+
+			bool bothNeutral = false;
+			if(testClientJet)
+			{
+				bool clientStateIsNeutral = testClientJet->currentMotorState()->GetClass() == UNeutralMotorState::StaticClass();
+				bool serverStateIsNeutral = testServerJet->currentMotorState()->GetClass() == UNeutralMotorState::StaticClass();
+				bothNeutral = serverStateIsNeutral && clientStateIsNeutral;
+			}
+
+			if(bothNeutral)
+			{
+				test->TestTrue(TEXT("The server should replicate its state when calling neutralize."), bothNeutral);
+				for(auto context : GEditor->GetWorldContexts())
+				{
+					context.World()->bDebugFrameStepExecution = true;
+				}
+				return true;
+			}
+
+			++tickCount;
+			if(tickCount > tickLimit)
+			{
+				test->TestTrue(TEXT("The server should replicate its state when calling neutralize."), bothNeutral);
+				for(auto context : GEditor->GetWorldContexts())
+				{
+					context.World()->bDebugFrameStepExecution = true;
+				}
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS

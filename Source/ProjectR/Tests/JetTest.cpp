@@ -720,6 +720,30 @@ bool FAJetNeutralizesMotorManagerWhenReleasingBrakeKeyTest::RunTest(const FStrin
 }
 
 
+bool FAJetServerNeutralizesWhenReleasingAccelerationKeyTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJet(numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientReleaseActionKey(FName(TEXT("AccelerateAction")), numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetNeutralMotorState(tickCount, tickLimit, numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

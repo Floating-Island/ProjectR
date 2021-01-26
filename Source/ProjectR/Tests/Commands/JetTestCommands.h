@@ -93,6 +93,8 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseAccelerationKey);
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseBrakeKey);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FClientReleaseActionKey, FName, keyName, int, clientQuantity);
+
 
 
 
@@ -164,6 +166,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FServerCheckJetSteer, int, tickC
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetToNeutralMotorState, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FServerCheckJetNeutralMotorState, int, tickCount, int, tickLimit, int, clientQuantity, FAutomationTestBase*, test);
 
 
 
