@@ -10,6 +10,7 @@
 #include "Jet/MotorStates/NeutralMotorState.h"
 #include "Jet/MotorStates/AcceleratingMotorState.h"
 #include "Jet/MotorStates/MixedMotorState.h"
+#include "Jet/MotorStates/ReversingMotorState.h"
 
 #include "Editor.h"
 #include "Kismet/GameplayStatics.h"
@@ -726,6 +727,26 @@ bool FSpawningAJetPressBrakeAndAccelerationKey::Update()
 	testJet->setMotorManagerMOCK();
 	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("BrakeAction")));
 	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("AccelerateAction")));
+
+	return true;
+}
+
+
+bool FSpawningAJetPressBrakeAndReleaseAccelerationKey::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+	sessionUtilities.spawnLocalPlayer();
+	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+	testJet->setMotorManagerMOCK();
+	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("BrakeAction")));
+	sessionUtilities.processLocalPlayerActionInputReleaseFrom(FName(TEXT("AccelerateAction")));
 
 	return true;
 }
@@ -1643,7 +1664,7 @@ bool FCheckAJetToMixedMotorState::Update()
 				bool isMixedState = currentMotorState->GetClass() == UMixedMotorState::StaticClass(); 
 
 				UE_LOG(LogTemp, Log, TEXT("Jet current motor state: %s"), *currentMotorState->GetName());
-				UE_LOG(LogTemp, Log, TEXT("Jet current motor state %s a neutral motor state."), *FString(isMixedState ? "is" : "isn't"));
+				UE_LOG(LogTemp, Log, TEXT("Jet current motor state %s a mixed motor state."), *FString(isMixedState ? "is" : "isn't"));
 
 				if (isMixedState)
 				{
@@ -1705,6 +1726,45 @@ bool FServerCheckJetMixedMotorState::Update()
 				{
 					context.World()->bDebugFrameStepExecution = true;
 				}
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FCheckAJetToReversingMotorState::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+		if (testJet)
+		{
+			UMotorState* currentMotorState = testJet->currentMotorState();
+			if(currentMotorState)
+			{
+				bool isReversingState = currentMotorState->GetClass() == UReversingMotorState::StaticClass(); 
+
+				UE_LOG(LogTemp, Log, TEXT("Jet current motor state: %s"), *currentMotorState->GetName());
+				UE_LOG(LogTemp, Log, TEXT("Jet current motor state %s a reversing motor state."), *FString(isReversingState ? "is" : "isn't"));
+
+				if (isReversingState)
+				{
+					test->TestTrue(TEXT("The Jet motor state should be Reversing after pressing both keys."), isReversingState);
+					testWorld->bDebugFrameStepExecution = true;
+					return true;
+				}
+			}
+
+			++tickCount;
+
+			if (tickCount > tickLimit)
+			{
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet never changed its motor state."), tickCount > tickLimit);
+				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
 		}
