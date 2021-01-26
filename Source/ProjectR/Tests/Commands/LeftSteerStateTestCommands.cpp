@@ -1,12 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "../Mocks/JetMOCK.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "LeftSteerStateTestCommands.h"
 #include "Jet/Jet.h"
 #include "../Utilities/PIESessionUtilities.h"
+#include "../Mocks/JetMOCK.h"
 #include "Jet/SteerStates/LeftSteerState.h"
 
 //Test preparation commands:
