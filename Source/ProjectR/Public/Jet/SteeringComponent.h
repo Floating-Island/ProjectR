@@ -36,4 +36,5 @@ public:
 	float steeringRadius();
 
 	void steerLeft();
+	void steerRight();
 };
