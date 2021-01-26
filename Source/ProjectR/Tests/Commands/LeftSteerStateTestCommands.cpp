@@ -16,15 +16,8 @@ bool FSpawningLeftSteerStateAndActivateIt::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-		if(testJet)
-		{
-			ULeftSteerState* testState = NewObject<ULeftSteerState>();
-			testState->activate(testJet->steeringComponent());
-			return true;
-		}
+		ULeftSteerState* testState = NewObject<ULeftSteerState>();
+		return true;
 	}
 	return false;
 }
@@ -47,9 +40,21 @@ bool FCheckAJetSteersLeft::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		FWorldContext serverContext = GEditor->GetWorldContexts()[1];
-		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 		if(testJet)
 		{
+			TArray<UObject*> objectsFound = TArray<UObject*>();
+			GetObjectsOfClass(ULeftSteerState::StaticClass(),objectsFound);
+			ULeftSteerState* steerState = Cast<ULeftSteerState, UObject>(objectsFound[0]);
+			if(steerState)
+			{
+				steerState->activate(testJet->steeringComponent());
+			}
+			else
+			{
+				return false;
+			}
+			
 			UE_LOG(LogTemp, Log, TEXT("Previous jet location: %s"), *previousLocation.ToString());
 			FVector currentLocation = testJet->GetActorLocation();
 			UE_LOG(LogTemp, Log, TEXT("Current jet location: %s"), *currentLocation.ToString());
