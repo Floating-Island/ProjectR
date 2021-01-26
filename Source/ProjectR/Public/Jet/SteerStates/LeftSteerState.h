@@ -13,5 +13,7 @@ UCLASS()
 class PROJECTR_API ULeftSteerState : public USteerState
 {
 	GENERATED_BODY()
-	
+
+public:
+	virtual void activate(USteeringComponent* aSteeringComponent) override;
 };

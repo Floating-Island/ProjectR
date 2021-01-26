@@ -3,3 +3,7 @@
 
 #include "Jet/SteerStates/CenterSteerState.h"
 
+void UCenterSteerState::activate(USteeringComponent* aSteeringComponent)
+{
+	
+}

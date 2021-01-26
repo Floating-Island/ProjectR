@@ -3,3 +3,7 @@
 
 #include "Jet/SteerStates/LeftSteerState.h"
 
+void ULeftSteerState::activate(USteeringComponent* aSteeringComponent)
+{
+	aSteeringComponent->steerLeft();
+}

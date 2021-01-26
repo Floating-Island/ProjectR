@@ -3,3 +3,6 @@
 
 #include "Jet/SteerStates/RightSteerState.h"
 
+void URightSteerState::activate(USteeringComponent* aSteeringComponent)
+{
+}
