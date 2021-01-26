@@ -3,3 +3,7 @@
 
 #include "Jet/SteerStates/SteerState.h"
 
+bool USteerState::IsSupportedForNetworking() const
+{
+	return true;
+}

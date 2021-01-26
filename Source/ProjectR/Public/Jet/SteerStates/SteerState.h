@@ -12,5 +12,7 @@ UCLASS()
 class PROJECTR_API USteerState : public UObject
 {
 	GENERATED_BODY()
-	
+
+public:
+	virtual bool IsSupportedForNetworking() const override;
 };
