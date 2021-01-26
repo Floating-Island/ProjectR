@@ -13,10 +13,12 @@
 
 //Test preparation commands:
 
-
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningLeftSteerStateAndActivateIt);
 
 //Test check commands:
 
+
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckAJetSteersLeft, int, tickCount, int, tickLimit, FVector, previousLocation, FAutomationTestBase*, test);
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

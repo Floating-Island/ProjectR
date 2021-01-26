@@ -7,6 +7,10 @@
 #include "LeftSteerStateTest.h"
 #include "Jet/SteerStates/LeftSteerState.h"
 
+#include "Tests/AutomationEditorCommon.h"
+#include "Commands/JetTestCommands.h"
+#include "Commands/LeftSteerStateTestCommands.h"
+
 bool FULeftSteerStateIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
 	ULeftSteerState* testState = NewObject<ULeftSteerState>();
@@ -25,6 +29,28 @@ bool FULeftSteerStateSupportsNetworkingTest::RunTest(const FString& Parameters)
 
 	return true;
 }
+
+
+bool FULeftSteerStateActivateAcceleratesMotorDriveTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetSetVelocityToTopSpeed);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningLeftSteerStateAndActivateIt);
+	int tickCount = 0;
+	int tickLimit = 3;
+	FVector location = FVector(0);
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSteersLeft(tickCount, tickLimit, location, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
