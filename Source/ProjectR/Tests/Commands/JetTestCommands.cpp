@@ -711,6 +711,24 @@ bool FSpawningAJetPressAccelerationAndBrakeKey::Update()
 }
 
 
+bool FSpawningAJetPressBrakeAndAccelerationKey::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+	sessionUtilities.spawnLocalPlayer();
+	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+	testJet->setMotorManagerMOCK();
+	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("BrakeAction")));
+	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("AccelerateAction")));
+
+	return true;
+}
 
 
 

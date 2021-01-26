@@ -102,6 +102,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FClientReleaseActionKey, FName, k
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerationAndBrakeKey);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeAndAccelerationKey);
+
+
 
 
 
