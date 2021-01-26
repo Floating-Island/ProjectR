@@ -201,6 +201,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetToAcceleratingMotorSt
 DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FServerCheckJetReversedMotorState, int, tickCount, int, tickLimit, int, clientQuantity, FAutomationTestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FServerCheckJetAcceleratedMotorState, int, tickCount, int, tickLimit, int, clientQuantity, FAutomationTestBase*, test);
+
+
 
 
 

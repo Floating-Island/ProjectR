@@ -1878,6 +1878,53 @@ bool FServerCheckJetReversedMotorState::Update()
 }
 
 
+bool FServerCheckJetAcceleratedMotorState::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = GEditor->GetWorldContexts()[1];
+		AJetMOCK* testServerJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(serverContext.World(), AJetMOCK::StaticClass()));
+		if(serverContext.World()->GetNumPlayerControllers() == clientQuantity && testServerJet)
+		{
+			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
+			UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager for checking..."));
+			AJetMOCK* testClientJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AJetMOCK::StaticClass()));
+
+			bool bothAccelerating = false;
+			if(testClientJet && testClientJet->currentMotorState() && testServerJet->currentMotorState())
+			{
+				bool clientStateIsAccelerating = testClientJet->currentMotorState()->GetClass() == UAcceleratingMotorState::StaticClass();
+				bool serverStateIsAccelerating = testServerJet->currentMotorState()->GetClass() == UAcceleratingMotorState::StaticClass();
+				bothAccelerating = serverStateIsAccelerating && clientStateIsAccelerating;
+			}
+
+			if(bothAccelerating)
+			{
+				test->TestTrue(TEXT("The server should replicate its state when the client has pressed the accelerate key and the brake key is released."), bothAccelerating);
+				for(auto context : GEditor->GetWorldContexts())
+				{
+					context.World()->bDebugFrameStepExecution = true;
+				}
+				return true;
+			}
+
+			++tickCount;
+			if(tickCount > tickLimit)
+			{
+				test->TestTrue(TEXT("The server should replicate its state when the client has pressed the accelerate key and the brake key is released."), bothAccelerating);
+				for(auto context : GEditor->GetWorldContexts())
+				{
+					context.World()->bDebugFrameStepExecution = true;
+				}
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+
 
 
 
