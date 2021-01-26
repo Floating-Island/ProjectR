@@ -22,6 +22,10 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FURightSteerStateIsntNullWhenInstantiatedTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FURightSteerStateSupportsNetworkingTest, 
+	"ProjectR.RightSteerState Tests.Replication.001: Supports networking", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
 
 
 

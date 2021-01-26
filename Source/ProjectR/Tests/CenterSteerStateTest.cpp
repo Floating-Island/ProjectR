@@ -18,6 +18,17 @@ bool FUCenterSteerStateIsntNullWhenInstantiatedTest::RunTest(const FString& Para
 }
 
 
+bool FUCenterSteerStateSupportsNetworkingTest::RunTest(const FString& Parameters)
+{
+	UCenterSteerState* testState = NewObject<UCenterSteerState>();
+
+	TestTrue("Should support networking.", testState->IsSupportedForNetworking());
+
+	return true;
+}
+
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
