@@ -629,6 +629,43 @@ bool FSpawningAJetReleaseBrakeKey::Update()
 }
 
 
+bool FServerSpawnJetMOCK::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = GEditor->GetWorldContexts()[1];//0 is editor, 1 is server, 2->N is clients
+
+		if(serverContext.World()->GetNumPlayerControllers() == clientQuantity)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Creating jet..."));
+			FActorSpawnParameters spawnParameters = FActorSpawnParameters();
+			spawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+			AJetMOCK* testJet = serverContext.World()->SpawnActor<AJetMOCK>(FVector(1000), FRotator(0), spawnParameters);
+
+			APlayerController* clientController = nullptr;
+			for (auto controllerIterator = serverContext.World()->GetPlayerControllerIterator(); controllerIterator; ++controllerIterator)
+			{
+				if(controllerIterator.GetIndex() == 1)
+				{
+					clientController = controllerIterator->Get();
+					break;
+				}
+			}
+			if(clientController)
+			{
+				testJet->SetOwner(clientController);
+				clientController->Possess(testJet);
+				clientController->PlayerState->SetIsSpectator(false);
+				testJet->setMotorManagerMOCK();
+			}
+			
+			return true;
+		}
+	}
+	return false;
+}
+
+
 bool FClientReleaseActionKey::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
@@ -643,6 +680,7 @@ bool FClientReleaseActionKey::Update()
 				APlayerController* controller = clientContext.World()->GetFirstPlayerController();
 				if(controller->AcknowledgedPawn == testJet)
 				{
+					UE_LOG(LogTemp, Log, TEXT("releasing key..."));
 					PIESessionUtilities::processActionKeyReleaseFrom(keyName, controller);
 					return true;
 				}
@@ -1518,7 +1556,7 @@ bool FServerCheckJetNeutralMotorState::Update()
 			AJetMOCK* testClientJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AJetMOCK::StaticClass()));
 
 			bool bothNeutral = false;
-			if(testClientJet && testClientJet->hasMotorManagerInstantiated() && testServerJet->hasMotorManagerInstantiated())
+			if(testClientJet && testClientJet->currentMotorState() && testServerJet->currentMotorState())
 			{
 				bool clientStateIsNeutral = testClientJet->currentMotorState()->GetClass() == UNeutralMotorState::StaticClass();
 				bool serverStateIsNeutral = testServerJet->currentMotorState()->GetClass() == UNeutralMotorState::StaticClass();

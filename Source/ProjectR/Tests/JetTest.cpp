@@ -722,7 +722,7 @@ bool FAJetNeutralizesMotorManagerWhenReleasingBrakeKeyTest::RunTest(const FStrin
 
 bool FAJetServerNeutralizesWhenReleasingAccelerationKeyTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest");
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	int32 numberOfPlayers = 2;
@@ -730,7 +730,7 @@ bool FAJetServerNeutralizesWhenReleasingAccelerationKeyTest::RunTest(const FStri
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJet(numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientReleaseActionKey(FName(TEXT("AccelerateAction")), numberOfPlayers));
 
@@ -745,7 +745,7 @@ bool FAJetServerNeutralizesWhenReleasingAccelerationKeyTest::RunTest(const FStri
 
 bool FAJetServerNeutralizesWhenReleasingBrakeKeyTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest");
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	int32 numberOfPlayers = 2;
@@ -753,7 +753,7 @@ bool FAJetServerNeutralizesWhenReleasingBrakeKeyTest::RunTest(const FString& Par
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJet(numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientReleaseActionKey(FName(TEXT("BrakeAction")), numberOfPlayers));
 

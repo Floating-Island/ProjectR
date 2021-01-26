@@ -93,6 +93,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseAccelerationKey);
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseBrakeKey);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FServerSpawnJetMOCK, int, clientQuantity);
+
+
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FClientReleaseActionKey, FName, keyName, int, clientQuantity);
 
 
