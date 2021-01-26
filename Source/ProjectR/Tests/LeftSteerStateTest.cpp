@@ -31,7 +31,7 @@ bool FULeftSteerStateSupportsNetworkingTest::RunTest(const FString& Parameters)
 }
 
 
-bool FULeftSteerStateActivateAcceleratesMotorDriveTest::RunTest(const FString& Parameters)
+bool FULeftSteerStateActivateTurnsLeftSteeringTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 

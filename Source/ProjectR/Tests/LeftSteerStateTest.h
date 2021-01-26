@@ -27,7 +27,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FULeftSteerStateSupportsNetworkingTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FULeftSteerStateActivateAcceleratesMotorDriveTest, 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FULeftSteerStateActivateTurnsLeftSteeringTest, 
 	"ProjectR.LeftSteerState Tests.Integration.002: activate steers left the steering component passed as parameter", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
