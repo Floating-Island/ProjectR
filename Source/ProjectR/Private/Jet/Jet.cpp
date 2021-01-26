@@ -3,6 +3,7 @@
 
 #include "Jet/Jet.h"
 
+
 #include "Components/StaticMeshComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -12,6 +13,9 @@
 #include "Jet/MotorDriveComponent.h"
 #include "Jet/MotorStates/MotorStateManager.h"
 #include "Net/UnrealNetwork.h"
+#include "GameFramework/PlayerInput.h"
+#include "GameFramework/PlayerController.h"
+
 
 
 AJet::AJet()
@@ -123,6 +127,11 @@ void AJet::brake()
 {
 	if(motorManager)
 	{
+		if(keyIsPressedFor(FName("AccelerateAction")))
+		{
+			motorManager->mix();
+			return;
+		}
 		motorManager->brake();
 	}
 }
@@ -222,6 +231,23 @@ FVector AJet::rightVectorProjectionOnFloor()
 	{
 		return GetActorRightVector();
 	}
+}
+
+bool AJet::keyIsPressedFor(const FName anActionMappingName)
+{
+	APlayerController* controller = Cast<APlayerController, AController>(GetController());
+	if(controller)
+	{
+		TArray<FInputActionKeyMapping> actionMappings = controller->PlayerInput->GetKeysForAction(anActionMappingName);
+		for (auto actionMapping : actionMappings)
+		{
+			if(controller->IsInputKeyDown(actionMapping.Key.GetFName()))
+			{
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 void AJet::serverSteer_Implementation(float aSteerDirection)

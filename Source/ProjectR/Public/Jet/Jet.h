@@ -95,4 +95,6 @@ public:
 	
     UFUNCTION(Server, Reliable, WithValidation)
         void serverSteer(float aSteerDirection);
+
+	bool keyIsPressedFor(const FName anActionMappingName);
 };
