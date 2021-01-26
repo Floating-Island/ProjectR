@@ -5,6 +5,18 @@
 
 
 #include "CenterSteerStateTest.h"
+#include "Jet/SteerStates/CenterSteerState.h"
+
+
+bool FUCenterSteerStateIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
+{
+	UCenterSteerState* testState = NewObject<UCenterSteerState>();
+
+	TestNotNull("Shouldn't be null when instantiated.", testState);
+
+	return true;
+}
+
 
 
 
