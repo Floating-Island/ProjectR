@@ -246,7 +246,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerBrakeReplicatesBrakingTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerBrakseWhenPressingBrakeKeyTest, 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerBrakesWhenPressingBrakeKeyTest, 
 	"ProjectR.Jet Tests.Replication.043: server brakes when client pressess brake key", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
@@ -271,6 +271,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetNeutralizesMotorManagerWhenReleasingAccele
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetNeutralizesMotorManagerWhenReleasingBrakeKeyTest, 
 	"ProjectR.Jet Tests.Unit.047: Neutralizes when releasing brake key", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
 
 
 //jet mesh should be set to collision enabled. (query and physics or physics only).

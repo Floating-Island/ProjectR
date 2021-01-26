@@ -614,7 +614,7 @@ bool FAJetServerBrakeReplicatesBrakingTest::RunTest(const FString& Parameters)
 }
 
 
-bool FAJetServerBrakseWhenPressingBrakeKeyTest::RunTest(const FString& Parameters)
+bool FAJetServerBrakesWhenPressingBrakeKeyTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
@@ -718,7 +718,6 @@ bool FAJetNeutralizesMotorManagerWhenReleasingBrakeKeyTest::RunTest(const FStrin
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
-
 
 
 
