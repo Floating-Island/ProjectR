@@ -9,7 +9,7 @@
 #include "Jet/MotorStates/MotorState.h"
 #include "Jet/MotorStates/NeutralMotorState.h"
 #include "Jet/MotorStates/AcceleratingMotorState.h"
-#include "../Mocks/MotorStateManagerMOCK.h"
+#include "Jet/MotorStates/MixedMotorState.h"
 
 #include "Editor.h"
 #include "Kismet/GameplayStatics.h"
@@ -688,6 +688,25 @@ bool FClientReleaseActionKey::Update()
 		}
 	}
 	return false;
+}
+
+
+bool FSpawningAJetPressAccelerationAndBrakeKey::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+	sessionUtilities.spawnLocalPlayer();
+
+	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("AccelerateAction")));
+	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("BrakeAction")));
+
+	return true;
 }
 
 
@@ -1524,7 +1543,7 @@ bool FCheckAJetToNeutralMotorState::Update()
 
 			if (isNeutralState)
 			{
-				test->TestTrue(TEXT("The Jet speed should increase after accelerating (after ticking)."), isNeutralState);
+				test->TestTrue(TEXT("The Jet motor state should be Neutral after releasing the key."), isNeutralState);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -1533,7 +1552,7 @@ bool FCheckAJetToNeutralMotorState::Update()
 
 			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from zero."), tickCount > tickLimit);
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet never changed its motor state."), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -1587,6 +1606,43 @@ bool FServerCheckJetNeutralMotorState::Update()
 	}
 	return false;
 }
+
+
+bool FCheckAJetToMixedMotorState::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+		if (testJet)
+		{
+			UMotorState* currentMotorState = testJet->currentMotorState();
+			bool isNeutralState = currentMotorState->GetClass() == UMixedMotorState::StaticClass(); 
+
+			UE_LOG(LogTemp, Log, TEXT("Jet current motor state: %s"), *currentMotorState->GetName());
+			UE_LOG(LogTemp, Log, TEXT("Jet current motor state %s a neutral motor state."), *FString(isNeutralState ? "is" : "isn't"));
+
+			if (isNeutralState)
+			{
+				test->TestTrue(TEXT("The Jet motor state should be Mixed after pressing both keys."), isNeutralState);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+
+			++tickCount;
+
+			if (tickCount > tickLimit)
+			{
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet never changed its motor state."), tickCount > tickLimit);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

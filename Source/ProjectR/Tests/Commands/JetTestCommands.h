@@ -99,6 +99,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FServerSpawnJetMOCK, int, clientQ
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FClientReleaseActionKey, FName, keyName, int, clientQuantity);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerationAndBrakeKey);
+
+
 
 
 
@@ -172,6 +175,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetToNeutralMotorState, 
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FServerCheckJetNeutralMotorState, int, tickCount, int, tickLimit, int, clientQuantity, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetToMixedMotorState, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
 
 
