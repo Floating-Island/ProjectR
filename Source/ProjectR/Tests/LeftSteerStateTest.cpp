@@ -5,7 +5,16 @@
 
 
 #include "LeftSteerStateTest.h"
+#include "Jet/SteerStates/LeftSteerState.h"
 
+bool FULeftSteerStateIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
+{
+	ULeftSteerState* testState = NewObject<ULeftSteerState>();
+
+	TestNotNull("Shouldn't be null when instantiated.", testState);
+
+	return true;
+}
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
