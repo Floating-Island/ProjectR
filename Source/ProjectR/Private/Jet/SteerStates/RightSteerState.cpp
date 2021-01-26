@@ -5,4 +5,5 @@
 
 void URightSteerState::activate(USteeringComponent* aSteeringComponent)
 {
+	aSteeringComponent->steerRight();
 }
