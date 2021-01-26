@@ -1667,5 +1667,53 @@ bool FCheckAJetToMixedMotorState::Update()
 }
 
 
+bool FServerCheckJetMixedMotorState::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = GEditor->GetWorldContexts()[1];
+		AJetMOCK* testServerJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(serverContext.World(), AJetMOCK::StaticClass()));
+		if(serverContext.World()->GetNumPlayerControllers() == clientQuantity && testServerJet)
+		{
+			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
+			UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager for checking..."));
+			AJetMOCK* testClientJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AJetMOCK::StaticClass()));
+
+			bool bothMixed = false;
+			if(testClientJet && testClientJet->currentMotorState() && testServerJet->currentMotorState())
+			{
+				bool clientStateIsMixed = testClientJet->currentMotorState()->GetClass() == UMixedMotorState::StaticClass();
+				bool serverStateIsMixed = testServerJet->currentMotorState()->GetClass() == UMixedMotorState::StaticClass();
+				bothMixed = serverStateIsMixed && clientStateIsMixed;
+			}
+
+			if(bothMixed)
+			{
+				test->TestTrue(TEXT("The server should replicate its state when calling mix."), bothMixed);
+				for(auto context : GEditor->GetWorldContexts())
+				{
+					context.World()->bDebugFrameStepExecution = true;
+				}
+				return true;
+			}
+
+			++tickCount;
+			if(tickCount > tickLimit)
+			{
+				test->TestTrue(TEXT("The server should replicate its state when calling mix."), bothMixed);
+				for(auto context : GEditor->GetWorldContexts())
+				{
+					context.World()->bDebugFrameStepExecution = true;
+				}
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS

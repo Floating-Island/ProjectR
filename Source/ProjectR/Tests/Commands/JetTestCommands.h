@@ -183,6 +183,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FServerCheckJetNeutralMotorState
 DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetToMixedMotorState, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FServerCheckJetMixedMotorState, int, tickCount, int, tickLimit, int, clientQuantity, FAutomationTestBase*, test);
+
+
 
 
 
