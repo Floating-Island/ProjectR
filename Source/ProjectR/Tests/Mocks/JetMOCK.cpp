@@ -157,6 +157,11 @@ bool AJetMOCK::hasMotorManagerInstantiated()
 	return motorManager ? true : false;
 }
 
+USteeringComponent* AJetMOCK::steeringComponent()
+{
+	return steeringSystem;
+}
+
 //bool AJetMOCK::hasAnAntiGravitySystem()
 //{
 //	return antiGravitySystem? true : false;

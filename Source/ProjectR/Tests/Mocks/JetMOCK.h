@@ -72,7 +72,8 @@ public:
 	void changeMotorStateTo();
 
 	bool hasMotorManagerInstantiated();
-	
+
+	USteeringComponent* steeringComponent();
 };
 
 template <class aMotorStateType>
