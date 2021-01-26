@@ -150,6 +150,12 @@ void AJet::neutralize()
 			motorManager->brake();
 			return;
 		}
+
+		if(keyIsPressedFor(FName("AccelerateAction")))
+		{
+			motorManager->accelerate();
+			return;
+		}
 		motorManager->neutralize();
 	}
 }
