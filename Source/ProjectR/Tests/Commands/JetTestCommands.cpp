@@ -1640,14 +1640,14 @@ bool FCheckAJetToMixedMotorState::Update()
 			UMotorState* currentMotorState = testJet->currentMotorState();
 			if(currentMotorState)
 			{
-				bool isNeutralState = currentMotorState->GetClass() == UMixedMotorState::StaticClass(); 
+				bool isMixedState = currentMotorState->GetClass() == UMixedMotorState::StaticClass(); 
 
 				UE_LOG(LogTemp, Log, TEXT("Jet current motor state: %s"), *currentMotorState->GetName());
-				UE_LOG(LogTemp, Log, TEXT("Jet current motor state %s a neutral motor state."), *FString(isNeutralState ? "is" : "isn't"));
+				UE_LOG(LogTemp, Log, TEXT("Jet current motor state %s a neutral motor state."), *FString(isMixedState ? "is" : "isn't"));
 
-				if (isNeutralState)
+				if (isMixedState)
 				{
-					test->TestTrue(TEXT("The Jet motor state should be Mixed after pressing both keys."), isNeutralState);
+					test->TestTrue(TEXT("The Jet motor state should be Mixed after pressing both keys."), isMixedState);
 					testWorld->bDebugFrameStepExecution = true;
 					return true;
 				}
@@ -1711,6 +1711,7 @@ bool FServerCheckJetMixedMotorState::Update()
 	}
 	return false;
 }
+
 
 
 
