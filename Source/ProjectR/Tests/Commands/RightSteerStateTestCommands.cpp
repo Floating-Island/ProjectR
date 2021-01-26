@@ -50,7 +50,7 @@ bool FCheckAJetSteersRight::Update()
 			FVector currentLocation = testJet->GetActorLocation();
 			UE_LOG(LogTemp, Log, TEXT("Current jet location: %s"), *currentLocation.ToString());
 			float currentYLocation = currentLocation.Y;
-			bool hasSteeredTowardsY = !FMath::IsNearlyEqual(previousLocation.Y, currentYLocation, 0.01f) && currentYLocation > previousLocation.Y;
+			bool hasSteeredTowardsY = !FMath::IsNearlyEqual(previousLocation.Y, currentYLocation, 0.001f) && currentYLocation > previousLocation.Y;
 
 			if(hasSteeredTowardsY)
 			{
