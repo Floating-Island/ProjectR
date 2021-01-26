@@ -1793,7 +1793,7 @@ bool FCheckAJetToReversingMotorState::Update()
 }
 
 
-bool FCheckAJetToAcceleratingMotorStateUpdate()
+bool FCheckAJetToAcceleratingMotorState::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
