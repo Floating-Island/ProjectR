@@ -145,6 +145,11 @@ void AJet::neutralize()
 {
 	if(motorManager)
 	{
+		if(keyIsPressedFor(FName("BrakeAction")))
+		{
+			motorManager->brake();
+			return;
+		}
 		motorManager->neutralize();
 	}
 }
