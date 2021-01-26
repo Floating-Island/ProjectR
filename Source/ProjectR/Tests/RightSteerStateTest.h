@@ -27,6 +27,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FURightSteerStateSupportsNetworkingTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FURightSteerStateActivateTurnsRightSteeringTest, 
+	"ProjectR.RightSteerState Tests.Integration.002: activate steers right the steering component passed as parameter", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 
