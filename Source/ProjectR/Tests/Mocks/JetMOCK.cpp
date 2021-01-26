@@ -4,7 +4,6 @@
 #include "JetMOCK.h"
 
 
-#include "MotorStateManagerMOCK.h"
 #include "Jet/MotorStates/MotorStateManager.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"

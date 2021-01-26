@@ -702,12 +702,14 @@ bool FSpawningAJetPressAccelerationAndBrakeKey::Update()
 	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 	sessionUtilities.spawnLocalPlayer();
-
+	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+	testJet->setMotorManagerMOCK();
 	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("AccelerateAction")));
 	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("BrakeAction")));
 
 	return true;
 }
+
 
 
 
@@ -1618,16 +1620,19 @@ bool FCheckAJetToMixedMotorState::Update()
 		if (testJet)
 		{
 			UMotorState* currentMotorState = testJet->currentMotorState();
-			bool isNeutralState = currentMotorState->GetClass() == UMixedMotorState::StaticClass(); 
-
-			UE_LOG(LogTemp, Log, TEXT("Jet current motor state: %s"), *currentMotorState->GetName());
-			UE_LOG(LogTemp, Log, TEXT("Jet current motor state %s a neutral motor state."), *FString(isNeutralState ? "is" : "isn't"));
-
-			if (isNeutralState)
+			if(currentMotorState)
 			{
-				test->TestTrue(TEXT("The Jet motor state should be Mixed after pressing both keys."), isNeutralState);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
+				bool isNeutralState = currentMotorState->GetClass() == UMixedMotorState::StaticClass(); 
+
+				UE_LOG(LogTemp, Log, TEXT("Jet current motor state: %s"), *currentMotorState->GetName());
+				UE_LOG(LogTemp, Log, TEXT("Jet current motor state %s a neutral motor state."), *FString(isNeutralState ? "is" : "isn't"));
+
+				if (isNeutralState)
+				{
+					test->TestTrue(TEXT("The Jet motor state should be Mixed after pressing both keys."), isNeutralState);
+					testWorld->bDebugFrameStepExecution = true;
+					return true;
+				}
 			}
 
 			++tickCount;

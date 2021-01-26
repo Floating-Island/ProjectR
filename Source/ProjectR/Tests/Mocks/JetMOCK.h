@@ -4,7 +4,8 @@
 
 #include "CoreMinimal.h"
 
-#include "../../Public/Jet/MotorStates/MotorState.h"
+#include "Jet/MotorStates/MotorState.h"
+#include "MotorStateManagerMOCK.h"
 #include "Jet/Jet.h"
 #include "JetMOCK.generated.h"
 

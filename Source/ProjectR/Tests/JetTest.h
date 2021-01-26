@@ -287,7 +287,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerNeutralizesWhenReleasingBrakeKeyTest
 
 //uses a mock
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMixesItsMotorStateWhenPressingAccelerationAndBrakeKeyTest, 
-	"ProjectR.Jet Tests.Unit.050: Mixes its motor state when pressing acceleration and brake key", 
+	"ProjectR.Jet Tests.Unit.050: Mixes its motor state when pressing acceleration and brake key (in that order)", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
