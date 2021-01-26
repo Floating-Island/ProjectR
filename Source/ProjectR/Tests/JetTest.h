@@ -305,7 +305,13 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerMixesWhenPressingAccelerationAndBrak
 
 //uses a mock
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetReversesItsMotorStateWhenBrakeKeyIsPressedAndAccelerateReleasedTest, 
-	"ProjectR.Jet Tests.Unit.052: Reverses its motor state when brake key is pressed and accelerate key is released (in that order)", 
+	"ProjectR.Jet Tests.Unit.053: Reverses its motor state when brake key is pressed and accelerate key is released (in that order)", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetAcceleratesItsMotorStateWhenAccelerateKeyIsPressedAndBrakeReleasedTest, 
+	"ProjectR.Jet Tests.Unit.054: Accelerates its motor state when accelerate key is pressed and brake key is released (in that order)", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

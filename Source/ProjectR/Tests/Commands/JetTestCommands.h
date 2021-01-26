@@ -108,6 +108,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeAndAccelerationKey);
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeAndReleaseAccelerationKey);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerateAndReleaseBrakeKey);
+
+
 
 
 
@@ -190,6 +193,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FServerCheckJetMixedMotorState, 
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetToReversingMotorState, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetToAcceleratingMotorState, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
 
 

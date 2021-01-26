@@ -752,6 +752,26 @@ bool FSpawningAJetPressBrakeAndReleaseAccelerationKey::Update()
 }
 
 
+bool FSpawningAJetPressAccelerateAndReleaseBrakeKey::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+	sessionUtilities.spawnLocalPlayer();
+	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+	testJet->setMotorManagerMOCK();
+	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("AccelerateAction")));
+	sessionUtilities.processLocalPlayerActionInputReleaseFrom(FName(TEXT("BrakeAction")));
+
+	return true;
+}
+
+
 
 
 
@@ -1754,6 +1774,45 @@ bool FCheckAJetToReversingMotorState::Update()
 				if (isReversingState)
 				{
 					test->TestTrue(TEXT("The Jet motor state should be Reversing after pressing both keys."), isReversingState);
+					testWorld->bDebugFrameStepExecution = true;
+					return true;
+				}
+			}
+
+			++tickCount;
+
+			if (tickCount > tickLimit)
+			{
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet never changed its motor state."), tickCount > tickLimit);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FCheckAJetToAcceleratingMotorStateUpdate()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+		if (testJet)
+		{
+			UMotorState* currentMotorState = testJet->currentMotorState();
+			if(currentMotorState)
+			{
+				bool isAcceleratingState = currentMotorState->GetClass() == UAcceleratingMotorState::StaticClass(); 
+
+				UE_LOG(LogTemp, Log, TEXT("Jet current motor state: %s"), *currentMotorState->GetName());
+				UE_LOG(LogTemp, Log, TEXT("Jet current motor state %s a accelerating motor state."), *FString(isAcceleratingState ? "is" : "isn't"));
+
+				if (isAcceleratingState)
+				{
+					test->TestTrue(TEXT("The Jet motor state should be Accelerating after pressing both keys."), isAcceleratingState);
 					testWorld->bDebugFrameStepExecution = true;
 					return true;
 				}
