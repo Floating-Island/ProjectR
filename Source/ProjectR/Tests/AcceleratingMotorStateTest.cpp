@@ -22,7 +22,6 @@ bool FUAcceleratingMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString
 
 bool FUAcceleratingMotorStateActivateAcceleratesMotorDriveTest::RunTest(const FString& Parameters)
 {
-	
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
