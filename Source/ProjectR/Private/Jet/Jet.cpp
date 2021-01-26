@@ -109,6 +109,11 @@ void AJet::accelerate()
 {
 	if(motorManager)
 	{
+		if(keyIsPressedFor(FName("BrakeAction")))
+		{
+			motorManager->mix();
+			return;
+		}
 		motorManager->accelerate();
 	}
 }
