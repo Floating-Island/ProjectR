@@ -21,7 +21,7 @@ bool FSpawningLeftSteerStateAndActivateIt::Update()
 		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 		if(testJet)
 		{
-			ULeftSteerState* testState = sessionUtilities.spawnInPIEAnInstanceOf<ULeftSteerState>();
+			ULeftSteerState* testState = NewObject<ULeftSteerState>();
 			testState->activate(testJet->steeringComponent());
 			return true;
 		}
