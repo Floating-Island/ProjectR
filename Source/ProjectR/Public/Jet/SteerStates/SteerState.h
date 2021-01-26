@@ -8,7 +8,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Abstract)
 class PROJECTR_API USteerState : public UObject
 {
 	GENERATED_BODY()
