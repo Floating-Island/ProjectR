@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "../Mocks/MotorStateManagerMOCK.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "JetTestCommands.h"
@@ -10,6 +9,7 @@
 #include "Jet/MotorStates/MotorState.h"
 #include "Jet/MotorStates/NeutralMotorState.h"
 #include "Jet/MotorStates/AcceleratingMotorState.h"
+#include "../Mocks/MotorStateManagerMOCK.h"
 
 #include "Editor.h"
 #include "Kismet/GameplayStatics.h"
@@ -1518,7 +1518,7 @@ bool FServerCheckJetNeutralMotorState::Update()
 			AJetMOCK* testClientJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AJetMOCK::StaticClass()));
 
 			bool bothNeutral = false;
-			if(testClientJet)
+			if(testClientJet && testClientJet->hasMotorManagerInstantiated() && testServerJet->hasMotorManagerInstantiated())
 			{
 				bool clientStateIsNeutral = testClientJet->currentMotorState()->GetClass() == UNeutralMotorState::StaticClass();
 				bool serverStateIsNeutral = testServerJet->currentMotorState()->GetClass() == UNeutralMotorState::StaticClass();

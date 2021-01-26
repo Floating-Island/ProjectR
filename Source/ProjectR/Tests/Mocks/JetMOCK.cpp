@@ -28,7 +28,7 @@ void AJetMOCK::Tick(float DeltaTime)
 		float weight = abs(physicsMeshComponent->GetMass() * GetWorld()->GetGravityZ());
 		physicsMeshComponent->AddForce(FVector(0, 0, weight));
 	}
-	if(serverSteerAlways)
+	if (serverSteerAlways)
 	{
 		serverSteer(1);
 	}
@@ -142,7 +142,7 @@ void AJetMOCK::setMotorManagerMOCK()
 UMotorState* AJetMOCK::currentMotorState()
 {
 	AMotorStateManagerMOCK* motorManagerMock = Cast<AMotorStateManagerMOCK, AMotorStateManager>(motorManager);
-	if(motorManagerMock)
+	if (motorManagerMock)
 	{
 		return motorManagerMock->currentState();
 	}
@@ -150,7 +150,12 @@ UMotorState* AJetMOCK::currentMotorState()
 	{
 		return nullptr;
 	}
-	
+
+}
+
+bool AJetMOCK::hasMotorManagerInstantiated()
+{
+	return motorManager ? true : false;
 }
 
 //bool AJetMOCK::hasAnAntiGravitySystem()

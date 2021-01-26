@@ -69,6 +69,8 @@ public:
 
 	template<class aMotorStateType>
 	void changeMotorStateTo();
+
+	bool hasMotorManagerInstantiated();
 	
 };
 
