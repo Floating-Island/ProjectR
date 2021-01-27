@@ -60,7 +60,7 @@ public:
 template <class aMotorStateType>
 void AMotorStateManager::updateStateTo()
 {
-	if(!motorState || motorStateIsOfType<aMotorStateType>())
+	if(!motorState || !motorStateIsOfType<aMotorStateType>())
 	{
 		motorState = NewObject<aMotorStateType>(this, aMotorStateType::StaticClass()->GetFName());
 	}
