@@ -30,7 +30,7 @@ bool FSpawnASteerStateManagerMOCK::Update()
 //Test check commands:
 
 
-bool FCheckSteerStateManagerDefaultState::Update()
+bool FCheckSteerStateManagerCurrentState::Update()
 {
 	if(GEditor->IsPlayingSessionInEditor())
 	{
@@ -38,7 +38,7 @@ bool FCheckSteerStateManagerDefaultState::Update()
 		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
 		if(testManager)
 		{
-			test->TestTrue(TEXT("The default state should be CenterSteerState"), testManager->currentState()->GetClass() == UCenterSteerState::StaticClass() );
+			test->TestTrue((TEXT("%s"), *message), testManager->currentState()->GetClass() == expectedState );
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;	
 		}

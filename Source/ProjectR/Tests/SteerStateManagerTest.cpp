@@ -6,6 +6,7 @@
 
 #include "SteerStateManagerTest.h"
 #include "Jet/SteerStates/SteerStateManager.h"
+#include "Jet/SteerStates/CenterSteerState.h"
 
 #include "Tests/AutomationEditorCommon.h"
 #include "Commands/SteerStateManagerTestCommands.h"
@@ -39,7 +40,7 @@ bool FASteerStateManagerDefaultStateIsCenterTest::RunTest(const FString& Paramet
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnASteerStateManagerMOCK);
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerDefaultState(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentState(UCenterSteerState::StaticClass(), FString("The default state should be CenterSteerState"), this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
