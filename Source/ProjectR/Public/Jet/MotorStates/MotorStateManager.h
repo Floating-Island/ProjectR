@@ -46,8 +46,6 @@ protected:
 	bool motorStateIsOfType();
 	
 public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 	virtual void PostInitializeComponents() override;
 	virtual bool ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags) override;
 

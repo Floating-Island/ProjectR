@@ -14,8 +14,7 @@
 // Sets default values
 AMotorStateManager::AMotorStateManager()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	SetReplicates(true);
 	bAlwaysRelevant = true;
 	motorState = nullptr;
@@ -25,13 +24,6 @@ AMotorStateManager::AMotorStateManager()
 void AMotorStateManager::BeginPlay()
 {
 	Super::BeginPlay();
-}
-
-// Called every frame
-void AMotorStateManager::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
 }
 
 void AMotorStateManager::PostInitializeComponents()
