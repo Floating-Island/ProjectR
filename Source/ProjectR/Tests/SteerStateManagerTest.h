@@ -37,6 +37,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerSteerLeftChangesStateToLeftS
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerSteerRightChangesStateToRightSteerTest, 
+	"ProjectR.SteerStateManager Tests.Unit.004: steerRight changes the current state to RightSteerState", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

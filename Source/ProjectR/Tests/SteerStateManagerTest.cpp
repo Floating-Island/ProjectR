@@ -1,13 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "../Public/Jet/SteerStates/LeftSteerState.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 
 #include "SteerStateManagerTest.h"
 #include "Jet/SteerStates/SteerStateManager.h"
 #include "Jet/SteerStates/CenterSteerState.h"
+#include "Jet/SteerStates/LeftSteerState.h"
+#include "Jet/SteerStates/RightSteerState.h"
 
 #include "Tests/AutomationEditorCommon.h"
 #include "Commands/SteerStateManagerTestCommands.h"
@@ -67,6 +68,26 @@ bool FASteerStateManagerSteerLeftChangesStateToLeftSteerTest::RunTest(const FStr
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
+
+
+bool FASteerStateManagerSteerRightChangesStateToRightSteerTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnASteerStateManagerMOCK);
+	ADD_LATENT_AUTOMATION_COMMAND(FRightSteerASteerStateManagerMOCK);
+	int tickCount = 0;
+	int tickLimit = 3;
+	UClass* expectedStateClass = URightSteerState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentState(expectedStateClass, (FString("After rightSteer, the current state should be %s."), *expectedStateClass->GetName()), tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
 
 
 

@@ -20,7 +20,6 @@ bool FSpawnASteerStateManagerMOCK::Update()
 		
 		return true;
 	}
-
 	return false;
 }
 
@@ -38,9 +37,27 @@ bool FLeftSteerASteerStateManagerMOCK::Update()
 			return true;
 		}
 	}
-
 	return false;
 }
+
+
+bool FRightSteerASteerStateManagerMOCK::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
+
+		if(testManager)
+		{
+			testManager->steerRight();
+			return true;
+		}
+	}
+	return false;
+}
+
+
 
 
 
