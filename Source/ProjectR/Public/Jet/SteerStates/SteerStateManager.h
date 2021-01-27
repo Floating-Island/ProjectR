@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "SteerStateManager.generated.h"
 
+class USteerState;
 UCLASS()
 class PROJECTR_API ASteerStateManager : public AActor
 {
@@ -18,6 +19,9 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void PostInitializeComponents() override;
+
+	USteerState* steerState;
 
 public:	
 	
