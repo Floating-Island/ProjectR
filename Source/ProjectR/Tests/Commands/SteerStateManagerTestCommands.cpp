@@ -58,6 +58,23 @@ bool FRightSteerASteerStateManagerMOCK::Update()
 }
 
 
+bool FCenterASteerStateManagerMOCK::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
+
+		if(testManager)
+		{
+			testManager->center();
+			return true;
+		}
+	}
+	return false;
+}
+
+
 
 
 
