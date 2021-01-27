@@ -23,3 +23,12 @@ void ASteerStateManager::PostInitializeComponents()
 
 	steerState = NewObject<UCenterSteerState>(this, FName("UCenterSteerState"));
 }
+
+void ASteerStateManager::steerLeft()
+{
+	if(steerState && steerStateIsOfType<USteerLeftState>())
+	{
+		return;
+	}
+	updateStateTo<USteerLeftState>();
+}
