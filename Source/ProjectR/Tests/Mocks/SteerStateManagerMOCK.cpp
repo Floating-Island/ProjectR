@@ -3,3 +3,7 @@
 
 #include "SteerStateManagerMOCK.h"
 
+USteerState* ASteerStateManagerMOCK::currentState()
+{
+	return steerState;
+}

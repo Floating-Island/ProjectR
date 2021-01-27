@@ -6,6 +6,7 @@
 #include "Jet/SteerStates/SteerStateManager.h"
 #include "SteerStateManagerMOCK.generated.h"
 
+class USteerState;
 /**
  * 
  */
@@ -13,5 +14,7 @@ UCLASS()
 class PROJECTR_API ASteerStateManagerMOCK : public ASteerStateManager
 {
 	GENERATED_BODY()
-	
+
+public:
+	USteerState* currentState();
 };
