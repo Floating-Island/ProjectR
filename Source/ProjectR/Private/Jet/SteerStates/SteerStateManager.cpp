@@ -12,7 +12,9 @@
 ASteerStateManager::ASteerStateManager()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	steerState = nullptr;
 	SetReplicates(true);
+	bAlwaysRelevant = true;
 }
 
 // Called when the game starts or when spawned
