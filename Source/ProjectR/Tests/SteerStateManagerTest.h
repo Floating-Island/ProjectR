@@ -67,6 +67,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerReplicatesTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerIsAlwaysRelevantToNetworkTest, 
+	"ProjectR.SteerStateManager Tests.Replication.010: Is always relevant to the network", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

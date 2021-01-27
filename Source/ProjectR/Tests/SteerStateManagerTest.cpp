@@ -172,6 +172,16 @@ bool FASteerStateManagerReplicatesTest::RunTest(const FString& Parameters)
 }
 
 
+bool FASteerStateManagerIsAlwaysRelevantToNetworkTest::RunTest(const FString& Parameters)
+{
+	ASteerStateManager* testManager = NewObject<ASteerStateManager>();
+
+	TestTrue(TEXT("Should be always relevant to the network."), testManager->bAlwaysRelevant);
+
+	return true;	
+}
+
+
 
 
 
