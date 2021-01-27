@@ -77,6 +77,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerReplicatesStateWhenCallingSt
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerReplicatesStateWhenCallingSteerRightTest, 
+	"ProjectR.SteerStateManager Tests.Replication.012: Replicates its state when client calls steerRight", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

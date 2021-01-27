@@ -31,6 +31,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FServerSpawnActorOfClass, UClass*
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientSteerLeftSteerStateManager, int, clientQuantity);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientSteerRightSteerStateManager, int, clientQuantity);
+
+
 
 
 //Test check commands:
