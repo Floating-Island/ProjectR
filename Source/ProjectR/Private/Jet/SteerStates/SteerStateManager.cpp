@@ -4,6 +4,8 @@
 #include "Jet/SteerStates/SteerStateManager.h"
 
 #include "Jet/SteerStates/CenterSteerState.h"
+#include "Jet/SteerStates/LeftSteerState.h"
+
 
 // Sets default values
 ASteerStateManager::ASteerStateManager()
@@ -26,9 +28,9 @@ void ASteerStateManager::PostInitializeComponents()
 
 void ASteerStateManager::steerLeft()
 {
-	if(steerState && steerStateIsOfType<USteerLeftState>())
+	if(steerState && steerStateIsOfType<ULeftSteerState>())
 	{
 		return;
 	}
-	updateStateTo<USteerLeftState>();
+	updateStateTo<ULeftSteerState>();
 }
