@@ -35,6 +35,7 @@ protected:
 
 public:
 	void steerLeft();
+	void steerRight();
 
 };
 

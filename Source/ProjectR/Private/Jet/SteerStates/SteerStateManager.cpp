@@ -4,6 +4,7 @@
 #include "Jet/SteerStates/SteerStateManager.h"
 
 #include "Jet/SteerStates/CenterSteerState.h"
+#include "Jet/SteerStates/RightSteerState.h"
 #include "Jet/SteerStates/LeftSteerState.h"
 
 
@@ -33,4 +34,13 @@ void ASteerStateManager::steerLeft()
 		return;
 	}
 	updateStateTo<ULeftSteerState>();
+}
+
+void ASteerStateManager::steerRight()
+{
+	if(steerState && steerStateIsOfType<URightSteerState>())
+	{
+		return;
+	}
+	updateStateTo<URightSteerState>();
 }
