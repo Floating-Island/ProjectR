@@ -52,6 +52,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerSteerLeftKeepsStateIfAlready
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerSteerRightKeepsStateIfAlreadyRightSteerStateTest, 
+	"ProjectR.SteerStateManager Tests.Unit.007: steerRight keeps current state if it's already a RightSteerState", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

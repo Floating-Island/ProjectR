@@ -119,7 +119,25 @@ bool FASteerStateManagerSteerLeftKeepsStateIfAlreadyLeftSteerStateTest::RunTest(
 	int tickCount = 0;
 	int tickLimit = 3;
 	USteerState* previousState = nullptr;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentStateAgainstPreviousOnSteerLeft(previousState, FString("leftSteer should keep the current state if it's a LeftSteerState."), tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentStateAgainstPreviousOnSteerLeft(previousState, FString("steerLeft should keep the current state if it's a LeftSteerState."), tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;	
+}
+
+
+bool FASteerStateManagerSteerRightKeepsStateIfAlreadyRightSteerStateTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnASteerStateManagerMOCK);
+	int tickCount = 0;
+	int tickLimit = 3;
+	USteerState* previousState = nullptr;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentStateAgainstPreviousOnSteerRight(previousState, FString("steerRight should keep the current state if it's a RightSteerState."), tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;	
