@@ -13,10 +13,11 @@
 
 //Test preparation commands:
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnASteerStateManagerMOCK);
 
 
 //Test check commands:
 
-
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSteerStateManagerDefaultState, FAutomationTestBase*, test);
 
 #endif //WITH_DEV_AUTOMATION_TESTS

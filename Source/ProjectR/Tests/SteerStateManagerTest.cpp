@@ -7,6 +7,9 @@
 #include "SteerStateManagerTest.h"
 #include "Jet/SteerStates/SteerStateManager.h"
 
+#include "Tests/AutomationEditorCommon.h"
+#include "Commands/SteerStateManagerTestCommands.h"
+
 
 bool FASteerStateManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
@@ -26,6 +29,22 @@ bool FASteerStateManagerDoesntTickTest::RunTest(const FString& Parameters)
 
 	return true;	
 }
+
+
+bool FASteerStateManagerDefaultStateIsCenterTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnASteerStateManagerMOCK);
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerDefaultState(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
 
 
 

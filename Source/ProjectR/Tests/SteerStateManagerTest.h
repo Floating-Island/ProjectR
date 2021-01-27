@@ -27,6 +27,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerDoesntTickTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerDefaultStateIsCenterTest, 
+	"ProjectR.SteerStateManager Tests.Unit.002: The default state is CenterSteerState", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 
