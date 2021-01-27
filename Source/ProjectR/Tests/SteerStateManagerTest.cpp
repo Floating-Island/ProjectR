@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "../Public/Jet/SteerStates/LeftSteerState.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 
@@ -60,7 +61,8 @@ bool FASteerStateManagerSteerLeftChangesStateToLeftSteerTest::RunTest(const FStr
 	ADD_LATENT_AUTOMATION_COMMAND(FLeftSteerASteerStateManagerMOCK);
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentState(UCenterSteerState::StaticClass(), FString("After leftSteer, the current state should be SteerLeftState."), tickCount, tickLimit, this));
+	UClass* expectedStateClass = ULeftSteerState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentState(expectedStateClass, (FString("After leftSteer, the current state should be %s."), *expectedStateClass->GetName()), tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
