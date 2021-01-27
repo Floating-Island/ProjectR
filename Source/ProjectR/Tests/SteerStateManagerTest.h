@@ -82,6 +82,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerReplicatesStateWhenCallingSt
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerReplicatesStateWhenCallingCenterTest, 
+	"ProjectR.SteerStateManager Tests.Replication.013: Replicates its state when client calls center", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

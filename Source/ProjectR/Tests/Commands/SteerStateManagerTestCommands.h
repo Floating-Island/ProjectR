@@ -34,6 +34,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientSteerLeftSteerStateManager
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientSteerRightSteerStateManager, int, clientQuantity);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientCenterSteerStateManager, int, clientQuantity);
+
+
 
 
 //Test check commands:

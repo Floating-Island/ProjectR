@@ -151,6 +151,28 @@ bool FClientSteerRightSteerStateManager::Update()
 }
 
 
+bool FClientCenterSteerStateManager::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{		
+		FWorldContext serverContext = GEditor->GetWorldContexts()[1];//0 is editor, 1 is server, 2->N is clients
+		if (serverContext.World()->GetNumPlayerControllers() == clientQuantity)
+		{
+			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
+			UE_LOG(LogTemp, Log, TEXT("retrieving steer state manager..."));
+			ASteerStateManager* testClientManager = Cast<ASteerStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), ASteerStateManager::StaticClass()));
+			if (testClientManager)
+			{
+				UE_LOG(LogTemp, Log, TEXT("centering steer state manager..."));
+				testClientManager->center();
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
 
 
 
