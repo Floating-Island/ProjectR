@@ -18,5 +18,16 @@ bool FASteerStateManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Par
 }
 
 
+bool FASteerStateManagerDoesntTickTest::RunTest(const FString& Parameters)
+{
+	ASteerStateManager* testManager = NewObject<ASteerStateManager>();
+
+	TestFalse(TEXT("Shouldn't tick."), testManager->CanEverTick());
+
+	return true;	
+}
+
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS

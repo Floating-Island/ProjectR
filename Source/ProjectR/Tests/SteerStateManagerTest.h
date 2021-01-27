@@ -20,7 +20,11 @@
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerIsntNullWhenInstantiatedTest, 
 	"ProjectR.SteerStateManager Tests.Unit.000: Isn't null when instantiated", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerDoesntTickTest, 
+	"ProjectR.SteerStateManager Tests.Unit.001: Doesn't tick", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 
