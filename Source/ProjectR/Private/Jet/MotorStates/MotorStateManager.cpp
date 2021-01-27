@@ -67,18 +67,20 @@ void AMotorStateManager::brake()
 
 void AMotorStateManager::neutralize()
 {
-	if (!motorState || !motorStateIsOfType<UNeutralMotorState>())
+	if (motorState && motorStateIsOfType<UNeutralMotorState>())
 	{
-		serverNeutralize();
+		return;
 	}
+	serverNeutralize();
 }
 
 void AMotorStateManager::mix()
 {
-	if (!motorState || !motorStateIsOfType<UMixedMotorState>())
+	if (motorState && motorStateIsOfType<UMixedMotorState>())
 	{
-		serverMix();
+		return;
 	}
+	serverMix();
 }
 
 void AMotorStateManager::activate(UMotorDriveComponent* aMotorDrive)
