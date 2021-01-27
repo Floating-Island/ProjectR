@@ -28,5 +28,9 @@ void ASteerStateManager::PostInitializeComponents()
 
 void ASteerStateManager::steerLeft()
 {
-	checkCurrentStateAndUpdateTo<ULeftSteerState>();
+	if(steerState && steerStateIsOfType<ULeftSteerState>())
+	{
+		return;
+	}
+	updateStateTo<ULeftSteerState>();
 }

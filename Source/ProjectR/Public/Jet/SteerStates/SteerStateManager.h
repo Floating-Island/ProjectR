@@ -31,9 +31,6 @@ protected:
 	template<class aSteerStateType>
 	void updateStateTo();
 
-	template<class aSteerStateType>
-	void checkCurrentStateAndUpdateTo();
-
 	
 
 public:
@@ -54,14 +51,4 @@ void ASteerStateManager::updateStateTo()
 	{
 		steerState = NewObject<aSteerStateType>(this, aSteerStateType::StaticClass()->GetFName());
 	}
-}
-
-template <class aSteerStateType>
-void ASteerStateManager::checkCurrentStateAndUpdateTo()
-{
-	if(steerState && steerStateIsOfType<aSteerStateType>())
-	{
-		return;
-	}
-	updateStateTo<aSteerStateType>();
 }
