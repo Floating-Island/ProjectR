@@ -72,6 +72,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerIsAlwaysRelevantToNetworkTes
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerReplicatesStateWhenCallingSteerLeftTest, 
+	"ProjectR.SteerStateManager Tests.Replication.011: Replicates its state when client calls steerLeft", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

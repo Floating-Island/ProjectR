@@ -25,6 +25,12 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FRightSteerASteerStateManagerMOCK);
 DEFINE_LATENT_AUTOMATION_COMMAND(FCenterASteerStateManagerMOCK);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FServerSpawnActorOfClass, UClass*, anActorClass, int, clientQuantity);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientSteerLeftSteerStateManager, int, clientQuantity);
+
+
 
 
 //Test check commands:
@@ -40,5 +46,8 @@ DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSteerStateManagerCurrentSt
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSteerStateManagerCurrentStateAgainstPreviousOnCenter, USteerState*, previousState, FString, message, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSteerStateManagerServerAndClientExpectedState, UClass*, expectedStateClass, int, tickCount, int, tickLimit, int, clientQuantity, FAutomationTestBase*, test);
 
 #endif //WITH_DEV_AUTOMATION_TESTS

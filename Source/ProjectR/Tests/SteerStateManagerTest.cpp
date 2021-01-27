@@ -12,6 +12,8 @@
 
 #include "Tests/AutomationEditorCommon.h"
 #include "Commands/SteerStateManagerTestCommands.h"
+#include "Commands/NetworkCommands.h"
+#include "Mocks/SteerStateManagerMOCK.h"
 
 
 bool FASteerStateManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
@@ -180,6 +182,32 @@ bool FASteerStateManagerIsAlwaysRelevantToNetworkTest::RunTest(const FString& Pa
 
 	return true;	
 }
+
+
+bool FASteerStateManagerReplicatesStateWhenCallingSteerLeftTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(steerStateManagerClass, numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientSteerLeftSteerStateManager(numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	UClass* expectedStateClass = ULeftSteerState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerServerAndClientExpectedState(expectedStateClass, tickCount, tickLimit, numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
 
 
 
