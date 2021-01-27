@@ -44,3 +44,12 @@ void ASteerStateManager::steerRight()
 	}
 	updateStateTo<URightSteerState>();
 }
+
+void ASteerStateManager::center()
+{
+	if(steerState && steerStateIsOfType<UCenterSteerState>())
+	{
+		return;
+	}
+	updateStateTo<UCenterSteerState>();
+}
