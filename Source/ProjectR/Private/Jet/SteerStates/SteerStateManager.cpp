@@ -50,6 +50,19 @@ bool ASteerStateManager::serverSteerRight_Validate()
 	return true;
 }
 
+void ASteerStateManager::serverCenter_Implementation()
+{
+	if(HasAuthority())
+	{
+		updateStateTo<UCenterSteerState>();
+	}
+}
+
+bool ASteerStateManager::serverCenter_Validate()
+{
+	return true;
+}
+
 void ASteerStateManager::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
@@ -96,7 +109,7 @@ void ASteerStateManager::center()
 	{
 		return;
 	}
-	updateStateTo<UCenterSteerState>();
+	serverCenter();
 }
 
 
