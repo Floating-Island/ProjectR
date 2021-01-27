@@ -21,9 +21,9 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	virtual void PostInitializeComponents() override;
 
-	USteerState* steerState;
+	UPROPERTY(Replicated)
+		USteerState* steerState;
 
 	template<class aSteerStateType>
 	bool steerStateIsOfType();
@@ -31,9 +31,13 @@ protected:
 	template<class aSteerStateType>
 	void updateStateTo();
 
-	
+	UFUNCTION(Server, Reliable, WithValidation)
+		void serverSteerLeft();
 
 public:
+	virtual void PostInitializeComponents() override;
+	virtual bool ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags) override;
+	
 	void steerLeft();
 	void steerRight();
 	void center();

@@ -6,7 +6,8 @@
 #include "Jet/SteerStates/CenterSteerState.h"
 #include "Jet/SteerStates/RightSteerState.h"
 #include "Jet/SteerStates/LeftSteerState.h"
-
+#include "Net/UnrealNetwork.h"
+#include "Engine/ActorChannel.h"
 
 // Sets default values
 ASteerStateManager::ASteerStateManager()
@@ -23,11 +24,39 @@ void ASteerStateManager::BeginPlay()
 	Super::BeginPlay();
 }
 
+void ASteerStateManager::serverSteerLeft_Implementation()
+{
+	if(HasAuthority())
+	{
+		updateStateTo<ULeftSteerState>();
+	}
+}
+
+bool ASteerStateManager::serverSteerLeft_Validate()
+{
+	return true;
+}
+
 void ASteerStateManager::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 
-	steerState = NewObject<UCenterSteerState>(this, FName("UCenterSteerState"));
+	if(HasAuthority())
+	{
+		steerState = NewObject<UCenterSteerState>(this, FName("UCenterSteerState"));
+	}
+}
+
+bool ASteerStateManager::ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags)
+{
+	bool hasReplicated = Super::ReplicateSubobjects(Channel, Bunch, RepFlags);
+
+    if (steerState != nullptr)
+    {
+        hasReplicated |= Channel->ReplicateSubobject(steerState, *Bunch, *RepFlags);
+    }
+
+    return hasReplicated;
 }
 
 void ASteerStateManager::steerLeft()
@@ -36,7 +65,7 @@ void ASteerStateManager::steerLeft()
 	{
 		return;
 	}
-	updateStateTo<ULeftSteerState>();
+	serverSteerLeft();
 }
 
 void ASteerStateManager::steerRight()
@@ -55,4 +84,12 @@ void ASteerStateManager::center()
 		return;
 	}
 	updateStateTo<UCenterSteerState>();
+}
+
+
+void ASteerStateManager::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ASteerStateManager, steerState);
 }
