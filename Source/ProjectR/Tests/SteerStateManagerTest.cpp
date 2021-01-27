@@ -162,6 +162,16 @@ bool FASteerStateManagerCenterKeepsStateIfAlreadyCenterSteerStateTest::RunTest(c
 }
 
 
+bool FASteerStateManagerReplicatesTest::RunTest(const FString& Parameters)
+{
+	ASteerStateManager* testManager = NewObject<ASteerStateManager>();
+
+	TestTrue(TEXT("Should replicate to the network."), testManager->GetIsReplicated());
+
+	return true;	
+}
+
+
 
 
 

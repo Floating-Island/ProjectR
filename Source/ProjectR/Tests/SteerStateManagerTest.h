@@ -62,6 +62,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerCenterKeepsStateIfAlreadyCen
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerReplicatesTest, 
+	"ProjectR.SteerStateManager Tests.Replication.009: Replicates to the network", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 
