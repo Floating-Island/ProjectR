@@ -34,6 +34,9 @@ protected:
 	UFUNCTION(Server, Reliable, WithValidation)
 		void serverSteerLeft();
 
+	UFUNCTION(Server, Reliable, WithValidation)
+		void serverSteerRight();
+
 public:
 	virtual void PostInitializeComponents() override;
 	virtual bool ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags) override;

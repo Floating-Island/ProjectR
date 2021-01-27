@@ -37,6 +37,19 @@ bool ASteerStateManager::serverSteerLeft_Validate()
 	return true;
 }
 
+void ASteerStateManager::serverSteerRight_Implementation()
+{
+	if(HasAuthority())
+	{
+		updateStateTo<URightSteerState>();
+	}
+}
+
+bool ASteerStateManager::serverSteerRight_Validate()
+{
+	return true;
+}
+
 void ASteerStateManager::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
@@ -74,7 +87,7 @@ void ASteerStateManager::steerRight()
 	{
 		return;
 	}
-	updateStateTo<URightSteerState>();
+	serverSteerRight();
 }
 
 void ASteerStateManager::center()
