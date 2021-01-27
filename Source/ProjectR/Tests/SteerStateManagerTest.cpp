@@ -108,6 +108,25 @@ bool FASteerStateManagerCenterChangesStateToCenterSteerTest::RunTest(const FStri
 }
 
 
+bool FASteerStateManagerSteerLeftKeepsStateIfAlreadyLeftSteerStateTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnASteerStateManagerMOCK);
+	ADD_LATENT_AUTOMATION_COMMAND(FLeftSteerASteerStateManagerMOCKIndefinitely);
+	int tickCount = 0;
+	int tickLimit = 3;
+	USteerState* previousState = nullptr;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentStateAgainstPrevious(previousState, FString("leftSteer should keep the current state if it's a LeftSteerState."), tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;	
+}
+
+
 
 
 

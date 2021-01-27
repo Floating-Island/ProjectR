@@ -13,11 +13,11 @@
 
 bool FSpawnASteerStateManagerMOCK::Update()
 {
-	if(GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		sessionUtilities.spawnInPIEAnInstanceOf<ASteerStateManagerMOCK>();
-		
+
 		return true;
 	}
 	return false;
@@ -26,12 +26,12 @@ bool FSpawnASteerStateManagerMOCK::Update()
 
 bool FLeftSteerASteerStateManagerMOCK::Update()
 {
-	if(GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
 
-		if(testManager)
+		if (testManager)
 		{
 			testManager->steerLeft();
 			return true;
@@ -43,12 +43,12 @@ bool FLeftSteerASteerStateManagerMOCK::Update()
 
 bool FRightSteerASteerStateManagerMOCK::Update()
 {
-	if(GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
 
-		if(testManager)
+		if (testManager)
 		{
 			testManager->steerRight();
 			return true;
@@ -60,15 +60,31 @@ bool FRightSteerASteerStateManagerMOCK::Update()
 
 bool FCenterASteerStateManagerMOCK::Update()
 {
-	if(GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
 
-		if(testManager)
+		if (testManager)
 		{
 			testManager->center();
 			return true;
+		}
+	}
+	return false;
+}
+
+
+bool FLeftSteerASteerStateManagerMOCKIndefinitely::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
+
+		if (testManager)
+		{
+			testManager->steerLeft();
 		}
 	}
 	return false;
@@ -85,25 +101,59 @@ bool FCenterASteerStateManagerMOCK::Update()
 
 bool FCheckSteerStateManagerCurrentState::Update()
 {
-	if(GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
-		if(testManager)
+		if (testManager)
 		{
 			UE_LOG(LogTemp, Log, TEXT("current state: %s"), *testManager->currentState()->GetName());
 			bool statesMatch = testManager->currentState()->GetClass() == expectedState;
-			if(statesMatch)
+			if (statesMatch)
 			{
-				test->TestTrue((TEXT("%s"), *message), statesMatch );
+				test->TestTrue((TEXT("%s"), *message), statesMatch);
 				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 				return true;
 			}
 
 			++tickCount;
-			if(tickCount>tickLimit)
+			if (tickCount > tickLimit)
 			{
-				test->TestTrue((TEXT("Tick limit reached. %s"), *message), statesMatch );
+				test->TestTrue((TEXT("Tick limit reached. %s"), *message), statesMatch);
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FCheckSteerStateManagerCurrentStateAgainstPrevious::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
+		if (testManager)
+		{
+			UE_LOG(LogTemp, Log, TEXT("previous state: %s"), *(previousState ? previousState->GetName() : FString("nullptr")));
+			USteerState* currentState = testManager->currentState();
+			UE_LOG(LogTemp, Log, TEXT("current state: %s"), *currentState->GetName());
+
+			bool statesMatch = currentState == previousState;
+			if (statesMatch)
+			{
+				test->TestTrue((TEXT("%s"), *message), statesMatch);
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+			previousState = currentState;
+
+			++tickCount;
+			if (tickCount > tickLimit)
+			{
+				test->TestTrue((TEXT("Tick limit reached. %s"), *message), statesMatch);
 				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 				return true;
 			}
