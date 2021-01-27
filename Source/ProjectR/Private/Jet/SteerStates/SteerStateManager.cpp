@@ -12,6 +12,7 @@
 ASteerStateManager::ASteerStateManager()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	SetReplicates(true);
 }
 
 // Called when the game starts or when spawned
