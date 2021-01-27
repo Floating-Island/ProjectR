@@ -26,10 +26,7 @@ void ASteerStateManager::BeginPlay()
 
 void ASteerStateManager::serverSteerLeft_Implementation()
 {
-	if(HasAuthority())
-	{
-		updateStateTo<ULeftSteerState>();
-	}
+	updateStateTo<ULeftSteerState>();
 }
 
 bool ASteerStateManager::serverSteerLeft_Validate()
@@ -39,10 +36,7 @@ bool ASteerStateManager::serverSteerLeft_Validate()
 
 void ASteerStateManager::serverSteerRight_Implementation()
 {
-	if(HasAuthority())
-	{
-		updateStateTo<URightSteerState>();
-	}
+	updateStateTo<URightSteerState>();
 }
 
 bool ASteerStateManager::serverSteerRight_Validate()
@@ -52,10 +46,7 @@ bool ASteerStateManager::serverSteerRight_Validate()
 
 void ASteerStateManager::serverCenter_Implementation()
 {
-	if(HasAuthority())
-	{
-		updateStateTo<UCenterSteerState>();
-	}
+	updateStateTo<UCenterSteerState>();
 }
 
 bool ASteerStateManager::serverCenter_Validate()

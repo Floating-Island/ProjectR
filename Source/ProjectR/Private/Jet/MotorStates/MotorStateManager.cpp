@@ -93,10 +93,7 @@ void AMotorStateManager::activate(UMotorDriveComponent* aMotorDrive)
 
 void AMotorStateManager::serverAccelerate_Implementation()
 {
-	if (HasAuthority())
-	{
-		updateStateTo<UAcceleratingMotorState>();
-	}
+	updateStateTo<UAcceleratingMotorState>();
 }
 
 bool AMotorStateManager::serverAccelerate_Validate()
@@ -104,13 +101,9 @@ bool AMotorStateManager::serverAccelerate_Validate()
 	return true;
 }
 
-
 void AMotorStateManager::serverBrake_Implementation()
 {
-	if(HasAuthority())
-	{
-		updateStateTo<UReversingMotorState>();
-	}
+	updateStateTo<UReversingMotorState>();
 }
 
 bool AMotorStateManager::serverBrake_Validate()
@@ -120,10 +113,8 @@ bool AMotorStateManager::serverBrake_Validate()
 
 void AMotorStateManager::serverNeutralize_Implementation()
 {
-	if(HasAuthority())
-	{
-		updateStateTo<UNeutralMotorState>();
-	}
+
+	updateStateTo<UNeutralMotorState>();
 }
 
 bool AMotorStateManager::serverNeutralize_Validate()
@@ -133,10 +124,7 @@ bool AMotorStateManager::serverNeutralize_Validate()
 
 void AMotorStateManager::serverMix_Implementation()
 {
-	if(HasAuthority())
-	{
-		updateStateTo<UMixedMotorState>();
-	}
+	updateStateTo<UMixedMotorState>();
 }
 
 bool AMotorStateManager::serverMix_Validate()
