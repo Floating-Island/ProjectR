@@ -38,6 +38,7 @@ bool FCheckSteerStateManagerCurrentState::Update()
 		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
 		if(testManager)
 		{
+			UE_LOG(LogTemp, Log, TEXT("current state: %s"), *testManager->currentState()->GetName());
 			test->TestTrue((TEXT("%s"), *message), testManager->currentState()->GetClass() == expectedState );
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;	
