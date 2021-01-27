@@ -116,11 +116,10 @@ bool FASteerStateManagerSteerLeftKeepsStateIfAlreadyLeftSteerStateTest::RunTest(
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnASteerStateManagerMOCK);
-	ADD_LATENT_AUTOMATION_COMMAND(FLeftSteerASteerStateManagerMOCKIndefinitely);
 	int tickCount = 0;
 	int tickLimit = 3;
 	USteerState* previousState = nullptr;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentStateAgainstPrevious(previousState, FString("leftSteer should keep the current state if it's a LeftSteerState."), tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentStateAgainstPreviousOnSteerLeft(previousState, FString("leftSteer should keep the current state if it's a LeftSteerState."), tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;	

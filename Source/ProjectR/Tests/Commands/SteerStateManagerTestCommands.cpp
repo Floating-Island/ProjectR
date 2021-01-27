@@ -75,22 +75,6 @@ bool FCenterASteerStateManagerMOCK::Update()
 }
 
 
-bool FLeftSteerASteerStateManagerMOCKIndefinitely::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
-
-		if (testManager)
-		{
-			testManager->steerLeft();
-		}
-	}
-	return false;
-}
-
-
 
 
 
@@ -129,7 +113,7 @@ bool FCheckSteerStateManagerCurrentState::Update()
 }
 
 
-bool FCheckSteerStateManagerCurrentStateAgainstPrevious::Update()
+bool FCheckSteerStateManagerCurrentStateAgainstPreviousOnSteerLeft::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -137,6 +121,7 @@ bool FCheckSteerStateManagerCurrentStateAgainstPrevious::Update()
 		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
 		if (testManager)
 		{
+			testManager->steerLeft();
 			UE_LOG(LogTemp, Log, TEXT("previous state: %s"), *(previousState ? previousState->GetName() : FString("nullptr")));
 			USteerState* currentState = testManager->currentState();
 			UE_LOG(LogTemp, Log, TEXT("current state: %s"), *currentState->GetName());
