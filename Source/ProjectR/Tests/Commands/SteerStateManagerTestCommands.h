@@ -16,6 +16,9 @@
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnASteerStateManagerMOCK);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FLeftSteerASteerStateManagerMOCK);
+
+
 //Test check commands:
 
 DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckSteerStateManagerCurrentState, UClass*, expectedState, FString, message, FAutomationTestBase*, test);

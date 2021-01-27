@@ -25,6 +25,25 @@ bool FSpawnASteerStateManagerMOCK::Update()
 }
 
 
+bool FLeftSteerASteerStateManagerMOCK::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
+
+		if(testManager)
+		{
+			testManager->steerLeft();
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
+
 
 
 //Test check commands:
