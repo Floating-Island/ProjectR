@@ -119,7 +119,7 @@ bool FClientSteerLeftSteerStateManager::Update()
 			ASteerStateManager* testClientManager = Cast<ASteerStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), ASteerStateManager::StaticClass()));
 			if (testClientManager)
 			{
-				UE_LOG(LogTemp, Log, TEXT("accelerating steer state manager..."));
+				UE_LOG(LogTemp, Log, TEXT("steering left steer state manager..."));
 				testClientManager->steerLeft();
 				return true;
 			}
