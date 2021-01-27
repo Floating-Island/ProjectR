@@ -29,7 +29,7 @@ protected:
 	bool steerStateIsOfType();
 
 	template<class aSteerStateType>
-	void udpateStateTo();
+	void updateStateTo();
 
 public:
 	void steerLeft();
@@ -43,7 +43,7 @@ bool ASteerStateManager::steerStateIsOfType()
 }
 
 template <class aSteerStateType>
-void ASteerStateManager::udpateStateTo()
+void ASteerStateManager::updateStateTo()
 {
 	if(!steerState || !steerStateIsOfType<aSteerStateType>())
 	{
