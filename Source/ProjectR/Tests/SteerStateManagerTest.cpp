@@ -40,7 +40,9 @@ bool FASteerStateManagerDefaultStateIsCenterTest::RunTest(const FString& Paramet
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnASteerStateManagerMOCK);
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentState(UCenterSteerState::StaticClass(), FString("The default state should be CenterSteerState"), this));
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentState(UCenterSteerState::StaticClass(), FString("The default state should be CenterSteerState"), tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -56,7 +58,9 @@ bool FASteerStateManagerSteerLeftChangesStateToLeftSteerTest::RunTest(const FStr
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnASteerStateManagerMOCK);
 	ADD_LATENT_AUTOMATION_COMMAND(FLeftSteerASteerStateManagerMOCK);
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentState(UCenterSteerState::StaticClass(), FString("After leftSteer, the current state should be SteerLeftState."), this));
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentState(UCenterSteerState::StaticClass(), FString("After leftSteer, the current state should be SteerLeftState."), tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

@@ -58,9 +58,21 @@ bool FCheckSteerStateManagerCurrentState::Update()
 		if(testManager)
 		{
 			UE_LOG(LogTemp, Log, TEXT("current state: %s"), *testManager->currentState()->GetName());
-			test->TestTrue((TEXT("%s"), *message), testManager->currentState()->GetClass() == expectedState );
-			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-			return true;	
+			bool statesMatch = testManager->currentState()->GetClass() == expectedState;
+			if(statesMatch)
+			{
+				test->TestTrue((TEXT("%s"), *message), statesMatch );
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+
+			++tickCount;
+			if(tickCount>tickLimit)
+			{
+				test->TestTrue((TEXT("Tick limit reached. %s"), *message), statesMatch );
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
 		}
 	}
 	return false;
