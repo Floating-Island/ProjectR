@@ -57,6 +57,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerSteerRightKeepsStateIfAlread
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerCenterKeepsStateIfAlreadyCenterSteerStateTest, 
+	"ProjectR.SteerStateManager Tests.Unit.008: center keeps current state if it's already a CenterSteerState", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

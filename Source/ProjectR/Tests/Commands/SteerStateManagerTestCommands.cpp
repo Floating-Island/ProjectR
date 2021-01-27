@@ -183,5 +183,40 @@ bool FCheckSteerStateManagerCurrentStateAgainstPreviousOnSteerRight::Update()
 }
 
 
+bool FCheckSteerStateManagerCurrentStateAgainstPreviousOnCenter::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
+		if (testManager)
+		{
+			testManager->center();
+			UE_LOG(LogTemp, Log, TEXT("previous state: %s"), *(previousState ? previousState->GetName() : FString("nullptr")));
+			USteerState* currentState = testManager->currentState();
+			UE_LOG(LogTemp, Log, TEXT("current state: %s"), *currentState->GetName());
+
+			bool statesMatch = currentState == previousState;
+			if (statesMatch)
+			{
+				test->TestTrue((TEXT("%s"), *message), statesMatch);
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+			previousState = currentState;
+
+			++tickCount;
+			if (tickCount > tickLimit)
+			{
+				test->TestTrue((TEXT("Tick limit reached. %s"), *message), statesMatch);
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS

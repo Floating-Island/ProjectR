@@ -38,4 +38,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSteerStateManagerCurrentSt
 
 DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSteerStateManagerCurrentStateAgainstPreviousOnSteerRight, USteerState*, previousState, FString, message, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
+
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSteerStateManagerCurrentStateAgainstPreviousOnCenter, USteerState*, previousState, FString, message, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
+
 #endif //WITH_DEV_AUTOMATION_TESTS
