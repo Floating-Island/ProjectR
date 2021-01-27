@@ -104,6 +104,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerReplicatesStateWhenCallingMi
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerDoesntTickTest, 
+	"ProjectR.MotorStateManager Tests.Unit.017: Doesn't tick", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

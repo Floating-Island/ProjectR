@@ -291,6 +291,16 @@ bool FAMotorStateManagerReplicatesStateWhenCallingMixTest::RunTest(const FString
 }
 
 
+bool FAMotorStateManagerDoesntTickTest::RunTest(const FString& Parameters)
+{
+	AMotorStateManager* testManager = NewObject<AMotorStateManager>();
+
+	TestFalse(TEXT("Shouldn't tick."), testManager->CanEverTick());
+
+	return true;
+}
+
+
 
 
 
