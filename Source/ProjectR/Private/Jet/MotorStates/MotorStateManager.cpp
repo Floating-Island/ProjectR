@@ -26,74 +26,9 @@ void AMotorStateManager::BeginPlay()
 	Super::BeginPlay();
 }
 
-void AMotorStateManager::PostInitializeComponents()
-{
-	Super::PostInitializeComponents();
-	if(HasAuthority())
-	{
-		motorState = NewObject<UNeutralMotorState>(this, FName("UNeutralMotorState"));
-	}
-}
-
-bool AMotorStateManager::ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags)
-{
-	bool hasReplicated = Super::ReplicateSubobjects(Channel, Bunch, RepFlags);
-
-    if (motorState != nullptr)
-    {
-        hasReplicated |= Channel->ReplicateSubobject(motorState, *Bunch, *RepFlags);
-    }
-
-    return hasReplicated;
-}
-
-void AMotorStateManager::accelerate()
-{
-	if (motorState && motorStateIsOfType<UAcceleratingMotorState>())
-	{
-		return;
-	}
-	serverAccelerate();
-}
-
-void AMotorStateManager::brake()
-{
-	if (motorState && motorStateIsOfType<UReversingMotorState>())
-	{
-		return;
-	}
-	serverBrake();
-}
-
-void AMotorStateManager::neutralize()
-{
-	if (motorState && motorStateIsOfType<UNeutralMotorState>())
-	{
-		return;
-	}
-	serverNeutralize();
-}
-
-void AMotorStateManager::mix()
-{
-	if (motorState && motorStateIsOfType<UMixedMotorState>())
-	{
-		return;
-	}
-	serverMix();
-}
-
-void AMotorStateManager::activate(UMotorDriveComponent* aMotorDrive)
-{
-	if(motorState)
-	{
-		motorState->activate(aMotorDrive);
-	}
-}
-
 void AMotorStateManager::serverAccelerate_Implementation()
 {
-	updateStateTo<UAcceleratingMotorState>();
+	multicastAccelerate();
 }
 
 bool AMotorStateManager::serverAccelerate_Validate()
@@ -103,7 +38,7 @@ bool AMotorStateManager::serverAccelerate_Validate()
 
 void AMotorStateManager::serverBrake_Implementation()
 {
-	updateStateTo<UReversingMotorState>();
+	multicastBrake();
 }
 
 bool AMotorStateManager::serverBrake_Validate()
@@ -113,8 +48,7 @@ bool AMotorStateManager::serverBrake_Validate()
 
 void AMotorStateManager::serverNeutralize_Implementation()
 {
-
-	updateStateTo<UNeutralMotorState>();
+	multicastNeutralize();
 }
 
 bool AMotorStateManager::serverNeutralize_Validate()
@@ -124,7 +58,7 @@ bool AMotorStateManager::serverNeutralize_Validate()
 
 void AMotorStateManager::serverMix_Implementation()
 {
-	updateStateTo<UMixedMotorState>();
+	multicastMix();
 }
 
 bool AMotorStateManager::serverMix_Validate()
@@ -132,9 +66,76 @@ bool AMotorStateManager::serverMix_Validate()
 	return true;
 }
 
-void AMotorStateManager::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(AMotorStateManager, motorState);
+void AMotorStateManager::multicastAccelerate_Implementation()
+{
+	updateStateTo<UAcceleratingMotorState>();
+}
+
+void AMotorStateManager::multicastBrake_Implementation()
+{
+	updateStateTo<UReversingMotorState>();
+}
+
+void AMotorStateManager::multicastNeutralize_Implementation()
+{
+	updateStateTo<UNeutralMotorState>();
+}
+
+void AMotorStateManager::multicastMix_Implementation()
+{
+	updateStateTo<UMixedMotorState>();
+}
+
+void AMotorStateManager::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	if (HasAuthority())
+	{
+		serverNeutralize();
+	}
+}
+
+void AMotorStateManager::accelerate()
+{
+	if (motorState.Get() && motorStateIsOfType<UAcceleratingMotorState>())
+	{
+		return;
+	}
+	serverAccelerate();
+}
+
+void AMotorStateManager::brake()
+{
+	if (motorState.Get() && motorStateIsOfType<UReversingMotorState>())
+	{
+		return;
+	}
+	serverBrake();
+}
+
+void AMotorStateManager::neutralize()
+{
+	if (motorState.Get() && motorStateIsOfType<UNeutralMotorState>())
+	{
+		return;
+	}
+	serverNeutralize();
+}
+
+void AMotorStateManager::mix()
+{
+	if (motorState.Get() && motorStateIsOfType<UMixedMotorState>())
+	{
+		return;
+	}
+	serverMix();
+}
+
+void AMotorStateManager::activate(UMotorDriveComponent* aMotorDrive)
+{
+	if (motorState.Get())
+	{
+		motorState->activate(aMotorDrive);
+	}
 }

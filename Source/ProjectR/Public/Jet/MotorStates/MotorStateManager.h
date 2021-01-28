@@ -23,8 +23,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(Replicated)
-		UMotorState* motorState;
+	TWeakObjectPtr<UMotorState> motorState;
 
 	UFUNCTION(Server, Reliable, WithValidation)
 		void serverAccelerate();
@@ -38,6 +37,19 @@ protected:
 	UFUNCTION(Server, Reliable, WithValidation)
 		void serverMix();
 
+	UFUNCTION(NetMulticast, Reliable)
+		void multicastAccelerate();
+
+	UFUNCTION(NetMulticast, Reliable)
+		void multicastBrake();
+
+	UFUNCTION(NetMulticast, Reliable)
+		void multicastNeutralize();
+
+	UFUNCTION(NetMulticast, Reliable)
+		void multicastMix();
+
+	
 	
 	template<class aMotorStateType>
 	void updateStateTo();
@@ -47,8 +59,7 @@ protected:
 	
 public:
 	virtual void PostInitializeComponents() override;
-	virtual bool ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags) override;
-
+	
 	void accelerate();
 	void brake();
 	void neutralize();
@@ -60,14 +71,15 @@ public:
 template <class aMotorStateType>
 void AMotorStateManager::updateStateTo()
 {
-	if(!motorState || !motorStateIsOfType<aMotorStateType>())
+	if(motorState.Get() && motorStateIsOfType<aMotorStateType>())
 	{
-		motorState = NewObject<aMotorStateType>(this, aMotorStateType::StaticClass()->GetFName());
+		return;
 	}
+	motorState = NewObject<aMotorStateType>(this, aMotorStateType::StaticClass()->GetFName());
 }
 
 template <class aMotorStateType>
 bool AMotorStateManager::motorStateIsOfType()
 {
-	return motorState->GetClass() == aMotorStateType::StaticClass() ? true : false;
+	return motorState->IsA(aMotorStateType::StaticClass()) ? true : false;
 }
