@@ -22,16 +22,6 @@ bool FURightSteerStateIsntNullWhenInstantiatedTest::RunTest(const FString& Param
 }
 
 
-bool FURightSteerStateSupportsNetworkingTest::RunTest(const FString& Parameters)
-{
-	URightSteerState* testState = NewObject<URightSteerState>();
-
-	TestTrue("Should support networking.", testState->IsSupportedForNetworking());
-
-	return true;
-}
-
-
 bool FURightSteerStateActivateTurnsRightSteeringTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");

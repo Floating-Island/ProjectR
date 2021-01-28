@@ -22,11 +22,6 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUCenterSteerStateIsntNullWhenInstantiatedTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUCenterSteerStateSupportsNetworkingTest, 
-	"ProjectR.CenterSteerState Tests.Replication.001: Supports networking", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
 
 
 

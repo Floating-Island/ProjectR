@@ -22,17 +22,9 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FURightSteerStateIsntNullWhenInstantiatedTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FURightSteerStateSupportsNetworkingTest, 
-	"ProjectR.RightSteerState Tests.Replication.001: Supports networking", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FURightSteerStateActivateTurnsRightSteeringTest, 
-	"ProjectR.RightSteerState Tests.Integration.002: activate steers right the steering component passed as parameter", 
+	"ProjectR.RightSteerState Tests.Integration.001: activate steers right the steering component passed as parameter", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
-
 
 
 

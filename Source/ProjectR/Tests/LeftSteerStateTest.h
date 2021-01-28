@@ -22,13 +22,8 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FULeftSteerStateIsntNullWhenInstantiatedTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FULeftSteerStateSupportsNetworkingTest, 
-	"ProjectR.LeftSteerState Tests.Replication.001: Supports networking", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FULeftSteerStateActivateTurnsLeftSteeringTest, 
-	"ProjectR.LeftSteerState Tests.Integration.002: activate steers left the steering component passed as parameter", 
+	"ProjectR.LeftSteerState Tests.Integration.001: activate steers left the steering component passed as parameter", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
