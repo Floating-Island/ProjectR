@@ -8,8 +8,6 @@
 #include "Jet/MotorStates/AcceleratingMotorState.h"
 #include "Jet/MotorStates/ReversingMotorState.h"
 #include "Jet/MotorStates/MixedMotorState.h"
-#include "Net/UnrealNetwork.h"
-#include "Engine/ActorChannel.h"
 
 // Sets default values
 AMotorStateManager::AMotorStateManager()
