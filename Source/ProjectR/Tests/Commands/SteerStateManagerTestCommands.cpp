@@ -84,7 +84,7 @@ bool FServerSpawnActorOfClass::Update()
 		if(serverContext.World()->GetNumPlayerControllers() == clientQuantity)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Creating steer state manager..."));
-			AActor* testActor = serverContext.World()->SpawnActor(anActorClass);
+			
 
 			APlayerController* clientController = nullptr;
 			for (auto controllerIterator = serverContext.World()->GetPlayerControllerIterator(); controllerIterator; ++controllerIterator)
@@ -97,10 +97,15 @@ bool FServerSpawnActorOfClass::Update()
 			}
 			if(clientController)
 			{
+				FActorSpawnParameters spawnParameters = FActorSpawnParameters();
+				spawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+				spawnParameters.Owner = clientController;
+				AActor* testActor = serverContext.World()->SpawnActor(anActorClass, 0, 0, spawnParameters);
 				testActor->SetOwner(clientController);
 				UE_LOG(LogTemp, Log, TEXT("steer state manager owner set..."));
+				return true;
 			}
-			return true;
+			
 		}
 	}
 	return false;
