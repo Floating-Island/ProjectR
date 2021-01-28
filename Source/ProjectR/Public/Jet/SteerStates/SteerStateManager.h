@@ -8,7 +8,7 @@
 #include "GameFramework/Actor.h"
 #include "SteerStateManager.generated.h"
 
-class USteerState;
+
 UCLASS()
 class PROJECTR_API ASteerStateManager : public AActor
 {
@@ -22,8 +22,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(Replicated)
-		USteerState* steerState;
+	TWeakObjectPtr<USteerState> steerState;
 
 	template<class aSteerStateType>
 	bool steerStateIsOfType();
@@ -39,10 +38,18 @@ protected:
 
 	UFUNCTION(Server, Reliable, WithValidation)
 		void serverCenter();
+	
+	UFUNCTION(NetMulticast, Reliable)
+		void multicastSteerLeft();
+
+	UFUNCTION(NetMulticast, Reliable)
+		void multicastSteerRight();
+
+	UFUNCTION(NetMulticast, Reliable)
+		void multicastCenter();
 
 public:
 	virtual void PostInitializeComponents() override;
-	virtual bool ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags) override;
 	
 	void steerLeft();
 	void steerRight();
@@ -53,14 +60,15 @@ public:
 template <class aSteerStateType>
 bool ASteerStateManager::steerStateIsOfType()
 {
-	return steerState->GetClass() == aSteerStateType::StaticClass() ? true : false;
+	return steerState->IsA(aSteerStateType::StaticClass()) ? true : false;
 }
 
 template <class aSteerStateType>
 void ASteerStateManager::updateStateTo()
 {
-	if(!steerState || !steerStateIsOfType<aSteerStateType>())
+	if(IsValid(steerState.Get()) && steerStateIsOfType<aSteerStateType>())
 	{
-		steerState = NewObject<aSteerStateType>(this, aSteerStateType::StaticClass()->GetFName());
+		return;
 	}
+	steerState = NewObject<aSteerStateType>(this, aSteerStateType::StaticClass()->GetFName());
 }

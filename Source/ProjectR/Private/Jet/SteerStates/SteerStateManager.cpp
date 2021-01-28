@@ -26,7 +26,7 @@ void ASteerStateManager::BeginPlay()
 
 void ASteerStateManager::serverSteerLeft_Implementation()
 {
-	updateStateTo<ULeftSteerState>();
+	multicastSteerLeft();
 }
 
 bool ASteerStateManager::serverSteerLeft_Validate()
@@ -36,7 +36,7 @@ bool ASteerStateManager::serverSteerLeft_Validate()
 
 void ASteerStateManager::serverSteerRight_Implementation()
 {
-	updateStateTo<URightSteerState>();
+	multicastSteerRight();
 }
 
 bool ASteerStateManager::serverSteerRight_Validate()
@@ -46,12 +46,27 @@ bool ASteerStateManager::serverSteerRight_Validate()
 
 void ASteerStateManager::serverCenter_Implementation()
 {
-	updateStateTo<UCenterSteerState>();
+	multicastCenter();
 }
 
 bool ASteerStateManager::serverCenter_Validate()
 {
 	return true;
+}
+
+void ASteerStateManager::multicastSteerLeft_Implementation()
+{
+	updateStateTo<ULeftSteerState>();
+}
+
+void ASteerStateManager::multicastSteerRight_Implementation()
+{
+	updateStateTo<URightSteerState>();
+}
+
+void ASteerStateManager::multicastCenter_Implementation()
+{
+	updateStateTo<UCenterSteerState>();
 }
 
 void ASteerStateManager::PostInitializeComponents()
@@ -60,25 +75,13 @@ void ASteerStateManager::PostInitializeComponents()
 
 	if(HasAuthority())
 	{
-		steerState = NewObject<UCenterSteerState>(this, FName("UCenterSteerState"));
+		serverCenter();
 	}
-}
-
-bool ASteerStateManager::ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags)
-{
-	bool hasReplicated = Super::ReplicateSubobjects(Channel, Bunch, RepFlags);
-
-    if (steerState != nullptr)
-    {
-        hasReplicated |= Channel->ReplicateSubobject(steerState, *Bunch, *RepFlags);
-    }
-
-    return hasReplicated;
 }
 
 void ASteerStateManager::steerLeft()
 {
-	if(steerState && steerStateIsOfType<ULeftSteerState>())
+	if(IsValid(steerState.Get()) && steerStateIsOfType<ULeftSteerState>())
 	{
 		return;
 	}
@@ -87,7 +90,7 @@ void ASteerStateManager::steerLeft()
 
 void ASteerStateManager::steerRight()
 {
-	if(steerState && steerStateIsOfType<URightSteerState>())
+	if(IsValid(steerState.Get()) && steerStateIsOfType<URightSteerState>())
 	{
 		return;
 	}
@@ -96,17 +99,9 @@ void ASteerStateManager::steerRight()
 
 void ASteerStateManager::center()
 {
-	if(steerState && steerStateIsOfType<UCenterSteerState>())
+	if(IsValid(steerState.Get()) && steerStateIsOfType<UCenterSteerState>())
 	{
 		return;
 	}
 	serverCenter();
-}
-
-
-void ASteerStateManager::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	DOREPLIFETIME(ASteerStateManager, steerState);
 }
