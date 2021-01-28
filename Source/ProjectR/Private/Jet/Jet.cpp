@@ -76,9 +76,12 @@ void AJet::Tick(float DeltaTime)
 void AJet::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	FActorSpawnParameters spawnParameters = FActorSpawnParameters();
-	spawnParameters.Owner = this;
-	motorManager = GetWorld()->SpawnActor<AMotorStateManager>(spawnParameters);
+	if(HasAuthority())
+	{
+		FActorSpawnParameters spawnParameters = FActorSpawnParameters();
+		spawnParameters.Owner = this;
+		motorManager = GetWorld()->SpawnActor<AMotorStateManager>(spawnParameters);
+	}
 }
 
 void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
