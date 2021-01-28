@@ -104,7 +104,7 @@ bool FServerSpawnMotorStateManager::Update()
 		if(serverContext.World()->GetNumPlayerControllers() == clientQuantity)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Creating motor state manager..."));
-			AMotorStateManagerMOCK* testManager = serverContext.World()->SpawnActor<AMotorStateManagerMOCK>();
+			
 
 			APlayerController* clientController = nullptr;
 			for (auto controllerIterator = serverContext.World()->GetPlayerControllerIterator(); controllerIterator; ++controllerIterator)
@@ -117,12 +117,12 @@ bool FServerSpawnMotorStateManager::Update()
 			}
 			if(clientController)
 			{
-				testManager->SetOwner(clientController);
+				FActorSpawnParameters spawnParameters = FActorSpawnParameters();
+				spawnParameters.Owner = clientController;
+				AMotorStateManagerMOCK* testManager = serverContext.World()->SpawnActor<AMotorStateManagerMOCK>(spawnParameters);
 				UE_LOG(LogTemp, Log, TEXT("motor state manager owner set..."));
+				return true;
 			}
-
-			
-			return true;
 		}
 	}
 	return false;
