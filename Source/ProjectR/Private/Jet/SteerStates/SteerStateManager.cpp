@@ -6,8 +6,6 @@
 #include "Jet/SteerStates/CenterSteerState.h"
 #include "Jet/SteerStates/RightSteerState.h"
 #include "Jet/SteerStates/LeftSteerState.h"
-#include "Net/UnrealNetwork.h"
-#include "Engine/ActorChannel.h"
 
 // Sets default values
 ASteerStateManager::ASteerStateManager()
