@@ -453,9 +453,7 @@ bool FServerSpawnJet::Update()
 		if(serverContext.World()->GetNumPlayerControllers() == clientQuantity)
 		{
 			UE_LOG(LogTemp, Log, TEXT("Creating jet..."));
-			FActorSpawnParameters spawnParameters = FActorSpawnParameters();
-			spawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-			AJet* testJet = serverContext.World()->SpawnActor<AJet>(FVector(1000), FRotator(0), spawnParameters);
+			
 
 			APlayerController* clientController = nullptr;
 			for (auto controllerIterator = serverContext.World()->GetPlayerControllerIterator(); controllerIterator; ++controllerIterator)
@@ -468,7 +466,10 @@ bool FServerSpawnJet::Update()
 			}
 			if(clientController)
 			{
-				testJet->SetOwner(clientController);
+				FActorSpawnParameters spawnParameters = FActorSpawnParameters();
+				spawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+				spawnParameters.Owner = clientController;
+				AJet* testJet = serverContext.World()->SpawnActor<AJet>(FVector(1000), FRotator(0), spawnParameters);
 				clientController->Possess(testJet);
 				clientController->PlayerState->SetIsSpectator(false);
 			}
