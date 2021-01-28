@@ -27,11 +27,6 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMixedMotorStateActivateAcceleratesMotorDriveT
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMixedMotorStateSupportsNetworkingTest, 
-	"ProjectR.MixedMotorState Tests.Replication.002: Supports networking", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
 
 
 

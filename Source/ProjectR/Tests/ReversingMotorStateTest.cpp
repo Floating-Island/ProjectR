@@ -39,15 +39,5 @@ bool FUReversingMotorStateActivateReversesMotorDriveTest::RunTest(const FString&
 }
 
 
-bool FUReversingMotorStateSupportsNetworkingTest::RunTest(const FString& Parameters)
-{
-	UReversingMotorState* testReversing = NewObject<UReversingMotorState>();
-
-	TestTrue(TEXT("Should support networking"), testReversing->IsSupportedForNetworking());
-	
-	return true;
-}
-
-
 
 #endif //WITH_DEV_AUTOMATION_TESTS

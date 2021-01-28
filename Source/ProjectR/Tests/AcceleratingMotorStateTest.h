@@ -27,11 +27,6 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUAcceleratingMotorStateActivateAcceleratesMoto
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUAcceleratingMotorStateSupportsNetworkingTest, 
-	"ProjectR.AcceleratingMotorState Tests.Replication.002: Supports networking", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
 
 
 

@@ -17,15 +17,5 @@ bool FUNeutralMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& Par
 }
 
 
-bool FUNeutralMotorStateSupportsNetworkingTest::RunTest(const FString& Parameters)
-{
-	UNeutralMotorState* testNeutral = NewObject<UNeutralMotorState>();
-
-	TestTrue(TEXT("Should support networking"), testNeutral->IsSupportedForNetworking());
-	
-	return true;	
-}
-
-
 
 #endif //WITH_DEV_AUTOMATION_TESTS

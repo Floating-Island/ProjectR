@@ -27,11 +27,6 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUReversingMotorStateActivateReversesMotorDrive
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUReversingMotorStateSupportsNetworkingTest, 
-	"ProjectR.ReversingMotorState Tests.Replication.002: Supports networking", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
 
 
 

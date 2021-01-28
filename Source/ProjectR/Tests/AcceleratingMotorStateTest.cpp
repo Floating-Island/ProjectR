@@ -38,16 +38,6 @@ bool FUAcceleratingMotorStateActivateAcceleratesMotorDriveTest::RunTest(const FS
 }
 
 
-bool FUAcceleratingMotorStateSupportsNetworkingTest::RunTest(const FString& Parameters)
-{
-	UAcceleratingMotorState* testAccelerating = NewObject<UAcceleratingMotorState>();
-
-	TestTrue(TEXT("Should support networking"), testAccelerating->IsSupportedForNetworking());
-	
-	return true;
-}
-
-
 
 
 

@@ -20,11 +20,6 @@
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUNeutralMotorStateIsntNullWhenInstantiatedTest, 
 	"ProjectR.NeutralMotorState Tests.Unit.000: Isn't null when instantiated", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-	
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUNeutralMotorStateSupportsNetworkingTest, 
-	"ProjectR.NeutralMotorState Tests.Replication.001: Supports networking", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 

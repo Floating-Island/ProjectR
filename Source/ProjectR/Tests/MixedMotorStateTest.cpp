@@ -39,16 +39,6 @@ bool FUMixedMotorStateActivateAcceleratesMotorDriveTest::RunTest(const FString& 
 }
 
 
-bool FUMixedMotorStateSupportsNetworkingTest::RunTest(const FString& Parameters)
-{
-	UMixedMotorState* testMixed = NewObject<UMixedMotorState>();
-
-	TestTrue(TEXT("The Mixed motor state should support networking."), testMixed->IsSupportedForNetworking());
-
-	return true;
-}
-
-
 
 
 
