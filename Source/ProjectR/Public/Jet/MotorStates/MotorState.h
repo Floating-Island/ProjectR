@@ -15,6 +15,5 @@ class PROJECTR_API UMotorState : public UObject
 public:	
 	// Sets default values for this actor's properties
 	UMotorState();
-	virtual bool IsSupportedForNetworking() const override { return true; }
 	virtual void activate(UMotorDriveComponent* aMotorDriveComponent) PURE_VIRTUAL(AMotorState::activate, ; );//I don't like this. It should be =0 instead of a macro...
 };
