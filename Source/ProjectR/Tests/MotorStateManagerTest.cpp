@@ -6,6 +6,10 @@
 
 #include "MotorStateManagerTest.h"
 #include "Jet/MotorStates/MotorStateManager.h"
+#include "Jet/MotorStates/AcceleratingMotorState.h"
+#include "Jet/MotorStates/NeutralMotorState.h"
+#include "Jet/MotorStates/ReversingMotorState.h"
+#include "Jet/MotorStates/MixedMotorState.h"
 
 #include "Tests/AutomationEditorCommon.h"
 #include "Commands/MotorStateManagerTestCommands.h"
@@ -183,7 +187,8 @@ bool FAMotorStateManagerReplicatesStateWhenCallingAccelerateTest::RunTest(const 
 
 	int tickCount = 0;
 	int tickLimit = 10;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerServerAndClientAcceleratingState(tickCount, tickLimit, numberOfPlayers, this));
+	UClass* expectedStateClass = UAcceleratingMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerServerAndClientExpectedState(expectedStateClass , tickCount, tickLimit, numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -206,7 +211,8 @@ bool FAMotorStateManagerReplicatesStateWhenCallingBrakeTest::RunTest(const FStri
 
 	int tickCount = 0;
 	int tickLimit = 10;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerServerAndClientReversingState(tickCount, tickLimit, numberOfPlayers, this));
+	UClass* expectedStateClass = UReversingMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerServerAndClientExpectedState(expectedStateClass , tickCount, tickLimit, numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -229,7 +235,8 @@ bool FAMotorStateManagerReplicatesStateWhenCallingNeutralizeTest::RunTest(const 
 
 	int tickCount = 0;
 	int tickLimit = 10;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerServerAndClientNeutralState(tickCount, tickLimit, numberOfPlayers, this));
+	UClass* expectedStateClass = UNeutralMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerServerAndClientExpectedState(expectedStateClass , tickCount, tickLimit, numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -284,7 +291,8 @@ bool FAMotorStateManagerReplicatesStateWhenCallingMixTest::RunTest(const FString
 
 	int tickCount = 0;
 	int tickLimit = 10;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerServerAndClientMixedState(tickCount, tickLimit, numberOfPlayers, this));
+	UClass* expectedStateClass = UMixedMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerServerAndClientExpectedState(expectedStateClass , tickCount, tickLimit, numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

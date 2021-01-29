@@ -5,21 +5,6 @@
 #include "CoreMinimal.h"
 #include "Misc/AutomationTest.h"
 
-/**
- * 
- */
-class PROJECTR_API NetworkCommands
-{
-public:
-	NetworkCommands();
-	~NetworkCommands();
-};
-
-
-
-
-
-
 
 
 /**

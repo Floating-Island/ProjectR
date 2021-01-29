@@ -76,13 +76,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerNeutraliz
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMotorStateManagerLeavesOneStateInWorld, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerServerAndClientAcceleratingState, int, tickCount, int, tickLimit, int, clientQuantity, FAutomationTestBase*, test);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerServerAndClientReversingState, int, tickCount, int, tickLimit, int, clientQuantity, FAutomationTestBase*, test);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerServerAndClientNeutralState, int, tickCount, int, tickLimit, int, clientQuantity, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckMotorStateManagerServerAndClientExpectedState, UClass*, expectedStateClass, int, tickCount, int, tickLimit, int, clientQuantity, FAutomationTestBase*, test);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMotorStateManagerStateChangesToMixed, FAutomationTestBase*, test);
@@ -90,7 +84,5 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMotorStateManagerStateChang
 
 DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerMixKeepsStateIfMixed, int, tickCount, int, tickLimit, UMotorState*, previousState, FAutomationTestBase*, test);
 
-
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMotorStateManagerServerAndClientMixedState, int, tickCount, int, tickLimit, int, clientQuantity, FAutomationTestBase*, test);
 
 #endif //WITH_DEV_AUTOMATION_TESTS

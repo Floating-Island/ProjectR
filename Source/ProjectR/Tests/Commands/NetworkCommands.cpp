@@ -7,20 +7,6 @@
 #include "Editor/UnrealEdEngine.h"
 #include "UnrealEdGlobals.h"
 
-NetworkCommands::NetworkCommands()
-{
-}
-
-NetworkCommands::~NetworkCommands()
-{
-}
-
-
-
-
-
-
-
 
 bool FStartNetworkedPIESession::Update()
 {

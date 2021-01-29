@@ -1,10 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "MotorStateManagerTestCommands.h"
 #include "../Utilities/PIESessionUtilities.h"
+#include "../Utilities/NetworkedPIESessionUtilities.h"
+
 #include "../Mocks/MotorStateManagerMOCK.h"
 #include "Jet/MotorStates/NeutralMotorState.h"
 #include "Jet/MotorStates/AcceleratingMotorState.h"
@@ -99,30 +102,10 @@ bool FServerSpawnMotorStateManager::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-		FWorldContext serverContext = GEditor->GetWorldContexts()[1];//0 is editor, 1 is server, 2->N is clients
-
-		if(serverContext.World()->GetNumPlayerControllers() == clientQuantity)
+		if (GEditor->IsPlayingSessionInEditor())
 		{
-			UE_LOG(LogTemp, Log, TEXT("Creating motor state manager..."));
-			
 
-			APlayerController* clientController = nullptr;
-			for (auto controllerIterator = serverContext.World()->GetPlayerControllerIterator(); controllerIterator; ++controllerIterator)
-			{
-				if(controllerIterator.GetIndex() == 1)
-				{
-					clientController = controllerIterator->Get();
-					break;
-				}
-			}
-			if(clientController)
-			{
-				FActorSpawnParameters spawnParameters = FActorSpawnParameters();
-				spawnParameters.Owner = clientController;
-				AMotorStateManagerMOCK* testManager = serverContext.World()->SpawnActor<AMotorStateManagerMOCK>(spawnParameters);
-				UE_LOG(LogTemp, Log, TEXT("motor state manager owner set..."));
-				return true;
-			}
+			return NetworkedPIESessionUtilities::spawnActorInServerWorldOfClass<AMotorStateManagerMOCK>(clientQuantity);
 		}
 	}
 	return false;
@@ -133,17 +116,25 @@ bool FClientAccelerateMotorStateManager::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{		
-		FWorldContext serverContext = GEditor->GetWorldContexts()[1];//0 is editor, 1 is server, 2->N is clients
-		if (serverContext.World()->GetNumPlayerControllers() == clientQuantity)
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+
+		if(serverWorld)
 		{
-			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
-			UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager..."));
-			AMotorStateManager* testClientManager = Cast<AMotorStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AMotorStateManager::StaticClass()));
-			if (testClientManager)
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+
+			if(clientWorld)
 			{
-				UE_LOG(LogTemp, Log, TEXT("accelerating motor state manager..."));
-				testClientManager->accelerate();
-				return true;
+				UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager..."));
+				AMotorStateManager* testClientManager = Cast<AMotorStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, AMotorStateManager::StaticClass()));
+
+				if (testClientManager)
+				{
+					UE_LOG(LogTemp, Log, TEXT("accelerating motor state manager..."));
+					testClientManager->accelerate();
+					return true;
+				}
 			}
 		}
 	}
@@ -155,17 +146,25 @@ bool FClientBrakeMotorStateManager::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{		
-		FWorldContext serverContext = GEditor->GetWorldContexts()[1];//0 is editor, 1 is server, 2->N is clients
-		if (serverContext.World()->GetNumPlayerControllers() == clientQuantity)
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+
+		if(serverWorld)
 		{
-			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
-			UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager..."));
-			AMotorStateManager* testClientManager = Cast<AMotorStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AMotorStateManager::StaticClass()));
-			if (testClientManager)
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+
+			if(clientWorld)
 			{
-				UE_LOG(LogTemp, Log, TEXT("reversing motor state manager..."));
-				testClientManager->brake();
-				return true;
+				UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager..."));
+				AMotorStateManager* testClientManager = Cast<AMotorStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, AMotorStateManager::StaticClass()));
+
+				if (testClientManager)
+				{
+					UE_LOG(LogTemp, Log, TEXT("reversing motor state manager..."));
+					testClientManager->brake();
+					return true;
+				}
 			}
 		}
 	}
@@ -177,17 +176,25 @@ bool FClientNeutralizeMotorStateManager::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{		
-		FWorldContext serverContext = GEditor->GetWorldContexts()[1];//0 is editor, 1 is server, 2->N is clients
-		if (serverContext.World()->GetNumPlayerControllers() == clientQuantity)
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+
+		if(serverWorld)
 		{
-			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
-			UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager..."));
-			AMotorStateManager* testClientManager = Cast<AMotorStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AMotorStateManager::StaticClass()));
-			if (testClientManager)
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+
+			if(clientWorld)
 			{
-				UE_LOG(LogTemp, Log, TEXT("neutralizing motor state manager..."));
-				testClientManager->neutralize();
-				return true;
+				UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager..."));
+				AMotorStateManager* testClientManager = Cast<AMotorStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, AMotorStateManager::StaticClass()));
+
+				if (testClientManager)
+				{
+					UE_LOG(LogTemp, Log, TEXT("neutralizing motor state manager..."));
+					testClientManager->neutralize();
+					return true;
+				}
 			}
 		}
 	}
@@ -215,17 +222,25 @@ bool FClientMixMotorStateManager::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{		
-		FWorldContext serverContext = GEditor->GetWorldContexts()[1];//0 is editor, 1 is server, 2->N is clients
-		if (serverContext.World()->GetNumPlayerControllers() == clientQuantity)
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+
+		if(serverWorld)
 		{
-			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
-			UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager..."));
-			AMotorStateManager* testClientManager = Cast<AMotorStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AMotorStateManager::StaticClass()));
-			if (testClientManager)
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+
+			if(clientWorld)
 			{
-				UE_LOG(LogTemp, Log, TEXT("mixing motor state manager..."));
-				testClientManager->mix();
-				return true;
+				UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager..."));
+				AMotorStateManager* testClientManager = Cast<AMotorStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, AMotorStateManager::StaticClass()));
+
+				if (testClientManager)
+				{
+					UE_LOG(LogTemp, Log, TEXT("mixing motor state manager..."));
+					testClientManager->mix();
+					return true;
+				}
 			}
 		}
 	}
@@ -430,145 +445,56 @@ bool FCheckMotorStateManagerNeutralizeKeepsStateIfNeutral::Update()
 //}
 
 
-bool FCheckMotorStateManagerServerAndClientAcceleratingState::Update()
+bool FCheckMotorStateManagerServerAndClientExpectedState::Update()
 {
 	if(GEditor->IsPlayingSessionInEditor())
 	{
-		FWorldContext serverContext = GEditor->GetWorldContexts()[1];
-		AMotorStateManagerMOCK* testServerManager = Cast<AMotorStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(serverContext.World(), AMotorStateManagerMOCK::StaticClass()));
-		if(serverContext.World()->GetNumPlayerControllers() == clientQuantity && testServerManager)
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+
+		if(serverWorld)
 		{
-			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
-			UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager for checking..."));
-			AMotorStateManagerMOCK* testClientManager = Cast<AMotorStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AMotorStateManagerMOCK::StaticClass()));
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
 
-			bool bothAccelerating = false;
-			if(testClientManager)
+			if(clientWorld)
 			{
-				bool clientStateIsAccelerating = testClientManager->currentState()->GetClass() == UAcceleratingMotorState::StaticClass();
-				bool serverStateIsAccelerating = testServerManager->currentState()->GetClass() == UAcceleratingMotorState::StaticClass();
-				bothAccelerating = serverStateIsAccelerating && clientStateIsAccelerating;
-			}
-
-			if(bothAccelerating)
-			{
-				test->TestTrue(TEXT("The server should replicate its state when calling accelerate."), bothAccelerating);
-				for(auto context : GEditor->GetWorldContexts())
+				UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager for checking..."));
+				AMotorStateManagerMOCK* testServerManager = Cast<AMotorStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(serverWorld, AMotorStateManagerMOCK::StaticClass()));
+				AMotorStateManagerMOCK* testClientManager = Cast<AMotorStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, AMotorStateManagerMOCK::StaticClass()));
+				bool statesMatch = false;
+				if(testClientManager)
 				{
-					context.World()->bDebugFrameStepExecution = true;
+					bool clientStateIsTheExpected = testClientManager->currentState()->GetClass() == expectedStateClass;
+					bool serverStateIsTheExpected = testServerManager->currentState()->GetClass() == expectedStateClass;
+					statesMatch = serverStateIsTheExpected && clientStateIsTheExpected;
 				}
-				return true;
-			}
 
-			++tickCount;
-			if(tickCount > tickLimit)
-			{
-				test->TestTrue(TEXT("The server should replicate its state when calling accelerate."), bothAccelerating);
-				for(auto context : GEditor->GetWorldContexts())
+				if(statesMatch)
 				{
-					context.World()->bDebugFrameStepExecution = true;
+					test->TestTrue((TEXT("The current state of server and client should be %s."), *expectedStateClass->GetName()), statesMatch);
+					for(auto context : GEditor->GetWorldContexts())
+					{
+						context.World()->bDebugFrameStepExecution = true;
+					}
+					return true;
 				}
-				return true;
+
+				++tickCount;
+				if(tickCount > tickLimit)
+				{
+					test->TestTrue((TEXT("The current state of server and client should be %s."), *expectedStateClass->GetName()), statesMatch);
+					for(auto context : GEditor->GetWorldContexts())
+					{
+						context.World()->bDebugFrameStepExecution = true;
+					}
+					return true;
+				}
 			}
 		}
 	}
 	return false;
 }
-
-
-bool FCheckMotorStateManagerServerAndClientReversingState::Update()
-{
-	if(GEditor->IsPlayingSessionInEditor())
-	{
-		FWorldContext serverContext = GEditor->GetWorldContexts()[1];
-		AMotorStateManagerMOCK* testServerManager = Cast<AMotorStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(serverContext.World(), AMotorStateManagerMOCK::StaticClass()));
-		if(serverContext.World()->GetNumPlayerControllers() == clientQuantity && testServerManager)
-		{
-			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
-			UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager for checking..."));
-			AMotorStateManagerMOCK* testClientManager = Cast<AMotorStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AMotorStateManagerMOCK::StaticClass()));
-
-			bool bothReversing = false;
-			if(testClientManager)
-			{
-				bool clientStateIsReversing = testClientManager->currentState()->GetClass() == UReversingMotorState::StaticClass();
-				bool serverStateIsReversing = testServerManager->currentState()->GetClass() == UReversingMotorState::StaticClass();
-				bothReversing = serverStateIsReversing && clientStateIsReversing;
-			}
-
-			if(bothReversing)
-			{
-				test->TestTrue(TEXT("The server should replicate its state when calling brake."), bothReversing);
-				for(auto context : GEditor->GetWorldContexts())
-				{
-					context.World()->bDebugFrameStepExecution = true;
-				}
-				return true;
-			}
-
-			++tickCount;
-			if(tickCount > tickLimit)
-			{
-				test->TestTrue(TEXT("The server should replicate its state when calling brake."), bothReversing);
-				for(auto context : GEditor->GetWorldContexts())
-				{
-					context.World()->bDebugFrameStepExecution = true;
-				}
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-
-bool FCheckMotorStateManagerServerAndClientNeutralState::Update()
-{
-	if(GEditor->IsPlayingSessionInEditor())
-	{
-		FWorldContext serverContext = GEditor->GetWorldContexts()[1];
-		AMotorStateManagerMOCK* testServerManager = Cast<AMotorStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(serverContext.World(), AMotorStateManagerMOCK::StaticClass()));
-		if(serverContext.World()->GetNumPlayerControllers() == clientQuantity && testServerManager)
-		{
-			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
-			UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager for checking..."));
-			AMotorStateManagerMOCK* testClientManager = Cast<AMotorStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AMotorStateManagerMOCK::StaticClass()));
-
-			bool bothNeutral = false;
-			if(testClientManager)
-			{
-				bool clientStateIsNeutral = testClientManager->currentState()->GetClass() == UNeutralMotorState::StaticClass();
-				bool serverStateIsNeutral = testServerManager->currentState()->GetClass() == UNeutralMotorState::StaticClass();
-				bothNeutral = serverStateIsNeutral && clientStateIsNeutral;
-			}
-
-			if(bothNeutral)
-			{
-				test->TestTrue(TEXT("The server should replicate its state when calling neutralize."), bothNeutral);
-				for(auto context : GEditor->GetWorldContexts())
-				{
-					context.World()->bDebugFrameStepExecution = true;
-				}
-				return true;
-			}
-
-			++tickCount;
-			if(tickCount > tickLimit)
-			{
-				test->TestTrue(TEXT("The server should replicate its state when calling neutralize."), bothNeutral);
-				for(auto context : GEditor->GetWorldContexts())
-				{
-					context.World()->bDebugFrameStepExecution = true;
-				}
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-
-
 
 
 bool FCheckMotorStateManagerStateChangesToMixed::Update()
@@ -613,52 +539,6 @@ bool FCheckMotorStateManagerMixKeepsStateIfMixed::Update()
 			{
 				test->TestTrue(TEXT("Should keep its state if mix when already Mixed"), statesMatch );
 				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-
-bool FCheckMotorStateManagerServerAndClientMixedState::Update()
-{
-	if(GEditor->IsPlayingSessionInEditor())
-	{
-		FWorldContext serverContext = GEditor->GetWorldContexts()[1];
-		AMotorStateManagerMOCK* testServerManager = Cast<AMotorStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(serverContext.World(), AMotorStateManagerMOCK::StaticClass()));
-		if(serverContext.World()->GetNumPlayerControllers() == clientQuantity && testServerManager)
-		{
-			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
-			UE_LOG(LogTemp, Log, TEXT("retrieving motor state manager for checking..."));
-			AMotorStateManagerMOCK* testClientManager = Cast<AMotorStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), AMotorStateManagerMOCK::StaticClass()));
-
-			bool bothMixed = false;
-			if(testClientManager)
-			{
-				bool clientStateIsMixed = testClientManager->currentState()->GetClass() == UMixedMotorState::StaticClass();
-				bool serverStateIsMixed = testServerManager->currentState()->GetClass() == UMixedMotorState::StaticClass();
-				bothMixed = serverStateIsMixed && clientStateIsMixed;
-			}
-
-			if(bothMixed)
-			{
-				test->TestTrue(TEXT("The server should replicate its state when calling mix."), bothMixed);
-				for(auto context : GEditor->GetWorldContexts())
-				{
-					context.World()->bDebugFrameStepExecution = true;
-				}
-				return true;
-			}
-
-			++tickCount;
-			if(tickCount > tickLimit)
-			{
-				test->TestTrue(TEXT("The server should replicate its state when calling mix."), bothMixed);
-				for(auto context : GEditor->GetWorldContexts())
-				{
-					context.World()->bDebugFrameStepExecution = true;
-				}
 				return true;
 			}
 		}

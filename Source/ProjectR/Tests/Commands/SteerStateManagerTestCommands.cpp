@@ -8,6 +8,7 @@
 
 #include "../Mocks/SteerStateManagerMOCK.h"
 #include "../Utilities/PIESessionUtilities.h"
+#include "../Utilities/NetworkedPIESessionUtilities.h"
 
 //Test preparation commands:
 
@@ -79,33 +80,9 @@ bool FServerSpawnActorOfClass::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-		FWorldContext serverContext = GEditor->GetWorldContexts()[1];//0 is editor, 1 is server, 2->N is clients
-
-		if(serverContext.World()->GetNumPlayerControllers() == clientQuantity)
+		if(ASteerStateManagerMOCK::StaticClass() == anActorClass)
 		{
-			UE_LOG(LogTemp, Log, TEXT("Creating steer state manager..."));
-			
-
-			APlayerController* clientController = nullptr;
-			for (auto controllerIterator = serverContext.World()->GetPlayerControllerIterator(); controllerIterator; ++controllerIterator)
-			{
-				if(controllerIterator.GetIndex() == 1)
-				{
-					clientController = controllerIterator->Get();
-					break;
-				}
-			}
-			if(clientController)
-			{
-				FActorSpawnParameters spawnParameters = FActorSpawnParameters();
-				spawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-				spawnParameters.Owner = clientController;
-				AActor* testActor = serverContext.World()->SpawnActor(anActorClass, 0, 0, spawnParameters);
-				testActor->SetOwner(clientController);
-				UE_LOG(LogTemp, Log, TEXT("steer state manager owner set..."));
-				return true;
-			}
-			
+			return NetworkedPIESessionUtilities::spawnActorInServerWorldOfClass<ASteerStateManagerMOCK>(clientQuantity);
 		}
 	}
 	return false;
@@ -116,17 +93,23 @@ bool FClientSteerLeftSteerStateManager::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{		
-		FWorldContext serverContext = GEditor->GetWorldContexts()[1];//0 is editor, 1 is server, 2->N is clients
-		if (serverContext.World()->GetNumPlayerControllers() == clientQuantity)
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+
+		if(serverWorld)
 		{
-			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
-			UE_LOG(LogTemp, Log, TEXT("retrieving steer state manager..."));
-			ASteerStateManager* testClientManager = Cast<ASteerStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), ASteerStateManager::StaticClass()));
-			if (testClientManager)
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+
+			if(clientWorld)
 			{
-				UE_LOG(LogTemp, Log, TEXT("steering left steer state manager..."));
-				testClientManager->steerLeft();
-				return true;
+				ASteerStateManager* testClientManager = Cast<ASteerStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, ASteerStateManager::StaticClass()));
+				if (testClientManager)
+				{
+					UE_LOG(LogTemp, Log, TEXT("steering left steer state manager..."));
+					testClientManager->steerLeft();
+					return true;
+				}
 			}
 		}
 	}
@@ -138,17 +121,23 @@ bool FClientSteerRightSteerStateManager::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{		
-		FWorldContext serverContext = GEditor->GetWorldContexts()[1];//0 is editor, 1 is server, 2->N is clients
-		if (serverContext.World()->GetNumPlayerControllers() == clientQuantity)
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+
+		if(serverWorld)
 		{
-			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
-			UE_LOG(LogTemp, Log, TEXT("retrieving steer state manager..."));
-			ASteerStateManager* testClientManager = Cast<ASteerStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), ASteerStateManager::StaticClass()));
-			if (testClientManager)
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+
+			if(clientWorld)
 			{
-				UE_LOG(LogTemp, Log, TEXT("steering right steer state manager..."));
-				testClientManager->steerRight();
-				return true;
+				ASteerStateManager* testClientManager = Cast<ASteerStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, ASteerStateManager::StaticClass()));
+				if (testClientManager)
+				{
+					UE_LOG(LogTemp, Log, TEXT("steering right steer state manager..."));
+					testClientManager->steerRight();
+					return true;
+				}
 			}
 		}
 	}
@@ -160,17 +149,24 @@ bool FClientCenterSteerStateManager::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{		
-		FWorldContext serverContext = GEditor->GetWorldContexts()[1];//0 is editor, 1 is server, 2->N is clients
-		if (serverContext.World()->GetNumPlayerControllers() == clientQuantity)
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+
+		if(serverWorld)
 		{
-			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
-			UE_LOG(LogTemp, Log, TEXT("retrieving steer state manager..."));
-			ASteerStateManager* testClientManager = Cast<ASteerStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), ASteerStateManager::StaticClass()));
-			if (testClientManager)
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+
+			if(clientWorld)
 			{
-				UE_LOG(LogTemp, Log, TEXT("centering steer state manager..."));
-				testClientManager->center();
-				return true;
+				ASteerStateManager* testClientManager = Cast<ASteerStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, ASteerStateManager::StaticClass()));
+
+				if (testClientManager)
+				{
+					UE_LOG(LogTemp, Log, TEXT("centering steer state manager..."));
+					testClientManager->center();
+					return true;
+				}
 			}
 		}
 	}
@@ -331,41 +327,47 @@ bool FCheckSteerStateManagerServerAndClientExpectedState::Update()
 {
 	if(GEditor->IsPlayingSessionInEditor())
 	{
-		FWorldContext serverContext = GEditor->GetWorldContexts()[1];
-		ASteerStateManagerMOCK* testServerManager = Cast<ASteerStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(serverContext.World(), ASteerStateManagerMOCK::StaticClass()));
-		if(serverContext.World()->GetNumPlayerControllers() == clientQuantity && testServerManager)
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+
+		if(serverWorld)
 		{
-			FWorldContext clientContext = GEditor->GetWorldContexts()[2];//0 is editor, 1 is server, 2->N is clients
-			UE_LOG(LogTemp, Log, TEXT("retrieving steer state manager for checking..."));
-			ASteerStateManagerMOCK* testClientManager = Cast<ASteerStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientContext.World(), ASteerStateManagerMOCK::StaticClass()));
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
 
-			bool statesMatch = false;
-			if(testClientManager)
+			if(clientWorld)
 			{
-				bool clientStateIsTheExpected = testClientManager->currentState()->GetClass() == expectedStateClass;
-				bool serverStateIsTheExpected = testServerManager->currentState()->GetClass() == expectedStateClass;
-				statesMatch = serverStateIsTheExpected && clientStateIsTheExpected;
-			}
-
-			if(statesMatch)
-			{
-				test->TestTrue((TEXT("The current state of server and client should be %s."), *expectedStateClass->GetName()), statesMatch);
-				for(auto context : GEditor->GetWorldContexts())
+				UE_LOG(LogTemp, Log, TEXT("retrieving steer state manager for checking..."));
+				ASteerStateManagerMOCK* testServerManager = Cast<ASteerStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(serverWorld, ASteerStateManagerMOCK::StaticClass()));
+				ASteerStateManagerMOCK* testClientManager = Cast<ASteerStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, ASteerStateManagerMOCK::StaticClass()));
+				bool statesMatch = false;
+				if(testClientManager)
 				{
-					context.World()->bDebugFrameStepExecution = true;
+					bool clientStateIsTheExpected = testClientManager->currentState()->GetClass() == expectedStateClass;
+					bool serverStateIsTheExpected = testServerManager->currentState()->GetClass() == expectedStateClass;
+					statesMatch = serverStateIsTheExpected && clientStateIsTheExpected;
 				}
-				return true;
-			}
 
-			++tickCount;
-			if(tickCount > tickLimit)
-			{
-				test->TestTrue((TEXT("The current state of server and client should be %s."), *expectedStateClass->GetName()), statesMatch);
-				for(auto context : GEditor->GetWorldContexts())
+				if(statesMatch)
 				{
-					context.World()->bDebugFrameStepExecution = true;
+					test->TestTrue((TEXT("The current state of server and client should be %s."), *expectedStateClass->GetName()), statesMatch);
+					for(auto context : GEditor->GetWorldContexts())
+					{
+						context.World()->bDebugFrameStepExecution = true;
+					}
+					return true;
 				}
-				return true;
+
+				++tickCount;
+				if(tickCount > tickLimit)
+				{
+					test->TestTrue((TEXT("The current state of server and client should be %s."), *expectedStateClass->GetName()), statesMatch);
+					for(auto context : GEditor->GetWorldContexts())
+					{
+						context.World()->bDebugFrameStepExecution = true;
+					}
+					return true;
+				}
 			}
 		}
 	}
