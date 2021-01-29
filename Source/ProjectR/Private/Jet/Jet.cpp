@@ -12,6 +12,7 @@
 #include "Jet/SteeringComponent.h"
 #include "Jet/MotorDriveComponent.h"
 #include "Jet/MotorStates/MotorStateManager.h"
+#include "Jet/SteerStates/SteerStateManager.h"
 #include "Net/UnrealNetwork.h"
 #include "GameFramework/PlayerInput.h"
 #include "GameFramework/PlayerController.h"
@@ -56,6 +57,7 @@ AJet::AJet()
 	SetReplicates(true);
 	SetReplicateMovement(true);
 	motorManager = nullptr;
+	steerManager = nullptr;
 }
 
 void AJet::BeginPlay()
@@ -71,6 +73,10 @@ void AJet::Tick(float DeltaTime)
 	{
 		motorManager->activate(motorDriveSystem);
 	}
+	if(steerManager)
+	{
+		steerManager->activate(steeringSystem);
+	}
 }
 
 void AJet::PostInitializeComponents()
@@ -80,7 +86,9 @@ void AJet::PostInitializeComponents()
 	{
 		FActorSpawnParameters spawnParameters = FActorSpawnParameters();
 		spawnParameters.Owner = this;
+		
 		motorManager = GetWorld()->SpawnActor<AMotorStateManager>(spawnParameters);
+		steerManager = GetWorld()->SpawnActor<ASteerStateManager>(spawnParameters);
 	}
 }
 
@@ -91,7 +99,7 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("AccelerateAction", EInputEvent::IE_Pressed, this, &AJet::accelerate);
 	PlayerInputComponent->BindAction("AccelerateAction", EInputEvent::IE_Released, this, &AJet::neutralize);
 
-	PlayerInputComponent->BindAxis("SteerAction", this, &AJet::serverSteer);
+	PlayerInputComponent->BindAction("SteerRightAction", EInputEvent::IE_Pressed, this, &AJet::steerRight);
 
 	PlayerInputComponent->BindAction("BrakeAction", EInputEvent::IE_Pressed, this, &AJet::brake);
 	PlayerInputComponent->BindAction("BrakeAction", EInputEvent::IE_Released, this, &AJet::neutralize);
@@ -180,7 +188,11 @@ float AJet::steerRadius()
 
 void AJet::steerRight()
 {
-	steeringSystem->steer(1);
+	if(steerManager)
+	{
+		UE_LOG(LogTemp, Log, TEXT("steer manager created, steering right..."));
+		steerManager->steerRight();
+	}
 }
 
 float AJet::antiGravityHeight()
@@ -269,22 +281,10 @@ bool AJet::keyIsPressedFor(const FName anActionMappingName)
 	return false;
 }
 
-void AJet::serverSteer_Implementation(float aSteerDirection)
-{
-	if(HasAuthority())
-	{
-		steerRight();
-	}
-}
-
-bool AJet::serverSteer_Validate(float aSteerDirection)
-{
-	return true;
-}
-
 void AJet::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
 {
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
     DOREPLIFETIME(AJet, motorManager);
+	DOREPLIFETIME(AJet, steerManager);
 }

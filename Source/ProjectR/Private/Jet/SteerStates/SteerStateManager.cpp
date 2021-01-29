@@ -59,6 +59,7 @@ void ASteerStateManager::multicastSteerLeft_Implementation()
 
 void ASteerStateManager::multicastSteerRight_Implementation()
 {
+	UE_LOG(LogTemp, Log, TEXT("updating steer state to right steer..."));
 	updateStateTo<URightSteerState>();
 }
 
@@ -102,4 +103,12 @@ void ASteerStateManager::center()
 		return;
 	}
 	serverCenter();
+}
+
+void ASteerStateManager::activate(USteeringComponent* aSteeringDrive)
+{
+	if(steerState.Get())
+	{
+		steerState->activate(aSteeringDrive);
+	}
 }

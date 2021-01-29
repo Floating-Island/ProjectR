@@ -18,9 +18,7 @@ class PROJECTR_API AJetMOCK : public AJet
 	GENERATED_BODY()
 
 private:
-	bool alwaysSteerRight;
 	bool alwaysCancelGravity;
-	bool serverSteerAlways;
 public:
 	AJetMOCK();
 	virtual void Tick(float DeltaTime) override;
@@ -57,10 +55,7 @@ public:
 
 	FVector centerOfMass();
 
-	void steerRightEveryTick();
 	void cancelGravityOnEveryTick();
-
-	void serverAlwaysSteer();
 
 	UMotorDriveComponent* motorDriveComponent();
 

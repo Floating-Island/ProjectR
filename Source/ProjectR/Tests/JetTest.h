@@ -251,13 +251,13 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerBrakesWhenPressingBrakeKeyTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerSteerReplicatesSteeringTest, 
-	"ProjectR.Jet Tests.Replication.044: serverSteer replicates steering to other clients", 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetRightSteerReplicatesRightSteeringTest, 
+	"ProjectR.Jet Tests.Replication.044: steerRight replicates right steering to other clients", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerSteersWhenPressingSteerKeyTest, 
-	"ProjectR.Jet Tests.Replication.045: server steers when client pressess steerRight key", 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerSteersToRightWhenPressingSteerKeyTest, 
+	"ProjectR.Jet Tests.Replication.045: server steers right when client pressess steerRight key", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

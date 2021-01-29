@@ -638,7 +638,7 @@ bool FAJetServerBrakesWhenPressingBrakeKeyTest::RunTest(const FString& Parameter
 }
 
 
-bool FAJetServerSteerReplicatesSteeringTest::RunTest(const FString& Parameters)
+bool FAJetRightSteerReplicatesRightSteeringTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
@@ -650,7 +650,7 @@ bool FAJetServerSteerReplicatesSteeringTest::RunTest(const FString& Parameters)
 
 	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetToSteer(numberOfPlayers));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FClientSteerJet(numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FClientSteerRightJet(numberOfPlayers));
 
 	int tickCount = 0;
 	int tickLimit = 10;
@@ -662,7 +662,7 @@ bool FAJetServerSteerReplicatesSteeringTest::RunTest(const FString& Parameters)
 }
 
 
-bool FAJetServerSteersWhenPressingSteerKeyTest::RunTest(const FString& Parameters)
+bool FAJetServerSteersToRightWhenPressingSteerKeyTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
@@ -674,7 +674,7 @@ bool FAJetServerSteersWhenPressingSteerKeyTest::RunTest(const FString& Parameter
 
 	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetToSteer(numberOfPlayers));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FClientPressKey(FName(TEXT("SteerAction")), numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("SteerRightAction")), numberOfPlayers));
 
 	int tickCount = 0;
 	int tickLimit = 10;

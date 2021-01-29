@@ -10,26 +10,17 @@
 
 AJetMOCK::AJetMOCK()
 {
-	alwaysSteerRight = false;
 	alwaysCancelGravity = false;
-	serverSteerAlways = false;
 }
 
 void AJetMOCK::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (alwaysSteerRight)
-	{
-		steerRight();
-	}
+
 	if (alwaysCancelGravity)
 	{
 		float weight = abs(physicsMeshComponent->GetMass() * GetWorld()->GetGravityZ());
 		physicsMeshComponent->AddForce(FVector(0, 0, weight));
-	}
-	if (serverSteerAlways)
-	{
-		serverSteer(1);
 	}
 }
 
@@ -110,19 +101,9 @@ FVector AJetMOCK::centerOfMass()
 	return physicsMeshComponent->GetCenterOfMass();
 }
 
-void AJetMOCK::steerRightEveryTick()
-{
-	alwaysSteerRight = true;
-}
-
 void AJetMOCK::cancelGravityOnEveryTick()
 {
 	alwaysCancelGravity = true;
-}
-
-void AJetMOCK::serverAlwaysSteer()
-{
-	serverSteerAlways = true;
 }
 
 UMotorDriveComponent* AJetMOCK::motorDriveComponent()

@@ -54,7 +54,7 @@ public:
 	void steerLeft();
 	void steerRight();
 	void center();
-
+	void activate(USteeringComponent* aSteeringDrive);
 };
 
 template <class aSteerStateType>

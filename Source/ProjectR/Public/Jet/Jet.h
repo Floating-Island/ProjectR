@@ -14,6 +14,7 @@ class UAntiGravityComponent;
 class USteeringComponent;
 class UMotorDriveComponent;
 class AMotorStateManager;
+class ASteerStateManager;
 
 UCLASS()
 class PROJECTR_API AJet : public APawn
@@ -53,6 +54,9 @@ protected:
 
 	UPROPERTY(Replicated)
 		AMotorStateManager* motorManager;
+
+	UPROPERTY(Replicated)
+		ASteerStateManager* steerManager;
 	
 public:
 	virtual void Tick(float DeltaTime) override;
@@ -92,9 +96,6 @@ public:
 	FVector velocityProjectionOnFloor();
 
 	FVector rightVectorProjectionOnFloor();
-	
-    UFUNCTION(Server, Reliable, WithValidation)
-        void serverSteer(float aSteerDirection);
 
 	bool keyIsPressedFor(const FName anActionMappingName);
 };
