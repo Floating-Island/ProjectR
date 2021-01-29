@@ -20,7 +20,7 @@ void AJetMOCK::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if (alwaysSteerRight)
 	{
-		steer(1);
+		steerRight();
 	}
 	if (alwaysCancelGravity)
 	{

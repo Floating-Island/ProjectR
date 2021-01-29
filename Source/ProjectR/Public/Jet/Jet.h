@@ -79,7 +79,7 @@ public:
 	bool goesBackwards();
 
 	float steerRadius();
-	void steer(float aDirectionMultiplier);
+	void steerRight();
 
 	float antiGravityHeight();
 

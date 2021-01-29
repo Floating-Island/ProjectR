@@ -275,7 +275,7 @@ bool FSpawningAJeSteerRightWhenIdle::Update()
 
 	float direction = 1;//1 is right, -1 is left...
 	testJet->SetActorRotation(FRotator(0));//so we are sure to start with zero rotation
-	testJet->steer(direction);
+	testJet->steerRight();
 
 	return true;
 }
@@ -330,7 +330,7 @@ bool FSpawningAJetTiltItAndMakeItSteerRight::Update()
 	FRotator rollRotator = FRotator(0, 0, roll);
 	testJet->SetActorRotation(rollRotator);
 	testJet->setCurrentXVelocityTo(10000);//we should set the speed to 1 first so the jet is able to steer.
-	testJet->steer(direction);
+	testJet->steerRight();
 
 	return true;
 }

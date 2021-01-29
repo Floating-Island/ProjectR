@@ -178,9 +178,9 @@ float AJet::steerRadius()
 	return steeringSystem->steeringRadius();
 }
 
-void AJet::steer(float aDirectionMultiplier)
+void AJet::steerRight()
 {
-	steeringSystem->steer(aDirectionMultiplier);
+	steeringSystem->steer(1);
 }
 
 float AJet::antiGravityHeight()
@@ -273,7 +273,7 @@ void AJet::serverSteer_Implementation(float aSteerDirection)
 {
 	if(HasAuthority())
 	{
-		steer(aSteerDirection);
+		steerRight();
 	}
 }
 
