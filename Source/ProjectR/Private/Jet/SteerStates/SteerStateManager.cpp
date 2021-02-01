@@ -59,7 +59,6 @@ void ASteerStateManager::multicastSteerLeft_Implementation()
 
 void ASteerStateManager::multicastSteerRight_Implementation()
 {
-	UE_LOG(LogTemp, Log, TEXT("updating steer state to right steer..."));
 	updateStateTo<URightSteerState>();
 }
 
