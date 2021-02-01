@@ -1091,6 +1091,30 @@ bool FAJetServerChangesSteerToLeftSteerWhenPressingSteerLeftKeyTest::RunTest(con
 }
 
 
+bool FAJetServerChangesSteerToCenterSteerWhenReleasingSteerLeftKeyTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientReleaseActionKey(FName(TEXT("SteerLeftAction")), numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetExpectedSteerState(expectedSteerStateClass, tickCount, tickLimit, numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 
 
 

@@ -369,7 +369,13 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetChangesToCenterSteerStateWhenPressingSteer
 
 //uses a mock
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerChangesSteerToLeftSteerWhenPressingSteerLeftKeyTest, 
-	"ProjectR.Jet Tests.Replication.049: server changes steer state to LeftSteer when client pressess SteerLeft key", 
+	"ProjectR.Jet Tests.Replication.065: server changes steer state to LeftSteer when client pressess SteerLeft key", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerChangesSteerToCenterSteerWhenReleasingSteerLeftKeyTest, 
+	"ProjectR.Jet Tests.Replication.065: server changes steer state to CenterSteer when client releases SteerLeft key", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
