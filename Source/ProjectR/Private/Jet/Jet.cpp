@@ -100,6 +100,7 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("AccelerateAction", EInputEvent::IE_Released, this, &AJet::neutralize);
 
 	PlayerInputComponent->BindAction("SteerRightAction", EInputEvent::IE_Pressed, this, &AJet::steerRight);
+	PlayerInputComponent->BindAction("SteerRightAction", EInputEvent::IE_Released, this, &AJet::centerSteer);
 
 	PlayerInputComponent->BindAction("SteerLeftAction", EInputEvent::IE_Pressed, this, &AJet::steerLeft);
 	PlayerInputComponent->BindAction("SteerLeftAction", EInputEvent::IE_Released, this, &AJet::centerSteer);
@@ -160,17 +161,6 @@ void AJet::neutralize()
 {
 	if(IsValid(motorManager))
 	{
-		if(keyIsPressedFor(FName("BrakeAction")))
-		{
-			motorManager->brake();
-			return;
-		}
-
-		if(keyIsPressedFor(FName("AccelerateAction")))
-		{
-			motorManager->accelerate();
-			return;
-		}
 		motorManager->neutralize();
 	}
 }
@@ -210,6 +200,17 @@ void AJet::centerSteer()
 {
 	if(IsValid(steerManager))
 	{
+		if(keyIsPressedFor(FName("SteerLeftAction")))
+		{
+			steerManager->steerLeft();
+			return;
+		}
+
+		if(keyIsPressedFor(FName("SteerRightAction")))
+		{
+			steerManager->steerRight();
+			return;
+		}
 		steerManager->center();
 	}
 }
