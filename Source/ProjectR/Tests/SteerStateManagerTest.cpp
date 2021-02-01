@@ -195,7 +195,7 @@ bool FASteerStateManagerReplicatesStateWhenCallingSteerLeftTest::RunTest(const F
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
 	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(steerStateManagerClass, numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnSteerStateManagerMOCK(steerStateManagerClass, numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientSteerLeftSteerStateManager(numberOfPlayers));
 
@@ -220,7 +220,7 @@ bool FASteerStateManagerReplicatesStateWhenCallingSteerRightTest::RunTest(const 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
 	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(steerStateManagerClass, numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnSteerStateManagerMOCK(steerStateManagerClass, numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientSteerRightSteerStateManager(numberOfPlayers));
 
@@ -245,7 +245,7 @@ bool FASteerStateManagerReplicatesStateWhenCallingCenterTest::RunTest(const FStr
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
 	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(steerStateManagerClass, numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnSteerStateManagerMOCK(steerStateManagerClass, numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientCenterSteerStateManager(numberOfPlayers));
 

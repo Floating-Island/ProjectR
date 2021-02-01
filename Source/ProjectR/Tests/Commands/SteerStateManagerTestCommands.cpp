@@ -76,7 +76,7 @@ bool FCenterASteerStateManagerMOCK::Update()
 }
 
 
-bool FServerSpawnActorOfClass::Update()
+bool FServerSpawnSteerStateManagerMOCK::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
