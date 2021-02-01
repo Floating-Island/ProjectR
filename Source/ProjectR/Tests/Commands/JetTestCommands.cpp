@@ -740,6 +740,24 @@ bool FSpawningAJetPressAccelerateAndReleaseBrakeKey::Update()
 }
 
 
+bool FSpawningAJetMakeItSteerLeft::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
+
+	testJet->setCurrentXVelocityTo(10000);//we should set the speed to 1000 first so the jet is able to steer.
+	testJet->steerLeft();
+
+	return true;
+}
+
 
 
 
@@ -911,7 +929,7 @@ bool FCheckAJetSpeedAgainstTopSpeed::Update()
 }
 
 
-bool FCheckAJetRotatedYaw::Update()
+bool FCheckAJetRotatedYawRight::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -1667,6 +1685,44 @@ bool FServerCheckJetExpectedMotorState::Update()
 	}
 	return false;
 }
+
+
+bool FCheckAJetRotatedYawLeft::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+		if (testJet)
+		{
+			float currentZRotation = testJet->GetActorRotation().Yaw;
+			bool hasSteeredLeft = currentZRotation < 0;
+			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotation, 0.1f);
+
+			UE_LOG(LogTemp, Log, TEXT("Jet rotation vector: %s"), *testJet->GetActorRotation().ToString());
+			UE_LOG(LogTemp, Log, TEXT("Jet %s steered left."), *FString(hasSteeredLeft ? "has" : "hasn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet %s made a minimal steering."), *FString(isMinimalSteering ? "has" : "hasn't"));
+
+			if (hasSteeredLeft && !isMinimalSteering)
+			{
+				test->TestTrue(TEXT("The Jet yaw rotation (around Z axis) should be greater than zero after steering right (after ticking)."), hasSteeredLeft && !isMinimalSteering);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			++tickCount;
+
+			if (tickCount > tickLimit)
+			{
+				test->TestFalse(TEXT("Tick limit reached for this test. The Jet yaw rotation (around Z axis) never changed from zero."), tickCount > tickLimit);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 
 
 

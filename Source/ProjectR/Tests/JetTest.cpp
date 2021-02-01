@@ -186,7 +186,7 @@ bool FAJetRotatesYawRightWhenSteeringRightTest::RunTest(const FString& Parameter
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItSteerRight);
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetRotatedYaw(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetRotatedYawRight(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -229,7 +229,7 @@ bool FAJetMovesRightWhenPressingSteerRightKeyTest::RunTest(const FString& Parame
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKey);
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetRotatedYaw(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetRotatedYawRight(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -920,6 +920,22 @@ bool FAJetServerAcceleratesWhenAccelerateKeyIsPressedAndBrakeReleasedTest::RunTe
 	return true;
 }
 
+
+bool FAJetRotatesYawLeftWhenSteeringLeftTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItSteerLeft);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetRotatedYawLeft(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
 
 
 
