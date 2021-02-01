@@ -635,6 +635,7 @@ bool FServerSpawnJetMOCK::Update()
 		{
 			AJetMOCK* testJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(serverWorld, AJetMOCK::StaticClass()));
 			testJet->setMotorManagerMOCK();
+			testJet->setSteerManagerMOCK();
 			return hasSucceded;
 		}
 		
@@ -1880,6 +1881,59 @@ bool FCheckAJetToExpectedSteerState::Update()
 				test->TestFalse((TEXT("Tick limit reached for this test. The Jet never changed its steer state to %s."), *expectedStateClass->GetName()), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FServerCheckJetExpectedSteerState::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+		if(serverWorld)
+		{
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+			if(clientWorld)
+			{
+				AJetMOCK* testServerJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(serverWorld, AJetMOCK::StaticClass()));
+				AJetMOCK* testClientJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, AJetMOCK::StaticClass()));
+
+				if(testServerJet && testClientJet)
+				{
+					bool bothAsExpected = false;
+					if(testClientJet->currentSteerState() && testServerJet->currentSteerState())
+					{
+						bool clientStateIsAsExpected = testClientJet->currentSteerState()->GetClass() == expectedStateClass;
+						bool serverStateIsAsExpected = testServerJet->currentSteerState()->GetClass() == expectedStateClass;
+						bothAsExpected = serverStateIsAsExpected && clientStateIsAsExpected;
+					}
+
+					if(bothAsExpected)
+					{
+						test->TestTrue((TEXT("The server should replicate its state to %s."), *expectedStateClass->GetName()), bothAsExpected);
+						for(auto context : GEditor->GetWorldContexts())
+						{
+							context.World()->bDebugFrameStepExecution = true;
+						}
+						return true;
+					}
+
+					++tickCount;
+					if(tickCount > tickLimit)
+					{
+						test->TestTrue((TEXT("Tick limit reached. The server should have replicated its state to %s."), *expectedStateClass->GetName()), bothAsExpected);
+						for(auto context : GEditor->GetWorldContexts())
+						{
+							context.World()->bDebugFrameStepExecution = true;
+						}
+						return true;
+					}
+				}
 			}
 		}
 	}

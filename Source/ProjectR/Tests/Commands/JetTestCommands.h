@@ -216,4 +216,6 @@ DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetRotatedYawLeft, int, 
 DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckAJetToExpectedSteerState, UClass*, expectedStateClass, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FServerCheckJetExpectedSteerState, UClass*, expectedStateClass, int, tickCount, int, tickLimit, int, clientQuantity, FAutomationTestBase*, test);
+
 #endif //WITH_DEV_AUTOMATION_TESTS
