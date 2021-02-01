@@ -217,6 +217,11 @@ void AJet::centerSteer()
 			return;
 		}
 
+		if(keyIsPressedFor(FName("SteerRightAction")))
+		{
+			steerManager->steerRight();
+			return;
+		}
 		steerManager->center();
 	}
 }
