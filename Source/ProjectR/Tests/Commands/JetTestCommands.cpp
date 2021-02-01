@@ -771,11 +771,30 @@ bool FSpawningAJetPressSteerLeftKey::Update()
 	sessionUtilities.spawnLocalPlayer();
 	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 	testJet->setSteerManagerMOCK();
-	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("AccelerateAction")));
 	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("SteerLeftAction")));
 	
 	return true;
 }
+
+
+bool FSpawningAJetReleaseSteerLeftKey::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	sessionUtilities.spawnLocalPlayer();
+	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+	testJet->setSteerManagerMOCK();
+	sessionUtilities.processLocalPlayerActionInputReleaseFrom(FName(TEXT("SteerLeftAction")));
+	
+	return true;
+}
+
+
+
 
 
 
