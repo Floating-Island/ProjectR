@@ -829,6 +829,24 @@ bool FSpawningAJetPressSteerLeftKeyReleaseSteerRightKey::Update()
 }
 
 
+bool FSpawningAJetPressSteerRightKeyReleaseSteerLeftKey::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	sessionUtilities.spawnLocalPlayer();
+	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+	testJet->setSteerManagerMOCK();
+	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("SteerRightAction")));
+	sessionUtilities.processLocalPlayerActionInputReleaseFrom(FName(TEXT("SteerLeftAction")));
+	
+	return true;
+}
+
+
 
 
 

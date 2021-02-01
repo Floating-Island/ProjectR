@@ -13,6 +13,7 @@
 #include "Jet/MotorStates/ReversingMotorState.h"
 #include "Jet/SteerStates/LeftSteerState.h"
 #include "Jet/SteerStates/CenterSteerState.h"
+#include "Jet/SteerStates/RightSteerState.h"
 
 //to be able to simulate:
 #include "Tests/AutomationEditorCommon.h"
@@ -1005,6 +1006,24 @@ bool FAJetChangesToLeftSteerStateWhenReleasingSteerRightKeyAndSteerLeftIsPressed
 	int tickCount = 0;
 	int tickLimit = 3;
 	UClass* expectedSteerStateClass = ULeftSteerState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedSteerState(expectedSteerStateClass, tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetChangesToRighSteerStateWhenReleasingSteerLeftKeyAndSteerRighIsPressedTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKeyReleaseSteerLeftKey);
+	int tickCount = 0;
+	int tickLimit = 3;
+	UClass* expectedSteerStateClass = URightSteerState::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedSteerState(expectedSteerStateClass, tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
