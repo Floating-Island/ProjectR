@@ -6,6 +6,7 @@
 #include "LevelEditor.h"
 #include "Editor/UnrealEdEngine.h"
 #include "UnrealEdGlobals.h"
+#include "../Utilities/NetworkedPIESessionUtilities.h"
 
 
 bool FStartNetworkedPIESession::Update()
@@ -23,4 +24,24 @@ bool FStartNetworkedPIESession::Update()
 	GUnrealEd->RequestPlaySession(sessionParameters);
 	
 	return true;
+}
+
+
+bool FServerSpawnActorOfClass::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		return NetworkedPIESessionUtilities::spawnActorInServerWorldOfClass(anActorClass, actorTransform, clientQuantity);
+	}
+	return false;
+}
+
+
+bool FServerSpawnPawnOfClass::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		return NetworkedPIESessionUtilities::spawnPawnInServerWorldOfClass(aPawnClass, pawnTransform, clientQuantity);
+	}
+	return false;
 }

@@ -62,6 +62,23 @@ public:
 	 */
 	template<class anActorClass>
 	static bool spawnActorInServerWorldOfClass(int expectedControllersInServer);
+
+	/**
+	 * Non template version.
+	 * Looks for the server context, retrieves its world, looks for the client controller, creates the actor and makes the controller its owner.
+	 * The actor owner will be the client controller because the actor needs a connection to be able to make remote procedure calls (RPCs).
+	 * Returns whether it was able to find the server context and create the actor.
+	 */
+	static bool spawnActorInServerWorldOfClass(UClass* anActorClass, const FTransform actorTransform, int expectedControllersInServer);
+
+
+	/**
+	 * Non template version.
+	 * Looks for the server context, retrieves its world, looks for the client controller, creates the pawn and makes the controller possess it.
+	 * The pawn owner will be the client controller. This is because the pawn needs a connection to be able to make remote procedure calls (RPCs).
+	 * Returns whether it was able to find the server context and spawn the pawn possessed.
+	 */
+	static bool spawnPawnInServerWorldOfClass(UClass* aPawnClass, const FTransform pawnTransform, int expectedControllersInServer);
 };
 
 template <class aPawnClass>
@@ -88,12 +105,14 @@ bool NetworkedPIESessionUtilities::spawnPawnInServerWorldOfClass(int expectedCon
 			FActorSpawnParameters spawnParameters = FActorSpawnParameters();
 			spawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 			spawnParameters.Owner = clientController;
-			aPawnClass* testPawn = serverWorld->SpawnActor<aPawnClass>(FVector(1000), FRotator(0), spawnParameters);
-			
-			clientController->Possess(testPawn);
-			clientController->PlayerState->SetIsSpectator(false);
-			UE_LOG(LogTemp, Log, TEXT("Created and possessed pawn of class %s!"), *aPawnClass::StaticClass()->GetName());
-			return true;
+			aPawnClass* pawn = serverWorld->SpawnActor<aPawnClass>(FVector(1000), FRotator(0), spawnParameters);
+			if(IsValid(pawn))
+			{
+				clientController->Possess(pawn);
+				clientController->PlayerState->SetIsSpectator(false);
+				UE_LOG(LogTemp, Log, TEXT("Created and possessed pawn of class %s!"), *aPawnClass::StaticClass()->GetName());
+				return true;
+			}
 		}
 	}
 	return false;
@@ -125,9 +144,12 @@ bool NetworkedPIESessionUtilities::spawnActorInServerWorldOfClass(int expectedCo
 			FActorSpawnParameters spawnParameters = FActorSpawnParameters();
 			spawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 			spawnParameters.Owner = clientController;
-			anActorClass* testActor = serverWorld->SpawnActor<anActorClass>(spawnParameters);
-			UE_LOG(LogTemp, Log, TEXT("actor of class %s created!"), *anActorClass::StaticClass()->GetName());
-			return true;
+			anActorClass* actor = serverWorld->SpawnActor<anActorClass>(spawnParameters);
+			if(IsValid(actor))
+			{
+				UE_LOG(LogTemp, Log, TEXT("actor of class %s created!"), *anActorClass::StaticClass()->GetName());
+				return true;
+			}
 		}
 		
 	}
