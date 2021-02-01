@@ -102,6 +102,7 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("SteerRightAction", EInputEvent::IE_Pressed, this, &AJet::steerRight);
 
 	PlayerInputComponent->BindAction("SteerLeftAction", EInputEvent::IE_Pressed, this, &AJet::steerLeft);
+	PlayerInputComponent->BindAction("SteerLeftAction", EInputEvent::IE_Released, this, &AJet::centerSteer);
 
 
 	PlayerInputComponent->BindAction("BrakeAction", EInputEvent::IE_Pressed, this, &AJet::brake);
@@ -202,6 +203,14 @@ void AJet::steerLeft()
 	if(IsValid(steerManager))
 	{
 		steerManager->steerLeft();
+	}
+}
+
+void AJet::centerSteer()
+{
+	if(IsValid(steerManager))
+	{
+		steerManager->center();
 	}
 }
 
