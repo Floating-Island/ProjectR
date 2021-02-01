@@ -2,32 +2,22 @@
 
 
 #include "JetMOCK.h"
+
+
+#include "Jet/MotorStates/MotorStateManager.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "SteerStateManagerMOCK.h"
 
 AJetMOCK::AJetMOCK()
 {
-	alwaysSteerRight = false;
-	alwaysAccelerate = false;
-	alwaysBrake = false;
 	alwaysCancelGravity = false;
 }
 
 void AJetMOCK::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (alwaysSteerRight)
-	{
-		steer(1);
-	}
-	if (alwaysAccelerate)
-	{
-		accelerate(1);
-	}
-	if (alwaysBrake)
-	{
-		brake(1);
-	}
+
 	if (alwaysCancelGravity)
 	{
 		float weight = abs(physicsMeshComponent->GetMass() * GetWorld()->GetGravityZ());
@@ -112,24 +102,54 @@ FVector AJetMOCK::centerOfMass()
 	return physicsMeshComponent->GetCenterOfMass();
 }
 
-void AJetMOCK::steerRightEveryTick()
-{
-	alwaysSteerRight = true;
-}
-
-void AJetMOCK::accelerateOnEveryTick()
-{
-	alwaysAccelerate = true;
-}
-
-void AJetMOCK::brakeOnEveryTick()
-{
-	alwaysBrake = true;
-}
-
 void AJetMOCK::cancelGravityOnEveryTick()
 {
 	alwaysCancelGravity = true;
+}
+
+UMotorDriveComponent* AJetMOCK::motorDriveComponent()
+{
+	return motorDriveSystem;
+}
+
+void AJetMOCK::setMotorManagerMOCK()
+{
+	motorManager->Destroy();
+	FActorSpawnParameters spawnParameters = FActorSpawnParameters();
+	spawnParameters.Owner = this;
+	motorManager = GetWorld()->SpawnActor<AMotorStateManagerMOCK>(spawnParameters);
+}
+
+UMotorState* AJetMOCK::currentMotorState()
+{
+	AMotorStateManagerMOCK* motorManagerMock = Cast<AMotorStateManagerMOCK, AMotorStateManager>(motorManager);
+
+	return motorManagerMock ? motorManagerMock->currentState() : nullptr;
+}
+
+bool AJetMOCK::hasMotorManagerInstantiated()
+{
+	return motorManager ? true : false;
+}
+
+USteeringComponent* AJetMOCK::steeringComponent()
+{
+	return steeringSystem;
+}
+
+USteerState* AJetMOCK::currentSteerState()
+{
+	ASteerStateManagerMOCK* steerManagerMock = Cast<ASteerStateManagerMOCK, ASteerStateManager>(steerManager);
+	
+	return steerManagerMock ? steerManagerMock->currentState() : nullptr;
+}
+
+void AJetMOCK::setSteerManagerMOCK()
+{
+	steerManager->Destroy();
+	FActorSpawnParameters spawnParameters = FActorSpawnParameters();
+	spawnParameters.Owner = this;
+	steerManager = GetWorld()->SpawnActor<ASteerStateManagerMOCK>(spawnParameters);
 }
 
 //bool AJetMOCK::hasAnAntiGravitySystem()

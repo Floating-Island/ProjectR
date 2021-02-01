@@ -221,11 +221,198 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSteersOrthogonalToSurfaceNormalTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetReplicatesTest, 
+	"ProjectR.Jet Tests.Replication.038: Replicates to other clients", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetReplicatesMovementTest, 
+	"ProjectR.Jet Tests.Replication.039: Replicates movement to other clients", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerAccelerateReplicatesAccelerationTest, 
+	"ProjectR.Jet Tests.Replication.040: accelerate replicates acceleration to other clients", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerAcceleratesWhenPressingAccelerationKeyTest, 
+	"ProjectR.Jet Tests.Replication.041: server accelerates when client pressess acceleration key", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerBrakeReplicatesBrakingTest, 
+	"ProjectR.Jet Tests.Replication.042: brake replicates braking to other clients", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerBrakesWhenPressingBrakeKeyTest, 
+	"ProjectR.Jet Tests.Replication.043: server brakes when client pressess brake key", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetRightSteerReplicatesRightSteeringTest, 
+	"ProjectR.Jet Tests.Replication.044: steerRight replicates right steering to other clients", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerSteersToRightWhenPressingSteerKeyTest, 
+	"ProjectR.Jet Tests.Replication.045: server steers right when client pressess steerRight key", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetNeutralizesMotorManagerWhenReleasingAccelerateKeyTest, 
+	"ProjectR.Jet Tests.Unit.046: Neutralizes when releasing acceleration key", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetNeutralizesMotorManagerWhenReleasingBrakeKeyTest, 
+	"ProjectR.Jet Tests.Unit.047: Neutralizes when releasing brake key", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerNeutralizesWhenReleasingAccelerationKeyTest, 
+	"ProjectR.Jet Tests.Replication.048: server neutralizes motor state when client releases acceleration key", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerNeutralizesWhenReleasingBrakeKeyTest, 
+	"ProjectR.Jet Tests.Replication.049: server neutralizes motor state when client releases brake key", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMixesItsMotorStateWhenPressingAccelerationAndBrakeKeyTest, 
+	"ProjectR.Jet Tests.Unit.050: Mixes its motor state when pressing acceleration and brake key (in that order)", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetMixesItsMotorStateWhenPressingBrakeAndAccelerationKeyTest, 
+	"ProjectR.Jet Tests.Unit.051: Mixes its motor state when pressing brake and acceleration key (in that order)", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerMixesWhenPressingAccelerationAndBrakeKeyTest, 
+	"ProjectR.Jet Tests.Replication.052: server mixes motor state when client presses accelerate and brake key", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetReversesItsMotorStateWhenBrakeKeyIsPressedAndAccelerateReleasedTest, 
+	"ProjectR.Jet Tests.Unit.053: Reverses its motor state when brake key is pressed and accelerate key is released (in that order)", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetAcceleratesItsMotorStateWhenAccelerateKeyIsPressedAndBrakeReleasedTest, 
+	"ProjectR.Jet Tests.Unit.054: Accelerates its motor state when accelerate key is pressed and brake key is released (in that order)", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerReversesWhenBrakeKeyIsPressedAndAccelerateReleasedTest, 
+	"ProjectR.Jet Tests.Replication.055: server reverses motor state when client has pressed brake key and accelerate key is released (in that order)", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerAcceleratesWhenAccelerateKeyIsPressedAndBrakeReleasedTest, 
+	"ProjectR.Jet Tests.Replication.056: server accelerates motor state when client has pressed accelerate key and brake key is released (in that order)", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetRotatesYawLeftWhenSteeringLeftTest, 
+	"ProjectR.Jet Tests.Unit.057: Rotates yaw left when steering left", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetChangesToLeftSteerStateWhenPressingSteerLeftKeyTest, 
+	"ProjectR.Jet Tests.Unit.058: Changes its steer state to LeftSteerState when pressing the SteerLeft key", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetChangesToCenterSteerStateWhenReleasingSteerLeftKeyTest, 
+	"ProjectR.Jet Tests.Unit.059: Changes its steer state to CenterSteerState when releasing the SteerLeft key", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetChangesToCenterSteerStateWhenReleasingSteerRightKeyTest, 
+	"ProjectR.Jet Tests.Unit.060: Changes its steer state to CenterSteerState when releasing the SteerRight key", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetChangesToLeftSteerStateWhenReleasingSteerRightKeyAndSteerLeftIsPressedTest, 
+	"ProjectR.Jet Tests.Unit.061: Changes its steer state to LeftSteerState when releasing the SteerRight key and the SteerLeft key is pressed", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetChangesToRightSteerStateWhenReleasingSteerLeftKeyAndSteerRightIsPressedTest, 
+	"ProjectR.Jet Tests.Unit.062: Changes its steer state to LeftSteerState when releasing the SteerLeft key and the SteerRight key is pressed", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetChangesToCenterSteerStateWhenPressingSteerRightKeyAndSteerLeftIsPressedTest, 
+	"ProjectR.Jet Tests.Unit.063: Changes its steer state to CenterSteerState when pressing the SteerRight key and the SteerLeft key is pressed", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetChangesToCenterSteerStateWhenPressingSteerLeftKeyAndSteerRightIsPressedTest, 
+	"ProjectR.Jet Tests.Unit.064: Changes its steer state to CenterSteerState when pressing the SteerLeft key and the SteerRight key is pressed", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerChangesSteerToLeftSteerWhenPressingSteerLeftKeyTest, 
+	"ProjectR.Jet Tests.Replication.065: server changes steer state to LeftSteer when client pressess SteerLeft key", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerChangesSteerToCenterSteerWhenReleasingSteerLeftKeyTest, 
+	"ProjectR.Jet Tests.Replication.065: server changes steer state to CenterSteer when client releases SteerLeft key", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerChangesSteerToCenterSteerWhenReleasingSteerRightKeyTest, 
+	"ProjectR.Jet Tests.Replication.066: server changes steer state to CenterSteer when client releases SteerRight key", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerChangesSteerToLeftSteerStateWhenReleasingSteerRightKeyAndSteerLeftIsPressedTest, 
+	"ProjectR.Jet Tests.Replication.067: server changes steer state to LeftSteer when client releases SteerRight key while the steer left is pressed", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerChangesSteerToRightSteerStateWhenReleasingSteerLeftKeyAndSteerRightIsPressedTest, 
+	"ProjectR.Jet Tests.Replication.068: server changes steer state to RightSteer when client releases SteerLeft key while the steerRight is pressed", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerChangesSteerToCenterSteerStateWhenPressingSteerLeftKeyAndSteerRightIsPressedTest, 
+	"ProjectR.Jet Tests.Replication.069: server changes steer state to CenterSteer when client pressess SteerLeft key while the steerRight is pressed", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//uses a mock
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetServerChangesSteerToCenterSteerStateWhenPressingSteerRightKeyAndSteerLeftIsPressedTest, 
+	"ProjectR.Jet Tests.Replication.069: server changes steer state to CenterSteer when client pressess SteerRight key while the steerLeft is pressed", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
 
 //jet mesh should be set to collision enabled. (query and physics or physics only).
 //delete tests that check velocity alignment to forward or backwards vectors after steering. Or see if it's possible to remade them.
 //create a state with state factory to handle the direction that the jet is heading (forwards or backwards). It should update itself every time that acceleration or brake is called.
-// maybe move that inReverseInverts method in the steer component to it.
+// maybe move the inReverseInverts method located in the steer component to the state factory.
 
 
 

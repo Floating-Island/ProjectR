@@ -13,6 +13,8 @@ class UCameraComponent;
 class UAntiGravityComponent;
 class USteeringComponent;
 class UMotorDriveComponent;
+class AMotorStateManager;
+class ASteerStateManager;
 
 UCLASS()
 class PROJECTR_API AJet : public APawn
@@ -49,9 +51,17 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 		UMotorDriveComponent* motorDriveSystem;
+
+	UPROPERTY(Replicated)
+		AMotorStateManager* motorManager;
+
+	UPROPERTY(Replicated)
+		ASteerStateManager* steerManager;
 	
 public:
 	virtual void Tick(float DeltaTime) override;
+	virtual void PostInitializeComponents() override;
+	
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
@@ -59,19 +69,23 @@ public:
 
 	float settedTopSpeed();
 
-	void accelerate(float anAccelerationMultiplier = 1.0f);
+	void accelerate();
 
 	float acceleration();
 
 	float brakeValue();
 
-	void brake(float aBrakeMultiplier = 1.0f);
+	void brake();
+
+	void neutralize();
 
 	bool goesForward();
 	bool goesBackwards();
 
 	float steerRadius();
-	void steer(float aDirectionMultiplier);
+	void steerRight();
+	void steerLeft();
+	void centerSteer();
 
 	float antiGravityHeight();
 
@@ -84,4 +98,6 @@ public:
 	FVector velocityProjectionOnFloor();
 
 	FVector rightVectorProjectionOnFloor();
+
+	bool keyIsPressedFor(const FName anActionMappingName);
 };

@@ -31,6 +31,11 @@ public:
 
 	void spawnLocalPlayer();
 	void processLocalPlayerInputFrom(FName anAxisMappingName);
+	static void processKeyPressFrom(FName anAxisMappingName, APlayerController* aController);
+	void processLocalPlayerActionInputFrom(FName anActionMappingName);
+	static void processActionKeyPressFrom(FName anActionMappingName, APlayerController* aController);
+	void processLocalPlayerActionInputReleaseFrom(FName anActionMappingName);
+	static void processActionKeyReleaseFrom(FName anActionMappingName, APlayerController* aController);
 
 	void processEditorClick(FVector2D atCoordinates);
 

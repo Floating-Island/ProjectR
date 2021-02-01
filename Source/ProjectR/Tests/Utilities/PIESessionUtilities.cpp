@@ -43,8 +43,13 @@ void PIESessionUtilities::processLocalPlayerInputFrom(FName anAxisMappingName)
 
 	APlayerController* controller = Cast<APlayerController, AActor>(testGameMode->GetGameInstance()->GetFirstLocalPlayerController(pieWorld));
 
+	processKeyPressFrom(anAxisMappingName, controller);
+}
+
+void PIESessionUtilities::processKeyPressFrom(FName anAxisMappingName, APlayerController* aController)
+{
 	FName const actionName = anAxisMappingName;
-	TArray<FInputAxisKeyMapping> axisMappings = controller->PlayerInput->GetKeysForAxis(actionName);//in the editor, we are going to add a new axis mapping inside Project settings -> Input
+	TArray<FInputAxisKeyMapping> axisMappings = aController->PlayerInput->GetKeysForAxis(actionName);//in the editor, we are going to add a new axis mapping inside Project settings -> Input
 	//in the pawn class, we are going to add a player input binding with:
 	//	PlayerInputComponent->BindAxis("AxisMappingName",this, &YourPawn::actionToBind);
 	//and in the constructor:
@@ -59,7 +64,51 @@ void PIESessionUtilities::processLocalPlayerInputFrom(FName anAxisMappingName)
 		}
 	}
 
-	controller->InputKey(actionKey, EInputEvent::IE_Repeat, 5.0f, false);
+	aController->InputKey(actionKey, EInputEvent::IE_Repeat, 5.0f, false);
+}
+
+void PIESessionUtilities::processLocalPlayerActionInputFrom(FName anActionMappingName)
+{
+	AGameModeBase* testGameMode = pieWorld->GetAuthGameMode();
+
+	APlayerController* controller = Cast<APlayerController, AActor>(testGameMode->GetGameInstance()->GetFirstLocalPlayerController(pieWorld));
+
+	processActionKeyPressFrom(anActionMappingName, controller);
+}
+
+void PIESessionUtilities::processActionKeyPressFrom(FName anActionMappingName, APlayerController* aController)
+{
+	FName const actionName = anActionMappingName;
+	TArray<FInputActionKeyMapping> actionMappings = aController->PlayerInput->GetKeysForAction(actionName);//in the editor, we are going to add a new action mapping inside Project settings -> Input
+	//in the pawn class, we are going to add a player input binding with:
+	//	PlayerInputComponent->BindAction("ActionMappingName", EInputEvent::IE_Pressed, this, &YourPawn::actionToBind);
+	//and in the constructor:
+	//AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
+	FKey actionKey = actionMappings[0].Key;
+
+	aController->InputKey(actionKey, EInputEvent::IE_Pressed, 5.0f, false);
+}
+
+void PIESessionUtilities::processLocalPlayerActionInputReleaseFrom(FName anActionMappingName)
+{
+	AGameModeBase* testGameMode = pieWorld->GetAuthGameMode();
+
+	APlayerController* controller = Cast<APlayerController, AActor>(testGameMode->GetGameInstance()->GetFirstLocalPlayerController(pieWorld));
+
+	processActionKeyReleaseFrom(anActionMappingName, controller);
+}
+
+void PIESessionUtilities::processActionKeyReleaseFrom(FName anActionMappingName, APlayerController* aController)
+{
+	FName const actionName = anActionMappingName;
+	TArray<FInputActionKeyMapping> actionMappings = aController->PlayerInput->GetKeysForAction(actionName);//in the editor, we are going to add a new action mapping inside Project settings -> Input
+	//in the pawn class, we are going to add a player input binding with:
+	//	PlayerInputComponent->BindAction("ActionMappingName", EInputEvent::IE_Released, this, &YourPawn::actionToBind);
+	//and in the constructor:
+	//AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
+	FKey actionKey = actionMappings[0].Key;
+
+	aController->InputKey(actionKey, EInputEvent::IE_Released, 5.0f, false);
 }
 
 void PIESessionUtilities::processEditorClick(FVector2D atCoordinates)

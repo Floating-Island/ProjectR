@@ -7,9 +7,17 @@
 #include "Commands/JetTestCommands.h"
 #include "Jet/Jet.h"
 #include "Mocks/JetMOCK.h"
+#include "Jet/MotorStates/AcceleratingMotorState.h"
+#include "Jet/MotorStates/MixedMotorState.h"
+#include "Jet/MotorStates/NeutralMotorState.h"
+#include "Jet/MotorStates/ReversingMotorState.h"
+#include "Jet/SteerStates/LeftSteerState.h"
+#include "Jet/SteerStates/CenterSteerState.h"
+#include "Jet/SteerStates/RightSteerState.h"
 
 //to be able to simulate:
 #include "Tests/AutomationEditorCommon.h"
+#include "Commands/NetworkCommands.h"
 
 
 
@@ -181,7 +189,7 @@ bool FAJetRotatesYawRightWhenSteeringRightTest::RunTest(const FString& Parameter
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItSteerRight);
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetRotatedYaw(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetRotatedYawRight(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -224,7 +232,7 @@ bool FAJetMovesRightWhenPressingSteerRightKeyTest::RunTest(const FString& Parame
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKey);
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetRotatedYaw(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetRotatedYawRight(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -523,9 +531,722 @@ bool FAJetSteersOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetVelocityMagnitudeOrthogonalityToFloor(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetReplicatesTest::RunTest(const FString& Parameters)
+{
+	AJet* testJet = NewObject<AJet>();
+	TestTrue(TEXT("Jet should replicate to other objects."), testJet->GetIsReplicated());
 
 	return true;
 }
+
+
+bool FAJetReplicatesMovementTest::RunTest(const FString& Parameters)
+{
+	AJet* testJet = NewObject<AJet>();
+	TestTrue(TEXT("Jet should replicate to other objects."), testJet->IsReplicatingMovement());
+
+	return true;
+}
+
+
+bool FAJetServerAccelerateReplicatesAccelerationTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJet(numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	FVector previousLocation = FVector(1000);
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetAccelerated(tickCount, tickLimit, numberOfPlayers, previousLocation, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerAcceleratesWhenPressingAccelerationKeyTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJet(numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("AccelerateAction")), numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	FVector previousLocation = FVector(1000);
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetAccelerated(tickCount, tickLimit, numberOfPlayers, previousLocation, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerBrakeReplicatesBrakingTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJet(numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	FVector previousLocation = FVector(1000);
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetBrake(tickCount, tickLimit, numberOfPlayers, previousLocation, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerBrakesWhenPressingBrakeKeyTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJet(numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("BrakeAction")), numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	FVector previousLocation = FVector(1000);
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetBrake(tickCount, tickLimit, numberOfPlayers, previousLocation, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetRightSteerReplicatesRightSteeringTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetToSteer(numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientSteerRightJet(numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	FVector previousLocation = FVector(1000);
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetSteer(tickCount, tickLimit, numberOfPlayers, previousLocation, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerSteersToRightWhenPressingSteerKeyTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetToSteer(numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("SteerRightAction")), numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	FVector previousLocation = FVector(1000);
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetSteer(tickCount, tickLimit, numberOfPlayers, previousLocation, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetNeutralizesMotorManagerWhenReleasingAccelerateKeyTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseAccelerationKey);
+	int tickCount = 0;
+	int tickLimit = 3;
+	UClass* expectedMotorStateClass = UNeutralMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedMotorState(expectedMotorStateClass, tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetNeutralizesMotorManagerWhenReleasingBrakeKeyTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseBrakeKey);
+	int tickCount = 0;
+	int tickLimit = 3;
+	UClass* expectedMotorStateClass = UNeutralMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedMotorState(expectedMotorStateClass, tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerNeutralizesWhenReleasingAccelerationKeyTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientReleaseActionKey(FName(TEXT("AccelerateAction")), numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	UClass* expectedMotorStateClass = UNeutralMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetExpectedMotorState(expectedMotorStateClass, tickCount, tickLimit, numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerNeutralizesWhenReleasingBrakeKeyTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientReleaseActionKey(FName(TEXT("BrakeAction")), numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	UClass* expectedMotorStateClass = UNeutralMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetExpectedMotorState(expectedMotorStateClass, tickCount, tickLimit, numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetMixesItsMotorStateWhenPressingAccelerationAndBrakeKeyTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerationAndBrakeKey);
+	int tickCount = 0;
+	int tickLimit = 3;
+	UClass* expectedMotorStateClass = UMixedMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedMotorState(expectedMotorStateClass, tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetMixesItsMotorStateWhenPressingBrakeAndAccelerationKeyTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeAndAccelerationKey);
+	int tickCount = 0;
+	int tickLimit = 3;
+	UClass* expectedMotorStateClass = UMixedMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedMotorState(expectedMotorStateClass, tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerMixesWhenPressingAccelerationAndBrakeKeyTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("AccelerateAction")), numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("BrakeAction")), numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	UClass* expectedMotorStateClass = UMixedMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetExpectedMotorState(expectedMotorStateClass, tickCount, tickLimit, numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetReversesItsMotorStateWhenBrakeKeyIsPressedAndAccelerateReleasedTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeAndReleaseAccelerationKey);
+	int tickCount = 0;
+	int tickLimit = 3;
+	UClass* expectedMotorStateClass = UReversingMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedMotorState(expectedMotorStateClass, tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetAcceleratesItsMotorStateWhenAccelerateKeyIsPressedAndBrakeReleasedTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerateAndReleaseBrakeKey);
+	int tickCount = 0;
+	int tickLimit = 3;
+	UClass* expectedMotorStateClass = UAcceleratingMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedMotorState(expectedMotorStateClass, tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerReversesWhenBrakeKeyIsPressedAndAccelerateReleasedTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("BrakeAction")), numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FClientReleaseActionKey(FName(TEXT("AccelerateAction")), numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	UClass* expectedMotorStateClass = UReversingMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetExpectedMotorState(expectedMotorStateClass, tickCount, tickLimit, numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerAcceleratesWhenAccelerateKeyIsPressedAndBrakeReleasedTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("AccelerateAction")), numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FClientReleaseActionKey(FName(TEXT("BrakeAction")), numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	UClass* expectedMotorStateClass = UAcceleratingMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetExpectedMotorState(expectedMotorStateClass, tickCount, tickLimit, numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetRotatesYawLeftWhenSteeringLeftTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItSteerLeft);
+	int tickCount = 0;
+	int tickLimit = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetRotatedYawLeft(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetChangesToLeftSteerStateWhenPressingSteerLeftKeyTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerLeftKey);
+	int tickCount = 0;
+	int tickLimit = 3;
+	UClass* expectedSteerStateClass = ULeftSteerState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedSteerState(expectedSteerStateClass, tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetChangesToCenterSteerStateWhenReleasingSteerLeftKeyTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseSteerLeftKey);
+	int tickCount = 0;
+	int tickLimit = 3;
+	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedSteerState(expectedSteerStateClass, tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetChangesToCenterSteerStateWhenReleasingSteerRightKeyTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseSteerRightKey);
+	int tickCount = 0;
+	int tickLimit = 3;
+	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedSteerState(expectedSteerStateClass, tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetChangesToLeftSteerStateWhenReleasingSteerRightKeyAndSteerLeftIsPressedTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerLeftKeyReleaseSteerRightKey);
+	int tickCount = 0;
+	int tickLimit = 3;
+	UClass* expectedSteerStateClass = ULeftSteerState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedSteerState(expectedSteerStateClass, tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetChangesToRightSteerStateWhenReleasingSteerLeftKeyAndSteerRightIsPressedTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKeyReleaseSteerLeftKey);
+	int tickCount = 0;
+	int tickLimit = 3;
+	UClass* expectedSteerStateClass = URightSteerState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedSteerState(expectedSteerStateClass, tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetChangesToCenterSteerStateWhenPressingSteerRightKeyAndSteerLeftIsPressedTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerLeftKeyPressSteerRightKey);
+	int tickCount = 0;
+	int tickLimit = 3;
+	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedSteerState(expectedSteerStateClass, tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetChangesToCenterSteerStateWhenPressingSteerLeftKeyAndSteerRightIsPressedTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKeyPressSteerLeftKey);
+	int tickCount = 0;
+	int tickLimit = 3;
+	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedSteerState(expectedSteerStateClass, tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerChangesSteerToLeftSteerWhenPressingSteerLeftKeyTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("SteerLeftAction")), numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	UClass* expectedSteerStateClass = ULeftSteerState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetExpectedSteerState(expectedSteerStateClass, tickCount, tickLimit, numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerChangesSteerToCenterSteerWhenReleasingSteerLeftKeyTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientReleaseActionKey(FName(TEXT("SteerLeftAction")), numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetExpectedSteerState(expectedSteerStateClass, tickCount, tickLimit, numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerChangesSteerToCenterSteerWhenReleasingSteerRightKeyTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientReleaseActionKey(FName(TEXT("SteerRightAction")), numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetExpectedSteerState(expectedSteerStateClass, tickCount, tickLimit, numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerChangesSteerToLeftSteerStateWhenReleasingSteerRightKeyAndSteerLeftIsPressedTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("SteerLeftAction")), numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FClientReleaseActionKey(FName(TEXT("SteerRightAction")), numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	UClass* expectedSteerStateClass = ULeftSteerState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetExpectedSteerState(expectedSteerStateClass, tickCount, tickLimit, numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerChangesSteerToRightSteerStateWhenReleasingSteerLeftKeyAndSteerRightIsPressedTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("SteerRightAction")), numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FClientReleaseActionKey(FName(TEXT("SteerLeftAction")), numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	UClass* expectedSteerStateClass = URightSteerState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetExpectedSteerState(expectedSteerStateClass, tickCount, tickLimit, numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerChangesSteerToCenterSteerStateWhenPressingSteerLeftKeyAndSteerRightIsPressedTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("SteerRightAction")), numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("SteerLeftAction")), numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetExpectedSteerState(expectedSteerStateClass, tickCount, tickLimit, numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerChangesSteerToCenterSteerStateWhenPressingSteerRightKeyAndSteerLeftIsPressedTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("SteerLeftAction")), numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("SteerRightAction")), numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetExpectedSteerState(expectedSteerStateClass, tickCount, tickLimit, numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

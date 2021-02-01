@@ -74,3 +74,13 @@ float USteeringComponent::steeringRadius()
 	return steerRadius;
 }
 
+void USteeringComponent::steerLeft()
+{
+	steer(-1);
+}
+
+void USteeringComponent::steerRight()
+{
+	steer(1);
+}
+

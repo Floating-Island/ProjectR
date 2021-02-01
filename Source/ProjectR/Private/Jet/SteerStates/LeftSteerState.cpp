@@ -1,0 +1,9 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+
+#include "Jet/SteerStates/LeftSteerState.h"
+
+void ULeftSteerState::activate(USteeringComponent* aSteeringComponent)
+{
+	aSteeringComponent->steerLeft();
+}

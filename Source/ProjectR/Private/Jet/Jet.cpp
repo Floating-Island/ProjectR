@@ -3,6 +3,7 @@
 
 #include "Jet/Jet.h"
 
+
 #include "Components/StaticMeshComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -10,6 +11,12 @@
 #include "Jet/AntiGravityComponent.h"
 #include "Jet/SteeringComponent.h"
 #include "Jet/MotorDriveComponent.h"
+#include "Jet/MotorStates/MotorStateManager.h"
+#include "Jet/SteerStates/SteerStateManager.h"
+#include "Net/UnrealNetwork.h"
+#include "GameFramework/PlayerInput.h"
+#include "GameFramework/PlayerController.h"
+
 
 
 AJet::AJet()
@@ -46,27 +53,61 @@ AJet::AJet()
 	steeringSystem = CreateDefaultSubobject<USteeringComponent>(TEXT("Steering System"));
 
 	motorDriveSystem = CreateDefaultSubobject<UMotorDriveComponent>(TEXT("Motor Drive System"));
+
+	SetReplicates(true);
+	SetReplicateMovement(true);
+	motorManager = nullptr;
+	steerManager = nullptr;
 }
 
 void AJet::BeginPlay()
 {
 	Super::BeginPlay();
+
 }
 
 void AJet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if(IsValid(motorManager))
+	{
+		motorManager->activate(motorDriveSystem);
+	}
+	if(IsValid(steerManager))
+	{
+		steerManager->activate(steeringSystem);
+	}
+}
+
+void AJet::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	if(HasAuthority())
+	{
+		FActorSpawnParameters spawnParameters = FActorSpawnParameters();
+		spawnParameters.Owner = this;
+		
+		motorManager = GetWorld()->SpawnActor<AMotorStateManager>(spawnParameters);
+		steerManager = GetWorld()->SpawnActor<ASteerStateManager>(spawnParameters);
+	}
 }
 
 void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	PlayerInputComponent->BindAxis("AccelerateAction", this, &AJet::accelerate);
+	PlayerInputComponent->BindAction("AccelerateAction", EInputEvent::IE_Pressed, this, &AJet::accelerate);
+	PlayerInputComponent->BindAction("AccelerateAction", EInputEvent::IE_Released, this, &AJet::neutralize);
 
-	PlayerInputComponent->BindAxis("SteerAction", this, &AJet::steer);
+	PlayerInputComponent->BindAction("SteerRightAction", EInputEvent::IE_Pressed, this, &AJet::steerRight);
+	PlayerInputComponent->BindAction("SteerRightAction", EInputEvent::IE_Released, this, &AJet::centerSteer);
 
-	PlayerInputComponent->BindAxis("BrakeAction", this, &AJet::brake);
+	PlayerInputComponent->BindAction("SteerLeftAction", EInputEvent::IE_Pressed, this, &AJet::steerLeft);
+	PlayerInputComponent->BindAction("SteerLeftAction", EInputEvent::IE_Released, this, &AJet::centerSteer);
+
+
+	PlayerInputComponent->BindAction("BrakeAction", EInputEvent::IE_Pressed, this, &AJet::brake);
+	PlayerInputComponent->BindAction("BrakeAction", EInputEvent::IE_Released, this, &AJet::neutralize);
 }
 
 
@@ -80,9 +121,17 @@ float AJet::settedTopSpeed()
 	return motorDriveSystem->settedTopSpeed();
 }
 
-void AJet::accelerate(float anAccelerationMultiplier)
+void AJet::accelerate()
 {
-	motorDriveSystem->accelerate(anAccelerationMultiplier);
+	if(IsValid(motorManager))
+	{
+		if(keyIsPressedFor(FName("BrakeAction")))
+		{
+			motorManager->mix();
+			return;
+		}
+		motorManager->accelerate();
+	}
 }
 
 float AJet::acceleration()
@@ -95,9 +144,36 @@ float AJet::brakeValue()
 	return motorDriveSystem->brakeValue();
 }
 
-void AJet::brake(float aBrakeMultiplier)
+void AJet::brake()
 {
-	motorDriveSystem->brake(aBrakeMultiplier);
+	if(IsValid(motorManager))
+	{
+		if(keyIsPressedFor(FName("AccelerateAction")))
+		{
+			motorManager->mix();
+			return;
+		}
+		motorManager->brake();
+	}
+}
+
+void AJet::neutralize()
+{
+	if(IsValid(motorManager))
+	{
+		if(keyIsPressedFor(FName("BrakeAction")))
+		{
+			motorManager->brake();
+			return;
+		}
+
+		if(keyIsPressedFor(FName("AccelerateAction")))
+		{
+			motorManager->accelerate();
+			return;
+		}
+		motorManager->neutralize();
+	}
 }
 
 bool AJet::goesForward()
@@ -115,9 +191,49 @@ float AJet::steerRadius()
 	return steeringSystem->steeringRadius();
 }
 
-void AJet::steer(float aDirectionMultiplier)
+void AJet::steerRight()
 {
-	steeringSystem->steer(aDirectionMultiplier);
+	if(IsValid(steerManager))
+	{
+		if(keyIsPressedFor(FName("SteerLeftAction")))
+		{
+			steerManager->center();
+			return;
+		}
+		steerManager->steerRight();
+	}
+}
+
+void AJet::steerLeft()
+{
+	if(IsValid(steerManager))
+	{
+		if(keyIsPressedFor(FName("SteerRightAction")))
+		{
+			steerManager->center();
+			return;
+		}
+		steerManager->steerLeft();
+	}
+}
+
+void AJet::centerSteer()
+{
+	if(IsValid(steerManager))
+	{
+		if(keyIsPressedFor(FName("SteerLeftAction")))
+		{
+			steerManager->steerLeft();
+			return;
+		}
+
+		if(keyIsPressedFor(FName("SteerRightAction")))
+		{
+			steerManager->steerRight();
+			return;
+		}
+		steerManager->center();
+	}
 }
 
 float AJet::antiGravityHeight()
@@ -189,3 +305,27 @@ FVector AJet::rightVectorProjectionOnFloor()
 	}
 }
 
+bool AJet::keyIsPressedFor(const FName anActionMappingName)
+{
+	APlayerController* controller = Cast<APlayerController, AController>(GetController());
+	if(controller)
+	{
+		TArray<FInputActionKeyMapping> actionMappings = controller->PlayerInput->GetKeysForAction(anActionMappingName);
+		for (auto actionMapping : actionMappings)
+		{
+			if(controller->IsInputKeyDown(actionMapping.Key.GetFName()))
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+void AJet::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+    DOREPLIFETIME(AJet, motorManager);
+	DOREPLIFETIME(AJet, steerManager);
+}

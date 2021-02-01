@@ -3,9 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "Jet/MotorStates/MotorState.h"
+#include "MotorStateManagerMOCK.h"
 #include "Jet/Jet.h"
 #include "JetMOCK.generated.h"
 
+class USteerState;
 /**
  *
  */
@@ -15,9 +19,6 @@ class PROJECTR_API AJetMOCK : public AJet
 	GENERATED_BODY()
 
 private:
-	bool alwaysSteerRight;
-	bool alwaysAccelerate;
-	bool alwaysBrake;
 	bool alwaysCancelGravity;
 public:
 	AJetMOCK();
@@ -55,8 +56,32 @@ public:
 
 	FVector centerOfMass();
 
-	void steerRightEveryTick();
-	void accelerateOnEveryTick();
-	void brakeOnEveryTick();
 	void cancelGravityOnEveryTick();
+
+	UMotorDriveComponent* motorDriveComponent();
+
+	void setMotorManagerMOCK();
+
+	UMotorState* currentMotorState();
+
+	template<class aMotorStateType>
+	void changeMotorStateTo();
+
+	bool hasMotorManagerInstantiated();
+
+	USteeringComponent* steeringComponent();
+
+	USteerState* currentSteerState();
+
+	void setSteerManagerMOCK();
 };
+
+template <class aMotorStateType>
+void AJetMOCK::changeMotorStateTo()
+{
+	AMotorStateManagerMOCK* motorManagerMock = Cast<AMotorStateManagerMOCK, AMotorStateManager>(motorManager);
+	if(motorManagerMock)
+	{
+		motorManagerMock->changeMotorStateTo<aMotorStateType>();
+	}
+}
