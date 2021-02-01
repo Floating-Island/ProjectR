@@ -1013,7 +1013,7 @@ bool FAJetChangesToLeftSteerStateWhenReleasingSteerRightKeyAndSteerLeftIsPressed
 }
 
 
-bool FAJetChangesToRighSteerStateWhenReleasingSteerLeftKeyAndSteerRighIsPressedTest::RunTest(const FString& Parameters)
+bool FAJetChangesToRightSteerStateWhenReleasingSteerLeftKeyAndSteerRightIsPressedTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest");
 
@@ -1024,6 +1024,24 @@ bool FAJetChangesToRighSteerStateWhenReleasingSteerLeftKeyAndSteerRighIsPressedT
 	int tickCount = 0;
 	int tickLimit = 3;
 	UClass* expectedSteerStateClass = URightSteerState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedSteerState(expectedSteerStateClass, tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetChangesToCenterSteerStateWhenPressingSteerRightKeyAndSteerLeftIsPressedTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerLeftKeyPressSteerRightKey);
+	int tickCount = 0;
+	int tickLimit = 3;
+	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedSteerState(expectedSteerStateClass, tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
