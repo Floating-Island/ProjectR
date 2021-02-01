@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "../Public/Jet/SteerStates/LeftSteerState.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "JetTest.h"
@@ -12,6 +11,7 @@
 #include "Jet/MotorStates/MixedMotorState.h"
 #include "Jet/MotorStates/NeutralMotorState.h"
 #include "Jet/MotorStates/ReversingMotorState.h"
+#include "Jet/SteerStates/LeftSteerState.h"
 
 //to be able to simulate:
 #include "Tests/AutomationEditorCommon.h"
