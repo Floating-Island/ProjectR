@@ -5,5 +5,5 @@
 
 USteerState* ASteerStateManagerMOCK::currentState()
 {
-	return steerState.Get();
+	return steerState;
 }

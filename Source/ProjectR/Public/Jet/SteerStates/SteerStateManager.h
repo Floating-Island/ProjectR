@@ -22,7 +22,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	TWeakObjectPtr<USteerState> steerState;
+	UPROPERTY()
+		USteerState* steerState;
 
 	template<class aSteerStateType>
 	bool steerStateIsOfType();
@@ -66,9 +67,11 @@ bool ASteerStateManager::steerStateIsOfType()
 template <class aSteerStateType>
 void ASteerStateManager::updateStateTo()
 {
-	if(IsValid(steerState.Get()) && steerStateIsOfType<aSteerStateType>())
+	if(IsValid(steerState) && steerStateIsOfType<aSteerStateType>())
 	{
 		return;
 	}
+	
+	steerState = nullptr;
 	steerState = NewObject<aSteerStateType>(this, aSteerStateType::StaticClass()->GetFName());
 }

@@ -5,5 +5,5 @@
 
 UMotorState* AMotorStateManagerMOCK::currentState()
 {
-	return motorState.Get();
+	return motorState;
 }

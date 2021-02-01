@@ -23,7 +23,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	TWeakObjectPtr<UMotorState> motorState;
+	UPROPERTY()
+		UMotorState* motorState;
 
 	UFUNCTION(Server, Reliable, WithValidation)
 		void serverAccelerate();
@@ -71,10 +72,12 @@ public:
 template <class aMotorStateType>
 void AMotorStateManager::updateStateTo()
 {
-	if(motorState.Get() && motorStateIsOfType<aMotorStateType>())
+	if(IsValid(motorState) && motorStateIsOfType<aMotorStateType>())
 	{
 		return;
 	}
+	
+	motorState = nullptr;
 	motorState = NewObject<aMotorStateType>(this, aMotorStateType::StaticClass()->GetFName());
 }
 

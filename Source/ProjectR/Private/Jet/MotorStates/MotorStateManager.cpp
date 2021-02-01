@@ -96,7 +96,7 @@ void AMotorStateManager::PostInitializeComponents()
 
 void AMotorStateManager::accelerate()
 {
-	if (motorState.Get() && motorStateIsOfType<UAcceleratingMotorState>())
+	if (IsValid(motorState) && motorStateIsOfType<UAcceleratingMotorState>())
 	{
 		return;
 	}
@@ -105,7 +105,7 @@ void AMotorStateManager::accelerate()
 
 void AMotorStateManager::brake()
 {
-	if (motorState.Get() && motorStateIsOfType<UReversingMotorState>())
+	if (IsValid(motorState) && motorStateIsOfType<UReversingMotorState>())
 	{
 		return;
 	}
@@ -114,7 +114,7 @@ void AMotorStateManager::brake()
 
 void AMotorStateManager::neutralize()
 {
-	if (motorState.Get() && motorStateIsOfType<UNeutralMotorState>())
+	if (IsValid(motorState) && motorStateIsOfType<UNeutralMotorState>())
 	{
 		return;
 	}
@@ -123,7 +123,7 @@ void AMotorStateManager::neutralize()
 
 void AMotorStateManager::mix()
 {
-	if (motorState.Get() && motorStateIsOfType<UMixedMotorState>())
+	if (IsValid(motorState) && motorStateIsOfType<UMixedMotorState>())
 	{
 		return;
 	}
@@ -132,7 +132,7 @@ void AMotorStateManager::mix()
 
 void AMotorStateManager::activate(UMotorDriveComponent* aMotorDrive)
 {
-	if (motorState.Get())
+	if (IsValid(motorState))
 	{
 		motorState->activate(aMotorDrive);
 	}

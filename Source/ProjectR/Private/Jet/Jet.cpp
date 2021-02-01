@@ -69,11 +69,11 @@ void AJet::BeginPlay()
 void AJet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if(motorManager)
+	if(IsValid(motorManager))
 	{
 		motorManager->activate(motorDriveSystem);
 	}
-	if(steerManager)
+	if(IsValid(steerManager))
 	{
 		steerManager->activate(steeringSystem);
 	}
@@ -118,7 +118,7 @@ float AJet::settedTopSpeed()
 
 void AJet::accelerate()
 {
-	if(motorManager)
+	if(IsValid(motorManager))
 	{
 		if(keyIsPressedFor(FName("BrakeAction")))
 		{
@@ -141,7 +141,7 @@ float AJet::brakeValue()
 
 void AJet::brake()
 {
-	if(motorManager)
+	if(IsValid(motorManager))
 	{
 		if(keyIsPressedFor(FName("AccelerateAction")))
 		{
@@ -154,7 +154,7 @@ void AJet::brake()
 
 void AJet::neutralize()
 {
-	if(motorManager)
+	if(IsValid(motorManager))
 	{
 		if(keyIsPressedFor(FName("BrakeAction")))
 		{
@@ -188,7 +188,7 @@ float AJet::steerRadius()
 
 void AJet::steerRight()
 {
-	if(steerManager)
+	if(IsValid(steerManager))
 	{
 		UE_LOG(LogTemp, Log, TEXT("steer manager created, steering right..."));
 		steerManager->steerRight();

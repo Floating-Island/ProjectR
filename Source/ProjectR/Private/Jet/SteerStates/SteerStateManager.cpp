@@ -80,7 +80,7 @@ void ASteerStateManager::PostInitializeComponents()
 
 void ASteerStateManager::steerLeft()
 {
-	if(IsValid(steerState.Get()) && steerStateIsOfType<ULeftSteerState>())
+	if(IsValid(steerState) && steerStateIsOfType<ULeftSteerState>())
 	{
 		return;
 	}
@@ -89,7 +89,7 @@ void ASteerStateManager::steerLeft()
 
 void ASteerStateManager::steerRight()
 {
-	if(IsValid(steerState.Get()) && steerStateIsOfType<URightSteerState>())
+	if(IsValid(steerState) && steerStateIsOfType<URightSteerState>())
 	{
 		return;
 	}
@@ -98,7 +98,7 @@ void ASteerStateManager::steerRight()
 
 void ASteerStateManager::center()
 {
-	if(IsValid(steerState.Get()) && steerStateIsOfType<UCenterSteerState>())
+	if(IsValid(steerState) && steerStateIsOfType<UCenterSteerState>())
 	{
 		return;
 	}
@@ -107,7 +107,7 @@ void ASteerStateManager::center()
 
 void ASteerStateManager::activate(USteeringComponent* aSteeringDrive)
 {
-	if(steerState.Get())
+	if(IsValid(steerState))
 	{
 		steerState->activate(aSteeringDrive);
 	}
