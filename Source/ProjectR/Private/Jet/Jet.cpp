@@ -203,6 +203,11 @@ void AJet::steerLeft()
 {
 	if(IsValid(steerManager))
 	{
+		if(keyIsPressedFor(FName("SteerRightAction")))
+		{
+			steerManager->center();
+			return;
+		}
 		steerManager->steerLeft();
 	}
 }
