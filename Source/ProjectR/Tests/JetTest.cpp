@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "../Public/Jet/SteerStates/LeftSteerState.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "JetTest.h"
@@ -932,6 +933,24 @@ bool FAJetRotatesYawLeftWhenSteeringLeftTest::RunTest(const FString& Parameters)
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetRotatedYawLeft(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetChangesToLeftSteerStateWhenPressingSteerLeftKeyTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerLeftKey);
+	int tickCount = 0;
+	int tickLimit = 3;
+	UClass* expectedSteerStateClass = ULeftSteerState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedSteerState(expectedSteerStateClass, tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

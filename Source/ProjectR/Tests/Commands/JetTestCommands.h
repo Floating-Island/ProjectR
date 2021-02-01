@@ -114,6 +114,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerateAndReleaseBrakeKey)
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItSteerLeft);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerLeftKey);
+
+
 
 
 
@@ -190,6 +193,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FServerCheckJetExpectedMotorStat
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetRotatedYawLeft, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckAJetToExpectedSteerState, UClass*, expectedStateClass, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

@@ -759,6 +759,24 @@ bool FSpawningAJetMakeItSteerLeft::Update()
 }
 
 
+bool FSpawningAJetPressSteerLeftKey::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	sessionUtilities.spawnLocalPlayer();
+	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+	testJet->setSteerManagerMOCK();
+	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("AccelerateAction")));
+	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("SteerLeftAction")));
+	
+	return true;
+}
+
+
 
 
 
@@ -1615,7 +1633,7 @@ bool FCheckAJetToExpectedMotorState::Update()
 
 			if (isExpectedState)
 			{
-				test->TestTrue((TEXT("The Jet motor state should be %s after releasing the key."), *expectedStateClass->GetName()), isExpectedState);
+				test->TestTrue((TEXT("The Jet motor state should be %s."), *expectedStateClass->GetName()), isExpectedState);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -1715,6 +1733,42 @@ bool FCheckAJetRotatedYawLeft::Update()
 			if (tickCount > tickLimit)
 			{
 				test->TestFalse(TEXT("Tick limit reached for this test. The Jet yaw rotation (around Z axis) never changed from zero."), tickCount > tickLimit);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FCheckAJetToExpectedSteerState::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+		if (testJet)
+		{
+			UMotorState* currentSteerState = testJet->currentSteerState();
+			bool isExpectedState = currentSteerState->GetClass() == expectedStateClass; 
+
+			UE_LOG(LogTemp, Log, TEXT("Jet current steer state: %s"), *currentSteerState->GetName());
+			UE_LOG(LogTemp, Log, TEXT("Jet current steer state %s a %s."), *FString(isExpectedState ? "is" : "isn't"), *expectedStateClass->GetName());
+
+			if (isExpectedState)
+			{
+				test->TestTrue((TEXT("The Jet steer state should be %s."), *expectedStateClass->GetName()), isExpectedState);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+
+			++tickCount;
+
+			if (tickCount > tickLimit)
+			{
+				test->TestFalse((TEXT("Tick limit reached for this test. The Jet never changed its steer state to %s."), *expectedStateClass->GetName()), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
