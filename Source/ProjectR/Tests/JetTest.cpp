@@ -958,7 +958,7 @@ bool FAJetChangesToLeftSteerStateWhenPressingSteerLeftKeyTest::RunTest(const FSt
 }
 
 
-bool FAJetChangesToCenterSteerStateWhenPressingSteerCenterKeyTest::RunTest(const FString& Parameters)
+bool FAJetChangesToCenterSteerStateWhenReleasingSteerLeftKeyTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest");
 

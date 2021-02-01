@@ -337,7 +337,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetChangesToLeftSteerStateWhenPressingSteerLe
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetChangesToCenterSteerStateWhenPressingSteerCenterKeyTest, 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetChangesToCenterSteerStateWhenReleasingSteerLeftKeyTest, 
 	"ProjectR.Jet Tests.Unit.059: Changes its steer state to CenterSteerState when releasing the SteerLeft key", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
