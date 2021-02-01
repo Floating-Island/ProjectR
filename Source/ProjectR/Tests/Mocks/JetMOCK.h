@@ -9,6 +9,7 @@
 #include "Jet/Jet.h"
 #include "JetMOCK.generated.h"
 
+class USteerState;
 /**
  *
  */
@@ -69,6 +70,10 @@ public:
 	bool hasMotorManagerInstantiated();
 
 	USteeringComponent* steeringComponent();
+
+	USteerState* currentSteerState();
+
+	void setSteerManagerMOCK();
 };
 
 template <class aMotorStateType>

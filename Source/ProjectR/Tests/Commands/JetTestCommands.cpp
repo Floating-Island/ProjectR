@@ -11,6 +11,7 @@
 #include "Jet/MotorStates/AcceleratingMotorState.h"
 #include "Jet/MotorStates/MixedMotorState.h"
 #include "Jet/MotorStates/ReversingMotorState.h"
+#include "Jet/SteerStates/SteerState.h"
 
 #include "Editor.h"
 #include "Kismet/GameplayStatics.h"
@@ -1751,7 +1752,7 @@ bool FCheckAJetToExpectedSteerState::Update()
 		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 		if (testJet)
 		{
-			UMotorState* currentSteerState = testJet->currentSteerState();
+			USteerState* currentSteerState = testJet->currentSteerState();
 			bool isExpectedState = currentSteerState->GetClass() == expectedStateClass; 
 
 			UE_LOG(LogTemp, Log, TEXT("Jet current steer state: %s"), *currentSteerState->GetName());
