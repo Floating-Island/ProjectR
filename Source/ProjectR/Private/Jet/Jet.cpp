@@ -190,8 +190,15 @@ void AJet::steerRight()
 {
 	if(IsValid(steerManager))
 	{
-		UE_LOG(LogTemp, Log, TEXT("steer manager created, steering right..."));
 		steerManager->steerRight();
+	}
+}
+
+void AJet::steerLeft()
+{
+	if(IsValid(steerManager))
+	{
+		steerManager->steerLeft();
 	}
 }
 

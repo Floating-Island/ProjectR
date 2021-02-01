@@ -84,6 +84,7 @@ public:
 
 	float steerRadius();
 	void steerRight();
+	void steerLeft();
 
 	float antiGravityHeight();
 
