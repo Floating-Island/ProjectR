@@ -123,6 +123,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseSteerLeftKey);
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseSteerRightKey);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerLeftKeyReleaseSteerRightKey);
+
+
 
 
 
