@@ -1,16 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "../Public/Jet/MotorStates/AcceleratingMotorState.h"
-#include "../Public/Jet/MotorStates/MixedMotorState.h"
-#include "../Public/Jet/MotorStates/NeutralMotorState.h"
-#include "../Public/Jet/MotorStates/ReversingMotorState.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "JetTest.h"
 #include "Commands/JetTestCommands.h"
 #include "Jet/Jet.h"
 #include "Mocks/JetMOCK.h"
+#include "Jet/MotorStates/AcceleratingMotorState.h"
+#include "Jet/MotorStates/MixedMotorState.h"
+#include "Jet/MotorStates/NeutralMotorState.h"
+#include "Jet/MotorStates/ReversingMotorState.h"
 
 //to be able to simulate:
 #include "Tests/AutomationEditorCommon.h"
