@@ -1580,7 +1580,7 @@ bool FServerCheckJetSteer::Update()
 }
 
 
-bool FCheckAJetToNeutralMotorState::Update()
+bool FCheckAJetToExpectedMotorState::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -1590,14 +1590,14 @@ bool FCheckAJetToNeutralMotorState::Update()
 		if (testJet)
 		{
 			UMotorState* currentMotorState = testJet->currentMotorState();
-			bool isNeutralState = currentMotorState->GetClass() == UNeutralMotorState::StaticClass(); 
+			bool isExpectedState = currentMotorState->GetClass() == expectedStateClass; 
 
 			UE_LOG(LogTemp, Log, TEXT("Jet current motor state: %s"), *currentMotorState->GetName());
-			UE_LOG(LogTemp, Log, TEXT("Jet current motor state %s a neutral motor state."), *FString(isNeutralState ? "is" : "isn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet current motor state %s a %s."), *FString(isExpectedState ? "is" : "isn't"), *expectedStateClass->GetName());
 
-			if (isNeutralState)
+			if (isExpectedState)
 			{
-				test->TestTrue(TEXT("The Jet motor state should be Neutral after releasing the key."), isNeutralState);
+				test->TestTrue((TEXT("The Jet motor state should be %s after releasing the key."), *expectedStateClass->GetName()), isExpectedState);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -1606,7 +1606,7 @@ bool FCheckAJetToNeutralMotorState::Update()
 
 			if (tickCount > tickLimit)
 			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet never changed its motor state."), tickCount > tickLimit);
+				test->TestFalse((TEXT("Tick limit reached for this test. The Jet never changed its motor state to %s."), *expectedStateClass->GetName()), tickCount > tickLimit);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -1616,7 +1616,7 @@ bool FCheckAJetToNeutralMotorState::Update()
 }
 
 
-bool FServerCheckJetNeutralMotorState::Update()
+bool FServerCheckJetExpectedMotorState::Update()
 {
 	if(GEditor->IsPlayingSessionInEditor())
 	{
@@ -1633,17 +1633,17 @@ bool FServerCheckJetNeutralMotorState::Update()
 
 				if(testServerJet && testClientJet)
 				{
-					bool bothNeutral = false;
+					bool bothAsExpected = false;
 					if(testClientJet->currentMotorState() && testServerJet->currentMotorState())
 					{
-						bool clientStateIsNeutral = testClientJet->currentMotorState()->GetClass() == UNeutralMotorState::StaticClass();
-						bool serverStateIsNeutral = testServerJet->currentMotorState()->GetClass() == UNeutralMotorState::StaticClass();
-						bothNeutral = serverStateIsNeutral && clientStateIsNeutral;
+						bool clientStateIsAsExpected = testClientJet->currentMotorState()->GetClass() == expectedStateClass;
+						bool serverStateIsAsExpected = testServerJet->currentMotorState()->GetClass() == expectedStateClass;
+						bothAsExpected = serverStateIsAsExpected && clientStateIsAsExpected;
 					}
 
-					if(bothNeutral)
+					if(bothAsExpected)
 					{
-						test->TestTrue(TEXT("The server should replicate its state when calling neutralize."), bothNeutral);
+						test->TestTrue((TEXT("The server should replicate its state to %s."), *expectedStateClass->GetName()), bothAsExpected);
 						for(auto context : GEditor->GetWorldContexts())
 						{
 							context.World()->bDebugFrameStepExecution = true;
@@ -1654,7 +1654,7 @@ bool FServerCheckJetNeutralMotorState::Update()
 					++tickCount;
 					if(tickCount > tickLimit)
 					{
-						test->TestTrue(TEXT("The server should replicate its state when calling neutralize."), bothNeutral);
+						test->TestTrue((TEXT("Tick limit reached. The server should have replicated its state to %s."), *expectedStateClass->GetName()), bothAsExpected);
 						for(auto context : GEditor->GetWorldContexts())
 						{
 							context.World()->bDebugFrameStepExecution = true;
@@ -1667,286 +1667,6 @@ bool FServerCheckJetNeutralMotorState::Update()
 	}
 	return false;
 }
-
-
-bool FCheckAJetToMixedMotorState::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-		if (testJet)
-		{
-			UMotorState* currentMotorState = testJet->currentMotorState();
-			if(currentMotorState)
-			{
-				bool isMixedState = currentMotorState->GetClass() == UMixedMotorState::StaticClass(); 
-
-				UE_LOG(LogTemp, Log, TEXT("Jet current motor state: %s"), *currentMotorState->GetName());
-				UE_LOG(LogTemp, Log, TEXT("Jet current motor state %s a mixed motor state."), *FString(isMixedState ? "is" : "isn't"));
-
-				if (isMixedState)
-				{
-					test->TestTrue(TEXT("The Jet motor state should be Mixed after pressing both keys."), isMixedState);
-					testWorld->bDebugFrameStepExecution = true;
-					return true;
-				}
-			}
-
-			++tickCount;
-
-			if (tickCount > tickLimit)
-			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet never changed its motor state."), tickCount > tickLimit);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-
-bool FServerCheckJetMixedMotorState::Update()
-{
-	if(GEditor->IsPlayingSessionInEditor())
-	{
-		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
-		UWorld* serverWorld = serverContext.World();
-		if(serverWorld)
-		{
-			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
-			UWorld* clientWorld = clientContext.World();
-			if(clientWorld)
-			{
-				AJetMOCK* testServerJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(serverWorld, AJetMOCK::StaticClass()));
-				AJetMOCK* testClientJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, AJetMOCK::StaticClass()));
-
-				if(testServerJet && testClientJet)
-				{
-					bool bothMixed = false;
-					if(testClientJet->currentMotorState() && testServerJet->currentMotorState())
-					{
-						bool clientStateIsMixed = testClientJet->currentMotorState()->GetClass() == UMixedMotorState::StaticClass();
-						bool serverStateIsMixed = testServerJet->currentMotorState()->GetClass() == UMixedMotorState::StaticClass();
-						bothMixed = serverStateIsMixed && clientStateIsMixed;
-					}
-
-					if(bothMixed)
-					{
-						test->TestTrue(TEXT("The server should replicate its state when calling mix."), bothMixed);
-						for(auto context : GEditor->GetWorldContexts())
-						{
-							context.World()->bDebugFrameStepExecution = true;
-						}
-						return true;
-					}
-
-					++tickCount;
-					if(tickCount > tickLimit)
-					{
-						test->TestTrue(TEXT("The server should replicate its state when calling mix."), bothMixed);
-						for(auto context : GEditor->GetWorldContexts())
-						{
-							context.World()->bDebugFrameStepExecution = true;
-						}
-						return true;
-					}
-				}
-			}
-		}
-	}
-	return false;
-}
-
-
-bool FCheckAJetToReversingMotorState::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-		if (testJet)
-		{
-			UMotorState* currentMotorState = testJet->currentMotorState();
-			if(currentMotorState)
-			{
-				bool isReversingState = currentMotorState->GetClass() == UReversingMotorState::StaticClass(); 
-
-				UE_LOG(LogTemp, Log, TEXT("Jet current motor state: %s"), *currentMotorState->GetName());
-				UE_LOG(LogTemp, Log, TEXT("Jet current motor state %s a reversing motor state."), *FString(isReversingState ? "is" : "isn't"));
-
-				if (isReversingState)
-				{
-					test->TestTrue(TEXT("The Jet motor state should be Reversing after pressing both keys."), isReversingState);
-					testWorld->bDebugFrameStepExecution = true;
-					return true;
-				}
-			}
-
-			++tickCount;
-
-			if (tickCount > tickLimit)
-			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet never changed its motor state."), tickCount > tickLimit);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-
-bool FCheckAJetToAcceleratingMotorState::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-		if (testJet)
-		{
-			UMotorState* currentMotorState = testJet->currentMotorState();
-			if(currentMotorState)
-			{
-				bool isAcceleratingState = currentMotorState->GetClass() == UAcceleratingMotorState::StaticClass(); 
-
-				UE_LOG(LogTemp, Log, TEXT("Jet current motor state: %s"), *currentMotorState->GetName());
-				UE_LOG(LogTemp, Log, TEXT("Jet current motor state %s a accelerating motor state."), *FString(isAcceleratingState ? "is" : "isn't"));
-
-				if (isAcceleratingState)
-				{
-					test->TestTrue(TEXT("The Jet motor state should be Accelerating after pressing both keys."), isAcceleratingState);
-					testWorld->bDebugFrameStepExecution = true;
-					return true;
-				}
-			}
-
-			++tickCount;
-
-			if (tickCount > tickLimit)
-			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet never changed its motor state."), tickCount > tickLimit);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-
-bool FServerCheckJetReversedMotorState::Update()
-{
-	if(GEditor->IsPlayingSessionInEditor())
-	{
-		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
-		UWorld* serverWorld = serverContext.World();
-		if(serverWorld)
-		{
-			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
-			UWorld* clientWorld = clientContext.World();
-			if(clientWorld)
-			{
-				AJetMOCK* testServerJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(serverWorld, AJetMOCK::StaticClass()));
-				AJetMOCK* testClientJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, AJetMOCK::StaticClass()));
-
-				if(testServerJet && testClientJet)
-				{
-					bool bothReversing = false;
-					if(testClientJet->currentMotorState() && testServerJet->currentMotorState())
-					{
-						bool clientStateIsReversing = testClientJet->currentMotorState()->GetClass() == UReversingMotorState::StaticClass();
-						bool serverStateIsReversing = testServerJet->currentMotorState()->GetClass() == UReversingMotorState::StaticClass();
-						bothReversing = serverStateIsReversing && clientStateIsReversing;
-					}
-
-					if(bothReversing)
-					{
-						test->TestTrue(TEXT("The server should replicate its state when the client has pressed the brake key and the accelerate key is released."), bothReversing);
-						for(auto context : GEditor->GetWorldContexts())
-						{
-							context.World()->bDebugFrameStepExecution = true;
-						}
-						return true;
-					}
-
-					++tickCount;
-					if(tickCount > tickLimit)
-					{
-						test->TestTrue(TEXT("The server should replicate its state when the client has pressed the brake key and the accelerate key is released."), bothReversing);
-						for(auto context : GEditor->GetWorldContexts())
-						{
-							context.World()->bDebugFrameStepExecution = true;
-						}
-						return true;
-					}
-				}
-			}
-		}
-	}
-	return false;
-}
-
-
-bool FServerCheckJetAcceleratedMotorState::Update()
-{
-	if(GEditor->IsPlayingSessionInEditor())
-	{
-		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
-		UWorld* serverWorld = serverContext.World();
-
-		if(serverWorld)
-		{
-			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
-			UWorld* clientWorld = clientContext.World();
-
-			if(clientWorld)
-			{
-				AJetMOCK* testServerJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(serverWorld, AJetMOCK::StaticClass()));
-				AJetMOCK* testClientJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, AJetMOCK::StaticClass()));
-
-				if(testServerJet && testClientJet)
-				{
-					bool bothAccelerating = false;
-
-					if(testClientJet->currentMotorState() && testServerJet->currentMotorState())
-					{
-						bool clientStateIsAccelerating = testClientJet->currentMotorState()->GetClass() == UAcceleratingMotorState::StaticClass();
-						bool serverStateIsAccelerating = testServerJet->currentMotorState()->GetClass() == UAcceleratingMotorState::StaticClass();
-						bothAccelerating = serverStateIsAccelerating && clientStateIsAccelerating;
-					}
-
-					if(bothAccelerating)
-					{
-						test->TestTrue(TEXT("The server should replicate its state when the client has pressed the accelerate key and the brake key is released."), bothAccelerating);
-						for(auto context : GEditor->GetWorldContexts())
-						{
-							context.World()->bDebugFrameStepExecution = true;
-						}
-						return true;
-					}
-
-					++tickCount;
-					if(tickCount > tickLimit)
-					{
-						test->TestTrue(TEXT("The server should replicate its state when the client has pressed the accelerate key and the brake key is released."), bothAccelerating);
-						for(auto context : GEditor->GetWorldContexts())
-						{
-							context.World()->bDebugFrameStepExecution = true;
-						}
-						return true;
-					}
-				}
-			}
-		}
-	}
-	return false;
-}
-
 
 
 

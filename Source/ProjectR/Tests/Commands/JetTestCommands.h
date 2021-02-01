@@ -180,28 +180,10 @@ DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FServerCheckJetBrake, int, tickC
 DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FServerCheckJetSteer, int, tickCount, int, tickLimit, int, clientQuantity, FVector, previousLocation, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetToNeutralMotorState, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckAJetToExpectedMotorState, UClass*, expectedStateClass, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FServerCheckJetNeutralMotorState, int, tickCount, int, tickLimit, int, clientQuantity, FAutomationTestBase*, test);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetToMixedMotorState, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FServerCheckJetMixedMotorState, int, tickCount, int, tickLimit, int, clientQuantity, FAutomationTestBase*, test);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetToReversingMotorState, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckAJetToAcceleratingMotorState, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FServerCheckJetReversedMotorState, int, tickCount, int, tickLimit, int, clientQuantity, FAutomationTestBase*, test);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FServerCheckJetAcceleratedMotorState, int, tickCount, int, tickLimit, int, clientQuantity, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FServerCheckJetExpectedMotorState, UClass*, expectedStateClass, int, tickCount, int, tickLimit, int, clientQuantity, FAutomationTestBase*, test);
 
 
 

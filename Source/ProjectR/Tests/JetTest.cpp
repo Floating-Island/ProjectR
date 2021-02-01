@@ -1,6 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "../Public/Jet/MotorStates/AcceleratingMotorState.h"
+#include "../Public/Jet/MotorStates/MixedMotorState.h"
+#include "../Public/Jet/MotorStates/NeutralMotorState.h"
+#include "../Public/Jet/MotorStates/ReversingMotorState.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "JetTest.h"
@@ -696,7 +700,8 @@ bool FAJetNeutralizesMotorManagerWhenReleasingAccelerateKeyTest::RunTest(const F
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseAccelerationKey);
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToNeutralMotorState(tickCount, tickLimit, this));
+	UClass* expectedMotorStateClass = UNeutralMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedMotorState(expectedMotorStateClass, tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -713,7 +718,8 @@ bool FAJetNeutralizesMotorManagerWhenReleasingBrakeKeyTest::RunTest(const FStrin
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseBrakeKey);
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToNeutralMotorState(tickCount, tickLimit, this));
+	UClass* expectedMotorStateClass = UNeutralMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedMotorState(expectedMotorStateClass, tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -736,7 +742,8 @@ bool FAJetServerNeutralizesWhenReleasingAccelerationKeyTest::RunTest(const FStri
 
 	int tickCount = 0;
 	int tickLimit = 10;
-	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetNeutralMotorState(tickCount, tickLimit, numberOfPlayers, this));
+	UClass* expectedMotorStateClass = UNeutralMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetExpectedMotorState(expectedMotorStateClass, tickCount, tickLimit, numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -759,7 +766,8 @@ bool FAJetServerNeutralizesWhenReleasingBrakeKeyTest::RunTest(const FString& Par
 
 	int tickCount = 0;
 	int tickLimit = 10;
-	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetNeutralMotorState(tickCount, tickLimit, numberOfPlayers, this));
+	UClass* expectedMotorStateClass = UNeutralMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetExpectedMotorState(expectedMotorStateClass, tickCount, tickLimit, numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -776,7 +784,8 @@ bool FAJetMixesItsMotorStateWhenPressingAccelerationAndBrakeKeyTest::RunTest(con
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerationAndBrakeKey);
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToMixedMotorState(tickCount, tickLimit, this));
+	UClass* expectedMotorStateClass = UMixedMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedMotorState(expectedMotorStateClass, tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -793,7 +802,8 @@ bool FAJetMixesItsMotorStateWhenPressingBrakeAndAccelerationKeyTest::RunTest(con
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeAndAccelerationKey);
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToMixedMotorState(tickCount, tickLimit, this));
+	UClass* expectedMotorStateClass = UMixedMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedMotorState(expectedMotorStateClass, tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -817,7 +827,8 @@ bool FAJetServerMixesWhenPressingAccelerationAndBrakeKeyTest::RunTest(const FStr
 
 	int tickCount = 0;
 	int tickLimit = 10;
-	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetMixedMotorState(tickCount, tickLimit, numberOfPlayers, this));
+	UClass* expectedMotorStateClass = UMixedMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetExpectedMotorState(expectedMotorStateClass, tickCount, tickLimit, numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -834,7 +845,8 @@ bool FAJetReversesItsMotorStateWhenBrakeKeyIsPressedAndAccelerateReleasedTest::R
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeAndReleaseAccelerationKey);
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToReversingMotorState(tickCount, tickLimit, this));
+	UClass* expectedMotorStateClass = UReversingMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedMotorState(expectedMotorStateClass, tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -851,7 +863,8 @@ bool FAJetAcceleratesItsMotorStateWhenAccelerateKeyIsPressedAndBrakeReleasedTest
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerateAndReleaseBrakeKey);
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToAcceleratingMotorState(tickCount, tickLimit, this));
+	UClass* expectedMotorStateClass = UAcceleratingMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetToExpectedMotorState(expectedMotorStateClass, tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -875,7 +888,8 @@ bool FAJetServerReversesWhenBrakeKeyIsPressedAndAccelerateReleasedTest::RunTest(
 
 	int tickCount = 0;
 	int tickLimit = 10;
-	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetReversedMotorState(tickCount, tickLimit, numberOfPlayers, this));
+	UClass* expectedMotorStateClass = UReversingMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetExpectedMotorState(expectedMotorStateClass, tickCount, tickLimit, numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -899,7 +913,8 @@ bool FAJetServerAcceleratesWhenAccelerateKeyIsPressedAndBrakeReleasedTest::RunTe
 
 	int tickCount = 0;
 	int tickLimit = 10;
-	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetAcceleratedMotorState(tickCount, tickLimit, numberOfPlayers, this));
+	UClass* expectedMotorStateClass = UAcceleratingMotorState::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCheckJetExpectedMotorState(expectedMotorStateClass, tickCount, tickLimit, numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
