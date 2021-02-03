@@ -35,7 +35,7 @@ bool FAMotorStateManagerDefaultStateIsNeutralTest::RunTest(const FString& Parame
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnActorOfClass(motorStateManagerClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(motorStateManagerClass, FTransform()));
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerDefaultState(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
@@ -51,7 +51,7 @@ bool FAMotorStateManagerAccelerateChangesStateToAcceleratingTest::RunTest(const 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnActorOfClass(motorStateManagerClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(motorStateManagerClass, FTransform()));
 	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAMotorStateManagerAndAccelerateIt);
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerStateChangesToAccelerating(this));
 
@@ -68,7 +68,7 @@ bool FAMotorStateManagerBrakeChangesStateToReversingTest::RunTest(const FString&
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnActorOfClass(motorStateManagerClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(motorStateManagerClass, FTransform()));
 	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAMotorStateManagerAndBrakeIt);
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerStateChangesToReversing(this));
 
@@ -85,7 +85,7 @@ bool FAMotorStateManagerNeutralizeChangesStateToNeutralTest::RunTest(const FStri
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnActorOfClass(motorStateManagerClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(motorStateManagerClass, FTransform()));
 	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAMotorStateManagerAndNeutralizeIt);
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerStateChangesToNeutral(this));
 
@@ -102,7 +102,7 @@ bool FAMotorStateManagerAccelerateKeepsStateIfAlreadyAcceleratingTest::RunTest(c
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnActorOfClass(motorStateManagerClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(motorStateManagerClass, FTransform()));
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerAccelerateKeepsStateIfAccelerating(tickCount, tickLimit, nullptr, this));
@@ -120,7 +120,7 @@ bool FAMotorStateManagerBrakeKeepsStateIfAlreadyReversingingTest::RunTest(const 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnActorOfClass(motorStateManagerClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(motorStateManagerClass, FTransform()));
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerBrakeKeepsStateIfReversing(tickCount, tickLimit, nullptr, this));
@@ -138,7 +138,7 @@ bool FAMotorStateManagerNeutralizeKeepsStateIfAlreadyNeutralTest::RunTest(const 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnActorOfClass(motorStateManagerClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(motorStateManagerClass, FTransform()));
 	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAMotorStateManagerAndAccelerateIt);
 	int tickCount = 0;
 	int tickLimit = 3;
@@ -267,7 +267,7 @@ bool FAMotorStateManagerMixChangesStateToMixedTest::RunTest(const FString& Param
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnActorOfClass(motorStateManagerClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(motorStateManagerClass, FTransform()));
 	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAMotorStateManagerAndMixIt);
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerStateChangesToMixed(this));
 
@@ -284,7 +284,7 @@ bool FAMotorStateManagerMixKeepsStateIfAlreadyMixedTest::RunTest(const FString& 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnActorOfClass(motorStateManagerClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(motorStateManagerClass, FTransform()));
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerMixKeepsStateIfMixed(tickCount, tickLimit, nullptr, this));

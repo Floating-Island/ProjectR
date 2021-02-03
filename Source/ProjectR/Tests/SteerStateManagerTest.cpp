@@ -45,7 +45,7 @@ bool FASteerStateManagerDefaultStateIsCenterTest::RunTest(const FString& Paramet
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnActorOfClass(steerStateManagerClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(steerStateManagerClass, FTransform()));
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentState(UCenterSteerState::StaticClass(), FString("The default state should be CenterSteerState"), tickCount, tickLimit, this));
@@ -63,7 +63,7 @@ bool FASteerStateManagerSteerLeftChangesStateToLeftSteerTest::RunTest(const FStr
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnActorOfClass(steerStateManagerClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(steerStateManagerClass, FTransform()));
 	ADD_LATENT_AUTOMATION_COMMAND(FLeftSteerASteerStateManagerMOCK);
 	int tickCount = 0;
 	int tickLimit = 3;
@@ -83,7 +83,7 @@ bool FASteerStateManagerSteerRightChangesStateToRightSteerTest::RunTest(const FS
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnActorOfClass(steerStateManagerClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(steerStateManagerClass, FTransform()));
 	ADD_LATENT_AUTOMATION_COMMAND(FRightSteerASteerStateManagerMOCK);
 	int tickCount = 0;
 	int tickLimit = 3;
@@ -103,7 +103,7 @@ bool FASteerStateManagerCenterChangesStateToCenterSteerTest::RunTest(const FStri
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnActorOfClass(steerStateManagerClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(steerStateManagerClass, FTransform()));
 	ADD_LATENT_AUTOMATION_COMMAND(FCenterASteerStateManagerMOCK);
 	int tickCount = 0;
 	int tickLimit = 3;
@@ -123,7 +123,7 @@ bool FASteerStateManagerSteerLeftKeepsStateIfAlreadyLeftSteerStateTest::RunTest(
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnActorOfClass(steerStateManagerClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(steerStateManagerClass, FTransform()));
 	int tickCount = 0;
 	int tickLimit = 3;
 	USteerState* previousState = nullptr;
@@ -142,7 +142,7 @@ bool FASteerStateManagerSteerRightKeepsStateIfAlreadyRightSteerStateTest::RunTes
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnActorOfClass(steerStateManagerClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(steerStateManagerClass, FTransform()));
 	int tickCount = 0;
 	int tickLimit = 3;
 	USteerState* previousState = nullptr;
@@ -161,7 +161,7 @@ bool FASteerStateManagerCenterKeepsStateIfAlreadyCenterSteerStateTest::RunTest(c
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnActorOfClass(steerStateManagerClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(steerStateManagerClass, FTransform()));
 	int tickCount = 0;
 	int tickLimit = 3;
 	USteerState* previousState = nullptr;
