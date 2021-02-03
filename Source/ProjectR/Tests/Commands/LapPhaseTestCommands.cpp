@@ -18,19 +18,6 @@
 //Test preparation commands:
 
 
-bool FSpawnALapPhaseMOCKInEditorWorld::Update()
-{
-	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
-	{
-		return false;
-	}
-
-	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
-	testWorld->SpawnActor<ALapPhaseMOCK>(ALapPhaseMOCK::StaticClass());
-
-	return true;
-}
-
 
 
 

@@ -13,6 +13,7 @@
 #include "Commands/LapPhaseTestCommands.h"
 #include "LapPhases/LapPhase.h"
 #include "Mocks/LapPhaseMOCK.h"
+#include "Commands/CommonPIECommands.h"
 
 #include "Tests/AutomationEditorCommon.h"
 
@@ -60,7 +61,8 @@ bool FALapPhaseHasCollisionEnabledToQueryOnlyTest::RunTest(const FString& Parame
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnALapPhaseMOCKInEditorWorld);
+	UClass* lapPhaseClass = ALapPhaseMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(lapPhaseClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckLapPhaseCollisionEnabled(this));
 
@@ -74,7 +76,8 @@ bool FALapPhaseOverlapsWithPawnChannelTest::RunTest(const FString& Parameters)
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnALapPhaseMOCKInEditorWorld);
+	UClass* lapPhaseClass = ALapPhaseMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(lapPhaseClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckLapPhaseCollisionResponse(this));
 
@@ -88,7 +91,8 @@ bool FALapPhaseObjectTypeIsWorldStaticTest::RunTest(const FString& Parameters)
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnALapPhaseMOCKInEditorWorld);
+	UClass* lapPhaseClass = ALapPhaseMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(lapPhaseClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckLapPhaseObjectType(this));
 
@@ -102,7 +106,8 @@ bool FALapPhaseGeneratesOverlapEventsTest::RunTest(const FString& Parameters)
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnALapPhaseMOCKInEditorWorld);
+	UClass* lapPhaseClass = ALapPhaseMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(lapPhaseClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckLapPhaseOverlapEvents(this));
 

@@ -12,8 +12,6 @@
 
 //Test preparation commands:
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnALapPhaseMOCKInEditorWorld);
-
 
 
 
