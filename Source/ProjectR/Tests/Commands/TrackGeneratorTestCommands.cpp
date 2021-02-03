@@ -20,18 +20,6 @@
 
 //Test preparation commands:
 
-bool FSpawnTrackGeneratorInEditorWorld::Update()
-{
-	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
-	{
-		return false;
-	}
-	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
-	testWorld->SpawnActor<ATrackGeneratorMOCK>(ATrackGeneratorMOCK::StaticClass());
-
-	return true;
-}
-
 
 bool FSpawnTrackGeneratorInEditorWorldRollSplineComponents::Update()
 {
@@ -73,32 +61,6 @@ bool FSpawnTrackGeneratorInEditorWorldDisableCollisions::Update()
 	ATrackGeneratorMOCK* testGenerator = testWorld->SpawnActor<ATrackGeneratorMOCK>(ATrackGeneratorMOCK::StaticClass());
 
 	testGenerator->disableCollisions();
-
-	return true;
-}
-
-
-bool FSpawnTrackGeneratorInPIE::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	sessionUtilities.spawnInPIEAnInstanceOf<ATrackGeneratorMOCK>();
-
-	return true;
-}
-
-
-bool FSpawnTwoTrackGeneratorsInPIE::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	sessionUtilities.spawnInPIEAnInstanceOf<ATrackGenerator>();
 
 	return true;
 }
