@@ -256,7 +256,7 @@ FVector AJet::ForwardProjectionOnFloor()
 	}
 }
 
-bool AJet::traceToFind(FHitResult& obstacle)
+bool AJet::traceToFind(FHitResult& anObstacle)
 {
 	FVector jetLocation = GetActorLocation();//should take consideration the actor bounds...
 	float rayExtension = 1000;
@@ -267,7 +267,7 @@ bool AJet::traceToFind(FHitResult& obstacle)
 	collisionParameters.bTraceComplex = false;
 	collisionParameters.bReturnPhysicalMaterial = false;
 
-	return  GetWorld()->LineTraceSingleByChannel(obstacle, jetLocation, rayEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
+	return  GetWorld()->LineTraceSingleByChannel(anObstacle, jetLocation, rayEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
 }
 
 FVector AJet::forwardVelocity()
