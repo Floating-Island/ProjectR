@@ -12,18 +12,6 @@
 
 //Test preparation commands:
 
-bool FSpawnASteerStateManagerMOCK::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		sessionUtilities.spawnInPIEAnInstanceOf<ASteerStateManagerMOCK>();
-
-		return true;
-	}
-	return false;
-}
-
 
 bool FLeftSteerASteerStateManagerMOCK::Update()
 {

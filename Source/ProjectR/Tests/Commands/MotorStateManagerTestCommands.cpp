@@ -17,83 +17,74 @@
 
 //Test preparation commands:
 
-bool FSpawnAMotorStateManager::Update()
+
+bool FRetrieveAMotorStateManagerAndAccelerateIt::Update()
 {
 	if(GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		sessionUtilities.spawnInPIEAnInstanceOf<AMotorStateManagerMOCK>();
-		
-		return true;
-	}
+		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
 
+		if(testManager)
+		{
+			testManager->accelerate();
+			return true;
+		}
+	}
 	return false;
 }
 
 
-bool FSpawnAMotorStateManagerAndAccelerateIt::Update()
+bool FRetrieveAMotorStateManagerAndBrakeIt::Update()
 {
 	if(GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		AMotorStateManagerMOCK* testManager = sessionUtilities.spawnInPIEAnInstanceOf<AMotorStateManagerMOCK>();
+		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
 
-		testManager->accelerate();
-		
-		return true;
+		if(testManager)
+		{
+			testManager->brake();
+			return true;
+		}
 	}
-
 	return false;
 }
 
 
-bool FSpawnAMotorStateManagerAndBrakeIt::Update()
+bool FRetrieveAMotorStateManagerAndNeutralizeIt::Update()
 {
 	if(GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		AMotorStateManagerMOCK* testManager = sessionUtilities.spawnInPIEAnInstanceOf<AMotorStateManagerMOCK>();
+		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
 
-		testManager->brake();
-		
-		return true;
+		if(testManager)
+		{
+			testManager->brake();//first change it to another state.
+			testManager->neutralize();
+			return true;
+		}
 	}
-
 	return false;
 }
 
 
-bool FSpawnAMotorStateManagerAndNeutralizeIt::Update()
-{
-	if(GEditor->IsPlayingSessionInEditor())
-	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		AMotorStateManagerMOCK* testManager = sessionUtilities.spawnInPIEAnInstanceOf<AMotorStateManagerMOCK>();
-
-		testManager->brake();//first change it to another state.
-		testManager->neutralize();
-		
-		return true;
-	}
-
-	return false;
-}
-
-
-//bool FSpawnAMotorStateManagerBrakeAccelerateAndNeutralizeIt::Update()//relying on the garbage collector to destroy the replaced objects
+//bool FRetrieveAMotorStateManagerBrakeAccelerateAndNeutralizeIt::Update()//relying on the garbage collector to destroy the replaced objects
 //{
 //	if(GEditor->IsPlayingSessionInEditor())
 //	{
 //		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-//		AMotorStateManagerMOCK* testManager = sessionUtilities.spawnInPIEAnInstanceOf<AMotorStateManagerMOCK>();
+//		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
 //
-//		testManager->brake();
-//		testManager->accelerate();
-//		testManager->neutralize();
-//		
-//		return true;
+//		if(testManager)
+//		{
+//			testManager->brake();
+//			testManager->accelerate();
+//			testManager->neutralize();
+//			return true;
+//		}
 //	}
-//
 //	return false;
 //}
 
@@ -188,18 +179,19 @@ bool FClientNeutralizeMotorStateManager::Update()
 }
 
 
-bool FSpawnAMotorStateManagerAndMixIt::Update()
+bool FRetrieveAMotorStateManagerAndMixIt::Update()
 {
 	if(GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		AMotorStateManagerMOCK* testManager = sessionUtilities.spawnInPIEAnInstanceOf<AMotorStateManagerMOCK>();
+		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
 
-		testManager->mix();
-		
-		return true;
+		if(testManager)
+		{
+			testManager->mix();
+			return true;
+		}
 	}
-
 	return false;
 }
 

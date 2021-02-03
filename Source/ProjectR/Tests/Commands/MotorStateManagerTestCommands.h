@@ -14,19 +14,16 @@
 //Test preparation commands:
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManager);
+DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAMotorStateManagerAndAccelerateIt);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManagerAndAccelerateIt);
+DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAMotorStateManagerAndBrakeIt);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManagerAndBrakeIt);
+DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAMotorStateManagerAndNeutralizeIt);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManagerAndNeutralizeIt);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManagerBrakeAccelerateAndNeutralizeIt);
+DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAMotorStateManagerBrakeAccelerateAndNeutralizeIt);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientAccelerateMotorStateManager, int, clientQuantity);
@@ -38,7 +35,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientBrakeMotorStateManager, in
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientNeutralizeMotorStateManager, int, clientQuantity);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManagerAndMixIt);
+DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAMotorStateManagerAndMixIt);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientMixMotorStateManager, int, clientQuantity);

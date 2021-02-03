@@ -13,8 +13,6 @@
 
 //Test preparation commands:
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnASteerStateManagerMOCK);
-
 
 DEFINE_LATENT_AUTOMATION_COMMAND(FLeftSteerASteerStateManagerMOCK);
 

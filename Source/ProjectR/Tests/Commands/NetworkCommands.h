@@ -5,7 +5,9 @@
 #include "CoreMinimal.h"
 #include "Misc/AutomationTest.h"
 
-
+/**
+ * This file cointains common latent commands necessary for networked tests.
+ */
 
 /**
 * Start a networked PIE session (non simulated)
