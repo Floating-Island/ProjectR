@@ -30,7 +30,7 @@ bool FURightSteerStateActivateTurnsRightSteeringTest::RunTest(const FString& Par
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetSetVelocityToTopSpeed);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetVelocityToTopSpeed);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningRightSteerStateAndActivateIt);
 	int tickCount = 0;
