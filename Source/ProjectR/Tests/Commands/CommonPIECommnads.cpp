@@ -5,7 +5,7 @@
 
 bool FSpawnActorOfClass::Update()
  {
-	FActorSpawnParameters spawnParameters = FActorSpawnParameters());
+	FActorSpawnParameters spawnParameters = FActorSpawnParameters();
 	spawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 	
  	if (GEditor->IsPlayingSessionInEditor() && GEditor->GetPIEWorldContext()->World()->SpawnActor(anActorClass, &actorTransform, spawnParameters))
