@@ -29,9 +29,6 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManagerAndNeutralizeIt);
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManagerBrakeAccelerateAndNeutralizeIt);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FServerSpawnMotorStateManager, int, clientQuantity);
-
-
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientAccelerateMotorStateManager, int, clientQuantity);
 
 

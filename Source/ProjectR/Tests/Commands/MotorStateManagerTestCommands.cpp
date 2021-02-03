@@ -98,20 +98,6 @@ bool FSpawnAMotorStateManagerAndNeutralizeIt::Update()
 //}
 
 
-bool FServerSpawnMotorStateManager::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{
-		if (GEditor->IsPlayingSessionInEditor())
-		{
-
-			return NetworkedPIESessionUtilities::spawnActorInServerWorldOfClass<AMotorStateManagerMOCK>(clientQuantity);
-		}
-	}
-	return false;
-}
-
-
 bool FClientAccelerateMotorStateManager::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())

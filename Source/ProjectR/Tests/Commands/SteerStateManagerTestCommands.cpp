@@ -76,19 +76,6 @@ bool FCenterASteerStateManagerMOCK::Update()
 }
 
 
-bool FServerSpawnSteerStateManagerMOCK::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{
-		if(ASteerStateManagerMOCK::StaticClass() == anActorClass)
-		{
-			return NetworkedPIESessionUtilities::spawnActorInServerWorldOfClass<ASteerStateManagerMOCK>(clientQuantity);
-		}
-	}
-	return false;
-}
-
-
 bool FClientSteerLeftSteerStateManager::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
