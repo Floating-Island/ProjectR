@@ -3,7 +3,7 @@
 
 #include "CommonPIECommands.h"
 
-bool FSpawnActorOfClass::Update()
+bool FSpawnInPIEAnActorOfClass::Update()
  {
 	FActorSpawnParameters spawnParameters = FActorSpawnParameters();
 	spawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
@@ -13,4 +13,16 @@ bool FSpawnActorOfClass::Update()
  		return true;
  	}
  	return false;
+ }
+
+bool FSpawnInEditorAnActorOfClass::Update()
+ {
+	FActorSpawnParameters spawnParameters = FActorSpawnParameters();
+	spawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+
+    if (GEditor->GetEditorWorldContext().World()->GetMapName() == "VoidWorld" && GEditor->GetEditorWorldContext().World()->SpawnActor(anActorClass, &actorTransform, spawnParameters))
+	{
+		return true;
+	}
+	return false;
  }

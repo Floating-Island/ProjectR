@@ -13,4 +13,10 @@
  /**
  * Spawn an actor in while in a PIE session.
  */
- DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FSpawnActorOfClass, UClass*, anActorClass, const FTransform, actorTransform);
+ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FSpawnInPIEAnActorOfClass, UClass*, anActorClass, const FTransform, actorTransform);
+
+
+ /**
+ * Spawn an actor in while in editor.
+ */
+ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FSpawnInEditorAnActorOfClass, UClass*, anActorClass, const FTransform, actorTransform);
