@@ -5,9 +5,11 @@
 
 
 #include "RaceStageTest.h"
-#include "Commands/RaceStageTestCommands.h"
 
 #include "GameMode/RaceStages/RaceStage.h"
+#include "Commands/RaceStageTestCommands.h"
+#include "Commands/CommonPIECommands.h"
+#include "Mocks/RaceStageMOCK.h"
 
 #include "Tests/AutomationEditorCommon.h"
 
@@ -38,7 +40,8 @@ bool FARaceStageSubscribesRaceModeToStageEndedEventTest::RunTest(const FString& 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARaceStage);
+	UClass* raceStageClass = ARaceStageMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(raceStageClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceModeSubscribed(this));
 

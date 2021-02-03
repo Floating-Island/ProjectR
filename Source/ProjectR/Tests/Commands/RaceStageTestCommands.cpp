@@ -8,25 +8,12 @@
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "RaceStageTestCommands.h"
-#include "GameMode/RaceStages/RaceStage.h"
 #include "../Mocks/RaceStageMOCK.h"
 
 #include "Tests/AutomationEditorCommon.h"
 #include "../Utilities/PIESessionUtilities.h"
 
 //Test preparation commands:
-
-bool FSpawnARaceStage::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	sessionUtilities.spawnInPIEAnInstanceOf<ARaceStageMOCK>();
-	
-	return true;
-}
 
 
 //Test check commands:
