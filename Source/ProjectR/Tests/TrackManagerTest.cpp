@@ -5,8 +5,12 @@
 
 #include "TrackManagerTest.h"
 #include "Commands/TrackManagerTestCommands.h"
+#include "Commands/CommonPIECommands.h"
+#include "Mocks/TrackManagerMOCK.h"
 
 #include "Track/TrackManager.h"
+#include "Track/TrackGenerator.h"
+
 #include "Tests/AutomationEditorCommon.h"
 
 
@@ -26,7 +30,12 @@ bool FATrackManagerHasTrackGeneratorsListedWhenSpawnedTest::RunTest(const FStrin
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningATrackGenerator);
+	UClass* trackGeneratorClass = ATrackGenerator::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(trackGeneratorClass, FTransform()));
+	
+	UClass* trackManagerClass = ATrackManagerMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(trackManagerClass, FTransform()));
+	
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackManagerTrackGenerators(tickCount, tickLimit, this));
