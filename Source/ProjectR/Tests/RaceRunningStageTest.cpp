@@ -45,7 +45,7 @@ bool FARaceRunningStageSpawnsEndedStageWhenNoRunningJetsTest::RunTest(const FStr
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARaceRunning);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARaceRunningCallNextStage);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckEndedStageSpawnedWithNoRunningJets(this));
 

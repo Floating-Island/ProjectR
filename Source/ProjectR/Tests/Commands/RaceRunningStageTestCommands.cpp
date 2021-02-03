@@ -28,20 +28,6 @@ bool FSpawnARaceRunningCallNextStage::Update()
 }
 
 
-bool FSpawnARaceRunning::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	ARaceRunningStage* testRunning = sessionUtilities.spawnInPIEAnInstanceOf<ARaceRunningStage>();
-
-	testRunning->nextStage();
-	return true;
-}
-
-
 bool FSpawnARaceRunningAndStart::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
