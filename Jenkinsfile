@@ -89,9 +89,13 @@ pipeline {
         slackSend channel: "#builds",
           color: '#c2f2d0',
           message: "\n *Tests Report Summary* - Total Tests: ${testReportSummary.totalCount}, Failures: ${testReportSummary.failCount}, Skipped: ${testReportSummary.skipCount}, Passed: ${testReportSummary.passCount}"
-
-      echo "Publish Code Coverage Report."
-      cobertura(coberturaReportFile:"${codeCoverageReportName}")
+      
+      script {
+      if (changeRequest target: 'master') {
+          echo "Publish Code Coverage Report."
+          cobertura(coberturaReportFile:"${codeCoverageReportName}")
+          }
+      }
 
       echo 'Cleaning up workspace:'
       echo '-checking current workspace.'
