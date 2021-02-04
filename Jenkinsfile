@@ -39,7 +39,7 @@ pipeline {
     stage('Testing') {
       when {
         not {
-          env.BRANCH_NAME == 'master'
+          expression { env.BRANCH_NAME == 'master' }
         }
       }//runs when no pushes to master triggered the build.
       steps {
@@ -59,7 +59,7 @@ pipeline {
 
     stage('Testing & Coverage') {
       when {
-        env.BRANCH_NAME == 'master'
+        expression { env.BRANCH_NAME == 'master' }
       }//runs only when the build was triggered by a push to master (this will also trigger when a pull request to master is confirmed).
       steps {
         echo 'Push to master recognized.'
