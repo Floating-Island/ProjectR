@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 
@@ -9,6 +8,8 @@
 #include "Jet/SteerStates/RightSteerState.h"
 
 #include "Tests/AutomationEditorCommon.h"
+#include "Commands/CommonPIECommands.h"
+#include "Mocks/JetMOCK.h"
 #include "Commands/JetTestCommands.h"
 #include "Commands/RightSteerStateTestCommands.h"
 
@@ -30,7 +31,10 @@ bool FURightSteerStateActivateTurnsRightSteeringTest::RunTest(const FString& Par
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetVelocityToTopSpeed);
+	UClass* jetClass = AJetMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(jetClass, FTransform()));
+	float desiredSpeed = 10000;
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetVelocityToDesiredSpeed(desiredSpeed));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningRightSteerStateAndActivateIt);
 	int tickCount = 0;

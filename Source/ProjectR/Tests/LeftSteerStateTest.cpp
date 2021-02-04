@@ -8,8 +8,10 @@
 #include "Jet/SteerStates/LeftSteerState.h"
 
 #include "Tests/AutomationEditorCommon.h"
+#include "Commands/CommonPIECommands.h"
 #include "Commands/JetTestCommands.h"
 #include "Commands/LeftSteerStateTestCommands.h"
+#include "Mocks/JetMOCK.h"
 
 bool FULeftSteerStateIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
@@ -29,7 +31,10 @@ bool FULeftSteerStateActivateTurnsLeftSteeringTest::RunTest(const FString& Param
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetVelocityToTopSpeed);
+	UClass* jetClass = AJetMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(jetClass, FTransform()));
+	float desiredSpeed = 10000;
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetVelocityToDesiredSpeed(desiredSpeed));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningLeftSteerStateAndActivateIt);
 	int tickCount = 0;

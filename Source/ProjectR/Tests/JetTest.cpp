@@ -5,6 +5,7 @@
 
 #include "JetTest.h"
 #include "Commands/JetTestCommands.h"
+#include "Commands/CommonPIECommands.h"
 #include "Jet/Jet.h"
 #include "Mocks/JetMOCK.h"
 #include "Jet/MotorStates/AcceleratingMotorState.h"
@@ -100,7 +101,9 @@ bool FAJetMovesForwardWhenAcceleratedTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerate);
+	UClass* jetClass = AJet::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(jetClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMakeItAccelerate);
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocation(tickCount, tickLimit, this));
@@ -117,7 +120,9 @@ bool FAJetSpeedIncreasesWhenAcceleratesTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerate);
+	UClass* jetClass = AJet::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(jetClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMakeItAccelerate);
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedIncrease(tickCount, tickLimit, this));
@@ -143,7 +148,9 @@ bool FAJetVelocityNegativeWhenBrakesTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItBrake);
+	UClass* jetClass = AJet::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(jetClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMakeItBrake);
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetVelocityDecrease(tickCount, tickLimit, this));
@@ -169,7 +176,11 @@ bool FAJetDoesntAccelerateWhenAtTopSpeedTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetSetVelocityToTopSpeed);
+	UClass* jetClass = AJetMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(jetClass, FTransform()));
+	float desiredSpeed = 10000;
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetVelocityToTopSpeed);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMakeItAccelerate);
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedAgainstTopSpeed(tickCount, tickLimit, this));
@@ -186,7 +197,12 @@ bool FAJetRotatesYawRightWhenSteeringRightTest::RunTest(const FString& Parameter
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItSteerRight);
+	UClass* jetClass = AJetMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(jetClass, FTransform()));
+	float desiredSpeed = 10000;
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetVelocityToDesiredSpeed(desiredSpeed));//to be able to steer...
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMakeItSteerRight);
+	
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetRotatedYawRight(tickCount, tickLimit, this));
@@ -212,7 +228,8 @@ bool FAJetAcceleratesWhenPressingAccelerationKeyTest::RunTest(const FString& Par
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerationKey);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndPressActionKey(FName(TEXT("AccelerateAction"))));
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedIncrease(tickCount, tickLimit, this));
@@ -229,7 +246,10 @@ bool FAJetMovesRightWhenPressingSteerRightKeyTest::RunTest(const FString& Parame
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKey);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
+	float desiredSpeed = 10000;
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetVelocityToDesiredSpeed(desiredSpeed));
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndPressActionKey(FName(TEXT("SteerRightAction"))));
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetRotatedYawRight(tickCount, tickLimit, this));
@@ -246,7 +266,8 @@ bool FAJetBrakesWhenPressingBrakeKeyTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeKey);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndPressActionKey(FName(TEXT("BrakeAction"))));
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetVelocityDecrease(tickCount, tickLimit, this));
@@ -316,7 +337,10 @@ bool FAJetAcceleratesAlongItsForwardVectorWhenAcceleratedAfterRotationTest::RunT
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotateAndAccelerate);
+	UClass* jetClass = AJet::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(jetClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndRotateIt);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMakeItAccelerate);
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocationCoincidentToForwardVector(tickCount, tickLimit, this));
@@ -333,7 +357,10 @@ bool FAJetBrakesAlongItsBackwardsVectorWhileRotatedTest::RunTest(const FString& 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotateAndBrake);
+	UClass* jetClass = AJet::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(jetClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndRotateIt);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMakeItBrake);
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetLocationParallelToForwardVector(tickCount, tickLimit, this));
@@ -370,7 +397,12 @@ bool FAJetInvertsSteeringWhenInReverseTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetBrakeAndSteerRight);
+	UClass* jetClass = AJetMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(jetClass, FTransform()));
+	float desiredSpeed = -10000;
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetVelocityToDesiredSpeed(desiredSpeed));
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMakeItSteerRight);
+	
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetInvertSteeringWhenInReverse(tickCount, tickLimit, this));
@@ -387,7 +419,9 @@ bool FAJetIsntAbleToSteerWhenIdleTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJeSteerRightWhenIdle);
+	UClass* jetClass = AJetMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(jetClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMakeItSteerRight);
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetUnableToSteerWhenIdle(tickCount, tickLimit, FRotator(0), this));
@@ -422,7 +456,8 @@ bool FAJetHasCenterOfMassLoweredTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJet);
+	UClass* jetClass = AJetMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(jetClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetCenterOfMass(this));
 
@@ -563,7 +598,11 @@ bool FAJetServerAccelerateReplicatesAccelerationTest::RunTest(const FString& Par
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJet(numberOfPlayers));
+	UClass* jetClass = AJet::StaticClass();
+	FVector jetLocation = FVector(1000);
+	FTransform jetTransform = FTransform();
+	jetTransform.SetLocation(jetLocation);
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnPawnOfClass(jetClass, jetTransform, numberOfPlayers));
 
 	int tickCount = 0;
 	int tickLimit = 10;
@@ -585,7 +624,11 @@ bool FAJetServerAcceleratesWhenPressingAccelerationKeyTest::RunTest(const FStrin
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJet(numberOfPlayers));
+	UClass* jetClass = AJet::StaticClass();
+	FVector jetLocation = FVector(1000);
+	FTransform jetTransform = FTransform();
+	jetTransform.SetLocation(jetLocation);
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnPawnOfClass(jetClass, jetTransform, numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("AccelerateAction")), numberOfPlayers));
 
@@ -609,7 +652,11 @@ bool FAJetServerBrakeReplicatesBrakingTest::RunTest(const FString& Parameters)
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJet(numberOfPlayers));
+	UClass* jetClass = AJet::StaticClass();
+	FVector jetLocation = FVector(1000);
+	FTransform jetTransform = FTransform();
+	jetTransform.SetLocation(jetLocation);
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnPawnOfClass(jetClass, jetTransform, numberOfPlayers));
 
 	int tickCount = 0;
 	int tickLimit = 10;
@@ -631,7 +678,11 @@ bool FAJetServerBrakesWhenPressingBrakeKeyTest::RunTest(const FString& Parameter
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJet(numberOfPlayers));
+	UClass* jetClass = AJet::StaticClass();
+	FVector jetLocation = FVector(1000);
+	FTransform jetTransform = FTransform();
+	jetTransform.SetLocation(jetLocation);
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnPawnOfClass(jetClass, jetTransform, numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("BrakeAction")), numberOfPlayers));
 
@@ -655,7 +706,12 @@ bool FAJetRightSteerReplicatesRightSteeringTest::RunTest(const FString& Paramete
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetToSteer(numberOfPlayers));
+	UClass* jetClass = AJetMOCK::StaticClass();
+	FVector jetLocation = FVector(1000);
+	FTransform jetTransform = FTransform();
+	jetTransform.SetLocation(jetLocation);
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnPawnOfClass(jetClass, jetTransform, numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FServerRetrieveJetMOCKAndSetTopSpeed(numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientSteerRightJet(numberOfPlayers));
 
@@ -679,7 +735,12 @@ bool FAJetServerSteersToRightWhenPressingSteerKeyTest::RunTest(const FString& Pa
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetToSteer(numberOfPlayers));
+	UClass* jetClass = AJetMOCK::StaticClass();
+	FVector jetLocation = FVector(1000);
+	FTransform jetTransform = FTransform();
+	jetTransform.SetLocation(jetLocation);
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnPawnOfClass(jetClass, jetTransform, numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FServerRetrieveJetMOCKAndSetTopSpeed(numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("SteerRightAction")), numberOfPlayers));
 
@@ -700,7 +761,10 @@ bool FAJetNeutralizesMotorManagerWhenReleasingAccelerateKeyTest::RunTest(const F
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseAccelerationKey);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetMotorManagerMOCKAndSetAcceleratingMotorState);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndReleaseActionKey(FName(TEXT("AccelerateAction"))));
+
 	int tickCount = 0;
 	int tickLimit = 3;
 	UClass* expectedMotorStateClass = UNeutralMotorState::StaticClass();
@@ -718,7 +782,10 @@ bool FAJetNeutralizesMotorManagerWhenReleasingBrakeKeyTest::RunTest(const FStrin
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseBrakeKey);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetMotorManagerMOCKAndSetAcceleratingMotorState);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndReleaseActionKey(FName(TEXT("BrakeAction"))));
+	
 	int tickCount = 0;
 	int tickLimit = 3;
 	UClass* expectedMotorStateClass = UNeutralMotorState::StaticClass();
@@ -739,7 +806,9 @@ bool FAJetServerNeutralizesWhenReleasingAccelerationKeyTest::RunTest(const FStri
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+	UClass* jetClass = AJetMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnPawnOfClass(jetClass, FTransform(), numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FServerRetrieveJetMOCKAndSetStateManagerMocks(numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientReleaseActionKey(FName(TEXT("AccelerateAction")), numberOfPlayers));
 
@@ -763,7 +832,9 @@ bool FAJetServerNeutralizesWhenReleasingBrakeKeyTest::RunTest(const FString& Par
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+	UClass* jetClass = AJetMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnPawnOfClass(jetClass, FTransform(), numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FServerRetrieveJetMOCKAndSetStateManagerMocks(numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientReleaseActionKey(FName(TEXT("BrakeAction")), numberOfPlayers));
 
@@ -784,7 +855,11 @@ bool FAJetMixesItsMotorStateWhenPressingAccelerationAndBrakeKeyTest::RunTest(con
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerationAndBrakeKey);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetMotorManagerMOCKAndSetAcceleratingMotorState);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndPressActionKey(FName(TEXT("AccelerateAction"))));
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndPressActionKey(FName(TEXT("BrakeAction"))));
+	
 	int tickCount = 0;
 	int tickLimit = 3;
 	UClass* expectedMotorStateClass = UMixedMotorState::StaticClass();
@@ -802,7 +877,11 @@ bool FAJetMixesItsMotorStateWhenPressingBrakeAndAccelerationKeyTest::RunTest(con
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeAndAccelerationKey);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetMotorManagerMOCKAndSetAcceleratingMotorState);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndPressActionKey(FName(TEXT("BrakeAction"))));
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndPressActionKey(FName(TEXT("AccelerateAction"))));
+	
 	int tickCount = 0;
 	int tickLimit = 3;
 	UClass* expectedMotorStateClass = UMixedMotorState::StaticClass();
@@ -823,7 +902,9 @@ bool FAJetServerMixesWhenPressingAccelerationAndBrakeKeyTest::RunTest(const FStr
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+	UClass* jetClass = AJetMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnPawnOfClass(jetClass, FTransform(), numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FServerRetrieveJetMOCKAndSetStateManagerMocks(numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("AccelerateAction")), numberOfPlayers));
 	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("BrakeAction")), numberOfPlayers));
@@ -845,7 +926,11 @@ bool FAJetReversesItsMotorStateWhenBrakeKeyIsPressedAndAccelerateReleasedTest::R
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeAndReleaseAccelerationKey);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetMotorManagerMOCKAndSetAcceleratingMotorState);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndPressActionKey(FName(TEXT("BrakeAction"))));
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndReleaseActionKey(FName(TEXT("AccelerateAction"))));
+	
 	int tickCount = 0;
 	int tickLimit = 3;
 	UClass* expectedMotorStateClass = UReversingMotorState::StaticClass();
@@ -863,7 +948,11 @@ bool FAJetAcceleratesItsMotorStateWhenAccelerateKeyIsPressedAndBrakeReleasedTest
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerateAndReleaseBrakeKey);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetMotorManagerMOCKAndSetAcceleratingMotorState);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndPressActionKey(FName(TEXT("AccelerateAction"))));
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndReleaseActionKey(FName(TEXT("BrakeAction"))));
+	
 	int tickCount = 0;
 	int tickLimit = 3;
 	UClass* expectedMotorStateClass = UAcceleratingMotorState::StaticClass();
@@ -884,7 +973,9 @@ bool FAJetServerReversesWhenBrakeKeyIsPressedAndAccelerateReleasedTest::RunTest(
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+	UClass* jetClass = AJetMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnPawnOfClass(jetClass, FTransform(), numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FServerRetrieveJetMOCKAndSetStateManagerMocks(numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("BrakeAction")), numberOfPlayers));
 	ADD_LATENT_AUTOMATION_COMMAND(FClientReleaseActionKey(FName(TEXT("AccelerateAction")), numberOfPlayers));
@@ -909,7 +1000,9 @@ bool FAJetServerAcceleratesWhenAccelerateKeyIsPressedAndBrakeReleasedTest::RunTe
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+	UClass* jetClass = AJetMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnPawnOfClass(jetClass, FTransform(), numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FServerRetrieveJetMOCKAndSetStateManagerMocks(numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("AccelerateAction")), numberOfPlayers));
 	ADD_LATENT_AUTOMATION_COMMAND(FClientReleaseActionKey(FName(TEXT("BrakeAction")), numberOfPlayers));
@@ -931,7 +1024,12 @@ bool FAJetRotatesYawLeftWhenSteeringLeftTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItSteerLeft);
+	UClass* jetClass = AJetMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(jetClass, FTransform()));
+	float desiredSpeed = 10000;
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetVelocityToDesiredSpeed(desiredSpeed));
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMakeItSteerLeft);
+	
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetRotatedYawLeft(tickCount, tickLimit, this));
@@ -948,7 +1046,10 @@ bool FAJetChangesToLeftSteerStateWhenPressingSteerLeftKeyTest::RunTest(const FSt
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerLeftKey);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetSteerManagerMOCK);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndPressActionKey(FName(TEXT("SteerLeftAction"))));
+	
 	int tickCount = 0;
 	int tickLimit = 3;
 	UClass* expectedSteerStateClass = ULeftSteerState::StaticClass();
@@ -966,7 +1067,10 @@ bool FAJetChangesToCenterSteerStateWhenReleasingSteerLeftKeyTest::RunTest(const 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseSteerLeftKey);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetSteerManagerMOCK);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndReleaseActionKey(FName(TEXT("SteerLeftAction"))));
+	
 	int tickCount = 0;
 	int tickLimit = 3;
 	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
@@ -984,7 +1088,10 @@ bool FAJetChangesToCenterSteerStateWhenReleasingSteerRightKeyTest::RunTest(const
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseSteerRightKey);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetSteerManagerMOCK);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndReleaseActionKey(FName(TEXT("SteerRightAction"))));
+	
 	int tickCount = 0;
 	int tickLimit = 3;
 	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
@@ -1002,7 +1109,11 @@ bool FAJetChangesToLeftSteerStateWhenReleasingSteerRightKeyAndSteerLeftIsPressed
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerLeftKeyReleaseSteerRightKey);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetSteerManagerMOCK);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndPressActionKey(FName(TEXT("SteerLeftAction"))));
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndReleaseActionKey(FName(TEXT("SteerRightAction"))));
+	
 	int tickCount = 0;
 	int tickLimit = 3;
 	UClass* expectedSteerStateClass = ULeftSteerState::StaticClass();
@@ -1020,7 +1131,11 @@ bool FAJetChangesToRightSteerStateWhenReleasingSteerLeftKeyAndSteerRightIsPresse
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKeyReleaseSteerLeftKey);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetSteerManagerMOCK);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndPressActionKey(FName(TEXT("SteerRightAction"))));
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndReleaseActionKey(FName(TEXT("SteerLeftAction"))));
+	
 	int tickCount = 0;
 	int tickLimit = 3;
 	UClass* expectedSteerStateClass = URightSteerState::StaticClass();
@@ -1038,7 +1153,11 @@ bool FAJetChangesToCenterSteerStateWhenPressingSteerRightKeyAndSteerLeftIsPresse
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerLeftKeyPressSteerRightKey);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetSteerManagerMOCK);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndPressActionKey(FName(TEXT("SteerLeftAction"))));
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndPressActionKey(FName(TEXT("SteerRightAction"))));
+	
 	int tickCount = 0;
 	int tickLimit = 3;
 	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
@@ -1056,7 +1175,11 @@ bool FAJetChangesToCenterSteerStateWhenPressingSteerLeftKeyAndSteerRightIsPresse
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKeyPressSteerLeftKey);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetSteerManagerMOCK);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndPressActionKey(FName(TEXT("SteerRightAction"))));
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndPressActionKey(FName(TEXT("SteerLeftAction"))));
+	
 	int tickCount = 0;
 	int tickLimit = 3;
 	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
@@ -1077,7 +1200,9 @@ bool FAJetServerChangesSteerToLeftSteerWhenPressingSteerLeftKeyTest::RunTest(con
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+	UClass* jetClass = AJetMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnPawnOfClass(jetClass, FTransform(), numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FServerRetrieveJetMOCKAndSetStateManagerMocks(numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("SteerLeftAction")), numberOfPlayers));
 
@@ -1101,7 +1226,9 @@ bool FAJetServerChangesSteerToCenterSteerWhenReleasingSteerLeftKeyTest::RunTest(
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+	UClass* jetClass = AJetMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnPawnOfClass(jetClass, FTransform(), numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FServerRetrieveJetMOCKAndSetStateManagerMocks(numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientReleaseActionKey(FName(TEXT("SteerLeftAction")), numberOfPlayers));
 
@@ -1125,7 +1252,9 @@ bool FAJetServerChangesSteerToCenterSteerWhenReleasingSteerRightKeyTest::RunTest
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+	UClass* jetClass = AJetMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnPawnOfClass(jetClass, FTransform(), numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FServerRetrieveJetMOCKAndSetStateManagerMocks(numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientReleaseActionKey(FName(TEXT("SteerRightAction")), numberOfPlayers));
 
@@ -1149,7 +1278,9 @@ bool FAJetServerChangesSteerToLeftSteerStateWhenReleasingSteerRightKeyAndSteerLe
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+	UClass* jetClass = AJetMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnPawnOfClass(jetClass, FTransform(), numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FServerRetrieveJetMOCKAndSetStateManagerMocks(numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("SteerLeftAction")), numberOfPlayers));
 	ADD_LATENT_AUTOMATION_COMMAND(FClientReleaseActionKey(FName(TEXT("SteerRightAction")), numberOfPlayers));
@@ -1174,7 +1305,9 @@ bool FAJetServerChangesSteerToRightSteerStateWhenReleasingSteerLeftKeyAndSteerRi
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+	UClass* jetClass = AJetMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnPawnOfClass(jetClass, FTransform(), numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FServerRetrieveJetMOCKAndSetStateManagerMocks(numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("SteerRightAction")), numberOfPlayers));
 	ADD_LATENT_AUTOMATION_COMMAND(FClientReleaseActionKey(FName(TEXT("SteerLeftAction")), numberOfPlayers));
@@ -1199,7 +1332,9 @@ bool FAJetServerChangesSteerToCenterSteerStateWhenPressingSteerLeftKeyAndSteerRi
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+	UClass* jetClass = AJetMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnPawnOfClass(jetClass, FTransform(), numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FServerRetrieveJetMOCKAndSetStateManagerMocks(numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("SteerRightAction")), numberOfPlayers));
 	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("SteerLeftAction")), numberOfPlayers));
@@ -1224,7 +1359,9 @@ bool FAJetServerChangesSteerToCenterSteerStateWhenPressingSteerRightKeyAndSteerL
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnJetMOCK(numberOfPlayers));
+	UClass* jetClass = AJetMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnPawnOfClass(jetClass, FTransform(), numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FServerRetrieveJetMOCKAndSetStateManagerMocks(numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("SteerLeftAction")), numberOfPlayers));
 	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("SteerRightAction")), numberOfPlayers));
