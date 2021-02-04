@@ -71,7 +71,7 @@ pipeline {
 
         slackSend channel: "#builds",
           color: '#c2f2d0',
-          message: "\n *Tests Report Summary* - _build ${env.BUILD_NUMBER} on ${env.BRANCH_NAME}_\n Total Tests: ${testReportSummary.totalCount}, Failures: ${testReportSummary.failCount}, Skipped: ${testReportSummary.skipCount}, Passed: ${testReportSummary.passCount}"
+          message: "_build ${env.BUILD_NUMBER} on ${env.BRANCH_NAME}_\n *Tests Report Summary* - Total Tests: ${testReportSummary.totalCount}, Failures: ${testReportSummary.failCount}, Skipped: ${testReportSummary.skipCount}, Passed: ${testReportSummary.passCount}"
       
       script {
       if (env.BRANCH_NAME == 'master') {
