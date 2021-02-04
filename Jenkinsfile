@@ -39,9 +39,9 @@ pipeline {
     stage('Testing') {
       when {
         not {
-          changeRequest
+          env.BRANCH_NAME == 'master'
         }
-      }//runs when no pull/merge requests triggered the build.
+      }//runs when no pushes to master triggered the build.
       steps {
         echo 'Testing Stage Started.'
 
@@ -59,11 +59,11 @@ pipeline {
 
     stage('Testing & Coverage') {
       when {
-        changeRequest target: 'master'
-      }//runs only when the build was triggered by a pull/merge request to master.
+        env.BRANCH_NAME == 'master'
+      }//runs only when the build was triggered by a push to master (this will also trigger when a pull request to master is confirmed).
       steps {
-        echo 'Pull request to master recognized.'
-        echo 'Testing & Coverage Stage Started.'
+        echo 'Push to master recognized.'
+        echo 'Testing & Code Coverage Stage Started.'
 
         bat "TestRunnerAndCodeCoverage.bat \"${ue4Path}\" \"${env.WORKSPACE}\" \"${ueProjectFilename}\" \"${testSuiteToRun}\" \"${testReportFolder}\" \"${testsLogName}\" \"${codeCoverageReportName}\""//runs the tests and performs code coverage
       }
@@ -91,7 +91,7 @@ pipeline {
           message: "\n *Tests Report Summary* - Total Tests: ${testReportSummary.totalCount}, Failures: ${testReportSummary.failCount}, Skipped: ${testReportSummary.skipCount}, Passed: ${testReportSummary.passCount}"
       
       script {
-      if (changeRequest target: 'master') {
+      if (env.BRANCH_NAME == 'master') {
           echo "Publish Code Coverage Report."
           cobertura(coberturaReportFile:"${codeCoverageReportName}")
           }
