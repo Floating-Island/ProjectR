@@ -20,3 +20,9 @@
  * Spawn an actor in while in editor.
  */
  DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FSpawnInEditorAnActorOfClass, UClass*, anActorClass, const FTransform, actorTransform);
+
+
+ /**
+ * Spawn a local player in while in a PIE session.
+ */
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);

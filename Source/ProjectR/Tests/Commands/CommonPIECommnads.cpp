@@ -2,6 +2,7 @@
 
 
 #include "CommonPIECommands.h"
+#include "../Utilities/PIESessionUtilities.h"
 
 bool FSpawnInPIEAnActorOfClass::Update()
  {
@@ -26,3 +27,17 @@ bool FSpawnInEditorAnActorOfClass::Update()
 	}
 	return false;
  }
+
+
+bool FSpawnLocalPlayerInPIE::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		sessionUtilities.spawnLocalPlayer();
+		return true;
+	}
+	return false;
+}
+
