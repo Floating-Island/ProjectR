@@ -194,7 +194,7 @@ bool FAMotorStateManagerReplicatesStateWhenCallingAccelerateTest::RunTest(const 
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	UClass* motorStateManagerClass = AMotorStateManager::StaticClass();
+	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(motorStateManagerClass, FTransform(), numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientAccelerateMotorStateManager(numberOfPlayers));
@@ -219,7 +219,7 @@ bool FAMotorStateManagerReplicatesStateWhenCallingBrakeTest::RunTest(const FStri
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	UClass* motorStateManagerClass = AMotorStateManager::StaticClass();
+	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(motorStateManagerClass, FTransform(), numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientBrakeMotorStateManager(numberOfPlayers));
@@ -244,7 +244,7 @@ bool FAMotorStateManagerReplicatesStateWhenCallingNeutralizeTest::RunTest(const 
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	UClass* motorStateManagerClass = AMotorStateManager::StaticClass();
+	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(motorStateManagerClass, FTransform(), numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientNeutralizeMotorStateManager(numberOfPlayers));
@@ -304,7 +304,7 @@ bool FAMotorStateManagerReplicatesStateWhenCallingMixTest::RunTest(const FString
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	UClass* motorStateManagerClass = AMotorStateManager::StaticClass();
+	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(motorStateManagerClass, FTransform(), numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientMixMotorStateManager(numberOfPlayers));
