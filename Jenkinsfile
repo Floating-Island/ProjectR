@@ -37,15 +37,17 @@ pipeline {
     }
 
     stage('Testing') {
-      when {
-        not {
-          expression { env.BRANCH_NAME == 'master' }
-        }
-      }//runs when no pushes to master triggered the build.
       steps {
         echo 'Testing Stage Started.'
-
-        bat "TestRunner.bat \"${ue4Path}\" \"${env.WORKSPACE}\" \"${ueProjectFilename}\" \"${testSuiteToRun}\" \"${testReportFolder}\" \"${testsLogName}\""//runs the tests
+        script {
+          if(env.BRANCH_NAME == 'master') {
+            echo 'Push to master recognized. Starting tests and code coverage.'
+            bat "TestRunnerAndCodeCoverage.bat \"${ue4Path}\" \"${env.WORKSPACE}\" \"${ueProjectFilename}\" \"${testSuiteToRun}\" \"${testReportFolder}\" \"${testsLogName}\" \"${codeCoverageReportName}\""//runs the tests and performs code coverage
+          }
+          else {
+            bat "TestRunner.bat \"${ue4Path}\" \"${env.WORKSPACE}\" \"${ueProjectFilename}\" \"${testSuiteToRun}\" \"${testReportFolder}\" \"${testsLogName}\""//runs the tests
+          }
+        }
       }
       post {
         success {
@@ -57,25 +59,6 @@ pipeline {
       }
     }
 
-    stage('Testing & Coverage') {
-      when {
-        expression { env.BRANCH_NAME == 'master' }
-      }//runs only when the build was triggered by a push to master (this will also trigger when a pull request to master is confirmed).
-      steps {
-        echo 'Push to master recognized.'
-        echo 'Testing & Code Coverage Stage Started.'
-
-        bat "TestRunnerAndCodeCoverage.bat \"${ue4Path}\" \"${env.WORKSPACE}\" \"${ueProjectFilename}\" \"${testSuiteToRun}\" \"${testReportFolder}\" \"${testsLogName}\" \"${codeCoverageReportName}\""//runs the tests and performs code coverage
-      }
-      post {
-        success {
-          echo 'Testing & Coverage Stage Successful.'
-        }
-        failure {
-          echo 'Testing & Coverage Stage Unsuccessful.'
-        }
-      }
-    }
 
 
   }
