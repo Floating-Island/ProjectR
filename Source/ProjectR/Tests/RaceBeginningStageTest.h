@@ -22,7 +22,6 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceBeginningStageIsntNullWhenInstantiatedTes
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-//uses a mock.
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceBeginningStageSubscribesRaceModeToStageEndedEventTest, 
 	"ProjectR.RaceBeginningStage Tests.Unit.001: Has its timer active at start", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
