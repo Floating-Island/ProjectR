@@ -22,7 +22,7 @@ pipeline {
         echo 'sending notification to Slack.'
         slackSend channel: '#builds', 
           color: '#4A90E2',
-          message: "Build ${env.BUILD_NUMBER} has started at node ${env.NODE_NAME}..."
+          message: "Build ${env.BUILD_NUMBER} on ${env.BRANCH_NAME} has started at node ${env.NODE_NAME}..."
 
         bat "BuildWithoutCooking.bat \"${ue4Path}\" \"${env.WORKSPACE}\" \"${ueProjectFilename}\""//builds our project
       }
@@ -93,17 +93,17 @@ pipeline {
     success{
         slackSend channel: '#builds',
           color: 'good', 
-          message: "*${currentBuild.currentResult}:* Build ${env.BUILD_NUMBER} has *succeded!* :innocent:"
+          message: "*${currentBuild.currentResult}:* Build ${env.BUILD_NUMBER} on ${env.BRANCH_NAME} has *succeded!* :innocent:"
     }
     unstable{
         slackSend channel: '#builds',
           color: '#E2A52E', 
-          message: "*${currentBuild.currentResult}:* Build ${env.BUILD_NUMBER} it's *unstable!* :grimacing:"
+          message: "*${currentBuild.currentResult}:* Build ${env.BUILD_NUMBER} on ${env.BRANCH_NAME} it's *unstable!* :grimacing:"
     }
     failure{
         slackSend channel: '#builds',
           color: 'danger', 
-          message: "*${currentBuild.currentResult}:* Build ${env.BUILD_NUMBER} has *failed* :astonished:"
+          message: "*${currentBuild.currentResult}:* Build ${env.BUILD_NUMBER} on ${env.BRANCH_NAME} has *failed* :astonished:"
     }
   }
 }
