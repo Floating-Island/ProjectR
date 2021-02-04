@@ -89,8 +89,6 @@ bool NetworkedPIESessionUtilities::spawnPawnInServerWorldOfClass(int expectedCon
 
 	if(serverWorld)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Creating pawn of class %s..."), *aPawnClass::StaticClass()->GetName());
-		
 		APlayerController* clientController = nullptr;
 		for (auto controllerIterator = serverWorld->GetPlayerControllerIterator(); controllerIterator; ++controllerIterator)
 		{
@@ -110,7 +108,6 @@ bool NetworkedPIESessionUtilities::spawnPawnInServerWorldOfClass(int expectedCon
 			{
 				clientController->Possess(pawn);
 				clientController->PlayerState->SetIsSpectator(false);
-				UE_LOG(LogTemp, Log, TEXT("Created and possessed pawn of class %s!"), *aPawnClass::StaticClass()->GetName());
 				return true;
 			}
 		}
@@ -127,9 +124,6 @@ bool NetworkedPIESessionUtilities::spawnActorInServerWorldOfClass(int expectedCo
 
 	if(serverWorld)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Creating actor of class %s..."), *anActorClass::StaticClass()->GetName());
-		
-
 		APlayerController* clientController = nullptr;
 		for (auto controllerIterator = serverWorld->GetPlayerControllerIterator(); controllerIterator; ++controllerIterator)
 		{
@@ -147,7 +141,6 @@ bool NetworkedPIESessionUtilities::spawnActorInServerWorldOfClass(int expectedCo
 			anActorClass* actor = serverWorld->SpawnActor<anActorClass>(spawnParameters);
 			if(IsValid(actor))
 			{
-				UE_LOG(LogTemp, Log, TEXT("actor of class %s created!"), *anActorClass::StaticClass()->GetName());
 				return true;
 			}
 		}

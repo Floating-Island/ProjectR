@@ -9,6 +9,7 @@
 
 #include "TrackGeneratorTest.h"
 #include "Commands/TrackGeneratorTestCommands.h"
+#include "Commands/CommonPIECommands.h"
 
 #include "Track/TrackGenerator.h"
 #include "Mocks/TrackGeneratorMOCK.h"
@@ -51,7 +52,8 @@ bool FATrackGeneratorRoadSplinesQuantityIsTheSameAsSplinePointsAtSpawningTest::R
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesQuantity(this));
 
@@ -65,7 +67,8 @@ bool FATrackGeneratorRoadSplinesStartPositionsAreTheSameAsSplinePointsAtSpawning
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesStartPositions(this));
 
@@ -80,7 +83,8 @@ bool FATrackGeneratorRoadSplinesEndPositionsAreTheSameAsNextSplinePointsAtSpawni
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesEndPositions(this));
 
@@ -94,7 +98,8 @@ bool FATrackGeneratorRoadSplinesStartTangentsAreTheSameAsSplinePointsAtSpawningT
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesStartTangents(this));
 
@@ -108,7 +113,8 @@ bool FATrackGeneratorRoadSplinesEndTangentsAreTheSameAsNextSplinePointsAtSpawnin
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesEndTangents(this));
 
@@ -122,7 +128,8 @@ bool FATrackGeneratorRoadSplinesMeshesAreSetAtSpawningTest::RunTest(const FStrin
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesMeshes(this));
 
@@ -136,7 +143,8 @@ bool FATrackGeneratorRoadSplinesMeshesAreTheRoadMeshAtSpawningTest::RunTest(cons
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesMeshesAreRoadMesh(this));
 
@@ -150,7 +158,8 @@ bool FATrackGeneratorHasTheSameAmountOfMagnetSplinesAsSplinePointsAtSpawningTest
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckSplineMagnetSplinesQuantity(this));
 
@@ -164,7 +173,8 @@ bool FATrackGeneratorMeshesHaveCollisionEnabledAtSpawningTest::RunTest(const FSt
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesCollisionEnabled(this));
 
@@ -178,7 +188,8 @@ bool FATrackGeneratorMeshesHaveCollisionObjectTypeWorldStaticAtSpawningTest::Run
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesCollisionObjectType(this));
 
@@ -192,7 +203,8 @@ bool FATrackGeneratorMeshesAreAttachedToRootAtSpawningTest::RunTest(const FStrin
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesAttachToRoot(this));
 
@@ -206,7 +218,8 @@ bool FATrackGeneratorMeshesHaveSameMobilityAsRootAtSpawningTest::RunTest(const F
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckRoadSplinesMobility(this));
 
@@ -229,7 +242,8 @@ bool FATrackGeneratorMagnetSplinesHaveTheSameMobilityAsRoadSplinesAtSpawningTest
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesMobility(this));
 
@@ -243,7 +257,8 @@ bool FATrackGeneratorMagnetSplinesAreAttachedToRoadSplinesAtSpawningTest::RunTes
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesAttachToRoadSplines(this));
 
@@ -257,7 +272,8 @@ bool FATrackGeneratorMagnetSplinesAreOnTopOfRoadSplinesAtSpawningTest::RunTest(c
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesOnTopRoadSplines(this));
 
@@ -271,7 +287,8 @@ bool FATrackGeneratorMagnetSplinesTangentsAreTheSameAsSplinePointsAtSpawningTest
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesTangents(this));
 
@@ -285,7 +302,8 @@ bool FATrackGeneratorMagnetSplinesMeshesAreSetAtSpawningTest::RunTest(const FStr
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesMeshes(this));
 
@@ -299,7 +317,8 @@ bool FATrackGeneratorMagnetSplinesAreHiddenInGameTest::RunTest(const FString& Pa
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesVisibility(this));
 
@@ -313,7 +332,8 @@ bool FATrackGeneratorMagnetSplinesHaveCollisionEnabledToQueryOnlyTest::RunTest(c
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesCollisionResponse(this));
 
@@ -327,7 +347,8 @@ bool FATrackGeneratorMagnetSplinesOverlapWithPawnChannelTest::RunTest(const FStr
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesResponseToPawnChannel(this));
 
@@ -341,7 +362,8 @@ bool FATrackGeneratorMagnetSplinesGenerateOverlapEventsTest::RunTest(const FStri
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMagnetSplinesGenerateOverlapEvents(this));
 
@@ -355,7 +377,8 @@ bool FATrackGeneratorSplineMeshComponentsHaveSmoothInterpolationEnabledTest::Run
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsSmoothInterpolation(this));
 
@@ -378,7 +401,8 @@ bool FATrackGeneratorTrackSectionsQuantityMatchesSplinePointsNumberTest::RunTest
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInEditorAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckTrackSectionsArrayQuantityAdjustedToNumberOfSplinePoints(this));
 
@@ -438,7 +462,8 @@ bool FATrackGeneratorHaveExpectedCollisionsInPIETest::RunTest(const FString& Par
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInPIE);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsExpectedCollisionInPIE(this));
 
@@ -454,7 +479,8 @@ bool FATrackGeneratorSpawnTrackManagerAtBeginPlayTest::RunTest(const FString& Pa
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInPIE);
+	UClass* trackGeneratorClass = ATrackGeneratorMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckTrackGeneratorSpawnsTrackManagerInPIE(this));
 
@@ -470,7 +496,9 @@ bool FATrackGeneratorsSpawnOnlyOneTrackManagerAtBeginPlayTest::RunTest(const FSt
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTwoTrackGeneratorsInPIE);
+	UClass* trackGeneratorClass = ATrackGenerator::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(trackGeneratorClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(trackGeneratorClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckTrackGeneratorsSpawnOneTrackManagerInPIE(this));
 

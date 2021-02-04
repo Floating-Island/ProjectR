@@ -27,136 +27,121 @@
 
 //Test preparation commands:
 
-bool FSpawningAJetMakeItAccelerate::Update()
+bool FRetrieveAJetMakeItAccelerate::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
 	{
-		return false;
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+
+		if(testJet)
+		{
+			testJet->accelerate();
+
+			return true;
+		}
 	}
-
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-
-	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-
-	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
-
-	testJet->accelerate();
-
-	return true;
+	return false;
 }
 
 
-bool FSpawningAJetMakeItBrake::Update()
+bool FRetrieveAJetMakeItBrake::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
 	{
-		return false;
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+
+		if(testJet)
+		{
+			testJet->brake();
+
+			return true;
+		}
 	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-
-	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
-
-	testJet->brake();
-
-	return true;
+	return false;
 }
 
 
-bool FSpawningAJetSetVelocityToTopSpeed::Update()
+bool FRetrieveAJetMOCKSetVelocityToTopSpeed::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
 	{
-		return false;
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+
+		if(testJet)
+		{
+			testJet->setCurrentXVelocityTo(testJet->settedTopSpeed());
+
+			return true;
+		}
 	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-
-	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
-
-	testJet->setCurrentXVelocityTo(testJet->settedTopSpeed());
-	testJet->accelerate();
-
-	return true;
+	return false;
 }
 
 
-bool FSpawningAJetMakeItSteerRight::Update()
+bool FRetrieveAJetMOCKSetVelocityToDesiredSpeed::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
 	{
-		return false;
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+
+		if(testJet)
+		{
+			testJet->setCurrentXVelocityTo(desiredSpeed);
+
+			return true;
+		}
 	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-
-	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
-
-	testJet->setCurrentXVelocityTo(10000);//we should set the speed to 1000 first so the jet is able to steer.
-	testJet->steerRight();
-
-	return true;
+	return false;
 }
 
 
-bool FSpawningAJetPressAccelerationKey::Update()
+bool FRetrieveAJetMakeItSteerRight::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
 	{
-		return false;
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+
+		if(testJet)
+		{
+			testJet->steerRight();
+
+			return true;
+		}
 	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-
-	sessionUtilities.spawnLocalPlayer();
-
-	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("AccelerateAction")));
-
-	return true;
+	return false;
 }
 
 
-bool FSpawningAJetPressSteerRightKey::Update()
+bool FRetrieveAJetAndPressActionKey::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())
 	{
-		return false;
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+
+		if(testJet)
+		{
+			APlayerController* controller = sessionUtilities.currentPIEWorld()->GetFirstPlayerController();
+			if(controller && controller->AcknowledgedPawn == testJet)
+			{
+				sessionUtilities.processLocalPlayerActionInputFrom(keyName);
+
+				return true;
+			}
+		}
 	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-
-	sessionUtilities.spawnLocalPlayer();
-
-	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-
-	testJet->setCurrentXVelocityTo(10000);//we should set the speed to 1 first so the jet is able to steer.
-	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("SteerRightAction")));
-
-	return true;
-}
-
-
-bool FSpawningAJetPressBrakeKey::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-
-	sessionUtilities.spawnLocalPlayer();
-
-	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("BrakeAction")));
-
-	return true;
+	return false;
 }
 
 
@@ -182,47 +167,22 @@ bool FSpawningAJetSnapedToFloor::Update()
 }
 
 
-bool FSpawningAJetRotateAndAccelerate::Update()
+bool FRetrieveAJetAndRotateIt::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())
 	{
-		return false;
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+
+		if(testJet)
+		{
+			float yawValue = 50;
+			testJet->SetActorRotation(FRotator(0, yawValue, 0));
+			return true;
+		}
 	}
-
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-
-	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-
-	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
-
-	float yawValue = 50;
-	testJet->SetActorRotation(FRotator(0, yawValue, 0));
-	testJet->accelerate();
-
-	return true;
-}
-
-
-bool FSpawningAJetRotateAndBrake::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-
-	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-
-	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
-
-	float yawValue = 50;
-	testJet->SetActorRotation(FRotator(0, yawValue, 0));
-	testJet->brake();
-
-	return true;
+	return false;
 }
 
 
@@ -243,57 +203,6 @@ bool FSpawningAJetRotateAndBrake::Update()
 //
 //	return true;
 //}
-
-
-bool FSpawningAJetBrakeAndSteerRight::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();//is a mock necessary??
-
-	testJet->setCurrentXVelocityTo(-10000);//we go reverse and then we try to steer
-	testJet->steerRight();
-
-	return true;
-}
-
-
-bool FSpawningAJeSteerRightWhenIdle::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-
-
-	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
-
-	float direction = 1;//1 is right, -1 is left...
-	testJet->SetActorRotation(FRotator(0));//so we are sure to start with zero rotation
-	testJet->steerRight();
-
-	return true;
-}
-
-
-bool FSpawningAJet::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
-
-	return true;
-}
 
 
 bool FSpawningTwoJetsMakeOneOfThemItAccelerateAndSteerRight::Update()
@@ -446,43 +355,6 @@ bool FSpawningAJetRotatedOverFloorAccelerateAndSteerItRight::Update()
 }
 
 
-bool FServerSpawnJet::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{
-		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
-		UWorld* serverWorld = serverContext.World();
-		
-		if(serverWorld)
-		{
-			UE_LOG(LogTemp, Log, TEXT("Creating jet..."));
-			
-
-			APlayerController* clientController = nullptr;
-			for (auto controllerIterator = serverWorld->GetPlayerControllerIterator(); controllerIterator; ++controllerIterator)
-			{
-				if(controllerIterator.GetIndex() == 1)
-				{
-					clientController = controllerIterator->Get();
-					break;
-				}
-			}
-			if(clientController)
-			{
-				FActorSpawnParameters spawnParameters = FActorSpawnParameters();
-				spawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
-				spawnParameters.Owner = clientController;
-				AJet* testJet = serverWorld->SpawnActor<AJet>(FVector(1000), FRotator(0), spawnParameters);
-				clientController->Possess(testJet);
-				clientController->PlayerState->SetIsSpectator(false);
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-
 bool FClientPressKey::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
@@ -533,20 +405,21 @@ bool FClientPressActionKey::Update()
 }
 
 
-bool FServerSpawnJetToSteer::Update()
+bool FServerRetrieveJetMOCKAndSetTopSpeed::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-		bool hasSucceded = NetworkedPIESessionUtilities::spawnPawnInServerWorldOfClass<AJetMOCK>(clientQuantity);
-		
 		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
 		UWorld* serverWorld = serverContext.World();
 
 		if(serverWorld)
 		{
 			AJetMOCK* testJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(serverWorld, AJetMOCK::StaticClass()));
-			testJet->setCurrentXVelocityTo(10000);
-			return hasSucceded;
+			if(testJet)
+			{
+				testJet->setCurrentXVelocityTo(testJet->settedTopSpeed());
+				return true;
+			}
 		}
 		
 	}
@@ -578,67 +451,65 @@ bool FClientSteerRightJet::Update()
 }
 
 
-bool FSpawningAJetReleaseAccelerationKey::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-
-	sessionUtilities.spawnLocalPlayer();
-
-	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-	testJet->setMotorManagerMOCK();
-	testJet->changeMotorStateTo<UAcceleratingMotorState>();
-	
-	sessionUtilities.processLocalPlayerActionInputReleaseFrom(FName(TEXT("AccelerateAction")));
-
-	return true;
-}
-
-
-bool FSpawningAJetReleaseBrakeKey::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-
-	sessionUtilities.spawnLocalPlayer();
-
-	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-	testJet->setMotorManagerMOCK();
-	testJet->changeMotorStateTo<UAcceleratingMotorState>();
-	
-	sessionUtilities.processLocalPlayerActionInputReleaseFrom(FName(TEXT("BrakeAction")));
-
-	return true;
-}
-
-
-bool FServerSpawnJetMOCK::Update()
+bool FRetrieveAJetMOCKSetMotorManagerMOCKAndSetAcceleratingMotorState::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-		bool hasSucceded = NetworkedPIESessionUtilities::spawnPawnInServerWorldOfClass<AJetMOCK>(clientQuantity);
-		
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+		if(testJet)
+		{
+			testJet->setMotorManagerMOCK();
+			testJet->changeMotorStateTo<UAcceleratingMotorState>();
+
+			return true;
+		}
+	}
+	return false;
+}
+
+
+
+bool FRetrieveAJetAndReleaseActionKey::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+
+		if(testJet)
+		{
+			APlayerController* controller = sessionUtilities.currentPIEWorld()->GetFirstPlayerController();
+			if(controller && controller->AcknowledgedPawn == testJet)
+			{
+				sessionUtilities.processLocalPlayerActionInputReleaseFrom(keyName);
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FServerRetrieveJetMOCKAndSetStateManagerMocks::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
 		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
 		UWorld* serverWorld = serverContext.World();
 
 		if(serverWorld)
 		{
 			AJetMOCK* testJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(serverWorld, AJetMOCK::StaticClass()));
-			testJet->setMotorManagerMOCK();
-			testJet->setSteerManagerMOCK();
-			return hasSucceded;
+			if(testJet)
+			{
+				testJet->setMotorManagerMOCK();
+				testJet->setSteerManagerMOCK();
+				return true;
+			}
 		}
-		
 	}
 	return false;
 }
@@ -670,217 +541,58 @@ bool FClientReleaseActionKey::Update()
 }
 
 
-bool FSpawningAJetPressAccelerationAndBrakeKey::Update()
+bool FRetrieveAJetMOCKSetMotorManagerMOCK::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())
 	{
-		return false;
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+		if(testJet)
+		{
+			testJet->setMotorManagerMOCK();
+
+			return true;
+		}
 	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	sessionUtilities.spawnLocalPlayer();
-	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-	testJet->setMotorManagerMOCK();
-	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("AccelerateAction")));
-	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("BrakeAction")));
-
-	return true;
+	return false;
 }
 
 
-bool FSpawningAJetPressBrakeAndAccelerationKey::Update()
+bool FRetrieveAJetMOCKSetSteerManagerMOCK::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())
 	{
-		return false;
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+		if(testJet)
+		{
+			testJet->setSteerManagerMOCK();
+
+			return true;
+		}
 	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	sessionUtilities.spawnLocalPlayer();
-	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-	testJet->setMotorManagerMOCK();
-	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("BrakeAction")));
-	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("AccelerateAction")));
-
-	return true;
+	return false;
 }
 
 
-bool FSpawningAJetPressBrakeAndReleaseAccelerationKey::Update()
+bool FRetrieveAJetMakeItSteerLeft::Update()
 {
-	if (!GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())
 	{
-		return false;
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+
+		if(testJet)
+		{
+			testJet->steerLeft();
+
+			return true;
+		}
 	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	sessionUtilities.spawnLocalPlayer();
-	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-	testJet->setMotorManagerMOCK();
-	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("BrakeAction")));
-	sessionUtilities.processLocalPlayerActionInputReleaseFrom(FName(TEXT("AccelerateAction")));
-
-	return true;
-}
-
-
-bool FSpawningAJetPressAccelerateAndReleaseBrakeKey::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	sessionUtilities.spawnLocalPlayer();
-	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-	testJet->setMotorManagerMOCK();
-	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("AccelerateAction")));
-	sessionUtilities.processLocalPlayerActionInputReleaseFrom(FName(TEXT("BrakeAction")));
-
-	return true;
-}
-
-
-bool FSpawningAJetMakeItSteerLeft::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-
-	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
-
-	testJet->setCurrentXVelocityTo(10000);//we should set the speed to 1000 first so the jet is able to steer.
-	testJet->steerLeft();
-
-	return true;
-}
-
-
-bool FSpawningAJetPressSteerLeftKey::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	sessionUtilities.spawnLocalPlayer();
-	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-	testJet->setSteerManagerMOCK();
-	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("SteerLeftAction")));
-	
-	return true;
-}
-
-
-bool FSpawningAJetReleaseSteerLeftKey::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	sessionUtilities.spawnLocalPlayer();
-	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-	testJet->setSteerManagerMOCK();
-	sessionUtilities.processLocalPlayerActionInputReleaseFrom(FName(TEXT("SteerLeftAction")));
-	
-	return true;
-}
-
-
-bool FSpawningAJetReleaseSteerRightKey::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	sessionUtilities.spawnLocalPlayer();
-	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-	testJet->setSteerManagerMOCK();
-	sessionUtilities.processLocalPlayerActionInputReleaseFrom(FName(TEXT("SteerRightAction")));
-	
-	return true;
-}
-
-
-bool FSpawningAJetPressSteerLeftKeyReleaseSteerRightKey::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	sessionUtilities.spawnLocalPlayer();
-	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-	testJet->setSteerManagerMOCK();
-	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("SteerLeftAction")));
-	sessionUtilities.processLocalPlayerActionInputReleaseFrom(FName(TEXT("SteerRightAction")));
-	
-	return true;
-}
-
-
-bool FSpawningAJetPressSteerRightKeyReleaseSteerLeftKey::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	sessionUtilities.spawnLocalPlayer();
-	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-	testJet->setSteerManagerMOCK();
-	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("SteerRightAction")));
-	sessionUtilities.processLocalPlayerActionInputReleaseFrom(FName(TEXT("SteerLeftAction")));
-	
-	return true;
-}
-
-
-bool FSpawningAJetPressSteerRightKeyPressSteerLeftKey::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	sessionUtilities.spawnLocalPlayer();
-	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-	testJet->setSteerManagerMOCK();
-	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("SteerRightAction")));
-	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("SteerLeftAction")));
-	
-	return true;
-}
-
-
-bool FSpawningAJetPressSteerLeftKeyPressSteerRightKey::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	sessionUtilities.spawnLocalPlayer();
-	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-	testJet->setSteerManagerMOCK();
-	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("SteerLeftAction")));
-	sessionUtilities.processLocalPlayerActionInputFrom(FName(TEXT("SteerRightAction")));
-	
-	return true;
+	return false;
 }
 
 
@@ -1862,25 +1574,28 @@ bool FCheckAJetToExpectedSteerState::Update()
 		if (testJet)
 		{
 			USteerState* currentSteerState = testJet->currentSteerState();
-			bool isExpectedState = currentSteerState->GetClass() == expectedStateClass; 
-
-			UE_LOG(LogTemp, Log, TEXT("Jet current steer state: %s"), *currentSteerState->GetName());
-			UE_LOG(LogTemp, Log, TEXT("Jet current steer state %s a %s."), *FString(isExpectedState ? "is" : "isn't"), *expectedStateClass->GetName());
-
-			if (isExpectedState)
+			if(currentSteerState)
 			{
-				test->TestTrue((TEXT("The Jet steer state should be %s."), *expectedStateClass->GetName()), isExpectedState);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
+				bool isExpectedState = currentSteerState->GetClass() == expectedStateClass; 
 
-			++tickCount;
+				UE_LOG(LogTemp, Log, TEXT("Jet current steer state: %s"), *currentSteerState->GetName());
+				UE_LOG(LogTemp, Log, TEXT("Jet current steer state %s a %s."), *FString(isExpectedState ? "is" : "isn't"), *expectedStateClass->GetName());
 
-			if (tickCount > tickLimit)
-			{
-				test->TestFalse((TEXT("Tick limit reached for this test. The Jet never changed its steer state to %s."), *expectedStateClass->GetName()), tickCount > tickLimit);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
+				if (isExpectedState)
+				{
+					test->TestTrue((TEXT("The Jet steer state should be %s."), *expectedStateClass->GetName()), isExpectedState);
+					testWorld->bDebugFrameStepExecution = true;
+					return true;
+				}
+
+				++tickCount;
+
+				if (tickCount > tickLimit)
+				{
+					test->TestFalse((TEXT("Tick limit reached for this test. The Jet never changed its steer state to %s."), *expectedStateClass->GetName()), tickCount > tickLimit);
+					testWorld->bDebugFrameStepExecution = true;
+					return true;
+				}
 			}
 		}
 	}

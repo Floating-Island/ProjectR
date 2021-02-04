@@ -14,9 +14,6 @@
 //Test preparation commands:
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorld);
-
-
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawnTrackGeneratorInEditorWorldRollSplineComponents, float, rollValue);
 
 
@@ -24,12 +21,6 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawnTrackGeneratorInEditorWorld
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldDisableCollisions);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInPIE);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnTwoTrackGeneratorsInPIE);
 
 
 

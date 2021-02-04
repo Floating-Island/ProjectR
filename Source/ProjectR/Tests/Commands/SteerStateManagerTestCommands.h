@@ -13,8 +13,6 @@
 
 //Test preparation commands:
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnASteerStateManagerMOCK);
-
 
 DEFINE_LATENT_AUTOMATION_COMMAND(FLeftSteerASteerStateManagerMOCK);
 
@@ -23,9 +21,6 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FRightSteerASteerStateManagerMOCK);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND(FCenterASteerStateManagerMOCK);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FServerSpawnSteerStateManagerMOCK, UClass*, anActorClass, int, clientQuantity);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientSteerLeftSteerStateManager, int, clientQuantity);

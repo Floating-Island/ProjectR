@@ -12,18 +12,6 @@
 
 //Test preparation commands:
 
-bool FSpawnASteerStateManagerMOCK::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		sessionUtilities.spawnInPIEAnInstanceOf<ASteerStateManagerMOCK>();
-
-		return true;
-	}
-	return false;
-}
-
 
 bool FLeftSteerASteerStateManagerMOCK::Update()
 {
@@ -70,19 +58,6 @@ bool FCenterASteerStateManagerMOCK::Update()
 		{
 			testManager->center();
 			return true;
-		}
-	}
-	return false;
-}
-
-
-bool FServerSpawnSteerStateManagerMOCK::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{
-		if(ASteerStateManagerMOCK::StaticClass() == anActorClass)
-		{
-			return NetworkedPIESessionUtilities::spawnActorInServerWorldOfClass<ASteerStateManagerMOCK>(clientQuantity);
 		}
 	}
 	return false;

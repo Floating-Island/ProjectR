@@ -37,43 +37,36 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModePositionsJetsBehindTheInitialLapP
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-//uses a mock
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeUpdateStageBringsNextStageTest, 
 	"ProjectR.RaceGameMode Tests.Unit.004: updateStage changes the stage to the next stage", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-//uses a mock
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModePositionNumberLowerThanTheOneBehindTest, 
 	"ProjectR.RaceGameMode Tests.Integration.005: The position number of a jet is lower than the jet behind", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-//uses a mock
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeMovesFinalistsJetsTest, 
 	"ProjectR.RaceGameMode Tests.Integration.006: Moves a jet to the finalist jets if it completes the final lap", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-//uses a mock
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModePlayersToCreateCreatesThatNumberOfPlayersTest, 
 	"ProjectR.RaceGameMode Tests.Integration.007: PlayersToCreate creates that number of players", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-//uses a mock
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeCreatesTheNecessaryGamePlayersTest, 
 	"ProjectR.RaceGameMode Tests.Integration.008: Creates the necessary number of players for the game instance", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-//uses a mock
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeSameOrMoreNumberOfJetsAsPlayersTest, 
 	"ProjectR.RaceGameMode Tests.Integration.009: The number of jets created is the same or more than the number of players", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-//uses a mock
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeSpawnedJetsWithTrackRotationTest, 
 	"ProjectR.RaceGameMode Tests.Integration.010: Each spawned jet has the rotation of the track section where it's at", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)

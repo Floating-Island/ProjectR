@@ -22,7 +22,7 @@ pipeline {
         echo 'sending notification to Slack.'
         slackSend channel: '#builds', 
           color: '#4A90E2',
-          message: "Build ${env.BUILD_NUMBER} has started at node ${env.NODE_NAME}..."
+          message: "Commit ${GIT_COMMIT} started build ${env.BUILD_NUMBER} on ${env.BRANCH_NAME} at node ${env.NODE_NAME}..."
 
         bat "BuildWithoutCooking.bat \"${ue4Path}\" \"${env.WORKSPACE}\" \"${ueProjectFilename}\""//builds our project
       }
@@ -39,8 +39,15 @@ pipeline {
     stage('Testing') {
       steps {
         echo 'Testing Stage Started.'
-
-        bat "TestRunnerAndCodeCoverage.bat \"${ue4Path}\" \"${env.WORKSPACE}\" \"${ueProjectFilename}\" \"${testSuiteToRun}\" \"${testReportFolder}\" \"${testsLogName}\" \"${codeCoverageReportName}\""//runs the tests
+        script {
+          if(env.BRANCH_NAME == 'master') {
+            echo 'Push to master recognized. Starting tests and code coverage.'
+            bat "TestRunnerAndCodeCoverage.bat \"${ue4Path}\" \"${env.WORKSPACE}\" \"${ueProjectFilename}\" \"${testSuiteToRun}\" \"${testReportFolder}\" \"${testsLogName}\" \"${codeCoverageReportName}\""//runs the tests and performs code coverage
+          }
+          else {
+            bat "TestRunner.bat \"${ue4Path}\" \"${env.WORKSPACE}\" \"${ueProjectFilename}\" \"${testSuiteToRun}\" \"${testReportFolder}\" \"${testsLogName}\""//runs the tests
+          }
+        }
       }
       post {
         success {
@@ -53,6 +60,7 @@ pipeline {
     }
 
 
+
   }
   post {
     always{
@@ -63,10 +71,14 @@ pipeline {
 
         slackSend channel: "#builds",
           color: '#c2f2d0',
-          message: "\n *Tests Report Summary* - Total Tests: ${testReportSummary.totalCount}, Failures: ${testReportSummary.failCount}, Skipped: ${testReportSummary.skipCount}, Passed: ${testReportSummary.passCount}"
-
-      echo "Publish Code Coverage Report."
-      cobertura(coberturaReportFile:"${codeCoverageReportName}")
+          message: "_build ${env.BUILD_NUMBER} on ${env.BRANCH_NAME}_\n *Tests Report Summary* - Total Tests: ${testReportSummary.totalCount}, Failures: ${testReportSummary.failCount}, Skipped: ${testReportSummary.skipCount}, Passed: ${testReportSummary.passCount}"
+      
+      script {
+      if (env.BRANCH_NAME == 'master') {
+          echo "Publish Code Coverage Report."
+          cobertura(coberturaReportFile:"${codeCoverageReportName}")
+          }
+      }
 
       echo 'Cleaning up workspace:'
       echo '-checking current workspace.'
@@ -81,17 +93,17 @@ pipeline {
     success{
         slackSend channel: '#builds',
           color: 'good', 
-          message: "*${currentBuild.currentResult}:* Build ${env.BUILD_NUMBER} has *succeded!* :innocent:"
+          message: "*${currentBuild.currentResult}:* Build ${env.BUILD_NUMBER} on ${env.BRANCH_NAME} has *succeded!* :innocent:"
     }
     unstable{
         slackSend channel: '#builds',
           color: '#E2A52E', 
-          message: "*${currentBuild.currentResult}:* Build ${env.BUILD_NUMBER} it's *unstable!* :grimacing:"
+          message: "*${currentBuild.currentResult}:* Build ${env.BUILD_NUMBER} on ${env.BRANCH_NAME} it's *unstable!* :grimacing:"
     }
     failure{
         slackSend channel: '#builds',
           color: 'danger', 
-          message: "*${currentBuild.currentResult}:* Build ${env.BUILD_NUMBER} has *failed* :astonished:"
+          message: "*${currentBuild.currentResult}:* Build ${env.BUILD_NUMBER} on ${env.BRANCH_NAME} has *failed* :astonished:"
     }
   }
 }

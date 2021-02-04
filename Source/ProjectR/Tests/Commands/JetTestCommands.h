@@ -12,46 +12,31 @@
 
 //Test preparation commands:
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItAccelerate);
+DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMakeItAccelerate);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItBrake);
+DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMakeItBrake);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetSetVelocityToTopSpeed);
+DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetVelocityToTopSpeed);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItSteerRight);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FRetrieveAJetMOCKSetVelocityToDesiredSpeed, float, desiredSpeed);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerationKey);
+DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMakeItSteerRight);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKey);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeKey);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FRetrieveAJetAndPressActionKey, FName, keyName);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetSnapedToFloor);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotateAndAccelerate);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotateAndBrake);
+DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndRotateIt);
 
 
 //DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetAccelerateAndSteerRight);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetBrakeAndSteerRight);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJeSteerRightWhenIdle);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJet);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningTwoJetsMakeOneOfThemItAccelerateAndSteerRight);
@@ -72,67 +57,37 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotatedOverFloorAndBrakeIt);
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotatedOverFloorAccelerateAndSteerItRight);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FServerSpawnJet, int, clientQuantity);
-
-
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FClientPressKey, FName, keyName, int, clientQuantity);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FClientPressActionKey, FName, keyName, int, clientQuantity);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FServerSpawnJetToSteer, int, clientQuantity);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FServerRetrieveJetMOCKAndSetTopSpeed, int, clientQuantity);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientSteerRightJet, int, clientQuantity);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseAccelerationKey);
+DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetMotorManagerMOCKAndSetAcceleratingMotorState);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseBrakeKey);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FRetrieveAJetAndReleaseActionKey, FName, keyName);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FServerSpawnJetMOCK, int, clientQuantity);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FServerRetrieveJetMOCKAndSetStateManagerMocks, int, clientQuantity);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FClientReleaseActionKey, FName, keyName, int, clientQuantity);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerationAndBrakeKey);
+DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetMotorManagerMOCK);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeAndAccelerationKey);
+DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetSteerManagerMOCK);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressBrakeAndReleaseAccelerationKey);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressAccelerateAndReleaseBrakeKey);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetMakeItSteerLeft);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerLeftKey);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseSteerLeftKey);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetReleaseSteerRightKey);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerLeftKeyReleaseSteerRightKey);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKeyReleaseSteerLeftKey);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerRightKeyPressSteerLeftKey);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetPressSteerLeftKeyPressSteerRightKey);
+DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMakeItSteerLeft);
 
 
 

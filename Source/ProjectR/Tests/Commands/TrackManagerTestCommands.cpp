@@ -19,20 +19,6 @@
 
 //Test preparation commands:
 
-bool FSpawningATrackGenerator::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-
-	sessionUtilities.spawnInPIEAnInstanceOf<ATrackGenerator>();
-	sessionUtilities.spawnInPIEAnInstanceOf<ATrackManagerMOCK>();
-	
-	return true;
-}
 
 
 bool FSpawningARotatedTrackGeneratorAndJetCloseToIt::Update()

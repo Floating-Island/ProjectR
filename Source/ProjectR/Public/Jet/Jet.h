@@ -91,7 +91,7 @@ public:
 
 	FVector ForwardProjectionOnFloor();
 
-	bool traceToFind(FHitResult& obstacle);
+	bool traceToFind(FHitResult& anObstacle);
 
 	FVector forwardVelocity();
 

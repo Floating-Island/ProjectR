@@ -6,12 +6,14 @@
 
 #include "MotorStateManagerTest.h"
 #include "Jet/MotorStates/MotorStateManager.h"
+#include "Mocks/MotorStateManagerMOCK.h"
 #include "Jet/MotorStates/AcceleratingMotorState.h"
 #include "Jet/MotorStates/NeutralMotorState.h"
 #include "Jet/MotorStates/ReversingMotorState.h"
 #include "Jet/MotorStates/MixedMotorState.h"
 
 #include "Tests/AutomationEditorCommon.h"
+#include "Commands/CommonPIECommands.h"
 #include "Commands/MotorStateManagerTestCommands.h"
 #include "Commands/NetworkCommands.h"
 
@@ -32,7 +34,8 @@ bool FAMotorStateManagerDefaultStateIsNeutralTest::RunTest(const FString& Parame
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManager);
+	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(motorStateManagerClass, FTransform()));
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerDefaultState(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
@@ -47,7 +50,9 @@ bool FAMotorStateManagerAccelerateChangesStateToAcceleratingTest::RunTest(const 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManagerAndAccelerateIt);
+	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(motorStateManagerClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAMotorStateManagerAndAccelerateIt);
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerStateChangesToAccelerating(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
@@ -62,7 +67,9 @@ bool FAMotorStateManagerBrakeChangesStateToReversingTest::RunTest(const FString&
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManagerAndBrakeIt);
+	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(motorStateManagerClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAMotorStateManagerAndBrakeIt);
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerStateChangesToReversing(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
@@ -77,7 +84,9 @@ bool FAMotorStateManagerNeutralizeChangesStateToNeutralTest::RunTest(const FStri
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManagerAndNeutralizeIt);
+	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(motorStateManagerClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAMotorStateManagerAndNeutralizeIt);
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerStateChangesToNeutral(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
@@ -92,7 +101,8 @@ bool FAMotorStateManagerAccelerateKeepsStateIfAlreadyAcceleratingTest::RunTest(c
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManager);
+	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(motorStateManagerClass, FTransform()));
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerAccelerateKeepsStateIfAccelerating(tickCount, tickLimit, nullptr, this));
@@ -109,7 +119,8 @@ bool FAMotorStateManagerBrakeKeepsStateIfAlreadyReversingingTest::RunTest(const 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManager);
+	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(motorStateManagerClass, FTransform()));
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerBrakeKeepsStateIfReversing(tickCount, tickLimit, nullptr, this));
@@ -126,7 +137,9 @@ bool FAMotorStateManagerNeutralizeKeepsStateIfAlreadyNeutralTest::RunTest(const 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManagerAndAccelerateIt);
+	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(motorStateManagerClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAMotorStateManagerAndAccelerateIt);
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerNeutralizeKeepsStateIfNeutral(tickCount, tickLimit, nullptr, this));
@@ -181,7 +194,8 @@ bool FAMotorStateManagerReplicatesStateWhenCallingAccelerateTest::RunTest(const 
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnMotorStateManager(numberOfPlayers));
+	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(motorStateManagerClass, FTransform(), numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientAccelerateMotorStateManager(numberOfPlayers));
 
@@ -205,7 +219,8 @@ bool FAMotorStateManagerReplicatesStateWhenCallingBrakeTest::RunTest(const FStri
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnMotorStateManager(numberOfPlayers));
+	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(motorStateManagerClass, FTransform(), numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientBrakeMotorStateManager(numberOfPlayers));
 
@@ -229,7 +244,8 @@ bool FAMotorStateManagerReplicatesStateWhenCallingNeutralizeTest::RunTest(const 
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnMotorStateManager(numberOfPlayers));
+	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(motorStateManagerClass, FTransform(), numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientNeutralizeMotorStateManager(numberOfPlayers));
 
@@ -250,7 +266,9 @@ bool FAMotorStateManagerMixChangesStateToMixedTest::RunTest(const FString& Param
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManagerAndMixIt);
+	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(motorStateManagerClass, FTransform()));
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAMotorStateManagerAndMixIt);
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerStateChangesToMixed(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
@@ -265,7 +283,8 @@ bool FAMotorStateManagerMixKeepsStateIfAlreadyMixedTest::RunTest(const FString& 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAMotorStateManager);
+	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(motorStateManagerClass, FTransform()));
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerMixKeepsStateIfMixed(tickCount, tickLimit, nullptr, this));
@@ -285,7 +304,8 @@ bool FAMotorStateManagerReplicatesStateWhenCallingMixTest::RunTest(const FString
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnMotorStateManager(numberOfPlayers));
+	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(motorStateManagerClass, FTransform(), numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientMixMotorStateManager(numberOfPlayers));
 
