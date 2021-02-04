@@ -37,10 +37,15 @@ pipeline {
     }
 
     stage('Testing') {
+      when {
+        not {
+          changeRequest
+        }
+      }//runs when no pull/merge requests triggered the build.
       steps {
         echo 'Testing Stage Started.'
 
-        bat "TestRunnerAndCodeCoverage.bat \"${ue4Path}\" \"${env.WORKSPACE}\" \"${ueProjectFilename}\" \"${testSuiteToRun}\" \"${testReportFolder}\" \"${testsLogName}\" \"${codeCoverageReportName}\""//runs the tests
+        bat "TestRunner.bat \"${ue4Path}\" \"${env.WORKSPACE}\" \"${ueProjectFilename}\" \"${testSuiteToRun}\" \"${testReportFolder}\" \"${testsLogName}\""//runs the tests
       }
       post {
         success {
@@ -48,6 +53,26 @@ pipeline {
         }
         failure {
           echo 'Testing Stage Unsuccessful.'
+        }
+      }
+    }
+
+    stage('Testing & Coverage') {
+      when {
+        changeRequest target: 'master'
+      }//runs only when the build was triggered by a pull/merge request to master.
+      steps {
+        echo 'Pull request to master recognized.'
+        echo 'Testing & Coverage Stage Started.'
+
+        bat "TestRunnerAndCodeCoverage.bat \"${ue4Path}\" \"${env.WORKSPACE}\" \"${ueProjectFilename}\" \"${testSuiteToRun}\" \"${testReportFolder}\" \"${testsLogName}\" \"${codeCoverageReportName}\""//runs the tests and makes code coverage
+      }
+      post {
+        success {
+          echo 'Testing & Coverage Stage Successful.'
+        }
+        failure {
+          echo 'Testing & Coverage Stage Unsuccessful.'
         }
       }
     }
