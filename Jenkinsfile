@@ -22,7 +22,7 @@ pipeline {
         echo 'sending notification to Slack.'
         slackSend channel: '#builds', 
           color: '#4A90E2',
-          message: "Build ${env.BUILD_NUMBER} on ${env.BRANCH_NAME} has started at node ${env.NODE_NAME}..."
+          message: "Commit ${GIT_COMMIT} started build ${env.BUILD_NUMBER} on ${env.BRANCH_NAME} at node ${env.NODE_NAME}..."
 
         bat "BuildWithoutCooking.bat \"${ue4Path}\" \"${env.WORKSPACE}\" \"${ueProjectFilename}\""//builds our project
       }
