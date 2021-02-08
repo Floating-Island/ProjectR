@@ -7,6 +7,10 @@
 #include "SessionManagerTest.h"
 #include "Session/SessionManager.h"
 #include "Mocks/SessionManagerMOCK.h"
+#include "Tests/AutomationEditorCommon.h"
+#include "Commands/CommonPIECommands.h"
+#include "Commands/SessionManagerTestCommands.h"
+#include "Utilities/ObjectContainerActor.h"
 
 
 bool FUSessionManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
@@ -41,10 +45,17 @@ bool FUSessionManagerHasTheSessionInterfaceWhenInstantiatedTest::RunTest(const F
 
 bool FUSessionManagerCreateLANSessionStartsTheCreationOfSessionTest::RunTest(const FString& Parameters)
 {
-	USessionManager* testManager = NewObject<USessionManager>();
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
-	TestTrue("createLANSession should start the asynchronous creation of a LAN session", testManager->createLANSession());
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	UClass* containerClass = AObjectContainerActor::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(containerClass, FTransform()));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FUSessionManagerCreateAndCheckSessionCreation(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
 
