@@ -5,6 +5,17 @@
 
 
 #include "SessionManagerTest.h"
+#include "Session/SessionManager.h"
+
+
+bool FUSessionManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
+{
+	USessionManager* testManager = NewObject<USessionManager>();
+
+	TestNotNull("Shouldn't be null when instantiated.", testManager);
+
+	return true;
+}
 
 
 
