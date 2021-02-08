@@ -12,6 +12,8 @@ public class ProjectR : ModuleRules
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
+        DynamicallyLoadedModuleNames.Add("OnlineSubsystemNull");
+
         // Uncomment if you are using Slate UI
         PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
 
