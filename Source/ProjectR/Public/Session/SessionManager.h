@@ -16,6 +16,11 @@ class PROJECTR_API USessionManager : public UObject
 {
 	GENERATED_BODY()
 
+	void makeSession();
+	
+public:
+	USessionManager();
+protected:
 	IOnlineSubsystem* onlineSubsystem;
 	IOnlineSessionPtr sessionInterface;
 };
