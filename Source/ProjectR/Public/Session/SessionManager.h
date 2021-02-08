@@ -20,7 +20,17 @@ class PROJECTR_API USessionManager : public UObject
 	
 public:
 	USessionManager();
+
+	bool createLANSession();
+	
 protected:
 	IOnlineSubsystem* onlineSubsystem;
 	IOnlineSessionPtr sessionInterface;
+
+	FName lobbyMapName;
+	
+	bool hostSession(TSharedPtr<const FUniqueNetId> aUserID, FName aSessionName, bool isALANSession,
+                                 bool hasPresence, int32 aPlayerCapacity);
+
+	TSharedPtr<FOnlineSessionSettings> retrieveConfiguredSessionSettings(bool isALANSession, bool hasPresence, int32 aPlayerCapacity);
 };
