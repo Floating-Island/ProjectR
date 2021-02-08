@@ -73,7 +73,7 @@ bool FUSessionManagerCreateLANSessionTravelsToLobbyWhenStartedTest::RunTest(cons
 	ADD_LATENT_AUTOMATION_COMMAND(FUSessionManagerCreateSession);
 
 	int tickCount = 0;
-	int tickLimit = 0;
+	int tickLimit = 10;
 	ADD_LATENT_AUTOMATION_COMMAND(FUSessionManagerCheckTravelToLobby(tickCount, tickLimit, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
