@@ -37,7 +37,7 @@ bool USessionManager::hostSession(TSharedPtr<const FUniqueNetId> aUserID, FName 
 TSharedPtr<FOnlineSessionSettings> USessionManager::retrieveConfiguredSessionSettings(bool isALANSession,
 	bool hasPresence, int32 aPlayerCapacity)
 {
-	TSharedPtr<FOnlineSessionSettings> sessionSettings = TSharedPtr<FOnlineSessionSettings>(NewObject<FOnlineSessionSettings>());
+	TSharedPtr<FOnlineSessionSettings> sessionSettings = MakeShared<FOnlineSessionSettings>();
 
 	sessionSettings->bIsLANMatch = isALANSession;
 	sessionSettings->bUsesPresence = hasPresence;
