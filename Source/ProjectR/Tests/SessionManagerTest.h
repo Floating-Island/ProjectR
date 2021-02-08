@@ -22,8 +22,13 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerIsntNullWhenInstantiatedTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerHasTheSessionSubsystemWhenInstantiatedTest, 
+	"ProjectR.SessionManager Tests.Unit.001: Has the session subsystem when instantiated", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerHasTheSessionInterfaceWhenInstantiatedTest, 
-	"ProjectR.SessionManager Tests.Unit.001: Has the session interface when instantiated", 
+	"ProjectR.SessionManager Tests.Unit.002: Has the session interface when instantiated", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

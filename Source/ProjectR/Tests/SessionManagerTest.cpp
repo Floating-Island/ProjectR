@@ -6,6 +6,7 @@
 
 #include "SessionManagerTest.h"
 #include "Session/SessionManager.h"
+#include "Mocks/SessionManagerMOCK.h"
 
 
 bool FUSessionManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
@@ -18,11 +19,21 @@ bool FUSessionManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Parame
 }
 
 
+bool FUSessionManagerHasTheSessionSubsystemWhenInstantiatedTest::RunTest(const FString& Parameters)
+{
+	USessionManagerMOCK* testManager = NewObject<USessionManagerMOCK>();
+
+	TestNotNull("Session subsystem shouldn't be null when instantiated.", testManager->retrieveSessionSubsystem());
+
+	return true;
+}
+
+
 bool FUSessionManagerHasTheSessionInterfaceWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
 	USessionManagerMOCK* testManager = NewObject<USessionManagerMOCK>();
 
-	TestNotNull("Session shouldn't be null when instantiated.", testManager->retrieveSession());
+	TestNotNull("Session interface shouldn't be null when instantiated.", testManager->retrieveSessionInterface());
 
 	return true;
 }
