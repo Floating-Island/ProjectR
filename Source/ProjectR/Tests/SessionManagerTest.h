@@ -37,6 +37,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerCreateLANSessionStartsTheCreati
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerCreateLANSessionTravelsToLobbyWhenStartedTest, 
+	"ProjectR.SessionManager Tests.Unit.004: createLANSession travels to lobby when it starts", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

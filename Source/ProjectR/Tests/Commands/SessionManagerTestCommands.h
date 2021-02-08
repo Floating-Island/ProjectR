@@ -13,10 +13,14 @@
 
 //Test preparation commands:
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FUSessionManagerCreateSession);
 
 
 //Test check commands:
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FUSessionManagerCreateAndCheckSessionCreation, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FUSessionManagerCheckTravelToLobby, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
 
 #endif //WITH_DEV_AUTOMATION_TESTS
