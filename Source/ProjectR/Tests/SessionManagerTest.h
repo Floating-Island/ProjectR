@@ -32,6 +32,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerHasTheSessionInterfaceWhenInsta
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerCreateLANSessionStartsTheCreationOfSessionTest, 
+	"ProjectR.SessionManager Tests.Unit.003: createLANSession starts the creation of a LAN session", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

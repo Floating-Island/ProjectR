@@ -39,6 +39,16 @@ bool FUSessionManagerHasTheSessionInterfaceWhenInstantiatedTest::RunTest(const F
 }
 
 
+bool FUSessionManagerCreateLANSessionStartsTheCreationOfSessionTest::RunTest(const FString& Parameters)
+{
+	USessionManager* testManager = NewObject<USessionManager>();
+
+	TestTrue("createLANSession should start the asynchronous creation of a LAN session", testManager->createLANSession());
+
+	return true;
+}
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
