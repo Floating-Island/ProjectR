@@ -18,6 +18,16 @@ bool FUSessionManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Parame
 }
 
 
+bool FUSessionManagerHasTheSessionInterfaceWhenInstantiatedTest::RunTest(const FString& Parameters)
+{
+	USessionManagerMOCK* testManager = NewObject<USessionManagerMOCK>();
+
+	TestNotNull("Session shouldn't be null when instantiated.", testManager->retrieveSession());
+
+	return true;
+}
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
