@@ -16,7 +16,9 @@ class PROJECTR_API USessionManager : public UObject
 {
 	GENERATED_BODY()
 
+	void fetchAndConfigureSessionInterface();
 	void fetchSessionInterface();
+	void configureSessionInterfaceHandles();
 	
 public:
 	USessionManager();
@@ -24,15 +26,31 @@ public:
 	bool createLANSession();
 
 	void prepareSubsystemAndInterface();
+
+	FString lobbyName();
 	
 protected:
 	IOnlineSubsystem* onlineSubsystem;
 	IOnlineSessionPtr sessionInterface;
 
-	FString lobbyMapName;
+	FName lobbyMapName;
 
 	bool hostSession(TSharedPtr<const FUniqueNetId> aUserID, FName aSessionName, bool isALANSession,
                                  bool hasPresence, int32 aPlayerCapacity);
 
 	TSharedPtr<FOnlineSessionSettings> retrieveConfiguredSessionSettings(bool isALANSession, bool hasPresence, int32 aPlayerCapacity);
+
+	//delegates
+	FOnCreateSessionCompleteDelegate sessionCreationCompletedDelegate;
+	FOnStartSessionCompleteDelegate sessionStartCompletedDelegate;
+
+	//handles
+	FDelegateHandle sessionCreationCompletedDelegateHandle;
+	FDelegateHandle sessionStartCompletedDelegateHandle;
+
+	//events
+	void sessionCreatedEvent(FName sessionName, bool bWasSuccessful);
+	void sessionStartedEvent(FName sessionName, bool bWasSuccessful);
+	
+	
 };

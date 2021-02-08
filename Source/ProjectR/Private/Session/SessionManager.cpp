@@ -4,11 +4,35 @@
 #include "Session/SessionManager.h"
 #include "OnlineSubsystem.h"
 #include "OnlineSessionSettings.h"
+#include "Kismet/GameplayStatics.h"
 
 
 USessionManager::USessionManager()
 {
-	lobbyMapName = FString("lobby");
+	lobbyMapName = FName(FString("lobby"));
+}
+
+void USessionManager::fetchAndConfigureSessionInterface()
+{
+	fetchSessionInterface();
+	configureSessionInterfaceHandles();
+}
+
+void USessionManager::fetchSessionInterface()
+{
+	if(onlineSubsystem)
+	{
+		sessionInterface = onlineSubsystem->GetSessionInterface();
+	}
+}
+
+void USessionManager::configureSessionInterfaceHandles()
+{
+	sessionCreationCompletedDelegate = FOnCreateSessionCompleteDelegate::CreateUObject(this, &USessionManager::sessionCreatedEvent);
+	sessionCreationCompletedDelegateHandle = sessionInterface->AddOnCreateSessionCompleteDelegate_Handle(sessionCreationCompletedDelegate);
+	
+	sessionStartCompletedDelegate = FOnStartSessionCompleteDelegate::CreateUObject(this, &USessionManager::sessionStartedEvent);
+	sessionStartCompletedDelegateHandle = sessionInterface->AddOnCreateSessionCompleteDelegate_Handle(sessionStartCompletedDelegate);
 }
 
 bool USessionManager::createLANSession()
@@ -19,7 +43,12 @@ bool USessionManager::createLANSession()
 void USessionManager::prepareSubsystemAndInterface()
 {
 	onlineSubsystem = IOnlineSubsystem::Get();
-	fetchSessionInterface();
+	fetchAndConfigureSessionInterface();
+}
+
+FString USessionManager::lobbyName()
+{
+	return lobbyMapName.ToString();
 }
 
 bool USessionManager::hostSession(TSharedPtr<const FUniqueNetId> aUserID, FName aSessionName, bool isALANSession,
@@ -29,7 +58,7 @@ bool USessionManager::hostSession(TSharedPtr<const FUniqueNetId> aUserID, FName 
 	{
 		TSharedPtr<FOnlineSessionSettings> sessionSettings = retrieveConfiguredSessionSettings(isALANSession, hasPresence, aPlayerCapacity);
 
-		sessionSettings->Set(SETTING_MAPNAME, lobbyMapName, EOnlineDataAdvertisementType::ViaOnlineService);
+		sessionSettings->Set(SETTING_MAPNAME, lobbyMapName.ToString(), EOnlineDataAdvertisementType::ViaOnlineService);
 		return sessionInterface->CreateSession(*aUserID, aSessionName, *sessionSettings);
 	}
 	return false;
@@ -53,10 +82,22 @@ TSharedPtr<FOnlineSessionSettings> USessionManager::retrieveConfiguredSessionSet
 	return sessionSettings;
 }
 
-void USessionManager::fetchSessionInterface()
+void USessionManager::sessionCreatedEvent(FName sessionName, bool bWasSuccessful)
 {
-	if(onlineSubsystem)
+	UE_LOG(LogTemp, Log, TEXT("Session %s creation: %s."), (*sessionName.ToString()), (bWasSuccessful)? (*FString("Successful")):(*FString("Unsuccessful")));
+
+	if (sessionInterface.IsValid() && bWasSuccessful)
 	{
-		sessionInterface = onlineSubsystem->GetSessionInterface();
+		sessionInterface->StartSession(sessionName);
+	}
+}
+
+void USessionManager::sessionStartedEvent(FName sessionName, bool bWasSuccessful)
+{
+	UE_LOG(LogTemp, Log, TEXT("Session %s starting: %s."), (*sessionName.ToString()), (bWasSuccessful) ? (*FString("Successful")) : (*FString("Unsuccessful")));
+
+	if (sessionInterface.IsValid() && bWasSuccessful)
+	{
+		UGameplayStatics::OpenLevel(GetWorld(), lobbyMapName, true, "listen");
 	}
 }
