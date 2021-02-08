@@ -22,12 +22,16 @@ public:
 	USessionManager();
 
 	bool createLANSession();
+
+	void prepareSubsystemAndInterface();
 	
 protected:
 	IOnlineSubsystem* onlineSubsystem;
 	IOnlineSessionPtr sessionInterface;
 
-	FName lobbyMapName;
+	FString lobbyMapName;
+
+	
 	
 	bool hostSession(TSharedPtr<const FUniqueNetId> aUserID, FName aSessionName, bool isALANSession,
                                  bool hasPresence, int32 aPlayerCapacity);

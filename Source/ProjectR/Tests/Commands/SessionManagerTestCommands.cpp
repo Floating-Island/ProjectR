@@ -21,14 +21,25 @@ bool FUSessionManagerCreateAndCheckSessionCreation::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
 		AObjectContainerActor* testContainer = sessionUtilities.retrieveFromPIEAnInstanceOf<AObjectContainerActor>();
-		
+
 		if(testContainer)
 		{
-			testContainer->storeObjectOfType<USessionManager>();
-			USessionManager* testManager = Cast<USessionManager, UObject>(testContainer->retrieveStoredObject());
-			test->TestTrue("createLANSession should start the asynchronous creation of a LAN session", testManager->createLANSession());
+			UWorld* containerWorld = testContainer->GetWorld();
+			if(ensure(containerWorld))
+			{
+				UE_LOG(LogTemp, Log, TEXT("trying to store session manager object"));
+				testContainer->storeObjectOfType<USessionManager>();
+				UE_LOG(LogTemp, Log, TEXT("session manager object stored"));
+				USessionManager* testManager = Cast<USessionManager, UObject>(testContainer->retrieveStoredObject());
+				if(testManager)
+				{
+					testManager->prepareSubsystemAndInterface();
+					UE_LOG(LogTemp, Log, TEXT("session manager object retrieved"));
+					test->TestTrue("createLANSession should start the asynchronous creation of a LAN session", testManager->createLANSession());
 
-			return true;
+					return true;
+				}
+			}
 		}
 	}
 	return false;
