@@ -33,7 +33,7 @@ bool FUSessionManagerHasTheSessionInterfaceWhenInstantiatedTest::RunTest(const F
 {
 	USessionManagerMOCK* testManager = NewObject<USessionManagerMOCK>();
 
-	TestNotNull("Session interface shouldn't be null when instantiated.", testManager->retrieveSessionInterface());
+	TestNotNull("Session interface shouldn't be null when instantiated.", testManager->retrieveSessionInterface().Get());
 
 	return true;
 }
