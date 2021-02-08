@@ -16,7 +16,7 @@ class PROJECTR_API USessionManager : public UObject
 {
 	GENERATED_BODY()
 
-	void makeSession();
+	void fetchSessionInterface();
 	
 public:
 	USessionManager();
@@ -31,8 +31,6 @@ protected:
 
 	FString lobbyMapName;
 
-	
-	
 	bool hostSession(TSharedPtr<const FUniqueNetId> aUserID, FName aSessionName, bool isALANSession,
                                  bool hasPresence, int32 aPlayerCapacity);
 
