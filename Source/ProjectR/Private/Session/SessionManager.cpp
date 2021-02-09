@@ -42,6 +42,9 @@ void USessionManager::configureSessionInterfaceHandles()
 	
 	sessionStartCompletedDelegate = FOnStartSessionCompleteDelegate::CreateUObject(this, &USessionManager::sessionStartedEvent);
 	sessionStartCompletedDelegateHandle = sessionInterface->AddOnCreateSessionCompleteDelegate_Handle(sessionStartCompletedDelegate);
+
+	sessionFindCompletedDelegate = FOnFindSessionsCompleteDelegate::CreateUObject(this, &USessionManager::sessionsSearchedEvent);
+	sessionFindCompletedDelegateHandle = sessionInterface->AddOnFindSessionsCompleteDelegate_Handle(sessionFindCompletedDelegate);
 }
 
 void USessionManager::checkSubsystemAndInterfaceConfigured()
@@ -132,6 +135,21 @@ bool USessionManager::searchSessions(TSharedPtr<const FUniqueNetId> aUserID, boo
 	return false;
 }
 
+TSet<FOnlineSessionSearchResult> USessionManager::sessionSearchResults()
+{
+	TSet<FOnlineSessionSearchResult> sessionsFound = TSet<FOnlineSessionSearchResult>());
+	TSharedPtr<const FUniqueNetId> ownUserID = GetWorld()->GetGameInstance()->GetPrimaryPlayerUniqueId();
+	
+	for(const auto& session : sessionSearch->SearchResults)
+	{
+		if(session.Session.OwningUserId != ownUserID)
+		{
+			sessionsFound.Add(session);
+		}
+	}
+	return sessionsFound;
+}
+
 void USessionManager::sessionCreatedEvent(FName sessionName, bool bWasSuccessful)
 {
 	UE_LOG(LogTemp, Log, TEXT("Session %s creation was %s."), (*sessionName.ToString()), (bWasSuccessful)? (*FString("Successful")):(*FString("Unsuccessful")));
@@ -149,5 +167,24 @@ void USessionManager::sessionStartedEvent(FName sessionName, bool bWasSuccessful
 	if (sessionInterface.IsValid() && bWasSuccessful)
 	{
 		UGameplayStatics::OpenLevel(GetWorld(), lobbyMapName, true, "listen");
+	}
+}
+
+void USessionManager::sessionsSearchedEvent(bool bWasSuccessful)
+{
+	UE_LOG(LogTemp, Log, TEXT("Session finding was %s."), (bWasSuccessful) ? (*FString("successful")) : (*FString("Unsuccessful")));
+
+	if (sessionInterface.IsValid())
+	{
+		TArray<FOnlineSessionSearchResult> searchResults = sessionSearch->SearchResults;
+		
+		UE_LOG(LogTemp, Log, TEXT("Number of sessions found: %d."), searchResults.Num());
+
+		UE_LOG(LogTemp, Log, TEXT("Sessions found:"));
+
+		for (auto sessionFound : searchResults)
+		{
+			UE_LOG(LogTemp, Log, TEXT("%s"), *(sessionFound.Session.OwningUserName));
+		}
 	}
 }

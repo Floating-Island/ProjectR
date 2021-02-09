@@ -32,6 +32,8 @@ public:
 	bool destroyCurrentSession();
 
 	bool searchLANSessions();
+
+	TSet<FOnlineSessionSearchResult> sessionSearchResults();
 	
 protected:
 	IOnlineSubsystem* onlineSubsystem;
@@ -56,14 +58,17 @@ protected:
 	//handles
 	FDelegateHandle sessionCreationCompletedDelegateHandle;
 	FDelegateHandle sessionStartCompletedDelegateHandle;
+	FDelegateHandle sessionFindCompletedDelegateHandle;
 
 	//delegates
 	FOnCreateSessionCompleteDelegate sessionCreationCompletedDelegate;
 	FOnStartSessionCompleteDelegate sessionStartCompletedDelegate;
+	FOnFindSessionsCompleteDelegate sessionFindCompletedDelegate;
 
 	//events
 	void sessionCreatedEvent(FName sessionName, bool bWasSuccessful);
 	void sessionStartedEvent(FName sessionName, bool bWasSuccessful);
+	void sessionsSearchedEvent(bool bWasSuccessful);
 	
 	
 };
