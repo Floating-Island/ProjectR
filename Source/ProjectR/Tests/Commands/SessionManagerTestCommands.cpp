@@ -66,26 +66,23 @@ bool FUSessionManagerCheckTravelToLobby::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		AObjectContainerActor* testContainer = sessionUtilities.retrieveFromPIEAnInstanceOf<AObjectContainerActor>();
-		if(testContainer)
+		
+		UE_LOG(LogTemp, Log, TEXT("current PIE world: %s."), *sessionUtilities.currentPIEWorld()->GetMapName());
+		bool isInAnotherWorld = !sessionUtilities.currentPIEWorld()->GetMapName().Contains("voidWorld");
+
+		if (isInAnotherWorld)
 		{
-			USessionManager* testManager = Cast<USessionManager, UObject>(testContainer->retrieveStoredObject());
-			bool isInAnotherWorld = sessionUtilities.currentPIEWorld()->GetMapName().Contains(*testManager->lobbyName());
+			test->TestTrue(TEXT("The session manager should travel to the lobby when the session starts."), isInAnotherWorld);
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
 
-			if (isInAnotherWorld)
-			{
-				test->TestTrue(TEXT("The session manager should travel to the lobby when the session starts."), isInAnotherWorld);
-				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-				return true;
-			}
-
-			++tickCount;
-			if (tickCount > tickLimit)
-			{
-				test->TestTrue(TEXT("The session manager should travel to the lobby when the session starts."), isInAnotherWorld);
-				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-				return true;
-			}
+		++tickCount;
+		if (tickCount > tickLimit)
+		{
+			test->TestTrue(TEXT("The session manager should travel to the lobby when the session starts."), isInAnotherWorld);
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
 		}
 	}
 	return false;
