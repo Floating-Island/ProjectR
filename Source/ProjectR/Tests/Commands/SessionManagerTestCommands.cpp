@@ -24,7 +24,6 @@ bool FUSessionManagerCreateSession::Update()
 			USessionManager* testManager = Cast<USessionManager, UObject>(testContainer->retrieveStoredObject());
 			if(testManager)
 			{
-				testManager->prepareSubsystemAndInterface();
 				testManager->createLANSession();
 				return true;
 			}
