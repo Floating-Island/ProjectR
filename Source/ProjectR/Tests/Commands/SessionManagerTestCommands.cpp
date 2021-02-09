@@ -50,7 +50,6 @@ bool FUSessionManagerCreateAndCheckSessionCreation::Update()
 			USessionManager* testManager = Cast<USessionManager, UObject>(testContainer->retrieveStoredObject());
 			if(testManager)
 			{
-				testManager->prepareSubsystemAndInterface();
 				test->TestTrue("createLANSession should start the asynchronous creation of a LAN session", testManager->createLANSession());
 
 				return true;
@@ -104,7 +103,6 @@ bool FUSessionManagerCheckSessionDestructionStarting::Update()
 
 			objectContainer->storeObjectOfType<USessionManager>();
 			USessionManager* testManager = Cast<USessionManager, UObject>(objectContainer->retrieveStoredObject());
-			testManager->prepareSubsystemAndInterface();
 			
 			test->TestTrue(TEXT("The session manager should start session destruction when calling destroyCurrentSession."), testManager->destroyCurrentSession());
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;

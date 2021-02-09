@@ -12,6 +12,12 @@ USessionManager::USessionManager()
 	lobbyMapName = FName(FString("lobby"));
 }
 
+void USessionManager::prepareSubsystemAndInterface()
+{
+	onlineSubsystem = IOnlineSubsystem::Get();
+	fetchAndConfigureSessionInterface();
+}
+
 void USessionManager::fetchAndConfigureSessionInterface()
 {
 	fetchSessionInterface();
@@ -35,15 +41,17 @@ void USessionManager::configureSessionInterfaceHandles()
 	sessionStartCompletedDelegateHandle = sessionInterface->AddOnCreateSessionCompleteDelegate_Handle(sessionStartCompletedDelegate);
 }
 
-bool USessionManager::createLANSession()
+void USessionManager::checkSubsystemAndInterfaceConfigured()
 {
-	return hostSession(GetWorld()->GetGameInstance()->GetPrimaryPlayerUniqueId(), GameSessionName, true, true, 8);
+	if(onlineSubsystem == nullptr || sessionInterface == nullptr)
+	{
+		prepareSubsystemAndInterface();
+	}
 }
 
-void USessionManager::prepareSubsystemAndInterface()
-{
-	onlineSubsystem = IOnlineSubsystem::Get();
-	fetchAndConfigureSessionInterface();
+bool USessionManager::createLANSession()
+{	
+	return hostSession(GetWorld()->GetGameInstance()->GetPrimaryPlayerUniqueId(), GameSessionName, true, true, 8);
 }
 
 FString USessionManager::lobbyName()
@@ -53,12 +61,14 @@ FString USessionManager::lobbyName()
 
 bool USessionManager::destroyCurrentSession()
 {
+	checkSubsystemAndInterfaceConfigured();
 	return sessionInterface->DestroySession(GameSessionName);
 }
 
 bool USessionManager::hostSession(TSharedPtr<const FUniqueNetId> aUserID, FName aSessionName, bool isALANSession,
                                   bool hasPresence, int32 aPlayerCapacity)
 {
+	checkSubsystemAndInterfaceConfigured();
 	if(sessionInterface.IsValid() && aUserID.IsValid())
 	{
 		TSharedPtr<FOnlineSessionSettings> sessionSettings = retrieveConfiguredSessionSettings(isALANSession, hasPresence, aPlayerCapacity);

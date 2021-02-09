@@ -16,16 +16,16 @@ class PROJECTR_API USessionManager : public UObject
 {
 	GENERATED_BODY()
 
+	void checkSubsystemAndInterfaceConfigured();
+	void prepareSubsystemAndInterface();
 	void fetchAndConfigureSessionInterface();
 	void fetchSessionInterface();
 	void configureSessionInterfaceHandles();
-	
+
 public:
 	USessionManager();
 
 	bool createLANSession();
-
-	void prepareSubsystemAndInterface();
 
 	FString lobbyName();
 
