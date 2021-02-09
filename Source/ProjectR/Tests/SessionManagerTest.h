@@ -22,28 +22,18 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerIsntNullWhenInstantiatedTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerHasTheSessionSubsystemWhenInstantiatedTest, 
-	"ProjectR.SessionManager Tests.Unit.001: Has the session subsystem when instantiated", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerHasTheSessionInterfaceWhenInstantiatedTest, 
-	"ProjectR.SessionManager Tests.Unit.002: Has the session interface when instantiated", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerCreateLANSessionStartsTheCreationOfSessionTest, 
-	"ProjectR.SessionManager Tests.Unit.003: createLANSession starts the creation of a LAN session", 
+	"ProjectR.SessionManager Tests.Unit.001: createLANSession starts the creation of a LAN session", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerCreateLANSessionTravelsToLobbyWhenStartedTest, 
-	"ProjectR.SessionManager Tests.Unit.004: createLANSession travels to lobby when it starts", 
+	"ProjectR.SessionManager Tests.Unit.002: createLANSession travels to lobby when it starts", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerDestroyCurrentSessionStartsSessionDestructionTest, 
-	"ProjectR.SessionManager Tests.Unit.005: destroyCurrentSession starts session destruction", 
+	"ProjectR.SessionManager Tests.Unit.003: destroyCurrentSession starts session destruction", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

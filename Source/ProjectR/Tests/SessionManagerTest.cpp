@@ -23,26 +23,6 @@ bool FUSessionManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Parame
 }
 
 
-bool FUSessionManagerHasTheSessionSubsystemWhenInstantiatedTest::RunTest(const FString& Parameters)
-{
-	USessionManagerMOCK* testManager = NewObject<USessionManagerMOCK>();
-
-	TestNotNull("Session subsystem shouldn't be null when instantiated.", testManager->retrieveSessionSubsystem());
-
-	return true;
-}
-
-
-bool FUSessionManagerHasTheSessionInterfaceWhenInstantiatedTest::RunTest(const FString& Parameters)
-{
-	USessionManagerMOCK* testManager = NewObject<USessionManagerMOCK>();
-
-	TestNotNull("Session interface shouldn't be null when instantiated.", testManager->retrieveSessionInterface().Get());
-
-	return true;
-}
-
-
 bool FUSessionManagerCreateLANSessionStartsTheCreationOfSessionTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
