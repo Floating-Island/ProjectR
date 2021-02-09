@@ -129,6 +129,32 @@ bool FUSessionManagerCheckSessionDestructionStarting::Update()
 }
 
 
+bool FUSessionManagerCheckSessionSearching::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		AObjectContainerActor* testContainer = sessionUtilities.retrieveFromPIEAnInstanceOf<AObjectContainerActor>();
+
+		if(testContainer)
+		{
+			testContainer->storeObjectOfType<USessionManager>();
+			USessionManager* testManager = Cast<USessionManager, UObject>(testContainer->retrieveStoredObject());
+			if(testManager)
+			{
+				test->TestTrue("searchLANSessions should start the asynchronous search of LAN sessions", testManager->searchLANSessions());
+				
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+
 
 
 

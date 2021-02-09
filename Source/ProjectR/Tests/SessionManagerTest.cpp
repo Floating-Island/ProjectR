@@ -82,6 +82,25 @@ bool FUSessionManagerDestroyCurrentSessionStartsSessionDestructionTest::RunTest(
 }
 
 
+bool FUSessionManagerSearchLANSessionsStartsTheSearchOfSessionsTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	UClass* containerClass = AObjectContainerActor::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(containerClass, FTransform()));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	ADD_LATENT_AUTOMATION_COMMAND(FUSessionManagerCheckSessionSearching(tickCount, tickLimit, this));
+	//to the command above add destroy session after checking. If not, further tests that want to create a session will fail...
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
