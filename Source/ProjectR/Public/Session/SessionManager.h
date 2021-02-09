@@ -28,6 +28,8 @@ public:
 	void prepareSubsystemAndInterface();
 
 	FString lobbyName();
+
+	bool destroyCurrentSession();
 	
 protected:
 	IOnlineSubsystem* onlineSubsystem;

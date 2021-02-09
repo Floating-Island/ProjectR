@@ -51,6 +51,11 @@ FString USessionManager::lobbyName()
 	return lobbyMapName.ToString();
 }
 
+bool USessionManager::destroyCurrentSession()
+{
+	return sessionInterface->DestroySession(GameSessionName);
+}
+
 bool USessionManager::hostSession(TSharedPtr<const FUniqueNetId> aUserID, FName aSessionName, bool isALANSession,
                                   bool hasPresence, int32 aPlayerCapacity)
 {
