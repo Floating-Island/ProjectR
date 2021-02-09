@@ -137,7 +137,7 @@ bool USessionManager::searchSessions(TSharedPtr<const FUniqueNetId> aUserID, boo
 
 TSet<FOnlineSessionSearchResult> USessionManager::sessionSearchResults()
 {
-	TSet<FOnlineSessionSearchResult> sessionsFound = TSet<FOnlineSessionSearchResult>());
+	TSet<FOnlineSessionSearchResult> sessionsFound = TSet<FOnlineSessionSearchResult>();
 	TSharedPtr<const FUniqueNetId> ownUserID = GetWorld()->GetGameInstance()->GetPrimaryPlayerUniqueId();
 	
 	for(const auto& session : sessionSearch->SearchResults)
