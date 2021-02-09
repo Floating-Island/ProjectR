@@ -42,6 +42,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerCreateLANSessionTravelsToLobbyW
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerDestroyCurrentSessionStartsSessionDestructionTest, 
+	"ProjectR.SessionManager Tests.Unit.005: destroyCurrentSession starts session destruction", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

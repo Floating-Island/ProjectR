@@ -54,7 +54,7 @@ bool FUSessionManagerCreateLANSessionStartsTheCreationOfSessionTest::RunTest(con
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(containerClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FUSessionManagerCreateAndCheckSessionCreation(this));
-
+	//to the command above add destroy session after checking. If not, further tests that want to create a session will fail...
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
@@ -75,7 +75,28 @@ bool FUSessionManagerCreateLANSessionTravelsToLobbyWhenStartedTest::RunTest(cons
 	int tickCount = 0;
 	int tickLimit = 10;
 	ADD_LATENT_AUTOMATION_COMMAND(FUSessionManagerCheckTravelToLobby(tickCount, tickLimit, this));
+	//to the command above add destroy session after checking. If not, further tests that want to create a session will fail...
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
 
+
+bool FUSessionManagerDestroyCurrentSessionStartsSessionDestructionTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	UClass* containerClass = AObjectContainerActor::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(containerClass, FTransform()));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FUSessionManagerCreateSession);
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	ADD_LATENT_AUTOMATION_COMMAND(FUSessionManagerCheckSessionDestructionStarting(tickCount, tickLimit, this));
+	//to the command above add destroy session after checking. If not, further tests that want to create a session will fail...
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }

@@ -89,6 +89,40 @@ bool FUSessionManagerCheckTravelToLobby::Update()
 }
 
 
+bool FUSessionManagerCheckSessionDestructionStarting::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		
+		UE_LOG(LogTemp, Log, TEXT("current PIE world: %s."), *sessionUtilities.currentPIEWorld()->GetMapName());
+		bool isInAnotherWorld = !sessionUtilities.currentPIEWorld()->GetMapName().Contains("voidWorld");
+
+		if (isInAnotherWorld)
+		{
+			AObjectContainerActor* objectContainer = sessionUtilities.spawnInPIEAnInstanceOf<AObjectContainerActor>();
+
+			objectContainer->storeObjectOfType<USessionManager>();
+			USessionManager* testManager = Cast<USessionManager, UObject>(objectContainer->retrieveStoredObject());
+			testManager->prepareSubsystemAndInterface();
+			
+			test->TestTrue(TEXT("The session manager should start session destruction when calling destroyCurrentSession."), testManager->destroyCurrentSession());
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+
+		}
+		++tickCount;
+		if (tickCount > tickLimit)
+		{
+			test->TestTrue(TEXT("The session manager should start session destruction when calling destroyCurrentSession."), isInAnotherWorld);
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+	}
+	return false;
+}
+
+
 
 
 
