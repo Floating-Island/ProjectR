@@ -11,6 +11,7 @@
 #include "Commands/CommonPIECommands.h"
 #include "Commands/SessionManagerTestCommands.h"
 #include "Utilities/ObjectContainerActor.h"
+#include "Commands/NetworkCommands.h"
 
 
 bool FUSessionManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
@@ -99,6 +100,33 @@ bool FUSessionManagerSearchLANSessionsStartsTheSearchOfSessionsTest::RunTest(con
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
+
+
+bool FUSessionManagerServerCreateSessionAppearsInClientSessionSearchTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	UClass* objectContainerClass = AObjectContainerActor::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(objectContainerClass, FTransform(), numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FServerCreateLANSession(numberOfPlayers));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientSpawnSessionManager(numberOfPlayers));
+
+	int tickCount = 0;
+	int tickLimit = 10;
+	ADD_LATENT_AUTOMATION_COMMAND(FUSessionManagerCheckClientFindsAtLeastOneLANSession(tickCount, tickLimit, numberOfPlayers, this));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
 
 
 

@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "../Utilities/NetworkedPIESessionUtilities.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "SessionManagerTestCommands.h"
@@ -33,7 +34,58 @@ bool FUSessionManagerCreateSession::Update()
 }
 
 
+bool FServerCreateLANSession::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+
+		if(serverWorld)
+		{
+			AObjectContainerActor* testContainer = Cast<AObjectContainerActor, AActor>(UGameplayStatics::GetActorOfClass(serverWorld, AObjectContainerActor::StaticClass()));
+			if(testContainer)
+			{
+				testContainer->storeObjectOfType<USessionManager>();
+				USessionManager* testManager = Cast<USessionManager, UObject>(testContainer->retrieveStoredObject());
+				if(testManager)
+				{
+					testManager->createLANSession();
+					return true;
+				}
+			}
+		}
+		
+	}
+	return false;
+}
+
+
+bool FClientSpawnSessionManager::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContextSafely(clientQuantity);
+		UWorld* clientWorld = clientContext.World();
+
+		if(clientWorld)
+		{
+			return clientWorld->SpawnActor(AObjectContainerActor::StaticClass()) ? true : false;
+		}
+		
+	}
+	return false;
+}
+
+
+
+
+
+
+
 //Test check commands:
+
+
 
 bool FUSessionManagerCreateAndCheckSessionCreation::Update()
 {
@@ -152,6 +204,57 @@ bool FUSessionManagerCheckSessionSearching::Update()
 	}
 	return false;
 }
+
+
+bool FUSessionManagerCheckClientFindsAtLeastOneLANSession::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+		if(serverWorld)
+		{
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+			if(clientWorld)
+			{
+
+				AObjectContainerActor* testContainer = Cast<AObjectContainerActor, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, AObjectContainerActor::StaticClass()));
+
+				if(testContainer)
+				{
+					testContainer->storeObjectOfType<USessionManager>();
+					USessionManager* testManager = Cast<USessionManager, UObject>(testContainer->retrieveStoredObject());
+					testManager->searchLANSessions();
+					if(testManager)
+					{
+						bool hasFoundSessions = testManager->sessionSearchResults().Num() > 0;
+						test->TestTrue("After a session is created, searchLANSessions should generate search results with at least one entry.", hasFoundSessions);
+						
+						for(auto context : GEditor->GetWorldContexts())
+						{
+							context.World()->bDebugFrameStepExecution = true;
+						}
+						return true;
+					}
+				}
+				++tickCount;
+				if(tickCount > tickLimit)
+				{
+					test->TestTrue("After a session is created, searchLANSessions should generate search results with at least one entry.", tickCount > tickLimit);
+					for(auto context : GEditor->GetWorldContexts())
+					{
+						context.World()->bDebugFrameStepExecution = true;
+					}
+					return true;
+				}
+
+			}
+		}
+	}
+	return false;
+}
+
 
 
 
