@@ -84,7 +84,7 @@ TSharedPtr<FOnlineSessionSettings> USessionManager::retrieveConfiguredSessionSet
 
 void USessionManager::sessionCreatedEvent(FName sessionName, bool bWasSuccessful)
 {
-	UE_LOG(LogTemp, Log, TEXT("Session %s creation: %s."), (*sessionName.ToString()), (bWasSuccessful)? (*FString("Successful")):(*FString("Unsuccessful")));
+	UE_LOG(LogTemp, Log, TEXT("Session %s creation was %s."), (*sessionName.ToString()), (bWasSuccessful)? (*FString("Successful")):(*FString("Unsuccessful")));
 
 	if (sessionInterface.IsValid() && bWasSuccessful)
 	{
@@ -94,7 +94,7 @@ void USessionManager::sessionCreatedEvent(FName sessionName, bool bWasSuccessful
 
 void USessionManager::sessionStartedEvent(FName sessionName, bool bWasSuccessful)
 {
-	UE_LOG(LogTemp, Log, TEXT("Session %s starting: %s."), (*sessionName.ToString()), (bWasSuccessful) ? (*FString("Successful")) : (*FString("Unsuccessful")));
+	UE_LOG(LogTemp, Log, TEXT("Session %s starting was %s."), (*sessionName.ToString()), (bWasSuccessful) ? (*FString("Successful")) : (*FString("Unsuccessful")));
 
 	if (sessionInterface.IsValid() && bWasSuccessful)
 	{
