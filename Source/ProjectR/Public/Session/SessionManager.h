@@ -33,7 +33,7 @@ public:
 
 	bool searchLANSessions();
 
-	TSet<FOnlineSessionSearchResult> sessionSearchResults();
+	TArray<FOnlineSessionSearchResult> sessionSearchResults();
 	
 protected:
 	IOnlineSubsystem* onlineSubsystem;
