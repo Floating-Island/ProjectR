@@ -51,6 +51,9 @@ bool FUSessionManagerCreateAndCheckSessionCreation::Update()
 			{
 				test->TestTrue("createLANSession should start the asynchronous creation of a LAN session", testManager->createLANSession());
 
+				testManager->destroyCurrentSession();
+				
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 				return true;
 			}
 		}
@@ -71,6 +74,12 @@ bool FUSessionManagerCheckTravelToLobby::Update()
 		if (isInAnotherWorld)
 		{
 			test->TestTrue(TEXT("The session manager should travel to the lobby when the session starts."), isInAnotherWorld);
+
+			AObjectContainerActor* objectContainer = sessionUtilities.spawnInPIEAnInstanceOf<AObjectContainerActor>();
+			objectContainer->storeObjectOfType<USessionManager>();
+			USessionManager* testManager = Cast<USessionManager, UObject>(objectContainer->retrieveStoredObject());
+			testManager->destroyCurrentSession();
+			
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
