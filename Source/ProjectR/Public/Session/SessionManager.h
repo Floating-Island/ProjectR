@@ -40,13 +40,13 @@ protected:
 
 	TSharedPtr<FOnlineSessionSettings> retrieveConfiguredSessionSettings(bool isALANSession, bool hasPresence, int32 aPlayerCapacity);
 
-	//delegates
-	FOnCreateSessionCompleteDelegate sessionCreationCompletedDelegate;
-	FOnStartSessionCompleteDelegate sessionStartCompletedDelegate;
-
 	//handles
 	FDelegateHandle sessionCreationCompletedDelegateHandle;
 	FDelegateHandle sessionStartCompletedDelegateHandle;
+
+	//delegates
+	FOnCreateSessionCompleteDelegate sessionCreationCompletedDelegate;
+	FOnStartSessionCompleteDelegate sessionStartCompletedDelegate;
 
 	//events
 	void sessionCreatedEvent(FName sessionName, bool bWasSuccessful);
