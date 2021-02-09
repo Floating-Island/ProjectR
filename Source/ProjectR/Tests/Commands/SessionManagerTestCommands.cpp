@@ -1,12 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "../Utilities/NetworkedPIESessionUtilities.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "SessionManagerTestCommands.h"
 #include "../Utilities/PIESessionUtilities.h"
 #include "../Utilities/ObjectContainerActor.h"
+#include "../Utilities/NetworkedPIESessionUtilities.h"
 #include "Session/SessionManager.h"
 
 //Test preparation commands:
