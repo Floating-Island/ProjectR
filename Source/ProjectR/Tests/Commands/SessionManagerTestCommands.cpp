@@ -229,26 +229,29 @@ bool FUSessionManagerCheckClientFindsAtLeastOneLANSession::Update()
 					if(testManager)
 					{
 						bool hasFoundSessions = testManager->sessionSearchResults().Num() > 0;
-						test->TestTrue("After a session is created, searchLANSessions should generate search results with at least one entry.", hasFoundSessions);
-						
-						for(auto context : GEditor->GetWorldContexts())
+						if(hasFoundSessions)
 						{
-							context.World()->bDebugFrameStepExecution = true;
+							test->TestTrue("After a session is created, searchLANSessions should generate search results with at least one entry.", hasFoundSessions);
+						
+							for(auto context : GEditor->GetWorldContexts())
+							{
+								context.World()->bDebugFrameStepExecution = true;
+							}
+							return true;
 						}
-						return true;
-					}
-				}
-				++tickCount;
-				if(tickCount > tickLimit)
-				{
-					test->TestTrue("After a session is created, searchLANSessions should generate search results with at least one entry.", tickCount > tickLimit);
-					for(auto context : GEditor->GetWorldContexts())
-					{
-						context.World()->bDebugFrameStepExecution = true;
-					}
-					return true;
-				}
 
+						++tickCount;
+						if(tickCount > tickLimit)
+						{
+							test->TestTrue("After a session is created, searchLANSessions should generate search results with at least one entry.", hasFoundSessions);
+							for(auto context : GEditor->GetWorldContexts())
+							{
+								context.World()->bDebugFrameStepExecution = true;
+							}
+							return true;
+						}
+					}
+				}
 			}
 		}
 	}
