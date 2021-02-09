@@ -10,6 +10,9 @@
 USessionManager::USessionManager()
 {
 	lobbyMapName = FName(FString("lobby"));
+	sessionSearch = nullptr;
+	maximumNumberOfSearches = 20;
+	maximumPingSizeAllowed = 50;
 }
 
 void USessionManager::prepareSubsystemAndInterface()
@@ -65,6 +68,11 @@ bool USessionManager::destroyCurrentSession()
 	return sessionInterface->DestroySession(GameSessionName);
 }
 
+bool USessionManager::searchLANSessions()
+{
+	return searchSessions(GetWorld()->GetGameInstance()->GetPrimaryPlayerUniqueId(), true, true);
+}
+
 bool USessionManager::hostSession(TSharedPtr<const FUniqueNetId> aUserID, FName aSessionName, bool isALANSession,
                                   bool hasPresence, int32 aPlayerCapacity)
 {
@@ -95,6 +103,33 @@ TSharedPtr<FOnlineSessionSettings> USessionManager::retrieveConfiguredSessionSet
 	sessionSettings->bAllowJoinViaPresenceFriendsOnly = false;
 
 	return sessionSettings;
+}
+
+void USessionManager::configureSessionSearch(bool isALANSession, bool hasPresence)
+{
+	sessionSearch = MakeShared<FOnlineSessionSearch>();
+
+	sessionSearch->bIsLanQuery = isALANSession;
+	sessionSearch->MaxSearchResults = maximumNumberOfSearches;
+	sessionSearch->PingBucketSize = maximumPingSizeAllowed;
+
+	if(hasPresence)
+	{
+		sessionSearch->QuerySettings.Set(SEARCH_PRESENCE, hasPresence, EOnlineComparisonOp::Equals);
+	}
+}
+
+bool USessionManager::searchSessions(TSharedPtr<const FUniqueNetId> aUserID, bool isALANSession, bool hasPresence)
+{
+	checkSubsystemAndInterfaceConfigured();
+	if (sessionInterface.IsValid() && aUserID.IsValid())
+	{
+		configureSessionSearch(isALANSession, hasPresence);
+		TSharedRef<FOnlineSessionSearch> searchSettings = sessionSearch.ToSharedRef();
+
+		return sessionInterface->FindSessions(*aUserID, searchSettings);
+	}
+	return false;
 }
 
 void USessionManager::sessionCreatedEvent(FName sessionName, bool bWasSuccessful)

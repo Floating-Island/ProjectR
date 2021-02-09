@@ -30,6 +30,8 @@ public:
 	FString lobbyName();
 
 	bool destroyCurrentSession();
+
+	bool searchLANSessions();
 	
 protected:
 	IOnlineSubsystem* onlineSubsystem;
@@ -42,6 +44,15 @@ protected:
 
 	TSharedPtr<FOnlineSessionSettings> retrieveConfiguredSessionSettings(bool isALANSession, bool hasPresence, int32 aPlayerCapacity);
 
+
+	TSharedPtr<class FOnlineSessionSearch> sessionSearch;
+	int maximumNumberOfSearches;
+	int maximumPingSizeAllowed;
+	void configureSessionSearch(bool isALANSession, bool hasPresence);
+	
+	bool searchSessions(TSharedPtr<const FUniqueNetId> aUserID, bool isALANSession,
+                                 bool hasPresence);
+	
 	//handles
 	FDelegateHandle sessionCreationCompletedDelegateHandle;
 	FDelegateHandle sessionStartCompletedDelegateHandle;
