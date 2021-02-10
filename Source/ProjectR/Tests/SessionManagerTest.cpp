@@ -115,13 +115,11 @@ bool FUSessionManagerServerCreateSessionAppearsInClientSessionSearchTest::RunTes
 	UClass* objectContainerClass = AObjectContainerActor::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(objectContainerClass, FTransform(), numberOfPlayers));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FServerCreateLANSession(numberOfPlayers));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FClientSpawnSessionManager(numberOfPlayers));
+	ADD_LATENT_AUTOMATION_COMMAND(FClientSpawnSessionManagerAndCreateSession(numberOfPlayers));
 
 	int tickCount = 0;
 	int tickLimit = 10;
-	ADD_LATENT_AUTOMATION_COMMAND(FUSessionManagerCheckClientFindsAtLeastOneLANSession(tickCount, tickLimit, numberOfPlayers, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FUSessionManagerCheckSErverFindsAtLeastOneLANSession(tickCount, tickLimit, numberOfPlayers, this));
 	
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

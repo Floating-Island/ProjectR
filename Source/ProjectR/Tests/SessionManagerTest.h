@@ -13,6 +13,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "Utilities/TestClasses/MultiplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -42,7 +43,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerSearchLANSessionsStartsTheSearc
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerServerCreateSessionAppearsInClientSessionSearchTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUSessionManagerServerCreateSessionAppearsInClientSessionSearchTest, MultiplePIETestBase, 
 	"ProjectR.SessionManager Tests.Replication.005: searchLANSessions in client finds inside its search results the previously created session of server", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
