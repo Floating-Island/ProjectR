@@ -135,16 +135,16 @@ bool USessionManager::searchSessions(TSharedPtr<const FUniqueNetId> aUserID, boo
 	return false;
 }
 
-TArray<FOnlineSessionSearchResult> USessionManager::sessionSearchResults()
+TArray<FString> USessionManager::sessionSearchResults()
 {
-	TArray<FOnlineSessionSearchResult> sessionsFound = TArray<FOnlineSessionSearchResult>();
+	TArray<FString> sessionsFound = TArray<FString>();
 	TSharedPtr<const FUniqueNetId> ownUserID = GetWorld()->GetGameInstance()->GetPrimaryPlayerUniqueId();
 	
 	for(const auto& session : sessionSearch->SearchResults)
 	{
 		if(session.Session.OwningUserId != ownUserID)
 		{
-			sessionsFound.Add(session);
+			sessionsFound.Add(session.GetSessionIdStr());
 		}
 	}
 	return sessionsFound;
@@ -177,14 +177,17 @@ void USessionManager::sessionsSearchedEvent(bool bWasSuccessful)
 	if (sessionInterface.IsValid())
 	{
 		TArray<FOnlineSessionSearchResult> searchResults = sessionSearch->SearchResults;
-		
-		UE_LOG(LogTemp, Log, TEXT("Number of sessions found: %d."), searchResults.Num());
 
-		UE_LOG(LogTemp, Log, TEXT("Sessions found:"));
-
-		for (auto sessionFound : searchResults)
+		int sessionQuantity = searchResults.Num();
+		UE_LOG(LogTemp, Log, TEXT("Number of sessions found: %d."), sessionQuantity);
+		if(sessionQuantity > 0)
 		{
-			UE_LOG(LogTemp, Log, TEXT("%s"), *(sessionFound.Session.OwningUserName));
+			UE_LOG(LogTemp, Log, TEXT("Sessions found:"));
+
+			for (auto sessionFound : searchResults)
+			{
+				UE_LOG(LogTemp, Log, TEXT("%s"), *(sessionFound.Session.GetSessionIdStr()));
+			}
 		}
 	}
 }

@@ -33,7 +33,7 @@ public:
 
 	bool searchLANSessions();
 
-	TArray<FOnlineSessionSearchResult> sessionSearchResults();
+	TArray<FString> sessionSearchResults();
 	
 protected:
 	IOnlineSubsystem* onlineSubsystem;
