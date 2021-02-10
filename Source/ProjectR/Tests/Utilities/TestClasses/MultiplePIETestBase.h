@@ -10,13 +10,13 @@
 /**
  * This class is intended to be used in tests where many PIE instances need to be run at the same time.
  */
-class MultiplePIETestBase : public FAutomationTestBase
+class FMultiplePIETestBase : public FAutomationTestBase
 {
 public:
 	UWorld* sessionHostWorld;
 	UWorld* sessionSubscriberWorld;
 
-	MultiplePIETestBase(const FString& InName, const bool bInComplexTask)
+	FMultiplePIETestBase(const FString& InName, const bool bInComplexTask)
 		: FAutomationTestBase(InName, bInComplexTask)
 	{
 		sessionHostWorld = nullptr;
