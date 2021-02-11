@@ -12,6 +12,7 @@
 #include "Commands/JetTestCommands.h"
 #include "Commands/LeftSteerStateTestCommands.h"
 #include "Mocks/JetMOCK.h"
+#include "Utilities/ObjectContainerActor.h"
 
 bool FULeftSteerStateIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
@@ -36,7 +37,9 @@ bool FULeftSteerStateActivateTurnsLeftSteeringTest::RunTest(const FString& Param
 	float desiredSpeed = 10000;
 	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetVelocityToDesiredSpeed(desiredSpeed));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningLeftSteerStateAndActivateIt);
+	UClass* containerClass = AObjectContainerActor::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(containerClass, FTransform()));
+	
 	int tickCount = 0;
 	int tickLimit = 3;
 	FVector location = FVector(0);

@@ -8,19 +8,10 @@
 #include "../Utilities/PIESessionUtilities.h"
 #include "../Mocks/JetMOCK.h"
 #include "Jet/SteerStates/LeftSteerState.h"
+#include "../Utilities/ObjectContainerActor.h"
 
 //Test preparation commands:
 
-
-bool FSpawningLeftSteerStateAndActivateIt::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{
-		ULeftSteerState* testState = NewObject<ULeftSteerState>();
-		return true;
-	}
-	return false;
-}
 
 
 
@@ -41,19 +32,18 @@ bool FCheckAJetSteersLeft::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		FWorldContext serverContext = GEditor->GetWorldContexts()[1];
 		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-		if(testJet)
+		AObjectContainerActor* testContainer = sessionUtilities.retrieveFromPIEAnInstanceOf<AObjectContainerActor>();
+		if(testJet && testContainer)
 		{
-			TArray<UObject*> objectsFound = TArray<UObject*>();
-			GetObjectsOfClass(ULeftSteerState::StaticClass(),objectsFound);
-			ULeftSteerState* steerState = Cast<ULeftSteerState, UObject>(objectsFound[0]);
-			if(steerState)
+			ULeftSteerState* steerState = Cast<ULeftSteerState, UObject>(testContainer->retrieveStoredObject());
+			if(steerState==nullptr)
 			{
-				steerState->activate(testJet->steeringComponent());
+				testContainer->storeObjectOfType<ULeftSteerState>();
+				steerState = Cast<ULeftSteerState, UObject>(testContainer->retrieveStoredObject());
 			}
-			else
-			{
-				return false;
-			}
+
+			steerState->activate(testJet->steeringComponent());
+
 			
 			UE_LOG(LogTemp, Log, TEXT("Previous jet location: %s"), *previousLocation.ToString());
 			FVector currentLocation = testJet->GetActorLocation();
