@@ -118,7 +118,7 @@ bool FUSessionManagerSessionSearchResultsReturnsIDsFromSearchResultsTest::RunTes
 }
 
 
-bool FUSessionManagerJoinSessionStartsWithArbitraryDataTest::RunTest(const FString& Parameters)
+bool FUSessionManagerJoinSessionDoesntStartWithArbitraryDataTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
 
@@ -128,7 +128,7 @@ bool FUSessionManagerJoinSessionStartsWithArbitraryDataTest::RunTest(const FStri
 	UClass* containerClass = AObjectContainerActor::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(containerClass, FTransform()));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSessionManagerStartsSessionJoin(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSessionManagerDoesntStartSessionJoin(this));
 	
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

@@ -211,7 +211,7 @@ bool FCheckSessionManagerSearchResults::Update()
 }
 
 
-bool FCheckSessionManagerStartsSessionJoin::Update()
+bool FCheckSessionManagerDoesntStartSessionJoin::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
 	{
@@ -225,7 +225,8 @@ bool FCheckSessionManagerStartsSessionJoin::Update()
 			USessionManagerMOCK* testManager = Cast<USessionManagerMOCK, UObject>(testContainer->retrieveStoredObject());
 			if(testManager)
 			{
-				FOnlineSession falseSession = FOnlineSession();
+				FOnlineSession falseSession = FOnlineSession(FOnlineSessionSettings());
+				falseSession.OwningUserId = testContainer->GetGameInstance()->GetPrimaryPlayerUniqueId();
 				FOnlineSessionSearchResult falseSessionResult = FOnlineSessionSearchResult();
 				falseSessionResult.Session = falseSession;
 				TArray<FOnlineSessionSearchResult> falseResults = TArray<FOnlineSessionSearchResult>();
@@ -235,7 +236,7 @@ bool FCheckSessionManagerStartsSessionJoin::Update()
 				
 				testManager->setArbitrarySessionSearchResults(dummySearchResults);
 
-				test->TestTrue(TEXT("joinASession is started when fed with arbitrary data"), testManager->joinASession(GameSessionName, falseSessionResult));
+				test->TestFalse(TEXT("joinASession isn't started when fed with arbitrary data"), testManager->joinASession(GameSessionName, falseSessionResult));
 
 				
 				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;

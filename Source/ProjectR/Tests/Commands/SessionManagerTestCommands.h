@@ -34,7 +34,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FUSessionManagerCheckSessionSea
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSessionManagerSearchResults, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSessionManagerStartsSessionJoin, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSessionManagerDoesntStartSessionJoin, FAutomationTestBase*, test);
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
