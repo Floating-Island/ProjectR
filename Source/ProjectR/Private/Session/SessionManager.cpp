@@ -139,12 +139,15 @@ TArray<FString> USessionManager::sessionSearchResults()
 {
 	TArray<FString> sessionsFound = TArray<FString>();
 	TSharedPtr<const FUniqueNetId> ownUserID = GetWorld()->GetGameInstance()->GetPrimaryPlayerUniqueId();
-	
-	for(const auto& session : sessionSearch->SearchResults)
+
+	if(sessionSearch.IsValid())
 	{
-		if(session.Session.OwningUserId != ownUserID)
+		for(const auto& session : sessionSearch->SearchResults)
 		{
-			sessionsFound.Add(session.GetSessionIdStr());
+			if(session.Session.OwningUserId != ownUserID)
+			{
+				sessionsFound.Add(session.GetSessionIdStr());
+			}
 		}
 	}
 	return sessionsFound;
