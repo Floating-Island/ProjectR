@@ -16,8 +16,6 @@
 DEFINE_LATENT_AUTOMATION_COMMAND(FUSessionManagerCreateSession);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientSpawnSessionManagerAndCreateSession, int32, clientQuantity);
-
 
 //Test check commands:
 

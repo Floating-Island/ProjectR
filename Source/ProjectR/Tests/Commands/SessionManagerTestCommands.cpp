@@ -34,36 +34,6 @@ bool FUSessionManagerCreateSession::Update()
 }
 
 
-bool FClientSpawnSessionManagerAndCreateSession::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{
-		FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContextSafely(clientQuantity);
-		UWorld* clientWorld = clientContext.World();
-
-		if(clientWorld)
-		{
-			AObjectContainerActor* testContainer = Cast<AObjectContainerActor, AActor>(clientWorld->SpawnActor(AObjectContainerActor::StaticClass()));
-			UE_LOG(LogTemp, Log, TEXT("creating container..."));
-			if(testContainer)
-			{
-				testContainer->storeObjectOfType<USessionManager>();
-				USessionManager* testManager = Cast<USessionManager, UObject>(testContainer->retrieveStoredObject());
-				UE_LOG(LogTemp, Log, TEXT("creating session manager..."));
-				if(testManager)
-				{
-					UE_LOG(LogTemp, Log, TEXT("creating session..."));
-					testManager->createLANSession();
-					return true;
-				}
-			}
-		}
-		
-	}
-	return false;
-}
-
-
 
 
 
