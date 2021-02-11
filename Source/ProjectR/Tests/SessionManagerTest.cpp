@@ -11,7 +11,7 @@
 #include "Commands/CommonPIECommands.h"
 #include "Commands/SessionManagerTestCommands.h"
 #include "Utilities/ObjectContainerActor.h"
-#include "Commands/NetworkCommands.h"
+#include "OnlineSessionSettings.h"
 
 
 bool FUSessionManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
@@ -100,6 +100,34 @@ bool FUSessionManagerSearchLANSessionsStartsTheSearchOfSessionsTest::RunTest(con
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
+
+
+bool FUSessionManagerSessionSearchResultsReturnsIDsFromSearchResultsTest::RunTest(const FString& Parameters)
+{
+	USessionManagerMOCK* testManager = NewObject<USessionManagerMOCK>();
+
+	TSharedPtr<FOnlineSessionSearch> dummySearchResults = MakeShared<FOnlineSessionSearch>();
+
+
+	TArray<FOnlineSessionSearchResult> falseResults = TArray<FOnlineSessionSearchResult>();
+	FOnlineSessionSearchResult falseSessionResult = FOnlineSessionSearchResult();
+
+	FOnlineSession falseSession = FOnlineSession();
+	falseSessionResult.Session = falseSession;
+	falseResults.Add(falseSessionResult);
+
+	bool startsWithoutSearchResults = testManager->sessionSearchResults().Num() == 0;
+	
+	testManager->setArbitrarySessionSearchResults(falseResults);
+
+	bool returnsSearchResults = testManager->sessionSearchResults().Num() > 0;
+
+	TestTrue(TEXT("sessionSearchResults returns the search Results session ID's"), startsWithoutSearchResults && returnsSearchResults);
+
+	return true;
+}
+
+
 
 
 

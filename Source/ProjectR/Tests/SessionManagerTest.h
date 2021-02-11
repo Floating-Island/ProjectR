@@ -42,6 +42,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerSearchLANSessionsStartsTheSearc
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerSessionSearchResultsReturnsIDsFromSearchResultsTest, 
+	"ProjectR.SessionManager Tests.Unit.005: sessionSearchResults returns IDs of sessions from SearchResults", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 
