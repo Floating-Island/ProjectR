@@ -153,6 +153,18 @@ TArray<FString> USessionManager::sessionSearchResults()
 	return sessionsFound;
 }
 
+bool USessionManager::joinASession(FName aSessionName, const FOnlineSessionSearchResult& aSessionResultData)
+{
+	bool bJoinSuccessful = false;
+	TSharedPtr<const FUniqueNetId> ownUserID = GetWorld()->GetGameInstance()->GetPrimaryPlayerUniqueId();
+	
+	if (sessionInterface.IsValid() && ownUserID.IsValid())
+	{
+		bJoinSuccessful = sessionInterface->JoinSession(*ownUserID, aSessionName, aSessionResultData);
+	}
+	return bJoinSuccessful;
+}
+
 void USessionManager::sessionCreatedEvent(FName sessionName, bool bWasSuccessful)
 {
 	UE_LOG(LogTemp, Log, TEXT("Session %s creation was %s."), (*sessionName.ToString()), (bWasSuccessful)? (*FString("Successful")):(*FString("Unsuccessful")));

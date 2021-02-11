@@ -34,6 +34,8 @@ public:
 	bool searchLANSessions();
 
 	TArray<FString> sessionSearchResults();
+
+	bool joinASession(FName aSessionName, const FOnlineSessionSearchResult& aSessionResultData);
 	
 protected:
 	IOnlineSubsystem* onlineSubsystem;
