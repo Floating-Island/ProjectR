@@ -19,5 +19,6 @@ public:
 
 	IOnlineSubsystem* retrieveSessionSubsystem();
 	IOnlineSessionPtr retrieveSessionInterface();
-	
+
+	void setArbitrarySessionSearchResults(TArray<FOnlineSessionSearchResult> anArbitrarySearchResultsArray);
 };
