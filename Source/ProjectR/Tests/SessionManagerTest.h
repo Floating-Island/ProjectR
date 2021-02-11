@@ -38,7 +38,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerDestroyCurrentSessionStartsSess
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerSearchLANSessionsStartsTheSearchOfSessionsTest, 
-	"ProjectR.SessionManager Tests.Unit.004: searchLANSessions starts the search of a LAN sessions", 
+	"ProjectR.SessionManager Tests.Unit.004: searchLANSessions starts the search of LAN sessions", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
