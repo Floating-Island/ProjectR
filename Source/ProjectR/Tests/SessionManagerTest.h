@@ -48,7 +48,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerSessionSearchResultsReturnsIDsF
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerJoinSessionDoesntStartWithArbitraryDataTest, 
-	"ProjectR.SessionManager Tests.Unit.006: joinASession isn't started if fed with arbitrary data", 
+	"ProjectR.SessionManager Tests.Negative.006: joinASession isn't started if fed with arbitrary data", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
