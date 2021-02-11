@@ -16,7 +16,7 @@ IOnlineSessionPtr USessionManagerMOCK::retrieveSessionInterface()
 }
 
 void USessionManagerMOCK::setArbitrarySessionSearchResults(
-	TArray<FOnlineSessionSearchResult> anArbitrarySearchResultsArray)
+	TSharedPtr<FOnlineSessionSearch> anArbitrarySessionSearch)
 {
-	sessionSearch->SearchResults = anArbitrarySearchResultsArray;
+	sessionSearch = anArbitrarySessionSearch;
 }

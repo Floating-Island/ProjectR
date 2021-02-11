@@ -6,8 +6,9 @@
 #include "SessionManagerTestCommands.h"
 #include "../Utilities/PIESessionUtilities.h"
 #include "../Utilities/ObjectContainerActor.h"
-#include "../Utilities/NetworkedPIESessionUtilities.h"
+#include "../Mocks/SessionManagerMOCK.h"
 #include "Session/SessionManager.h"
+#include "OnlineSessionSettings.h"
 
 //Test preparation commands:
 
@@ -166,6 +167,49 @@ bool FUSessionManagerCheckSessionSearching::Update()
 	}
 	return false;
 }
+
+
+bool FCheckSessionManagerSearchResults::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		AObjectContainerActor* testContainer = sessionUtilities.retrieveFromPIEAnInstanceOf<AObjectContainerActor>();
+
+		if(testContainer)
+		{
+			testContainer->storeObjectOfType<USessionManagerMOCK>();
+			USessionManagerMOCK* testManager = Cast<USessionManagerMOCK, UObject>(testContainer->retrieveStoredObject());
+			if(testManager)
+			{
+				FOnlineSession falseSession = FOnlineSession();
+				FOnlineSessionSearchResult falseSessionResult = FOnlineSessionSearchResult();
+				falseSessionResult.Session = falseSession;
+				TArray<FOnlineSessionSearchResult> falseResults = TArray<FOnlineSessionSearchResult>();
+				falseResults.Add(falseSessionResult);
+
+				TSharedPtr<FOnlineSessionSearch> dummySearchResults = MakeShared<FOnlineSessionSearch>();
+
+				dummySearchResults->SearchResults = falseResults;
+				
+				bool startsWithoutSearchResults = testManager->sessionSearchResults().Num() == 0;
+				
+				testManager->setArbitrarySessionSearchResults(dummySearchResults);
+
+				bool returnsSearchResults = testManager->sessionSearchResults().Num() > 0;
+
+				test->TestTrue(TEXT("sessionSearchResults returns the search Results session ID's"), startsWithoutSearchResults && returnsSearchResults);
+
+				
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 
 
 
