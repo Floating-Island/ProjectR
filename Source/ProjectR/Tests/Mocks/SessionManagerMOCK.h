@@ -38,4 +38,6 @@ public:
 	bool FOnStartSessionCompleteDelegateHandleIsSet();
 
 	bool FOnFindSessionsCompleteDelegateHandleIsSet();
+
+	bool FOnJoinSessionCompleteDelegateHandleIsSet();
 };
