@@ -7,6 +7,7 @@
 #include "UI/LocalMultiplayerMenu.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
+#include "Session/SessionManager.h"
 
 
 
@@ -120,4 +121,16 @@ void UProjectRGameInstance::expectedPlayers(int aQuantity)
 int UProjectRGameInstance::necessaryPlayers()
 {
 	return numberOfPlayers;
+}
+
+bool UProjectRGameInstance::sessionManagerIsConfigured()
+{
+	return sessionManager && sessionManager->isConfigured();
+}
+
+void UProjectRGameInstance::OnStart()
+{
+	Super::OnStart();
+	sessionManager = NewObject<USessionManager>(this, USessionManager::StaticClass()->GetFName());
+	sessionManager->checkSubsystemAndInterfaceConfigured();
 }

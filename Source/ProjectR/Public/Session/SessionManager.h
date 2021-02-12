@@ -20,10 +20,13 @@ class PROJECTR_API USessionManager : public UObject
 	void fetchAndConfigureSessionInterface();
 	void fetchSessionInterface();
 	void configureSessionInterfaceHandles();
-
+	bool delegatesConfigured();
+	
 public:
 	USessionManager();
 
+	void checkSubsystemAndInterfaceConfigured();
+	
 	bool createLANSession();
 
 	FString lobbyName();
@@ -35,13 +38,13 @@ public:
 	TArray<FString> sessionSearchResults();
 
 	bool joinASession(FName aSessionName, const FOnlineSessionSearchResult& aSessionResultData);
+
+	bool isConfigured();
 	
 protected:
 	IOnlineSubsystem* onlineSubsystem;
 	IOnlineSessionPtr sessionInterface;
 
-	void checkSubsystemAndInterfaceConfigured();
-	
 	FName lobbyMapName;
 
 	bool hostSession(TSharedPtr<const FUniqueNetId> aUserID, FName aSessionName, bool isALANSession,

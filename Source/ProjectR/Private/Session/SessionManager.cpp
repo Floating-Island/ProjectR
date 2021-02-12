@@ -50,6 +50,14 @@ void USessionManager::configureSessionInterfaceHandles()
 	sessionJoinCompletedDelegateHandle = sessionInterface->AddOnJoinSessionCompleteDelegate_Handle(sessionJoinCompletedDelegate);
 }
 
+bool USessionManager::delegatesConfigured()
+{
+	return sessionCreationCompletedDelegate.IsBoundToObject(this) && 
+		sessionStartCompletedDelegate.IsBoundToObject(this) &&
+		sessionFindCompletedDelegate.IsBoundToObject(this) &&
+		sessionJoinCompletedDelegate.IsBoundToObject(this);
+}
+
 void USessionManager::checkSubsystemAndInterfaceConfigured()
 {
 	if(onlineSubsystem == nullptr || sessionInterface == nullptr)
@@ -166,6 +174,11 @@ bool USessionManager::joinASession(FName aSessionName, const FOnlineSessionSearc
 		bJoinSuccessful = sessionInterface->JoinSession(*ownUserID, aSessionName, aSessionResultData);
 	}
 	return bJoinSuccessful;
+}
+
+bool USessionManager::isConfigured()
+{
+	return onlineSubsystem && sessionInterface && delegatesConfigured();
 }
 
 void USessionManager::sessionCreatedEvent(FName sessionName, bool bWasSuccessful)

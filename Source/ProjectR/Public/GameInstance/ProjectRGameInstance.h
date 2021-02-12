@@ -8,6 +8,7 @@
 #include "Engine/GameInstance.h"
 #include "ProjectRGameInstance.generated.h"
 
+class USessionManager;
 class ULocalMultiplayerMenu;
 class USingleplayerMenu;
 class UMainMenu;
@@ -25,6 +26,10 @@ protected:
 	USingleplayerMenu* singleplayerMenu;
 	ULocalMultiplayerMenu* localMultiplayerMenu;
 	void lockMouseToWidget(UMenu* menu);
+
+	UPROPERTY()
+	USessionManager* sessionManager;
+	
 public:
 	UProjectRGameInstance();
 	
@@ -52,4 +57,7 @@ public:
 
 	void expectedPlayers(int aQuantity);
 	int necessaryPlayers();
+	bool sessionManagerIsConfigured();
+
+	virtual void OnStart() override;
 };
