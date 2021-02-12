@@ -304,6 +304,34 @@ bool FCheckSessionManagerBoundToFOnStartSessionCompleteDelegate::Update()
 }
 
 
+bool FCheckSessionManagerBoundToFOnFindSessionsCompleteDelegate::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		AObjectContainerActor* testContainer = sessionUtilities.retrieveFromPIEAnInstanceOf<AObjectContainerActor>();
+
+		if(testContainer)
+		{
+			testContainer->storeObjectOfType<USessionManagerMOCK>();
+			USessionManagerMOCK* testManager = Cast<USessionManagerMOCK, UObject>(testContainer->retrieveStoredObject());
+			if(testManager)
+			{
+				testManager->configureSubsystemAndInterface();
+
+				test->TestTrue(TEXT("session manager should be bound to FOnFindSessionsCompleteDelegate"), testManager->isBoundToFOnFindSessionsCompleteDelegate());
+
+				
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
 bool FCheckSessionManagerBoundToFOnJoinSessionCompleteDelegate::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
@@ -332,7 +360,7 @@ bool FCheckSessionManagerBoundToFOnJoinSessionCompleteDelegate::Update()
 }
 
 
-bool FCheckSessionManagerBoundToFOnFindSessionsCompleteDelegate::Update()
+bool FCheckSessionManagerFOnCreateSessionCompleteDelegateHandleSet::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -348,7 +376,7 @@ bool FCheckSessionManagerBoundToFOnFindSessionsCompleteDelegate::Update()
 			{
 				testManager->configureSubsystemAndInterface();
 
-				test->TestTrue(TEXT("session manager should be bound to FOnFindSessionsCompleteDelegate"), testManager->isBoundToFOnFindSessionsCompleteDelegate());
+				test->TestTrue(TEXT("FOnCreateSessionCompleteDelegate handle should be set"), testManager->FOnCreateSessionCompleteDelegateHandleIsSet());
 
 				
 				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
@@ -358,7 +386,6 @@ bool FCheckSessionManagerBoundToFOnFindSessionsCompleteDelegate::Update()
 	}
 	return false;
 }
-
 
 
 
