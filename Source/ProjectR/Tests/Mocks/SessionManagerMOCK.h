@@ -25,4 +25,6 @@ public:
 	void configureSubsystemAndInterface();
 
 	bool isBoundToFOnCreateSessionCompleteDelegate();
+
+	bool isBoundToFOnStartSessionCompleteDelegate();
 };

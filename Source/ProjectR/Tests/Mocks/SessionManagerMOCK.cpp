@@ -30,3 +30,8 @@ bool USessionManagerMOCK::isBoundToFOnCreateSessionCompleteDelegate()
 {
 	return sessionCreationCompletedDelegate.IsBoundToObject(this);
 }
+
+bool USessionManagerMOCK::isBoundToFOnStartSessionCompleteDelegate()
+{
+	return sessionStartCompletedDelegate.IsBoundToObject(this);
+}
