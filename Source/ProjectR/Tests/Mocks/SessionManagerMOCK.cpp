@@ -45,3 +45,8 @@ bool USessionManagerMOCK::isBoundToFOnJoinSessionCompleteDelegate()
 {
 	return sessionFindCompletedDelegate.IsBoundToObject(this);
 }
+
+bool USessionManagerMOCK::FOnCreateSessionCompleteDelegateHandleIsSet()
+{
+	return sessionCreationCompletedDelegate.GetHandle() == sessionCreationCompletedDelegateHandle;
+}

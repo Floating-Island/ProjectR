@@ -31,4 +31,7 @@ public:
 	bool isBoundToFOnFindSessionsCompleteDelegate();
 
 	bool isBoundToFOnJoinSessionCompleteDelegate();
+
+
+	bool FOnCreateSessionCompleteDelegateHandleIsSet();
 };
