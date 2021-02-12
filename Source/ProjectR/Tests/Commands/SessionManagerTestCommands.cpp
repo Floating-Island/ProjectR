@@ -304,6 +304,34 @@ bool FCheckSessionManagerBoundToFOnStartSessionCompleteDelegate::Update()
 }
 
 
+bool FCheckSessionManagerBoundToFOnFindSessionsCompleteDelegate::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		AObjectContainerActor* testContainer = sessionUtilities.retrieveFromPIEAnInstanceOf<AObjectContainerActor>();
+
+		if(testContainer)
+		{
+			testContainer->storeObjectOfType<USessionManagerMOCK>();
+			USessionManagerMOCK* testManager = Cast<USessionManagerMOCK, UObject>(testContainer->retrieveStoredObject());
+			if(testManager)
+			{
+				testManager->configureSubsystemAndInterface();
+
+				test->TestTrue(TEXT("session manager should be bound to FOnFindSessionsCompleteDelegate"), testManager->isBoundToFOnFindSessionsCompleteDelegate());
+
+				
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
 
 
 
