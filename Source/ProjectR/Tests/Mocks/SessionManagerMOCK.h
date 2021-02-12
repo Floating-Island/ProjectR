@@ -36,4 +36,6 @@ public:
 	bool FOnCreateSessionCompleteDelegateHandleIsSet();
 
 	bool FOnStartSessionCompleteDelegateHandleIsSet();
+
+	bool FOnFindSessionsCompleteDelegateHandleIsSet();
 };
