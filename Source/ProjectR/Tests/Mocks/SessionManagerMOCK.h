@@ -21,4 +21,8 @@ public:
 	IOnlineSessionPtr retrieveSessionInterface();
 
 	void setArbitrarySessionSearchResults(TSharedPtr<FOnlineSessionSearch> anArbitrarySessionSearch);
+
+	void configureSubsystemAndInterface();
+
+	bool isBoundToFOnCreateSessionCompleteDelegate();
 };

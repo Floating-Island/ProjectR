@@ -20,3 +20,13 @@ void USessionManagerMOCK::setArbitrarySessionSearchResults(
 {
 	sessionSearch = anArbitrarySessionSearch;
 }
+
+void USessionManagerMOCK::configureSubsystemAndInterface()
+{
+	checkSubsystemAndInterfaceConfigured();
+}
+
+bool USessionManagerMOCK::isBoundToFOnCreateSessionCompleteDelegate()
+{
+	return sessionCreationCompletedDelegate.IsBoundToObject(this);
+}
