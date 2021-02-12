@@ -45,6 +45,9 @@ void USessionManager::configureSessionInterfaceHandles()
 
 	sessionFindCompletedDelegate = FOnFindSessionsCompleteDelegate::CreateUObject(this, &USessionManager::sessionsSearchedEvent);
 	sessionFindCompletedDelegateHandle = sessionInterface->AddOnFindSessionsCompleteDelegate_Handle(sessionFindCompletedDelegate);
+
+	sessionJoinCompletedDelegate = FOnJoinSessionCompleteDelegate::CreateUObject(this, &USessionManager::sessionJoinedEvent);
+	sessionJoinCompletedDelegateHandle = sessionInterface->AddOnJoinSessionCompleteDelegate_Handle(sessionJoinCompletedDelegate);
 }
 
 void USessionManager::checkSubsystemAndInterfaceConfigured()
@@ -203,6 +206,25 @@ void USessionManager::sessionsSearchedEvent(bool bWasSuccessful)
 			{
 				UE_LOG(LogTemp, Log, TEXT("%s"), *(sessionFound.Session.GetSessionIdStr()));
 			}
+		}
+	}
+}
+
+void USessionManager::sessionJoinedEvent(FName sessionName, EOnJoinSessionCompleteResult::Type result)
+{
+	UE_LOG(LogTemp, Log, TEXT("Joining session %s, %d."), *(sessionName.ToString()), static_cast<int32>(result));
+
+	if (sessionInterface.IsValid() && result == EOnJoinSessionCompleteResult::Success)
+	{
+		APlayerController* const userController = GetWorld()->GetGameInstance()->GetFirstLocalPlayerController();
+
+		FString travelURL;
+
+		if(userController && sessionInterface->GetResolvedConnectString(sessionName, travelURL))
+		{
+			UE_LOG(LogTemp, Log, TEXT("Session URL: %s"), *(travelURL));
+
+			userController->ClientTravel(travelURL, ETravelType::TRAVEL_Absolute);
 		}
 	}
 }

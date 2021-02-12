@@ -56,21 +56,25 @@ protected:
 	
 	bool searchSessions(TSharedPtr<const FUniqueNetId> aUserID, bool isALANSession,
                                  bool hasPresence);
+
 	
 	//handles
 	FDelegateHandle sessionCreationCompletedDelegateHandle;
 	FDelegateHandle sessionStartCompletedDelegateHandle;
 	FDelegateHandle sessionFindCompletedDelegateHandle;
+	FDelegateHandle sessionJoinCompletedDelegateHandle;
 
 	//delegates
 	FOnCreateSessionCompleteDelegate sessionCreationCompletedDelegate;
 	FOnStartSessionCompleteDelegate sessionStartCompletedDelegate;
 	FOnFindSessionsCompleteDelegate sessionFindCompletedDelegate;
+	FOnJoinSessionCompleteDelegate sessionJoinCompletedDelegate;
 
 	//events
 	void sessionCreatedEvent(FName sessionName, bool bWasSuccessful);
 	void sessionStartedEvent(FName sessionName, bool bWasSuccessful);
 	void sessionsSearchedEvent(bool bWasSuccessful);
+	void sessionJoinedEvent(FName sessionName, EOnJoinSessionCompleteResult::Type result);
 	
 	
 };
