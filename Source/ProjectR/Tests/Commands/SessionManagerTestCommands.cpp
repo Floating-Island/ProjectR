@@ -14,7 +14,7 @@
 
 bool FUSessionManagerCreateSession::Update()
 {
-	if (GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
@@ -52,7 +52,7 @@ bool FUSessionManagerCreateSession::Update()
 
 bool FUSessionManagerCreateAndCheckSessionCreation::Update()
 {
-	if (GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
@@ -146,7 +146,7 @@ bool FUSessionManagerCheckSessionDestructionStarting::Update()
 
 bool FUSessionManagerCheckSessionSearching::Update()
 {
-	if (GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
@@ -171,7 +171,7 @@ bool FUSessionManagerCheckSessionSearching::Update()
 
 bool FCheckSessionManagerSearchResults::Update()
 {
-	if (GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
@@ -213,7 +213,7 @@ bool FCheckSessionManagerSearchResults::Update()
 
 bool FCheckSessionManagerDoesntStartSessionJoin::Update()
 {
-	if (GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
@@ -250,7 +250,7 @@ bool FCheckSessionManagerDoesntStartSessionJoin::Update()
 
 bool FCheckSessionManagerBoundToFOnCreateSessionCompleteDelegate::Update()
 {
-	if (GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
@@ -265,6 +265,34 @@ bool FCheckSessionManagerBoundToFOnCreateSessionCompleteDelegate::Update()
 				testManager->configureSubsystemAndInterface();
 
 				test->TestTrue(TEXT("session manager should be bound to FOnCreateSessionCompleteDelegate"), testManager->isBoundToFOnCreateSessionCompleteDelegate());
+
+				
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FCheckSessionManagerBoundToFOnStartSessionCompleteDelegate::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		AObjectContainerActor* testContainer = sessionUtilities.retrieveFromPIEAnInstanceOf<AObjectContainerActor>();
+
+		if(testContainer)
+		{
+			testContainer->storeObjectOfType<USessionManagerMOCK>();
+			USessionManagerMOCK* testManager = Cast<USessionManagerMOCK, UObject>(testContainer->retrieveStoredObject());
+			if(testManager)
+			{
+				testManager->configureSubsystemAndInterface();
+
+				test->TestTrue(TEXT("session manager should be bound to FOnStartSessionCompleteDelegate"), testManager->isBoundToFOnStartSessionCompleteDelegate());
 
 				
 				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
