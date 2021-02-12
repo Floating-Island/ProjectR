@@ -67,6 +67,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerIsBoundToFOnFindSessionsComplet
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerIsBoundToFOnJoinSessionCompleteDelegateTest, 
+	"ProjectR.SessionManager Tests.Unit.010: is bound to FOnJoinSessionCompleteDelegate", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 	//isBound tests...
 

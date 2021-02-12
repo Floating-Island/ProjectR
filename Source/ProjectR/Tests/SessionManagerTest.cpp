@@ -186,6 +186,23 @@ bool FUSessionManagerIsBoundToFOnFindSessionsCompleteDelegateTest::RunTest(const
 }
 
 
+bool FUSessionManagerIsBoundToFOnJoinSessionCompleteDelegateTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	UClass* containerClass = AObjectContainerActor::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(containerClass, FTransform()));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSessionManagerBoundToFOnJoinSessionCompleteDelegate(this));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 
 
 
