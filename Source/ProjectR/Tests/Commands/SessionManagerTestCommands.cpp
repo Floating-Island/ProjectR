@@ -262,7 +262,7 @@ bool FCheckSessionManagerBoundToFOnCreateSessionCompleteDelegate::Update()
 			USessionManagerMOCK* testManager = Cast<USessionManagerMOCK, UObject>(testContainer->retrieveStoredObject());
 			if(testManager)
 			{
-				testManager->checkSubsystemAndInterfaceConfigured();
+				testManager->configureSubsystemAndInterface();
 
 				test->TestTrue(TEXT("session manager should be bound to FOnCreateSessionCompleteDelegate"), testManager->isBoundToFOnCreateSessionCompleteDelegate());
 
