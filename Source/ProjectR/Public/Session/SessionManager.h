@@ -16,7 +16,6 @@ class PROJECTR_API USessionManager : public UObject
 {
 	GENERATED_BODY()
 
-	void checkSubsystemAndInterfaceConfigured();
 	void prepareSubsystemAndInterface();
 	void fetchAndConfigureSessionInterface();
 	void fetchSessionInterface();
@@ -41,6 +40,8 @@ protected:
 	IOnlineSubsystem* onlineSubsystem;
 	IOnlineSessionPtr sessionInterface;
 
+	void checkSubsystemAndInterfaceConfigured();
+	
 	FName lobbyMapName;
 
 	bool hostSession(TSharedPtr<const FUniqueNetId> aUserID, FName aSessionName, bool isALANSession,
