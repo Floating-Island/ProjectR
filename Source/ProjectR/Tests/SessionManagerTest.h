@@ -52,8 +52,13 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerJoinSessionDoesntStartWithArbit
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerIsBoundToFOnCreateSessionCompleteDelegateTest, 
+	"ProjectR.SessionManager Tests.Unit.007: is bound to FOnCreateSessionCompleteDelegate", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+
+	//isBound tests...
 
 
 

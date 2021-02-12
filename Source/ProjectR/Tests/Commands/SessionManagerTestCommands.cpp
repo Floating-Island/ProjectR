@@ -248,6 +248,35 @@ bool FCheckSessionManagerDoesntStartSessionJoin::Update()
 }
 
 
+bool FCheckSessionManagerBoundToFOnCreateSessionCompleteDelegate::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())//if not, everything would be made while the map is loading and the PIE is in progress.
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		AObjectContainerActor* testContainer = sessionUtilities.retrieveFromPIEAnInstanceOf<AObjectContainerActor>();
+
+		if(testContainer)
+		{
+			testContainer->storeObjectOfType<USessionManagerMOCK>();
+			USessionManagerMOCK* testManager = Cast<USessionManagerMOCK, UObject>(testContainer->retrieveStoredObject());
+			if(testManager)
+			{
+				testManager->checkSubsystemAndInterfaceConfigured();
+
+				test->TestTrue(TEXT("session manager should be bound to FOnCreateSessionCompleteDelegate"), testManager->isBoundToFOnCreateSessionCompleteDelegate());
+
+				
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+
 
 
 
