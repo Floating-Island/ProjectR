@@ -27,4 +27,6 @@ public:
 	bool isBoundToFOnCreateSessionCompleteDelegate();
 
 	bool isBoundToFOnStartSessionCompleteDelegate();
+
+	bool isBoundToFOnFindSessionsCompleteDelegate();
 };
