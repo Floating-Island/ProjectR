@@ -77,6 +77,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerFOnCreateSessionCompleteDelegat
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerFOnStartSessionCompleteDelegateHandleIsSetTest, 
+	"ProjectR.SessionManager Tests.Unit.012: FOnStartSessionCompleteDelegate handle is set", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 	//isBound tests...
 
