@@ -209,6 +209,19 @@ bool FCheckLoadMainMenuSetsExpectedPlayersToOne::Update()
 	return false;
 }
 
+bool FCheckSessionManagerSetInGameInstance::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		test->TestTrue(TEXT("The session manager should be set and configured."), testInstance->sessionManagerConfigured());
+		return true;
+	}
+	return false;
+}
+
 
 
 

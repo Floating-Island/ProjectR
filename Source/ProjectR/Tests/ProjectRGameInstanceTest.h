@@ -81,6 +81,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadMainMenuSetsExpectedP
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceHasASessionManagerConfiguredTest, 
+	"ProjectR.ProjectRGameInstance Tests.Unit.013: Has a session manager created and configured",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

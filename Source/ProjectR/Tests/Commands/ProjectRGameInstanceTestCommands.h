@@ -49,4 +49,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckShowsCursorInSplitscreenMen
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLoadMainMenuSetsExpectedPlayersToOne, FAutomationTestBase*, test);
 
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSessionManagerSetInGameInstance, FAutomationTestBase*, test);
+
 #endif //WITH_DEV_AUTOMATION_TESTS
