@@ -50,3 +50,8 @@ bool USessionManagerMOCK::FOnCreateSessionCompleteDelegateHandleIsSet()
 {
 	return sessionCreationCompletedDelegate.GetHandle() == sessionCreationCompletedDelegateHandle;
 }
+
+bool USessionManagerMOCK::FOnStartSessionCompleteDelegateHandleIsSet()
+{
+	return sessionStartCompletedDelegate.GetHandle() == sessionStartCompletedDelegateHandle;
+}
