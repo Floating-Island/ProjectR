@@ -416,6 +416,34 @@ bool FCheckSessionManagerFOnStartSessionCompleteDelegateHandleSet::Update()
 }
 
 
+bool FCheckSessionManagerFOnFindSessionsCompleteDelegateHandleSet::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		AObjectContainerActor* testContainer = sessionUtilities.retrieveFromPIEAnInstanceOf<AObjectContainerActor>();
+
+		if(testContainer)
+		{
+			testContainer->storeObjectOfType<USessionManagerMOCK>();
+			USessionManagerMOCK* testManager = Cast<USessionManagerMOCK, UObject>(testContainer->retrieveStoredObject());
+			if(testManager)
+			{
+				testManager->configureSubsystemAndInterface();
+
+				test->TestTrue(TEXT("FOnFindSessionsCompleteDelegate handle should be set"), testManager->FOnFindSessionsCompleteDelegateHandleIsSet());
+
+				
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
 
 
 

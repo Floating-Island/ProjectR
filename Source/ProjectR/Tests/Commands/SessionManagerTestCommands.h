@@ -55,4 +55,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSessionManagerFOnCreateSess
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSessionManagerFOnStartSessionCompleteDelegateHandleSet, FAutomationTestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSessionManagerFOnFindSessionsCompleteDelegateHandleSet, FAutomationTestBase*, test);
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS
