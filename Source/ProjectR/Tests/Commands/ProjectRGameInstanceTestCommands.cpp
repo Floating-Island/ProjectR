@@ -216,7 +216,7 @@ bool FCheckSessionManagerSetInGameInstance::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
-		test->TestTrue(TEXT("The session manager should be set and configured."), testInstance->sessionManagerConfigured());
+		test->TestTrue(TEXT("The session manager should be set and configured."), testInstance->sessionManagerIsConfigured());
 		return true;
 	}
 	return false;
