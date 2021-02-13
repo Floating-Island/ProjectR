@@ -86,6 +86,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceHasASessionManagerConfigu
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadLANMultiplayerMenuCreatesLANMultiplayerMenuTest, 
+	"ProjectR.ProjectRGameInstance Tests.Integration.001: loadLANMultiplayerMenu creates the lanMultiplayer menu and adds it to viewport",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

@@ -52,4 +52,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLoadMainMenuSetsExpectedPla
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSessionManagerSetInGameInstance, FAutomationTestBase*, test);
 
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesLANMultiplayerMenu, FAutomationTestBase*, test);
+
 #endif //WITH_DEV_AUTOMATION_TESTS

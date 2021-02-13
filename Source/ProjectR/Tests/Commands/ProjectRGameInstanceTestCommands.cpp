@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "ProjectRGameInstanceTestCommands.h"
@@ -10,6 +9,7 @@
 #include "UI/MainMenu.h"
 #include "UI/SingleplayerMenu.h"
 #include "UI/LocalMultiplayerMenu.h"
+#include "../../Public/UI/LanMultiplayerMenu.h"
 
 
 //Test preparation commands:
@@ -217,6 +217,22 @@ bool FCheckSessionManagerSetInGameInstance::Update()
 		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
 		test->TestTrue(TEXT("The session manager should be set and configured."), testInstance->sessionManagerIsConfigured());
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckCreatesLANMultiplayerMenu::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		ULanMultiplayerMenu* testMenu = testInstance->loadLANMUltiplayerMenu();
+
+		test->TestTrue(TEXT("loadLANMUltiplayerMenu should bring the lanMultiplayer menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
 		return true;
 	}
 	return false;
