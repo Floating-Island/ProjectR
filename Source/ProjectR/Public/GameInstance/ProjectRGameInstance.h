@@ -45,7 +45,7 @@ public:
 		TSubclassOf<ULocalMultiplayerMenu> localMultiplayerMenuClass;
 
 	UPROPERTY(EditDefaultsOnly, Category= "Menus")
-		TSubclassOf<ULocalMultiplayerMenu> lanMultiplayerMenuClass;
+		TSubclassOf<ULanMultiplayerMenu> lanMultiplayerMenuClass;
 
 	UFUNCTION(BlueprintCallable)
 	UMainMenu* loadMainMenu();
