@@ -15,13 +15,13 @@
 UMainMenu* UProjectRGameInstance::loadMainMenu()
 {
 	UMainMenu* mainMenuInstance = Cast<UMainMenu, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), UMainMenu::StaticClass()));
-	if (!mainMenuInstance)
+	if (mainMenuInstance)
 	{
-		mainMenu = CreateWidget<UMainMenu>(GetWorld(), mainMenuClass, FName("Main Menu"));
+		mainMenu = mainMenuInstance;
 	}
 	else
 	{
-		mainMenu = mainMenuInstance;
+		mainMenu = CreateWidget<UMainMenu>(GetWorld(), mainMenuClass, FName("Main Menu"));
 	}
 	UE_LOG(LogTemp, Log, TEXT("attempting to add main menu to viewport"));
 	if (!mainMenu->IsInViewport())
@@ -52,13 +52,13 @@ UProjectRGameInstance::UProjectRGameInstance()
 USingleplayerMenu* UProjectRGameInstance::loadSingleplayerMenu()
 {
 	USingleplayerMenu* singleplayerMenuInstance = Cast<USingleplayerMenu, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), USingleplayerMenu::StaticClass()));
-	if (!singleplayerMenuInstance)
+	if (singleplayerMenuInstance)
 	{
-		singleplayerMenu = CreateWidget<USingleplayerMenu>(GetWorld(), singleplayerMenuClass, FName("Singleplayer Menu"));
+		singleplayerMenu = singleplayerMenuInstance;
 	}
 	else
 	{
-		singleplayerMenu = singleplayerMenuInstance;
+		singleplayerMenu = CreateWidget<USingleplayerMenu>(GetWorld(), singleplayerMenuClass, FName("Singleplayer Menu"));
 	}
 	if (!singleplayerMenu->IsInViewport())
 	{
@@ -71,13 +71,13 @@ USingleplayerMenu* UProjectRGameInstance::loadSingleplayerMenu()
 ULocalMultiplayerMenu* UProjectRGameInstance::loadLocalMultiplayerMenu()
 {
 	ULocalMultiplayerMenu* localMultiplayerMenuInstance = Cast<ULocalMultiplayerMenu, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ULocalMultiplayerMenu::StaticClass()));
-	if (!localMultiplayerMenuInstance)
+	if (localMultiplayerMenuInstance)
 	{
-		localMultiplayerMenu = CreateWidget<ULocalMultiplayerMenu>(GetWorld(), localMultiplayerMenuClass, FName("Splitscreen Menu"));
+		localMultiplayerMenu = localMultiplayerMenuInstance;
 	}
 	else
 	{
-		localMultiplayerMenu = localMultiplayerMenuInstance;
+		localMultiplayerMenu = CreateWidget<ULocalMultiplayerMenu>(GetWorld(), localMultiplayerMenuClass, FName("Splitscreen Menu"));
 	}
 	if (!localMultiplayerMenu->IsInViewport())
 	{
@@ -90,13 +90,13 @@ ULocalMultiplayerMenu* UProjectRGameInstance::loadLocalMultiplayerMenu()
 ULanMultiplayerMenu* UProjectRGameInstance::loadLANMUltiplayerMenu()
 {
 	ULanMultiplayerMenu* lanMultiplayerMenuInstance = Cast<ULanMultiplayerMenu, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ULanMultiplayerMenu::StaticClass()));
-	if (!lanMultiplayerMenuInstance)
+	if (lanMultiplayerMenuInstance)
 	{
-		lanMultiplayerMenu = CreateWidget<ULanMultiplayerMenu>(GetWorld(), lanMultiplayerMenuClass, FName("Lan Multiplayer Menu"));
+		lanMultiplayerMenu = lanMultiplayerMenuInstance;
 	}
 	else
 	{
-		lanMultiplayerMenu = lanMultiplayerMenuInstance;
+		lanMultiplayerMenu = CreateWidget<ULanMultiplayerMenu>(GetWorld(), lanMultiplayerMenuClass, FName("Lan Multiplayer Menu"));
 	}
 	if (!lanMultiplayerMenu->IsInViewport())
 	{
