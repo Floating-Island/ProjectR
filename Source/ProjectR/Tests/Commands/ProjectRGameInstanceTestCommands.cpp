@@ -239,7 +239,7 @@ bool FCheckCreatesLANMultiplayerMenu::Update()
 }
 
 
-bool FCheckCreatesLANMultiplayerMenu::Update()
+bool FCheckCreatesOneLANMultiplayerMenu::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
