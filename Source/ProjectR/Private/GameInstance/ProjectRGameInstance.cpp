@@ -7,32 +7,8 @@
 #include "UI/LocalMultiplayerMenu.h"
 #include "UI/LanMultiplayerMenu.h"
 #include "Blueprint/UserWidget.h"
-#include "Kismet/GameplayStatics.h"
 #include "Session/SessionManager.h"
 
-
-
-UMainMenu* UProjectRGameInstance::loadMainMenu()
-{
-	UMainMenu* mainMenuInstance = Cast<UMainMenu, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), UMainMenu::StaticClass()));
-	if (mainMenuInstance)
-	{
-		mainMenu = mainMenuInstance;
-	}
-	else
-	{
-		mainMenu = CreateWidget<UMainMenu>(GetWorld(), mainMenuClass, FName("Main Menu"));
-	}
-	UE_LOG(LogTemp, Log, TEXT("attempting to add main menu to viewport"));
-	if (!mainMenu->IsInViewport())
-	{
-		mainMenu->AddToViewport();
-		lockMouseToWidget(mainMenu);
-	}
-	expectedPlayers(1);//obscure. Necessary to set the number of players when coming from a pause or going back to main menu from the local multiplayer menu.
-	
-	return mainMenu;
-}
 
 void UProjectRGameInstance::lockMouseToWidget(UMenu* menu)
 {
@@ -44,93 +20,59 @@ void UProjectRGameInstance::lockMouseToWidget(UMenu* menu)
 	controller->bShowMouseCursor = true;
 }
 
+bool UProjectRGameInstance::menuIsInViewport(UMenu* aMenu)
+{
+	if (!aMenu)
+	{
+		return false;
+	}
+	return aMenu->IsInViewport();
+}
+
 UProjectRGameInstance::UProjectRGameInstance()
 {
 	numberOfPlayers = 1;
 }
 
+UMainMenu* UProjectRGameInstance::loadMainMenu()
+{
+	expectedPlayers(1);//obscure. Necessary to set the number of players when coming from a pause or going back to main menu from the local multiplayer menu.
+
+	mainMenu = loadMenuOfClass<UMainMenu>(mainMenuClass, FName("Main Menu"));
+	return mainMenu;
+}
+
 USingleplayerMenu* UProjectRGameInstance::loadSingleplayerMenu()
 {
-	USingleplayerMenu* singleplayerMenuInstance = Cast<USingleplayerMenu, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), USingleplayerMenu::StaticClass()));
-	if (singleplayerMenuInstance)
-	{
-		singleplayerMenu = singleplayerMenuInstance;
-	}
-	else
-	{
-		singleplayerMenu = CreateWidget<USingleplayerMenu>(GetWorld(), singleplayerMenuClass, FName("Singleplayer Menu"));
-	}
-	if (!singleplayerMenu->IsInViewport())
-	{
-		singleplayerMenu->AddToViewport();
-		lockMouseToWidget(singleplayerMenu);
-	}
+	singleplayerMenu = loadMenuOfClass<USingleplayerMenu>(singleplayerMenuClass, FName("Singleplayer Menu"));
 	return singleplayerMenu;
 }
 
 ULocalMultiplayerMenu* UProjectRGameInstance::loadLocalMultiplayerMenu()
 {
-	ULocalMultiplayerMenu* localMultiplayerMenuInstance = Cast<ULocalMultiplayerMenu, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ULocalMultiplayerMenu::StaticClass()));
-	if (localMultiplayerMenuInstance)
-	{
-		localMultiplayerMenu = localMultiplayerMenuInstance;
-	}
-	else
-	{
-		localMultiplayerMenu = CreateWidget<ULocalMultiplayerMenu>(GetWorld(), localMultiplayerMenuClass, FName("Splitscreen Menu"));
-	}
-	if (!localMultiplayerMenu->IsInViewport())
-	{
-		localMultiplayerMenu->AddToViewport();
-		lockMouseToWidget(localMultiplayerMenu);
-	}
+	localMultiplayerMenu = loadMenuOfClass<ULocalMultiplayerMenu>(localMultiplayerMenuClass, FName("Splitscreen Menu"));
 	return localMultiplayerMenu;
 }
 
 ULanMultiplayerMenu* UProjectRGameInstance::loadLANMUltiplayerMenu()
 {
-	ULanMultiplayerMenu* lanMultiplayerMenuInstance = Cast<ULanMultiplayerMenu, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ULanMultiplayerMenu::StaticClass()));
-	if (lanMultiplayerMenuInstance)
-	{
-		lanMultiplayerMenu = lanMultiplayerMenuInstance;
-	}
-	else
-	{
-		lanMultiplayerMenu = CreateWidget<ULanMultiplayerMenu>(GetWorld(), lanMultiplayerMenuClass, FName("Lan Multiplayer Menu"));
-	}
-	if (!lanMultiplayerMenu->IsInViewport())
-	{
-		lanMultiplayerMenu->AddToViewport();
-		lockMouseToWidget(lanMultiplayerMenu);
-	}
+	lanMultiplayerMenu = loadMenuOfClass<ULanMultiplayerMenu>(lanMultiplayerMenuClass, FName("Lan Multiplayer Menu"));
 	return lanMultiplayerMenu;
 }
 
 bool UProjectRGameInstance::isMainMenuInViewport()
 {
-	if (!mainMenu)
-	{
-		return false;
-	}
-	return mainMenu->IsInViewport();
+	return menuIsInViewport(mainMenu);
 }
 
 bool UProjectRGameInstance::isSingleplayerMenuInViewport()
 {
-	if (!singleplayerMenu)
-	{
-		return false;
-	}
-	return singleplayerMenu->IsInViewport();
+	return menuIsInViewport(singleplayerMenu);
 }
 
 bool UProjectRGameInstance::isLocalMultiplayerMenuInViewport()
 {
-	if (!localMultiplayerMenu)
-	{
-		return false;
-	}
-	return localMultiplayerMenu->IsInViewport();
+	return menuIsInViewport(localMultiplayerMenu);
 }
 
 void UProjectRGameInstance::expectedPlayers(int aQuantity)

@@ -6,6 +6,7 @@
 
 #include "../UI/Menu.h"
 #include "Engine/GameInstance.h"
+#include "Kismet/GameplayStatics.h"
 #include "ProjectRGameInstance.generated.h"
 
 class ULanMultiplayerMenu;
@@ -27,7 +28,10 @@ protected:
 	USingleplayerMenu* singleplayerMenu;
 	ULocalMultiplayerMenu* localMultiplayerMenu;
 	ULanMultiplayerMenu* lanMultiplayerMenu;
+	template<class aMenuType>
+	aMenuType* loadMenuOfClass(TSubclassOf<UMenu> aMenuClass, FName aMenuName);
 	void lockMouseToWidget(UMenu* menu);
+	bool menuIsInViewport(UMenu* aMenu);
 
 	UPROPERTY()
 	USessionManager* sessionManager;
@@ -69,3 +73,24 @@ public:
 
 	virtual void OnStart() override;
 };
+
+template <class aMenuType>
+aMenuType* UProjectRGameInstance::loadMenuOfClass(TSubclassOf<UMenu> aMenuClass, FName aMenuName)
+{
+	aMenuType* menuInstance = Cast<aMenuType, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), aMenuType::StaticClass()));
+	aMenuType* loadedMenu = nullptr;
+	if (menuInstance)
+	{
+		loadedMenu = menuInstance;
+	}
+	else
+	{
+		loadedMenu = Cast<aMenuType, UUserWidget>(UUserWidget::CreateWidgetInstance(*GetWorld(), aMenuClass, aMenuName));
+	}
+	if (!loadedMenu->IsInViewport())
+	{
+		loadedMenu->AddToViewport();
+		lockMouseToWidget(loadedMenu);
+	}
+	return loadedMenu;
+}
