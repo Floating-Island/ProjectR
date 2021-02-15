@@ -101,6 +101,7 @@ ULanMultiplayerMenu* UProjectRGameInstance::loadLANMUltiplayerMenu()
 	if (!lanMultiplayerMenu->IsInViewport())
 	{
 		lanMultiplayerMenu->AddToViewport();
+		lockMouseToWidget(lanMultiplayerMenu);
 	}
 	return lanMultiplayerMenu;
 }
