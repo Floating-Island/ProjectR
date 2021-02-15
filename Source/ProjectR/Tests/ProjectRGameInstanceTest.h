@@ -91,6 +91,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadLANMultiplayerMenuCre
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadLANMultiplayerMenuCreatesOneLANMultiplayerMenuTest, 
+	"ProjectR.ProjectRGameInstance Tests.Unit.015: loadLANMultiplayerMenu creates only one lan multiplayer menu",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

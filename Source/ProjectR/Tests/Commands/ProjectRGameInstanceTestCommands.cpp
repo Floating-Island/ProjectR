@@ -239,6 +239,23 @@ bool FCheckCreatesLANMultiplayerMenu::Update()
 }
 
 
+bool FCheckCreatesLANMultiplayerMenu::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		ULanMultiplayerMenu* testMenu = testInstance->loadLANMUltiplayerMenu();
+		ULanMultiplayerMenu* testAnotherMenu = testInstance->loadLANMUltiplayerMenu();
+
+		test->TestTrue(TEXT("loadLANMUltiplayerMenu should create only one instance of lanMultiplayer menu."), testMenu == testAnotherMenu);
+		return true;
+	}
+	return false;
+}
+
+
 
 
 
