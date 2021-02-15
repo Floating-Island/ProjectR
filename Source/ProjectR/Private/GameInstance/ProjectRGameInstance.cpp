@@ -89,8 +89,15 @@ ULocalMultiplayerMenu* UProjectRGameInstance::loadLocalMultiplayerMenu()
 
 ULanMultiplayerMenu* UProjectRGameInstance::loadLANMUltiplayerMenu()
 {
-	lanMultiplayerMenu = CreateWidget<ULanMultiplayerMenu>(GetWorld(), lanMultiplayerMenuClass, FName("Lan Multiplayer Menu"));
-
+	ULanMultiplayerMenu* lanMultiplayerMenuInstance = Cast<ULanMultiplayerMenu, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ULanMultiplayerMenu::StaticClass()));
+	if (!lanMultiplayerMenuInstance)
+	{
+		lanMultiplayerMenu = CreateWidget<ULanMultiplayerMenu>(GetWorld(), lanMultiplayerMenuClass, FName("Lan Multiplayer Menu"));
+	}
+	else
+	{
+		lanMultiplayerMenu = lanMultiplayerMenuInstance;
+	}
 	if (!lanMultiplayerMenu->IsInViewport())
 	{
 		lanMultiplayerMenu->AddToViewport();
