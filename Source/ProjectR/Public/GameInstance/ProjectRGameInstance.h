@@ -8,6 +8,7 @@
 #include "Engine/GameInstance.h"
 #include "ProjectRGameInstance.generated.h"
 
+class ULanMultiplayerMenu;
 class USessionManager;
 class ULocalMultiplayerMenu;
 class USingleplayerMenu;
@@ -25,6 +26,7 @@ protected:
 	UMainMenu* mainMenu;
 	USingleplayerMenu* singleplayerMenu;
 	ULocalMultiplayerMenu* localMultiplayerMenu;
+	ULanMultiplayerMenu* lanMultiplayerMenu;
 	void lockMouseToWidget(UMenu* menu);
 
 	UPROPERTY()
@@ -42,6 +44,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category= "Menus")
 		TSubclassOf<ULocalMultiplayerMenu> localMultiplayerMenuClass;
 
+	UPROPERTY(EditDefaultsOnly, Category= "Menus")
+		TSubclassOf<ULocalMultiplayerMenu> lanMultiplayerMenuClass;
+
 	UFUNCTION(BlueprintCallable)
 	UMainMenu* loadMainMenu();
 	
@@ -50,6 +55,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	ULocalMultiplayerMenu* loadLocalMultiplayerMenu();
+
+	UFUNCTION(BlueprintCallable)
+	ULanMultiplayerMenu* loadLANMUltiplayerMenu();
 
 	bool isMainMenuInViewport();
 	bool isSingleplayerMenuInViewport();

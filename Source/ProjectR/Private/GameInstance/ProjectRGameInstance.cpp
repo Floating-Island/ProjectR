@@ -5,6 +5,7 @@
 #include "UI/MainMenu.h"
 #include "UI/SingleplayerMenu.h"
 #include "UI/LocalMultiplayerMenu.h"
+#include "UI/LanMultiplayerMenu.h"
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "Session/SessionManager.h"
@@ -84,6 +85,17 @@ ULocalMultiplayerMenu* UProjectRGameInstance::loadLocalMultiplayerMenu()
 		lockMouseToWidget(localMultiplayerMenu);
 	}
 	return localMultiplayerMenu;
+}
+
+ULanMultiplayerMenu* UProjectRGameInstance::loadLANMUltiplayerMenu()
+{
+	lanMultiplayerMenu = CreateWidget<ULanMultiplayerMenu>(GetWorld(), lanMultiplayerMenuClass, FName("Lan Multiplayer Menu"));
+
+	if (!lanMultiplayerMenu->IsInViewport())
+	{
+		lanMultiplayerMenu->AddToViewport();
+	}
+	return lanMultiplayerMenu;
 }
 
 bool UProjectRGameInstance::isMainMenuInViewport()
