@@ -256,6 +256,24 @@ bool FCheckCreatesLANMultiplayerMenu::Update()
 }
 
 
+bool FCheckShowsCursorInLanMultiplayerMenu::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		ULanMultiplayerMenu* testMenu = testInstance->loadLANMUltiplayerMenu();
+		bool controllerShowsMouseCursor = sessionUtilities.defaultPIEWorld()->GetFirstPlayerController()->ShouldShowMouseCursor();
+
+		test->TestTrue(TEXT("loadLanMultiplayerMenu should make the controller show the mouse cursor."), testMenu && controllerShowsMouseCursor);
+		return true;
+	}
+	return false;
+}
+
+
+
 
 
 

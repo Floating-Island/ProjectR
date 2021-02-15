@@ -96,6 +96,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadLANMultiplayerMenuCre
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLANMultiplayerMenuShowsMouseCursorTest, 
+	"ProjectR.ProjectRGameInstance Tests.Integration.016: loadLANMultiplayerMenu makes the controller to show the mouse cursor",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

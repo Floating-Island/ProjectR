@@ -58,4 +58,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesLANMultiplayerMenu, 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesOneLANMultiplayerMenu, FAutomationTestBase*, test);
 
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckShowsCursorInLanMultiplayerMenu, FAutomationTestBase*, test);
+
 #endif //WITH_DEV_AUTOMATION_TESTS

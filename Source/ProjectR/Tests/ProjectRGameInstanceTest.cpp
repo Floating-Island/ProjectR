@@ -212,7 +212,6 @@ bool FUProjectRGameInstanceLoadLANMultiplayerMenuCreatesLANMultiplayerMenuTest::
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
-	
 }
 
 
@@ -227,9 +226,20 @@ bool FUProjectRGameInstanceLoadLANMultiplayerMenuCreatesOneLANMultiplayerMenuTes
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
-	
 }
 
+bool FUProjectRGameInstanceLANMultiplayerMenuShowsMouseCursorTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckShowsCursorInLanMultiplayerMenu(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
 
 
 
