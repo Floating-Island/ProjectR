@@ -13,5 +13,8 @@ UCLASS()
 class PROJECTR_API ULanMultiplayerMenu : public UMenu
 {
 	GENERATED_BODY()
-	
+
+
+public:
+	virtual bool Initialize() override;
 };
