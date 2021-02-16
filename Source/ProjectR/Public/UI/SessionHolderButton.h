@@ -13,5 +13,11 @@ UCLASS()
 class PROJECTR_API USessionHolderButton : public UButton
 {
 	GENERATED_BODY()
+
+ FOnlineSessionSearchResult& sessionResult;
+	
+public:
+	void storeSessionResult(const FOnlineSessionSearchResult& aTestResult);
+	const FOnlineSessionSearchResult& sessionResultStored();
 	
 };
