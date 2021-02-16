@@ -24,7 +24,7 @@ bool ULanMultiplayerMenu::Initialize()
 
 FVector2D ULanMultiplayerMenu::goBackButtonAbsoluteCenterPosition()
 {
-	buttonAbsoluteCenterPosition(goBackButton);
+	return buttonAbsoluteCenterPosition(goBackButton);
 }
 
 void ULanMultiplayerMenu::goBack()
