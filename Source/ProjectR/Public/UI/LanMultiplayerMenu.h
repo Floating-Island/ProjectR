@@ -18,11 +18,18 @@ class PROJECTR_API ULanMultiplayerMenu : public UMenu
 public:
 	virtual bool Initialize() override;
 	FVector2D goBackButtonAbsoluteCenterPosition();
-
+	FVector2D createSessionButtonAbsoluteCenterPosition();
+	
 protected:
 	UPROPERTY(meta = (BindWidget))
 		UButton* goBackButton;
 
+	UPROPERTY(meta = (BindWidget))
+		UButton* createSessionButton;
+
 	UFUNCTION()
 		void goBack();
+
+	UFUNCTION()
+		void startLANSessionCreation();
 };

@@ -71,6 +71,8 @@ public:
 	int necessaryPlayers();
 	bool sessionManagerIsConfigured();
 
+	void createLANSession();
+
 	virtual void OnStart() override;
 };
 

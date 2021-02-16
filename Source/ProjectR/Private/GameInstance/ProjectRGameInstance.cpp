@@ -90,6 +90,11 @@ bool UProjectRGameInstance::sessionManagerIsConfigured()
 	return sessionManager && sessionManager->isConfigured();
 }
 
+void UProjectRGameInstance::createLANSession()
+{
+	sessionManager->createLANSession();
+}
+
 void UProjectRGameInstance::OnStart()
 {
 	Super::OnStart();

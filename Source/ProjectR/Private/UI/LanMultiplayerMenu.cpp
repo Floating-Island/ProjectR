@@ -18,6 +18,14 @@ bool ULanMultiplayerMenu::Initialize()
 		goBackButton->IsFocusable = true;
 		goBackButton->SetClickMethod(EButtonClickMethod::MouseDown);
 	}
+
+	if (createSessionButton)
+	{
+		createSessionButton->OnClicked.AddDynamic(this, &ULanMultiplayerMenu::startLANSessionCreation);
+		createSessionButton->OnPressed.AddDynamic(this, &ULanMultiplayerMenu::startLANSessionCreation);
+		createSessionButton->IsFocusable = true;
+		createSessionButton->SetClickMethod(EButtonClickMethod::MouseDown);
+	}
 	
 	return initializeResult;
 }
@@ -27,9 +35,20 @@ FVector2D ULanMultiplayerMenu::goBackButtonAbsoluteCenterPosition()
 	return buttonAbsoluteCenterPosition(goBackButton);
 }
 
+FVector2D ULanMultiplayerMenu::createSessionButtonAbsoluteCenterPosition()
+{
+	return buttonAbsoluteCenterPosition(createSessionButton);
+}
+
 void ULanMultiplayerMenu::goBack()
 {
 	RemoveFromViewport();
 	UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance());
 	gameInstance->loadMainMenu();
+}
+
+void ULanMultiplayerMenu::startLANSessionCreation()
+{
+	UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance());
+	gameInstance->createLANSession();
 }
