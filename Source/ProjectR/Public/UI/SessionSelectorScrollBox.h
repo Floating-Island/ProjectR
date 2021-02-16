@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class PROJECTR_API USessionSelectorScrollBox : public UScrollBox
+class PROJECTR_API USessionSelectorScrollBox : public UUserWidget
 {
 	GENERATED_BODY()
 	

@@ -24,10 +24,11 @@ bool FUSessionHolderButtonStoresFOnlineSessionSearchResultTest::RunTest(const FS
 	USessionHolderButton* testButton = NewObject<USessionHolderButton>();
 
 	FOnlineSessionSearchResult testResult = FOnlineSessionSearchResult();
-
+	testResult.PingInMs = 60;
+	
 	testButton->storeSessionResult(testResult);
 	
-	TestTrue(TEXT("The session holder button should be able to store a FOnlineSessionSearchResult."), testButton->sessionResultStored() == testResult);
+	TestTrue(TEXT("The session holder button should be able to store a FOnlineSessionSearchResult."), testButton->sessionResultStored().PingInMs == testResult.PingInMs);
 	
 	return true;
 }

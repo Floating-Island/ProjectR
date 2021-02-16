@@ -3,21 +3,23 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "OnlineSessionSettings.h"
 #include "Components/Button.h"
 #include "SessionHolderButton.generated.h"
+
 
 /**
  * 
  */
 UCLASS()
-class PROJECTR_API USessionHolderButton : public UButton
+class PROJECTR_API USessionHolderButton : public UUserWidget
 {
 	GENERATED_BODY()
 
- FOnlineSessionSearchResult& sessionResult;
+ FOnlineSessionSearchResult sessionResult;
 	
 public:
-	void storeSessionResult(const FOnlineSessionSearchResult& aTestResult);
-	const FOnlineSessionSearchResult& sessionResultStored();
-	
+	void storeSessionResult(FOnlineSessionSearchResult aTestResult);
+	const FOnlineSessionSearchResult sessionResultStored();
 };
