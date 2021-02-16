@@ -21,6 +21,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionHolderButtonIsntNullWhenInstantiatedTe
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionHolderButtonStoresFOnlineSessionSearchResultTest, 
+	"ProjectR.SessionHolderButton Tests.Unit.001: Stores FSearchResult structs",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

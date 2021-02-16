@@ -19,5 +19,19 @@ bool FUSessionHolderButtonIsntNullWhenInstantiatedTest::RunTest(const FString& P
 }
 
 
+bool FUSessionHolderButtonStoresFOnlineSessionSearchResultTest::RunTest(const FString& Parameters)
+{
+	USessionHolderButton* testButton = NewObject<USessionHolderButton>();
+
+	FOnlineSessionSearchResult testResult = FOnlineSessionSearchResult();
+
+	testButton->storeSessionResult(testResult);
+	
+	TestTrue(TEXT("The session holder button should be able to store a FOnlineSessionSearchResult."), testButton->sessionResultStored() == testResult);
+	
+	return true;
+}
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
