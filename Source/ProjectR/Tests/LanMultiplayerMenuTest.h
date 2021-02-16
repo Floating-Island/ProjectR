@@ -21,6 +21,14 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FULanMultiplayerMenuIsntNullWhenInstantiatedTes
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FULanMultiplayerMenuClickingGoBackButtonRemovesFromViewportTest,
+	"ProjectR.LanMultiplayerMenu Tests.Integration.001: Clicking the go back button removes the menu from viewport",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+//go back button
+//create session button
+//search sessions button leads to search sessions menu, which has the join button. It could be done inside the lan multiplayer menu.
+
 
 
 

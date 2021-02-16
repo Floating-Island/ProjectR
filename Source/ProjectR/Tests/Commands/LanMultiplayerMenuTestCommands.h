@@ -17,6 +17,8 @@
 
 //Test check commands:
 
+class ULanMultiplayerMenu;
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckLanMultiplayerMenuClickGoBackRemovesFromViewport, ULanMultiplayerMenu*, lanMultiplayerMenuInstance, FAutomationTestBase*, test);
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
