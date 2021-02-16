@@ -7,6 +7,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "../TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -19,6 +20,9 @@
 
 class ULanMultiplayerMenu;
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckLanMultiplayerMenuClickGoBackRemovesFromViewport, ULanMultiplayerMenu*, lanMultiplayerMenuInstance, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckLanMultiplayerMenuClickGoBackBringsMainMenu, ULanMultiplayerMenu*, lanMultiplayerMenuInstance, FSimplePIETestBase*, test);
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

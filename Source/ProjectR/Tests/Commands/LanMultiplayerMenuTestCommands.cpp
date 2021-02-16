@@ -46,6 +46,39 @@ bool FCheckLanMultiplayerMenuClickGoBackRemovesFromViewport::Update()
 }
 
 
+bool FCheckLanMultiplayerMenuClickGoBackBringsMainMenu::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		if (lanMultiplayerMenuInstance == nullptr)
+		{
+			lanMultiplayerMenuInstance = gameInstance->loadLANMUltiplayerMenu();
+			return false;
+		}
+
+		if (lanMultiplayerMenuInstance->IsInViewport())
+		{
+			FVector2D goBackButtonCoordinates = lanMultiplayerMenuInstance->goBackButtonAbsoluteCenterPosition();
+			sessionUtilities.processEditorClick(goBackButtonCoordinates);
+			return false;
+		}
+
+		if (gameInstance->isMainMenuInViewport())
+		{
+			test->TestTrue(test->conditionMessage(), gameInstance->isMainMenuInViewport());
+			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+
+		return test->manageTickCountTowardsLimit();
+	}
+	return false;
+}
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
