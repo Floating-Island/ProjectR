@@ -79,6 +79,40 @@ bool FCheckLanMultiplayerMenuClickGoBackBringsMainMenu::Update()
 }
 
 
+bool FCheckLanMultiplayerMenuClickCreateSessionBringsLobby::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		if (lanMultiplayerMenuInstance == nullptr)
+		{
+			lanMultiplayerMenuInstance = gameInstance->loadLANMUltiplayerMenu();
+			return false;
+		}
+
+		if (lanMultiplayerMenuInstance->IsInViewport())
+		{
+			FVector2D createSessionButtonCoordinates = lanMultiplayerMenuInstance->createSessionButtonAbsoluteCenterPosition();
+			sessionUtilities.processEditorClick(createSessionButtonCoordinates);
+			return false;
+		}
+		
+		bool inAnotherWorld = !sessionUtilities.currentPIEWorld()->GetMapName().Contains("VoidWorld");
+		if (inAnotherWorld)
+		{
+			test->TestTrue(test->conditionMessage(), inAnotherWorld);
+			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+
+		return test->manageTickCountTowardsLimit();
+	}
+	return false;
+}
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

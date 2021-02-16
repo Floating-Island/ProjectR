@@ -31,9 +31,14 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULanMultiplayerMenuClickingGoBackButton
 	"ProjectR.LanMultiplayerMenu Tests.Integration.002: Clicking the go back button brings the mainMenu",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-//go back button
-//create session button
-//search sessions button leads to search sessions menu, which has the join button. It could be done inside the lan multiplayer menu.
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULanMultiplayerMenuClickingCreateSessionButtonStartsSessionTest, FSimplePIETestBase,
+	"ProjectR.LanMultiplayerMenu Tests.Integration.002: Clicking the create session travels to the lobby when the session starts",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+//create session button (pressing it starts a session creation; changes map to lobby by the on start session event).
+//it automatically searches for sessions and displays them. the join button is only clickable if a session is selected.
 
 
 
