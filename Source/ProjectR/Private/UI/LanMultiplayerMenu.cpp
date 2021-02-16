@@ -2,6 +2,8 @@
 
 
 #include "UI/LanMultiplayerMenu.h"
+
+#include "GameInstance/ProjectRGameInstance.h"
 #include "Components/Button.h"
 
 bool ULanMultiplayerMenu::Initialize()
@@ -28,4 +30,6 @@ FVector2D ULanMultiplayerMenu::goBackButtonAbsoluteCenterPosition()
 void ULanMultiplayerMenu::goBack()
 {
 	RemoveFromViewport();
+	UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance());
+	gameInstance->loadMainMenu();
 }
