@@ -11,19 +11,7 @@
 
 //Test preparation commands:
 
-bool FSpawnGameModeDefaultPawn::Update()
-{
-	if(GEditor->IsPlayingSessionInEditor())
-	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		AGameModeBase* pieGameMode = sessionUtilities.currentPIEWorld()->GetAuthGameMode();
-		APlayerController* pieController = sessionUtilities.currentPIEWorld()->GetFirstPlayerController();
 
-		pieGameMode->SpawnDefaultPawnAtTransform(pieController, FTransform());
-		return true;
-	}
-	return false;
-}
 
 
 

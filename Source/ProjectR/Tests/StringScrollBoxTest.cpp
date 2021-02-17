@@ -8,6 +8,7 @@
 #include "UI/StringButtonScrollBox.h"
 
 #include "Tests/AutomationEditorCommon.h"
+#include "Commands/CommonPIECommands.h"
 #include "Commands/StringScrollBoxTestCommands.h"
 
 

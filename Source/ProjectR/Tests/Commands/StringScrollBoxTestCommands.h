@@ -14,7 +14,7 @@
 
 //Test preparation commands:
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnGameModeDefaultPawn);
+
 
 //Test check commands:
 
