@@ -13,6 +13,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -21,7 +22,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStringHolderButtonIsntNullWhenInstantiatedTes
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStringHolderButtonStoresStringsTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUStringHolderButtonStoresStringsTest, FSimplePIETestBase,
 	"ProjectR.StringHolderButton Tests.Unit.001: Stores FSearchResult structs",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 

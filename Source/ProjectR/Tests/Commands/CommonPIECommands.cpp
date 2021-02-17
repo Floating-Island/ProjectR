@@ -3,6 +3,7 @@
 
 #include "CommonPIECommands.h"
 #include "../Utilities/PIESessionUtilities.h"
+#include "GameFramework/GameModeBase.h"
 
 
 bool FSpawnGameModeDefaultPawn::Update()

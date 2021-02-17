@@ -6,6 +6,9 @@
 
 #include "StringHolderButtonTest.h"
 #include "UI/StringHolderButton.h"
+#include "Tests/AutomationEditorCommon.h"
+#include "Commands/CommonPIECommands.h"
+#include "Commands/StringHolderButtonTestCommands.h"
 
 
 bool FUStringHolderButtonIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
@@ -20,14 +23,17 @@ bool FUStringHolderButtonIsntNullWhenInstantiatedTest::RunTest(const FString& Pa
 
 bool FUStringHolderButtonStoresStringsTest::RunTest(const FString& Parameters)
 {
-	UStringHolderButton* testButton = NewObject<UStringHolderButton>();
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-StringHolderContainer");
+	establishTestMessageTo(FString("The string holder button should be able to store a FString."));
+	establishTickLimitTo(3);
 
-	FString testString = FString("I'm a string.");
-	
-	testButton->store(testString);
-	
-	TestTrue(TEXT("The string holder button should be able to store a FString."), testButton->storedString().Contains(testString));
-	
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnGameModeDefaultPawn);
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAStringHolderButtonStoresAndRetrievesString(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
 
