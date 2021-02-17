@@ -16,8 +16,13 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionSelectorScrollBoxIsntNullWhenInstantiatedTest, 
-	"ProjectR.SessionSelectorScrollBox Tests.Unit.000: Isn't null when instantiated",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStringHolderButtonIsntNullWhenInstantiatedTest, 
+	"ProjectR.StringHolderButton Tests.Unit.000: Isn't null when instantiated",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStringHolderButtonStoresStringsTest, 
+	"ProjectR.StringHolderButton Tests.Unit.001: Stores FSearchResult structs",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

@@ -13,18 +13,13 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionHolderButtonIsntNullWhenInstantiatedTest, 
-	"ProjectR.SessionHolderButton Tests.Unit.000: Isn't null when instantiated",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStringButtonScrollBoxIsntNullWhenInstantiatedTest, 
+	"ProjectR.StringButtonScrollBox Tests.Unit.000: Isn't null when instantiated",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionHolderButtonStoresFOnlineSessionSearchResultTest, 
-	"ProjectR.SessionHolderButton Tests.Unit.001: Stores FSearchResult structs",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
 
 
 

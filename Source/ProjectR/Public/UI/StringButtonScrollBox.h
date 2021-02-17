@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Components/ScrollBox.h"
-#include "SessionSelectorScrollBox.generated.h"
+#include "StringButtonScrollBox.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PROJECTR_API USessionSelectorScrollBox : public UUserWidget
+class PROJECTR_API UStringButtonScrollBox : public UUserWidget
 {
 	GENERATED_BODY()
 	
