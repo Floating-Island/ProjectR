@@ -40,5 +40,22 @@ bool FUStringButtonScrollBoxPopulatesScrollBoxWithStringHolderButtonsTest::RunTe
 }
 
 
+bool FUStringButtonScrollClickingChildButtonUpdatesSelectedStringTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-StringScrollContainer");
+	establishTestMessageTo(FString("Clicking a child button should update the selected string to it."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnGameModeDefaultPawn);
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAStringScrollBoxChildClicked(nullptr, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS

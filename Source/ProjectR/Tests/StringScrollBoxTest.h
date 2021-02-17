@@ -27,6 +27,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUStringButtonScrollBoxPopulatesScrollBo
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUStringButtonScrollClickingChildButtonUpdatesSelectedStringTest, FSimplePIETestBase,
+	"ProjectR.StringButtonScrollBox Tests.Integration.002: Clicking a child button updates the selected string text",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 
