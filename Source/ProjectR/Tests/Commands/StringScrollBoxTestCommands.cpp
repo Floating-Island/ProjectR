@@ -7,7 +7,7 @@
 #include "../Utilities/PIESessionUtilities.h"
 #include "GameFramework/GameModeBase.h"
 #include "UI/StringButtonScrollBox.h"
-#include "OnlineSessionSettings.h"
+#include "../Utilities/BlueprintWidgetContainerPawn.h"
 
 //Test preparation commands:
 
@@ -18,7 +18,7 @@ bool FSpawnGameModeDefaultPawn::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		AGameModeBase* pieGameMode = sessionUtilities.currentPIEWorld()->GetAuthGameMode();
 		APlayerController* pieController = sessionUtilities.currentPIEWorld()->GetFirstPlayerController();
-		
+
 		pieGameMode->SpawnDefaultPawnAtTransform(pieController, FTransform());
 		return true;
 	}
@@ -35,19 +35,21 @@ bool FCheckAStringScrollBoxPopulateBoxNumberOfChilds::Update()
 	if(GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UStringButtonScrollBox* testScroll = sessionUtilities.retrieveFromPIEAnInstanceOf<UStringButtonScrollBox>();
-		if(testScroll)
+		ABlueprintWidgetContainerPawn* testContainer = sessionUtilities.retrieveFromPIEAnInstanceOf<ABlueprintWidgetContainerPawn>();
+		
+		if(testContainer)
 		{
+			UStringButtonScrollBox* testScroll = Cast<UStringButtonScrollBox, UUserWidget>(testContainer->retrieveWidget());
 			TArray<FString> testStrings = TArray<FString>();
 			testStrings.Add(FString("I'm "));
 			testStrings.Add(FString("a "));
 			testStrings.Add(FString("string."));
 
 			testScroll->populateBox(testStrings);
-			bool numbersCoincedent = testScroll->stringButtonsQuantity() == testStrings.Num();
-			if(numbersCoincedent)
+			bool numbersCoincident = testScroll->stringButtonsQuantity() == testStrings.Num();
+			if(numbersCoincident)
 			{
-				test->TestTrue(test->conditionMessage(), numbersCoincedent);
+				test->TestTrue(test->conditionMessage(), numbersCoincident);
 				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 				return true;
 			}
