@@ -5,10 +5,13 @@
 
 void UStringHolderButton::store(FString aString)
 {
-	text = aString;
+	if(textHolder)
+	{
+		textHolder->SetText(FText::FromString(aString));
+	}
 }
 
 FString UStringHolderButton::storedString()
 {
-	return text;
+	return textHolder->GetText().ToString();
 }

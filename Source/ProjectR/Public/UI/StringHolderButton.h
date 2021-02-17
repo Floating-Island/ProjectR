@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 
-#include "OnlineSessionSettings.h"
 #include "Components/Button.h"
+#include "Components/TextBlock.h"
 #include "StringHolderButton.generated.h"
 
 
@@ -16,10 +16,16 @@ UCLASS()
 class PROJECTR_API UStringHolderButton : public UUserWidget
 {
 	GENERATED_BODY()
-
- FString text;
 	
 public:
 	void store(FString aString);
 	FString storedString();
+
+protected:
+
+	UPROPERTY(meta = (BindWidget))
+		UButton* textButton;
+
+	UPROPERTY(meta = (BindWidget))
+		UTextBlock* textHolder;
 };
