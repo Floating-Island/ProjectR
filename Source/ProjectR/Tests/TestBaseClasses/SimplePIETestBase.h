@@ -42,7 +42,7 @@ void establishTestMessageTo(FString aMessage);
 void establishTickLimitTo(int aDesiredQuantity);
 
 /**
- * checks that if the tick count reaches the tick limit.
+ * checks if the tick count reaches the tick limit.
  * If true, appends a failure message to the test.
  * returns whether the tick count exceeds the tick limit.
  * Should be located at the bottom of the latent command where you want to start ticking to end.
