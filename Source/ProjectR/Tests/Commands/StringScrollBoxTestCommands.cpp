@@ -79,7 +79,7 @@ bool FCheckAStringScrollBoxChildClicked::Update()
 				FVector2D buttonCoordinates = aButtonHolder->buttonCoordinates();
 				sessionUtilities.processEditorClick(buttonCoordinates);
 				
-				bool textsMatch = aButtonHolder->storedString().Contains(testScroll->SelectedString());
+				bool textsMatch = aButtonHolder->storedString().Contains(testScroll->selectedString());
 				
 				if(textsMatch)
 				{
