@@ -22,6 +22,12 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUStringButtonScrollBoxIsntNullWhenInstantiated
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUStringButtonScrollBoxPopulatesScrollBoxWithStringHolderButtonsTest, FSimplePIETestBase,
+	"ProjectR.StringButtonScrollBox Tests.Integration.001: populateBox fills the scroll box with string holder buttons",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+
 
 
 
