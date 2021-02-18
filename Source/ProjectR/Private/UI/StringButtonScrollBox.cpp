@@ -25,17 +25,14 @@ bool UStringButtonScrollBox::Initialize()
 void UStringButtonScrollBox::populateBoxWith(TArray<FString> aBunchOfStrings)
 {
 	selectedChild = nullptr;
-	if(scrollBoxWidget)
+	scrollBoxWidget->ClearChildren();
+	for(auto aString : aBunchOfStrings)
 	{
-		scrollBoxWidget->ClearChildren();
-		for(auto aString : aBunchOfStrings)
+		UStringHolderButton* stringButtonWidget = Cast<UStringHolderButton, UUserWidget>(CreateWidget(this, stringHolderButtonClass));
+		if(stringButtonWidget)
 		{
-			UStringHolderButton* stringButtonWidget = Cast<UStringHolderButton, UUserWidget>(CreateWidget(this, stringHolderButtonClass));
-			if(stringButtonWidget)
-			{
-				stringButtonWidget->store(aString);
-				scrollBoxWidget->AddChild(stringButtonWidget);
-			}
+			stringButtonWidget->store(aString);
+			scrollBoxWidget->AddChild(stringButtonWidget);
 		}
 	}
 }
