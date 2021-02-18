@@ -116,5 +116,21 @@ bool FUMainMenuClickingLanMultiplayerButtonRemovesMenuFromViewportTest::RunTest(
 }
 
 
+bool FUMainMenuClickingLanMultiplayerButtonBringsLanMultiplayerMenuTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishTestMessageTo(FString("The main menu should load the lan multiplayer menu when clicking the lan multiplayer button."));
+	establishTickLimitTo(10);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickLanMultiplayerBringsLanMultiplayerMenu(nullptr, false, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS

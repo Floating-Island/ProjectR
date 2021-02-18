@@ -229,6 +229,40 @@ bool FCheckMainMenuClickLanMultiplayerRemovesMenuFromViewport::Update()
 }
 
 
+bool FCheckMainMenuClickLanMultiplayerBringsLanMultiplayerMenu::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+	
+		if(mainMenuInstance == nullptr)
+		{
+			mainMenuInstance = gameInstance->loadMainMenu();
+			isMenuInstanciated = true;
+			return false;
+		}
+		
+		if(isMenuInstanciated && mainMenuInstance->IsInViewport())
+		{
+			FVector2D lanMultiplayerButtonCoordinates = mainMenuInstance->lanMultiplayerButtonAbsoluteCenterPosition();
+			sessionUtilities.processEditorClick(lanMultiplayerButtonCoordinates);
+			return false;
+		}
+		
+		if (isMenuInstanciated && !mainMenuInstance->IsInViewport())
+		{
+			test->TestTrue(test->conditionMessage(), gameInstance->isLocalMultiplayerMenuInViewport());
+			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+
+		test->manageTickCountTowardsLimit();
+	}
+	return false;
+}
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
