@@ -64,31 +64,46 @@ bool FCheckAStringScrollBoxChildClicked::Update()
 			testStrings.Add(FString("a "));
 			testStrings.Add(FString("string."));
 
-			testScroll->populateBox(testStrings);
-
-			TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
-			UWidgetBlueprintLibrary::GetAllWidgetsOfClass(sessionUtilities.currentPIEWorld(),retrievedWidgets, UStringHolderButton::StaticClass());
-
-			if(retrievedWidgets.Num() > 0)
+			if(!testScroll->IsInViewport())
 			{
-				if(aButtonHolder == nullptr)
-				{
-					aButtonHolder = Cast<UStringHolderButton, UUserWidget>(retrievedWidgets.Pop());
-				}
-
-				FVector2D buttonCoordinates = aButtonHolder->buttonCoordinates();
-				sessionUtilities.processEditorClick(buttonCoordinates);
-				
-				bool textsMatch = aButtonHolder->storedString().Contains(testScroll->selectedString());
-				
-				if(textsMatch)
-				{
-					test->TestTrue(test->conditionMessage(), textsMatch);
-					sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-					return true;
-				}
-				return test->manageTickCountTowardsLimit();
+				testScroll->AddToViewport();
+				FInputModeUIOnly inputModeData;
+				inputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+				inputModeData.SetWidgetToFocus(testScroll->TakeWidget());
+				APlayerController* controller = sessionUtilities.currentPIEWorld()->GetFirstPlayerController();
+				controller->SetInputMode(inputModeData);
+				controller->bShowMouseCursor = true;
 			}
+			TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+			UWidgetBlueprintLibrary::GetAllWidgetsOfClass(sessionUtilities.currentPIEWorld(),retrievedWidgets, UStringHolderButton::StaticClass(), false);
+
+			if(retrievedWidgets.Num() == 0)
+			{
+				testScroll->populateBox(testStrings);
+			}
+
+
+			UE_LOG(LogTemp, Log, TEXT("number of %s retrieved: %d"), *UStringHolderButton::StaticClass()->GetName(), retrievedWidgets.Num());
+
+			if(aButtonHolder == nullptr)
+			{
+				aButtonHolder = Cast<UStringHolderButton, UUserWidget>(retrievedWidgets.Pop());
+			}
+
+			FVector2D buttonCoordinates = aButtonHolder->buttonCoordinates();
+			sessionUtilities.processEditorClick(buttonCoordinates);
+
+			UE_LOG(LogTemp, Log, TEXT("button string: %s.\nscroll string: %s."), *aButtonHolder->storedString(), *testScroll->selectedString());
+			
+			bool textsMatch = aButtonHolder->storedString().Contains(testScroll->selectedString());
+			
+			if(textsMatch)
+			{
+				test->TestTrue(test->conditionMessage(), textsMatch);
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;

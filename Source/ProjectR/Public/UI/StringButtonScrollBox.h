@@ -14,15 +14,22 @@ UCLASS()
 class PROJECTR_API UStringButtonScrollBox : public UUserWidget
 {
 	GENERATED_BODY()
-
+	
 protected:
 	UPROPERTY(meta = (BindWidget))
 		UScrollBox* scrollBoxWidget;
 
+	UPROPERTY()
+		UStringHolderButton* selectedChild;
+	
 	UPROPERTY(EditDefaultsOnly, Category = "String Holder Button Class")
 		TSubclassOf<UStringHolderButton> stringHolderButtonClass;
 
+	
 public:
+	virtual bool Initialize() override;
 	void populateBox(TArray<FString> aBunchOfStrings);
 	int stringButtonsQuantity();
+	FString selectedString();
+	void childClicked(UStringHolderButton* aChild);
 };

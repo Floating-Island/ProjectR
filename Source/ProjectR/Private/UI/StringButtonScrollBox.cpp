@@ -6,8 +6,25 @@
 #include "UI/StringHolderButton.h"
 
 
+void UStringButtonScrollBox::childClicked(UStringHolderButton* aChild)
+{
+	if(selectedChild != aChild && aChild->GetTypedOuter(StaticClass()))
+	{
+		selectedChild = aChild;
+	}
+}
+
+bool UStringButtonScrollBox::Initialize()
+{
+	bool initializeResult = Super::Initialize();
+	selectedChild = nullptr;
+	bIsFocusable = true;
+	return initializeResult;
+}
+
 void UStringButtonScrollBox::populateBox(TArray<FString> aBunchOfStrings)
 {
+	selectedChild = nullptr;
 	if(scrollBoxWidget)
 	{
 		for(auto aString : aBunchOfStrings)
@@ -25,4 +42,9 @@ void UStringButtonScrollBox::populateBox(TArray<FString> aBunchOfStrings)
 int UStringButtonScrollBox::stringButtonsQuantity()
 {
 	return scrollBoxWidget->GetChildrenCount();
+}
+
+FString UStringButtonScrollBox::selectedString()
+{
+	return selectedChild? selectedChild->storedString() : FString();
 }

@@ -18,8 +18,11 @@ class PROJECTR_API UStringHolderButton : public UUserWidget
 	GENERATED_BODY()
 	
 public:
+	virtual bool Initialize() override;
 	void store(FString aString);
 	FString storedString();
+
+	FVector2D buttonCoordinates();
 
 protected:
 
@@ -28,4 +31,7 @@ protected:
 
 	UPROPERTY(meta = (BindWidget))
 		UTextBlock* textHolder;
+
+	UFUNCTION()
+		void buttonClickedEvent();
 };
