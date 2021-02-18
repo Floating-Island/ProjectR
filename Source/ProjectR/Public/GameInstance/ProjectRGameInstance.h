@@ -72,6 +72,7 @@ public:
 	bool sessionManagerIsConfigured();
 
 	void createLANSession();
+	void destroyOnlineSession();
 
 	virtual void OnStart() override;
 };

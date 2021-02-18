@@ -95,6 +95,11 @@ void UProjectRGameInstance::createLANSession()
 	sessionManager->createLANSession();
 }
 
+void UProjectRGameInstance::destroyOnlineSession()
+{
+	sessionManager->destroyCurrentSession();
+}
+
 void UProjectRGameInstance::OnStart()
 {
 	Super::OnStart();

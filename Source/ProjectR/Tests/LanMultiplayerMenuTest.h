@@ -33,11 +33,10 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULanMultiplayerMenuClickingGoBackButton
 
 
 IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULanMultiplayerMenuClickingCreateSessionButtonStartsSessionTest, FSimplePIETestBase,
-	"ProjectR.LanMultiplayerMenu Tests.Integration.002: Clicking the create session travels to the lobby when the session starts",
+	"ProjectR.LanMultiplayerMenu Tests.Integration.003: Clicking the create session travels to the lobby when the session starts",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-//create session button (pressing it starts a session creation; changes map to lobby by the on start session event).
 //it automatically searches for sessions and displays them. the join button is only clickable if a session is selected.
 
 

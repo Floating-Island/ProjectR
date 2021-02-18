@@ -86,13 +86,14 @@ bool FCheckLanMultiplayerMenuClickCreateSessionBringsLobby::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
-		if (lanMultiplayerMenuInstance == nullptr)
+		if (!menuInstantiated && lanMultiplayerMenuInstance == nullptr)
 		{
 			lanMultiplayerMenuInstance = gameInstance->loadLANMUltiplayerMenu();
+			menuInstantiated = true;
 			return false;
 		}
 
-		if (lanMultiplayerMenuInstance->IsInViewport())
+		if (IsValid(lanMultiplayerMenuInstance) && lanMultiplayerMenuInstance->IsInViewport())
 		{
 			FVector2D createSessionButtonCoordinates = lanMultiplayerMenuInstance->createSessionButtonAbsoluteCenterPosition();
 			sessionUtilities.processEditorClick(createSessionButtonCoordinates);
@@ -103,6 +104,7 @@ bool FCheckLanMultiplayerMenuClickCreateSessionBringsLobby::Update()
 		if (inAnotherWorld)
 		{
 			test->TestTrue(test->conditionMessage(), inAnotherWorld);
+			gameInstance->destroyOnlineSession();
 			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
