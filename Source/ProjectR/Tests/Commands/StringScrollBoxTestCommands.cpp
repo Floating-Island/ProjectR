@@ -80,6 +80,7 @@ bool FCheckAStringScrollBoxChildClicked::Update()
 			if(retrievedWidgets.Num() == 0)
 			{
 				testScroll->populateBox(testStrings);
+				return false;
 			}
 
 
