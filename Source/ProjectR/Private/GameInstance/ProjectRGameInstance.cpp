@@ -100,6 +100,16 @@ void UProjectRGameInstance::destroyOnlineSession()
 	sessionManager->destroyCurrentSession();
 }
 
+TArray<FString> UProjectRGameInstance::sessionsFound()
+{
+	return sessionManager->sessionSearchResults();
+}
+
+void UProjectRGameInstance::startLANSessionsSearch()
+{
+	sessionManager->searchLANSessions();
+}
+
 void UProjectRGameInstance::OnStart()
 {
 	Super::OnStart();

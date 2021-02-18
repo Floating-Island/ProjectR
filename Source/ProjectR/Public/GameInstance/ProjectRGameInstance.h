@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 
+
+#include "../Session/SessionManager.h"
 #include "../UI/Menu.h"
 #include "Engine/GameInstance.h"
 #include "Kismet/GameplayStatics.h"
@@ -73,6 +75,12 @@ public:
 
 	void createLANSession();
 	void destroyOnlineSession();
+	TArray<FString> sessionsFound();
+
+	template <typename objectType, void( objectType::* method)(bool)>
+		void subscribeToSessionSearchedEvent(objectType* anObject);
+
+	void startLANSessionsSearch();
 
 	virtual void OnStart() override;
 };
@@ -96,4 +104,10 @@ aMenuType* UProjectRGameInstance::loadMenuOfClass(TSubclassOf<UMenu> aMenuClass,
 		lockMouseToWidget(loadedMenu);
 	}
 	return loadedMenu;
+}
+
+template <typename objectType, void(objectType::* method)(bool)>
+void UProjectRGameInstance::subscribeToSessionSearchedEvent(objectType* anObject)
+{
+	sessionManager->subscribeToSessionSearchedEvent<objectType, method>(anObject);
 }

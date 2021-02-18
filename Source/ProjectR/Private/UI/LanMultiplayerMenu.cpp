@@ -5,12 +5,17 @@
 
 #include "GameInstance/ProjectRGameInstance.h"
 #include "Components/Button.h"
+#include "UI/StringButtonScrollBox.h"
+#include "TimerManager.h"
 
 bool ULanMultiplayerMenu::Initialize()
 {
 	bool initializeResult = Super::Initialize();
 	bIsFocusable = true;
-
+	gameInstance = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance());
+	gameInstance->subscribeToSessionSearchedEvent<ULanMultiplayerMenu, &ULanMultiplayerMenu::sessionSearchCompletedAnd>(this);
+	gameInstance->startLANSessionsSearch();
+	
 	if (goBackButton)
 	{
 		goBackButton->OnClicked.AddDynamic(this, &ULanMultiplayerMenu::goBack);
@@ -40,15 +45,23 @@ FVector2D ULanMultiplayerMenu::createSessionButtonAbsoluteCenterPosition()
 	return buttonAbsoluteCenterPosition(createSessionButton);
 }
 
+void ULanMultiplayerMenu::sessionSearchCompletedAnd(bool aSessionSearchWasSuccessful)
+{
+	if(aSessionSearchWasSuccessful)
+	{
+		TArray<FString> foundSessionsID = gameInstance->sessionsFound();
+		sessionListingBox->populateBoxWith(foundSessionsID);
+		gameInstance->TimerManager->SetTimer(retrySessionSearchTimer, gameInstance, &UProjectRGameInstance::startLANSessionsSearch, timeBetweenSearches, true);
+	}
+}
+
 void ULanMultiplayerMenu::goBack()
 {
 	RemoveFromViewport();
-	UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance());
 	gameInstance->loadMainMenu();
 }
 
 void ULanMultiplayerMenu::startLANSessionCreation()
 {
-	UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance());
 	gameInstance->createLANSession();
 }

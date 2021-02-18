@@ -40,6 +40,9 @@ public:
 	bool joinASession(FName aSessionName, const FOnlineSessionSearchResult& aSessionResultData);
 
 	bool isConfigured();
+
+	template <typename objectType, void( objectType::* method)(bool)>
+	void subscribeToSessionSearchedEvent(objectType* anObject);
 	
 protected:
 	IOnlineSubsystem* onlineSubsystem;
@@ -82,3 +85,13 @@ protected:
 	
 	
 };
+
+template <typename objectType, void(objectType::* method)(bool)>
+void USessionManager::subscribeToSessionSearchedEvent(objectType* anObject)
+{
+	checkSubsystemAndInterfaceConfigured();
+	FOnFindSessionsCompleteDelegate aFindDelegate = FOnFindSessionsCompleteDelegate::CreateUObject(anObject, method);
+	sessionInterface->AddOnFindSessionsCompleteDelegate_Handle(sessionFindCompletedDelegate);
+}
+
+
