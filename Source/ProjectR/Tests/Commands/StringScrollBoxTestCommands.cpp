@@ -111,6 +111,42 @@ bool FCheckAStringScrollBoxChildClicked::Update()
 }
 
 
+bool FCheckAStringScrollBoxKeepsArraySize::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		ABlueprintWidgetContainerPawn* testContainer = sessionUtilities.retrieveFromPIEAnInstanceOf<ABlueprintWidgetContainerPawn>();
+		
+		if(testContainer)
+		{
+			UStringButtonScrollBox* testScroll = Cast<UStringButtonScrollBox, UUserWidget>(testContainer->retrieveWidget());
+			TArray<FString> testStrings = TArray<FString>();
+			testStrings.Add(FString("I'm "));
+			testStrings.Add(FString("a "));
+			testStrings.Add(FString("string."));
+
+			TArray<FString> testAnotherStrings = TArray<FString>();
+			testStrings.Add(FString("I'm "));
+			testStrings.Add(FString("string."));
+
+
+			testScroll->populateBox(testStrings);
+			testScroll->populateBox(testAnotherStrings);
+			bool numbersCoincident = testScroll->stringButtonsQuantity() == testAnotherStrings.Num();
+			if(numbersCoincident)
+			{
+				test->TestTrue(test->conditionMessage(), numbersCoincident);
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+			return test->manageTickCountTowardsLimit();
+		}
+	}
+	return false;
+}
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

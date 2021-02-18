@@ -25,5 +25,8 @@ class UStringHolderButton;
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckAStringScrollBoxChildClicked, UStringHolderButton*, aButtonHolder, FSimplePIETestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckAStringScrollBoxKeepsArraySize, UStringHolderButton*, aButtonHolder, FSimplePIETestBase*, test);
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS

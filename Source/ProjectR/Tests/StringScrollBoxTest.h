@@ -32,6 +32,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUStringButtonScrollClickingChildButtonU
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUStringButtonScrollPopulatingBoxWithDifferentArraysLeavesOnlyTheLastTest, FSimplePIETestBase,
+	"ProjectR.StringButtonScrollBox Tests.Integration.003: populateBox makes the scroll box keep the last array passed",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

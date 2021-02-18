@@ -57,5 +57,22 @@ bool FUStringButtonScrollClickingChildButtonUpdatesSelectedStringTest::RunTest(c
 }
 
 
+bool FUStringButtonScrollPopulatingBoxWithDifferentArraysLeavesOnlyTheLastTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-StringScrollContainer");
+	establishTestMessageTo(FString("Populating the scroll box should make it keep only the passed array as children."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnGameModeDefaultPawn);
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAStringScrollBoxKeepsArraySize(nullptr, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
