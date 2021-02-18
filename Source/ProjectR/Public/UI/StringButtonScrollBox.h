@@ -28,7 +28,7 @@ protected:
 	
 public:
 	virtual bool Initialize() override;
-	void populateBox(TArray<FString> aBunchOfStrings);
+	void populateBoxWith(TArray<FString> aBunchOfStrings);
 	int stringButtonsQuantity();
 	FString selectedString();
 	void childClicked(UStringHolderButton* aChild);

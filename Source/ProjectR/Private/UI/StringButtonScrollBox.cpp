@@ -22,7 +22,7 @@ bool UStringButtonScrollBox::Initialize()
 	return initializeResult;
 }
 
-void UStringButtonScrollBox::populateBox(TArray<FString> aBunchOfStrings)
+void UStringButtonScrollBox::populateBoxWith(TArray<FString> aBunchOfStrings)
 {
 	selectedChild = nullptr;
 	if(scrollBoxWidget)

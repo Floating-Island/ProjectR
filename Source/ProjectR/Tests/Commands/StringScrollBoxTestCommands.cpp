@@ -34,7 +34,7 @@ bool FCheckAStringScrollBoxPopulateBoxNumberOfChilds::Update()
 			testStrings.Add(FString("a "));
 			testStrings.Add(FString("string."));
 
-			testScroll->populateBox(testStrings);
+			testScroll->populateBoxWith(testStrings);
 			bool numbersCoincident = testScroll->stringButtonsQuantity() == testStrings.Num();
 			if(numbersCoincident)
 			{
@@ -79,7 +79,7 @@ bool FCheckAStringScrollBoxChildClicked::Update()
 
 			if(retrievedWidgets.Num() == 0)
 			{
-				testScroll->populateBox(testStrings);
+				testScroll->populateBoxWith(testStrings);
 				return false;
 			}
 
@@ -131,8 +131,8 @@ bool FCheckAStringScrollBoxKeepsArraySize::Update()
 			testStrings.Add(FString("string."));
 
 
-			testScroll->populateBox(testStrings);
-			testScroll->populateBox(testAnotherStrings);
+			testScroll->populateBoxWith(testStrings);
+			testScroll->populateBoxWith(testAnotherStrings);
 			bool numbersCoincident = testScroll->stringButtonsQuantity() == testAnotherStrings.Num();
 			if(numbersCoincident)
 			{
