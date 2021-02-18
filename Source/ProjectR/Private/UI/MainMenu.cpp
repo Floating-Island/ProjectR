@@ -87,4 +87,7 @@ void UMainMenu::bringLocalMultiplayerMenu()
 void UMainMenu::bringLanMultiplayerMenu()
 {
 	RemoveFromParent();
+	UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance());
+	
+	gameInstance->loadLANMUltiplayerMenu();
 }
