@@ -1,8 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "../Mocks/SessionManagerMOCK.h"
-#include "../Utilities/ObjectContainerActor.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "LanMultiplayerMenuTestCommands.h"
@@ -107,44 +105,6 @@ bool FCheckLanMultiplayerMenuClickCreateSessionBringsLobby::Update()
 		{
 			test->TestTrue(test->conditionMessage(), inAnotherWorld);
 			gameInstance->destroyOnlineSession();
-			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
-			return true;
-		}
-
-		return test->manageTickCountTowardsLimit();
-	}
-	return false;
-}
-
-
-bool FCheckLanMultiplayerBindsToFindSessionEvent::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
-
-		if (!menuInstantiated && lanMultiplayerMenuInstance == nullptr)
-		{
-			lanMultiplayerMenuInstance = gameInstance->loadLANMUltiplayerMenu();
-			menuInstantiated = true;
-			
-			AObjectContainerActor* testContainer = sessionUtilities.spawnInPIEAnInstanceOf<AObjectContainerActor>();
-			testContainer->storeObjectOfType<USessionManagerMOCK>();
-			return false;
-		}
-		
-		AObjectContainerActor* testContainer = sessionUtilities.retrieveFromPIEAnInstanceOf<AObjectContainerActor>();
-
-		USessionManagerMOCK* testManager = Cast<USessionManagerMOCK, UObject>(testContainer->retrieveStoredObject());
-
-		testManager->subscribeToSessionSearchedEvent<ULanMultiplayerMenu, &ULanMultiplayerMenu::sessionSearchCompletedAnd>(lanMultiplayerMenuInstance);
-
-		bool isBoundToSessionSearch = testManager->fOnFindSessionsCompleteDelegateIsBoundTo(lanMultiplayerMenuInstance);
-		
-		if (isBoundToSessionSearch)
-		{
-			test->TestTrue(test->conditionMessage(), isBoundToSessionSearch);
 			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}

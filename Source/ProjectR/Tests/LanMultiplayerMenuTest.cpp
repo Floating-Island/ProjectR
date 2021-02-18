@@ -64,21 +64,5 @@ bool FULanMultiplayerMenuClickingCreateSessionButtonStartsSessionTest::RunTest(c
 }
 
 
-bool FULanMultiplayerMenuIBindableToSessionManagerFindEventTest::RunTest(const FString& Parameters)
-{
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-	establishTestMessageTo(FString("The lan multiplayer menu should be bindable to the session manager find session complete event."));
-	establishTickLimitTo(3);
-	
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
-	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckLanMultiplayerBindsToFindSessionEvent(nullptr, false, this));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	return true;
-}
-
-
 
 #endif //WITH_DEV_AUTOMATION_TESTS
