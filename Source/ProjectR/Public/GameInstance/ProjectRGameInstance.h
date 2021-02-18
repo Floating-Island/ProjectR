@@ -81,6 +81,7 @@ public:
 		void subscribeToSessionSearchedEvent(objectType* anObject);
 
 	void startLANSessionsSearch();
+	void joinSessionWith(FString aDesiredSessionID);
 
 	virtual void OnStart() override;
 };

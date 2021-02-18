@@ -181,6 +181,18 @@ bool USessionManager::isConfigured()
 	return onlineSubsystem && sessionInterface && delegatesConfigured();
 }
 
+void USessionManager::joinSessionWith(FString aDesiredSessionID)
+{
+	for(const auto& sessionData : sessionSearch->SearchResults)
+	{
+		if(sessionData.GetSessionIdStr() == aDesiredSessionID)
+		{
+			joinASession(GameSessionName, sessionData);
+		}
+	}
+}
+
+
 void USessionManager::sessionCreatedEvent(FName sessionName, bool bWasSuccessful)
 {
 	UE_LOG(LogTemp, Log, TEXT("Session %s creation was %s."), (*sessionName.ToString()), (bWasSuccessful)? (*FString("Successful")):(*FString("Unsuccessful")));

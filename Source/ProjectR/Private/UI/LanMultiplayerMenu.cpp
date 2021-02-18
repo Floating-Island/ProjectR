@@ -13,8 +13,11 @@ bool ULanMultiplayerMenu::Initialize()
 	bool initializeResult = Super::Initialize();
 	bIsFocusable = true;
 	gameInstance = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance());
-	gameInstance->subscribeToSessionSearchedEvent<ULanMultiplayerMenu, &ULanMultiplayerMenu::sessionSearchCompletedAnd>(this);
-	gameInstance->startLANSessionsSearch();
+	if(gameInstance)
+	{
+		gameInstance->subscribeToSessionSearchedEvent<ULanMultiplayerMenu, &ULanMultiplayerMenu::sessionSearchCompletedAnd>(this);
+		gameInstance->startLANSessionsSearch();
+	}
 	
 	if (goBackButton)
 	{
@@ -30,6 +33,14 @@ bool ULanMultiplayerMenu::Initialize()
 		createSessionButton->OnPressed.AddDynamic(this, &ULanMultiplayerMenu::startLANSessionCreation);
 		createSessionButton->IsFocusable = true;
 		createSessionButton->SetClickMethod(EButtonClickMethod::MouseDown);
+	}
+
+	if (joinSessionButton)
+	{
+		joinSessionButton->OnClicked.AddDynamic(this, &ULanMultiplayerMenu::joinSelectedSession);
+		joinSessionButton->OnPressed.AddDynamic(this, &ULanMultiplayerMenu::joinSelectedSession);
+		joinSessionButton->IsFocusable = true;
+		joinSessionButton->SetClickMethod(EButtonClickMethod::MouseDown);
 	}
 	
 	return initializeResult;
@@ -64,4 +75,11 @@ void ULanMultiplayerMenu::goBack()
 void ULanMultiplayerMenu::startLANSessionCreation()
 {
 	gameInstance->createLANSession();
+}
+
+void ULanMultiplayerMenu::joinSelectedSession()
+{
+	FString desiredSessionID = sessionListingBox->selectedString();
+
+	gameInstance->joinSessionWith(desiredSessionID);
 }

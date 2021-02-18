@@ -110,6 +110,11 @@ void UProjectRGameInstance::startLANSessionsSearch()
 	sessionManager->searchLANSessions();
 }
 
+void UProjectRGameInstance::joinSessionWith(FString aDesiredSessionID)
+{
+	sessionManager->joinSessionWith(aDesiredSessionID);
+}
+
 void UProjectRGameInstance::OnStart()
 {
 	Super::OnStart();

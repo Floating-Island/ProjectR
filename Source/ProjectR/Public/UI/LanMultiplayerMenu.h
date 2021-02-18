@@ -33,11 +33,17 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 		UStringButtonScrollBox* sessionListingBox;
 
+	UPROPERTY(meta = (BindWidget))
+		UButton* joinSessionButton;
+
 	UFUNCTION()
 		void goBack();
 
 	UFUNCTION()
 		void startLANSessionCreation();
+
+	UFUNCTION()
+		void joinSelectedSession();
 
 	FTimerHandle retrySessionSearchTimer;
 

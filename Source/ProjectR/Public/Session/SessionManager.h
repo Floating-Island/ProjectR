@@ -43,6 +43,8 @@ public:
 
 	template <typename objectType, void( objectType::* method)(bool)>
 	void subscribeToSessionSearchedEvent(objectType* anObject);
+
+	void joinSessionWith(FString aDesiredSessionID);
 	
 protected:
 	IOnlineSubsystem* onlineSubsystem;
