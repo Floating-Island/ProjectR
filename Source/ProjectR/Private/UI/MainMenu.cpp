@@ -30,6 +30,14 @@ bool UMainMenu::Initialize()
 		localMultiplayerButton->IsFocusable = true;
 		localMultiplayerButton->SetClickMethod(EButtonClickMethod::MouseDown);
 	}
+
+	if (lanMultiplayerButton)
+	{
+		lanMultiplayerButton->OnClicked.AddDynamic(this, &UMainMenu::bringLanMultiplayerMenu);
+		lanMultiplayerButton->OnPressed.AddDynamic(this, &UMainMenu::bringLanMultiplayerMenu);
+		lanMultiplayerButton->IsFocusable = true;
+		lanMultiplayerButton->SetClickMethod(EButtonClickMethod::MouseDown);
+	}
 	bIsFocusable = true;
 	return initializeResult;
 }
@@ -47,6 +55,11 @@ FVector2D UMainMenu::singleplayerButtonAbsoluteCenterPosition()
 FVector2D UMainMenu::localMultiplayerButtonAbsoluteCenterPosition()
 {
 	return buttonAbsoluteCenterPosition(localMultiplayerButton);
+}
+
+FVector2D UMainMenu::lanMultiplayerButtonAbsoluteCenterPosition()
+{
+	return buttonAbsoluteCenterPosition(lanMultiplayerButton);
 }
 
 
@@ -69,4 +82,9 @@ void UMainMenu::bringLocalMultiplayerMenu()
 	UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance());
 	
 	gameInstance->loadLocalMultiplayerMenu();
+}
+
+void UMainMenu::bringLanMultiplayerMenu()
+{
+	RemoveFromParent();
 }
