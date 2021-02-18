@@ -200,6 +200,35 @@ bool FCheckSoloMainMenuClickLocalMultiplayerBringsLocalMultiplayerMenu::Update()
 }
 
 
+bool FCheckMainMenuClickLanMultiplayerRemovesMenuFromViewport::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	
+		if(mainMenuInstance == nullptr)
+		{
+			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+			mainMenuInstance = gameInstance->loadMainMenu();
+			isMenuInstanciated = true;
+			return false;
+		}
+		
+		if(isMenuInstanciated && mainMenuInstance->IsInViewport())
+		{
+			FVector2D lanMultiplayerButtonCoordinates = mainMenuInstance->lanMultiplayerButtonAbsoluteCenterPosition();
+			sessionUtilities.processEditorClick(lanMultiplayerButtonCoordinates);
+			return false;
+		}
+		
+		test->TestTrue(TEXT("The main menu should be removed from viewport when clicking the lan multiplayer button."), !mainMenuInstance->IsInViewport());
+		sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+		return true;
+	}
+	return false;
+}
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

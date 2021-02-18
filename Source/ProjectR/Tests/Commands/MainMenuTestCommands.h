@@ -7,6 +7,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "../TestBaseClasses/SimplePIETestBase.h"
 
 class UMainMenu;
 
@@ -32,6 +33,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckMainMenuClickLocalMultipla
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSoloMainMenuClickLocalMultiplayerBringsLocalMultiplayerMenu, int, tickCount, int, tickLimit, UMainMenu*, mainMenuInstance, bool, isMenuInstanciated,  FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckMainMenuClickLanMultiplayerRemovesMenuFromViewport, UMainMenu*, mainMenuInstance, bool, isMenuInstanciated,  FAutomationTestBase*, test);
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
