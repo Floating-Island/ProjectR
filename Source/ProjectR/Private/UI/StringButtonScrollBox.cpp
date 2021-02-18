@@ -27,6 +27,7 @@ void UStringButtonScrollBox::populateBox(TArray<FString> aBunchOfStrings)
 	selectedChild = nullptr;
 	if(scrollBoxWidget)
 	{
+		scrollBoxWidget->ClearChildren();
 		for(auto aString : aBunchOfStrings)
 		{
 			UStringHolderButton* stringButtonWidget = Cast<UStringHolderButton, UUserWidget>(CreateWidget(this, stringHolderButtonClass));
