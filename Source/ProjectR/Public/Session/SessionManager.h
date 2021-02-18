@@ -93,7 +93,7 @@ void USessionManager::subscribeToSessionSearchedEvent(objectType* anObject)
 {
 	checkSubsystemAndInterfaceConfigured();
 	FOnFindSessionsCompleteDelegate aFindDelegate = FOnFindSessionsCompleteDelegate::CreateUObject(anObject, method);
-	sessionInterface->AddOnFindSessionsCompleteDelegate_Handle(sessionFindCompletedDelegate);
+	sessionInterface->AddOnFindSessionsCompleteDelegate_Handle(aFindDelegate);
 }
 
 
