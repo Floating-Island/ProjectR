@@ -58,11 +58,16 @@ FVector2D ULanMultiplayerMenu::createSessionButtonAbsoluteCenterPosition()
 
 void ULanMultiplayerMenu::sessionSearchCompletedAnd(bool aSessionSearchWasSuccessful)
 {
+	UE_LOG(LogTemp, Log, TEXT("session search %s successful. Attempting to populate box and set timer..."), *FString(aSessionSearchWasSuccessful? "was" : "wasn't"));
 	if(aSessionSearchWasSuccessful)
 	{
 		TArray<FString> foundSessionsID = gameInstance->sessionsFound();
 		sessionListingBox->populateBoxWith(foundSessionsID);
-		gameInstance->TimerManager->SetTimer(retrySessionSearchTimer, gameInstance, &UProjectRGameInstance::startLANSessionsSearch, timeBetweenSearches, true);
+		gameInstance->TimerManager->ClearTimer(retrySessionSearchTimer);
+		if(IsInViewport())
+		{
+			gameInstance->TimerManager->SetTimer(retrySessionSearchTimer, gameInstance, &UProjectRGameInstance::startLANSessionsSearch, timeBetweenSearches);
+		}
 	}
 }
 
