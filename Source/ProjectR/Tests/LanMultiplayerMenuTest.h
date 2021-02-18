@@ -37,6 +37,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULanMultiplayerMenuClickingCreateSessio
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULanMultiplayerMenuIBindableToSessionManagerFindEventTest, FSimplePIETestBase,
+	"ProjectR.LanMultiplayerMenu Tests.Integration.004: Is bindable to the session manager find session event",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 //it automatically searches for sessions and displays them. the join button is only clickable if a session is selected.
 
 
