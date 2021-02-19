@@ -13,6 +13,7 @@ USessionManager::USessionManager()
 	sessionSearch = nullptr;
 	maximumNumberOfSearches = 20;
 	maximumPingSizeAllowed = 50;
+	sessionName = FName(FString("projectRLANSession"));
 }
 
 void USessionManager::prepareSubsystemAndInterface()
@@ -68,7 +69,7 @@ void USessionManager::checkSubsystemAndInterfaceConfigured()
 
 bool USessionManager::createLANSession()
 {	
-	return hostSession(GetWorld()->GetGameInstance()->GetPrimaryPlayerUniqueId(), GameSessionName, true, true, 8);
+	return hostSession(GetWorld()->GetGameInstance()->GetPrimaryPlayerUniqueId(), sessionName, true, true, 8);
 }
 
 FString USessionManager::lobbyName()
@@ -79,7 +80,7 @@ FString USessionManager::lobbyName()
 bool USessionManager::destroyCurrentSession()
 {
 	checkSubsystemAndInterfaceConfigured();
-	return sessionInterface->DestroySession(GameSessionName);
+	return sessionInterface->DestroySession(sessionName);
 }
 
 bool USessionManager::searchLANSessions()
@@ -95,7 +96,7 @@ bool USessionManager::hostSession(TSharedPtr<const FUniqueNetId> aUserID, FName 
 	{
 		TSharedPtr<FOnlineSessionSettings> sessionSettings = retrieveConfiguredSessionSettings(isALANSession, hasPresence, aPlayerCapacity);
 
-		sessionSettings->Set(SETTING_MAPNAME, lobbyMapName.ToString(), EOnlineDataAdvertisementType::ViaOnlineService);
+		sessionSettings->Set(SETTING_MAPNAME, lobbyMapName.ToString(), EOnlineDataAdvertisementType::ViaOnlineServiceAndPing);
 		return sessionInterface->CreateSession(*aUserID, aSessionName, *sessionSettings);
 	}
 	return false;
@@ -187,7 +188,7 @@ void USessionManager::joinSessionWith(FString aDesiredSessionID)
 	{
 		if(sessionData.GetSessionIdStr() == aDesiredSessionID)
 		{
-			joinASession(GameSessionName, sessionData);
+			joinASession(sessionName, sessionData);
 		}
 	}
 }
