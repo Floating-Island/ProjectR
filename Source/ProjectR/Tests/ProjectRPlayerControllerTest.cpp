@@ -83,7 +83,9 @@ bool FAProjectRPlayerControllerEscKeyLoadsPauseMenuTest::RunTest(const FString& 
 bool FAProjectRPlayerControllerEscKeyRemovesPauseMenuIfInViewportTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-PlayerControllerMOCK");
-
+	establishTestMessageTo(FString("Esc key makes the controller remove the pause menu present in viewport and hide the mouse cursor."));
+	establishTickLimitTo(3);
+	
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 

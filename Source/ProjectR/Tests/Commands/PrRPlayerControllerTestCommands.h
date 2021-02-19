@@ -34,7 +34,7 @@ class AProjectRPlayerControllerMOCK;
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerControllerPressEscBringsPauseMenu, AProjectRPlayerControllerMOCK*, testPlayerController, FSimplePIETestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerControllerPressEscRemovesPauseMenuInViewport, AProjectRPlayerControllerMOCK*, testPlayerController, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerControllerPressEscRemovesPauseMenuInViewport, AProjectRPlayerControllerMOCK*, testPlayerController, FSimplePIETestBase*, test);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerControllerLoadPauseMenuPausesTheGame, AProjectRPlayerControllerMOCK*, testPlayerController, FAutomationTestBase*, test);
