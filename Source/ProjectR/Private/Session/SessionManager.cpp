@@ -218,7 +218,7 @@ void USessionManager::sessionsSearchedEvent(bool bWasSuccessful)
 {
 	UE_LOG(LogTemp, Log, TEXT("Session finding was %s."), (bWasSuccessful) ? (*FString("successful")) : (*FString("Unsuccessful")));
 
-	if (sessionInterface.IsValid())
+	if (sessionInterface.IsValid() && sessionSearch.IsValid())
 	{
 		TArray<FOnlineSessionSearchResult> searchResults = sessionSearch->SearchResults;
 
