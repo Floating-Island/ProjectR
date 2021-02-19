@@ -28,17 +28,18 @@ bool FCheckLanMultiplayerMenuClickGoBackRemovesFromViewport::Update()
 		{
 			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 			lanMultiplayerMenuInstance = gameInstance->loadLANMUltiplayerMenu();
+			menuIsInstantiated = true;
 			return false;
 		}
 
-		if(lanMultiplayerMenuInstance->IsInViewport())
+		if(menuIsInstantiated && IsValid(lanMultiplayerMenuInstance) && lanMultiplayerMenuInstance->IsInViewport())
 		{
 			FVector2D goBackButtonCoordinates = lanMultiplayerMenuInstance->goBackButtonAbsoluteCenterPosition();
 			sessionUtilities.processEditorClick(goBackButtonCoordinates);
-			return false;
+			return test->manageTickCountTowardsLimit();
 		}
 
-		test->TestTrue(TEXT("The lan multiplayer menu should be removed from viewport when clicking the go back button."), !lanMultiplayerMenuInstance->IsInViewport());
+		test->TestTrue(test->conditionMessage(), !lanMultiplayerMenuInstance->IsInViewport());
 		sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 		return true;
 	}

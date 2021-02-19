@@ -21,8 +21,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FULanMultiplayerMenuIsntNullWhenInstantiatedTes
 	"ProjectR.LanMultiplayerMenu Tests.Unit.000: Isn't null when instantiated",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FULanMultiplayerMenuClickingGoBackButtonRemovesFromViewportTest,
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULanMultiplayerMenuClickingGoBackButtonRemovesFromViewportTest, FSimplePIETestBase,
 	"ProjectR.LanMultiplayerMenu Tests.Integration.001: Clicking the go back button removes the menu from viewport",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
