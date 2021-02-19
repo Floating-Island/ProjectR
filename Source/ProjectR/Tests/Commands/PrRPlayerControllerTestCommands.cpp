@@ -108,9 +108,10 @@ bool FCheckPlayerControllerPressEscBringsPauseMenu::Update()
 
 			if (testPlayerController->pauseMenuIsInViewport())
 			{
-				test->TestTrue(TEXT("Esc key makes the controller load the pause menu."), testPlayerController->pauseMenuIsInViewport());
+				test->TestTrue(test->conditionMessage(), testPlayerController->pauseMenuIsInViewport());
 				return true;
 			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;

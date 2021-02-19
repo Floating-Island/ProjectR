@@ -7,6 +7,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "../TestBaseClasses/SimplePIETestBase.h"
 
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -30,7 +31,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckPlayerControllerShowsMouseC
 
 
 class AProjectRPlayerControllerMOCK;
-DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerControllerPressEscBringsPauseMenu, AProjectRPlayerControllerMOCK*, testPlayerController, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerControllerPressEscBringsPauseMenu, AProjectRPlayerControllerMOCK*, testPlayerController, FSimplePIETestBase*, test);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerControllerPressEscRemovesPauseMenuInViewport, AProjectRPlayerControllerMOCK*, testPlayerController, FAutomationTestBase*, test);

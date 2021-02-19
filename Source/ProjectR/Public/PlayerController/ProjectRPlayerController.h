@@ -16,7 +16,8 @@ class PROJECTR_API AProjectRPlayerController : public APlayerController
 	GENERATED_BODY()
 
 protected:
-	UPauseMenu* pauseMenu;
+	UPROPERTY()
+		UPauseMenu* pauseMenu;
 
 	virtual void SetupInputComponent() override;
 

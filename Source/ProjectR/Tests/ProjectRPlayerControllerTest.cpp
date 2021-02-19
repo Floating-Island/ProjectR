@@ -67,6 +67,8 @@ bool FAProjectRPlayerControllerLoadPauseMenuShowsMouseCursorTest::RunTest(const 
 bool FAProjectRPlayerControllerEscKeyLoadsPauseMenuTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-PlayerControllerMOCK");
+	establishTestMessageTo(FString("Esc key should make the controller load the pause menu."));
+	establishTickLimitTo(3);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));

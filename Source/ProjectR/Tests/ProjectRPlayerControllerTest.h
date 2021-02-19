@@ -13,6 +13,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -35,8 +36,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerLoadPauseMenuShowsMou
 	"ProjectR.ProjectRPlayerController Tests.Integration.003: loadPauseMenu makes the mouse cursor show",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerEscKeyLoadsPauseMenuTest,
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerEscKeyLoadsPauseMenuTest, FSimplePIETestBase,
 	"ProjectR.ProjectRPlayerController Tests.Integration.004: Pressing the Esc key brings the pause menu",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
