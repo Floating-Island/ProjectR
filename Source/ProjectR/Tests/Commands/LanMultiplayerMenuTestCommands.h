@@ -25,7 +25,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckLanMultiplayerMenuClickGo
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckLanMultiplayerMenuClickGoBackBringsMainMenu, ULanMultiplayerMenu*, lanMultiplayerMenuInstance, FSimplePIETestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckLanMultiplayerMenuClickCreateSessionBringsLobby, ULanMultiplayerMenu*, lanMultiplayerMenuInstance, FSimplePIETestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckLanMultiplayerMenuClickCreateSessionBringsLobby, ULanMultiplayerMenu*, lanMultiplayerMenuInstance, bool, lanMenuInstantiated, FSimplePIETestBase*, test);
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

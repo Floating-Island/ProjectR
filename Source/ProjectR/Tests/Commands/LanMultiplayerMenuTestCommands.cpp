@@ -91,9 +91,10 @@ bool FCheckLanMultiplayerMenuClickCreateSessionBringsLobby::Update()
 
 		if(inTestWorld)
 		{
-			if (lanMultiplayerMenuInstance == nullptr)
+			if (!lanMenuInstantiated && lanMultiplayerMenuInstance == nullptr)
 			{
 				lanMultiplayerMenuInstance = gameInstance->loadLANMUltiplayerMenu();
+				lanMenuInstantiated = true;
 				return false;
 			}
 
