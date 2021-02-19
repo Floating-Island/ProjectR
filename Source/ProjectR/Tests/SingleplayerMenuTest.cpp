@@ -21,6 +21,8 @@ bool FUSingleplayerMenuIsntNullWhenInstantiatedTest::RunTest(const FString& Para
 bool FUSingleplayerMenuClickingPlayButtonChangesMapTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishTestMessageTo(FString("The singleplayer menu should change the current map when clicking the play button."));
+	establishTickLimitTo(3);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
@@ -37,6 +39,8 @@ bool FUSingleplayerMenuClickingPlayButtonChangesMapTest::RunTest(const FString& 
 bool FUSingleplayerMenuClickingGoBackButtonRemovesFromViewportTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishTestMessageTo(FString("The singleplayer menu should be removed from viewport when clicking the go back button."));
+	establishTickLimitTo(3);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
@@ -53,6 +57,8 @@ bool FUSingleplayerMenuClickingGoBackButtonRemovesFromViewportTest::RunTest(cons
 bool FUSingleplayerMenuClickingGoBackButtonBringsMainMenuTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishTestMessageTo(FString("The singleplayer menu should change to the main menu when clicking the go back button."));
+	establishTickLimitTo(3);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
