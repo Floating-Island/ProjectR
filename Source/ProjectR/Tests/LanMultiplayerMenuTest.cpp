@@ -9,13 +9,13 @@
 
 #include "UI/LanMultiplayerMenu.h"
 
-//bool FULanMultiplayerMenuIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
-//{
-//	ULanMultiplayerMenu* testLanMultiplayerMenu = NewObject<ULanMultiplayerMenu>();
-//	TestNotNull(TEXT("The LAN multiplayer menu shouldn't be null after instantiating it."), testLanMultiplayerMenu);
-//
-//	return true;
-//}
+bool FULanMultiplayerMenuIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
+{
+	ULanMultiplayerMenu* testLanMultiplayerMenu = NewObject<ULanMultiplayerMenu>();
+	TestNotNull(TEXT("The LAN multiplayer menu shouldn't be null after instantiating it."), testLanMultiplayerMenu);
+
+	return true;
+}
 
 
 bool FULanMultiplayerMenuClickingGoBackButtonRemovesFromViewportTest::RunTest(const FString& Parameters)

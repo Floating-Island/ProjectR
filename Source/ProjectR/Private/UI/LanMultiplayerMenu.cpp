@@ -38,8 +38,8 @@ bool ULanMultiplayerMenu::Initialize()
 		joinSessionButton->SetClickMethod(EButtonClickMethod::MouseDown);
 		if(gameInstance)
 		{
-			gameInstance->subscribeToSessionSearchedEvent<ULanMultiplayerMenu, &ULanMultiplayerMenu::sessionSearchCompletedAnd>(this);
-			gameInstance->startLANSessionsSearch();
+			//gameInstance->subscribeToSessionSearchedEvent<ULanMultiplayerMenu, &ULanMultiplayerMenu::sessionSearchCompletedAnd>(this);
+			//gameInstance->startLANSessionsSearch();
 		}
 	}
 	
