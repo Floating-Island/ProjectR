@@ -47,14 +47,14 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingLocalMultiplayerButtonBringsL
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingLanMultiplayerButtonRemovesMenuFromViewportTest, 
-	"ProjectR.MainMenu Tests.Integration.006: Clicking the lan multiplayer button removes the menu from viewport",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingLanMultiplayerButtonBringsLanMultiplayerMenuTest, FSimplePIETestBase,
-	"ProjectR.MainMenu Tests.Integration.007: Clicking the lan multiplayer button brings the lan multiplayer menu",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingLanMultiplayerButtonRemovesMenuFromViewportTest, 
+//	"ProjectR.MainMenu Tests.Integration.006: Clicking the lan multiplayer button removes the menu from viewport",
+//	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//
+//IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingLanMultiplayerButtonBringsLanMultiplayerMenuTest, FSimplePIETestBase,
+//	"ProjectR.MainMenu Tests.Integration.007: Clicking the lan multiplayer button brings the lan multiplayer menu",
+//	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 
