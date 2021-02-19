@@ -13,7 +13,7 @@ USessionManager::USessionManager()
 	sessionSearch = nullptr;
 	maximumNumberOfSearches = 20;
 	maximumPingSizeAllowed = 50;
-	sessionName = FName(FString("projectRLANSession"));
+	lanSessionName = FName(FString("projectRLANSession"));
 }
 
 void USessionManager::prepareSubsystemAndInterface()
@@ -69,7 +69,7 @@ void USessionManager::checkSubsystemAndInterfaceConfigured()
 
 bool USessionManager::createLANSession()
 {	
-	return hostSession(GetWorld()->GetGameInstance()->GetPrimaryPlayerUniqueId(), sessionName, true, true, 8);
+	return hostSession(GetWorld()->GetGameInstance()->GetPrimaryPlayerUniqueId(), lanSessionName, true, true, 8);
 }
 
 FString USessionManager::lobbyName()
@@ -80,7 +80,7 @@ FString USessionManager::lobbyName()
 bool USessionManager::destroyCurrentSession()
 {
 	checkSubsystemAndInterfaceConfigured();
-	return sessionInterface->DestroySession(sessionName);
+	return sessionInterface->DestroySession(lanSessionName);
 }
 
 bool USessionManager::searchLANSessions()
@@ -188,7 +188,7 @@ void USessionManager::joinSessionWith(FString aDesiredSessionID)
 	{
 		if(sessionData.GetSessionIdStr() == aDesiredSessionID)
 		{
-			joinASession(sessionName, sessionData);
+			joinASession(lanSessionName, sessionData);
 		}
 	}
 }
