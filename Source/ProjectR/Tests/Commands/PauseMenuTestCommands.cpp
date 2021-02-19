@@ -32,18 +32,9 @@ bool FCheckPauseMenuClickReturnButtonChangesToMainMenuMap::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		bool isInAnotherWorld = !GEditor->GetPIEWorldContext()->World()->GetMapName().Contains("VoidWorld-PlayerController");
 
 		UE_LOG(LogTemp, Log, TEXT("this is %s world"), *GEditor->GetPIEWorldContext()->World()->GetMapName());
 
-		if (isInAnotherWorld)
-		{
-			bool inMainMenuMap = GEditor->GetPIEWorldContext()->World()->GetMapName().Contains("MainMenu");
-			test->TestTrue(test->conditionMessage(), inMainMenuMap);
-			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
-			return true;
-		}
-		
 		if (!menuIsInstantiated && pauseMenuInstance == nullptr)
 		{
 			UE_LOG(LogTemp, Log, TEXT("attempting pause menu instantiation..."));
@@ -59,14 +50,21 @@ bool FCheckPauseMenuClickReturnButtonChangesToMainMenuMap::Update()
 			return false;
 		}
 		UE_LOG(LogTemp, Log, TEXT("pause menu is instantiated"));
-		if (!isInAnotherWorld)
+		
+		bool isInAnotherWorld = !GEditor->GetPIEWorldContext()->World()->GetMapName().Contains("VoidWorld-PlayerController");
+		
+		if (isInAnotherWorld)
 		{
-			FVector2D returnButtonCoordinates = pauseMenuInstance->returnButtonAbsoluteCenterPosition();
-			UE_LOG(LogTemp, Log, TEXT("return button coordinates in viewport: %s"), *returnButtonCoordinates.ToString());
-			UE_LOG(LogTemp, Log, TEXT("attempting click"));
-			sessionUtilities.processEditorClick(returnButtonCoordinates);
-			return false;
+			bool inMainMenuMap = GEditor->GetPIEWorldContext()->World()->GetMapName().Contains("MainMenu");
+			test->TestTrue(test->conditionMessage(), inMainMenuMap);
+			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
 		}
+
+		FVector2D returnButtonCoordinates = pauseMenuInstance->returnButtonAbsoluteCenterPosition();
+		UE_LOG(LogTemp, Log, TEXT("return button coordinates in viewport: %s"), *returnButtonCoordinates.ToString());
+		UE_LOG(LogTemp, Log, TEXT("attempting click"));
+		sessionUtilities.processEditorClick(returnButtonCoordinates);
 		return test->manageTickCountTowardsLimit();
 	}
 	return false;
