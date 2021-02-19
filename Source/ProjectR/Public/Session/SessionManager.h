@@ -51,7 +51,6 @@ protected:
 	IOnlineSessionPtr sessionInterface;
 
 	FName lobbyMapName;
-	FName lanSessionName;
 
 	bool hostSession(TSharedPtr<const FUniqueNetId> aUserID, FName aSessionName, bool isALANSession,
                                  bool hasPresence, int32 aPlayerCapacity);
