@@ -54,6 +54,15 @@ bool FCheckLanMultiplayerMenuClickGoBackBringsMainMenu::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
+		bool mainMenuInViewport = gameInstance->isMainMenuInViewport();
+		
+		if (mainMenuInViewport)
+		{
+			test->TestTrue(test->conditionMessage(), mainMenuInViewport);
+			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+		
 		if (lanMultiplayerMenuInstance == nullptr)
 		{
 			lanMultiplayerMenuInstance = gameInstance->loadLANMUltiplayerMenu();
@@ -64,17 +73,8 @@ bool FCheckLanMultiplayerMenuClickGoBackBringsMainMenu::Update()
 		{
 			FVector2D goBackButtonCoordinates = lanMultiplayerMenuInstance->goBackButtonAbsoluteCenterPosition();
 			sessionUtilities.processEditorClick(goBackButtonCoordinates);
-			return false;
+			return test->manageTickCountTowardsLimit();
 		}
-
-		if (gameInstance->isMainMenuInViewport())
-		{
-			test->TestTrue(test->conditionMessage(), gameInstance->isMainMenuInViewport());
-			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
-			return true;
-		}
-
-		return test->manageTickCountTowardsLimit();
 	}
 	return false;
 }
