@@ -235,29 +235,28 @@ bool FCheckMainMenuClickLanMultiplayerBringsLanMultiplayerMenu::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
-	
-		if(mainMenuInstance == nullptr)
-		{
-			mainMenuInstance = gameInstance->loadMainMenu();
-			isMenuInstanciated = true;
-			return false;
-		}
+
+		bool isLanInViewport = gameInstance->isLanMultiplayerMenuInViewport();
 		
-		if(isMenuInstanciated && mainMenuInstance->IsInViewport())
+		if (isLanInViewport)
 		{
-			FVector2D lanMultiplayerButtonCoordinates = mainMenuInstance->lanMultiplayerButtonAbsoluteCenterPosition();
-			sessionUtilities.processEditorClick(lanMultiplayerButtonCoordinates);
-			return false;
-		}
-		
-		if (isMenuInstanciated && !mainMenuInstance->IsInViewport())
-		{
-			test->TestTrue(test->conditionMessage(), gameInstance->isLocalMultiplayerMenuInViewport());
+			test->TestTrue(test->conditionMessage(), isLanInViewport);
 			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
-
-		test->manageTickCountTowardsLimit();
+		
+		if(mainMenuInstance == nullptr)
+		{
+			mainMenuInstance = gameInstance->loadMainMenu();
+			return false;
+		}
+		
+		if(mainMenuInstance->IsInViewport())
+		{
+			FVector2D lanMultiplayerButtonCoordinates = mainMenuInstance->lanMultiplayerButtonAbsoluteCenterPosition();
+			sessionUtilities.processEditorClick(lanMultiplayerButtonCoordinates);
+		}
+		return test->manageTickCountTowardsLimit();
 	}
 	return false;
 }

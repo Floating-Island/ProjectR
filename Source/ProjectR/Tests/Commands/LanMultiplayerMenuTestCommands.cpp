@@ -86,30 +86,28 @@ bool FCheckLanMultiplayerMenuClickCreateSessionBringsLobby::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
-		if (!menuInstantiated && lanMultiplayerMenuInstance == nullptr)
+		bool inTestWorld = sessionUtilities.currentPIEWorld()->GetMapName().Contains("VoidWorld");
+
+		if(inTestWorld)
 		{
-			lanMultiplayerMenuInstance = gameInstance->loadLANMUltiplayerMenu();
-			menuInstantiated = true;
-			return false;
+			if (lanMultiplayerMenuInstance == nullptr)
+			{
+				lanMultiplayerMenuInstance = gameInstance->loadLANMUltiplayerMenu();
+				return false;
+			}
+
+			if (IsValid(lanMultiplayerMenuInstance) && lanMultiplayerMenuInstance->IsInViewport())
+			{
+				FVector2D createSessionButtonCoordinates = lanMultiplayerMenuInstance->createSessionButtonAbsoluteCenterPosition();
+				sessionUtilities.processEditorClick(createSessionButtonCoordinates);
+			}
+			return test->manageTickCountTowardsLimit();
 		}
 
-		if (IsValid(lanMultiplayerMenuInstance) && lanMultiplayerMenuInstance->IsInViewport())
-		{
-			FVector2D createSessionButtonCoordinates = lanMultiplayerMenuInstance->createSessionButtonAbsoluteCenterPosition();
-			sessionUtilities.processEditorClick(createSessionButtonCoordinates);
-			return false;
-		}
-		
-		bool inAnotherWorld = !sessionUtilities.currentPIEWorld()->GetMapName().Contains("VoidWorld");
-		if (inAnotherWorld)
-		{
-			test->TestTrue(test->conditionMessage(), inAnotherWorld);
-			gameInstance->destroyOnlineSession();
-			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
-			return true;
-		}
-
-		return test->manageTickCountTowardsLimit();
+		test->TestTrue(test->conditionMessage(), !inTestWorld);
+		gameInstance->destroyOnlineSession();
+		sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+		return true;
 	}
 	return false;
 }

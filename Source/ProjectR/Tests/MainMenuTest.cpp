@@ -125,7 +125,7 @@ bool FUMainMenuClickingLanMultiplayerButtonBringsLanMultiplayerMenuTest::RunTest
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 	
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickLanMultiplayerBringsLanMultiplayerMenu(nullptr, false, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickLanMultiplayerBringsLanMultiplayerMenu(nullptr, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

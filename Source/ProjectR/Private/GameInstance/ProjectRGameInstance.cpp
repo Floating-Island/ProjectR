@@ -75,6 +75,11 @@ bool UProjectRGameInstance::isLocalMultiplayerMenuInViewport()
 	return menuIsInViewport(localMultiplayerMenu);
 }
 
+bool UProjectRGameInstance::isLanMultiplayerMenuInViewport()
+{
+	return menuIsInViewport(lanMultiplayerMenu);
+}
+
 void UProjectRGameInstance::expectedPlayers(int aQuantity)
 {
 	numberOfPlayers = aQuantity;

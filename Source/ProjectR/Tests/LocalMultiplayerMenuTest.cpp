@@ -43,7 +43,7 @@ bool FULocalMultiplayerMenuClickingGoBackButtonBringsMainMenuTest::RunTest(const
 
 	int tickCount = 0;
 	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckLocalMultiplayerMenuClickGoBackBringsMainMenu(tickCount, tickLimit, nullptr, false, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLocalMultiplayerMenuClickGoBackBringsMainMenu(tickCount, tickLimit, nullptr,this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

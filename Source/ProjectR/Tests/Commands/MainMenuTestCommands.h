@@ -38,7 +38,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSoloMainMenuClickLocalMult
 DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckMainMenuClickLanMultiplayerRemovesMenuFromViewport, UMainMenu*, mainMenuInstance, bool, isMenuInstanciated,  FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckMainMenuClickLanMultiplayerBringsLanMultiplayerMenu, UMainMenu*, mainMenuInstance, bool, isMenuInstanciated,  FSimplePIETestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckMainMenuClickLanMultiplayerBringsLanMultiplayerMenu, UMainMenu*, mainMenuInstance, FSimplePIETestBase*, test);
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
