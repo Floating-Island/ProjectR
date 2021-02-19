@@ -13,6 +13,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -21,7 +22,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUPauseMenuIsntNullWhenInstantiatedTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUPauseMenuClickingReturnButtonChangesToMainMenuMapTest,
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUPauseMenuClickingReturnButtonChangesToMainMenuMapTest, FSimplePIETestBase,
 	"ProjectR.PauseMenu Tests.Integration.001: Clicking the return button travels to main menu map",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 

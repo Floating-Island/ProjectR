@@ -36,7 +36,15 @@ bool FCheckPauseMenuClickReturnButtonChangesToMainMenuMap::Update()
 
 		UE_LOG(LogTemp, Log, TEXT("this is %s world"), *GEditor->GetPIEWorldContext()->World()->GetMapName());
 
-		if (pauseMenuInstance == nullptr)
+		if (isInAnotherWorld)
+		{
+			bool inMainMenuMap = GEditor->GetPIEWorldContext()->World()->GetMapName().Contains("MainMenu");
+			test->TestTrue(test->conditionMessage(), inMainMenuMap);
+			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+		
+		if (!menuIsInstantiated && pauseMenuInstance == nullptr)
 		{
 			UE_LOG(LogTemp, Log, TEXT("attempting pause menu instantiation..."));
 			sessionUtilities.defaultPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
@@ -47,36 +55,19 @@ bool FCheckPauseMenuClickReturnButtonChangesToMainMenuMap::Update()
 				UE_LOG(LogTemp, Log, TEXT("controller instantiated, attempting pause menu load..."));
 				pauseMenuInstance = testPlayerController->loadPauseMenu();
 			}
+			menuIsInstantiated = true;
 			return false;
 		}
-		else
+		UE_LOG(LogTemp, Log, TEXT("pause menu is instantiated"));
+		if (!isInAnotherWorld)
 		{
-			UE_LOG(LogTemp, Log, TEXT("pause menu is instantiated"));
-			if (!isInAnotherWorld)
-			{
-				FVector2D returnButtonCoordinates = pauseMenuInstance->returnButtonAbsoluteCenterPosition();
-				UE_LOG(LogTemp, Log, TEXT("return button coordinates in viewport: %s"), *returnButtonCoordinates.ToString());
-				UE_LOG(LogTemp, Log, TEXT("attempting click"));
-				sessionUtilities.processEditorClick(returnButtonCoordinates);
-				return false;
-			}
-
-			if (isInAnotherWorld)
-			{
-				bool inMainMenuMap = GEditor->GetPIEWorldContext()->World()->GetMapName().Contains("MainMenu");
-				test->TestTrue(TEXT("The pause menu should change to the main menu map when clicking the return button."), inMainMenuMap);
-				sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
-				return true;
-			}
-
-			++tickCount;
-			if (tickCount > tickLimit)
-			{
-				test->TestTrue(TEXT("The pause menu should change to the main menu map when clicking the return button."), isInAnotherWorld);
-				sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
-				return true;
-			}
+			FVector2D returnButtonCoordinates = pauseMenuInstance->returnButtonAbsoluteCenterPosition();
+			UE_LOG(LogTemp, Log, TEXT("return button coordinates in viewport: %s"), *returnButtonCoordinates.ToString());
+			UE_LOG(LogTemp, Log, TEXT("attempting click"));
+			sessionUtilities.processEditorClick(returnButtonCoordinates);
+			return false;
 		}
+		return test->manageTickCountTowardsLimit();
 	}
 	return false;
 }
