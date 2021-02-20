@@ -42,11 +42,6 @@ bool ULanMultiplayerMenu::Initialize()
 			gameInstance->startLANSessionsSearch();
 		}
 	}
-
-	if(sessionListingBox)
-	{
-		sessionListingBox->bIsFocusable = true;
-	}
 	
 	return initializeResult;
 }
@@ -63,7 +58,7 @@ FVector2D ULanMultiplayerMenu::createSessionButtonAbsoluteCenterPosition()
 
 void ULanMultiplayerMenu::sessionSearchCompletedAnd(bool aSessionSearchWasSuccessful)
 {
-	UE_LOG(LogTemp, Log, TEXT("session search %s successful. Attempting to populate box and set timer..."), *FString(aSessionSearchWasSuccessful? "was" : "wasn't"));
+	/*UE_LOG(LogTemp, Log, TEXT("session search %s successful. Attempting to populate box and set timer..."), *FString(aSessionSearchWasSuccessful? "was" : "wasn't"));
 	if(aSessionSearchWasSuccessful)
 	{
 		TArray<FString> foundSessionsID = gameInstance->sessionsFound();
@@ -73,7 +68,7 @@ void ULanMultiplayerMenu::sessionSearchCompletedAnd(bool aSessionSearchWasSucces
 		{
 			gameInstance->TimerManager->SetTimer(retrySessionSearchTimer, gameInstance, &UProjectRGameInstance::startLANSessionsSearch, timeBetweenSearches);
 		}
-	}
+	}*/
 }
 
 void ULanMultiplayerMenu::goBack()
@@ -91,7 +86,7 @@ void ULanMultiplayerMenu::startLANSessionCreation()
 
 void ULanMultiplayerMenu::joinSelectedSession()
 {
-	FString desiredSessionID = sessionListingBox->selectedString();
+	/*FString desiredSessionID = sessionListingBox->selectedString();*/
 
 	gameInstance->joinSessionWith(desiredSessionID);
 }
