@@ -88,5 +88,5 @@ void ULanMultiplayerMenu::joinSelectedSession()
 {
 	/*FString desiredSessionID = sessionListingBox->selectedString();*/
 
-	gameInstance->joinSessionWith(desiredSessionID);
+	/*gameInstance->joinSessionWith(desiredSessionID);*/
 }
