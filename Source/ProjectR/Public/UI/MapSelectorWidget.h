@@ -21,7 +21,7 @@ public:
 
 protected:
 
-	UPROPERTY()
+	UPROPERTY(meta = (BindWidget))
 		UStringButtonScrollBox* mapListing;
 
 	/// <summary>
