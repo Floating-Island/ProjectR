@@ -17,13 +17,13 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUTrackSelectorWidgetIsntNullWhenInstantiatedTest, 
-	"ProjectR.TrackSelectorWidget Tests.Unit.000: Isn't null when instantiated",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMapSelectorWidgetIsntNullWhenInstantiatedTest, 
+	"ProjectR.MapSelectorWidget Tests.Unit.000: Isn't null when instantiated",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUTrackSelectorWidgetCreatesAmountOfButtonsAsMapsFoundTest, FSimplePIETestBase,
-	"ProjectR.TrackSelectorWidget Tests.Unit.001: Creates as much string holder buttons as maps found",
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUMapSelectorWidgetCreatesAmountOfButtonsAsMapsFoundTest, FSimplePIETestBase,
+	"ProjectR.MapSelectorWidget Tests.Unit.001: Creates as much string holder buttons as maps found",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
