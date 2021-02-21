@@ -26,14 +26,14 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULanMultiplayerMenuClickingGoBackButton
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULanMultiplayerMenuClickingGoBackButtonBringsMainMenuTest, FSimplePIETestBase,
-	"ProjectR.LanMultiplayerMenu Tests.Integration.002: Clicking the go back button brings the mainMenu",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULanMultiplayerMenuClickingCreateSessionButtonStartsSessionTest, FSimplePIETestBase,
-	"ProjectR.LanMultiplayerMenu Tests.Integration.003: Clicking the create session travels to the lobby when the session starts",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULanMultiplayerMenuClickingGoBackButtonBringsMainMenuTest, FSimplePIETestBase,
+//	"ProjectR.LanMultiplayerMenu Tests.Integration.002: Clicking the go back button brings the mainMenu",
+//	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//
+//IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULanMultiplayerMenuClickingCreateSessionButtonStartsSessionTest, FSimplePIETestBase,
+//	"ProjectR.LanMultiplayerMenu Tests.Integration.003: Clicking the create session travels to the lobby when the session starts",
+//	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 
