@@ -30,8 +30,8 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 		UButton* createSessionButton;
 
-	UPROPERTY(meta = (BindWidget))
-		UStringButtonScrollBox* sessionListingBox;
+	/*UPROPERTY(meta = (BindWidget))
+		UStringButtonScrollBox* sessionListingBox;*/
 
 	UPROPERTY(meta = (BindWidget))
 		UButton* joinSessionButton;

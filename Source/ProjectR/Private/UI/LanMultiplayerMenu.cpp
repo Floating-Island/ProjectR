@@ -62,7 +62,7 @@ void ULanMultiplayerMenu::sessionSearchCompletedAnd(bool aSessionSearchWasSucces
 	if(aSessionSearchWasSuccessful)
 	{
 		TArray<FString> foundSessionsID = gameInstance->sessionsFound();
-		sessionListingBox->populateBoxWith(foundSessionsID);
+		//sessionListingBox->populateBoxWith(foundSessionsID);
 		gameInstance->TimerManager->ClearTimer(retrySessionSearchTimer);
 		if(IsInViewport())
 		{
@@ -84,7 +84,7 @@ void ULanMultiplayerMenu::startLANSessionCreation()
 
 void ULanMultiplayerMenu::joinSelectedSession()
 {
-	FString desiredSessionID = sessionListingBox->selectedString();
+	/*FString desiredSessionID = sessionListingBox->selectedString();
 
-	gameInstance->joinSessionWith(desiredSessionID);
+	gameInstance->joinSessionWith(desiredSessionID);*/
 }
