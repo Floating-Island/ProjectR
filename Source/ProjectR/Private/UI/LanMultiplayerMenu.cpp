@@ -12,7 +12,12 @@ bool ULanMultiplayerMenu::Initialize()
 {
 	bool initializeResult = Super::Initialize();
 	bIsFocusable = true;
-	//gameInstance = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance());
+	gameInstance = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance());
+	if(gameInstance)
+	{
+		gameInstance->subscribeToSessionSearchedEvent<ULanMultiplayerMenu, &ULanMultiplayerMenu::sessionSearchCompletedAnd>(this);
+		gameInstance->startLANSessionsSearch();
+	}
 	
 	if (goBackButton)
 	{
@@ -36,11 +41,6 @@ bool ULanMultiplayerMenu::Initialize()
 		joinSessionButton->OnPressed.AddDynamic(this, &ULanMultiplayerMenu::joinSelectedSession);
 		joinSessionButton->IsFocusable = true;
 		joinSessionButton->SetClickMethod(EButtonClickMethod::MouseDown);
-		if(gameInstance)
-		{
-			//gameInstance->subscribeToSessionSearchedEvent<ULanMultiplayerMenu, &ULanMultiplayerMenu::sessionSearchCompletedAnd>(this);
-			//gameInstance->startLANSessionsSearch();
-		}
 	}
 	
 	return initializeResult;
@@ -58,7 +58,7 @@ FVector2D ULanMultiplayerMenu::createSessionButtonAbsoluteCenterPosition()
 
 void ULanMultiplayerMenu::sessionSearchCompletedAnd(bool aSessionSearchWasSuccessful)
 {
-	/*UE_LOG(LogTemp, Log, TEXT("session search %s successful. Attempting to populate box and set timer..."), *FString(aSessionSearchWasSuccessful? "was" : "wasn't"));
+	UE_LOG(LogTemp, Log, TEXT("session search %s successful. Attempting to populate box and set timer..."), *FString(aSessionSearchWasSuccessful? "was" : "wasn't"));
 	if(aSessionSearchWasSuccessful)
 	{
 		TArray<FString> foundSessionsID = gameInstance->sessionsFound();
@@ -68,25 +68,23 @@ void ULanMultiplayerMenu::sessionSearchCompletedAnd(bool aSessionSearchWasSucces
 		{
 			gameInstance->TimerManager->SetTimer(retrySessionSearchTimer, gameInstance, &UProjectRGameInstance::startLANSessionsSearch, timeBetweenSearches);
 		}
-	}*/
+	}
 }
 
 void ULanMultiplayerMenu::goBack()
 {
-	//gameInstance->TimerManager->ClearTimer(retrySessionSearchTimer);
 	RemoveFromViewport();
-	Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance())->loadMainMenu();
+	gameInstance->loadMainMenu();
 }
 
 void ULanMultiplayerMenu::startLANSessionCreation()
 {
-	//gameInstance->TimerManager->ClearTimer(retrySessionSearchTimer);
-	//gameInstance->createLANSession();
+	gameInstance->createLANSession();
 }
 
 void ULanMultiplayerMenu::joinSelectedSession()
 {
-	/*FString desiredSessionID = sessionListingBox->selectedString();*/
+	FString desiredSessionID = sessionListingBox->selectedString();
 
-	/*gameInstance->joinSessionWith(desiredSessionID);*/
+	gameInstance->joinSessionWith(desiredSessionID);
 }
