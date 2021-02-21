@@ -6,6 +6,7 @@
 #include "MapSelectorWidgetTestCommands.h"
 #include "UI/MapSelectorWidget.h"
 #include "UI/StringHolderButton.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "../Utilities/BlueprintWidgetContainerPawn.h"
 #include "../Utilities/PIESessionUtilities.h"
 
@@ -27,8 +28,18 @@ bool FCheckMapSelectorCreatesButtonsAsMapsFound::Update()
 		{
 			UMapSelectorWidget* testSelector = Cast<UMapSelectorWidget, UUserWidget>(testContainer->retrieveWidget());
 
-			TArray<UStringHolderButton*> buttonsMade = TArray<UStringHolderButton*>();
-			buttonsMade = sessionUtilities.retrieveFromPIEAllInstancesOf<UStringHolderButton>();
+			if(!testSelector->IsInViewport())
+			{
+				testSelector->AddToViewport();
+				FInputModeUIOnly inputModeData;
+				inputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+				inputModeData.SetWidgetToFocus(testSelector->TakeWidget());
+				APlayerController* controller = sessionUtilities.currentPIEWorld()->GetFirstPlayerController();
+				controller->SetInputMode(inputModeData);
+				controller->bShowMouseCursor = true;
+			}
+			TArray<UUserWidget*> buttonsMade = TArray<UUserWidget*>();
+			UWidgetBlueprintLibrary::GetAllWidgetsOfClass(sessionUtilities.currentPIEWorld(),buttonsMade, UStringHolderButton::StaticClass(), false);
 			
 			TArray<FString> mapsFound = TArray<FString>();
 			mapsFound = testSelector->mapsCollected();
