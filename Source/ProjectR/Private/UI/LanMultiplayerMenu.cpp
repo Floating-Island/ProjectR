@@ -12,7 +12,7 @@ bool ULanMultiplayerMenu::Initialize()
 {
 	bool initializeResult = Super::Initialize();
 	bIsFocusable = true;
-	gameInstance = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance());
+	//gameInstance = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance());
 	
 	if (goBackButton)
 	{
@@ -73,15 +73,15 @@ void ULanMultiplayerMenu::sessionSearchCompletedAnd(bool aSessionSearchWasSucces
 
 void ULanMultiplayerMenu::goBack()
 {
-	gameInstance->TimerManager->ClearTimer(retrySessionSearchTimer);
+	//gameInstance->TimerManager->ClearTimer(retrySessionSearchTimer);
 	RemoveFromViewport();
-	gameInstance->loadMainMenu();
+	Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance())->loadMainMenu();
 }
 
 void ULanMultiplayerMenu::startLANSessionCreation()
 {
-	gameInstance->TimerManager->ClearTimer(retrySessionSearchTimer);
-	gameInstance->createLANSession();
+	//gameInstance->TimerManager->ClearTimer(retrySessionSearchTimer);
+	//gameInstance->createLANSession();
 }
 
 void ULanMultiplayerMenu::joinSelectedSession()

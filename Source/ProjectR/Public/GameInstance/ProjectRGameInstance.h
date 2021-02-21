@@ -26,12 +26,18 @@ class PROJECTR_API UProjectRGameInstance : public UGameInstance
 
 protected:
 	int numberOfPlayers;
-	UMainMenu* mainMenu;
-	USingleplayerMenu* singleplayerMenu;
-	ULocalMultiplayerMenu* localMultiplayerMenu;
-	ULanMultiplayerMenu* lanMultiplayerMenu;
+	UPROPERTY()
+		UMainMenu* mainMenu;
+	UPROPERTY()
+		USingleplayerMenu* singleplayerMenu;
+	UPROPERTY()
+		ULocalMultiplayerMenu* localMultiplayerMenu;
+	UPROPERTY()
+		ULanMultiplayerMenu* lanMultiplayerMenu;
+
 	template<class aMenuType>
 	aMenuType* loadMenuOfClass(TSubclassOf<UMenu> aMenuClass, FName aMenuName);
+
 	void lockMouseToWidget(UMenu* menu);
 	bool menuIsInViewport(UMenu* aMenu);
 
