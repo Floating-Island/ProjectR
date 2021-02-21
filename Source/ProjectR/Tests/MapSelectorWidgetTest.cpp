@@ -6,6 +6,7 @@
 #include "MapSelectorWidgetTest.h"
 #include "../Public/UI/MapSelectorWidget.h"
 #include "Tests/AutomationEditorCommon.h"
+#include "Commands/CommonPIECommands.h"
 #include "Commands/MapSelectorWidgetTestCommands.h"
 
 
@@ -29,6 +30,7 @@ bool FUMapSelectorWidgetCreatesAmountOfButtonsAsMapsFoundTest::RunTest(const FSt
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnGameModeDefaultPawn);
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMapSelectorCreatesButtonsAsMapsFound(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
