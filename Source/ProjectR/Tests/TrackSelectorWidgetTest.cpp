@@ -3,7 +3,7 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-#include "TrackSelectorWidget.h"
+#include "TrackSelectorWidgetTest.h"
 #include "../Public/UI/TrackSelectorWidget.h"
 
 
