@@ -13,11 +13,17 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUTrackSelectorWidgetIsntNullWhenInstantiatedTest, 
 	"ProjectR.TrackSelectorWidget Tests.Unit.000: Isn't null when instantiated",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUTrackSelectorWidgetCreatesAmountOfButtonsAsMapsFoundTest, FSimplePIETestBase,
+	"ProjectR.TrackSelectorWidget Tests.Unit.001: Creates as much string holder buttons as maps found",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
