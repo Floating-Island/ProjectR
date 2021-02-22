@@ -6,6 +6,7 @@
 #include "UI/Menu.h"
 #include "LobbyMenu.generated.h"
 
+class UMapSelectorWidget;
 /**
  * 
  */
@@ -21,13 +22,21 @@ protected:
 	UFUNCTION()
 		void returnToMainMenu();
 
+	UFUNCTION()
+		void startRace();
 
-	
 	UPROPERTY(meta = (BindWidget))
 		UButton* returnButton;
 
+	UPROPERTY(meta = (BindWidget))
+		UMapSelectorWidget* mapListing;
+
+	UPROPERTY(meta = (BindWidget))
+		UButton* startRaceButton;
+	
 public:
 	virtual bool Initialize() override;
 	FVector2D returnButtonAbsoluteCenterPosition();
+	FVector2D startRaceButtonAbsoluteCenterPosition();
 	
 };

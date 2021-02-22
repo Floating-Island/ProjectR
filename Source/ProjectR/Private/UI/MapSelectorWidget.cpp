@@ -43,6 +43,11 @@ TArray<FString> UMapSelectorWidget::mapsCollected()
 	return mapNames;
 }
 
+FString UMapSelectorWidget::selectedMap()
+{
+	return mapListing->selectedString();
+}
+
 void UMapSelectorWidget::createMapButtons()
 {
 	TArray<FString> mapsFound = mapsCollected();

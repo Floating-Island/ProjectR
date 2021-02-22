@@ -18,6 +18,7 @@ class PROJECTR_API UMapSelectorWidget : public UUserWidget
 public:
 	virtual bool Initialize() override;
 	TArray<FString> mapsCollected();
+	FString selectedMap();
 
 protected:
 
