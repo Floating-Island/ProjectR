@@ -10,6 +10,9 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
+class FSimplePIETestBase;
+
+
 
 //Test preparation commands:
 
@@ -60,5 +63,8 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesOneLANMultiplayerMen
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckShowsCursorInLanMultiplayerMenu, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesLobbyMenu, FSimplePIETestBase*, test);
 
 #endif //WITH_DEV_AUTOMATION_TESTS

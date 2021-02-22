@@ -6,10 +6,14 @@
 #include "ProjectRGameInstanceTestCommands.h"
 #include "GameInstance/ProjectRGameInstance.h"
 #include "../Utilities/PIESessionUtilities.h"
+#include "../TestBaseClasses/SimplePIETestBase.h"
 #include "UI/MainMenu.h"
 #include "UI/SingleplayerMenu.h"
 #include "UI/LocalMultiplayerMenu.h"
-#include "../../Public/UI/LanMultiplayerMenu.h"
+#include "UI/LanMultiplayerMenu.h"
+#include "UI/LobbyMenu.h"
+
+
 
 
 //Test preparation commands:
@@ -267,6 +271,22 @@ bool FCheckShowsCursorInLanMultiplayerMenu::Update()
 		bool controllerShowsMouseCursor = sessionUtilities.defaultPIEWorld()->GetFirstPlayerController()->ShouldShowMouseCursor();
 
 		test->TestTrue(TEXT("loadLanMultiplayerMenu should make the controller show the mouse cursor."), testMenu && controllerShowsMouseCursor);
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckCreatesLobbyMenu::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		ULobbyMenu* testMenu = testInstance->loadLobbyMenu();
+
+		test->TestTrue(test->conditionMessage(), testMenu && testMenu->IsInViewport());
 		return true;
 	}
 	return false;

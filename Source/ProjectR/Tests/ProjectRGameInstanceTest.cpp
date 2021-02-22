@@ -242,6 +242,23 @@ bool FUProjectRGameInstanceLANMultiplayerMenuShowsMouseCursorTest::RunTest(const
 }
 
 
+bool FUProjectRGameInstanceLoadLobbyMenuCreatesLobbyMenuTest::RunTest(const FString& Parameters)
+{
+	establishInitialWorldNameTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("loadLobbyMenu should bring the lobby menu instance and add it to viewport."));
+	establishTickLimitTo(3);
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(initialWorldName()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckCreatesLobbyMenu(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+
 
 
 
