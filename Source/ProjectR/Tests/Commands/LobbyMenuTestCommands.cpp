@@ -26,7 +26,7 @@ bool FCheckLobbyMenuClickReturnToMainMenu::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
-		bool inInitialWorld = gameInstance->isLanMultiplayerMenuInViewport();
+		bool inInitialWorld = sessionUtilities.currentPIEWorld()->GetMapName().Equals(test->initialWorldName(), ESearchCase::CaseSensitive);
 		
 		if (inInitialWorld)
 		{
@@ -59,7 +59,7 @@ bool FCheckLobbyMenuClickSelectMapAndStartRace::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
-		bool inInitialWorld = gameInstance->isLanMultiplayerMenuInViewport();
+		bool inInitialWorld = sessionUtilities.currentPIEWorld()->GetMapName().Equals(test->initialWorldName(), ESearchCase::CaseSensitive);
 		
 		if (inInitialWorld)
 		{
@@ -90,7 +90,7 @@ bool FCheckLobbyMenuClickSelectMapAndStartRace::Update()
 				}
 				else
 				{
-					FVector2D startRaceButtonCoordinates = lobbyInstance->startRaceButtonsAbsoluteCenterPosition();
+					FVector2D startRaceButtonCoordinates = lobbyInstance->startRaceButtonAbsoluteCenterPosition();
 					sessionUtilities.processEditorClick(startRaceButtonCoordinates);
 				}
 				return test->manageTickCountTowardsLimit();
