@@ -14,6 +14,7 @@
  */
 class FSimplePIETestBase : public FAutomationTestBase
 {
+FString initialWorld;
 FString testMessage;
 int tickCount;
 int tickLimit;
@@ -26,12 +27,18 @@ public:
 	FSimplePIETestBase(const FString& InName, const bool bInComplexTask)
 		: FAutomationTestBase(InName, bInComplexTask)
 	{
+		      initialWorld = FString();
         testMessage = FString();
         tickCount = 0;
         tickLimit = 0;
 	}
 
 /**
+ * method that only sets the test message if it's empty.
+ */
+void establishInitialWorldNameTo(FString aWorldName);
+
+ /**
  * method that only sets the test message if it's empty.
  */
 void establishTestMessageTo(FString aMessage);

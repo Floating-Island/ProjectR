@@ -30,6 +30,14 @@ void FSimplePIETestBase::increaseTickCount()
 	++tickCount;
 }
 
+void FSimplePIETestBase::establishInitialWorldNameTo(FString aWorldName)
+{
+	if(initialWorld.IsEmpty())
+	{
+		initialWorld = aWorldName;
+	}
+}
+
 void FSimplePIETestBase::establishTestMessageTo(FString aMessage)
 {
 	if(testMessage.IsEmpty())
