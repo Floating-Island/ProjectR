@@ -11,6 +11,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "ProjectRGameInstance.generated.h"
 
+class ULobbyMenu;
 class ULanMultiplayerMenu;
 class USessionManager;
 class ULocalMultiplayerMenu;
@@ -34,6 +35,8 @@ protected:
 		ULocalMultiplayerMenu* localMultiplayerMenu;
 	UPROPERTY()
 		ULanMultiplayerMenu* lanMultiplayerMenu;
+	UPROPERTY()
+		ULobbyMenu* lobbyMenu;
 
 	template<class aMenuType>
 	aMenuType* loadMenuOfClass(TSubclassOf<UMenu> aMenuClass, FName aMenuName);
@@ -59,6 +62,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category= "Menus")
 		TSubclassOf<ULanMultiplayerMenu> lanMultiplayerMenuClass;
 
+	UPROPERTY(EditDefaultsOnly, Category= "Menus")
+		TSubclassOf<ULobbyMenu> lobbyMenuClass;
+
 	UFUNCTION(BlueprintCallable)
 	UMainMenu* loadMainMenu();
 	
@@ -70,6 +76,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	ULanMultiplayerMenu* loadLANMUltiplayerMenu();
+
+	UFUNCTION(BlueprintCallable)
+	ULobbyMenu* loadLobbyMenu();
 
 	bool isMainMenuInViewport();
 	bool isSingleplayerMenuInViewport();

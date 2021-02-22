@@ -6,6 +6,7 @@
 #include "UI/SingleplayerMenu.h"
 #include "UI/LocalMultiplayerMenu.h"
 #include "UI/LanMultiplayerMenu.h"
+#include "UI/LobbyMenu.h"
 #include "Blueprint/UserWidget.h"
 #include "Session/SessionManager.h"
 
@@ -58,6 +59,12 @@ ULanMultiplayerMenu* UProjectRGameInstance::loadLANMUltiplayerMenu()
 {
 	lanMultiplayerMenu = loadMenuOfClass<ULanMultiplayerMenu>(lanMultiplayerMenuClass, FName("Lan Multiplayer Menu"));
 	return lanMultiplayerMenu;
+}
+
+ULobbyMenu* UProjectRGameInstance::loadLobbyMenu()
+{
+	lobbyMenu = loadMenuOfClass<ULobbyMenu>(lobbyMenuClass, FName("Lobby Menu"));
+	return lobbyMenu;
 }
 
 bool UProjectRGameInstance::isMainMenuInViewport()
