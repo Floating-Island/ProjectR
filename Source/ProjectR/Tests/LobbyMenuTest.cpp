@@ -35,6 +35,22 @@ bool FULobbyMenuClickingReturnGoesToMainMenuTest::RunTest(const FString& Paramet
 }
 
 
+bool FULobbyMenuClickingAMapAndStartRaceChangesWorldTest::RunTest(const FString& Parameters)
+{
+	establishInitialWorldNameTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The lobby menu should change the map to the one selected after clicking the startRace button."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(initialWorldName()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLobbyMenuClickSelectMapAndStartRace(nullptr, true, false, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 
 
 

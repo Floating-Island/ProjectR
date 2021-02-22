@@ -23,5 +23,8 @@ class ULobbyMenu;
 DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckLobbyMenuClickReturnToMainMenu, ULobbyMenu*, lobbyInstance, bool, menuNeedsInstantiation, FSimplePIETestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckLobbyMenuClickSelectMapAndStartRace, ULobbyMenu*, lobbyInstance, bool, menuNeedsInstantiation, bool, hasSelectedMap, FSimplePIETestBase*, test);
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS

@@ -27,6 +27,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULobbyMenuClickingReturnGoesToMainMenuT
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULobbyMenuClickingAMapAndStartRaceChangesWorldTest, FSimplePIETestBase,
+	"ProjectR.LobbyMenu Tests.Unit.002: Clicking a map button and then startRaceButton changes the map",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
