@@ -21,11 +21,11 @@ bool FULobbyMenuIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 
 bool FULobbyMenuClickingReturnGoesToMainMenuTest::RunTest(const FString& Parameters)
 {
-	establishInitialWorldNameTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
 	establishTestMessageTo(FString("The lobby menu should return to the main menu when 'Return to Main Menu' is clicked."));
 	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(initialWorldName()));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 	
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckLobbyMenuClickReturnToMainMenu(nullptr, true, this));
@@ -37,11 +37,11 @@ bool FULobbyMenuClickingReturnGoesToMainMenuTest::RunTest(const FString& Paramet
 
 bool FULobbyMenuClickingAMapAndStartRaceChangesWorldTest::RunTest(const FString& Parameters)
 {
-	establishInitialWorldNameTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
 	establishTestMessageTo(FString("The lobby menu should change the map to the one selected after clicking the startRace button."));
 	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(initialWorldName()));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 	
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckLobbyMenuClickSelectMapAndStartRace(nullptr, true, false, this));

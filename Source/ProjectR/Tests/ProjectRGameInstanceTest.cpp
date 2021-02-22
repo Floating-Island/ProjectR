@@ -244,11 +244,11 @@ bool FUProjectRGameInstanceLANMultiplayerMenuShowsMouseCursorTest::RunTest(const
 
 bool FUProjectRGameInstanceLoadLobbyMenuCreatesLobbyMenuTest::RunTest(const FString& Parameters)
 {
-	establishInitialWorldNameTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
 	establishTestMessageTo(FString("loadLobbyMenu should bring the lobby menu instance and add it to viewport."));
 	establishTickLimitTo(3);
 	
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(initialWorldName()));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckCreatesLobbyMenu(this));
@@ -260,11 +260,11 @@ bool FUProjectRGameInstanceLoadLobbyMenuCreatesLobbyMenuTest::RunTest(const FStr
 
 bool FUProjectRGameInstanceLoadLobbyMenuCreatesOneLobbyMenuTest::RunTest(const FString& Parameters)
 {
-	establishInitialWorldNameTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
 	establishTestMessageTo(FString("loadLobbyMenu should create only one instance of lobby menu."));
 	establishTickLimitTo(3);
 	
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(initialWorldName()));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckCreatesOneLobbyMenu(this));
@@ -276,11 +276,11 @@ bool FUProjectRGameInstanceLoadLobbyMenuCreatesOneLobbyMenuTest::RunTest(const F
 
 bool FUProjectRGameInstanceLoadLobbyMenuShowsMouseCursorTest::RunTest(const FString& Parameters)
 {
-	establishInitialWorldNameTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
 	establishTestMessageTo(FString("loadLobbyMenu should make the controller show the mouse cursor."));
 	establishTickLimitTo(3);
 	
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(initialWorldName()));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckLoadLobbyMenuShowsMouseCursor(this));

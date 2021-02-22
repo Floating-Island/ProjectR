@@ -30,11 +30,11 @@ void FSimplePIETestBase::increaseTickCount()
 	++tickCount;
 }
 
-void FSimplePIETestBase::establishInitialWorldNameTo(FString aWorldName)
+void FSimplePIETestBase::establishInitialMapDirectoryTo(FString aWorldName)
 {
-	if(initialWorld.IsEmpty())
+	if(initialMapDirectory.IsEmpty())
 	{
-		initialWorld = aWorldName;
+		initialMapDirectory = aWorldName;
 	}
 }
 
@@ -70,8 +70,21 @@ FString FSimplePIETestBase::conditionMessage()
 	return testMessage;
 }
 
+FString FSimplePIETestBase::retrieveInitialMapDirectory()
+{
+	return initialMapDirectory;
+}
+
 FString FSimplePIETestBase::initialWorldName()
 {
+	if(initialWorld.IsEmpty())
+	{
+		FString mapName = FString();
+		FString discard = FString();
+		initialMapDirectory.Split("/", &discard, &mapName, ESearchCase::IgnoreCase, ESearchDir::FromEnd);
+
+		initialWorld = mapName;
+	}
 	return initialWorld;
 }
 

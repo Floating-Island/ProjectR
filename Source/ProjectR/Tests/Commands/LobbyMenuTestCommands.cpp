@@ -24,12 +24,11 @@ bool FCheckLobbyMenuClickReturnToMainMenu::Update()
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
-
 		bool inInitialWorld = sessionUtilities.currentPIEWorld()->GetMapName().Contains(test->initialWorldName());
 		
 		if (inInitialWorld)
 		{
+			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 			if(menuNeedsInstantiation)
 			{
 				lobbyInstance = gameInstance->loadLobbyMenu();

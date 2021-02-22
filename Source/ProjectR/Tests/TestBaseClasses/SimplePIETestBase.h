@@ -14,6 +14,7 @@
  */
 class FSimplePIETestBase : public FAutomationTestBase
 {
+FString initialMapDirectory;
 FString initialWorld;
 FString testMessage;
 int tickCount;
@@ -27,7 +28,8 @@ public:
 	FSimplePIETestBase(const FString& InName, const bool bInComplexTask)
 		: FAutomationTestBase(InName, bInComplexTask)
 	{
-		      initialWorld = FString();
+		      initialMapDirectory = FString();
+        initialWorld = FString();
         testMessage = FString();
         tickCount = 0;
         tickLimit = 0;
@@ -36,7 +38,7 @@ public:
 /**
  * method that only sets the test message if it's empty.
  */
-void establishInitialWorldNameTo(FString aWorldName);
+void establishInitialMapDirectoryTo(FString aWorldName);
 
  /**
  * method that only sets the test message if it's empty.
@@ -61,6 +63,11 @@ bool manageTickCountTowardsLimit();
  * returns the test message.
  */
  FString conditionMessage();
+
+ /**
+ * returns the test initial map directory.
+ */
+ FString retrieveInitialMapDirectory();
 
  /**
  * returns the test initial world name.
