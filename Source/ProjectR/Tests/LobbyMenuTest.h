@@ -13,6 +13,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -21,7 +22,9 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FULobbyMenuIsntNullWhenInstantiatedTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULobbyMenuClickingReturnGoesToMainMenuTest, FSimplePIETestBase,
+	"ProjectR.LobbyMenu Tests.Unit.001: Clicking the return to main menu button loads the main menu map",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 

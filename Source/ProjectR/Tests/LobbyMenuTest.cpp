@@ -6,6 +6,8 @@
 
 #include "LobbyMenuTest.h"
 #include "UI/LobbyMenu.h"
+#include "Tests/AutomationEditorCommon.h"
+#include "Commands/LobbyMenuTestCommands.h"
 
 bool FULobbyMenuIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
@@ -15,6 +17,23 @@ bool FULobbyMenuIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 
 	return true;
 }
+
+
+bool FULobbyMenuClickingReturnGoesToMainMenuTest::RunTest(const FString& Parameters)
+{
+	establishInitialWorldNameTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The lobby menu should return to the main menu when 'Return to Main Menu' is clicked."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(initialWorldName()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLobbyMenuClickReturnToMainMenu(nullptr, true, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
 
 
 

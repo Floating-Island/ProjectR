@@ -18,5 +18,10 @@
 //Test check commands:
 
 
+class FSimplePIETestBase;
+class ULobbyMenu;
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckLobbyMenuClickReturnToMainMenu, ULobbyMenu*, lobbyInstance, bool, menuNeedsInstantiation, FSimplePIETestBase*, test);
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
