@@ -258,6 +258,22 @@ bool FUProjectRGameInstanceLoadLobbyMenuCreatesLobbyMenuTest::RunTest(const FStr
 }
 
 
+bool FUProjectRGameInstanceLoadLobbyMenuCreatesOneLobbyMenuTest::RunTest(const FString& Parameters)
+{
+	establishInitialWorldNameTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("loadLobbyMenu should create only one instance of lobby menu."));
+	establishTickLimitTo(3);
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(initialWorldName()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckCreatesOneLobbyMenu(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 
 
 

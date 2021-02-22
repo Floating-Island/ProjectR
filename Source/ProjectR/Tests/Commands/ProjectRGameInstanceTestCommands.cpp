@@ -293,6 +293,23 @@ bool FCheckCreatesLobbyMenu::Update()
 }
 
 
+bool FCheckCreatesOneLobbyMenu::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		ULobbyMenu* testMenu = testInstance->loadLobbyMenu();
+		ULobbyMenu* testAnotherMenu = testInstance->loadLobbyMenu();
+
+		test->TestTrue(test->conditionMessage(), testMenu == testAnotherMenu);
+		return true;
+	}
+	return false;
+}
+
+
 
 
 
