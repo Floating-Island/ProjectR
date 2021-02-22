@@ -112,6 +112,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadLobbyMenuCreat
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadLobbyMenuShowsMouseCursorTest, FSimplePIETestBase,
+	"ProjectR.ProjectRGameInstance Tests.Integration.019: loadLobbyMenu makes the controller show the mouse cursor",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

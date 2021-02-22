@@ -310,6 +310,23 @@ bool FCheckCreatesOneLobbyMenu::Update()
 }
 
 
+bool FCheckLoadLobbyMenuShowsMouseCursor::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		ULobbyMenu* testMenu = testInstance->loadLobbyMenu();
+		bool controllerShowsMouseCursor = sessionUtilities.defaultPIEWorld()->GetFirstPlayerController()->ShouldShowMouseCursor();
+
+		test->TestTrue(test->conditionMessage(), testMenu && controllerShowsMouseCursor);
+		return true;
+	}
+	return false;
+}
+
+
 
 
 
