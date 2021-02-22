@@ -70,5 +70,10 @@ FString FSimplePIETestBase::conditionMessage()
 	return testMessage;
 }
 
+FString FSimplePIETestBase::initialWorldName()
+{
+	return initialWorld;
+}
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS

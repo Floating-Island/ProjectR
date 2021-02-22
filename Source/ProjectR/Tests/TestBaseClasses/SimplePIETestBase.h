@@ -62,6 +62,11 @@ bool manageTickCountTowardsLimit();
  */
  FString conditionMessage();
 
+ /**
+ * returns the test initial world name.
+ */
+ FString initialWorldName();
+
 };
 
 
