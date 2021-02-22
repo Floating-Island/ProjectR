@@ -13,5 +13,21 @@ UCLASS()
 class PROJECTR_API ULobbyMenu : public UMenu
 {
 	GENERATED_BODY()
+
+	
+	
+
+protected:
+	UFUNCTION()
+		void returnToMainMenu();
+
+
+	
+	UPROPERTY(meta = (BindWidget))
+		UButton* returnButton;
+
+public:
+	virtual bool Initialize() override;
+	FVector2D returnButtonAbsoluteCenterPosition();
 	
 };
