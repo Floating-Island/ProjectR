@@ -26,7 +26,7 @@ bool FCheckLobbyMenuClickReturnToMainMenu::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
-		bool inInitialWorld = sessionUtilities.currentPIEWorld()->GetMapName().Equals(test->initialWorldName(), ESearchCase::CaseSensitive);
+		bool inInitialWorld = sessionUtilities.currentPIEWorld()->GetMapName().Contains(test->initialWorldName());
 		
 		if (inInitialWorld)
 		{
@@ -59,7 +59,7 @@ bool FCheckLobbyMenuClickSelectMapAndStartRace::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
-		bool inInitialWorld = sessionUtilities.currentPIEWorld()->GetMapName().Equals(test->initialWorldName(), ESearchCase::CaseSensitive);
+		bool inInitialWorld = sessionUtilities.currentPIEWorld()->GetMapName().Contains(test->initialWorldName());
 		
 		if (inInitialWorld)
 		{
