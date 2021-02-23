@@ -5,6 +5,7 @@
 
 #include "LobbyMenuTestCommands.h"
 #include "../Utilities/PIESessionUtilities.h"
+#include "../Utilities/NetworkedPIESessionUtilities.h"
 #include "GameInstance/ProjectRGameInstance.h"
 #include "../TestBaseClasses/SimplePIETestBase.h"
 #include "UI/LobbyMenu.h"
@@ -102,6 +103,33 @@ bool FCheckLobbyMenuClickSelectMapAndStartRace::Update()
 	}
 	return false;
 }
+
+
+bool FCheckLobbyMenuLoadedByLevelBlueprint::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+		UWidgetBlueprintLibrary::GetAllWidgetsOfClass(sessionUtilities.currentPIEWorld(),retrievedWidgets, ULobbyMenu::StaticClass(), false);
+
+		bool lobbyMenuPresent = retrievedWidgets.Num() == 1;
+		
+		if(lobbyMenuPresent)
+		{
+			test->TestTrue(test->conditionMessage(), lobbyMenuPresent);
+			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+		return test->manageTickCountTowardsLimit();
+	}
+	return false;
+}
+
+
+
+
 
 
 

@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "Commands/NetworkCommands.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 
@@ -49,6 +50,23 @@ bool FULobbyMenuClickingAMapAndStartRaceChangesWorldTest::RunTest(const FString&
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
+
+
+bool FULobbyMenuIsLoadedInLobbyMapLevelBlueprintTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/lobby"));
+	establishTestMessageTo(FString("The lobby menu should be loaded by the level blueprint of the lobby menu."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLobbyMenuLoadedByLevelBlueprint(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
 
 
 

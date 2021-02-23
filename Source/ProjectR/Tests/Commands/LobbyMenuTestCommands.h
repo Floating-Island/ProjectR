@@ -26,5 +26,11 @@ DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckLobbyMenuClickReturnToMai
 DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckLobbyMenuClickSelectMapAndStartRace, ULobbyMenu*, lobbyInstance, bool, menuNeedsInstantiation, bool, hasSelectedMap, FSimplePIETestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLobbyMenuLoadedByLevelBlueprint, FSimplePIETestBase*, test);
+
+
+
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS

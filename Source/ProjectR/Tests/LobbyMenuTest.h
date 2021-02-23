@@ -32,6 +32,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULobbyMenuClickingAMapAndStartRaceChang
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULobbyMenuIsLoadedInLobbyMapLevelBlueprintTest, FSimplePIETestBase,
+	"ProjectR.LobbyMenu Tests.Integration.003: Is loaded by the level blueprint in the lobby map",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
