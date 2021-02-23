@@ -12,8 +12,20 @@ void ULobbyMenu::returnToMainMenu()
 
 void ULobbyMenu::startRace()
 {
+	focusPlayersOnGame();
 	FString mapSelected = mapListing->selectedMap();
 	GetWorld()->ServerTravel(mapSelected + FString("?listen"), false, false);
+}
+
+void ULobbyMenu::focusPlayersOnGame()
+{
+	FInputModeGameOnly inputModeData;
+	inputModeData.SetConsumeCaptureMouseDown(true);
+	for (auto iterator = GetWorld()->GetPlayerControllerIterator(); iterator; ++iterator)//check if it works. Check that clients are able to move. After dealing with postlogin in gamemode...
+	{
+		APlayerController* controller = iterator->Get();
+		controller->SetInputMode(inputModeData);
+	}
 }
 
 bool ULobbyMenu::Initialize()

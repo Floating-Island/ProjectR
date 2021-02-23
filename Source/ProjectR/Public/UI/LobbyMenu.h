@@ -33,6 +33,8 @@ protected:
 
 	UPROPERTY(meta = (BindWidget))
 		UButton* startRaceButton;
+
+	void focusPlayersOnGame();
 	
 public:
 	virtual bool Initialize() override;
