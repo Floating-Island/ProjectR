@@ -13,7 +13,7 @@ void ULobbyMenu::returnToMainMenu()
 void ULobbyMenu::startRace()
 {
 	FString mapSelected = mapListing->selectedMap();
-	GetWorld()->ServerTravel(mapSelected, false, true);
+	GetWorld()->ServerTravel(mapSelected + FString("?listen"), false, false);
 }
 
 bool ULobbyMenu::Initialize()
