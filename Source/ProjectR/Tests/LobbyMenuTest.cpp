@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Commands/NetworkCommands.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 
@@ -9,6 +8,7 @@
 #include "UI/LobbyMenu.h"
 #include "Tests/AutomationEditorCommon.h"
 #include "Commands/LobbyMenuTestCommands.h"
+
 
 bool FULobbyMenuIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
