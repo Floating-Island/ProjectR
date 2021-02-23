@@ -7,6 +7,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "../TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -52,6 +53,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckCreatesSameOrMoreJetsThan
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckJetsSameRotationAsTrack, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckRaceGameModeStartsIfReachesExpectedControllersNumber, int, clientQuantity, bool, travelDispatched, FSimplePIETestBase*, test);
 
 
 

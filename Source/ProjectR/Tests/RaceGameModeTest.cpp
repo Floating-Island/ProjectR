@@ -1,14 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-
-
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "RaceGameModeTest.h"
 #include "GameMode/RaceGameMode.h"
 #include "Commands/RaceGameModeTestCommands.h"
+#include "Commands/NetworkCommands.h"
 
 #include "Tests/AutomationEditorCommon.h"
 
@@ -166,6 +164,27 @@ bool FARaceGameModeSpawnedJetsWithTrackRotationTest::RunTest(const FString& Para
 	int tickCount = 0;
 	int tickLimit = 3;
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetsSameRotationAsTrack(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FARaceGameModeStartsWhenControllersQuantityReachExpectedTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The race game mode should start when the number of expected controllers is reached."));
+	establishTickLimitTo(10);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeStartsIfReachesExpectedControllersNumber(numberOfPlayers, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

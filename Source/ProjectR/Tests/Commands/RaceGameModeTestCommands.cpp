@@ -1,10 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-
-
-
-
+#include "../Utilities/NetworkedPIESessionUtilities.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "RaceGameModeTestCommands.h"
@@ -421,6 +418,45 @@ bool FCheckJetsSameRotationAsTrack::Update()
 	}
 	return false;
 }
+
+
+bool FCheckRaceGameModeStartsIfReachesExpectedControllersNumber::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+		if(serverWorld)
+		{
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+			if(clientWorld)
+			{
+				if(!travelDispatched)
+				{
+					FString travelURL = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode") + FString("?listen") + FString(TEXT("?numControllers=%d", clientQuantity));
+					serverWorld->ServerTravel(travelURL);
+					travelDispatched = true;
+					return false;
+				}
+				
+				bool raceBeginningReached = UGameplayStatics::GetActorOfClass(serverWorld, ARaceBeginningStage::StaticClass()) != nullptr;
+				if(raceBeginningReached)
+				{
+					test->TestTrue(test->conditionMessage(), raceBeginningReached);
+					for(auto context : GEditor->GetWorldContexts())
+					{
+						context.World()->bDebugFrameStepExecution = true;
+					}
+					return true;
+				}
+				return test->manageTickCountTowardsLimit();
+			}
+		}
+	}
+	return false;
+}
+
 
 
 
