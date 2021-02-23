@@ -434,7 +434,7 @@ bool FCheckRaceGameModeStartsIfReachesExpectedControllersNumber::Update()
 			{
 				if(!travelDispatched)
 				{
-					FString travelURL = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode") + FString("?listen") + FString(TEXT("?numControllers=%d", clientQuantity));
+					FString travelURL = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode") + FString("?listen") + FString(TEXT("?numControllers=%d"), clientQuantity);
 					serverWorld->ServerTravel(travelURL);
 					travelDispatched = true;
 					return false;
