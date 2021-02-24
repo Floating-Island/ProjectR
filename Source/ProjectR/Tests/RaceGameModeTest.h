@@ -71,11 +71,6 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeSameOrMoreNumberOfJetsAsPlayersTe
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeSpawnedJetsWithTrackRotationTest, 
 	"ProjectR.RaceGameMode Tests.Integration.010: Each spawned jet has the rotation of the track section where it's at", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-	
-
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceGameModeStartsWhenControllersQuantityReachExpectedTest, FSimplePIETestBase,
-	"ProjectR.RaceGameMode Tests.Replication.011: Starts the game when the expected controllers quantity is reached", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 

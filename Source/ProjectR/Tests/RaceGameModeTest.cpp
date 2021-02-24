@@ -169,25 +169,4 @@ bool FARaceGameModeSpawnedJetsWithTrackRotationTest::RunTest(const FString& Para
 	return true;
 }
 
-
-bool FARaceGameModeStartsWhenControllersQuantityReachExpectedTest::RunTest(const FString& Parameters)
-{
-	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
-	establishTestMessageTo(FString("The race game mode should start when the number of expected controllers is reached."));
-	establishTickLimitTo(10);
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
-
-	int32 numberOfPlayers = 2;
-	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
-
-	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
-
-	
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeStartsIfReachesExpectedControllersNumber(numberOfPlayers, false, this));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	return true;
-}
-
 #endif //WITH_DEV_AUTOMATION_TESTS
