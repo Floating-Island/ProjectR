@@ -78,6 +78,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceGameModeLapCompletedByJetUpdatesPl
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceGameModeupdateJetPositionsUpdatesPlayerStatePositionTest, FSimplePIETestBase,
+	"ProjectR.RaceGameMode Tests.Integration.012: updateJetPositions updates the playerState's currentPositon", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

@@ -467,6 +467,52 @@ bool FCheckPlayerStateLapUpdated::Update()
 }
 
 
+bool FCheckPlayerStatePositionUpdated::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+	
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+		ARaceGameMode* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameMode>();
+		ARaceBeginningStage* testStage = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceBeginningStage>();
+		if (testGameMode && testStage)
+		{
+			if(selectedJet == nullptr)
+			{
+				selectedJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+				return false;
+			}
+
+			if(IsValid(selectedJet))
+			{
+				testGameMode->updateJetPositions();
+				AController* controller = Cast<AController, AActor>(selectedJet->GetOwner());
+				ARacePlayerState* testState = controller->GetPlayerState<ARacePlayerState>();
+				if(testState)
+				{
+					int gameModeCurrentPosition = testGameMode->positionOf(selectedJet);
+					UE_LOG(LogTemp, Log, TEXT("current game mode position: %d."), gameModeCurrentPosition);
+					int playerStateCurrentPosition = testState->currentPosition();
+					UE_LOG(LogTemp, Log, TEXT("current player state position: %d."), playerStateCurrentPosition);
+					
+					bool positionsMatch = gameModeCurrentPosition == playerStateCurrentPosition;
+					if(positionsMatch)
+					{
+						test->TestTrue(test->conditionMessage(), positionsMatch);
+						sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+						return true;
+					}
+				}
+				return test->manageTickCountTowardsLimit();
+			}
+		}
+	}
+	return false;
+}
+
+
 
 
 
