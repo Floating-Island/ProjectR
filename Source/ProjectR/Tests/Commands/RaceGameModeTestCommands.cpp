@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "../../Public/PlayerState/RacePlayerState.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "RaceGameModeTestCommands.h"
@@ -418,6 +419,48 @@ bool FCheckJetsSameRotationAsTrack::Update()
 	}
 	return false;
 }
+
+
+bool FCheckPlayerStateLapUpdated::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+	
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+		ARaceGameMode* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameMode>();
+		ARaceBeginningStage* testStage = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceBeginningStage>();
+		if (testGameMode && testStage)
+		{
+			if(selectedJet == nullptr)
+			{
+				selectedJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+			}
+
+			testGameMode->lapCompletedByJet(selectedJet);
+
+			ARacePlayerState* testState = Cast<ARacePlayerState, APlayerState>(selectedJet->GetController()->PlayerState);
+			if(testState)
+			{
+				bool lapsMatch = testGameMode->lapOf(selectedJet) == testState->currentLap();
+				if(lapsMatch)
+				{
+					test->TestTrue(test->conditionMessage(), lapsMatch);
+					sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+					return true;
+				}
+			}
+			return test->manageTickCountTowardsLimit();
+		}
+	}
+	return false;
+}
+
+
+
+
+
 
 
 

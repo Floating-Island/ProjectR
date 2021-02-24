@@ -73,6 +73,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeSpawnedJetsWithTrackRotationTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceGameModeLapCompletedByJetUpdatesPlayerStateLapTest, FSimplePIETestBase,
+	"ProjectR.RaceGameMode Tests.Integration.011: lapCompletedByJet updates the playerState's currentLap", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 
