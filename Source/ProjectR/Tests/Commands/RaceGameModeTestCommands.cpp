@@ -436,22 +436,31 @@ bool FCheckPlayerStateLapUpdated::Update()
 			if(selectedJet == nullptr)
 			{
 				selectedJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+				return false;
 			}
 
-			testGameMode->lapCompletedByJet(selectedJet);
-
-			ARacePlayerState* testState = Cast<ARacePlayerState, APlayerState>(selectedJet->GetController()->PlayerState);
-			if(testState)
+			if(IsValid(selectedJet))
 			{
-				bool lapsMatch = testGameMode->lapOf(selectedJet) == testState->currentLap();
-				if(lapsMatch)
+				testGameMode->lapCompletedByJet(selectedJet);
+				AController* controller = Cast<AController, AActor>(selectedJet->GetOwner());
+				ARacePlayerState* testState = controller->GetPlayerState<ARacePlayerState>();
+				if(testState)
 				{
-					test->TestTrue(test->conditionMessage(), lapsMatch);
-					sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-					return true;
+					int gameModeCurrentLap = testGameMode->lapOf(selectedJet);
+					UE_LOG(LogTemp, Log, TEXT("current game mode lap: %d."), gameModeCurrentLap);
+					int playerStateCurrentLap = testState->currentLap();
+					UE_LOG(LogTemp, Log, TEXT("current player state lap: %d."), playerStateCurrentLap);
+					
+					bool lapsMatch = gameModeCurrentLap == playerStateCurrentLap;
+					if(lapsMatch)
+					{
+						test->TestTrue(test->conditionMessage(), lapsMatch);
+						sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+						return true;
+					}
 				}
+				return test->manageTickCountTowardsLimit();
 			}
-			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;
