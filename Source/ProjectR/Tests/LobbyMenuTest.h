@@ -37,6 +37,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULobbyMenuIsLoadedInLobbyMapLevelBluepr
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULobbyMenuGameStatePlayerArrayQuantityChangeIsUpdatedTest, FSimplePIETestBase,
+	"ProjectR.LobbyMenu Tests.Integration.004: Reflects changes in the GameState playerArray quantity",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

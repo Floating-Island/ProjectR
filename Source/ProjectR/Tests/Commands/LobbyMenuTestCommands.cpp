@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "../../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/GameFramework/GameStateBase.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "LobbyMenuTestCommands.h"
@@ -128,6 +129,42 @@ bool FCheckLobbyMenuLoadedByLevelBlueprint::Update()
 }
 
 
+bool FCheckLobbyMenuUpdatesPlayersConnected::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+		UWidgetBlueprintLibrary::GetAllWidgetsOfClass(sessionUtilities.currentPIEWorld(),retrievedWidgets, ULobbyMenu::StaticClass(), false);
+
+		ULobbyMenu* testLobby = Cast<ULobbyMenu, UUserWidget>(retrievedWidgets.Pop());
+		
+		if(testLobby)
+		{
+			int playersInLobby = testLobby->connectedPlayers();
+			UE_LOG(LogTemp, Log, TEXT("Players in lobby: %d"), playersInLobby);
+
+			int playersInGameState = sessionUtilities.currentPIEWorld()->GetGameState()->PlayerArray.Num();
+			UE_LOG(LogTemp, Log, TEXT("Players in GameState: %d"), playersInGameState);
+
+			playersQuantityMatch = playersInLobby == playersInGameState;
+
+			UE_LOG(LogTemp, Log, TEXT("players quantity %smatch"), *FString(playersQuantityMatch? "" : "don't "));
+
+			sessionUtilities.spawnLocalPlayer();
+			
+			test->increaseTickCount();
+			if(test->tickCountExceedsLimit())
+			{
+				test->TestTrue(test->conditionMessage(), playersQuantityMatch);
+				sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
 
 
 

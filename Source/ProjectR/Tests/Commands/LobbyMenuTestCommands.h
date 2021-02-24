@@ -29,6 +29,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckLobbyMenuClickSelectMapAnd
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLobbyMenuLoadedByLevelBlueprint, FSimplePIETestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckLobbyMenuUpdatesPlayersConnected, bool, playersQuantityMatch, FSimplePIETestBase*, test);
+
+
 
 
 

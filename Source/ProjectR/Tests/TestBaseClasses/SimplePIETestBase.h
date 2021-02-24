@@ -22,7 +22,6 @@ int tickLimit;
 
  void appendTestFailureWhen(bool aTickCountExceedsLimit);
  void pauseCurrentPIEWorldWhen(bool aTickCountExceedsLimit);
- void increaseTickCount();
 
 public:
 	FSimplePIETestBase(const FString& InName, const bool bInComplexTask)
@@ -49,6 +48,8 @@ void establishTestMessageTo(FString aMessage);
  * method that only sets the tick limit on the first time it's called.
  */
 void establishTickLimitTo(int aDesiredQuantity);
+void increaseTickCount();
+bool tickCountExceedsLimit();
 
 /**
  * checks if the tick count reaches the tick limit.

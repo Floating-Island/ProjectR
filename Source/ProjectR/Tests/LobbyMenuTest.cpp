@@ -68,6 +68,22 @@ bool FULobbyMenuIsLoadedInLobbyMapLevelBlueprintTest::RunTest(const FString& Par
 }
 
 
+bool FULobbyMenuGameStatePlayerArrayQuantityChangeIsUpdatedTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/lobby"));
+	establishTestMessageTo(FString("The lobby menu should update its playersConnected when the PlayerArray quantity in GameState changes."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLobbyMenuUpdatesPlayersConnected(false, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 
 
 

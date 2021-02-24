@@ -54,9 +54,14 @@ void FSimplePIETestBase::establishTickLimitTo(int aDesiredQuantity)
 	}
 }
 
+bool FSimplePIETestBase::tickCountExceedsLimit()
+{
+	return tickCount > tickLimit;
+}
+
 bool FSimplePIETestBase::manageTickCountTowardsLimit()
 {
-	bool tickCountExceedsLimit = tickCount > tickLimit;
+	bool tickCountExceedsLimit = tickCountExceedsLimit();
 
 	appendTestFailureWhen(tickCountExceedsLimit);
 	pauseCurrentPIEWorldWhen(tickCountExceedsLimit);
