@@ -6,6 +6,7 @@
 #include "UI/Menu.h"
 #include "LobbyMenu.generated.h"
 
+class UTextBlock;
 class UMapSelectorWidget;
 /**
  * 
@@ -34,11 +35,18 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 		UButton* startRaceButton;
 
+	UPROPERTY(meta = (BindWidget))
+		UTextBlock* playersInLobbyText;
+
 	void focusPlayersOnGame();
+	void updatePlayersInLobby();
 	
 public:
 	virtual bool Initialize() override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	FVector2D returnButtonAbsoluteCenterPosition();
 	FVector2D startRaceButtonAbsoluteCenterPosition();
+
+	int connectedPlayers();
 	
 };

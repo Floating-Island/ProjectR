@@ -2,6 +2,9 @@
 
 
 #include "UI/LobbyMenu.h"
+
+#include "../../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/GameFramework/GameStateBase.h"
+#include "../../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Runtime/UMG/Public/Components/TextBlock.h"
 #include "Components/Button.h"
 #include "UI/MapSelectorWidget.h"
 
@@ -26,6 +29,21 @@ void ULobbyMenu::focusPlayersOnGame()
 	{
 		APlayerController* controller = iterator->Get();
 		controller->SetInputMode(inputModeData);
+	}
+}
+
+void ULobbyMenu::updatePlayersInLobby()
+{
+	if(playersInLobbyText)
+	{
+		int playersInGameState = GetWorld()->GetGameState()->PlayerArray.Num();
+		int playersInLobbyNumber = FCString::Atoi(*playersInLobbyText->GetText().ToString());
+		
+		if(playersInGameState == playersInLobbyNumber)
+		{
+			return;
+		}
+		playersInLobbyText->SetText(FText::FromString(FString::FromInt(playersInGameState)));
 	}
 }
 
@@ -59,6 +77,12 @@ bool ULobbyMenu::Initialize()
 	return initializeResult;
 }
 
+void ULobbyMenu::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+{
+	Super::NativeTick(MyGeometry, InDeltaTime);
+	updatePlayersInLobby();
+}
+
 FVector2D ULobbyMenu::returnButtonAbsoluteCenterPosition()
 {
 	return buttonAbsoluteCenterPosition(returnButton);
@@ -67,4 +91,13 @@ FVector2D ULobbyMenu::returnButtonAbsoluteCenterPosition()
 FVector2D ULobbyMenu::startRaceButtonAbsoluteCenterPosition()
 {
 	return buttonAbsoluteCenterPosition(startRaceButton);
+}
+
+int ULobbyMenu::connectedPlayers()
+{
+	if(playersInLobbyText)
+	{
+		return FCString::Atoi(*playersInLobbyText->GetText().ToString());
+	}
+	return -1;
 }
