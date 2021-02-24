@@ -12,7 +12,7 @@ bool FARacePlayerStateIsntNullWhenInstantiatedTest::RunTest(const FString& Param
 {
 	ARacePlayerState* testPlayerState = NewObject<ARacePlayerState>();
 
-	TestTrue(TEXT("Shouldn't be null when instantiated"), testPlayerState);
+	TestNotNull(TEXT("Shouldn't be null when instantiated"), testPlayerState);
 	
 	return true;
 }
