@@ -61,13 +61,13 @@ bool FSimplePIETestBase::tickCountExceedsLimit()
 
 bool FSimplePIETestBase::manageTickCountTowardsLimit()
 {
-	bool tickCountExceedsLimit = tickCountExceedsLimit();
+	bool tickCountExceedsTheLimit = tickCountExceedsLimit();
 
-	appendTestFailureWhen(tickCountExceedsLimit);
-	pauseCurrentPIEWorldWhen(tickCountExceedsLimit);
+	appendTestFailureWhen(tickCountExceedsTheLimit);
+	pauseCurrentPIEWorldWhen(tickCountExceedsTheLimit);
 	increaseTickCount();
 
-	return tickCountExceedsLimit;
+	return tickCountExceedsTheLimit;
 }
 
 FString FSimplePIETestBase::conditionMessage()
