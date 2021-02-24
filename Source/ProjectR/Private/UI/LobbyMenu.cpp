@@ -14,7 +14,8 @@ void ULobbyMenu::startRace()
 {
 	focusPlayersOnGame();
 	FString mapSelected = mapListing->selectedMap();
-	GetWorld()->ServerTravel(mapSelected + FString("?listen"), false, false);
+	FString travelURL = mapSelected + FString("?listen") + FString("?numControllers=") + FString::FromInt(GetWorld()->GetNumPlayerControllers());
+	GetWorld()->ServerTravel(travelURL, false, false);
 }
 
 void ULobbyMenu::focusPlayersOnGame()

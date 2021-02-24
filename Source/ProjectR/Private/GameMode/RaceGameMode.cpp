@@ -11,21 +11,68 @@
 #include "LapPhases/InitialLapPhase.h"
 #include "GameMode/RaceStages/RacePreparationStage.h"
 #include "GameInstance/ProjectRGameInstance.h"
+#include "TimerManager.h"
 
 #include "Kismet/GameplayStatics.h"
 
 
+bool ARaceGameMode::expectedControllerQuantityReached()
+{
+	int controllersAvailable = GetWorld()->GetNumPlayerControllers();
+	if(controllersAvailable == expectedControllers())
+	{
+		return true;
+	}
+	return false;
+}
+
+int ARaceGameMode::expectedControllers()
+{
+	if(expectedControllersNumber == 0)
+	{
+		FString controllerQuantityString = UGameplayStatics::ParseOption(OptionsString, "numControllers");//"?numControllers=xx"
+		expectedControllersNumber = controllerQuantityString.IsEmpty()? 1 : FCString::Atoi(*controllerQuantityString);
+	}
+	return expectedControllersNumber;
+}
+
+void ARaceGameMode::prepareToStart()
+{
+	timeToWaitForPlayers = 0.1f;
+	FTimerManager& timerManager = GetGameInstance()->GetTimerManager();
+	if(timerManager.IsTimerActive(waitForPlayersTimer))
+	{
+		timerManager.ClearTimer(waitForPlayersTimer);
+		timerManager.SetTimerForNextTick(this, &ARaceGameMode::startStage);
+	}
+}
+
+void ARaceGameMode::startStage()
+{
+	if(stage)
+	{
+		stage->start();
+	}
+}
 
 ARaceGameMode::ARaceGameMode()
 {
+	expectedControllersNumber = 0;
 	numberOfLaps = 3;
 	jetSpawnHeight = 100;
-	initialForwardDistanceBetweenJets = 2000;
-	initialLateralDistanceBetweenJets = 1000;
-
+	initialForwardDistanceBetweenJets = 3000;
+	initialLateralDistanceBetweenJets = 2500;
+	stage = nullptr;
 	jetClass = AJet::StaticClass();
 	currentJetPositions = TMap<AJet*, int8>();
 	finalizedJets = TArray<AJet*>();
+	timeToWaitForPlayers = 20;
+}
+
+void ARaceGameMode::prepareInitialStageStart()
+{
+	stage = gameWorld->SpawnActor<ARacePreparationStage>();
+	GetGameInstance()->GetTimerManager().SetTimer(waitForPlayersTimer, this, &ARaceGameMode::startStage, timeToWaitForPlayers);
 }
 
 void ARaceGameMode::StartPlay()
@@ -37,9 +84,7 @@ void ARaceGameMode::StartPlay()
 	track = Cast<ATrackGenerator, AActor>(soonToBeTrack);
 	AActor* soonToBeInitialPhase = UGameplayStatics::GetActorOfClass(gameWorld, AInitialLapPhase::StaticClass());
 	initialPhase = Cast<AInitialLapPhase, AActor>(soonToBeInitialPhase);
-
-	stage = gameWorld->SpawnActor<ARacePreparationStage>();
-	stage->start();
+	prepareInitialStageStart();
 }
 
 void ARaceGameMode::positionExpectedJets()
@@ -218,5 +263,13 @@ void ARaceGameMode::enableJetsInput()
 		{
 			jet->EnableInput(Cast<APlayerController,AController>(jet->GetController()));
 		}
+	}
+}
+
+void ARaceGameMode::PostLogin(APlayerController* NewPlayer)
+{
+	if(expectedControllerQuantityReached())
+	{
+		prepareToStart();
 	}
 }

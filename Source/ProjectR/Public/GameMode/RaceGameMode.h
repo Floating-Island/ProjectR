@@ -19,7 +19,7 @@ class PROJECTR_API ARaceGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
-
+int expectedControllersNumber;
 
 protected:
 
@@ -31,6 +31,11 @@ protected:
 	ALapManager* lapManager;
 	TMap<AJet*, int8> currentJetPositions;
 	TArray<AJet*> finalizedJets;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
+		float timeToWaitForPlayers;
+	
+	FTimerHandle waitForPlayersTimer;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
 		int numberOfLaps;
@@ -47,6 +52,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Race Settings")
 		TSubclassOf<AJet> jetClass;
 
+	bool expectedControllerQuantityReached();
+	int expectedControllers();
+	void prepareToStart();
+	void startStage();
+	void prepareInitialStageStart();
+	
 public:
 	ARaceGameMode();
 
@@ -87,5 +98,5 @@ public:
 	void disableJetsInput();
 	void enableJetsInput();
 	
-
+	virtual void PostLogin(APlayerController* NewPlayer) override;
 };
