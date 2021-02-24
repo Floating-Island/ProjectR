@@ -13,5 +13,15 @@ UCLASS()
 class PROJECTR_API ARacePlayerState : public APlayerState
 {
 	GENERATED_BODY()
+
+protected:
+
+	
+	int lap;
+
+public:
+	ARacePlayerState();
+	int currentLap();
+	void updateLapTo(int aCurrentLap);
 	
 };

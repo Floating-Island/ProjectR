@@ -12,6 +12,7 @@
 #include "GameMode/RaceStages/RacePreparationStage.h"
 #include "GameInstance/ProjectRGameInstance.h"
 #include "TimerManager.h"
+#include "PlayerState/RacePlayerState.h"
 
 #include "Kismet/GameplayStatics.h"
 
@@ -73,6 +74,19 @@ void ARaceGameMode::prepareInitialStageStart()
 {
 	stage = gameWorld->SpawnActor<ARacePreparationStage>();
 	GetGameInstance()->GetTimerManager().SetTimer(waitForPlayersTimer, this, &ARaceGameMode::startStage, timeToWaitForPlayers);
+}
+
+void ARaceGameMode::updateCurrentPlayerStateLapOf(AJet* aJet, int aCurrentLap)
+{
+	AController* controller = Cast<AController, AActor>(aJet->GetOwner());
+	if(controller)
+	{
+		ARacePlayerState* playerState = controller->GetPlayerState<ARacePlayerState>();
+		if(playerState && aCurrentLap > playerState->currentLap())
+		{
+			playerState->updateLapTo(aCurrentLap);
+		}
+	}
 }
 
 void ARaceGameMode::StartPlay()
@@ -196,12 +210,16 @@ int ARaceGameMode::laps()
 void ARaceGameMode::lapCompletedByJet(AJet* aCrossingJet)
 {
 	if (runningJets.Contains(aCrossingJet))
-	{
+	{	
 		if (lapManager->currentLapOf(aCrossingJet) > laps())
 		{
 			runningJets.Remove(aCrossingJet);
 			finalizedJets.Add(aCrossingJet);
 			UE_LOG(LogTemp, Log, TEXT("A Jet has finished laps!!!"));
+		}
+		else
+		{
+			updateCurrentPlayerStateLapOf(aCrossingJet, lapManager->currentLapOf(aCrossingJet));
 		}
 	}
 }
@@ -272,4 +290,9 @@ void ARaceGameMode::PostLogin(APlayerController* NewPlayer)
 	{
 		prepareToStart();
 	}
+}
+
+int ARaceGameMode::lapOf(AJet* aJet)
+{
+	return lapManager->currentLapOf(aJet);
 }

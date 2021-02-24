@@ -57,6 +57,8 @@ protected:
 	void prepareToStart();
 	void startStage();
 	void prepareInitialStageStart();
+
+	void updateCurrentPlayerStateLapOf(AJet* aJet, int aCurrentLap);
 	
 public:
 	ARaceGameMode();
@@ -99,4 +101,6 @@ public:
 	void enableJetsInput();
 	
 	virtual void PostLogin(APlayerController* NewPlayer) override;
+
+	int lapOf(AJet* aJet);
 };
