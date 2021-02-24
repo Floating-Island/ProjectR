@@ -151,7 +151,14 @@ bool FCheckLobbyMenuUpdatesPlayersConnected::Update()
 
 			UE_LOG(LogTemp, Log, TEXT("players quantity %smatch"), *FString(playersQuantityMatch? "" : "don't "));
 
-			sessionUtilities.spawnLocalPlayer();
+			sessionUtilities.spawnInPIEAnInstanceOf<APlayerController>();
+			TArray<APlayerController*> players = sessionUtilities.retrieveFromPIEAllInstancesOf<APlayerController>();
+
+			UE_LOG(LogTemp, Log, TEXT("quantity of players spawned: %d"), players.Num());
+			for(const auto& player : players)
+			{
+				sessionUtilities.currentPIEWorld()->GetGameState()->AddPlayerState(player->PlayerState);
+			}
 			
 			test->increaseTickCount();
 			if(test->tickCountExceedsLimit())
