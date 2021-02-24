@@ -5,6 +5,17 @@
 
 
 #include "RacePlayerStateTest.h"
+#include "PlayerState/RacePlayerState.h"
+
+
+bool FARacePlayerStateIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
+{
+	ARacePlayerState* testPlayerState = NewObject<ARacePlayerState>();
+
+	TestTrue(TEXT("Shouldn't be null when instantiated"), testPlayerState);
+	
+	return true;
+}
 
 
 
