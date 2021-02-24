@@ -6,6 +6,7 @@
 ARacePlayerState::ARacePlayerState()
 {
 	lap = 0;
+	position = 0;
 }
 
 int ARacePlayerState::currentLap()
@@ -16,4 +17,14 @@ int ARacePlayerState::currentLap()
 void ARacePlayerState::updateLapTo(int aCurrentLap)
 {
 	lap = aCurrentLap;
+}
+
+int ARacePlayerState::currentPosition()
+{
+	return position;
+}
+
+void ARacePlayerState::updatePositionTo(int aCurrentPosition)
+{
+	position = aCurrentPosition;
 }

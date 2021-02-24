@@ -89,6 +89,22 @@ void ARaceGameMode::updateCurrentPlayerStateLapOf(AJet* aJet, int aCurrentLap)
 	}
 }
 
+void ARaceGameMode::updatePlayerStatesPositions()
+{
+	for(const auto& jetWithPosition : positions())
+	{
+		AController* controller = Cast<AController, AActor>(jetWithPosition.Key->GetOwner());
+		if(controller)
+		{
+			ARacePlayerState* playerState = controller->GetPlayerState<ARacePlayerState>();
+			if(playerState && jetWithPosition.Value != playerState->currentPosition())
+			{
+				playerState->updatePositionTo(jetWithPosition.Value);
+			}
+		}
+	}
+}
+
 void ARaceGameMode::StartPlay()
 {
 	Super::StartPlay();
@@ -200,6 +216,7 @@ void ARaceGameMode::createLapManager()
 void ARaceGameMode::updateJetPositions()
 {
 	currentJetPositions = calculateJetPositions();
+	updatePlayerStatesPositions();
 }
 
 int ARaceGameMode::laps()
@@ -295,4 +312,9 @@ void ARaceGameMode::PostLogin(APlayerController* NewPlayer)
 int ARaceGameMode::lapOf(AJet* aJet)
 {
 	return lapManager->currentLapOf(aJet);
+}
+
+int ARaceGameMode::positionOf(AJet* aJet)
+{
+	return *currentJetPositions.Find(aJet);
 }

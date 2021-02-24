@@ -59,6 +59,7 @@ protected:
 	void prepareInitialStageStart();
 
 	void updateCurrentPlayerStateLapOf(AJet* aJet, int aCurrentLap);
+	void updatePlayerStatesPositions();
 	
 public:
 	ARaceGameMode();
@@ -103,4 +104,6 @@ public:
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 
 	int lapOf(AJet* aJet);
+
+	int positionOf(AJet* aJet);
 };

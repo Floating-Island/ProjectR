@@ -18,10 +18,13 @@ protected:
 
 	
 	int lap;
+	int position;
 
 public:
 	ARacePlayerState();
 	int currentLap();
 	void updateLapTo(int aCurrentLap);
+	int currentPosition();
+	void updatePositionTo(int aCurrentPosition);
 	
 };
