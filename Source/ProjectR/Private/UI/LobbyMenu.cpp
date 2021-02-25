@@ -3,8 +3,8 @@
 
 #include "UI/LobbyMenu.h"
 
-#include "../../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/GameFramework/GameStateBase.h"
-#include "../../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Runtime/UMG/Public/Components/TextBlock.h"
+#include "GameFramework/GameStateBase.h"
+#include "Components/TextBlock.h"
 #include "Components/Button.h"
 #include "UI/MapSelectorWidget.h"
 
