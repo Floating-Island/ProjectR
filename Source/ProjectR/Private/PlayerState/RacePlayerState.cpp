@@ -58,7 +58,7 @@ void ARacePlayerState::subscribeToPositionUpdate(URacePlayerUI* aRacePlayerUI)
 	positionUpdateEvent.AddDynamic(aRacePlayerUI, &URacePlayerUI::updatePositionTo);
 }
 
-void ARacePlayerState::loadRaceUI(AProjectRPlayerController* playerController)
+void ARacePlayerState::loadRaceUI(APlayerController* playerController)
 {
 	if (!raceUI || raceUI->IsUnreachable())
 	{

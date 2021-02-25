@@ -51,6 +51,6 @@ public:
 	void updatePositionTo(int aCurrentPosition);
 	void subscribeToLapUpdate(URacePlayerUI* aRacePlayerUI);
 	void subscribeToPositionUpdate(URacePlayerUI* aRacePlayerUI);
-	void loadRaceUI(AProjectRPlayerController* playerController);
+	void loadRaceUI(APlayerController* playerController);
 	
 };
