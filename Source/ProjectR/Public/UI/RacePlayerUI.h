@@ -25,6 +25,7 @@ protected:
 
 public:
 	virtual bool Initialize() override;
-	void updateLapTo(int aNewLap);
+	UFUNCTION()
+		void updateLapTo(int aNewLap);
 	int currentLap();
 };
