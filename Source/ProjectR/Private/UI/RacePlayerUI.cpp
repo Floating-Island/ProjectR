@@ -36,10 +36,7 @@ bool URacePlayerUI::Initialize()
 
 void URacePlayerUI::updateLapTo(int aNewLap)
 {
-	if(aNewLap > currentLap())
-	{
-		changeIntegerTextOf(currentLapText, aNewLap);
-	}
+	changeIntegerTextOf(currentLapText, aNewLap);
 }
 
 void URacePlayerUI::updatePositionTo(int aNewPosition)
