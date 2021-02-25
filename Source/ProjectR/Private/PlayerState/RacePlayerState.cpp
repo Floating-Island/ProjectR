@@ -60,12 +60,15 @@ void ARacePlayerState::subscribeToPositionUpdate(URacePlayerUI* aRacePlayerUI)
 
 void ARacePlayerState::loadRaceUI(APlayerController* playerController)
 {
-	if (!raceUI || raceUI->IsUnreachable())
+	if(raceUIClass)
 	{
-		raceUI = CreateWidget<URacePlayerUI>(playerController->GetWorld(), raceUIClass, FName("Race UI"));
-	}
-	if (!raceUI->IsInViewport())
-	{
-		showRaceUI();
+		if (!raceUI || raceUI->IsUnreachable())
+		{
+			raceUI = CreateWidget<URacePlayerUI>(playerController->GetWorld(), raceUIClass, FName("Race UI"));
+		}
+		if (!raceUI->IsInViewport())
+		{
+			showRaceUI();
+		}
 	}
 }
