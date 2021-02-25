@@ -1,13 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Commands/CommonPIECommands.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "ProjectRPlayerControllerTest.h"
 #include "Commands/PrRPlayerControllerTestCommands.h"
 #include "PlayerController/ProjectRPlayerController.h"
 #include "Tests/AutomationEditorCommon.h"
+#include "Commands/CommonPIECommands.h"
 
 
 
@@ -135,7 +135,7 @@ bool FAProjectRPlayerControllerFullyTicksWhenGamePausedTest::RunTest(const FStri
 
 bool FAProjectRPlayerControllerLoadsthePlayerStateUIWhenSpawnedTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-ControllerRacePlayerState"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-ControllerPlayerState"));
 	establishTestMessageTo(FString("The ProjectRController should load the stored PlayerState UI when spawned."));
 	establishTickLimitTo(3);
 
