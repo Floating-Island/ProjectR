@@ -22,11 +22,13 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARacePlayerStateIsntNullWhenInstantiatedTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-
-
-
 IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARacePlayerStateUpdateLapToUpdatesSubscribedRacePlayerUICurrentLapTest, FSimplePIETestBase,
 	"ProjectR.RacePlayerState Tests.Integration.001: updateLapTo updates subscribed RacePlayerUIs currentLap", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARacePlayerStateUpdatePositionToUpdatesSubscribedRacePlayerUICurrentPositionTest, FSimplePIETestBase,
+	"ProjectR.RacePlayerState Tests.Integration.002: updatePositionTo updates subscribed RacePlayerUIs currentPosition", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

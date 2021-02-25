@@ -68,6 +68,57 @@ bool FCheckPlayerStateUpdatesRacePlayerUICurrentLap::Update()
 }
 
 
+bool FCheckPlayerStateUpdatesRacePlayerUICurrentPosition::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+	
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		
+		ABlueprintWidgetContainerPawn* testContainer = sessionUtilities.retrieveFromPIEAnInstanceOf<ABlueprintWidgetContainerPawn>();
+		if(testContainer == nullptr)
+		{
+			return false;
+		}
+		
+		URacePlayerUI* testRaceUI = Cast<URacePlayerUI, UUserWidget>(testContainer->retrieveWidget());
+		if (testRaceUI == nullptr)
+		{
+			return false;
+		}
+		
+		ARacePlayerState* testState = sessionUtilities.retrieveFromPIEAnInstanceOf<ARacePlayerState>();
+		if(testState == nullptr)
+		{
+			sessionUtilities.spawnInPIEAnInstanceOf<ARacePlayerState>();
+			return false;
+		}
+
+		testState->subscribeToPositionUpdate(testRaceUI);
+
+		int arbitraryPositionNumber = 5;
+		testState->updatePositionTo(arbitraryPositionNumber);
+
+		int stateCurrentPosition = testState->currentPosition();
+		UE_LOG(LogTemp, Log, TEXT("current player state position: %d."), stateCurrentPosition);
+		
+		int uiCurrentPosition = testRaceUI->currentPosition();
+		UE_LOG(LogTemp, Log, TEXT("current race player ui position: %d."), uiCurrentPosition);
+
+		bool positionsMatch = stateCurrentPosition == uiCurrentPosition;
+
+		if(positionsMatch)
+		{
+			test->TestTrue(test->conditionMessage(), positionsMatch);
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+		return test->manageTickCountTowardsLimit();
+	}
+	return false;
+}
+
+
 
 
 
