@@ -9,6 +9,7 @@
 class URacePlayerUI;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLapUpdateEvent, int, anUpdatedLap);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPositionUpdateEvent, int, anUpdatedPosition);
 /**
  * 
  */
@@ -26,7 +27,11 @@ protected:
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 		FLapUpdateEvent lapUpdateEvent;
 
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+		FPositionUpdateEvent positionUpdateEvent;
+
 	void fireLapUpdateEvent();
+	void firePositionUpdateEvent();
 
 public:
 	ARacePlayerState();
@@ -35,5 +40,6 @@ public:
 	int currentPosition();
 	void updatePositionTo(int aCurrentPosition);
 	void subscribeToLapUpdate(URacePlayerUI* aRacePlayerUI);
+	void subscribeToPositionUpdate(URacePlayerUI* aRacePlayerUI);
 	
 };

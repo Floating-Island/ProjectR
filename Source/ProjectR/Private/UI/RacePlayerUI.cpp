@@ -9,9 +9,19 @@ int URacePlayerUI::currentLap()
 	return FCString::Atoi(*currentLapText->GetText().ToString());
 }
 
+int URacePlayerUI::currentPosition()
+{
+	return FCString::Atoi(*currentPositionText->GetText().ToString());
+}
+
 void URacePlayerUI::changeLapTextTo(int aNewLap)
 {
 	currentLapText->SetText(FText::FromString(FString::FromInt(aNewLap)));
+}
+
+void URacePlayerUI::changePositionTextTo(int aNewPosition)
+{
+	currentPositionText->SetText(FText::FromString(FString::FromInt(aNewPosition)));
 }
 
 bool URacePlayerUI::Initialize()
@@ -22,6 +32,12 @@ bool URacePlayerUI::Initialize()
 		int firstLap = 1;
 		changeLapTextTo(firstLap);
 	}
+
+	if(currentPositionText)
+	{
+		int firstPosition = 0;
+		changePositionTextTo(firstPosition);
+	}
 	return initializeResult;
 }
 
@@ -31,4 +47,9 @@ void URacePlayerUI::updateLapTo(int aNewLap)
 	{
 		changeLapTextTo(aNewLap);
 	}
+}
+
+void URacePlayerUI::updatePositionTo(int aNewPosition)
+{
+	changePositionTextTo(aNewPosition);
 }
