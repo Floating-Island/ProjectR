@@ -60,5 +60,10 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerFullyTicksWhenGamePau
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerLoadsthePlayerStateUIWhenSpawnedTest, FSimplePIETestBase,
+	"ProjectR.ProjectRPlayerController Tests.Integration.009: loads the Stored PlayerState UI when spawned", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS

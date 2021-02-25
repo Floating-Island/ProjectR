@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "PrRPlayerControllerTestCommands.h"
@@ -11,6 +10,8 @@
 #include "UI/PauseMenu.h"
 #include "GameFramework/GameModeBase.h"
 #include "GameFramework/PlayerInput.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
+#include "UI/RacePlayerUI.h"
 
 
 //Test preparation commands:
@@ -193,6 +194,34 @@ bool FCheckPlayerControllerLoadPauseMenuUnPausesTheGameIfInViewport::Update()
 				return true;
 			}
 		}
+	}
+	return false;
+}
+
+
+bool FCheckPRPlayerControllerLoadsPlayerStateUI::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		if (testPlayerController == nullptr)
+		{
+			testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerControllerMOCK>();
+			return false;
+		}
+
+		TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+		UWidgetBlueprintLibrary::GetAllWidgetsOfClass(sessionUtilities.currentPIEWorld(),retrievedWidgets, URacePlayerUI::StaticClass(), false);
+		
+		URacePlayerUI* testRaceUI = Cast<URacePlayerUI, UUserWidget>(retrievedWidgets.Pop());		
+
+		if(testRaceUI)
+		{
+			test->TestNotNull(test->conditionMessage(), testRaceUI);
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+		return test->manageTickCountTowardsLimit();
 	}
 	return false;
 }
