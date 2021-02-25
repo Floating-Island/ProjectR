@@ -30,7 +30,7 @@ bool FCheckPlayerStateUpdatesRacePlayerUICurrentLap::Update()
 			ARacePlayerState* testState = sessionUtilities.retrieveFromPIEAnInstanceOf<ARacePlayerState>();
 			if(testState == nullptr)
 			{
-				testState = sessionUtilities.spawnInPIEAnInstanceOf<ARacePlayerState>();
+				sessionUtilities.spawnInPIEAnInstanceOf<ARacePlayerState>();
 				return false;
 			}
 
