@@ -206,7 +206,7 @@ bool FCheckPRPlayerControllerLoadsPlayerStateUI::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		if (testPlayerController == nullptr)
 		{
-			testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerControllerMOCK>();
+			testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
 			return false;
 		}
 
