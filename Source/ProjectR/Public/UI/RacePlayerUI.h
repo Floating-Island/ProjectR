@@ -23,9 +23,8 @@ protected:
 
 	UPROPERTY(meta = (BindWidget))
 		UTextBlock* currentPositionText;
-	
-	void changeLapTextTo(int aNewLap);
-	void changePositionTextTo(int aNewPosition);
+
+	void changeIntegerTextOf(UTextBlock* aTextBlock, int aNewValue);
 
 public:
 	virtual bool Initialize() override;
