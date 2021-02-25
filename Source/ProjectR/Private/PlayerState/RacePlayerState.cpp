@@ -2,7 +2,8 @@
 
 
 #include "PlayerState/RacePlayerState.h"
-#include "UI/RacePlayerUI.h"
+
+#include "PlayerController/ProjectRPlayerController.h"
 
 void ARacePlayerState::fireLapUpdateEvent()
 {
@@ -12,6 +13,11 @@ void ARacePlayerState::fireLapUpdateEvent()
 void ARacePlayerState::firePositionUpdateEvent()
 {
 	positionUpdateEvent.Broadcast(position);
+}
+
+void ARacePlayerState::showRaceUI()
+{
+	raceUI->AddToViewport();
 }
 
 ARacePlayerState::ARacePlayerState()
@@ -50,4 +56,16 @@ void ARacePlayerState::subscribeToLapUpdate(URacePlayerUI* aRacePlayerUI)
 void ARacePlayerState::subscribeToPositionUpdate(URacePlayerUI* aRacePlayerUI)
 {
 	positionUpdateEvent.AddDynamic(aRacePlayerUI, &URacePlayerUI::updatePositionTo);
+}
+
+void ARacePlayerState::loadRaceUI(AProjectRPlayerController* playerController)
+{
+	if (!raceUI || raceUI->IsUnreachable())
+	{
+		raceUI = CreateWidget<URacePlayerUI>(playerController->GetWorld(), raceUIClass, FName("Race UI"));
+	}
+	if (!raceUI->IsInViewport())
+	{
+		showRaceUI();
+	}
 }

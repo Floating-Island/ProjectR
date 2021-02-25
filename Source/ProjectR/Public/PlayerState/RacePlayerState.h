@@ -4,9 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerState.h"
+#include "UI/RacePlayerUI.h"
 #include "RacePlayerState.generated.h"
 
-class URacePlayerUI;
+
+class AProjectRPlayerController;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLapUpdateEvent, int, anUpdatedLap);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPositionUpdateEvent, int, anUpdatedPosition);
@@ -33,6 +35,14 @@ protected:
 	void fireLapUpdateEvent();
 	void firePositionUpdateEvent();
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Settings")
+		TSubclassOf<URacePlayerUI> raceUIClass;
+
+	UPROPERTY()
+		URacePlayerUI* raceUI;
+
+	void showRaceUI();
+	
 public:
 	ARacePlayerState();
 	int currentLap();
@@ -41,5 +51,6 @@ public:
 	void updatePositionTo(int aCurrentPosition);
 	void subscribeToLapUpdate(URacePlayerUI* aRacePlayerUI);
 	void subscribeToPositionUpdate(URacePlayerUI* aRacePlayerUI);
+	void loadRaceUI(AProjectRPlayerController* playerController);
 	
 };

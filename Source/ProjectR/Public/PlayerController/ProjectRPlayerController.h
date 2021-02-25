@@ -23,6 +23,7 @@ protected:
 
 public:
 	AProjectRPlayerController(const FObjectInitializer& ObjectInitializer);
+	virtual void BeginPlay() override;
 	void focusOnGame();
 	void focusOnPauseMenu();
 

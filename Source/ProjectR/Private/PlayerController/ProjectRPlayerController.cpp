@@ -2,6 +2,8 @@
 
 
 #include "PlayerController/ProjectRPlayerController.h"
+
+#include "../../Public/PlayerState/RacePlayerState.h"
 #include "UI/PauseMenu.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -15,6 +17,16 @@ void AProjectRPlayerController::SetupInputComponent()
 AProjectRPlayerController::AProjectRPlayerController(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
 	bShouldPerformFullTickWhenPaused = true;
+}
+
+void AProjectRPlayerController::BeginPlay()
+{
+	Super::BeginPlay();
+	ARacePlayerState* racePlayerState = Cast<ARacePlayerState, APlayerState>(PlayerState);
+	if(racePlayerState)
+	{
+		racePlayerState->loadRaceUI(this);
+	}
 }
 
 UPauseMenu* AProjectRPlayerController::loadPauseMenu()
