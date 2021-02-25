@@ -6,6 +6,7 @@
 #include "RacePlayerStateTestCommands.h"
 #include "../Utilities/PIESessionUtilities.h"
 #include "../TestBaseClasses/SimplePIETestBase.h"
+#include "../Utilities/BlueprintWidgetContainerPawn.h"
 #include "PlayerState/RacePlayerState.h"
 #include "UI/RacePlayerUI.h"
 
@@ -22,39 +23,46 @@ bool FCheckPlayerStateUpdatesRacePlayerUICurrentLap::Update()
 	{
 	
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-		URacePlayerUI* testRaceUI = sessionUtilities.retrieveFromPIEAnInstanceOf<URacePlayerUI>();
-		if (testRaceUI)
+		
+		ABlueprintWidgetContainerPawn* testContainer = sessionUtilities.retrieveFromPIEAnInstanceOf<ABlueprintWidgetContainerPawn>();
+		if(testContainer == nullptr)
 		{
-			
-			ARacePlayerState* testState = sessionUtilities.retrieveFromPIEAnInstanceOf<ARacePlayerState>();
-			if(testState == nullptr)
-			{
-				sessionUtilities.spawnInPIEAnInstanceOf<ARacePlayerState>();
-				return false;
-			}
-
-			testState->subscribeToLapUpdate(testRaceUI);
-
-			int arbitraryLapNumber = 5;
-			testState->updateLapTo(arbitraryLapNumber);
-
-			int stateCurrentLap = testState->currentLap();
-			UE_LOG(LogTemp, Log, TEXT("current player state lap: %d."), stateCurrentLap);
-			
-			int uiCurrentLap = testRaceUI->currentLap();
-			UE_LOG(LogTemp, Log, TEXT("current race player ui lap: %d."), uiCurrentLap);
-
-			bool lapsMatch = stateCurrentLap == uiCurrentLap;
-
-			if(lapsMatch)
-			{
-				test->TestTrue(test->conditionMessage(), lapsMatch);
-				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-				return true;
-			}
-			return test->manageTickCountTowardsLimit();
+			return false;
 		}
+		
+		URacePlayerUI* testRaceUI = Cast<URacePlayerUI, UUserWidget>(testContainer->retrieveWidget());
+		if (testRaceUI == nullptr)
+		{
+			return false;
+		}
+		
+		ARacePlayerState* testState = sessionUtilities.retrieveFromPIEAnInstanceOf<ARacePlayerState>();
+		if(testState == nullptr)
+		{
+			sessionUtilities.spawnInPIEAnInstanceOf<ARacePlayerState>();
+			return false;
+		}
+
+		testState->subscribeToLapUpdate(testRaceUI);
+
+		int arbitraryLapNumber = 5;
+		testState->updateLapTo(arbitraryLapNumber);
+
+		int stateCurrentLap = testState->currentLap();
+		UE_LOG(LogTemp, Log, TEXT("current player state lap: %d."), stateCurrentLap);
+		
+		int uiCurrentLap = testRaceUI->currentLap();
+		UE_LOG(LogTemp, Log, TEXT("current race player ui lap: %d."), uiCurrentLap);
+
+		bool lapsMatch = stateCurrentLap == uiCurrentLap;
+
+		if(lapsMatch)
+		{
+			test->TestTrue(test->conditionMessage(), lapsMatch);
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+		return test->manageTickCountTowardsLimit();
 	}
 	return false;
 }
