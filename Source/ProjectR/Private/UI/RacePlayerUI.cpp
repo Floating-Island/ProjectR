@@ -29,14 +29,12 @@ bool URacePlayerUI::Initialize()
 	bool initializeResult = Super::Initialize();
 	if(currentLapText)
 	{
-		int firstLap = 1;
-		changeLapTextTo(firstLap);
+		currentLapText->SetText(FText::FromString(FString("currentLap")));
 	}
 
 	if(currentPositionText)
 	{
-		int firstPosition = 0;
-		changePositionTextTo(firstPosition);
+		currentPositionText->SetText(FText::FromString(FString("currentPosition")));
 	}
 	return initializeResult;
 }
