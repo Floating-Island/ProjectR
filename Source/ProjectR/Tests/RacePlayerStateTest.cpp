@@ -59,7 +59,7 @@ bool FARacePlayerStateUpdatePositionToUpdatesSubscribedRacePlayerUICurrentPositi
 
 bool FARacePlayerStateLoadRaceUIMakesRacePlayerUISynchronizeVariablesTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RacePlayerUIContainer"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-ControllerPlayerState"));
 	establishTestMessageTo(FString("The race player state should update subscribed racePlayerUIs currentPosition when calling updatePositionTo."));
 	establishTickLimitTo(3);
 

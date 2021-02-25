@@ -129,7 +129,6 @@ bool FCheckPlayerStateLoadsPlayerRaceUISynchronized::Update()
 		ARacePlayerState* testState = sessionUtilities.retrieveFromPIEAnInstanceOf<ARacePlayerState>();
 		if(testState == nullptr)
 		{
-			sessionUtilities.spawnInPIEAnInstanceOf<ARacePlayerState>();
 			return false;
 		}
 
