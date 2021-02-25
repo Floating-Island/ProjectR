@@ -13,6 +13,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -22,6 +23,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARacePlayerStateIsntNullWhenInstantiatedTest,
 
 
 
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARacePlayerStateUpdateLapToUpdatesSubscribedRacePlayerUICurrentLapTest, FSimplePIETestBase,
+	"ProjectR.RacePlayerState Tests.Integration.001: updateLapTo updates subscribed RacePlayerUIs currentLap", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 

@@ -10,6 +10,9 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
+class ARacePlayerState;
+class FSimplePIETestBase;
+
 
 //Test preparation commands:
 
@@ -17,6 +20,6 @@
 
 //Test check commands:
 
-
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerStateUpdatesRacePlayerUICurrentLap, ARacePlayerState*, raceState, FSimplePIETestBase*, test);
 
 #endif //WITH_DEV_AUTOMATION_TESTS

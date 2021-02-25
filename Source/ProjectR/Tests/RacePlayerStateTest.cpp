@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Editor/UnrealEd/Public/Tests/AutomationEditorCommon.h"
+#include "Commands/CommonPIECommands.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 
@@ -16,6 +18,26 @@ bool FARacePlayerStateIsntNullWhenInstantiatedTest::RunTest(const FString& Param
 	
 	return true;
 }
+
+
+bool FARacePlayerStateUpdateLapToUpdatesSubscribedRacePlayerUICurrentLapTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RacePlayerUIContainer"));
+	establishTestMessageTo(FString("The race player state should update subscribed racePlayerUIs currentLap when calling updateLapTo."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnGameModeDefaultPawn);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerStateUpdatesRacePlayerUICurrentLap(nullptr, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 
 
 
