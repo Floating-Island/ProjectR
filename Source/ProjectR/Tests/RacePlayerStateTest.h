@@ -32,6 +32,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARacePlayerStateUpdatePositionToUpdates
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARacePlayerStateLoadRaceUIMakesRacePlayerUISynchronizeVariablesTest, FSimplePIETestBase,
+	"ProjectR.RacePlayerState Tests.Integration.003: loadRaceUI makes the loaded RacePlayerUI synchronize its values", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

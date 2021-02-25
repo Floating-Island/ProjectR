@@ -119,6 +119,59 @@ bool FCheckPlayerStateUpdatesRacePlayerUICurrentPosition::Update()
 }
 
 
+bool FCheckPlayerStateLoadsPlayerRaceUISynchronized::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+	
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		
+		ARacePlayerState* testState = sessionUtilities.retrieveFromPIEAnInstanceOf<ARacePlayerState>();
+		if(testState == nullptr)
+		{
+			sessionUtilities.spawnInPIEAnInstanceOf<ARacePlayerState>();
+			return false;
+		}
+
+		APlayerController* controller = sessionUtilities.retrieveFromPIEAnInstanceOf<APlayerController>();
+		
+		testState->loadRaceUI(controller);
+		
+		URacePlayerUI* testRaceUI = sessionUtilities.retrieveFromPIEAnInstanceOf<URacePlayerUI>();
+		if (testRaceUI == nullptr)
+		{
+			return false;
+		}
+
+		int stateCurrentLap = testState->currentLap();
+		UE_LOG(LogTemp, Log, TEXT("current player state lap: %d."), stateCurrentLap);
+		
+		int uiCurrentLap = testRaceUI->currentLap();
+		UE_LOG(LogTemp, Log, TEXT("current race player ui lap: %d."), uiCurrentLap);
+
+
+		int stateCurrentPosition = testState->currentPosition();
+		UE_LOG(LogTemp, Log, TEXT("current player state position: %d."), stateCurrentPosition);
+		
+		int uiCurrentPosition = testRaceUI->currentPosition();
+		UE_LOG(LogTemp, Log, TEXT("current race player ui position: %d."), uiCurrentPosition);
+
+		
+		bool lapsMatch = stateCurrentLap == uiCurrentLap;
+		bool positionsMatch = stateCurrentPosition == uiCurrentPosition;
+
+		if(positionsMatch && lapsMatch)
+		{
+			test->TestTrue(test->conditionMessage(), positionsMatch && lapsMatch);
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+		return test->manageTickCountTowardsLimit();
+	}
+	return false;
+}
+
+
 
 
 
