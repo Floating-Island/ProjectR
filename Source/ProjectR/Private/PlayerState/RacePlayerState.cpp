@@ -22,7 +22,7 @@ void ARacePlayerState::showRaceUI()
 
 ARacePlayerState::ARacePlayerState()
 {
-	lap = 0;
+	lap = 1;
 	position = 0;
 }
 
@@ -71,4 +71,8 @@ void ARacePlayerState::loadRaceUI(APlayerController* playerController)
 			showRaceUI();
 		}
 	}
+	subscribeToLapUpdate(raceUI);
+	subscribeToPositionUpdate(raceUI);
+	fireLapUpdateEvent();
+	firePositionUpdateEvent();
 }
