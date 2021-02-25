@@ -2,6 +2,12 @@
 
 
 #include "PlayerState/RacePlayerState.h"
+#include "UI/RacePlayerUI.h"
+
+void ARacePlayerState::fireLapUpdateEvent()
+{
+	lapUpdateEvent.Broadcast(lap);
+}
 
 ARacePlayerState::ARacePlayerState()
 {
@@ -27,4 +33,9 @@ int ARacePlayerState::currentPosition()
 void ARacePlayerState::updatePositionTo(int aCurrentPosition)
 {
 	position = aCurrentPosition;
+}
+
+void ARacePlayerState::subscribeToLapUpdate(URacePlayerUI* aRacePlayerUI)
+{
+	lapUpdateEvent.AddDynamic(aRacePlayerUI, &URacePlayerUI::updateLapTo);
 }

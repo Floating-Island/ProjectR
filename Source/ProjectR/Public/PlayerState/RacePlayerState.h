@@ -6,6 +6,9 @@
 #include "GameFramework/PlayerState.h"
 #include "RacePlayerState.generated.h"
 
+class URacePlayerUI;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLapUpdateEvent, int, anUpdatedLap);
 /**
  * 
  */
@@ -20,11 +23,17 @@ protected:
 	int lap;
 	int position;
 
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+		FLapUpdateEvent lapUpdateEvent;
+
+	void fireLapUpdateEvent();
+
 public:
 	ARacePlayerState();
 	int currentLap();
 	void updateLapTo(int aCurrentLap);
 	int currentPosition();
 	void updatePositionTo(int aCurrentPosition);
+	void subscribeToLapUpdate(URacePlayerUI* aRacePlayerUI);
 	
 };

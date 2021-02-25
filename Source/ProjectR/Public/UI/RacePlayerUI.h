@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "Blueprint/UserWidget.h"
 #include "RacePlayerUI.generated.h"
 
+class UTextBlock;
 /**
  * 
  */
@@ -13,5 +15,16 @@ UCLASS()
 class PROJECTR_API URacePlayerUI : public UUserWidget
 {
 	GENERATED_BODY()
-	
+
+protected:
+
+	UPROPERTY(meta = (BindWidget))
+		UTextBlock* currentLapText;
+
+	void changeLapTextTo(int aNewLap);
+
+public:
+	virtual bool Initialize() override;
+	void updateLapTo(int aNewLap);
+	int currentLap();
 };
