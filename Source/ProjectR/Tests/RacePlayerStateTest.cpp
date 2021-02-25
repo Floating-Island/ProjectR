@@ -1,13 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Editor/UnrealEd/Public/Tests/AutomationEditorCommon.h"
-#include "Commands/CommonPIECommands.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 
 #include "RacePlayerStateTest.h"
 #include "PlayerState/RacePlayerState.h"
+#include "Tests/AutomationEditorCommon.h"
+#include "Commands/CommonPIECommands.h"
+#include "Commands/RacePlayerStateTestCommands.h"
 
 
 bool FARacePlayerStateIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
