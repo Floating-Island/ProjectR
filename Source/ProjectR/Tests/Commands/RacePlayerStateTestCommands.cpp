@@ -9,6 +9,7 @@
 #include "../Utilities/BlueprintWidgetContainerPawn.h"
 #include "PlayerState/RacePlayerState.h"
 #include "UI/RacePlayerUI.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 
 //Test preparation commands:
 
@@ -136,7 +137,10 @@ bool FCheckPlayerStateLoadsPlayerRaceUISynchronized::Update()
 		
 		testState->loadRaceUI(controller);
 		
-		URacePlayerUI* testRaceUI = sessionUtilities.retrieveFromPIEAnInstanceOf<URacePlayerUI>();
+		TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+		UWidgetBlueprintLibrary::GetAllWidgetsOfClass(sessionUtilities.currentPIEWorld(),retrievedWidgets, URacePlayerUI::StaticClass(), false);
+		
+		URacePlayerUI* testRaceUI = Cast<URacePlayerUI, UUserWidget>(retrievedWidgets.Pop());
 		if (testRaceUI == nullptr)
 		{
 			return false;
