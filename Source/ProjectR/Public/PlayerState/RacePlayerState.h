@@ -44,6 +44,9 @@ protected:
 
 	void showRaceUI();
 	
+	UFUNCTION()
+		void configureRaceUI();
+	
 public:
 	ARacePlayerState();
 	int currentLap();
