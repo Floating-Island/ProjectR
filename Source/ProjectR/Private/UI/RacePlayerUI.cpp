@@ -21,7 +21,10 @@ int URacePlayerUI::currentPosition()
 
 void URacePlayerUI::setTotalLapsTo(int aDesiredValue)
 {
-	changeIntegerTextOf(totalLapsText, aDesiredValue);
+	if(totalLapsText->GetText().ToString().Contains("(Total Laps)"))
+	{
+		changeIntegerTextOf(totalLapsText, aDesiredValue);
+	}
 }
 
 void URacePlayerUI::changeIntegerTextOf(UTextBlock* aTextBlock, int aNewValue)
