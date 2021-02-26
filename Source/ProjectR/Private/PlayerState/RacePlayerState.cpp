@@ -66,13 +66,13 @@ void ARacePlayerState::loadRaceUI(APlayerController* playerController)
 		if (!raceUI || raceUI->IsUnreachable())
 		{
 			raceUI = CreateWidget<URacePlayerUI>(playerController->GetWorld(), raceUIClass, FName("Race UI"));
+			configureRaceUI();
 		}
 		if (!raceUI->IsInViewport())
 		{
 			showRaceUI();
 		}
 	}
-	configureRaceUI();
 }
 
 void ARacePlayerState::configureRaceUI()
