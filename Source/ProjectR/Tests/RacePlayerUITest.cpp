@@ -38,6 +38,23 @@ bool FARacePlayerUISetTotalLapsToChangesTotalLapsTextTest::RunTest(const FString
 }
 
 
+bool FARacePlayerUISetTotalLapsChangesTotalLapsTextOnceTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RacePlayerUIContainer");
+	establishTestMessageTo(FString("The race player UI should change its totalLapsText when calling setTotalLaps, but only the first time."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnGameModeDefaultPawn);
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckARacePlayerUIChangesTotalLapsTextOnce(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

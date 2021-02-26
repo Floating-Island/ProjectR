@@ -41,5 +41,40 @@ bool FCheckARacePlayerUIChangesTotalLapsText::Update()
 }
 
 
+bool FCheckARacePlayerUIChangesTotalLapsTextOnce::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		ABlueprintWidgetContainerPawn* testContainer = sessionUtilities.retrieveFromPIEAnInstanceOf<ABlueprintWidgetContainerPawn>();
+		
+		if(testContainer)
+		{
+			URacePlayerUI* testUI = Cast<URacePlayerUI, UUserWidget>(testContainer->retrieveWidget());
+			int desiredFirstTextValue = 5;
+
+			int desiredSecondTextValue = 7;
+
+			testUI->setTotalLapsTo(desiredFirstTextValue);
+			testUI->setTotalLapsTo(desiredSecondTextValue);
+
+
+			bool firstValuesSetCoincident = testUI->totalLaps() == desiredFirstTextValue;
+			bool secondValuesSetDiffer = testUI->totalLaps() != desiredSecondTextValue;
+
+			bool setsValuesOnce = firstValuesSetCoincident && secondValuesSetDiffer;
+			
+			if(setsValuesOnce)
+			{
+				test->TestTrue(test->conditionMessage(), setsValuesOnce);
+				return true;
+			}
+			return test->manageTickCountTowardsLimit();
+		}
+	}
+	return false;
+}
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS

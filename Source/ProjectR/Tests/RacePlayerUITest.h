@@ -25,7 +25,12 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARacePlayerUIIsntNullWhenInstantiatedTest,
 IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARacePlayerUISetTotalLapsToChangesTotalLapsTextTest, FSimplePIETestBase,
 	"ProjectR.RacePlayerUI Tests.Unit.001: setTotalLapsTo changes totalLapsText value", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	
 
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARacePlayerUISetTotalLapsChangesTotalLapsTextOnceTest, FSimplePIETestBase,
+	"ProjectR.RacePlayerUI Tests.Unit.002: setTotalLapsTo changes totalLapsText value once", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 
