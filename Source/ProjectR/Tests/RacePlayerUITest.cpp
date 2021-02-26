@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Commands/RacePlayerUITestCommands.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 
@@ -9,6 +8,7 @@
 #include "UI/RacePlayerUI.h"
 #include "Tests/AutomationEditorCommon.h"
 #include "Commands/CommonPIECommands.h"
+#include "Commands/RacePlayerUITestCommands.h"
 
 
 bool FARacePlayerUIIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
