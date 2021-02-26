@@ -13,11 +13,17 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARacePlayerUIIsntNullWhenInstantiatedTest, 
 	"ProjectR.RacePlayerUI Tests.Unit.000: Isn't null when instantiated",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARacePlayerUISetTotalLapsChangesTotalLapsTextTest, FSimplePIETestBase,
+	"ProjectR.RacePlayerUI Tests.Unit.001: updatePositionTo updates subscribed RacePlayerUIs currentPosition", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
