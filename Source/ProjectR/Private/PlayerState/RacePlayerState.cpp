@@ -59,15 +59,6 @@ void ARacePlayerState::subscribeToPositionUpdate(URacePlayerUI* aRacePlayerUI)
 	positionUpdateEvent.AddDynamic(aRacePlayerUI, &URacePlayerUI::updatePositionTo);
 }
 
-void ARacePlayerState::configureRaceUI()
-{
-	subscribeToLapUpdate(raceUI);
-	subscribeToPositionUpdate(raceUI);
-	fireLapUpdateEvent();
-	firePositionUpdateEvent();
-	raceUI->setTotalLapsTo(totalLaps());
-}
-
 void ARacePlayerState::loadRaceUI(APlayerController* playerController)
 {
 	if(raceUIClass)
@@ -81,7 +72,16 @@ void ARacePlayerState::loadRaceUI(APlayerController* playerController)
 			showRaceUI();
 		}
 	}
-	GetGameInstance()->GetTimerManager().SetTimerForNextTick(this, &ARacePlayerState::configureRaceUI);
+	configureRaceUI();
+}
+
+void ARacePlayerState::configureRaceUI()
+{
+	subscribeToLapUpdate(raceUI);
+	subscribeToPositionUpdate(raceUI);
+	fireLapUpdateEvent();
+	firePositionUpdateEvent();
+	raceUI->setTotalLapsTo(totalLaps());
 }
 
 int ARacePlayerState::totalLaps()
