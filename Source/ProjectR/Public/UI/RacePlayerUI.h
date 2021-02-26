@@ -22,6 +22,9 @@ protected:
 		UTextBlock* currentLapText;
 
 	UPROPERTY(meta = (BindWidget))
+		UTextBlock* totalLapsText;
+
+	UPROPERTY(meta = (BindWidget))
 		UTextBlock* currentPositionText;
 
 	void changeIntegerTextOf(UTextBlock* aTextBlock, int aNewValue);
@@ -35,6 +38,9 @@ public:
 	UFUNCTION()
 		void updatePositionTo(int aNewPosition);
 	
+	void setTotalLapsTo(int aDesiredValue);
+	
 	int currentLap();
+	int totalLaps();
 	int currentPosition();
 };

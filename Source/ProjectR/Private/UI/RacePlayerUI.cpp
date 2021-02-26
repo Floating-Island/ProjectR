@@ -9,9 +9,19 @@ int URacePlayerUI::currentLap()
 	return FCString::Atoi(*currentLapText->GetText().ToString());
 }
 
+int URacePlayerUI::totalLaps()
+{
+	return FCString::Atoi(*totalLapsText->GetText().ToString());
+}
+
 int URacePlayerUI::currentPosition()
 {
 	return FCString::Atoi(*currentPositionText->GetText().ToString());
+}
+
+void URacePlayerUI::setTotalLapsTo(int aDesiredValue)
+{
+	changeIntegerTextOf(totalLapsText, aDesiredValue);
 }
 
 void URacePlayerUI::changeIntegerTextOf(UTextBlock* aTextBlock, int aNewValue)
@@ -25,6 +35,11 @@ bool URacePlayerUI::Initialize()
 	if(currentLapText)
 	{
 		currentLapText->SetText(FText::FromString(FString("currentLap")));
+	}
+
+	if(totalLapsText)
+	{
+		totalLapsText->SetText(FText::FromString(FString("TotalLaps")));
 	}
 
 	if(currentPositionText)
