@@ -76,6 +76,7 @@ void ARacePlayerState::loadRaceUI(APlayerController* playerController)
 	subscribeToPositionUpdate(raceUI);
 	fireLapUpdateEvent();
 	firePositionUpdateEvent();
+	raceUI->setTotalLapsTo(totalLaps());
 }
 
 int ARacePlayerState::totalLaps()
