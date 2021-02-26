@@ -152,6 +152,12 @@ bool FCheckPlayerStateLoadsPlayerRaceUISynchronized::Update()
 		int uiCurrentLap = testRaceUI->currentLap();
 		UE_LOG(LogTemp, Log, TEXT("current race player ui lap: %d."), uiCurrentLap);
 
+		int stateTotalLaps = testState->totalLaps();
+		UE_LOG(LogTemp, Log, TEXT("player state total laps: %d."), stateTotalLaps);
+		
+		int uiTotalLaps = testRaceUI->totalLaps();
+		UE_LOG(LogTemp, Log, TEXT("race player total ui laps: %d."), uiTotalLaps);
+
 
 		int stateCurrentPosition = testState->currentPosition();
 		UE_LOG(LogTemp, Log, TEXT("current player state position: %d."), stateCurrentPosition);
@@ -160,12 +166,15 @@ bool FCheckPlayerStateLoadsPlayerRaceUISynchronized::Update()
 		UE_LOG(LogTemp, Log, TEXT("current race player ui position: %d."), uiCurrentPosition);
 
 		
-		bool lapsMatch = stateCurrentLap == uiCurrentLap;
 		bool positionsMatch = stateCurrentPosition == uiCurrentPosition;
+		bool lapsMatch = stateCurrentLap == uiCurrentLap;
+		bool totalLapsMatch = stateTotalLaps == uiTotalLaps;
 
-		if(positionsMatch && lapsMatch)
+		bool valuesMatch = positionsMatch && lapsMatch && totalLapsMatch;
+
+		if(valuesMatch)
 		{
-			test->TestTrue(test->conditionMessage(), positionsMatch && lapsMatch);
+			test->TestTrue(test->conditionMessage(), valuesMatch);
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
