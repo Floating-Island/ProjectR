@@ -21,7 +21,7 @@ bool FARacePlayerUIIsntNullWhenInstantiatedTest::RunTest(const FString& Paramete
 }
 
 
-bool FARacePlayerUISetTotalLapsChangesTotalLapsTextTest::RunTest(const FString& Parameters)
+bool FARacePlayerUISetTotalLapsToChangesTotalLapsTextTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RacePlayerUIContainer");
 	establishTestMessageTo(FString("The race player UI should change its totalLapsText when calling setTotalLaps."));

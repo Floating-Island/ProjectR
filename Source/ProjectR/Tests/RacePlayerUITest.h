@@ -22,8 +22,8 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARacePlayerUIIsntNullWhenInstantiatedTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARacePlayerUISetTotalLapsChangesTotalLapsTextTest, FSimplePIETestBase,
-	"ProjectR.RacePlayerUI Tests.Unit.001: updatePositionTo updates subscribed RacePlayerUIs currentPosition", 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARacePlayerUISetTotalLapsToChangesTotalLapsTextTest, FSimplePIETestBase,
+	"ProjectR.RacePlayerUI Tests.Unit.001: setTotalLapsTo changes totalLapsText value", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
