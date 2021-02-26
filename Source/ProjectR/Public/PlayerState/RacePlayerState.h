@@ -25,6 +25,7 @@ protected:
 	
 	int lap;
 	int position;
+	int totalLapsValue;
 
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 		FLapUpdateEvent lapUpdateEvent;
@@ -52,5 +53,7 @@ public:
 	void subscribeToLapUpdate(URacePlayerUI* aRacePlayerUI);
 	void subscribeToPositionUpdate(URacePlayerUI* aRacePlayerUI);
 	void loadRaceUI(APlayerController* playerController);
+	int totalLaps();
+	void setTotalLapsTo(int aDesiredAmount);
 	
 };

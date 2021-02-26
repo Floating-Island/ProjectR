@@ -60,6 +60,7 @@ protected:
 
 	void updateCurrentPlayerStateLapOf(AJet* aJet, int aCurrentLap);
 	void updatePlayerStatesPositions();
+	void setPlayerStateTotalLaps(APlayerController* controller);
 	
 public:
 	ARaceGameMode();

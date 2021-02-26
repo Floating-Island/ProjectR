@@ -23,6 +23,7 @@ void ARacePlayerState::showRaceUI()
 ARacePlayerState::ARacePlayerState()
 {
 	lap = 1;
+	totalLapsValue = 0;
 	position = 0;
 }
 
@@ -75,4 +76,17 @@ void ARacePlayerState::loadRaceUI(APlayerController* playerController)
 	subscribeToPositionUpdate(raceUI);
 	fireLapUpdateEvent();
 	firePositionUpdateEvent();
+}
+
+int ARacePlayerState::totalLaps()
+{
+	return totalLapsValue;
+}
+
+void ARacePlayerState::setTotalLapsTo(int aDesiredAmount)
+{
+	if(totalLapsValue == 0)
+	{
+		totalLapsValue = aDesiredAmount;
+	}
 }

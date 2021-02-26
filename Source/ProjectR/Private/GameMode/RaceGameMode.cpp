@@ -267,6 +267,15 @@ void ARaceGameMode::achieveNecessaryPlayersQuantity()
 	playersToCreate(playersNeeded);
 }
 
+void ARaceGameMode::setPlayerStateTotalLaps(APlayerController* controller)
+{
+	ARacePlayerState* playerState = Cast<ARacePlayerState, APlayerState>(controller->PlayerState);
+	if(playerState)
+	{
+		playerState->setTotalLapsTo(laps());
+	}
+}
+
 void ARaceGameMode::possessJets()
 {
 	TArray<AJet*> unPossessedJets = runningJets.Array();
@@ -276,6 +285,7 @@ void ARaceGameMode::possessJets()
 		AJet* unPossessedJet = unPossessedJets.Pop();
 		unPossessedJet->SetOwner(controller);
 		controller->Possess(unPossessedJet);
+		setPlayerStateTotalLaps(controller);
 	}//if when testing the splitscreen only the first player moves, try to spawn more players.
 }
 
