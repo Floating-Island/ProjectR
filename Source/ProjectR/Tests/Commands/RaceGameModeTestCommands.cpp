@@ -513,6 +513,51 @@ bool FCheckPlayerStatePositionUpdated::Update()
 }
 
 
+bool FCheckPlayerStateTotalLapsUpdated::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+	
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+		ARaceGameMode* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameMode>();
+		ARaceBeginningStage* testStage = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceBeginningStage>();
+		if (testGameMode && testStage)
+		{
+			if(selectedJet == nullptr)
+			{
+				selectedJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+				return false;
+			}
+
+			if(IsValid(selectedJet))
+			{
+				AController* controller = Cast<AController, AActor>(selectedJet->GetOwner());
+				ARacePlayerState* testState = controller->GetPlayerState<ARacePlayerState>();
+				if(testState)
+				{
+					int gameModeTotalLaps = testGameMode->laps();
+					UE_LOG(LogTemp, Log, TEXT("game mode total laps: %d."), gameModeTotalLaps);
+					int playerStateTotalLaps = testState->totalLaps();
+					UE_LOG(LogTemp, Log, TEXT("player state total laps: %d."), playerStateTotalLaps);
+					
+					bool lapsMatch = gameModeTotalLaps == playerStateTotalLaps;
+					if(lapsMatch)
+					{
+						test->TestTrue(test->conditionMessage(), lapsMatch);
+						sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+						return true;
+					}
+				}
+				return test->manageTickCountTowardsLimit();
+			}
+		}
+	}
+	return false;
+}
+
+
 
 
 

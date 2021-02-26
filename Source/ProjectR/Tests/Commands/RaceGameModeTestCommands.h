@@ -61,6 +61,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerStateLapUpdated, AJet
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerStatePositionUpdated, AJet*, selectedJet, FSimplePIETestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerStateTotalLapsUpdated, AJet*, selectedJet, FSimplePIETestBase*, test);
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

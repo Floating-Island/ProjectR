@@ -202,4 +202,20 @@ bool FARaceGameModeupdateJetPositionsUpdatesPlayerStatePositionTest::RunTest(con
 }
 
 
+bool FARaceGameModeSetsPlayerStateTotalLapsBeforeBeginningStageTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode"));
+	establishTestMessageTo(FString("The game mode should set the RacePlayerState's totalLaps in each controller before the beginning stage."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerStateTotalLapsUpdated(nullptr, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS

@@ -83,6 +83,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceGameModeupdateJetPositionsUpdatesP
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceGameModeSetsPlayerStateTotalLapsBeforeBeginningStageTest, FSimplePIETestBase,
+	"ProjectR.RaceGameMode Tests.Integration.013: Sets the RacePlayerState's totalLaps before BeginningStage", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 
