@@ -135,14 +135,13 @@ bool FCheckPlayerStateLoadsPlayerRaceUISynchronized::Update()
 
 		APlayerController* controller = sessionUtilities.retrieveFromPIEAnInstanceOf<APlayerController>();
 		
-		testState->loadRaceUI(controller);
-		
 		TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
 		UWidgetBlueprintLibrary::GetAllWidgetsOfClass(sessionUtilities.currentPIEWorld(),retrievedWidgets, URacePlayerUI::StaticClass(), false);
 		
 		URacePlayerUI* testRaceUI = Cast<URacePlayerUI, UUserWidget>(retrievedWidgets.Pop());
 		if (testRaceUI == nullptr)
 		{
+			testState->loadRaceUI(controller);
 			return false;
 		}
 
