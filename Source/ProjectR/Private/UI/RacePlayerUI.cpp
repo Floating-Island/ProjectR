@@ -34,17 +34,17 @@ bool URacePlayerUI::Initialize()
 	bool initializeResult = Super::Initialize();
 	if(currentLapText)
 	{
-		currentLapText->SetText(FText::FromString(FString("currentLap")));
+		currentLapText->SetText(FText::FromString(FString("(Current Lap)")));
 	}
 
 	if(totalLapsText)
 	{
-		totalLapsText->SetText(FText::FromString(FString("TotalLaps")));
+		totalLapsText->SetText(FText::FromString(FString("(Total Laps)")));
 	}
 
 	if(currentPositionText)
 	{
-		currentPositionText->SetText(FText::FromString(FString("currentPosition")));
+		currentPositionText->SetText(FText::FromString(FString("(Current Position)")));
 	}
 	return initializeResult;
 }
