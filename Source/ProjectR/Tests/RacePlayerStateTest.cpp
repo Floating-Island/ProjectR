@@ -9,6 +9,7 @@
 #include "Tests/AutomationEditorCommon.h"
 #include "Commands/CommonPIECommands.h"
 #include "Commands/RacePlayerStateTestCommands.h"
+#include "Commands/NetworkCommands.h"
 
 
 bool FARacePlayerStateIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
@@ -69,6 +70,25 @@ bool FARacePlayerStateLoadRaceUIMakesRacePlayerUISynchronizeVariablesTest::RunTe
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerStateLoadsPlayerRaceUISynchronized(nullptr, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FARacePlayerStateServerUpdateLapToUpdatesSubscribedClientRacePlayerUICurrentLapTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-ControllerPlayerState"));
+	establishTestMessageTo(FString("The race player state should update subscribed racePlayerUIs currentPosition when calling updatePositionTo."));
+	establishTickLimitTo(10);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckServerUpdatesLapReplicatesToClientRaceUI(TArray<ARacePlayerState*>(), numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

@@ -10,6 +10,7 @@
 #include "PlayerState/RacePlayerState.h"
 #include "UI/RacePlayerUI.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "../Utilities/NetworkedPIESessionUtilities.h"
 
 //Test preparation commands:
 
@@ -179,6 +180,80 @@ bool FCheckPlayerStateLoadsPlayerRaceUISynchronized::Update()
 		}
 		return test->manageTickCountTowardsLimit();
 	}
+	return false;
+}
+
+
+bool FCheckServerUpdatesLapReplicatesToClientRaceUI::Update()
+{
+		if(GEditor->IsPlayingSessionInEditor())
+	{
+			FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+			UWorld* serverWorld = serverContext.World();
+			if(serverWorld)
+			{
+				FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+				UWorld* clientWorld = clientContext.World();
+				if(clientWorld)
+				{
+					if(raceStates.Num() == 0)
+					{
+						UE_LOG(LogTemp, Log, TEXT("raceStates is empty..."));
+						TArray<AActor*> retrievedActors = TArray<AActor*>();
+						UGameplayStatics::GetAllActorsOfClass(serverWorld, ARacePlayerState::StaticClass(), retrievedActors);
+
+						for(auto& actor : retrievedActors)
+						{
+							UE_LOG(LogTemp, Log, TEXT("filling raceStates..."));
+							ARacePlayerState* testState = Cast<ARacePlayerState, AActor>(actor);
+							if(testState == nullptr)
+							{
+								UE_LOG(LogTemp, Log, TEXT("player state isn't a RacePlayerState..."));
+								return false;
+							}
+							UE_LOG(LogTemp, Log, TEXT("adding race player state to raceStates..."));
+							raceStates.Add(testState);
+						}
+					}
+
+
+					int desiredCurrentLap = 5;
+					
+					UE_LOG(LogTemp, Log, TEXT("desired current lap: %d."), desiredCurrentLap);
+					
+					for(auto& racePlayerState : raceStates)
+					{
+						racePlayerState->updateLapTo(5);
+					}
+					
+					
+					TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+					UWidgetBlueprintLibrary::GetAllWidgetsOfClass(clientWorld,retrievedWidgets, URacePlayerUI::StaticClass(), false);
+					
+					URacePlayerUI* testRaceUI = Cast<URacePlayerUI, UUserWidget>(retrievedWidgets.Pop());
+					if (testRaceUI == nullptr)
+					{
+						return false;
+					}
+
+					int uiCurrentLap = testRaceUI->currentLap();
+					UE_LOG(LogTemp, Log, TEXT("current race player ui lap: %d."), uiCurrentLap);
+
+					bool lapsMatch = desiredCurrentLap == uiCurrentLap;
+
+					if(lapsMatch)
+					{
+						test->TestTrue(test->conditionMessage(), lapsMatch);
+						for(auto context : GEditor->GetWorldContexts())
+						{
+							context.World()->bDebugFrameStepExecution = true;
+						}
+						return true;
+					}
+					return test->manageTickCountTowardsLimit();
+				}
+			}
+		}
 	return false;
 }
 
