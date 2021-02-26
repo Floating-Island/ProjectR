@@ -51,12 +51,12 @@ void ARacePlayerState::updatePositionTo(int aCurrentPosition)
 
 void ARacePlayerState::subscribeToLapUpdate(URacePlayerUI* aRacePlayerUI)
 {
-	lapUpdateEvent.AddDynamic(aRacePlayerUI, &URacePlayerUI::updateLapTo);
+	lapUpdateEvent.AddUniqueDynamic(aRacePlayerUI, &URacePlayerUI::updateLapTo);
 }
 
 void ARacePlayerState::subscribeToPositionUpdate(URacePlayerUI* aRacePlayerUI)
 {
-	positionUpdateEvent.AddDynamic(aRacePlayerUI, &URacePlayerUI::updatePositionTo);
+	positionUpdateEvent.AddUniqueDynamic(aRacePlayerUI, &URacePlayerUI::updatePositionTo);
 }
 
 void ARacePlayerState::loadRaceUI(APlayerController* playerController)
