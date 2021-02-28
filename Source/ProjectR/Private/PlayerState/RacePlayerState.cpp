@@ -4,6 +4,7 @@
 #include "PlayerState/RacePlayerState.h"
 
 #include "PlayerController/ProjectRPlayerController.h"
+#include "Net/UnrealNetwork.h"
 
 void ARacePlayerState::fireLapUpdateEvent()
 {
@@ -15,16 +16,12 @@ void ARacePlayerState::firePositionUpdateEvent()
 	positionUpdateEvent.Broadcast(position);
 }
 
-void ARacePlayerState::showRaceUI()
-{
-	raceUI->AddToViewport();
-}
-
 ARacePlayerState::ARacePlayerState()
 {
 	lap = 1;
 	totalLapsValue = 0;
 	position = 0;
+	SetReplicates(true);
 }
 
 int ARacePlayerState::currentLap()
@@ -35,7 +32,6 @@ int ARacePlayerState::currentLap()
 void ARacePlayerState::updateLapTo(int aCurrentLap)
 {
 	lap = aCurrentLap;
-	fireLapUpdateEvent();
 }
 
 int ARacePlayerState::currentPosition()
@@ -59,31 +55,6 @@ void ARacePlayerState::subscribeToPositionUpdate(URacePlayerUI* aRacePlayerUI)
 	positionUpdateEvent.AddUniqueDynamic(aRacePlayerUI, &URacePlayerUI::updatePositionTo);
 }
 
-void ARacePlayerState::loadRaceUI(APlayerController* playerController)
-{
-	if(raceUIClass)
-	{
-		if (!raceUI || raceUI->IsUnreachable())
-		{
-			raceUI = CreateWidget<URacePlayerUI>(playerController->GetWorld(), raceUIClass, FName("Race UI"));
-			configureRaceUI();
-		}
-		if (!raceUI->IsInViewport())
-		{
-			showRaceUI();
-		}
-	}
-}
-
-void ARacePlayerState::configureRaceUI()
-{
-	subscribeToLapUpdate(raceUI);
-	subscribeToPositionUpdate(raceUI);
-	fireLapUpdateEvent();
-	firePositionUpdateEvent();
-	raceUI->setTotalLapsTo(totalLaps());
-}
-
 int ARacePlayerState::totalLaps()
 {
 	return totalLapsValue;
@@ -95,4 +66,27 @@ void ARacePlayerState::setTotalLapsTo(int aDesiredAmount)
 	{
 		totalLapsValue = aDesiredAmount;
 	}
+}
+
+UClass* ARacePlayerState::raceUIType()
+{
+	return raceUIClass;
+}
+
+void ARacePlayerState::fireEvents(APlayerController* controller)
+{
+	ARacePlayerState* self = Cast<ARacePlayerState, APlayerState>(controller->PlayerState);
+	if(self == this)
+	{
+		fireLapUpdateEvent();
+		firePositionUpdateEvent();
+	}
+}
+
+
+void ARacePlayerState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+    DOREPLIFETIME(ARacePlayerState, lap);
 }

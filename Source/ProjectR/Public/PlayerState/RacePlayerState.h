@@ -22,8 +22,10 @@ class PROJECTR_API ARacePlayerState : public APlayerState
 
 protected:
 
+
+	UPROPERTY(ReplicatedUsing= fireLapUpdateEvent)
+		int lap;
 	
-	int lap;
 	int position;
 	int totalLapsValue;
 
@@ -33,19 +35,13 @@ protected:
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 		FPositionUpdateEvent positionUpdateEvent;
 
-	void fireLapUpdateEvent();
+	UFUNCTION()
+		void fireLapUpdateEvent();
+	
 	void firePositionUpdateEvent();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Settings")
 		TSubclassOf<URacePlayerUI> raceUIClass;
-
-	UPROPERTY()
-		URacePlayerUI* raceUI;
-
-	void showRaceUI();
-	
-	UFUNCTION()
-		void configureRaceUI();
 	
 public:
 	ARacePlayerState();
@@ -55,8 +51,9 @@ public:
 	void updatePositionTo(int aCurrentPosition);
 	void subscribeToLapUpdate(URacePlayerUI* aRacePlayerUI);
 	void subscribeToPositionUpdate(URacePlayerUI* aRacePlayerUI);
-	void loadRaceUI(APlayerController* playerController);
 	int totalLaps();
 	void setTotalLapsTo(int aDesiredAmount);
+	UClass* raceUIType();
+	void fireEvents(APlayerController* controller);
 	
 };

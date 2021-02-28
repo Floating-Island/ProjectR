@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "ProjectRPlayerController.generated.h"
 
+class URacePlayerUI;
 class UPauseMenu;
 /**
  * 
@@ -21,11 +22,24 @@ protected:
 
 	virtual void SetupInputComponent() override;
 
+
+	UPROPERTY()
+		URacePlayerUI* raceUI;
+
+	void showRaceUI();
+
+	UFUNCTION()
+		void configureRaceUI();
+	
+
 public:
 	AProjectRPlayerController(const FObjectInitializer& ObjectInitializer);
 	virtual void BeginPlay() override;
 	void focusOnGame();
 	void focusOnPauseMenu();
+
+	UFUNCTION(Client, Reliable)
+		void loadRaceUI();
 
 	UPROPERTY(EditDefaultsOnly, Category= "Menus")
 		TSubclassOf<UPauseMenu> pauseMenuClass;

@@ -6,12 +6,27 @@
 #include "../../Public/PlayerState/RacePlayerState.h"
 #include "UI/PauseMenu.h"
 #include "Kismet/GameplayStatics.h"
+#include "UI/RacePlayerUI.h"
 
 void AProjectRPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
 	InputComponent->BindKey(EKeys::Escape, IE_Pressed, this, &AProjectRPlayerController::loadPauseMenuWrapper);
+}
+
+void AProjectRPlayerController::showRaceUI()
+{
+	raceUI->AddToViewport();
+}
+
+void AProjectRPlayerController::configureRaceUI()
+{
+	ARacePlayerState* racePlayerState = Cast<ARacePlayerState, APlayerState>(PlayerState);
+	racePlayerState->subscribeToLapUpdate(raceUI);
+	racePlayerState->subscribeToPositionUpdate(raceUI);
+	racePlayerState->fireEvents(this);
+	raceUI->setTotalLapsTo(racePlayerState->totalLaps());
 }
 
 AProjectRPlayerController::AProjectRPlayerController(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
@@ -22,11 +37,6 @@ AProjectRPlayerController::AProjectRPlayerController(const FObjectInitializer& O
 void AProjectRPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	ARacePlayerState* racePlayerState = Cast<ARacePlayerState, APlayerState>(PlayerState);
-	if(racePlayerState)
-	{
-		racePlayerState->loadRaceUI(this);
-	}
 }
 
 UPauseMenu* AProjectRPlayerController::loadPauseMenu()
@@ -56,6 +66,24 @@ void AProjectRPlayerController::focusOnPauseMenu()
 	inputModeData.SetWidgetToFocus(pauseMenu->TakeWidget());
 	SetInputMode(inputModeData);
 	bShowMouseCursor = true;
+}
+
+void AProjectRPlayerController::loadRaceUI_Implementation()
+{
+	ARacePlayerState* racePlayerState = Cast<ARacePlayerState, APlayerState>(PlayerState);
+	if(racePlayerState)
+	{
+		UClass* raceUIClass = racePlayerState->raceUIType();
+		if (!raceUI || raceUI->IsUnreachable())
+		{
+			raceUI = CreateWidget<URacePlayerUI>(GetWorld(), raceUIClass, FName("Race UI"));
+			configureRaceUI();
+		}
+		if (!raceUI->IsInViewport())
+		{
+			showRaceUI();
+		}
+	}
 }
 
 void AProjectRPlayerController::focusOnGame()
