@@ -30,13 +30,7 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARacePlayerStateUpdateLapToUpdatesSubsc
 IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARacePlayerStateUpdatePositionToUpdatesSubscribedRacePlayerUICurrentPositionTest, FSimplePIETestBase,
 	"ProjectR.RacePlayerState Tests.Integration.002: updatePositionTo updates subscribed RacePlayerUIs currentPosition", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARacePlayerStateLoadRaceUIMakesRacePlayerUISynchronizeVariablesTest, FSimplePIETestBase,
-	"ProjectR.RacePlayerState Tests.Integration.003: loadRaceUI makes the loaded RacePlayerUI synchronize its values", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 	
-
 
 IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARacePlayerStateServerUpdateLapToUpdatesSubscribedClientRacePlayerUICurrentLapTest, FSimplePIETestBase,
 	"ProjectR.RacePlayerState Tests.Replication.004: Server updateLapTo updates subscribed client RacePlayerUIs currentLap", 

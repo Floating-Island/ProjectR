@@ -64,6 +64,10 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerLoadRaceUILoad
 	"ProjectR.ProjectRPlayerController Tests.Integration.009: loadRaceUI loads the RacePlayerState UI", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerLoadRaceUIMakesRacePlayerUISynchronizeVariablesTest, FSimplePIETestBase,
+	"ProjectR.ProjectRPlayerController Tests.Integration.010: loadRaceUI makes the loaded RacePlayerUI synchronize its values with the RacePlayerState", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

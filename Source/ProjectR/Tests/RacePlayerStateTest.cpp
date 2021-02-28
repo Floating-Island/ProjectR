@@ -58,24 +58,6 @@ bool FARacePlayerStateUpdatePositionToUpdatesSubscribedRacePlayerUICurrentPositi
 }
 
 
-bool FARacePlayerStateLoadRaceUIMakesRacePlayerUISynchronizeVariablesTest::RunTest(const FString& Parameters)
-{
-	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RacePlayerState"));
-	establishTestMessageTo(FString("The race player state should update subscribed racePlayerUIs currentPosition when calling updatePositionTo."));
-	establishTickLimitTo(3);
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
-	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
-
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerStateLoadsPlayerRaceUISynchronized(nullptr, this));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	return true;
-}
-
-
 bool FARacePlayerStateServerUpdateLapToUpdatesSubscribedClientRacePlayerUICurrentLapTest::RunTest(const FString& Parameters)
 {
 	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-ControllerPlayerState"));

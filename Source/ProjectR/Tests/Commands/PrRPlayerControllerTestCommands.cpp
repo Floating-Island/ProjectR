@@ -12,6 +12,7 @@
 #include "GameFramework/PlayerInput.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "UI/RacePlayerUI.h"
+#include "../../Public/PlayerState/RacePlayerState.h"
 
 
 //Test preparation commands:
@@ -230,6 +231,79 @@ bool FCheckPRPlayerControllerLoadsPlayerStateUI::Update()
 	return false;
 }
 
+
+bool FCheckPRPlayerControllerLoadsPlayerRaceUISynchronized::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+	
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		if(testPlayerController == nullptr)
+		{
+			testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
+			testPlayerController->loadRaceUI();
+			return false;
+		}
+		
+		ARacePlayerState* testState = sessionUtilities.retrieveFromPIEAnInstanceOf<ARacePlayerState>();
+		if(testState == nullptr)
+		{
+			return false;
+		}
+		
+		TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+		UWidgetBlueprintLibrary::GetAllWidgetsOfClass(sessionUtilities.currentPIEWorld(),retrievedWidgets, URacePlayerUI::StaticClass(), false);
+
+		if(retrievedWidgets.Num() == 0)
+		{
+			AProjectRPlayerController* controller = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
+			controller->loadRaceUI();
+			return false;
+		}
+		
+		URacePlayerUI* testRaceUI = Cast<URacePlayerUI, UUserWidget>(retrievedWidgets.Pop());
+		if (testRaceUI == nullptr)
+		{
+			return false;
+		}
+
+		int stateCurrentLap = testState->currentLap();
+		UE_LOG(LogTemp, Log, TEXT("current player state lap: %d."), stateCurrentLap);
+		
+		int uiCurrentLap = testRaceUI->currentLap();
+		UE_LOG(LogTemp, Log, TEXT("current race player ui lap: %d."), uiCurrentLap);
+
+		int stateTotalLaps = testState->totalLaps();
+		UE_LOG(LogTemp, Log, TEXT("player state total laps: %d."), stateTotalLaps);
+		
+		int uiTotalLaps = testRaceUI->totalLaps();
+		UE_LOG(LogTemp, Log, TEXT("race player total ui laps: %d."), uiTotalLaps);
+
+
+		int stateCurrentPosition = testState->currentPosition();
+		UE_LOG(LogTemp, Log, TEXT("current player state position: %d."), stateCurrentPosition);
+		
+		int uiCurrentPosition = testRaceUI->currentPosition();
+		UE_LOG(LogTemp, Log, TEXT("current race player ui position: %d."), uiCurrentPosition);
+
+		
+		bool positionsMatch = stateCurrentPosition == uiCurrentPosition;
+		bool lapsMatch = stateCurrentLap == uiCurrentLap;
+		bool totalLapsMatch = stateTotalLaps == uiTotalLaps;
+
+		bool valuesMatch = positionsMatch && lapsMatch && totalLapsMatch;
+
+		if(valuesMatch)
+		{
+			test->TestTrue(test->conditionMessage(), valuesMatch);
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+		return test->manageTickCountTowardsLimit();
+	}
+	return false;
+}
 
 
 

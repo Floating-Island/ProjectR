@@ -47,5 +47,8 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerControllerLoadPauseMe
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPRPlayerControllerLoadsPlayerStateUI, AProjectRPlayerController*, testPlayerController, FSimplePIETestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPRPlayerControllerLoadsPlayerRaceUISynchronized, AProjectRPlayerController*, testPlayerController, FSimplePIETestBase*, test);
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS

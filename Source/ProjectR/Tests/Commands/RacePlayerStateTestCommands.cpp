@@ -11,6 +11,7 @@
 #include "UI/RacePlayerUI.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "../Utilities/NetworkedPIESessionUtilities.h"
+#include "PlayerController/ProjectRPlayerController.h"
 
 //Test preparation commands:
 
@@ -121,69 +122,6 @@ bool FCheckPlayerStateUpdatesRacePlayerUICurrentPosition::Update()
 }
 
 
-bool FCheckPlayerStateLoadsPlayerRaceUISynchronized::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{
-	
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		
-		ARacePlayerState* testState = sessionUtilities.retrieveFromPIEAnInstanceOf<ARacePlayerState>();
-		if(testState == nullptr)
-		{
-			return false;
-		}
-
-		APlayerController* controller = sessionUtilities.retrieveFromPIEAnInstanceOf<APlayerController>();
-		
-		TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
-		UWidgetBlueprintLibrary::GetAllWidgetsOfClass(sessionUtilities.currentPIEWorld(),retrievedWidgets, URacePlayerUI::StaticClass(), false);
-		
-		URacePlayerUI* testRaceUI = Cast<URacePlayerUI, UUserWidget>(retrievedWidgets.Pop());
-		if (testRaceUI == nullptr)
-		{
-			testState->loadRaceUI(controller);
-			return false;
-		}
-
-		int stateCurrentLap = testState->currentLap();
-		UE_LOG(LogTemp, Log, TEXT("current player state lap: %d."), stateCurrentLap);
-		
-		int uiCurrentLap = testRaceUI->currentLap();
-		UE_LOG(LogTemp, Log, TEXT("current race player ui lap: %d."), uiCurrentLap);
-
-		int stateTotalLaps = testState->totalLaps();
-		UE_LOG(LogTemp, Log, TEXT("player state total laps: %d."), stateTotalLaps);
-		
-		int uiTotalLaps = testRaceUI->totalLaps();
-		UE_LOG(LogTemp, Log, TEXT("race player total ui laps: %d."), uiTotalLaps);
-
-
-		int stateCurrentPosition = testState->currentPosition();
-		UE_LOG(LogTemp, Log, TEXT("current player state position: %d."), stateCurrentPosition);
-		
-		int uiCurrentPosition = testRaceUI->currentPosition();
-		UE_LOG(LogTemp, Log, TEXT("current race player ui position: %d."), uiCurrentPosition);
-
-		
-		bool positionsMatch = stateCurrentPosition == uiCurrentPosition;
-		bool lapsMatch = stateCurrentLap == uiCurrentLap;
-		bool totalLapsMatch = stateTotalLaps == uiTotalLaps;
-
-		bool valuesMatch = positionsMatch && lapsMatch && totalLapsMatch;
-
-		if(valuesMatch)
-		{
-			test->TestTrue(test->conditionMessage(), valuesMatch);
-			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-			return true;
-		}
-		return test->manageTickCountTowardsLimit();
-	}
-	return false;
-}
-
-
 bool FCheckServerUpdatesLapReplicatesToClientRaceUI::Update()
 {
 	if(GEditor->IsPlayingSessionInEditor())
@@ -200,17 +138,29 @@ bool FCheckServerUpdatesLapReplicatesToClientRaceUI::Update()
 				UE_LOG(LogTemp, Log, TEXT("desired current lap: %d."), desiredCurrentLap);
 
 				UE_LOG(LogTemp, Log, TEXT("raceStates size: %d."), raceStates.Num());
+
+				UE_LOG(LogTemp, Log, TEXT("making controllers load the race UI..."));
+				for (auto iterator = serverWorld->GetPlayerControllerIterator(); iterator; ++iterator)
+				{
+					AProjectRPlayerController* controller = Cast<AProjectRPlayerController, APlayerController>(iterator->Get());
+					ARacePlayerState* testState = Cast<ARacePlayerState, APlayerState>(controller->PlayerState);
+					if(testState == nullptr)
+					{
+						return false;
+					}
+					controller->loadRaceUI();
+				}
 				
 				if(raceStates.Num() == 0)
 				{
-					UE_LOG(LogTemp, Log, TEXT("raceStates is empty..."));
-				
+					UE_LOG(LogTemp, Log, TEXT("raceStates is empty..."));//getallactorsOfClass ARacePlayerState es mejor. Se ve si son la misma cantidad que clientQuantity
 					for (auto iterator = serverWorld->GetPlayerControllerIterator(); iterator; ++iterator)
 					{
 						ARacePlayerState* testState = Cast<ARacePlayerState, APlayerState>(iterator->Get()->PlayerState);
 						if(testState == nullptr)
 						{
 							UE_LOG(LogTemp, Log, TEXT("player state isn't of type RacePlayerState..."));
+							raceStates.Empty();
 							break;
 						}
 						UE_LOG(LogTemp, Log, TEXT("player state is of type RacePlayerState, updating lap and adding it to raceStates..."));

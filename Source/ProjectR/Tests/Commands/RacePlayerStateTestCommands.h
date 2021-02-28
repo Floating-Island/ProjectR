@@ -26,9 +26,6 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerStateUpdatesRacePlaye
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerStateUpdatesRacePlayerUICurrentPosition, ARacePlayerState*, raceState, FSimplePIETestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerStateLoadsPlayerRaceUISynchronized, ARacePlayerState*, raceState, FSimplePIETestBase*, test);
-
-
 DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckServerUpdatesLapReplicatesToClientRaceUI, TArray<ARacePlayerState*>, raceStates, int, clientQuantity, FSimplePIETestBase*, test);
 
 #endif //WITH_DEV_AUTOMATION_TESTS
