@@ -133,10 +133,10 @@ bool FAProjectRPlayerControllerFullyTicksWhenGamePausedTest::RunTest(const FStri
 }
 
 
-bool FAProjectRPlayerControllerLoadsthePlayerStateUIWhenSpawnedTest::RunTest(const FString& Parameters)
+bool FAProjectRPlayerControllerLoadRaceUILoadsthePlayerStateUITest::RunTest(const FString& Parameters)
 {
 	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-ControllerPlayerState"));
-	establishTestMessageTo(FString("The ProjectRController should load the stored PlayerState UI when spawned."));
+	establishTestMessageTo(FString("The ProjectRController should load the stored RacePlayerState UI when calling loadRaceUI."));
 	establishTickLimitTo(3);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));

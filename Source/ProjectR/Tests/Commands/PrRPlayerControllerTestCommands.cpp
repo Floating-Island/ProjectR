@@ -209,19 +209,23 @@ bool FCheckPRPlayerControllerLoadsPlayerStateUI::Update()
 			testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
 			return false;
 		}
+		 testPlayerController->loadRaceUI();
 
 		TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
 		UWidgetBlueprintLibrary::GetAllWidgetsOfClass(sessionUtilities.currentPIEWorld(),retrievedWidgets, URacePlayerUI::StaticClass(), false);
-		
-		URacePlayerUI* testRaceUI = Cast<URacePlayerUI, UUserWidget>(retrievedWidgets.Pop());		
 
-		if(testRaceUI)
+		if(retrievedWidgets.Num() > 0)
 		{
-			test->TestNotNull(test->conditionMessage(), testRaceUI);
-			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-			return true;
+			URacePlayerUI* testRaceUI = Cast<URacePlayerUI, UUserWidget>(retrievedWidgets.Pop());		
+
+			if(testRaceUI)
+			{
+				test->TestNotNull(test->conditionMessage(), testRaceUI);
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+			return test->manageTickCountTowardsLimit();
 		}
-		return test->manageTickCountTowardsLimit();
 	}
 	return false;
 }
