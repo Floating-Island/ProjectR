@@ -35,6 +35,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARacePlayerStateUpdatePositionToUpdates
 IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARacePlayerStateServerUpdateLapToUpdatesSubscribedClientRacePlayerUICurrentLapTest, FSimplePIETestBase,
 	"ProjectR.RacePlayerState Tests.Replication.004: Server updateLapTo updates subscribed client RacePlayerUIs currentLap", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARacePlayerStateServerUpdatePositionToUpdatesSubscribedClientRacePlayerUICurrentPositionTest, FSimplePIETestBase,
+	"ProjectR.RacePlayerState Tests.Replication.005: Server updatePositionTo updates subscribed client RacePlayerUIs currentPosition", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 

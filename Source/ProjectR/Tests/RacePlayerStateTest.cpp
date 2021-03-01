@@ -61,7 +61,7 @@ bool FARacePlayerStateUpdatePositionToUpdatesSubscribedRacePlayerUICurrentPositi
 bool FARacePlayerStateServerUpdateLapToUpdatesSubscribedClientRacePlayerUICurrentLapTest::RunTest(const FString& Parameters)
 {
 	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-ControllerPlayerState"));
-	establishTestMessageTo(FString("The race player state should update subscribed racePlayerUIs currentPosition when calling updatePositionTo."));
+	establishTestMessageTo(FString("The race player state should update subscribed client racePlayerUIs currentLap when calling updateLapTo."));
 	establishTickLimitTo(10);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
@@ -71,6 +71,25 @@ bool FARacePlayerStateServerUpdateLapToUpdatesSubscribedClientRacePlayerUICurren
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckServerUpdatesLapReplicatesToClientRaceUI(TArray<ARacePlayerState*>(), numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FARacePlayerStateServerUpdatePositionToUpdatesSubscribedClientRacePlayerUICurrentPositionTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-ControllerPlayerState"));
+	establishTestMessageTo(FString("The race player state should update subscribed client racePlayerUIs currentPosition when calling updatePositionTo."));
+	establishTickLimitTo(10);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckServerUpdatesPositionReplicatesToClientRaceUI(TArray<ARacePlayerState*>(), numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
