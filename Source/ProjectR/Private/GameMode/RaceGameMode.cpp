@@ -268,15 +268,6 @@ void ARaceGameMode::achieveNecessaryPlayersQuantity()
 	playersToCreate(playersNeeded);
 }
 
-void ARaceGameMode::setPlayerStateTotalLaps(APlayerController* controller)
-{
-	ARacePlayerState* playerState = Cast<ARacePlayerState, APlayerState>(controller->PlayerState);
-	if(playerState)
-	{
-		playerState->setTotalLapsTo(laps());
-	}
-}
-
 void ARaceGameMode::possessJets()
 {
 	TArray<AJet*> unPossessedJets = runningJets.Array();
@@ -288,6 +279,25 @@ void ARaceGameMode::possessJets()
 		controller->Possess(unPossessedJet);
 		prepareRaceUIOf(controller);
 	}//if when testing the splitscreen only the first player moves, try to spawn more players.
+}
+
+void ARaceGameMode::prepareRaceUIOf(APlayerController* aController)
+{
+	setPlayerStateTotalLaps(aController);
+	AProjectRPlayerController* controller = Cast<AProjectRPlayerController, APlayerController>(aController);
+	if(controller)
+	{
+		controller->loadRaceUI();
+	}
+}
+
+void ARaceGameMode::setPlayerStateTotalLaps(APlayerController* controller)
+{
+	ARacePlayerState* playerState = Cast<ARacePlayerState, APlayerState>(controller->PlayerState);
+	if(playerState)
+	{
+		playerState->setTotalLapsTo(laps());
+	}
 }
 
 void ARaceGameMode::disableJetsInput()
@@ -309,16 +319,6 @@ void ARaceGameMode::enableJetsInput()
 		{
 			jet->EnableInput(Cast<APlayerController,AController>(jet->GetController()));
 		}
-	}
-}
-
-void ARaceGameMode::prepareRaceUIOf(APlayerController* aController)
-{
-	setPlayerStateTotalLaps(aController);
-	AProjectRPlayerController* controller = Cast<AProjectRPlayerController, APlayerController>(aController);
-	if(controller)
-	{
-		controller->loadRaceUI();
 	}
 }
 
