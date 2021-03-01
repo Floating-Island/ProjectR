@@ -20,7 +20,7 @@
 
 
 
-bool FCheckPlayerStateUpdatesRacePlayerUICurrentLap::Update()
+bool FCheckGameStateUpdatesAnnouncerUIDisplayText::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -50,7 +50,7 @@ bool FCheckPlayerStateUpdatesRacePlayerUICurrentLap::Update()
 		FString arbitraryAnnouncerText = FString("5");
 		testState->updateAnnouncerWith(arbitraryAnnouncerText);
 
-		FString stateAnnouncerText = testState->announcerText();
+		FString stateAnnouncerText = testState->announcerDisplayText();
 		UE_LOG(LogTemp, Log, TEXT("game state announcer text: %s."), *stateAnnouncerText);
 		
 		FString uiAssignedText = testAnnouncerUI->assignedText();
