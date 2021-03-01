@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "../../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Runtime/UMG/Public/Blueprint/WidgetBlueprintLibrary.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "RaceGameModeTestCommands.h"
@@ -16,6 +15,7 @@
 #include "GameMode/RaceStages/RaceRunningStage.h"
 #include "GameInstance/ProjectRGameInstance.h"
 #include "PlayerState/RacePlayerState.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 
 #include "../Mocks/LapManagerMOCK.h"
 #include "Tests/AutomationEditorCommon.h"
@@ -563,18 +563,16 @@ bool FCheckSameRaceUIQuantityAsControllers::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-	
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 		ARaceGameMode* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameMode>();
 		ARaceBeginningStage* testStage = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceBeginningStage>();
+		
 		if (testGameMode && testStage)
 		{
-			UWorld* testWorld = sessionUtilities.currentPIEWorld();
+			UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 			TArray<AActor*> controllers = TArray<AActor*>();
 			UGameplayStatics::GetAllActorsOfClass(testWorld, APlayerController::StaticClass(), controllers);
-
 
 			TArray<UUserWidget*> raceUIs = TArray<UUserWidget*>();
 			UWidgetBlueprintLibrary::GetAllWidgetsOfClass(testWorld,raceUIs, URacePlayerUI::StaticClass(), false);
