@@ -218,4 +218,20 @@ bool FARaceGameModeSetsPlayerStateTotalLapsBeforeBeginningStageTest::RunTest(con
 }
 
 
+bool FARaceGameModeLoadsRaceUIForEachControllerBeforeBeginningStageTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode"));
+	establishTestMessageTo(FString("The game mode should load the RacePlayerUI in each controller before the beginning stage."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSameRaceUIQuantityAsControllers(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS

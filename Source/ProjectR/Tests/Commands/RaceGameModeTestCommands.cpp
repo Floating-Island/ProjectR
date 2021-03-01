@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "../../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Runtime/UMG/Public/Blueprint/WidgetBlueprintLibrary.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "RaceGameModeTestCommands.h"
@@ -552,6 +553,42 @@ bool FCheckPlayerStateTotalLapsUpdated::Update()
 				}
 				return test->manageTickCountTowardsLimit();
 			}
+		}
+	}
+	return false;
+}
+
+
+bool FCheckSameRaceUIQuantityAsControllers::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+	
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+		ARaceGameMode* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameMode>();
+		ARaceBeginningStage* testStage = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceBeginningStage>();
+		if (testGameMode && testStage)
+		{
+			UWorld* testWorld = sessionUtilities.currentPIEWorld();
+			TArray<AActor*> controllers = TArray<AActor*>();
+			UGameplayStatics::GetAllActorsOfClass(testWorld, APlayerController::StaticClass(), controllers);
+
+
+			TArray<UUserWidget*> raceUIs = TArray<UUserWidget*>();
+			UWidgetBlueprintLibrary::GetAllWidgetsOfClass(testWorld,raceUIs, URacePlayerUI::StaticClass(), false);
+
+			bool quantitiesMatch = controllers.Num() == raceUIs.Num();
+
+
+			if(quantitiesMatch)
+			{
+				test->TestTrue(test->conditionMessage(), quantitiesMatch);
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;

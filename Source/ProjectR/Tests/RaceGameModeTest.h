@@ -88,6 +88,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceGameModeSetsPlayerStateTotalLapsBe
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceGameModeLoadsRaceUIForEachControllerBeforeBeginningStageTest, FSimplePIETestBase,
+	"ProjectR.RaceGameMode Tests.Integration.014: Loads the RacePlayerUI for each controller before BeginningStage", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 
