@@ -32,6 +32,7 @@ int ARacePlayerState::currentLap()
 void ARacePlayerState::updateLapTo(int aCurrentLap)
 {
 	lap = aCurrentLap;
+	fireLapUpdateEvent();
 }
 
 int ARacePlayerState::currentPosition()
@@ -42,6 +43,7 @@ int ARacePlayerState::currentPosition()
 void ARacePlayerState::updatePositionTo(int aCurrentPosition)
 {
 	position = aCurrentPosition;
+	firePositionUpdateEvent();
 }
 
 void ARacePlayerState::subscribeToLapUpdate(URacePlayerUI* aRacePlayerUI)
