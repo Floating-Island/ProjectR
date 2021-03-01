@@ -153,7 +153,7 @@ bool FCheckServerUpdatesLapReplicatesToClientRaceUI::Update()
 				
 				if(raceStates.Num() == 0)
 				{
-					UE_LOG(LogTemp, Log, TEXT("raceStates is empty..."));//getallactorsOfClass ARacePlayerState es mejor. Se ve si son la misma cantidad que clientQuantity
+					UE_LOG(LogTemp, Log, TEXT("raceStates is empty..."));
 					for (auto iterator = serverWorld->GetPlayerControllerIterator(); iterator; ++iterator)
 					{
 						ARacePlayerState* testState = Cast<ARacePlayerState, APlayerState>(iterator->Get()->PlayerState);
@@ -240,7 +240,7 @@ bool FCheckServerUpdatesPositionReplicatesToClientRaceUI::Update()
 				
 				if(raceStates.Num() == 0)
 				{
-					UE_LOG(LogTemp, Log, TEXT("raceStates is empty..."));//getallactorsOfClass ARacePlayerState es mejor. Se ve si son la misma cantidad que clientQuantity
+					UE_LOG(LogTemp, Log, TEXT("raceStates is empty..."));
 					for (auto iterator = serverWorld->GetPlayerControllerIterator(); iterator; ++iterator)
 					{
 						ARacePlayerState* testState = Cast<ARacePlayerState, APlayerState>(iterator->Get()->PlayerState);
@@ -282,6 +282,93 @@ bool FCheckServerUpdatesPositionReplicatesToClientRaceUI::Update()
 				if(positionsMatch)
 				{
 					test->TestTrue(test->conditionMessage(), positionsMatch);
+					for(auto context : GEditor->GetWorldContexts())
+					{
+						context.World()->bDebugFrameStepExecution = true;
+					}
+					return true;
+				}
+				return test->manageTickCountTowardsLimit();
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FCheckServerUpdatesTotalLapsReplicatesToClientRaceUI::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+		if(serverWorld)
+		{
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+			if(clientWorld)
+			{
+				int desiredTotalLaps = 5;
+				UE_LOG(LogTemp, Log, TEXT("desired total lap: %d."), desiredTotalLaps);
+
+				UE_LOG(LogTemp, Log, TEXT("raceStates size: %d."), raceStates.Num());
+
+				UE_LOG(LogTemp, Log, TEXT("making controllers load the race UI..."));
+				for (auto iterator = serverWorld->GetPlayerControllerIterator(); iterator; ++iterator)
+				{
+					AProjectRPlayerController* controller = Cast<AProjectRPlayerController, APlayerController>(iterator->Get());
+					ARacePlayerState* testState = Cast<ARacePlayerState, APlayerState>(controller->PlayerState);
+					if(testState == nullptr)
+					{
+						return false;
+					}
+					controller->loadRaceUI();
+				}
+				
+				if(raceStates.Num() == 0)
+				{
+					UE_LOG(LogTemp, Log, TEXT("raceStates is empty..."));
+					for (auto iterator = serverWorld->GetPlayerControllerIterator(); iterator; ++iterator)
+					{
+						ARacePlayerState* testState = Cast<ARacePlayerState, APlayerState>(iterator->Get()->PlayerState);
+						if(testState == nullptr)
+						{
+							UE_LOG(LogTemp, Log, TEXT("player state isn't of type RacePlayerState..."));
+							raceStates.Empty();
+							break;
+						}
+						UE_LOG(LogTemp, Log, TEXT("player state is of type RacePlayerState, updating lap and adding it to raceStates..."));
+						testState->setTotalLapsTo(desiredTotalLaps);
+						raceStates.Add(testState);
+					}
+					return false;
+				}
+				
+				
+				TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+				UWidgetBlueprintLibrary::GetAllWidgetsOfClass(clientWorld,retrievedWidgets, URacePlayerUI::StaticClass(), false);
+
+				if(retrievedWidgets.Num() == 0)
+				{
+					UE_LOG(LogTemp, Log, TEXT("couldn't find RacePlayerUIs..."));
+					return false;
+				}
+				
+				URacePlayerUI* testRaceUI = Cast<URacePlayerUI, UUserWidget>(retrievedWidgets.Pop());
+				if (testRaceUI == nullptr)
+				{
+					UE_LOG(LogTemp, Log, TEXT("retrieved widgets aren't of type RacePlayerUIs..."));
+					return false;
+				}
+
+				int uiTotalLaps = testRaceUI->totalLaps();
+				UE_LOG(LogTemp, Log, TEXT("total race player ui lap: %d."), uiTotalLaps);
+
+				bool lapsMatch = desiredTotalLaps == uiTotalLaps;
+
+				if(lapsMatch)
+				{
+					test->TestTrue(test->conditionMessage(), lapsMatch);
 					for(auto context : GEditor->GetWorldContexts())
 					{
 						context.World()->bDebugFrameStepExecution = true;

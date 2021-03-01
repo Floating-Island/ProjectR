@@ -42,6 +42,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARacePlayerStateServerUpdatePositionToU
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARacePlayerStateServerSetTotalLapsToSetsSubscribedClientRacePlayerUITotalLapsTest, FSimplePIETestBase,
+	"ProjectR.RacePlayerState Tests.Replication.006: Server setTotalLaps updates the totalLaps in the subscribed client RacePlayerUIs", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

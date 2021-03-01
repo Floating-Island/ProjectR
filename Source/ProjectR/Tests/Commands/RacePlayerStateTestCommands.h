@@ -31,4 +31,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckServerUpdatesLapReplicate
 
 DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckServerUpdatesPositionReplicatesToClientRaceUI, TArray<ARacePlayerState*>, raceStates, int, clientQuantity, FSimplePIETestBase*, test);
 
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckServerUpdatesTotalLapsReplicatesToClientRaceUI, TArray<ARacePlayerState*>, raceStates, int, clientQuantity, FSimplePIETestBase*, test);
+
 #endif //WITH_DEV_AUTOMATION_TESTS

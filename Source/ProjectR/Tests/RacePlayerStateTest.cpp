@@ -96,6 +96,25 @@ bool FARacePlayerStateServerUpdatePositionToUpdatesSubscribedClientRacePlayerUIC
 }
 
 
+bool FARacePlayerStateServerSetTotalLapsToSetsSubscribedClientRacePlayerUITotalLapsTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-ControllerPlayerState"));
+	establishTestMessageTo(FString("The race player state should update subscribed client racePlayerUIs totalLaps when calling setTotalLaps."));
+	establishTickLimitTo(10);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckServerUpdatesTotalLapsReplicatesToClientRaceUI(TArray<ARacePlayerState*>(), numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 
 
 
