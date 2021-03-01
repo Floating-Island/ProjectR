@@ -572,13 +572,17 @@ bool FCheckSameRaceUIQuantityAsControllers::Update()
 		{
 			UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 			TArray<AActor*> controllers = TArray<AActor*>();
-			UGameplayStatics::GetAllActorsOfClass(testWorld, APlayerController::StaticClass(), controllers);
+			UGameplayStatics::GetAllActorsOfClass(testWorld, AProjectRPlayerController::StaticClass(), controllers);
 
 			TArray<UUserWidget*> raceUIs = TArray<UUserWidget*>();
 			UWidgetBlueprintLibrary::GetAllWidgetsOfClass(testWorld,raceUIs, URacePlayerUI::StaticClass(), false);
 
-			bool quantitiesMatch = controllers.Num() == raceUIs.Num();
-
+			int controllersQuantity = controllers.Num();
+			UE_LOG(LogTemp, Log, TEXT("controllers: %d."), controllersQuantity);
+			int raceUIsQuantity = raceUIs.Num();
+			UE_LOG(LogTemp, Log, TEXT("raceUIs: %d."), raceUIsQuantity);
+			
+			bool quantitiesMatch = controllersQuantity == raceUIsQuantity;
 
 			if(quantitiesMatch)
 			{
