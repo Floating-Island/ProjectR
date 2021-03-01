@@ -7,6 +7,7 @@
 #include "Commands/ProjectRGameStateTestCommands.h"
 #include "GameState/ProjectRGameState.h"
 #include "Tests/AutomationEditorCommon.h"
+#include "Commands/CommonPIECommands.h"
 
 
 
@@ -21,18 +22,23 @@ bool FAProjectRGameStateIsntNullWhenInstantiatedTest::RunTest(const FString& Par
 }
 
 
-//bool FAProjectRGameStateLoadPauseMenuAddsItToViewportTest::RunTest(const FString& Parameters)
-//{
-//	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-GameState");
-//
-//	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
-//	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
-//
-//	ADD_LATENT_AUTOMATION_COMMAND(FCheckGameStateBringsPauseMenu(this));
-//
-//	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-//	return true;
-//}
+bool FAProjectRGameStateUpdateAnnouncerWithUpdatesTextFromSubscribedAnnouncerUITest::RunTest(const FString& Parameters)
+{
+		establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-AnnouncerUIContainer"));
+	establishTestMessageTo(FString("The projectR game state should update subscribed announcerUIs displayText when calling updateAnnouncerWith."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnGameModeDefaultPawn);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckGameStateUpdatesAnnouncerUIDisplayText(nullptr, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
 
 
 

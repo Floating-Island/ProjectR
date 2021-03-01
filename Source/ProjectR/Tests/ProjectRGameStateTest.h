@@ -13,6 +13,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -21,9 +22,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRGameStateIsntNullWhenInstantiatedTest
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRGameStateLoadPauseMenuAddsItToViewportTest,
-//	"ProjectR.ProjectRGameState Tests.Integration.001: loadPauseMenu adds the pause menu to viewport",
-//	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAProjectRGameStateUpdateAnnouncerWithUpdatesTextFromSubscribedAnnouncerUITest, FSimplePIETestBase,
+	"ProjectR.ProjectRGameState Tests.Integration.001: updateAnnouncerWith updates text from subscribed AnnouncerUI", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
