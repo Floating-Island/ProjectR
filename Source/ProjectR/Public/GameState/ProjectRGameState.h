@@ -6,7 +6,10 @@
 #include "GameFramework/GameStateBase.h"
 #include "ProjectRGameState.generated.h"
 
+class UAnnouncerUI;
 class UPauseMenu;
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FAnnouncerUpdateEvent, FString, anUpdatedText);
 /**
  * 
  */
@@ -15,12 +18,23 @@ class PROJECTR_API AProjectRGameState : public AGameStateBase
 {
 	GENERATED_BODY()
 
-//protected:
-//		UPauseMenu* pauseMenu;
+protected:
+
+	UPROPERTY()
+		FString announcerText;
+
+	
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+		FAnnouncerUpdateEvent announcerUpdateEvent;
+
+	void fireAnnouncerUpdateEvent();
+	
 //public:
 //	UPROPERTY(EditDefaultsOnly, Category= "Menus")
 //		TSubclassOf<UPauseMenu> pauseMenuClass;
-//	
-//public:
-//	UPauseMenu* loadPauseMenu();
+
+public:
+	void subscribeToAnnouncerUpdate(UAnnouncerUI* anAnnouncerUI);
+	void updateAnnouncerWith(FString aText);
+	FString announcerDisplayText();
 };

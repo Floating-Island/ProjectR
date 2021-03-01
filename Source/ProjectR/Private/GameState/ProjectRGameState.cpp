@@ -2,19 +2,27 @@
 
 
 #include "GameState/ProjectRGameState.h"
-#include "Blueprint/UserWidget.h"
-#include "UI/PauseMenu.h"
+
+#include "UI/AnnouncerUI.h"
 
 
-//UPauseMenu* AProjectRGameState::loadPauseMenu()
-//{
-//	if (!pauseMenu)
-//	{
-//		pauseMenu = CreateWidget<UPauseMenu>(GetWorld()->GetGameInstance(), pauseMenuClass, FName("Pause Menu"));
-//	}
-//	if (!pauseMenu->IsInViewport())
-//	{
-//		pauseMenu->AddToViewport();
-//	}
-//	return pauseMenu;
-//}
+void AProjectRGameState::fireAnnouncerUpdateEvent()
+{
+	announcerUpdateEvent.Broadcast(announcerText);
+}
+
+void AProjectRGameState::subscribeToAnnouncerUpdate(UAnnouncerUI* anAnnouncerUI)
+{
+	announcerUpdateEvent.AddUniqueDynamic(anAnnouncerUI, &UAnnouncerUI::modifyWith);
+}
+
+void AProjectRGameState::updateAnnouncerWith(FString aText)
+{
+	announcerText = aText;
+	fireAnnouncerUpdateEvent();
+}
+
+FString AProjectRGameState::announcerDisplayText()
+{
+	return announcerText;
+}
