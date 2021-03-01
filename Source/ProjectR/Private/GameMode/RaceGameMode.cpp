@@ -12,6 +12,7 @@
 #include "GameMode/RaceStages/RacePreparationStage.h"
 #include "GameInstance/ProjectRGameInstance.h"
 #include "TimerManager.h"
+#include "PlayerController/ProjectRPlayerController.h"
 #include "PlayerState/RacePlayerState.h"
 
 #include "Kismet/GameplayStatics.h"
@@ -285,6 +286,7 @@ void ARaceGameMode::possessJets()
 		AJet* unPossessedJet = unPossessedJets.Pop();
 		unPossessedJet->SetOwner(controller);
 		controller->Possess(unPossessedJet);
+		prepareRaceUIOf(controller);
 	}//if when testing the splitscreen only the first player moves, try to spawn more players.
 }
 
@@ -310,9 +312,18 @@ void ARaceGameMode::enableJetsInput()
 	}
 }
 
+void ARaceGameMode::prepareRaceUIOf(APlayerController* aController)
+{
+	setPlayerStateTotalLaps(aController);
+	AProjectRPlayerController* controller = Cast<AProjectRPlayerController, APlayerController>(aController);
+	if(controller)
+	{
+		controller->loadRaceUI();
+	}
+}
+
 void ARaceGameMode::PostLogin(APlayerController* NewPlayer)
 {
-	setPlayerStateTotalLaps(NewPlayer);
 	if(expectedControllerQuantityReached())
 	{
 		prepareToStart();

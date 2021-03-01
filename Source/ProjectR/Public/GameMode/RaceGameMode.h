@@ -101,7 +101,8 @@ public:
 
 	void disableJetsInput();
 	void enableJetsInput();
-	
+	void prepareRaceUIOf(APlayerController* aController);
+
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 
 	int lapOf(AJet* aJet);
