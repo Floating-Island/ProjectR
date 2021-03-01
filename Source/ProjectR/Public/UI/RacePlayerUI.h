@@ -37,6 +37,9 @@ public:
 	
 	UFUNCTION()
 		void updatePositionTo(int aNewPosition);
+
+	UFUNCTION()
+		void modifyTotalLapsTo(int aNewTotalLapsValue);
 	
 	void setTotalLapsTo(int aDesiredValue);
 	

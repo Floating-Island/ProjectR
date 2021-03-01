@@ -26,8 +26,8 @@ void AProjectRPlayerController::configureRaceUI()
 	ARacePlayerState* racePlayerState = Cast<ARacePlayerState, APlayerState>(PlayerState);
 	racePlayerState->subscribeToLapUpdate(raceUI);
 	racePlayerState->subscribeToPositionUpdate(raceUI);
+	racePlayerState->subscribeToTotalLapsSet(raceUI);
 	racePlayerState->fireEvents(this);
-	raceUI->setTotalLapsTo(racePlayerState->totalLaps());
 }
 
 AProjectRPlayerController::AProjectRPlayerController(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)

@@ -12,6 +12,7 @@ class AProjectRPlayerController;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLapUpdateEvent, int, anUpdatedLap);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPositionUpdateEvent, int, anUpdatedPosition);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTotalLapsSetEvent, int, aRaceTotalLaps);
 /**
  * 
  */
@@ -28,8 +29,9 @@ protected:
 
 	UPROPERTY(ReplicatedUsing= firePositionUpdateEvent)
 		int position;
-	
-	int totalLapsValue;
+
+	UPROPERTY(ReplicatedUsing= fireTotalLapsSetEvent)
+		int totalLapsValue;
 
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 		FLapUpdateEvent lapUpdateEvent;
@@ -37,11 +39,17 @@ protected:
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 		FPositionUpdateEvent positionUpdateEvent;
 
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+		FTotalLapsSetEvent totalLapsSetEvent;
+
 	UFUNCTION()
 		void fireLapUpdateEvent();
 
 	UFUNCTION()
 		void firePositionUpdateEvent();
+
+	UFUNCTION()
+		void fireTotalLapsSetEvent();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Settings")
 		TSubclassOf<URacePlayerUI> raceUIClass;
@@ -54,8 +62,11 @@ public:
 	void updatePositionTo(int aCurrentPosition);
 	void subscribeToLapUpdate(URacePlayerUI* aRacePlayerUI);
 	void subscribeToPositionUpdate(URacePlayerUI* aRacePlayerUI);
+	void subscribeToTotalLapsSet(URacePlayerUI* aRacePlayerUI);
 	int totalLaps();
-	void setTotalLapsTo(int aDesiredAmount);
+	UFUNCTION()
+		void setTotalLapsTo(int aDesiredAmount);
+
 	UClass* raceUIType();
 	void fireEvents(APlayerController* controller);
 	

@@ -16,6 +16,11 @@ void ARacePlayerState::firePositionUpdateEvent()
 	positionUpdateEvent.Broadcast(position);
 }
 
+void ARacePlayerState::fireTotalLapsSetEvent()
+{
+	totalLapsSetEvent.Broadcast(totalLapsValue);
+}
+
 ARacePlayerState::ARacePlayerState()
 {
 	lap = 1;
@@ -56,6 +61,11 @@ void ARacePlayerState::subscribeToPositionUpdate(URacePlayerUI* aRacePlayerUI)
 	positionUpdateEvent.AddUniqueDynamic(aRacePlayerUI, &URacePlayerUI::updatePositionTo);
 }
 
+void ARacePlayerState::subscribeToTotalLapsSet(URacePlayerUI* aRacePlayerUI)
+{
+	totalLapsSetEvent.AddUniqueDynamic(aRacePlayerUI, &URacePlayerUI::modifyTotalLapsTo);
+}
+
 int ARacePlayerState::totalLaps()
 {
 	return totalLapsValue;
@@ -66,6 +76,7 @@ void ARacePlayerState::setTotalLapsTo(int aDesiredAmount)
 	if(totalLapsValue == 0)
 	{
 		totalLapsValue = aDesiredAmount;
+		fireTotalLapsSetEvent();
 	}
 }
 
@@ -81,6 +92,7 @@ void ARacePlayerState::fireEvents(APlayerController* controller)
 	{
 		fireLapUpdateEvent();
 		firePositionUpdateEvent();
+		fireTotalLapsSetEvent();
 	}
 }
 
@@ -91,4 +103,5 @@ void ARacePlayerState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & 
 
     DOREPLIFETIME(ARacePlayerState, lap);
 	DOREPLIFETIME(ARacePlayerState, position);
+	DOREPLIFETIME(ARacePlayerState, totalLapsValue);
 }

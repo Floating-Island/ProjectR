@@ -61,3 +61,8 @@ void URacePlayerUI::updatePositionTo(int aNewPosition)
 {
 	changeIntegerTextOf(currentPositionText, aNewPosition);
 }
+
+void URacePlayerUI::modifyTotalLapsTo(int aNewTotalLapsValue)
+{
+	changeIntegerTextOf(totalLapsText, aNewTotalLapsValue);
+}
