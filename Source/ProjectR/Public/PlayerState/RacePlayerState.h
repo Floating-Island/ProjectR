@@ -25,8 +25,10 @@ protected:
 
 	UPROPERTY(ReplicatedUsing= fireLapUpdateEvent)
 		int lap;
+
+	UPROPERTY(ReplicatedUsing= firePositionUpdateEvent)
+		int position;
 	
-	int position;
 	int totalLapsValue;
 
 	UPROPERTY(BlueprintAssignable, Category = "Events")
@@ -37,8 +39,9 @@ protected:
 
 	UFUNCTION()
 		void fireLapUpdateEvent();
-	
-	void firePositionUpdateEvent();
+
+	UFUNCTION()
+		void firePositionUpdateEvent();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Settings")
 		TSubclassOf<URacePlayerUI> raceUIClass;

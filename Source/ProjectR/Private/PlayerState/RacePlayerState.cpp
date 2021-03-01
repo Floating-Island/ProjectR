@@ -42,7 +42,6 @@ int ARacePlayerState::currentPosition()
 void ARacePlayerState::updatePositionTo(int aCurrentPosition)
 {
 	position = aCurrentPosition;
-	firePositionUpdateEvent();
 }
 
 void ARacePlayerState::subscribeToLapUpdate(URacePlayerUI* aRacePlayerUI)
@@ -89,4 +88,5 @@ void ARacePlayerState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & 
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
     DOREPLIFETIME(ARacePlayerState, lap);
+	DOREPLIFETIME(ARacePlayerState, position);
 }
