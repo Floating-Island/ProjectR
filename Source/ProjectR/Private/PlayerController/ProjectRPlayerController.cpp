@@ -7,6 +7,7 @@
 #include "UI/PauseMenu.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/RacePlayerUI.h"
+#include "TimerManager.h"
 
 void AProjectRPlayerController::SetupInputComponent()
 {
@@ -17,7 +18,7 @@ void AProjectRPlayerController::SetupInputComponent()
 
 void AProjectRPlayerController::showRaceUI()
 {
-	raceUI->AddToViewport();
+	raceUI->AddToPlayerScreen();
 }
 
 void AProjectRPlayerController::configureRaceUI()
@@ -70,18 +71,25 @@ void AProjectRPlayerController::focusOnPauseMenu()
 
 void AProjectRPlayerController::loadRaceUI_Implementation()
 {
-	ARacePlayerState* racePlayerState = Cast<ARacePlayerState, APlayerState>(PlayerState);
-	if(racePlayerState)
+	if(IsLocalPlayerController())
 	{
-		UClass* raceUIClass = racePlayerState->raceUIType();
-		if (!raceUI || raceUI->IsUnreachable())
+		ARacePlayerState* racePlayerState = Cast<ARacePlayerState, APlayerState>(PlayerState);
+		if(racePlayerState)
 		{
-			raceUI = CreateWidget<URacePlayerUI>(GetWorld(), raceUIClass, FName("Race UI"));
-			configureRaceUI();
+			UClass* raceUIClass = racePlayerState->raceUIType();
+			if (!raceUI || raceUI->IsUnreachable())
+			{
+				raceUI = CreateWidget<URacePlayerUI>(this, raceUIClass);
+				configureRaceUI();
+			}
+			if (!raceUI->IsInViewport())
+			{
+				showRaceUI();
+			}
 		}
-		if (!raceUI->IsInViewport())
+		else
 		{
-			showRaceUI();
+			GetWorld()->GetTimerManager().SetTimerForNextTick(this, &AProjectRPlayerController::loadRaceUI);
 		}
 	}
 }
