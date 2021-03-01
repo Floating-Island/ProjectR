@@ -3,7 +3,7 @@
 
 #include "PlayerController/ProjectRPlayerController.h"
 
-#include "../../Public/PlayerState/RacePlayerState.h"
+#include "PlayerState/RacePlayerState.h"
 #include "UI/PauseMenu.h"
 #include "Kismet/GameplayStatics.h"
 #include "UI/RacePlayerUI.h"
@@ -33,11 +33,6 @@ void AProjectRPlayerController::configureRaceUI()
 AProjectRPlayerController::AProjectRPlayerController(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
 	bShouldPerformFullTickWhenPaused = true;
-}
-
-void AProjectRPlayerController::BeginPlay()
-{
-	Super::BeginPlay();
 }
 
 UPauseMenu* AProjectRPlayerController::loadPauseMenu()
