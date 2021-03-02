@@ -4,11 +4,22 @@
 #include "GameMode/RaceStages/RaceBeginningStage.h"
 
 #include "TimerManager.h"
+#include "PlayerController/ProjectRPlayerController.h"
 #include "GameMode/RaceStages/RaceRunningStage.h"
 
 
+void ARaceBeginningStage::loadAnnouncerOnControllers()
+{
+	for (auto iterator = GetWorld()->GetPlayerControllerIterator(); iterator; ++iterator)
+	{
+		AProjectRPlayerController* controller = Cast<AProjectRPlayerController, APlayerController>(iterator->Get());
+		controller->loadAnnouncerUI();
+	}
+}
+
 void ARaceBeginningStage::start()
 {
+	loadAnnouncerOnControllers();
 	FTimerDelegate countdownDelegate = FTimerDelegate::CreateUObject(this, &ARaceBeginningStage::countdownToStart, 3);
 	GetWorldTimerManager().SetTimer(countdownTimer, countdownDelegate, 1, false, 1.0f);
 }
