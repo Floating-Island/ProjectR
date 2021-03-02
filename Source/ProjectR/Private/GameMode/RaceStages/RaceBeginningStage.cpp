@@ -27,13 +27,13 @@ void ARaceBeginningStage::start()
 
 void ARaceBeginningStage::countdownToStart(int countdown)
 {
+	AProjectRGameState* gameState = Cast<AProjectRGameState, AGameStateBase>(GetWorld()->GetGameState());
 	if (countdown <= 0)
 	{
-		UE_LOG(LogTemp, Log, TEXT("Announcer: GO!!!"));
+		gameState->updateAnnouncerWith(FString("GO!"));
 		stageEndedEvent.Broadcast(this);
 		return;
 	}
-	AProjectRGameState* gameState = Cast<AProjectRGameState, AGameStateBase>(GetWorld()->GetGameState());
 	gameState->updateAnnouncerWith(FString::FromInt(countdown));
 	FTimerDelegate countdownDelegate = FTimerDelegate::CreateUObject(this, &ARaceBeginningStage::countdownToStart, --countdown);
 	GetWorldTimerManager().SetTimer(countdownTimer, countdownDelegate, 1, false, 1.0f);
