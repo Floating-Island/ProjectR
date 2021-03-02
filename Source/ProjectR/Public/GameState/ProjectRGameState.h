@@ -20,14 +20,17 @@ class PROJECTR_API AProjectRGameState : public AGameStateBase
 
 protected:
 
-	UPROPERTY()
+	UPROPERTY(ReplicatedUsing= fireAnnouncerUpdateEvent)
 		FString announcerText;
-
 	
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 		FAnnouncerUpdateEvent announcerUpdateEvent;
 
-	void fireAnnouncerUpdateEvent();
+	UFUNCTION()
+		void fireAnnouncerUpdateEvent();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Settings")
+		TSubclassOf<UAnnouncerUI> announcerUIClass;
 	
 //public:
 //	UPROPERTY(EditDefaultsOnly, Category= "Menus")
@@ -37,4 +40,6 @@ public:
 	void subscribeToAnnouncerUpdate(UAnnouncerUI* anAnnouncerUI);
 	void updateAnnouncerWith(FString aText);
 	FString announcerDisplayText();
+	UClass* announcerUIType();
+	void fireEvents();
 };

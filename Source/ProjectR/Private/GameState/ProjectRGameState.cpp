@@ -3,6 +3,8 @@
 
 #include "GameState/ProjectRGameState.h"
 
+
+#include "Net/UnrealNetwork.h"
 #include "UI/AnnouncerUI.h"
 
 
@@ -25,4 +27,21 @@ void AProjectRGameState::updateAnnouncerWith(FString aText)
 FString AProjectRGameState::announcerDisplayText()
 {
 	return announcerText;
+}
+
+UClass* AProjectRGameState::announcerUIType()
+{
+	return announcerUIClass;
+}
+
+void AProjectRGameState::fireEvents()
+{
+	fireAnnouncerUpdateEvent();
+}
+
+void AProjectRGameState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+    DOREPLIFETIME(AProjectRGameState, announcerText	);
 }

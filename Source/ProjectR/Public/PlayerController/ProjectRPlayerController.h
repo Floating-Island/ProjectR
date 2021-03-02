@@ -6,6 +6,8 @@
 #include "GameFramework/PlayerController.h"
 #include "ProjectRPlayerController.generated.h"
 
+class AProjectRGameState;
+class UAnnouncerUI;
 class URacePlayerUI;
 class UPauseMenu;
 /**
@@ -26,10 +28,16 @@ protected:
 	UPROPERTY()
 		URacePlayerUI* raceUI;
 
+	UPROPERTY()
+		UAnnouncerUI* announcerUI;
+
 	void showRaceUI();
 
 	UFUNCTION()
 		void configureRaceUI();
+
+	void configureAnnouncerUI(AProjectRGameState* aGameState);
+	void showAnnouncerUI();
 	
 
 public:
@@ -47,4 +55,7 @@ public:
 
 	UFUNCTION()
 		void loadPauseMenuWrapper();
+
+	UFUNCTION(Client, Reliable)
+		void loadAnnouncerUI();
 };

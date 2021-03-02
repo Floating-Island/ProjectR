@@ -8,6 +8,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "UI/RacePlayerUI.h"
 #include "TimerManager.h"
+#include "GameState/ProjectRGameState.h"
+#include "UI/AnnouncerUI.h"
 
 void AProjectRPlayerController::SetupInputComponent()
 {
@@ -28,6 +30,17 @@ void AProjectRPlayerController::configureRaceUI()
 	racePlayerState->subscribeToPositionUpdate(raceUI);
 	racePlayerState->subscribeToTotalLapsSet(raceUI);
 	racePlayerState->fireEvents(this);
+}
+
+void AProjectRPlayerController::configureAnnouncerUI(AProjectRGameState* aGameState)
+{
+	aGameState->subscribeToAnnouncerUpdate(announcerUI);
+	aGameState->fireEvents();
+}
+
+void AProjectRPlayerController::showAnnouncerUI()
+{
+	announcerUI->AddToPlayerScreen();
 }
 
 AProjectRPlayerController::AProjectRPlayerController(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
@@ -102,4 +115,29 @@ void AProjectRPlayerController::focusOnGame()
 void AProjectRPlayerController::loadPauseMenuWrapper()
 {
 	loadPauseMenu();
+}
+
+void AProjectRPlayerController::loadAnnouncerUI_Implementation()
+{
+	if(IsLocalPlayerController())
+	{
+		AProjectRGameState* gameState = Cast<AProjectRGameState, AGameStateBase>(GetWorld()->GetGameState());
+		if(gameState)
+		{
+			UClass* announcerUIClass = gameState->announcerUIType();
+			if (!announcerUI || announcerUI->IsUnreachable())
+			{
+				announcerUI = CreateWidget<UAnnouncerUI>(this, announcerUIClass);
+				configureAnnouncerUI(gameState);
+			}
+			if (!announcerUI->IsInViewport())
+			{
+				showAnnouncerUI();
+			}
+		}
+		else
+		{
+			GetWorld()->GetTimerManager().SetTimerForNextTick(this, &AProjectRPlayerController::loadAnnouncerUI);
+		}
+	}
 }
