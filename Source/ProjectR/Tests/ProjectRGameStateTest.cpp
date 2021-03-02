@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Commands/NetworkCommands.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "ProjectRGameStateTest.h"
@@ -9,6 +8,7 @@
 #include "GameState/ProjectRGameState.h"
 #include "Tests/AutomationEditorCommon.h"
 #include "Commands/CommonPIECommands.h"
+#include "Commands/NetworkCommands.h"
 
 
 

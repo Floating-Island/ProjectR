@@ -1,9 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "../../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Runtime/UMG/Public/Blueprint/WidgetBlueprintLibrary.h"
-#include "../../Public/PlayerController/ProjectRPlayerController.h"
-#include "../Utilities/NetworkedPIESessionUtilities.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "ProjectRGameStateTestCommands.h"
@@ -11,6 +8,9 @@
 #include "GameState/ProjectRGameState.h"
 #include "../../Public/UI/AnnouncerUI.h"
 #include "../Utilities/BlueprintWidgetContainerPawn.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
+#include "PlayerController/ProjectRPlayerController.h"
+#include "../Utilities/NetworkedPIESessionUtilities.h"
 
 //Test preparation commands:
 
