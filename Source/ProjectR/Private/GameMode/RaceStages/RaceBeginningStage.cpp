@@ -14,7 +14,10 @@ void ARaceBeginningStage::loadAnnouncerOnControllers()
 	for (auto iterator = GetWorld()->GetPlayerControllerIterator(); iterator; ++iterator)
 	{
 		AProjectRPlayerController* controller = Cast<AProjectRPlayerController, APlayerController>(iterator->Get());
-		controller->loadAnnouncerUI();
+		if(controller)
+		{
+			controller->loadAnnouncerUI();
+		}
 	}
 }
 

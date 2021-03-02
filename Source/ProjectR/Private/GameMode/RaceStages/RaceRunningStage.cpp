@@ -13,7 +13,10 @@ void ARaceRunningStage::removeAnnouncersFromControllers()
 	for (auto iterator = GetWorld()->GetPlayerControllerIterator(); iterator; ++iterator)
 	{
 		AProjectRPlayerController* controller = Cast<AProjectRPlayerController, APlayerController>(iterator->Get());
-		controller->removeAnnouncerUI();
+		if(controller)
+		{
+			controller->removeAnnouncerUI();
+		}
 	}
 }
 
