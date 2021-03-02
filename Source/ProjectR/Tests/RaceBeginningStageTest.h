@@ -13,6 +13,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -31,6 +32,10 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceBeginningStageNextStageSpawnsRunningStage
 	"ProjectR.RaceBeginningStage Tests.Unit.002: nextStage spawns a race running stage", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceBeginningStageLoadsAnnouncerUIOnStartTest, FSimplePIETestBase,
+	"ProjectR.ProjectRGameState Tests.Integration.003: loads announcerUIs on each controller at start", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 

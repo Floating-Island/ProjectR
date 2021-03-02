@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "Commands/CommonPIECommands.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "RaceBeginningStageTest.h"
@@ -51,6 +52,26 @@ bool FARaceBeginningStageNextStageSpawnsRunningStageTest::RunTest(const FString&
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
+
+
+bool FARaceBeginningStageLoadsAnnouncerUIOnStartTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK"));
+	establishTestMessageTo(FString("The RaceBeginningStage should load announcerUI on each controller when calling start."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnGameModeDefaultPawn);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARaceBeginningMOCK);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceBeginningStageLoadsAnnouncerUIs(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
 
 
 

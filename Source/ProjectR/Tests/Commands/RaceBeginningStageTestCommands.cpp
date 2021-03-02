@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "../../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Runtime/UMG/Public/Blueprint/WidgetBlueprintLibrary.h"
+#include "../../Public/UI/AnnouncerUI.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "RaceBeginningStageTestCommands.h"
@@ -91,6 +93,44 @@ bool FCheckRunningStageSpawned::Update()
 	}
 	return false;
 }
+
+
+bool FCheckRaceBeginningStageLoadsAnnouncerUIs::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+		ARaceBeginningStage* testBeginning = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceBeginningStage>();
+		if (testBeginning)
+		{
+			TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+			UWidgetBlueprintLibrary::GetAllWidgetsOfClass(testWorld,retrievedWidgets, UAnnouncerUI::StaticClass(), false);
+
+			int numberOfAnnouncers = retrievedWidgets.Num();
+			UE_LOG(LogTemp, Log, TEXT("announcer UI quantity: %d."), numberOfAnnouncers);
+
+			int numberOfControllers = testWorld->GetNumPlayerControllers();
+			UE_LOG(LogTemp, Log, TEXT("Controllers quantity: %d."), numberOfControllers);
+
+			bool quantitiesMatch = numberOfControllers == numberOfAnnouncers;
+
+			if(quantitiesMatch)
+			{
+				test->TestTrue(test->conditionMessage(), quantitiesMatch);
+				for(auto context : GEditor->GetWorldContexts())
+				{
+					context.World()->bDebugFrameStepExecution = true;
+				}
+				return true;
+			}
+			return test->manageTickCountTowardsLimit();
+		}
+	}
+	return false;
+}
+
 
 
 
