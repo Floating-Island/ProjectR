@@ -609,11 +609,11 @@ bool FCheckServerRaceGameModePreventsPausing::Update()
 			UWorld* clientWorld = clientContext.World();
 			if(clientWorld)
 			{
-				bool allowsPausing = serverWorld->GetAuthGameMode()->AllowPausing();
+				bool preventsPausing = serverWorld->GetAuthGameMode()->AllowPausing() == false;
 
-				if(allowsPausing)
+				if(preventsPausing)
 				{
-					test->TestTrue(test->conditionMessage(), allowsPausing);
+					test->TestTrue(test->conditionMessage(), preventsPausing);
 					for(auto context : GEditor->GetWorldContexts())
 					{
 						context.World()->bDebugFrameStepExecution = true;
