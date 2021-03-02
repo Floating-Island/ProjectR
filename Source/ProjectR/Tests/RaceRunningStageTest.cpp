@@ -10,6 +10,7 @@
 #include "GameMode/RaceStages/RaceRunningStage.h"
 
 #include "Tests/AutomationEditorCommon.h"
+#include "Commands/CommonPIECommands.h"
 
 
 
@@ -70,6 +71,26 @@ bool FARaceRunningStageEnablesJetsInputOnStartTest::RunTest(const FString& Param
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
+
+
+bool FARaceRunningStageStartRemovesAnnouncerUIFromViewportsTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK"));
+	establishTestMessageTo(FString("The RaceRunningStage should remove announcer UIs from controllers when calling start."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	UClass* raceStageClass = ARaceRunningStage::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(raceStageClass, FTransform()));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceRunningStartRemovesAnnouncerUIs(true, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
 
 
 

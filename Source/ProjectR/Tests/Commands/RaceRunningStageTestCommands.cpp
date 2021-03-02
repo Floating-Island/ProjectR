@@ -11,6 +11,9 @@
 
 #include "../Mocks/RaceGameModeMOCK.h"
 #include "../Utilities/PIESessionUtilities.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
+#include "PlayerController/ProjectRPlayerController.h"
+#include "UI/AnnouncerUI.h"
 
 //Test preparation commands:
 
@@ -142,6 +145,55 @@ bool FCheckARaceRunningStartEnablesJetsInput::Update()
 	}
 	return false;
 }
+
+
+bool FCheckRaceRunningStartRemovesAnnouncerUIs::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+		ARaceRunningStage* testRunning = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceRunningStage>();
+		if (testRunning)
+		{
+			if(controllersNeedAnnouncerLoad)
+			{
+				for (auto iterator = testWorld->GetPlayerControllerIterator(); iterator; ++iterator)
+				{
+					AProjectRPlayerController* controller = Cast<AProjectRPlayerController, APlayerController>(iterator->Get());
+					if(controller == nullptr)
+					{
+						return false;
+					}
+					controller->loadAnnouncerUI();
+				}
+				controllersNeedAnnouncerLoad = false;
+				return false;
+			}
+
+			testRunning->start();
+
+			TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+			UWidgetBlueprintLibrary::GetAllWidgetsOfClass(sessionUtilities.currentPIEWorld(),retrievedWidgets, UAnnouncerUI::StaticClass(), false);
+			
+			bool noAnnouncersFound = retrievedWidgets.Num() == 0;
+
+			if(noAnnouncersFound)
+			{
+				test->TestTrue(test->conditionMessage(), noAnnouncersFound);
+				for(auto context : GEditor->GetWorldContexts())
+				{
+					context.World()->bDebugFrameStepExecution = true;
+				}
+				return true;
+			}
+			return test->manageTickCountTowardsLimit();
+		}
+	}
+	return false;
+}
+
 
 
 
