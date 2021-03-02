@@ -34,6 +34,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRunningStageSpawned, FAutom
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRaceBeginningStageLoadsAnnouncerUIs, FSimplePIETestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRaceBeginningStageCountdownToStartModifiesAnnouncerText, FSimplePIETestBase*, test);
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

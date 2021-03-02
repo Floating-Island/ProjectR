@@ -10,6 +10,7 @@
 
 #include "Tests/AutomationEditorCommon.h"
 #include "Commands/CommonPIECommands.h"
+#include "Mocks/RaceBeginningStageMOCK.h"
 
 
 
@@ -66,6 +67,25 @@ bool FARaceBeginningStageLoadsAnnouncerUIOnStartTest::RunTest(const FString& Par
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARaceBeginningMOCK);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceBeginningStageLoadsAnnouncerUIs(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FARaceBeginningStageCountdownToStartModifiesGameStateAnnouncerTextTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK"));
+	establishTestMessageTo(FString("The RaceBeginningStage should modify announcerText from game state when calling countdownToStart."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	UClass* raceStageClass = ARaceBeginningStageMOCK::StaticClass();
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(raceStageClass, FTransform()));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceBeginningStageCountdownToStartModifiesAnnouncerText(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

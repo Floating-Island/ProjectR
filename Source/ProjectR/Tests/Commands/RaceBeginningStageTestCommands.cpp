@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "../../Public/GameState/ProjectRGameState.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "RaceBeginningStageTestCommands.h"
@@ -115,6 +116,46 @@ bool FCheckRaceBeginningStageLoadsAnnouncerUIs::Update()
 			UE_LOG(LogTemp, Log, TEXT("Controllers quantity: %d."), numberOfControllers);
 
 			bool quantitiesMatch = numberOfControllers == numberOfAnnouncers;
+
+			if(quantitiesMatch)
+			{
+				test->TestTrue(test->conditionMessage(), quantitiesMatch);
+				for(auto context : GEditor->GetWorldContexts())
+				{
+					context.World()->bDebugFrameStepExecution = true;
+				}
+				return true;
+			}
+			return test->manageTickCountTowardsLimit();
+		}
+	}
+	return false;
+}
+
+
+bool FCheckRaceBeginningStageCountdownToStartModifiesAnnouncerText::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+		ARaceBeginningStageMOCK* testBeginning = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceBeginningStageMOCK>();
+		if (testBeginning)
+		{
+			testBeginning->loadAnnouncers();
+
+			int arbitraryNumber = 5;
+			UE_LOG(LogTemp, Log, TEXT("desired announcer number: %d."), arbitraryNumber);
+
+			testBeginning->countdownToStart(arbitraryNumber);
+
+			AProjectRGameState* testState = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRGameState>();
+
+			int announcerToNumber = FCString::Atoi(*testState->announcerDisplayText());
+			
+
+			bool quantitiesMatch = arbitraryNumber == announcerToNumber;
 
 			if(quantitiesMatch)
 			{
