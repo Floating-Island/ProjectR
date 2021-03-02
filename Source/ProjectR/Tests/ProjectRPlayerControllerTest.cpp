@@ -8,6 +8,7 @@
 #include "PlayerController/ProjectRPlayerController.h"
 #include "Tests/AutomationEditorCommon.h"
 #include "Commands/CommonPIECommands.h"
+#include "Commands/NetworkCommands.h"
 
 
 
@@ -164,6 +165,25 @@ bool FAProjectRPlayerControllerLoadRaceUIMakesRacePlayerUISynchronizeVariablesTe
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckPRPlayerControllerLoadsPlayerRaceUISynchronized(nullptr, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAProjectRPlayerControllerServerRemoveAnnouncerUIRemovesClientLoadedAnnouncerUITest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK"));
+	establishTestMessageTo(FString("The race player state should update subscribed client racePlayerUIs currentLap when calling updateLapTo."));
+	establishTickLimitTo(10);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckServerRemoveAnnouncerUIRemovesFromClient(true, numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

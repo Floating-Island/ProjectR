@@ -12,7 +12,9 @@
 #include "GameFramework/PlayerInput.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "UI/RacePlayerUI.h"
-#include "../../Public/PlayerState/RacePlayerState.h"
+#include "PlayerState/RacePlayerState.h"
+#include "../Utilities/NetworkedPIESessionUtilities.h"
+#include "UI/AnnouncerUI.h"
 
 
 //Test preparation commands:
@@ -301,6 +303,54 @@ bool FCheckPRPlayerControllerLoadsPlayerRaceUISynchronized::Update()
 			return true;
 		}
 		return test->manageTickCountTowardsLimit();
+	}
+	return false;
+}
+
+
+bool FCheckServerRemoveAnnouncerUIRemovesFromClient::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+		if(serverWorld)
+		{
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+			if(clientWorld)
+			{
+
+				TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+				UWidgetBlueprintLibrary::GetAllWidgetsOfClass(clientWorld,retrievedWidgets, UAnnouncerUI::StaticClass(), false);
+
+				bool announcerMissingFromClient = retrievedWidgets.Num() == 0;
+
+				AProjectRPlayerController* controller = Cast<AProjectRPlayerController, AActor>(UGameplayStatics::GetActorOfClass(serverWorld, AProjectRPlayerController::StaticClass()));
+				if(!announcerMissingFromClient)
+				{
+					controller->removeAnnouncerUI();
+					needsToLoadAnnouncer = false;
+				}
+				
+				if(needsToLoadAnnouncer)
+				{
+					controller->loadAnnouncerUI();
+					return false;
+				}
+
+				if(announcerMissingFromClient && !needsToLoadAnnouncer)
+				{
+					test->TestTrue(test->conditionMessage(), announcerMissingFromClient);
+					for(auto context : GEditor->GetWorldContexts())
+					{
+						context.World()->bDebugFrameStepExecution = true;
+					}
+					return true;
+				}
+				return test->manageTickCountTowardsLimit();
+			}
+		}
 	}
 	return false;
 }

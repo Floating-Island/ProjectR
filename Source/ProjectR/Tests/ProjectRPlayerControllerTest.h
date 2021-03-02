@@ -70,5 +70,10 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerLoadRaceUIMake
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerServerRemoveAnnouncerUIRemovesClientLoadedAnnouncerUITest, FSimplePIETestBase,
+	"ProjectR.ProjectRPlayerController Tests.Replication.011: Server removeAnnouncerUI removes client loaded announcerUI", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
