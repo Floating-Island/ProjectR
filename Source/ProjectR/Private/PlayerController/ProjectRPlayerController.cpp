@@ -117,6 +117,15 @@ void AProjectRPlayerController::loadPauseMenuWrapper()
 	loadPauseMenu();
 }
 
+void AProjectRPlayerController::removeAnnouncerUI()
+{
+	if (!announcerUI || announcerUI->IsUnreachable() || !announcerUI->IsInViewport())
+	{
+		return;
+	}
+	announcerUI->RemoveFromParent();
+}
+
 void AProjectRPlayerController::loadAnnouncerUI_Implementation()
 {
 	if(IsLocalPlayerController())

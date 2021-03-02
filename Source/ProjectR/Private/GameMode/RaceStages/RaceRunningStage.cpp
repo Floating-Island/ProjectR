@@ -3,8 +3,19 @@
 
 #include "GameMode/RaceStages/RaceRunningStage.h"
 
+
+#include "PlayerController/ProjectRPlayerController.h"
 #include "GameMode/RaceStages/RaceEndedStage.h"
 #include "GameMode/RaceGameMode.h"
+
+void ARaceRunningStage::removeAnnouncersFromControllers()
+{
+	for (auto iterator = GetWorld()->GetPlayerControllerIterator(); iterator; ++iterator)
+	{
+		AProjectRPlayerController* controller = Cast<AProjectRPlayerController, APlayerController>(iterator->Get());
+		controller->removeAnnouncerUI();
+	}
+}
 
 ARaceStage* ARaceRunningStage::nextStage()
 {
@@ -23,5 +34,6 @@ void ARaceRunningStage::Tick(float DeltaSeconds)
 
 void ARaceRunningStage::start()
 {
+	removeAnnouncersFromControllers();
 	raceMode->enableJetsInput();
 }

@@ -14,6 +14,8 @@ class PROJECTR_API ARaceRunningStage : public ARaceStage
 {
 	GENERATED_BODY()
 
+protected:
+	void removeAnnouncersFromControllers();
 public:
 	ARaceStage* nextStage() override;
 	void Tick(float DeltaSeconds) override;
