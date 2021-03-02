@@ -59,5 +59,6 @@ public:
 	UFUNCTION(Client, Reliable)
 		void loadAnnouncerUI();
 
-	void removeAnnouncerUI();
+	UFUNCTION(Client, Reliable)
+		void removeAnnouncerUI();
 };
