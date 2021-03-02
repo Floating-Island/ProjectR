@@ -39,7 +39,7 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceBeginningStageLoadsAnnouncerUIOnSt
 
 
 IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceBeginningStageCountdownToStartModifiesGameStateAnnouncerTextTest, FSimplePIETestBase,
-	"ProjectR.RaceBeginningStage Tests.Integration.004: countdownToStart modifies the gameState's announcer text", 
+	"ProjectR.RaceBeginningStage Tests.Integration.004: countdownToStart modifies the gameState's announcer text (except with zero or less)", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
