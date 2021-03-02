@@ -13,5 +13,8 @@ UCLASS()
 class PROJECTR_API ARaceRunningStageMOCK : public ARaceRunningStage
 {
 	GENERATED_BODY()
-	
+
+
+public:
+	bool announcerRemovalDelayStarted();
 };

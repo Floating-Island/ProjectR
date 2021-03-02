@@ -34,6 +34,7 @@ void ARaceRunningStage::Tick(float DeltaSeconds)
 
 void ARaceRunningStage::start()
 {
-	removeAnnouncersFromControllers();
+	FTimerDelegate removalDelegate = FTimerDelegate::CreateUObject(this, &ARaceRunningStage::removeAnnouncersFromControllers);
+	GetWorldTimerManager().SetTimer(announcerRemovalDelay, removalDelegate, 2.5f, false, 1.0f);
 	raceMode->enableJetsInput();
 }
