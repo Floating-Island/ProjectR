@@ -68,7 +68,7 @@ UPauseMenu* AProjectRPlayerController::loadPauseMenu()
 
 void AProjectRPlayerController::focusOnPauseMenu()
 {
-	UGameplayStatics::SetGamePaused(GetWorld(), true);
+	SetPause(true);
 	pauseMenu->AddToViewport();
 	FInputModeGameAndUI inputModeData;
 	inputModeData.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
@@ -104,7 +104,7 @@ void AProjectRPlayerController::loadRaceUI_Implementation()
 
 void AProjectRPlayerController::focusOnGame()
 {
-	UGameplayStatics::SetGamePaused(GetWorld(), false);
+	SetPause(false);
 	pauseMenu->RemoveFromViewport();
 	FInputModeGameOnly inputModeData;
 	inputModeData.SetConsumeCaptureMouseDown(true);
