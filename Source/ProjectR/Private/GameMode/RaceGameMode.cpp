@@ -69,6 +69,7 @@ ARaceGameMode::ARaceGameMode()
 	currentJetPositions = TMap<AJet*, int8>();
 	finalizedJets = TArray<AJet*>();
 	timeToWaitForPlayers = 20;
+	bPauseable = false;
 }
 
 void ARaceGameMode::prepareInitialStageStart()
@@ -109,7 +110,7 @@ void ARaceGameMode::updatePlayerStatesPositions()
 void ARaceGameMode::StartPlay()
 {
 	Super::StartPlay();
-
+	ClearPause();
 	gameWorld = GetWorld();
 	AActor* soonToBeTrack = UGameplayStatics::GetActorOfClass(gameWorld, ATrackGenerator::StaticClass());
 	track = Cast<ATrackGenerator, AActor>(soonToBeTrack);
