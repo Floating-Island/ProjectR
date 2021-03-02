@@ -34,7 +34,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceBeginningStageNextStageSpawnsRunningStage
 
 
 IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceBeginningStageLoadsAnnouncerUIOnStartTest, FSimplePIETestBase,
-	"ProjectR.ProjectRGameState Tests.Integration.003: loads announcerUIs on each controller at start", 
+	"ProjectR.RaceBeginningStage Tests.Integration.003: loads announcerUIs on each controller at start", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
