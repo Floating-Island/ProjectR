@@ -38,8 +38,8 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceRunningStageEnablesJetsInputOnStartTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceRunningStageStartRemovesAnnouncerUIFromViewportsTest, FSimplePIETestBase,
-	"ProjectR.RaceRunningStage Tests.Integration.004: start removes the loaded AnnouncerUIs from viewports", 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceRunningStageStartInitiatesRemovalOfAnnouncerUIsTest, FSimplePIETestBase,
+	"ProjectR.RaceRunningStage Tests.Integration.004: start starts the removal of loaded AnnouncerUIs", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

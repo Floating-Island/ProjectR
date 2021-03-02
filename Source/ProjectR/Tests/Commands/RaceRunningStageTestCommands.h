@@ -35,7 +35,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckEndedStageSpawnedWithNoRunn
 DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckARaceRunningStartEnablesJetsInput, int, tickCount, int, tickLimit,  FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckRaceRunningStartRemovesAnnouncerUIs, bool, controllersNeedAnnouncerLoad, FSimplePIETestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckRaceRunningStartsAnnouncerUIsRemoval, bool, controllersNeedAnnouncerLoad, FSimplePIETestBase*, test);
 
 
 

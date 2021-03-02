@@ -10,6 +10,7 @@
 #include "Jet/Jet.h"
 
 #include "../Mocks/RaceGameModeMOCK.h"
+#include "../Mocks/RaceRunningStageMOCK.h"
 #include "../Utilities/PIESessionUtilities.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "PlayerController/ProjectRPlayerController.h"
@@ -147,14 +148,14 @@ bool FCheckARaceRunningStartEnablesJetsInput::Update()
 }
 
 
-bool FCheckRaceRunningStartRemovesAnnouncerUIs::Update()
+bool FCheckRaceRunningStartsAnnouncerUIsRemoval::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
-		ARaceRunningStage* testRunning = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceRunningStage>();
+		ARaceRunningStageMOCK* testRunning = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceRunningStageMOCK>();
 		if (testRunning)
 		{
 			if(controllersNeedAnnouncerLoad)
@@ -177,11 +178,11 @@ bool FCheckRaceRunningStartRemovesAnnouncerUIs::Update()
 			TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
 			UWidgetBlueprintLibrary::GetAllWidgetsOfClass(sessionUtilities.currentPIEWorld(),retrievedWidgets, UAnnouncerUI::StaticClass(), false);
 			
-			bool noAnnouncersFound = retrievedWidgets.Num() == 0;
+			bool announcerRemovalStarted = testRunning->announcerRemovalDelayStarted();
 
-			if(noAnnouncersFound)
+			if(announcerRemovalStarted)
 			{
-				test->TestTrue(test->conditionMessage(), noAnnouncersFound);
+				test->TestTrue(test->conditionMessage(), announcerRemovalStarted);
 				for(auto context : GEditor->GetWorldContexts())
 				{
 					context.World()->bDebugFrameStepExecution = true;
