@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "../../Public/GameState/ProjectRGameState.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "RaceBeginningStageTestCommands.h"
@@ -10,6 +9,7 @@
 #include "GameMode/RaceStages/RaceRunningStage.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "UI/AnnouncerUI.h"
+#include "GameState/ProjectRGameState.h"
 
 
 #include "Tests/AutomationEditorCommon.h"
