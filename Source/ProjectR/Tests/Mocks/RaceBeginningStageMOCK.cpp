@@ -8,3 +8,8 @@ bool ARaceBeginningStageMOCK::hasTimerActive()
 {
 	return GetWorldTimerManager().IsTimerActive(countdownTimer) || GetWorldTimerManager().IsTimerPaused(countdownTimer) || GetWorldTimerManager().IsTimerPending(countdownTimer);
 }
+
+void ARaceBeginningStageMOCK::loadAnnouncers()
+{
+	loadAnnouncerOnControllers();
+}
