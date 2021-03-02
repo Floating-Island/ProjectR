@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Commands/CommonPIECommands.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "RaceBeginningStageTest.h"
@@ -10,6 +9,7 @@
 #include "GameMode/RaceStages/RaceBeginningStage.h"
 
 #include "Tests/AutomationEditorCommon.h"
+#include "Commands/CommonPIECommands.h"
 
 
 
