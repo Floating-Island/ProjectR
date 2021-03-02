@@ -597,6 +597,38 @@ bool FCheckSameRaceUIQuantityAsControllers::Update()
 }
 
 
+bool FCheckServerRaceGameModePreventsPausing::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+		if(serverWorld)
+		{
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+			if(clientWorld)
+			{
+				bool allowsPausing = serverWorld->GetAuthGameMode()->AllowPausing();
+
+				if(allowsPausing)
+				{
+					test->TestTrue(test->conditionMessage(), allowsPausing);
+					for(auto context : GEditor->GetWorldContexts())
+					{
+						context.World()->bDebugFrameStepExecution = true;
+					}
+					return true;
+				}
+				return test->manageTickCountTowardsLimit();
+			}
+		}
+	}
+	return false;
+}
+
+
+
 
 
 

@@ -93,6 +93,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceGameModeLoadsRaceUIForEachControll
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceGameModePreventsPausingOnNetworkedSessionsTest, FSimplePIETestBase,
+	"ProjectR.RaceGameMode Tests.Replication.015: Prevents pausing on networked sessions", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 
