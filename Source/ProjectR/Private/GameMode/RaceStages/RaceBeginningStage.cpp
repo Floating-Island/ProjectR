@@ -6,6 +6,7 @@
 #include "TimerManager.h"
 #include "PlayerController/ProjectRPlayerController.h"
 #include "GameMode/RaceStages/RaceRunningStage.h"
+#include "GameState/ProjectRGameState.h"
 
 
 void ARaceBeginningStage::loadAnnouncerOnControllers()
@@ -32,7 +33,8 @@ void ARaceBeginningStage::countdownToStart(int countdown)
 		stageEndedEvent.Broadcast(this);
 		return;
 	}
-	UE_LOG(LogTemp, Log, TEXT("Announcer: %d!"), countdown);
+	AProjectRGameState* gameState = Cast<AProjectRGameState, AGameStateBase>(GetWorld()->GetGameState());
+	gameState->updateAnnouncerWith(FString::FromInt(countdown));
 	FTimerDelegate countdownDelegate = FTimerDelegate::CreateUObject(this, &ARaceBeginningStage::countdownToStart, --countdown);
 	GetWorldTimerManager().SetTimer(countdownTimer, countdownDelegate, 1, false, 1.0f);
 }
