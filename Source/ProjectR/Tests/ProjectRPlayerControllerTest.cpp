@@ -183,7 +183,9 @@ bool FAProjectRPlayerControllerServerRemoveAnnouncerUIRemovesClientLoadedAnnounc
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckServerRemoveAnnouncerUIRemovesFromClient(true, numberOfPlayers, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FServerLoadAnnouncers(numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckServerRemoveAnnouncerUIRemovesFromClient(numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

@@ -17,6 +17,7 @@ class AProjectRPlayerController;
 
  //Test preparation commands:
 
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FServerLoadAnnouncers, int, clientQuantity, FSimplePIETestBase*, test);
 
 
 
@@ -50,7 +51,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPRPlayerControllerLoadsPlay
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPRPlayerControllerLoadsPlayerRaceUISynchronized, AProjectRPlayerController*, testPlayerController, FSimplePIETestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckServerRemoveAnnouncerUIRemovesFromClient, bool, needsToLoadAnnouncer, int, clientQuantity, FSimplePIETestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckServerRemoveAnnouncerUIRemovesFromClient, int, clientQuantity, FSimplePIETestBase*, test);
 
 
 

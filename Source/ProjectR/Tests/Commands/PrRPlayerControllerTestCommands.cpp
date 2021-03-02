@@ -20,6 +20,31 @@
 //Test preparation commands:
 
 
+bool FServerLoadAnnouncers::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+		if(serverWorld)
+		{
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+			if(clientWorld)
+			{
+				TArray<AActor*> retrievedActors = TArray<AActor*>();
+				UGameplayStatics::GetAllActorsOfClass(serverWorld, AProjectRPlayerController::StaticClass(), retrievedActors);
+				for(auto& actor : retrievedActors)
+				{
+					AProjectRPlayerController* controller = Cast<AProjectRPlayerController, AActor>(actor);
+					controller->loadAnnouncerUI();
+				}
+				return true;
+			}
+		}
+	}
+	return false;
+}
 
 
 
@@ -320,28 +345,36 @@ bool FCheckServerRemoveAnnouncerUIRemovesFromClient::Update()
 			UWorld* clientWorld = clientContext.World();
 			if(clientWorld)
 			{
-
 				TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
 				UWidgetBlueprintLibrary::GetAllWidgetsOfClass(clientWorld,retrievedWidgets, UAnnouncerUI::StaticClass(), false);
 
-				bool announcerMissingFromClient = retrievedWidgets.Num() == 0;
-
-				AProjectRPlayerController* controller = Cast<AProjectRPlayerController, AActor>(UGameplayStatics::GetActorOfClass(serverWorld, AProjectRPlayerController::StaticClass()));
-				if(!announcerMissingFromClient)
+				bool needsToRemoveAnnouncers = false;
+				for(const auto& announcer : retrievedWidgets)
 				{
-					controller->removeAnnouncerUI();
-					needsToLoadAnnouncer = false;
+					if(announcer->IsInViewport())
+					{
+						needsToRemoveAnnouncers = true;
+						break;
+					}
 				}
+				bool foundAnnouncers = retrievedWidgets.Num() > 0;
 				
-				if(needsToLoadAnnouncer)
+				if(foundAnnouncers && needsToRemoveAnnouncers)
 				{
-					controller->loadAnnouncerUI();
-					return false;
+					TArray<AActor*> retrievedActors = TArray<AActor*>();
+					UGameplayStatics::GetAllActorsOfClass(serverWorld, AProjectRPlayerController::StaticClass(), retrievedActors);
+					for(auto& actor : retrievedActors)
+					{
+						AProjectRPlayerController* controller = Cast<AProjectRPlayerController, AActor>(actor);
+						controller->removeAnnouncerUI();
+					}
 				}
 
-				if(announcerMissingFromClient && !needsToLoadAnnouncer)
+				bool hasHiddenAllAnnouncers = foundAnnouncers && !needsToRemoveAnnouncers;
+
+				if(hasHiddenAllAnnouncers)
 				{
-					test->TestTrue(test->conditionMessage(), announcerMissingFromClient);
+					test->TestTrue(test->conditionMessage(), hasHiddenAllAnnouncers);
 					for(auto context : GEditor->GetWorldContexts())
 					{
 						context.World()->bDebugFrameStepExecution = true;
