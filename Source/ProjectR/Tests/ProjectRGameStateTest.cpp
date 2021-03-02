@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "Commands/NetworkCommands.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "ProjectRGameStateTest.h"
@@ -24,7 +25,7 @@ bool FAProjectRGameStateIsntNullWhenInstantiatedTest::RunTest(const FString& Par
 
 bool FAProjectRGameStateUpdateAnnouncerWithUpdatesTextFromSubscribedAnnouncerUITest::RunTest(const FString& Parameters)
 {
-		establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-AnnouncerUIContainer"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-AnnouncerUIContainer"));
 	establishTestMessageTo(FString("The projectR game state should update subscribed announcerUIs displayText when calling updateAnnouncerWith."));
 	establishTickLimitTo(3);
 
@@ -38,6 +39,26 @@ bool FAProjectRGameStateUpdateAnnouncerWithUpdatesTextFromSubscribedAnnouncerUIT
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
+
+
+bool FAProjectRGameStateServerUpdateAnnouncerWithUpdatesTextFromClientSubscribedAnnouncerUITest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-ControllerGameState"));
+	establishTestMessageTo(FString("The projectR server game state should update client subscribed announcerUIs displayText when calling updateAnnouncerWith."));
+	establishTickLimitTo(10);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckServerGameStateUpdatesClientAnnouncerUIDisplayText(numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
 
 
 

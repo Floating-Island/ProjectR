@@ -27,6 +27,9 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAProjectRGameStateUpdateAnnouncerWithUp
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAProjectRGameStateServerUpdateAnnouncerWithUpdatesTextFromClientSubscribedAnnouncerUITest, FSimplePIETestBase,
+	"ProjectR.RacePlayerState Tests.Replication.002: Server updateAnnouncerWith updates text from client subscribed AnnouncerUI", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

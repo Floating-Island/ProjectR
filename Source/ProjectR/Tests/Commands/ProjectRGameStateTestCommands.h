@@ -26,4 +26,7 @@ class AProjectRGameState;
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckGameStateUpdatesAnnouncerUIDisplayText, AProjectRGameState*, gameState, FSimplePIETestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckServerGameStateUpdatesClientAnnouncerUIDisplayText, int, clientQuantity, FSimplePIETestBase*, test);
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS
