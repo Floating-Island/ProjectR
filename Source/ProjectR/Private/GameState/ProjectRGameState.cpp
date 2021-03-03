@@ -2,19 +2,46 @@
 
 
 #include "GameState/ProjectRGameState.h"
-#include "Blueprint/UserWidget.h"
-#include "UI/PauseMenu.h"
 
 
-//UPauseMenu* AProjectRGameState::loadPauseMenu()
-//{
-//	if (!pauseMenu)
-//	{
-//		pauseMenu = CreateWidget<UPauseMenu>(GetWorld()->GetGameInstance(), pauseMenuClass, FName("Pause Menu"));
-//	}
-//	if (!pauseMenu->IsInViewport())
-//	{
-//		pauseMenu->AddToViewport();
-//	}
-//	return pauseMenu;
-//}
+#include "Net/UnrealNetwork.h"
+#include "UI/AnnouncerUI.h"
+
+
+void AProjectRGameState::fireAnnouncerUpdateEvent()
+{
+	announcerUpdateEvent.Broadcast(announcerText);
+}
+
+void AProjectRGameState::subscribeToAnnouncerUpdate(UAnnouncerUI* anAnnouncerUI)
+{
+	announcerUpdateEvent.AddUniqueDynamic(anAnnouncerUI, &UAnnouncerUI::modifyWith);
+}
+
+void AProjectRGameState::updateAnnouncerWith(FString aText)
+{
+	announcerText = aText;
+	fireAnnouncerUpdateEvent();
+}
+
+FString AProjectRGameState::announcerDisplayText()
+{
+	return announcerText;
+}
+
+UClass* AProjectRGameState::announcerUIType()
+{
+	return announcerUIClass;
+}
+
+void AProjectRGameState::fireEvents()
+{
+	fireAnnouncerUpdateEvent();
+}
+
+void AProjectRGameState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+    DOREPLIFETIME(AProjectRGameState, announcerText	);
+}

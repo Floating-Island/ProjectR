@@ -7,10 +7,11 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "../TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-
+class AJet;
  //Test preparation commands:
 
 
@@ -52,6 +53,21 @@ DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckCreatesSameOrMoreJetsThan
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckJetsSameRotationAsTrack, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerStateLapUpdated, AJet*, selectedJet, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerStatePositionUpdated, AJet*, selectedJet, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayerStateTotalLapsUpdated, AJet*, selectedJet, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSameRaceUIQuantityAsControllers, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckServerRaceGameModePreventsPausing, int, clientQuantity, FSimplePIETestBase*, test);
 
 
 

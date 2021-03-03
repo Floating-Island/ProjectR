@@ -10,6 +10,9 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
+class FSimplePIETestBase;
+
+
 
 //Test preparation commands:
 
@@ -48,5 +51,26 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckShowsCursorInSplitscreenMen
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLoadMainMenuSetsExpectedPlayersToOne, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSessionManagerSetInGameInstance, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesLANMultiplayerMenu, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesOneLANMultiplayerMenu, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckShowsCursorInLanMultiplayerMenu, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesLobbyMenu, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesOneLobbyMenu, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLoadLobbyMenuShowsMouseCursor, FSimplePIETestBase*, test);
 
 #endif //WITH_DEV_AUTOMATION_TESTS

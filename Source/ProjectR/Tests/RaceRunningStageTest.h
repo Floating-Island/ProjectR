@@ -13,6 +13,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -34,6 +35,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceRunningStageSpawnsEndedStageWhenNoRunning
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceRunningStageEnablesJetsInputOnStartTest, 
 	"ProjectR.RaceRunningStage Tests.Integration.003: Enables jets input on start", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceRunningStageStartInitiatesRemovalOfAnnouncerUIsTest, FSimplePIETestBase,
+	"ProjectR.RaceRunningStage Tests.Integration.004: start starts the removal of loaded AnnouncerUIs", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

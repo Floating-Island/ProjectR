@@ -6,6 +6,9 @@
 #include "GameFramework/PlayerController.h"
 #include "ProjectRPlayerController.generated.h"
 
+class AProjectRGameState;
+class UAnnouncerUI;
+class URacePlayerUI;
 class UPauseMenu;
 /**
  * 
@@ -16,14 +19,34 @@ class PROJECTR_API AProjectRPlayerController : public APlayerController
 	GENERATED_BODY()
 
 protected:
-	UPauseMenu* pauseMenu;
+	UPROPERTY()
+		UPauseMenu* pauseMenu;
 
 	virtual void SetupInputComponent() override;
+
+
+	UPROPERTY()
+		URacePlayerUI* raceUI;
+
+	UPROPERTY()
+		UAnnouncerUI* announcerUI;
+
+	void showRaceUI();
+
+	UFUNCTION()
+		void configureRaceUI();
+
+	void configureAnnouncerUI(AProjectRGameState* aGameState);
+	void showAnnouncerUI();
+	
 
 public:
 	AProjectRPlayerController(const FObjectInitializer& ObjectInitializer);
 	void focusOnGame();
 	void focusOnPauseMenu();
+
+	UFUNCTION(Client, Reliable)
+		void loadRaceUI();
 
 	UPROPERTY(EditDefaultsOnly, Category= "Menus")
 		TSubclassOf<UPauseMenu> pauseMenuClass;
@@ -32,4 +55,10 @@ public:
 
 	UFUNCTION()
 		void loadPauseMenuWrapper();
+
+	UFUNCTION(Client, Reliable)
+		void loadAnnouncerUI();
+
+	UFUNCTION(Client, Reliable)
+		void removeAnnouncerUI();
 };

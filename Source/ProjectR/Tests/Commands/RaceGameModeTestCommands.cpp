@@ -1,10 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-
-
-
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "RaceGameModeTestCommands.h"
@@ -18,10 +14,13 @@
 #include "GameMode/RaceStages/RaceBeginningStage.h"
 #include "GameMode/RaceStages/RaceRunningStage.h"
 #include "GameInstance/ProjectRGameInstance.h"
+#include "PlayerState/RacePlayerState.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 
 #include "../Mocks/LapManagerMOCK.h"
 #include "Tests/AutomationEditorCommon.h"
 #include "../Utilities/PIESessionUtilities.h"
+#include "../Utilities/NetworkedPIESessionUtilities.h"
 
 
 //Test preparation commands:
@@ -421,6 +420,219 @@ bool FCheckJetsSameRotationAsTrack::Update()
 	}
 	return false;
 }
+
+
+bool FCheckPlayerStateLapUpdated::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+	
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+		ARaceGameMode* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameMode>();
+		ARaceBeginningStage* testStage = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceBeginningStage>();
+		if (testGameMode && testStage)
+		{
+			if(selectedJet == nullptr)
+			{
+				selectedJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+				return false;
+			}
+
+			if(IsValid(selectedJet))
+			{
+				testGameMode->lapCompletedByJet(selectedJet);
+				AController* controller = Cast<AController, AActor>(selectedJet->GetOwner());
+				ARacePlayerState* testState = controller->GetPlayerState<ARacePlayerState>();
+				if(testState)
+				{
+					int gameModeCurrentLap = testGameMode->lapOf(selectedJet);
+					UE_LOG(LogTemp, Log, TEXT("current game mode lap: %d."), gameModeCurrentLap);
+					int playerStateCurrentLap = testState->currentLap();
+					UE_LOG(LogTemp, Log, TEXT("current player state lap: %d."), playerStateCurrentLap);
+					
+					bool lapsMatch = gameModeCurrentLap == playerStateCurrentLap;
+					if(lapsMatch)
+					{
+						test->TestTrue(test->conditionMessage(), lapsMatch);
+						sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+						return true;
+					}
+				}
+				return test->manageTickCountTowardsLimit();
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FCheckPlayerStatePositionUpdated::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+	
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+		ARaceGameMode* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameMode>();
+		ARaceBeginningStage* testStage = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceBeginningStage>();
+		if (testGameMode && testStage)
+		{
+			if(selectedJet == nullptr)
+			{
+				selectedJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+				return false;
+			}
+
+			if(IsValid(selectedJet))
+			{
+				testGameMode->updateJetPositions();
+				AController* controller = Cast<AController, AActor>(selectedJet->GetOwner());
+				ARacePlayerState* testState = controller->GetPlayerState<ARacePlayerState>();
+				if(testState)
+				{
+					int gameModeCurrentPosition = testGameMode->positionOf(selectedJet);
+					UE_LOG(LogTemp, Log, TEXT("current game mode position: %d."), gameModeCurrentPosition);
+					int playerStateCurrentPosition = testState->currentPosition();
+					UE_LOG(LogTemp, Log, TEXT("current player state position: %d."), playerStateCurrentPosition);
+					
+					bool positionsMatch = gameModeCurrentPosition == playerStateCurrentPosition;
+					if(positionsMatch)
+					{
+						test->TestTrue(test->conditionMessage(), positionsMatch);
+						sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+						return true;
+					}
+				}
+				return test->manageTickCountTowardsLimit();
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FCheckPlayerStateTotalLapsUpdated::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+	
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+
+		ARaceGameMode* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameMode>();
+		ARaceBeginningStage* testStage = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceBeginningStage>();
+		if (testGameMode && testStage)
+		{
+			if(selectedJet == nullptr)
+			{
+				selectedJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+				return false;
+			}
+
+			if(IsValid(selectedJet))
+			{
+				AController* controller = Cast<AController, AActor>(selectedJet->GetOwner());
+				ARacePlayerState* testState = controller->GetPlayerState<ARacePlayerState>();
+				if(testState)
+				{
+					int gameModeTotalLaps = testGameMode->laps();
+					UE_LOG(LogTemp, Log, TEXT("game mode total laps: %d."), gameModeTotalLaps);
+					int playerStateTotalLaps = testState->totalLaps();
+					UE_LOG(LogTemp, Log, TEXT("player state total laps: %d."), playerStateTotalLaps);
+					
+					bool lapsMatch = gameModeTotalLaps == playerStateTotalLaps;
+					if(lapsMatch)
+					{
+						test->TestTrue(test->conditionMessage(), lapsMatch);
+						sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+						return true;
+					}
+				}
+				return test->manageTickCountTowardsLimit();
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FCheckSameRaceUIQuantityAsControllers::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		ARaceGameMode* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameMode>();
+		ARaceBeginningStage* testStage = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceBeginningStage>();
+		
+		if (testGameMode && testStage)
+		{
+			UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+			TArray<AActor*> controllers = TArray<AActor*>();
+			UGameplayStatics::GetAllActorsOfClass(testWorld, AProjectRPlayerController::StaticClass(), controllers);
+
+			TArray<UUserWidget*> raceUIs = TArray<UUserWidget*>();
+			UWidgetBlueprintLibrary::GetAllWidgetsOfClass(testWorld,raceUIs, URacePlayerUI::StaticClass(), false);
+
+			int controllersQuantity = controllers.Num();
+			UE_LOG(LogTemp, Log, TEXT("controllers: %d."), controllersQuantity);
+			int raceUIsQuantity = raceUIs.Num();
+			UE_LOG(LogTemp, Log, TEXT("raceUIs: %d."), raceUIsQuantity);
+			
+			bool quantitiesMatch = controllersQuantity == raceUIsQuantity;
+
+			if(quantitiesMatch)
+			{
+				test->TestTrue(test->conditionMessage(), quantitiesMatch);
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+			return test->manageTickCountTowardsLimit();
+		}
+	}
+	return false;
+}
+
+
+bool FCheckServerRaceGameModePreventsPausing::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+		if(serverWorld)
+		{
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+			if(clientWorld)
+			{
+				bool preventsPausing = serverWorld->GetAuthGameMode()->AllowPausing() == false;
+
+				if(preventsPausing)
+				{
+					test->TestTrue(test->conditionMessage(), preventsPausing);
+					for(auto context : GEditor->GetWorldContexts())
+					{
+						context.World()->bDebugFrameStepExecution = true;
+					}
+					return true;
+				}
+				return test->manageTickCountTowardsLimit();
+			}
+		}
+	}
+	return false;
+}
+
+
+
+
+
+
+
 
 
 

@@ -11,35 +11,112 @@
 #include "LapPhases/InitialLapPhase.h"
 #include "GameMode/RaceStages/RacePreparationStage.h"
 #include "GameInstance/ProjectRGameInstance.h"
+#include "TimerManager.h"
+#include "PlayerController/ProjectRPlayerController.h"
+#include "PlayerState/RacePlayerState.h"
 
 #include "Kismet/GameplayStatics.h"
 
 
+bool ARaceGameMode::expectedControllerQuantityReached()
+{
+	int controllersAvailable = GetWorld()->GetNumPlayerControllers();
+	if(controllersAvailable == expectedControllers())
+	{
+		return true;
+	}
+	return false;
+}
+
+int ARaceGameMode::expectedControllers()
+{
+	if(expectedControllersNumber == 0)
+	{
+		FString controllerQuantityString = UGameplayStatics::ParseOption(OptionsString, "numControllers");//"?numControllers=xx"
+		expectedControllersNumber = controllerQuantityString.IsEmpty()? 1 : FCString::Atoi(*controllerQuantityString);
+	}
+	return expectedControllersNumber;
+}
+
+void ARaceGameMode::prepareToStart()
+{
+	timeToWaitForPlayers = 0.1f;
+	FTimerManager& timerManager = GetGameInstance()->GetTimerManager();
+	if(timerManager.IsTimerActive(waitForPlayersTimer))
+	{
+		timerManager.ClearTimer(waitForPlayersTimer);
+		timerManager.SetTimerForNextTick(this, &ARaceGameMode::startStage);
+	}
+}
+
+void ARaceGameMode::startStage()
+{
+	if(stage)
+	{
+		stage->start();
+	}
+}
 
 ARaceGameMode::ARaceGameMode()
 {
+	expectedControllersNumber = 0;
 	numberOfLaps = 3;
 	jetSpawnHeight = 100;
-	initialForwardDistanceBetweenJets = 2000;
-	initialLateralDistanceBetweenJets = 1000;
-
+	initialForwardDistanceBetweenJets = 3000;
+	initialLateralDistanceBetweenJets = 2500;
+	stage = nullptr;
 	jetClass = AJet::StaticClass();
 	currentJetPositions = TMap<AJet*, int8>();
 	finalizedJets = TArray<AJet*>();
+	timeToWaitForPlayers = 20;
+	bPauseable = false;
+}
+
+void ARaceGameMode::prepareInitialStageStart()
+{
+	stage = gameWorld->SpawnActor<ARacePreparationStage>();
+	GetGameInstance()->GetTimerManager().SetTimer(waitForPlayersTimer, this, &ARaceGameMode::startStage, timeToWaitForPlayers);
+}
+
+void ARaceGameMode::updateCurrentPlayerStateLapOf(AJet* aJet, int aCurrentLap)
+{
+	AController* controller = Cast<AController, AActor>(aJet->GetOwner());
+	if(controller)
+	{
+		ARacePlayerState* playerState = controller->GetPlayerState<ARacePlayerState>();
+		if(playerState && aCurrentLap > playerState->currentLap())
+		{
+			playerState->updateLapTo(aCurrentLap);
+		}
+	}
+}
+
+void ARaceGameMode::updatePlayerStatesPositions()
+{
+	for(const auto& jetWithPosition : positions())
+	{
+		AController* controller = Cast<AController, AActor>(jetWithPosition.Key->GetOwner());
+		if(controller)
+		{
+			ARacePlayerState* playerState = controller->GetPlayerState<ARacePlayerState>();
+			if(playerState && jetWithPosition.Value != playerState->currentPosition())
+			{
+				playerState->updatePositionTo(jetWithPosition.Value);
+			}
+		}
+	}
 }
 
 void ARaceGameMode::StartPlay()
 {
 	Super::StartPlay();
-
+	ClearPause();
 	gameWorld = GetWorld();
 	AActor* soonToBeTrack = UGameplayStatics::GetActorOfClass(gameWorld, ATrackGenerator::StaticClass());
 	track = Cast<ATrackGenerator, AActor>(soonToBeTrack);
 	AActor* soonToBeInitialPhase = UGameplayStatics::GetActorOfClass(gameWorld, AInitialLapPhase::StaticClass());
 	initialPhase = Cast<AInitialLapPhase, AActor>(soonToBeInitialPhase);
-
-	stage = gameWorld->SpawnActor<ARacePreparationStage>();
-	stage->start();
+	prepareInitialStageStart();
 }
 
 void ARaceGameMode::positionExpectedJets()
@@ -141,6 +218,7 @@ void ARaceGameMode::createLapManager()
 void ARaceGameMode::updateJetPositions()
 {
 	currentJetPositions = calculateJetPositions();
+	updatePlayerStatesPositions();
 }
 
 int ARaceGameMode::laps()
@@ -151,12 +229,16 @@ int ARaceGameMode::laps()
 void ARaceGameMode::lapCompletedByJet(AJet* aCrossingJet)
 {
 	if (runningJets.Contains(aCrossingJet))
-	{
+	{	
 		if (lapManager->currentLapOf(aCrossingJet) > laps())
 		{
 			runningJets.Remove(aCrossingJet);
 			finalizedJets.Add(aCrossingJet);
 			UE_LOG(LogTemp, Log, TEXT("A Jet has finished laps!!!"));
+		}
+		else
+		{
+			updateCurrentPlayerStateLapOf(aCrossingJet, lapManager->currentLapOf(aCrossingJet));
 		}
 	}
 }
@@ -196,7 +278,27 @@ void ARaceGameMode::possessJets()
 		AJet* unPossessedJet = unPossessedJets.Pop();
 		unPossessedJet->SetOwner(controller);
 		controller->Possess(unPossessedJet);
+		prepareRaceUIOf(controller);
 	}//if when testing the splitscreen only the first player moves, try to spawn more players.
+}
+
+void ARaceGameMode::prepareRaceUIOf(APlayerController* aController)
+{
+	setPlayerStateTotalLaps(aController);
+	AProjectRPlayerController* controller = Cast<AProjectRPlayerController, APlayerController>(aController);
+	if(controller)
+	{
+		controller->loadRaceUI();
+	}
+}
+
+void ARaceGameMode::setPlayerStateTotalLaps(APlayerController* controller)
+{
+	ARacePlayerState* playerState = Cast<ARacePlayerState, APlayerState>(controller->PlayerState);
+	if(playerState)
+	{
+		playerState->setTotalLapsTo(laps());
+	}
 }
 
 void ARaceGameMode::disableJetsInput()
@@ -219,4 +321,22 @@ void ARaceGameMode::enableJetsInput()
 			jet->EnableInput(Cast<APlayerController,AController>(jet->GetController()));
 		}
 	}
+}
+
+void ARaceGameMode::PostLogin(APlayerController* NewPlayer)
+{
+	if(expectedControllerQuantityReached())
+	{
+		prepareToStart();
+	}
+}
+
+int ARaceGameMode::lapOf(AJet* aJet)
+{
+	return lapManager->currentLapOf(aJet);
+}
+
+int ARaceGameMode::positionOf(AJet* aJet)
+{
+	return *currentJetPositions.Find(aJet);
 }

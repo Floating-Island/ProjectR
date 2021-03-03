@@ -7,6 +7,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "../TestBaseClasses/SimplePIETestBase.h"
 
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -21,13 +22,13 @@
  //Test check commands:
 
 class USingleplayerMenu;
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSingleplayerMenuClickPlayButtonChangesMap, int, tickCount, int, tickLimit, USingleplayerMenu*, singleplayerMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckSingleplayerMenuClickPlayButtonChangesMap, USingleplayerMenu*, singleplayerMenuInstance, bool, isMenuInstanciated, FSimplePIETestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSingleplayerMenuClickGoBackRemovesFromViewport, int, tickCount, int, tickLimit, USingleplayerMenu*, singleplayerMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckSingleplayerMenuClickGoBackRemovesFromViewport, USingleplayerMenu*, singleplayerMenuInstance, bool, isMenuInstanciated, FSimplePIETestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSingleplayerMenuClickGoBackBringsMainMenu, int, tickCount, int, tickLimit, USingleplayerMenu*, singleplayerMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckSingleplayerMenuClickGoBackBringsMainMenu, USingleplayerMenu*, singleplayerMenuInstance, bool, isMenuInstanciated, FSimplePIETestBase*, test);
 
 
 

@@ -56,25 +56,25 @@ bool FCheckLocalMultiplayerMenuClickGoBackBringsMainMenu::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
+		bool mainMenuInViewport = gameInstance->isMainMenuInViewport();
+
+		if(mainMenuInViewport)
+		{
+			test->TestTrue(TEXT("The local multiplayer menu should change to the main menu when clicking the go back button."), mainMenuInViewport);
+			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+		
 		if (localMultiplayerMenuInstance == nullptr)
 		{
 			localMultiplayerMenuInstance = gameInstance->loadLocalMultiplayerMenu();
-			isMenuInstanciated = true;
 			return false;
 		}
 
-		if (isMenuInstanciated && localMultiplayerMenuInstance->IsInViewport())
+		if (localMultiplayerMenuInstance->IsInViewport())
 		{
 			FVector2D goBackButtonCoordinates = localMultiplayerMenuInstance->goBackButtonAbsoluteCenterPosition();
 			sessionUtilities.processEditorClick(goBackButtonCoordinates);
-			return false;
-		}
-
-		if (isMenuInstanciated && !localMultiplayerMenuInstance->IsInViewport())
-		{
-			test->TestTrue(TEXT("The local multiplayer menu should change to the main menu when clicking the go back button."), gameInstance->isMainMenuInViewport());
-			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
-			return true;
 		}
 
 		++tickCount;

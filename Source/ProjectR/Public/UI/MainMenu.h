@@ -25,6 +25,9 @@ protected:
 	UFUNCTION()
 		void bringLocalMultiplayerMenu();
 
+	UFUNCTION()
+		void bringLanMultiplayerMenu();
+
 	UPROPERTY(meta = (BindWidget))
 		UButton* quitButton;
 
@@ -34,6 +37,9 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 		UButton* localMultiplayerButton;
 
+	UPROPERTY(meta = (BindWidget))
+		UButton* lanMultiplayerButton;
+
 public:
 	virtual bool Initialize() override;
 
@@ -42,4 +48,6 @@ public:
 	FVector2D singleplayerButtonAbsoluteCenterPosition();
 
 	FVector2D localMultiplayerButtonAbsoluteCenterPosition();
+
+	FVector2D lanMultiplayerButtonAbsoluteCenterPosition();
 };

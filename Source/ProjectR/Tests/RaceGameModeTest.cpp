@@ -1,14 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-
-
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "RaceGameModeTest.h"
 #include "GameMode/RaceGameMode.h"
 #include "Commands/RaceGameModeTestCommands.h"
+#include "Commands/NetworkCommands.h"
 
 #include "Tests/AutomationEditorCommon.h"
 
@@ -170,5 +168,90 @@ bool FARaceGameModeSpawnedJetsWithTrackRotationTest::RunTest(const FString& Para
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
+
+
+bool FARaceGameModeLapCompletedByJetUpdatesPlayerStateLapTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode"));
+	establishTestMessageTo(FString("The game mode should update a jet player state's currentLap when calling lapCompletedByJet."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerStateLapUpdated(nullptr, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FARaceGameModeupdateJetPositionsUpdatesPlayerStatePositionTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode"));
+	establishTestMessageTo(FString("The game mode should update a jet player state's currentPosition when calling updateJetPositions."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerStatePositionUpdated(nullptr, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FARaceGameModeSetsPlayerStateTotalLapsBeforeBeginningStageTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode"));
+	establishTestMessageTo(FString("The game mode should set the RacePlayerState's totalLaps in each controller before the beginning stage."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerStateTotalLapsUpdated(nullptr, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FARaceGameModeLoadsRaceUIForEachControllerBeforeBeginningStageTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode"));
+	establishTestMessageTo(FString("The game mode should load the RacePlayerUI in each controller before the beginning stage."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSameRaceUIQuantityAsControllers(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FARaceGameModePreventsPausingOnNetworkedSessionsTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK"));
+	establishTestMessageTo(FString("The race game mode shouldn't allow to pause on networked sessions."));
+	establishTickLimitTo(10);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckServerRaceGameModePreventsPausing(numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS

@@ -200,6 +200,68 @@ bool FCheckSoloMainMenuClickLocalMultiplayerBringsLocalMultiplayerMenu::Update()
 }
 
 
+bool FCheckMainMenuClickLanMultiplayerRemovesMenuFromViewport::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	
+		if(mainMenuInstance == nullptr)
+		{
+			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+			mainMenuInstance = gameInstance->loadMainMenu();
+			isMenuInstanciated = true;
+			return false;
+		}
+		
+		if(isMenuInstanciated && mainMenuInstance->IsInViewport())
+		{
+			FVector2D lanMultiplayerButtonCoordinates = mainMenuInstance->lanMultiplayerButtonAbsoluteCenterPosition();
+			sessionUtilities.processEditorClick(lanMultiplayerButtonCoordinates);
+			return false;
+		}
+		
+		test->TestTrue(TEXT("The main menu should be removed from viewport when clicking the lan multiplayer button."), !mainMenuInstance->IsInViewport());
+		sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckMainMenuClickLanMultiplayerBringsLanMultiplayerMenu::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		bool isLanInViewport = gameInstance->isLanMultiplayerMenuInViewport();
+		
+		if (isLanInViewport)
+		{
+			test->TestTrue(test->conditionMessage(), isLanInViewport);
+			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+		
+		if(mainMenuInstance == nullptr)
+		{
+			mainMenuInstance = gameInstance->loadMainMenu();
+			return false;
+		}
+		
+		if(mainMenuInstance->IsInViewport())
+		{
+			FVector2D lanMultiplayerButtonCoordinates = mainMenuInstance->lanMultiplayerButtonAbsoluteCenterPosition();
+			sessionUtilities.processEditorClick(lanMultiplayerButtonCoordinates);
+		}
+		return test->manageTickCountTowardsLimit();
+	}
+	return false;
+}
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

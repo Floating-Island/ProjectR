@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "PrRPlayerControllerTestCommands.h"
@@ -11,11 +10,41 @@
 #include "UI/PauseMenu.h"
 #include "GameFramework/GameModeBase.h"
 #include "GameFramework/PlayerInput.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
+#include "UI/RacePlayerUI.h"
+#include "PlayerState/RacePlayerState.h"
+#include "../Utilities/NetworkedPIESessionUtilities.h"
+#include "UI/AnnouncerUI.h"
 
 
 //Test preparation commands:
 
 
+bool FServerLoadAnnouncers::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+		if(serverWorld)
+		{
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+			if(clientWorld)
+			{
+				TArray<AActor*> retrievedActors = TArray<AActor*>();
+				UGameplayStatics::GetAllActorsOfClass(serverWorld, AProjectRPlayerController::StaticClass(), retrievedActors);
+				for(auto& actor : retrievedActors)
+				{
+					AProjectRPlayerController* controller = Cast<AProjectRPlayerController, AActor>(actor);
+					controller->loadAnnouncerUI();
+				}
+				return true;
+			}
+		}
+	}
+	return false;
+}
 
 
 
@@ -108,9 +137,10 @@ bool FCheckPlayerControllerPressEscBringsPauseMenu::Update()
 
 			if (testPlayerController->pauseMenuIsInViewport())
 			{
-				test->TestTrue(TEXT("Esc key makes the controller load the pause menu."), testPlayerController->pauseMenuIsInViewport());
+				test->TestTrue(test->conditionMessage(), testPlayerController->pauseMenuIsInViewport());
 				return true;
 			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;
@@ -133,12 +163,10 @@ bool FCheckPlayerControllerPressEscRemovesPauseMenuInViewport::Update()
 			if (testPlayerController->pauseMenuIsInViewport())
 			{
 				testPlayerController->InputKey(EKeys::Escape, EInputEvent::IE_Pressed, 5.0f, false);
+				return test->manageTickCountTowardsLimit();
 			}
-			else
-			{
-				test->TestTrue(TEXT("Esc key makes the controller remove the pause menu present in viewport and hide the mouse cursor."), !testPlayerController->pauseMenuIsInViewport() && !testPlayerController->ShouldShowMouseCursor());
-				return true;
-			}
+			test->TestTrue(test->conditionMessage(), !testPlayerController->pauseMenuIsInViewport() && !testPlayerController->ShouldShowMouseCursor());
+			return true;
 		}
 	}
 	return false;
@@ -198,6 +226,167 @@ bool FCheckPlayerControllerLoadPauseMenuUnPausesTheGameIfInViewport::Update()
 	return false;
 }
 
+
+bool FCheckPRPlayerControllerLoadsPlayerStateUI::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		if (testPlayerController == nullptr)
+		{
+			testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
+			return false;
+		}
+		 testPlayerController->loadRaceUI();
+
+		TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+		UWidgetBlueprintLibrary::GetAllWidgetsOfClass(sessionUtilities.currentPIEWorld(),retrievedWidgets, URacePlayerUI::StaticClass(), false);
+
+		if(retrievedWidgets.Num() > 0)
+		{
+			URacePlayerUI* testRaceUI = Cast<URacePlayerUI, UUserWidget>(retrievedWidgets.Pop());		
+
+			if(testRaceUI)
+			{
+				test->TestNotNull(test->conditionMessage(), testRaceUI);
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+			return test->manageTickCountTowardsLimit();
+		}
+	}
+	return false;
+}
+
+
+bool FCheckPRPlayerControllerLoadsPlayerRaceUISynchronized::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+	
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		if(testPlayerController == nullptr)
+		{
+			testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
+			testPlayerController->loadRaceUI();
+			return false;
+		}
+		
+		ARacePlayerState* testState = sessionUtilities.retrieveFromPIEAnInstanceOf<ARacePlayerState>();
+		if(testState == nullptr)
+		{
+			return false;
+		}
+		
+		TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+		UWidgetBlueprintLibrary::GetAllWidgetsOfClass(sessionUtilities.currentPIEWorld(),retrievedWidgets, URacePlayerUI::StaticClass(), false);
+
+		if(retrievedWidgets.Num() == 0)
+		{
+			AProjectRPlayerController* controller = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
+			controller->loadRaceUI();
+			return false;
+		}
+		
+		URacePlayerUI* testRaceUI = Cast<URacePlayerUI, UUserWidget>(retrievedWidgets.Pop());
+		if (testRaceUI == nullptr)
+		{
+			return false;
+		}
+
+		int stateCurrentLap = testState->currentLap();
+		UE_LOG(LogTemp, Log, TEXT("current player state lap: %d."), stateCurrentLap);
+		
+		int uiCurrentLap = testRaceUI->currentLap();
+		UE_LOG(LogTemp, Log, TEXT("current race player ui lap: %d."), uiCurrentLap);
+
+		int stateTotalLaps = testState->totalLaps();
+		UE_LOG(LogTemp, Log, TEXT("player state total laps: %d."), stateTotalLaps);
+		
+		int uiTotalLaps = testRaceUI->totalLaps();
+		UE_LOG(LogTemp, Log, TEXT("race player total ui laps: %d."), uiTotalLaps);
+
+
+		int stateCurrentPosition = testState->currentPosition();
+		UE_LOG(LogTemp, Log, TEXT("current player state position: %d."), stateCurrentPosition);
+		
+		int uiCurrentPosition = testRaceUI->currentPosition();
+		UE_LOG(LogTemp, Log, TEXT("current race player ui position: %d."), uiCurrentPosition);
+
+		
+		bool positionsMatch = stateCurrentPosition == uiCurrentPosition;
+		bool lapsMatch = stateCurrentLap == uiCurrentLap;
+		bool totalLapsMatch = stateTotalLaps == uiTotalLaps;
+
+		bool valuesMatch = positionsMatch && lapsMatch && totalLapsMatch;
+
+		if(valuesMatch)
+		{
+			test->TestTrue(test->conditionMessage(), valuesMatch);
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+		return test->manageTickCountTowardsLimit();
+	}
+	return false;
+}
+
+
+bool FCheckServerRemoveAnnouncerUIRemovesFromClient::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+		if(serverWorld)
+		{
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+			if(clientWorld)
+			{
+				TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+				UWidgetBlueprintLibrary::GetAllWidgetsOfClass(clientWorld,retrievedWidgets, UAnnouncerUI::StaticClass(), false);
+
+				bool needsToRemoveAnnouncers = false;
+				for(const auto& announcer : retrievedWidgets)
+				{
+					if(announcer->IsInViewport())
+					{
+						needsToRemoveAnnouncers = true;
+						break;
+					}
+				}
+				bool foundAnnouncers = retrievedWidgets.Num() > 0;
+				
+				if(foundAnnouncers && needsToRemoveAnnouncers)
+				{
+					TArray<AActor*> retrievedActors = TArray<AActor*>();
+					UGameplayStatics::GetAllActorsOfClass(serverWorld, AProjectRPlayerController::StaticClass(), retrievedActors);
+					for(auto& actor : retrievedActors)
+					{
+						AProjectRPlayerController* controller = Cast<AProjectRPlayerController, AActor>(actor);
+						controller->removeAnnouncerUI();
+					}
+				}
+
+				bool hasHiddenAllAnnouncers = foundAnnouncers && !needsToRemoveAnnouncers;
+
+				if(hasHiddenAllAnnouncers)
+				{
+					test->TestTrue(test->conditionMessage(), hasHiddenAllAnnouncers);
+					for(auto context : GEditor->GetWorldContexts())
+					{
+						context.World()->bDebugFrameStepExecution = true;
+					}
+					return true;
+				}
+				return test->manageTickCountTowardsLimit();
+			}
+		}
+	}
+	return false;
+}
 
 
 

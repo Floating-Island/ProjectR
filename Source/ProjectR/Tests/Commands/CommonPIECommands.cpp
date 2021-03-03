@@ -3,6 +3,22 @@
 
 #include "CommonPIECommands.h"
 #include "../Utilities/PIESessionUtilities.h"
+#include "GameFramework/GameModeBase.h"
+
+
+bool FSpawnGameModeDefaultPawn::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		AGameModeBase* pieGameMode = sessionUtilities.currentPIEWorld()->GetAuthGameMode();
+		APlayerController* pieController = sessionUtilities.currentPIEWorld()->GetFirstPlayerController();
+
+		pieGameMode->SpawnDefaultPawnAtTransform(pieController, FTransform());
+		return true;
+	}
+	return false;
+}
 
 bool FSpawnInPIEAnActorOfClass::Update()
  {

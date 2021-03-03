@@ -13,6 +13,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -42,7 +43,17 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingLocalMultiplayerButtonRemoves
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingLocalMultiplayerButtonBringsLocalMultiplayerMenuTest, 
-	"ProjectR.MainMenu Tests.Integration.005: Clicking the local multiplayer button brings the singleplayer menu",
+	"ProjectR.MainMenu Tests.Integration.005: Clicking the local multiplayer button brings the localMultiplayer menu",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingLanMultiplayerButtonRemovesMenuFromViewportTest, 
+	"ProjectR.MainMenu Tests.Integration.006: Clicking the lan multiplayer button removes the menu from viewport",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingLanMultiplayerButtonBringsLanMultiplayerMenuTest, FSimplePIETestBase,
+	"ProjectR.MainMenu Tests.Integration.007: Clicking the lan multiplayer button brings the lan multiplayer menu",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

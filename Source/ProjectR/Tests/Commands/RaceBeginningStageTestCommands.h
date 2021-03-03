@@ -7,6 +7,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "../TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -29,6 +30,11 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckTimerActive, FAutomationTes
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRunningStageSpawned, FAutomationTestBase*, test);
 
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRaceBeginningStageLoadsAnnouncerUIs, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckRaceBeginningStageCountdownToStartModifiesAnnouncerText, FSimplePIETestBase*, test);
 
 
 

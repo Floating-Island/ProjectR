@@ -25,13 +25,13 @@ bool FUPauseMenuIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 bool FUPauseMenuClickingReturnButtonChangesToMainMenuMapTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-PlayerController");
+	establishTestMessageTo(FString("The pause menu should change to the main menu map when clicking the return button."));
+	establishTickLimitTo(3);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckPauseMenuClickReturnButtonChangesToMainMenuMap(tickCount, tickLimit, nullptr, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckPauseMenuClickReturnButtonChangesToMainMenuMap(nullptr, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

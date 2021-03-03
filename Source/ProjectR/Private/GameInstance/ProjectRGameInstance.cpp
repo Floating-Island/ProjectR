@@ -5,32 +5,11 @@
 #include "UI/MainMenu.h"
 #include "UI/SingleplayerMenu.h"
 #include "UI/LocalMultiplayerMenu.h"
+#include "UI/LanMultiplayerMenu.h"
+#include "UI/LobbyMenu.h"
 #include "Blueprint/UserWidget.h"
-#include "Kismet/GameplayStatics.h"
+#include "Session/SessionManager.h"
 
-
-
-UMainMenu* UProjectRGameInstance::loadMainMenu()
-{
-	UMainMenu* mainMenuInstance = Cast<UMainMenu, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), UMainMenu::StaticClass()));
-	if (!mainMenuInstance)
-	{
-		mainMenu = CreateWidget<UMainMenu>(GetWorld(), mainMenuClass, FName("Main Menu"));
-	}
-	else
-	{
-		mainMenu = mainMenuInstance;
-	}
-	UE_LOG(LogTemp, Log, TEXT("attempting to add main menu to viewport"));
-	if (!mainMenu->IsInViewport())
-	{
-		mainMenu->AddToViewport();
-		lockMouseToWidget(mainMenu);
-	}
-	expectedPlayers(1);//obscure. Necessary to set the number of players when coming from a pause or going back to main menu from the local multiplayer menu.
-	
-	return mainMenu;
-}
 
 void UProjectRGameInstance::lockMouseToWidget(UMenu* menu)
 {
@@ -42,74 +21,70 @@ void UProjectRGameInstance::lockMouseToWidget(UMenu* menu)
 	controller->bShowMouseCursor = true;
 }
 
+bool UProjectRGameInstance::menuIsInViewport(UMenu* aMenu)
+{
+	if (!aMenu)
+	{
+		return false;
+	}
+	return aMenu->IsInViewport();
+}
+
 UProjectRGameInstance::UProjectRGameInstance()
 {
 	numberOfPlayers = 1;
 }
 
+UMainMenu* UProjectRGameInstance::loadMainMenu()
+{
+	expectedPlayers(1);//obscure. Necessary to set the number of players when coming from a pause or going back to main menu from the local multiplayer menu.
+
+	mainMenu = loadMenuOfClass<UMainMenu>(mainMenuClass, FName("Main Menu"));
+	return mainMenu;
+}
+
 USingleplayerMenu* UProjectRGameInstance::loadSingleplayerMenu()
 {
-	USingleplayerMenu* singleplayerMenuInstance = Cast<USingleplayerMenu, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), USingleplayerMenu::StaticClass()));
-	if (!singleplayerMenuInstance)
-	{
-		singleplayerMenu = CreateWidget<USingleplayerMenu>(GetWorld(), singleplayerMenuClass, FName("Singleplayer Menu"));
-	}
-	else
-	{
-		singleplayerMenu = singleplayerMenuInstance;
-	}
-	if (!singleplayerMenu->IsInViewport())
-	{
-		singleplayerMenu->AddToViewport();
-		lockMouseToWidget(singleplayerMenu);
-	}
+	singleplayerMenu = loadMenuOfClass<USingleplayerMenu>(singleplayerMenuClass, FName("Singleplayer Menu"));
 	return singleplayerMenu;
 }
 
 ULocalMultiplayerMenu* UProjectRGameInstance::loadLocalMultiplayerMenu()
 {
-	ULocalMultiplayerMenu* localMultiplayerMenuInstance = Cast<ULocalMultiplayerMenu, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ULocalMultiplayerMenu::StaticClass()));
-	if (!localMultiplayerMenuInstance)
-	{
-		localMultiplayerMenu = CreateWidget<ULocalMultiplayerMenu>(GetWorld(), localMultiplayerMenuClass, FName("Splitscreen Menu"));
-	}
-	else
-	{
-		localMultiplayerMenu = localMultiplayerMenuInstance;
-	}
-	if (!localMultiplayerMenu->IsInViewport())
-	{
-		localMultiplayerMenu->AddToViewport();
-		lockMouseToWidget(localMultiplayerMenu);
-	}
+	localMultiplayerMenu = loadMenuOfClass<ULocalMultiplayerMenu>(localMultiplayerMenuClass, FName("Splitscreen Menu"));
 	return localMultiplayerMenu;
+}
+
+ULanMultiplayerMenu* UProjectRGameInstance::loadLANMUltiplayerMenu()
+{
+	lanMultiplayerMenu = loadMenuOfClass<ULanMultiplayerMenu>(lanMultiplayerMenuClass, FName("Lan Multiplayer Menu"));
+	return lanMultiplayerMenu;
+}
+
+ULobbyMenu* UProjectRGameInstance::loadLobbyMenu()
+{
+	lobbyMenu = loadMenuOfClass<ULobbyMenu>(lobbyMenuClass, FName("Lobby Menu"));
+	return lobbyMenu;
 }
 
 bool UProjectRGameInstance::isMainMenuInViewport()
 {
-	if (!mainMenu)
-	{
-		return false;
-	}
-	return mainMenu->IsInViewport();
+	return menuIsInViewport(mainMenu);
 }
 
 bool UProjectRGameInstance::isSingleplayerMenuInViewport()
 {
-	if (!singleplayerMenu)
-	{
-		return false;
-	}
-	return singleplayerMenu->IsInViewport();
+	return menuIsInViewport(singleplayerMenu);
 }
 
 bool UProjectRGameInstance::isLocalMultiplayerMenuInViewport()
 {
-	if (!localMultiplayerMenu)
-	{
-		return false;
-	}
-	return localMultiplayerMenu->IsInViewport();
+	return menuIsInViewport(localMultiplayerMenu);
+}
+
+bool UProjectRGameInstance::isLanMultiplayerMenuInViewport()
+{
+	return menuIsInViewport(lanMultiplayerMenu);
 }
 
 void UProjectRGameInstance::expectedPlayers(int aQuantity)
@@ -120,4 +95,41 @@ void UProjectRGameInstance::expectedPlayers(int aQuantity)
 int UProjectRGameInstance::necessaryPlayers()
 {
 	return numberOfPlayers;
+}
+
+bool UProjectRGameInstance::sessionManagerIsConfigured()
+{
+	return sessionManager && sessionManager->isConfigured();
+}
+
+void UProjectRGameInstance::createLANSession()
+{
+	sessionManager->createLANSession();
+}
+
+void UProjectRGameInstance::destroyOnlineSession()
+{
+	sessionManager->destroyCurrentSession();
+}
+
+TArray<FString> UProjectRGameInstance::sessionsFound()
+{
+	return sessionManager->sessionSearchResults();
+}
+
+void UProjectRGameInstance::startLANSessionsSearch()
+{
+	sessionManager->searchLANSessions();
+}
+
+void UProjectRGameInstance::joinSessionWith(FString aDesiredSessionID)
+{
+	sessionManager->joinSessionWith(aDesiredSessionID);
+}
+
+void UProjectRGameInstance::OnStart()
+{
+	Super::OnStart();
+	sessionManager = NewObject<USessionManager>(this, USessionManager::StaticClass()->GetFName());
+	sessionManager->checkSubsystemAndInterfaceConfigured();
 }

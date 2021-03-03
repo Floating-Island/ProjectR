@@ -13,6 +13,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -69,6 +70,31 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeSameOrMoreNumberOfJetsAsPlayersTe
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARaceGameModeSpawnedJetsWithTrackRotationTest, 
 	"ProjectR.RaceGameMode Tests.Integration.010: Each spawned jet has the rotation of the track section where it's at", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceGameModeLapCompletedByJetUpdatesPlayerStateLapTest, FSimplePIETestBase,
+	"ProjectR.RaceGameMode Tests.Integration.011: lapCompletedByJet updates the playerState's currentLap", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceGameModeupdateJetPositionsUpdatesPlayerStatePositionTest, FSimplePIETestBase,
+	"ProjectR.RaceGameMode Tests.Integration.012: updateJetPositions updates the playerState's currentPositon", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceGameModeSetsPlayerStateTotalLapsBeforeBeginningStageTest, FSimplePIETestBase,
+	"ProjectR.RaceGameMode Tests.Integration.013: Sets the RacePlayerState's totalLaps before BeginningStage", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceGameModeLoadsRaceUIForEachControllerBeforeBeginningStageTest, FSimplePIETestBase,
+	"ProjectR.RaceGameMode Tests.Integration.014: Loads the RacePlayerUI for each controller before BeginningStage", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceGameModePreventsPausingOnNetworkedSessionsTest, FSimplePIETestBase,
+	"ProjectR.RaceGameMode Tests.Replication.015: Prevents pausing on networked sessions", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

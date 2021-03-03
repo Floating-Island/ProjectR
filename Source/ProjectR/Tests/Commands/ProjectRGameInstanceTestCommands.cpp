@@ -1,15 +1,19 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "ProjectRGameInstanceTestCommands.h"
 #include "GameInstance/ProjectRGameInstance.h"
 #include "../Utilities/PIESessionUtilities.h"
+#include "../TestBaseClasses/SimplePIETestBase.h"
 #include "UI/MainMenu.h"
 #include "UI/SingleplayerMenu.h"
 #include "UI/LocalMultiplayerMenu.h"
+#include "UI/LanMultiplayerMenu.h"
+#include "UI/LobbyMenu.h"
+
+
 
 
 //Test preparation commands:
@@ -208,6 +212,120 @@ bool FCheckLoadMainMenuSetsExpectedPlayersToOne::Update()
 	}
 	return false;
 }
+
+bool FCheckSessionManagerSetInGameInstance::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		test->TestTrue(TEXT("The session manager should be set and configured."), testInstance->sessionManagerIsConfigured());
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckCreatesLANMultiplayerMenu::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		ULanMultiplayerMenu* testMenu = testInstance->loadLANMUltiplayerMenu();
+
+		test->TestTrue(TEXT("loadLANMUltiplayerMenu should bring the lanMultiplayer menu instance and add it to viewport."), testMenu && testMenu->IsInViewport());
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckCreatesOneLANMultiplayerMenu::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		ULanMultiplayerMenu* testMenu = testInstance->loadLANMUltiplayerMenu();
+		ULanMultiplayerMenu* testAnotherMenu = testInstance->loadLANMUltiplayerMenu();
+
+		test->TestTrue(TEXT("loadLANMUltiplayerMenu should create only one instance of lanMultiplayer menu."), testMenu == testAnotherMenu);
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckShowsCursorInLanMultiplayerMenu::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		ULanMultiplayerMenu* testMenu = testInstance->loadLANMUltiplayerMenu();
+		bool controllerShowsMouseCursor = sessionUtilities.defaultPIEWorld()->GetFirstPlayerController()->ShouldShowMouseCursor();
+
+		test->TestTrue(TEXT("loadLanMultiplayerMenu should make the controller show the mouse cursor."), testMenu && controllerShowsMouseCursor);
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckCreatesLobbyMenu::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		ULobbyMenu* testMenu = testInstance->loadLobbyMenu();
+
+		test->TestTrue(test->conditionMessage(), testMenu && testMenu->IsInViewport());
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckCreatesOneLobbyMenu::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		ULobbyMenu* testMenu = testInstance->loadLobbyMenu();
+		ULobbyMenu* testAnotherMenu = testInstance->loadLobbyMenu();
+
+		test->TestTrue(test->conditionMessage(), testMenu == testAnotherMenu);
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckLoadLobbyMenuShowsMouseCursor::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		ULobbyMenu* testMenu = testInstance->loadLobbyMenu();
+		bool controllerShowsMouseCursor = sessionUtilities.defaultPIEWorld()->GetFirstPlayerController()->ShouldShowMouseCursor();
+
+		test->TestTrue(test->conditionMessage(), testMenu && controllerShowsMouseCursor);
+		return true;
+	}
+	return false;
+}
+
 
 
 

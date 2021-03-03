@@ -13,6 +13,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -27,7 +28,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadMainMenuCreatesMainMe
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadMainMenuCreatesOnlyOneMainMenuTest, 
-	"ProjectR.ProjectRGameInstance Tests.Unit.001: loadMainMenu creates only one main menu",
+	"ProjectR.ProjectRGameInstance Tests.Unit.002: loadMainMenu creates only one main menu",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
@@ -78,6 +79,41 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadSplitscreenMenuShowsM
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadMainMenuSetsExpectedPlayersToOneTest, 
 	"ProjectR.ProjectRGameInstance Tests.Integration.012: loadMainMenu sets the expected players to 1",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceHasASessionManagerConfiguredTest, 
+	"ProjectR.ProjectRGameInstance Tests.Unit.013: Has a session manager created and configured",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadLANMultiplayerMenuCreatesLANMultiplayerMenuTest, 
+	"ProjectR.ProjectRGameInstance Tests.Integration.014: loadLANMultiplayerMenu creates the lanMultiplayer menu and adds it to viewport",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadLANMultiplayerMenuCreatesOneLANMultiplayerMenuTest, 
+	"ProjectR.ProjectRGameInstance Tests.Unit.015: loadLANMultiplayerMenu creates only one lan multiplayer menu",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLANMultiplayerMenuShowsMouseCursorTest, 
+	"ProjectR.ProjectRGameInstance Tests.Integration.016: loadLANMultiplayerMenu makes the controller to show the mouse cursor",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadLobbyMenuCreatesLobbyMenuTest, FSimplePIETestBase,
+	"ProjectR.ProjectRGameInstance Tests.Integration.017: loadLobbyMenu creates the lobby menu and adds it to viewport",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadLobbyMenuCreatesOneLobbyMenuTest, FSimplePIETestBase,
+	"ProjectR.ProjectRGameInstance Tests.Integration.018: loadLobbyMenu creates only one lobby menu",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadLobbyMenuShowsMouseCursorTest, FSimplePIETestBase,
+	"ProjectR.ProjectRGameInstance Tests.Integration.019: loadLobbyMenu makes the controller show the mouse cursor",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

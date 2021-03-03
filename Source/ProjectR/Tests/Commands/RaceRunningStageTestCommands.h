@@ -7,6 +7,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "../TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -32,6 +33,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckEndedStageSpawnedWithNoRunn
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckARaceRunningStartEnablesJetsInput, int, tickCount, int, tickLimit,  FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckRaceRunningStartsAnnouncerUIsRemoval, bool, controllersNeedAnnouncerLoad, FSimplePIETestBase*, test);
 
 
 

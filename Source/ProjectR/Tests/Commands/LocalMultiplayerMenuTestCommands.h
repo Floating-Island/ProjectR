@@ -22,7 +22,7 @@ class ULocalMultiplayerMenu;
 DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckLocalMultiplayerMenuClickGoBackRemovesFromViewport, int, tickCount, int, tickLimit, ULocalMultiplayerMenu*, localMultiplayerMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckLocalMultiplayerMenuClickGoBackBringsMainMenu, int, tickCount, int, tickLimit, ULocalMultiplayerMenu*, localMultiplayerMenuInstance, bool, isMenuInstanciated, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckLocalMultiplayerMenuClickGoBackBringsMainMenu, int, tickCount, int, tickLimit, ULocalMultiplayerMenu*, localMultiplayerMenuInstance, FAutomationTestBase*, test);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckLocalMultiplayerMenuClickPlaySetsPlayers, int, tickCount, int, tickLimit, ULocalMultiplayerMenu*, localMultiplayerMenuInstance, int, aSelectedNumberOfPlayers, FAutomationTestBase*, test);

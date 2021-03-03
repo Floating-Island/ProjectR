@@ -7,7 +7,7 @@
 
 void UPauseMenu::returnToMainMenu()
 {
-	UGameplayStatics::OpenLevel(GetWorld(), mainMenuLevel);
+	GetGameInstance()->ReturnToMainMenu();
 }
 
 void UPauseMenu::removeFromViewportAndResumeGame()

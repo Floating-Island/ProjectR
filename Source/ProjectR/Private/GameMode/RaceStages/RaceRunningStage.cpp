@@ -3,8 +3,22 @@
 
 #include "GameMode/RaceStages/RaceRunningStage.h"
 
+
+#include "PlayerController/ProjectRPlayerController.h"
 #include "GameMode/RaceStages/RaceEndedStage.h"
 #include "GameMode/RaceGameMode.h"
+
+void ARaceRunningStage::removeAnnouncersFromControllers()
+{
+	for (auto iterator = GetWorld()->GetPlayerControllerIterator(); iterator; ++iterator)
+	{
+		AProjectRPlayerController* controller = Cast<AProjectRPlayerController, APlayerController>(iterator->Get());
+		if(controller)
+		{
+			controller->removeAnnouncerUI();
+		}
+	}
+}
 
 ARaceStage* ARaceRunningStage::nextStage()
 {
@@ -23,5 +37,7 @@ void ARaceRunningStage::Tick(float DeltaSeconds)
 
 void ARaceRunningStage::start()
 {
+	FTimerDelegate removalDelegate = FTimerDelegate::CreateUObject(this, &ARaceRunningStage::removeAnnouncersFromControllers);
+	GetWorldTimerManager().SetTimer(announcerRemovalDelay, removalDelegate, 2.5f, false, 1.0f);
 	raceMode->enableJetsInput();
 }

@@ -16,7 +16,7 @@ class PROJECTR_API ARaceBeginningStage : public ARaceStage
 
 protected:
 	FTimerHandle countdownTimer;
-	
+	void loadAnnouncerOnControllers();
 	
 public:
 	virtual void start() override;

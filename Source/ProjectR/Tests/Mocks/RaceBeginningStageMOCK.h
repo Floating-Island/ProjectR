@@ -16,4 +16,6 @@ class PROJECTR_API ARaceBeginningStageMOCK : public ARaceBeginningStage
 
 public:
 	bool hasTimerActive();
+
+	void loadAnnouncers();
 };

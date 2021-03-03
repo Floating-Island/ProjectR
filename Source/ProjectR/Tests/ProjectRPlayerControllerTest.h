@@ -13,6 +13,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -35,13 +36,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerLoadPauseMenuShowsMou
 	"ProjectR.ProjectRPlayerController Tests.Integration.003: loadPauseMenu makes the mouse cursor show",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerEscKeyLoadsPauseMenuTest,
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerEscKeyLoadsPauseMenuTest, FSimplePIETestBase,
 	"ProjectR.ProjectRPlayerController Tests.Integration.004: Pressing the Esc key brings the pause menu",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerEscKeyRemovesPauseMenuIfInViewportTest,
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerEscKeyRemovesPauseMenuIfInViewportTest, FSimplePIETestBase,
 	"ProjectR.ProjectRPlayerController Tests.Integration.005: Pressing the Esc key removes the pause menu if it's already in viewport and hide the mouse cursor",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
@@ -58,6 +57,21 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerLoadPauseMenuUnPauses
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerFullyTicksWhenGamePausedTest,
 	"ProjectR.ProjectRPlayerController Tests.Integration.008: Is set to fully tick when game is paused",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerLoadRaceUILoadsthePlayerStateUITest, FSimplePIETestBase,
+	"ProjectR.ProjectRPlayerController Tests.Integration.009: loadRaceUI loads the RacePlayerState UI", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerLoadRaceUIMakesRacePlayerUISynchronizeVariablesTest, FSimplePIETestBase,
+	"ProjectR.ProjectRPlayerController Tests.Integration.010: loadRaceUI makes the loaded RacePlayerUI synchronize its values with the RacePlayerState", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerServerRemoveAnnouncerUIRemovesClientLoadedAnnouncerUITest, FSimplePIETestBase,
+	"ProjectR.ProjectRPlayerController Tests.Replication.011: Server removeAnnouncerUI removes client loaded announcerUI", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

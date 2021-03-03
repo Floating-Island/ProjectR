@@ -9,6 +9,10 @@
  * This file cointains common latent commands necessary for tests.
  */
 
+/**
+ * Spawns the world gamemode default pawn.
+ */
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnGameModeDefaultPawn);
 
  /**
  * Spawn an actor in while in a PIE session.
