@@ -7,6 +7,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "../TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -16,6 +17,9 @@
 
 
 //Test check commands:
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckPlayerPositionRowUpdatesWithGivenInfo, FSimplePIETestBase*, test);
 
 
 

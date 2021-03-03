@@ -13,11 +13,17 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUPlayerPositionRowIsntNullWhenInstantiatedTest, 
 	"ProjectR.PlayerPositionRow Tests.Unit.000: Isn't null when instantiated",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUPlayerPositionRowUpdatePlayerInfoWithUpdatesInfoTest, FSimplePIETestBase,
+	"ProjectR.PlayerPositionRow Tests.Unit.001: updatePlayerInfoWith updates the info",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
