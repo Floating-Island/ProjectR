@@ -13,7 +13,6 @@ bool FURaceResultsUIIsntNullWhenInstantiatedTest::RunTest(const FString& Paramet
 {
 	URaceResultsUI* testResults = NewObject<URaceResultsUI>();
 
-
 	TestNotNull(FString("Shouldn't be null when instantiated"), testResults);
 
 	return true;
