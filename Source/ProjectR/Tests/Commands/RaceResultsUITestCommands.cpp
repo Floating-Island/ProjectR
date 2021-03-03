@@ -28,10 +28,10 @@ bool FCheckRaceResultsInfoBoxQuantitySameAsPlayerStates::Update()
 			URaceResultsUI* testResults = Cast<URaceResultsUI, UUserWidget>(testContainer->retrieveWidget());
 			AProjectRGameState* testGameState = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRGameState>();
 
-			bool stringsCoincident = testResults->rowsQuantity() == testGameState->PlayerArray.Num();
-			if(stringsCoincident)
+			bool QuantitiesCoincident = testResults->rowsQuantity() == testGameState->PlayerArray.Num();
+			if(QuantitiesCoincident)
 			{
-				test->TestTrue(test->conditionMessage(), stringsCoincident);
+				test->TestTrue(test->conditionMessage(), QuantitiesCoincident);
 				return true;
 			}
 			return test->manageTickCountTowardsLimit();
