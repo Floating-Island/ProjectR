@@ -13,11 +13,17 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FURaceResultsUIIsntNullWhenInstantiatedTest, 
 	"ProjectR.RaceResultsUI Tests.Unit.000: Isn't null when instantiated",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FURaceResultsUIFillsInfoBoxWithRaceGameStatePlayerStatesInfoTest, FSimplePIETestBase,
+	"ProjectR.RaceResultsUI Tests.Unit.001: fills its infoBox with the RaceGameState's PlayerStates info",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

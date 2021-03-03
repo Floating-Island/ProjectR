@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Editor/UnrealEd/Public/Tests/AutomationEditorCommon.h"
+#include "Commands/CommonPIECommands.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 
@@ -15,6 +17,23 @@ bool FURaceResultsUIIsntNullWhenInstantiatedTest::RunTest(const FString& Paramet
 
 	TestNotNull(FString("Shouldn't be null when instantiated"), testResults);
 
+	return true;
+}
+
+
+bool FURaceResultsUIFillsInfoBoxWithRaceGameStatePlayerStatesInfoTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceResultsAndFriends"));
+	establishTestMessageTo(FString("The player position row should update its info when calling updateInfoWith."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnGameModeDefaultPawn);
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceResultsInfoBoxQuantitySameAsPlayerStates(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
 
