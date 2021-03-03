@@ -7,6 +7,7 @@
 #include "UI/PlayerPositionRow.h"
 #include "Tests/AutomationEditorCommon.h"
 #include "Commands/CommonPIECommands.h"
+#include "Commands/PlayerPositionRowTestCommands.h"
 
 
 
