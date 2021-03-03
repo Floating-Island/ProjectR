@@ -27,4 +27,7 @@ protected:
 public:
 
 	void updateInfoWith(FString aPlayerName, FString aPosition);
+	FString playerName();
+	FString position();
+	
 };

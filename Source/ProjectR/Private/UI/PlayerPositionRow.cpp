@@ -9,3 +9,13 @@ void UPlayerPositionRow::updateInfoWith(FString aPlayerName, FString aPosition)
 	playerNameText->SetText(FText::FromString(aPlayerName));
 	positionText->SetText(FText::FromString(aPosition));
 }
+
+FString UPlayerPositionRow::playerName()
+{
+	return playerNameText->GetText().ToString();
+}
+
+FString UPlayerPositionRow::position()
+{
+	return positionText->GetText().ToString();
+}
