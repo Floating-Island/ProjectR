@@ -301,7 +301,7 @@ bool FUProjectRGameInstanceLoadMainMenuDestroysPlayersButFirstTest::RunTest(cons
 
 	ADD_LATENT_AUTOMATION_COMMAND(FGameInstanceCreateMorePlayers);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckLoadMainMenuKeepsOnlyFirstPlayer(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLoadMainMenuKeepsOnlyFirstPlayer(false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

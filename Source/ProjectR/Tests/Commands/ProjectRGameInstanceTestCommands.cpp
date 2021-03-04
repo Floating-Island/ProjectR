@@ -351,22 +351,29 @@ bool FCheckLoadMainMenuKeepsOnlyFirstPlayer::Update()
 
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
 		int playersInWorld = testWorld->GetNumPlayerControllers();
-		if(playersInWorld > 1)
-		{
-			UE_LOG(LogTemp, Log, TEXT("quantity of players: %d"), playersInWorld);
-		
-			testInstance->loadMainMenu();
 
-			UE_LOG(LogTemp, Log, TEXT("quantity of players after loading the main menu: %d"), playersInWorld);
-		
-			bool onlyFirstController = playersInWorld == 1 && testWorld->GetFirstPlayerController();
-			if(onlyFirstController)
+		if(!needsToLoadMainMenu)
+		{
+			if(playersInWorld > 1)
 			{
-				test->TestTrue(test->conditionMessage(), onlyFirstController);
-				return true;
+				needsToLoadMainMenu = true;
 			}
-			return test->manageTickCountTowardsLimit();
+			return false;
 		}
+
+		UE_LOG(LogTemp, Log, TEXT("quantity of players: %d"), playersInWorld);
+		
+		testInstance->loadMainMenu();
+
+		UE_LOG(LogTemp, Log, TEXT("quantity of players after loading the main menu: %d"), playersInWorld);
+		
+		bool onlyFirstController = playersInWorld == 1 && testWorld->GetFirstPlayerController();
+		if(onlyFirstController)
+		{
+			test->TestTrue(test->conditionMessage(), onlyFirstController);
+			return true;
+		}
+		return test->manageTickCountTowardsLimit();
 	}
 	return false;
 }
