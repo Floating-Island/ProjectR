@@ -327,6 +327,34 @@ bool FCheckLoadLobbyMenuShowsMouseCursor::Update()
 }
 
 
+bool FCheckLoadMainMenuKeepsOnlyFirstController::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+
+		sessionUtilities.spawnInPIEAnInstanceOf<APlayerController>();
+		sessionUtilities.spawnInPIEAnInstanceOf<APlayerController>();
+		
+		testInstance->loadMainMenu();
+		
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		
+		bool onlyFirstController = testWorld->GetNumPlayerControllers() == 0 && testWorld->GetFirstPlayerController();
+		if(onlyFirstController)
+		{
+			test->TestTrue(test->conditionMessage(), onlyFirstController);
+			return true;
+		}
+		return test->manageTickCountTowardsLimit();
+	}
+	return false;
+}
+
+
+
 
 
 

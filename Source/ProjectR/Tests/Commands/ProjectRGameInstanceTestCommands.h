@@ -73,4 +73,10 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesOneLobbyMenu, FSimpl
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLoadLobbyMenuShowsMouseCursor, FSimplePIETestBase*, test);
 
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLoadMainMenuKeepsOnlyFirstController, FSimplePIETestBase*, test);
+
+
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS
