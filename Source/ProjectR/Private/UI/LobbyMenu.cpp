@@ -53,6 +53,8 @@ bool ULobbyMenu::Initialize()
 
 	bIsFocusable = true;
 
+	bool doesntHaveAuthority = GetOwningLocalPlayer()->PlayerController->HasAuthority() == false;
+	
 	if(returnButton)
 	{
 		returnButton->OnClicked.AddDynamic(this, &ULobbyMenu::returnToMainMenu);
@@ -64,6 +66,10 @@ bool ULobbyMenu::Initialize()
 	if(mapListing)
 	{
 		mapListing->bIsFocusable = true;
+		if(doesntHaveAuthority)
+		{
+			mapListing->SetVisibility(ESlateVisibility::Collapsed);
+		}
 	}
 
 	if(startRaceButton)
@@ -72,6 +78,11 @@ bool ULobbyMenu::Initialize()
 		startRaceButton->OnPressed.AddDynamic(this, &ULobbyMenu::startRace);
 		startRaceButton->IsFocusable = true;
 		startRaceButton->SetClickMethod(EButtonClickMethod::MouseDown);
+
+		if(doesntHaveAuthority)
+		{
+			startRaceButton->SetVisibility(ESlateVisibility::Collapsed);
+		}
 	}
 
 	return initializeResult;
