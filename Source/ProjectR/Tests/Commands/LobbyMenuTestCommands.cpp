@@ -11,6 +11,8 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "UI/StringHolderButton.h"
 #include "GameFramework/GameStateBase.h"
+#include "UI/MapSelectorWidget.h"
+#include "../Utilities/NetworkedPIESessionUtilities.h"
 
 
 //Test preparation commands:
@@ -171,6 +173,45 @@ bool FCheckLobbyMenuUpdatesPlayersConnected::Update()
 	}
 	return false;
 }
+
+
+bool FCheckClientMapSelectorCollapsed::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+		if(serverWorld)
+		{
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+			if(clientWorld)
+			{
+
+				TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+				UWidgetBlueprintLibrary::GetAllWidgetsOfClass(clientWorld,retrievedWidgets, UMapSelectorWidget::StaticClass(), false);
+
+				UMapSelectorWidget* testSelector = Cast<UMapSelectorWidget, UUserWidget>(retrievedWidgets.Pop());
+
+				
+				bool isCollapsed = testSelector->GetVisibility() == ESlateVisibility::Collapsed;
+
+				if(isCollapsed)
+				{
+					test->TestTrue(test->conditionMessage(), isCollapsed);
+					for(auto context : GEditor->GetWorldContexts())
+					{
+						context.World()->bDebugFrameStepExecution = true;
+					}
+					return true;
+				}
+				return test->manageTickCountTowardsLimit();
+			}
+		}
+	}
+	return false;
+}
+
 
 
 

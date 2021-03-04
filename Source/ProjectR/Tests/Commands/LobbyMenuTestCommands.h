@@ -32,6 +32,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLobbyMenuLoadedByLevelBluep
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckLobbyMenuUpdatesPlayersConnected, bool, playersQuantityMatch, FSimplePIETestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckClientMapSelectorCollapsed, int, clientQuantity, FSimplePIETestBase*, test);
+
+
 
 
 

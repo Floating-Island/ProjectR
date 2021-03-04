@@ -42,6 +42,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULobbyMenuGameStatePlayerArrayQuantityC
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULobbyMenuCollapsesMapSelectorWidgetIfNotAuthorityTest, FSimplePIETestBase,
+	"ProjectR.LobbyMenu Tests.Replication.006: Collapses the maps selector widget if local player isn't authority",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

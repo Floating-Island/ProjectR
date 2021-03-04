@@ -8,6 +8,7 @@
 #include "UI/LobbyMenu.h"
 #include "Tests/AutomationEditorCommon.h"
 #include "Commands/LobbyMenuTestCommands.h"
+#include "Commands/NetworkCommands.h"
 
 
 bool FULobbyMenuIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
@@ -82,6 +83,27 @@ bool FULobbyMenuGameStatePlayerArrayQuantityChangeIsUpdatedTest::RunTest(const F
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
+
+
+bool FULobbyMenuCollapsesMapSelectorWidgetIfNotAuthorityTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/lobby"));
+	establishTestMessageTo(FString("The lobby menu should update its playersConnected when the PlayerArray quantity in GameState changes."));
+	establishTickLimitTo(10);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckClientMapSelectorCollapsed(numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 
 
 
