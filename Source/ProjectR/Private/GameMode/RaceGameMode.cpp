@@ -236,7 +236,10 @@ void ARaceGameMode::lapCompletedByJet(AJet* aCrossingJet)
 			finalizedJets.Add(aCrossingJet);
 			UE_LOG(LogTemp, Log, TEXT("A Jet has finished laps!!!"));
 			AProjectRPlayerController* jetController = Cast<AProjectRPlayerController, AActor>(aCrossingJet->GetOwner());
-			jetController->loadResultsUI();
+			if(jetController)
+			{
+				jetController->loadResultsUI();
+			}
 		}
 		else
 		{
