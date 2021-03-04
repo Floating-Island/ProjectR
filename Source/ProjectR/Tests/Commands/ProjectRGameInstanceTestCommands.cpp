@@ -21,6 +21,21 @@
 
 
 
+bool FGameInstanceCreateMorePlayers::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		UGameplayStatics::CreatePlayer(sessionUtilities.currentPIEWorld());
+		UGameplayStatics::CreatePlayer(sessionUtilities.currentPIEWorld());
+		return true;
+	}
+	return false;
+}
+
+
+
 
 
 
@@ -325,6 +340,44 @@ bool FCheckLoadLobbyMenuShowsMouseCursor::Update()
 	}
 	return false;
 }
+
+
+bool FCheckLoadMainMenuKeepsOnlyFirstPlayer::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
+
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+		int playersInWorld = testWorld->GetNumPlayerControllers();
+
+		if(!needsToLoadMainMenu)
+		{
+			if(playersInWorld > 1)
+			{
+				needsToLoadMainMenu = true;
+			}
+			return false;
+		}
+
+		UE_LOG(LogTemp, Log, TEXT("quantity of players: %d"), playersInWorld);
+		
+		testInstance->loadMainMenu();
+
+		UE_LOG(LogTemp, Log, TEXT("quantity of players after loading the main menu: %d"), playersInWorld);
+		
+		bool onlyFirstController = playersInWorld == 1 && testWorld->GetFirstPlayerController();
+		if(onlyFirstController)
+		{
+			test->TestTrue(test->conditionMessage(), onlyFirstController);
+			return true;
+		}
+		return test->manageTickCountTowardsLimit();
+	}
+	return false;
+}
+
 
 
 

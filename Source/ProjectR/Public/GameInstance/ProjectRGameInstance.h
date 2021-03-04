@@ -46,6 +46,9 @@ protected:
 
 	UPROPERTY()
 	USessionManager* sessionManager;
+
+	UFUNCTION()
+		void keepFirstControllerOnly();
 	
 public:
 	UProjectRGameInstance();

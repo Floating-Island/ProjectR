@@ -16,6 +16,8 @@ class FSimplePIETestBase;
 
 //Test preparation commands:
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FGameInstanceCreateMorePlayers);
+
 
 
 //Test check commands:
@@ -72,5 +74,11 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckCreatesOneLobbyMenu, FSimpl
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLoadLobbyMenuShowsMouseCursor, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckLoadMainMenuKeepsOnlyFirstPlayer, bool, needsToLoadMainMenu, FSimplePIETestBase*, test);
+
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS

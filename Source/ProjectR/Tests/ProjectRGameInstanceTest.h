@@ -117,6 +117,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadLobbyMenuShows
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUProjectRGameInstanceLoadMainMenuDestroysPlayersButFirstTest, FSimplePIETestBase,
+	"ProjectR.ProjectRGameInstance Tests.Integration.020: loadMainMenu destroys all players but the first one",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
