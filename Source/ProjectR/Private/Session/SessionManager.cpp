@@ -67,7 +67,8 @@ void USessionManager::checkSubsystemAndInterfaceConfigured()
 }
 
 bool USessionManager::createLANSession()
-{	
+{
+	destroyCurrentSession();
 	return hostSession(GetWorld()->GetGameInstance()->GetPrimaryPlayerUniqueId(), GameSessionName, true, true, 8);
 }
 
