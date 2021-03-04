@@ -194,7 +194,6 @@ bool FCheckClientMapSelectorCollapsed::Update()
 				if(retrievedWidgets.Num() > 0)
 				{
 					UMapSelectorWidget* testSelector = Cast<UMapSelectorWidget, UUserWidget>(retrievedWidgets.Pop());
-
 				
 					bool isCollapsed = testSelector->GetVisibility() == ESlateVisibility::Collapsed;
 
