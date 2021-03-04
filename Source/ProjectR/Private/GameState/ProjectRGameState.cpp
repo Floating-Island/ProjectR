@@ -6,6 +6,7 @@
 
 #include "Net/UnrealNetwork.h"
 #include "UI/AnnouncerUI.h"
+#include "UI/RaceResultsUI.h"
 
 
 void AProjectRGameState::fireAnnouncerUpdateEvent()
@@ -37,6 +38,11 @@ UClass* AProjectRGameState::announcerUIType()
 void AProjectRGameState::fireEvents()
 {
 	fireAnnouncerUpdateEvent();
+}
+
+UClass* AProjectRGameState::resultsUIType()
+{
+	return resultsUIClass;
 }
 
 void AProjectRGameState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const

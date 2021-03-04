@@ -15,6 +15,7 @@
 #include "PlayerState/RacePlayerState.h"
 #include "../Utilities/NetworkedPIESessionUtilities.h"
 #include "UI/AnnouncerUI.h"
+#include "UI/RaceResultsUI.h"
 
 
 //Test preparation commands:
@@ -38,6 +39,33 @@ bool FServerLoadAnnouncers::Update()
 				{
 					AProjectRPlayerController* controller = Cast<AProjectRPlayerController, AActor>(actor);
 					controller->loadAnnouncerUI();
+				}
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FServerLoadResults::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+		if(serverWorld)
+		{
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+			if(clientWorld)
+			{
+				TArray<AActor*> retrievedActors = TArray<AActor*>();
+				UGameplayStatics::GetAllActorsOfClass(serverWorld, AProjectRPlayerController::StaticClass(), retrievedActors);
+				for(auto& actor : retrievedActors)
+				{
+					AProjectRPlayerController* controller = Cast<AProjectRPlayerController, AActor>(actor);
+					controller->loadResultsUI();
 				}
 				return true;
 			}
@@ -375,6 +403,40 @@ bool FCheckServerRemoveAnnouncerUIRemovesFromClient::Update()
 				if(hasHiddenAllAnnouncers)
 				{
 					test->TestTrue(test->conditionMessage(), hasHiddenAllAnnouncers);
+					for(auto context : GEditor->GetWorldContexts())
+					{
+						context.World()->bDebugFrameStepExecution = true;
+					}
+					return true;
+				}
+				return test->manageTickCountTowardsLimit();
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FCheckClientLoadsResults::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+		if(serverWorld)
+		{
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+			if(clientWorld)
+			{
+				TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+				UWidgetBlueprintLibrary::GetAllWidgetsOfClass(clientWorld,retrievedWidgets, URaceResultsUI::StaticClass(), false);
+
+				bool hasLoadedResults = retrievedWidgets.Num() > 0;
+
+				if(hasLoadedResults)
+				{
+					test->TestTrue(test->conditionMessage(), hasLoadedResults);
 					for(auto context : GEditor->GetWorldContexts())
 					{
 						context.World()->bDebugFrameStepExecution = true;

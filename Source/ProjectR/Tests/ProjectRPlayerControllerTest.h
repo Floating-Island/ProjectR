@@ -75,5 +75,10 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerServerRemoveAn
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerServerLoadResultsUILoadsClientRaceResultsUITest, FSimplePIETestBase,
+	"ProjectR.ProjectRPlayerController Tests.Replication.012: Server loadResultsUI loads client RaceResultsUI", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS

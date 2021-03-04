@@ -21,6 +21,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawnAJetBehindAnother, FAutomat
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAJetOnFinalLapMakeItFinish);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAControlledJetOnFinalLapMakeItFinish);
+
+
 
 
 
@@ -68,6 +71,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSameRaceUIQuantityAsControl
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckServerRaceGameModePreventsPausing, int, clientQuantity, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckGameModeRaceResultsLoaded, FSimplePIETestBase*, test);
 
 
 

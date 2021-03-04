@@ -6,6 +6,7 @@
 #include "GameFramework/GameStateBase.h"
 #include "ProjectRGameState.generated.h"
 
+class URaceResultsUI;
 class UAnnouncerUI;
 class UPauseMenu;
 
@@ -31,6 +32,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Settings")
 		TSubclassOf<UAnnouncerUI> announcerUIClass;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Settings")
+		TSubclassOf<URaceResultsUI> resultsUIClass;
 	
 //public:
 //	UPROPERTY(EditDefaultsOnly, Category= "Menus")
@@ -42,4 +46,5 @@ public:
 	FString announcerDisplayText();
 	UClass* announcerUIType();
 	void fireEvents();
+	UClass* resultsUIType();
 };
