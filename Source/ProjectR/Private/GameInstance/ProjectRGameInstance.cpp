@@ -30,6 +30,27 @@ bool UProjectRGameInstance::menuIsInViewport(UMenu* aMenu)
 	return aMenu->IsInViewport();
 }
 
+void UProjectRGameInstance::keepFirstControllerOnly()
+{
+	APlayerController* firstController = GetWorld()->GetFirstPlayerController();
+	UE_LOG(LogTemp, Log, TEXT("quantity of players: %d"), GetWorld()->GetNumPlayerControllers());
+
+	TArray<APlayerController*> controllersToDestroy = TArray<APlayerController*>();
+	for(auto controllerIterator = GetWorld()->GetControllerIterator(); controllerIterator; ++controllerIterator)
+	{
+		APlayerController* controller = Cast<APlayerController, AController>(controllerIterator->Get());
+		if(controller && controller != firstController)
+		{
+			controllersToDestroy.Add(controller);
+		}
+	}
+
+	for(auto& controller : controllersToDestroy)
+	{
+		UGameplayStatics::RemovePlayer(controller, true);
+	}
+}
+
 UProjectRGameInstance::UProjectRGameInstance()
 {
 	numberOfPlayers = 1;
@@ -38,7 +59,7 @@ UProjectRGameInstance::UProjectRGameInstance()
 UMainMenu* UProjectRGameInstance::loadMainMenu()
 {
 	expectedPlayers(1);//obscure. Necessary to set the number of players when coming from a pause or going back to main menu from the local multiplayer menu.
-
+	GetTimerManager().SetTimerForNextTick(this, &UProjectRGameInstance::keepFirstControllerOnly);
 	mainMenu = loadMenuOfClass<UMainMenu>(mainMenuClass, FName("Main Menu"));
 	return mainMenu;
 }
