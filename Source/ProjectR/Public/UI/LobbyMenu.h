@@ -40,7 +40,8 @@ protected:
 
 	void focusPlayersOnGame();
 	void updatePlayersInLobby();
-	
+	bool localOwnerHasAuthority();
+
 public:
 	virtual bool Initialize() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;

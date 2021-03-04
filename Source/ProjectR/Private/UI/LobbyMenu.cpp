@@ -15,10 +15,13 @@ void ULobbyMenu::returnToMainMenu()
 
 void ULobbyMenu::startRace()
 {
-	focusPlayersOnGame();
-	FString mapSelected = mapListing->selectedMap();
-	FString travelURL = mapSelected + FString("?listen") + FString("?numControllers=") + FString::FromInt(GetWorld()->GetNumPlayerControllers());
-	GetWorld()->ServerTravel(travelURL, false, false);
+	if(localOwnerHasAuthority())
+	{
+		focusPlayersOnGame();
+		FString mapSelected = mapListing->selectedMap();
+		FString travelURL = mapSelected + FString("?listen") + FString("?numControllers=") + FString::FromInt(GetWorld()->GetNumPlayerControllers());
+		GetWorld()->ServerTravel(travelURL, false, false);
+	}
 }
 
 void ULobbyMenu::focusPlayersOnGame()
@@ -47,13 +50,18 @@ void ULobbyMenu::updatePlayersInLobby()
 	}
 }
 
+bool ULobbyMenu::localOwnerHasAuthority()
+{
+	return GetOwningLocalPlayer()->PlayerController->HasAuthority();
+}
+
 bool ULobbyMenu::Initialize()
 {
 	bool initializeResult = Super::Initialize();
 
 	bIsFocusable = true;
 
-	bool doesntHaveAuthority = GetOwningLocalPlayer()->PlayerController->HasAuthority() == false;
+	bool doesntHaveAuthority = localOwnerHasAuthority() == false;
 	
 	if(returnButton)
 	{
