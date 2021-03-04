@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "ProjectRPlayerController.generated.h"
 
+class URaceResultsUI;
 class AProjectRGameState;
 class UAnnouncerUI;
 class URacePlayerUI;
@@ -31,6 +32,9 @@ protected:
 	UPROPERTY()
 		UAnnouncerUI* announcerUI;
 
+	UPROPERTY()
+		URaceResultsUI* raceResultsUI;
+
 	void showRaceUI();
 
 	UFUNCTION()
@@ -38,6 +42,7 @@ protected:
 
 	void configureAnnouncerUI(AProjectRGameState* aGameState);
 	void showAnnouncerUI();
+	void showResultsUI();
 	
 
 public:
@@ -61,4 +66,7 @@ public:
 
 	UFUNCTION(Client, Reliable)
 		void removeAnnouncerUI();
+	
+	UFUNCTION(Client, Reliable)
+		void loadResultsUI();
 };

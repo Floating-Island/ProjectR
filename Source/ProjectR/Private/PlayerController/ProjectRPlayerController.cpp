@@ -10,6 +10,7 @@
 #include "TimerManager.h"
 #include "GameState/ProjectRGameState.h"
 #include "UI/AnnouncerUI.h"
+#include "UI/RaceResultsUI.h"
 
 void AProjectRPlayerController::SetupInputComponent()
 {
@@ -41,6 +42,11 @@ void AProjectRPlayerController::configureAnnouncerUI(AProjectRGameState* aGameSt
 void AProjectRPlayerController::showAnnouncerUI()
 {
 	announcerUI->AddToPlayerScreen();
+}
+
+void AProjectRPlayerController::showResultsUI()
+{
+	raceResultsUI->AddToPlayerScreen();
 }
 
 AProjectRPlayerController::AProjectRPlayerController(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
@@ -115,6 +121,30 @@ void AProjectRPlayerController::focusOnGame()
 void AProjectRPlayerController::loadPauseMenuWrapper()
 {
 	loadPauseMenu();
+}
+
+void AProjectRPlayerController::loadResultsUI_Implementation()
+{
+	if(IsLocalPlayerController())
+	{
+		AProjectRGameState* gameState = Cast<AProjectRGameState, AGameStateBase>(GetWorld()->GetGameState());
+		if(gameState)
+		{
+			UClass* resultsUIClass = gameState->resultsUIType();
+			if (!raceResultsUI || raceResultsUI->IsUnreachable())
+			{
+				raceResultsUI = CreateWidget<URaceResultsUI>(this, resultsUIClass);
+			}
+			if (!raceResultsUI->IsInViewport())
+			{
+				showResultsUI();
+			}
+		}
+		else
+		{
+			GetWorld()->GetTimerManager().SetTimerForNextTick(this, &AProjectRPlayerController::loadResultsUI);
+		}
+	}
 }
 
 void AProjectRPlayerController::removeAnnouncerUI_Implementation()
