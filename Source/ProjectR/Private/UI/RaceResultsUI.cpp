@@ -15,23 +15,30 @@ void URaceResultsUI::repopulateInfoBox()
 	AProjectRGameState* gameState = Cast<AProjectRGameState, AGameStateBase>(GetWorld()->GetGameState());
 	if(gameState && playerPositionRowClass)
 	{
+		TMap<FString, int> namesAndPositions = TMap<FString, int>();
 		for (const auto& playerState : gameState->PlayerArray)
 		{
 			ARacePlayerState* raceState = Cast<ARacePlayerState, APlayerState>(playerState);
 			if(raceState)
 			{
-				fillInfoBoxWith(raceState);
+				namesAndPositions.Add(FString::FromInt(raceState->GetUniqueID()), raceState->currentPosition());
 			}
+		}
+		namesAndPositions.ValueSort([](float first, float second) {return first < second; });
+		
+		for (const auto& playerInfo : namesAndPositions)
+		{
+			fillInfoBoxWith(playerInfo);
 		}
 	}
 }
 
-void URaceResultsUI::fillInfoBoxWith(ARacePlayerState* aRaceState)
+void URaceResultsUI::fillInfoBoxWith(const TTuple<FString, int>& aPlayerNameAndPositionTuple)
 {
 	UPlayerPositionRow* playerInfoRow = Cast<UPlayerPositionRow, UUserWidget>(CreateWidget(infoBox, playerPositionRowClass));
 	if(playerInfoRow)
 	{
-		playerInfoRow->updateInfoWith(FString::FromInt(aRaceState->GetUniqueID()), FString::FromInt(aRaceState->currentPosition()));
+		playerInfoRow->updateInfoWith(aPlayerNameAndPositionTuple.Key, FString::FromInt(aPlayerNameAndPositionTuple.Value));
 		infoBox->AddChild(playerInfoRow);
 	}
 }

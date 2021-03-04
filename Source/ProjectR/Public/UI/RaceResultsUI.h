@@ -27,7 +27,7 @@ protected:
 		TSubclassOf<UPlayerPositionRow> playerPositionRowClass;
 	
 	void repopulateInfoBox();
-	void fillInfoBoxWith(ARacePlayerState* aRaceState);
+	void fillInfoBoxWith(const TTuple<FString, int>& aPlayerNameAndPositionTuple);
 	
 public:
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
