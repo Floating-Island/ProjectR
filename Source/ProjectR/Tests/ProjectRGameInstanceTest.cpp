@@ -290,7 +290,7 @@ bool FUProjectRGameInstanceLoadLobbyMenuShowsMouseCursorTest::RunTest(const FStr
 }
 
 
-bool FUProjectRGameInstanceLoadMainMenuDestroysControllersButFirstTest::RunTest(const FString& Parameters)
+bool FUProjectRGameInstanceLoadMainMenuDestroysPlayersButFirstTest::RunTest(const FString& Parameters)
 {
 	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
 	establishTestMessageTo(FString("loadMainMenu should destroy all controllers except the first one."));
@@ -299,7 +299,9 @@ bool FUProjectRGameInstanceLoadMainMenuDestroysControllersButFirstTest::RunTest(
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckLoadMainMenuKeepsOnlyFirstController(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FGameInstanceCreateMorePlayers);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLoadMainMenuKeepsOnlyFirstPlayer(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

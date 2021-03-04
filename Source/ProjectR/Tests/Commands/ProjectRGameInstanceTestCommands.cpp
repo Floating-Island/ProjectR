@@ -21,6 +21,21 @@
 
 
 
+bool FGameInstanceCreateMorePlayers::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		UGameplayStatics::CreatePlayer(sessionUtilities.currentPIEWorld());
+		UGameplayStatics::CreatePlayer(sessionUtilities.currentPIEWorld());
+		return true;
+	}
+	return false;
+}
+
+
+
 
 
 
@@ -327,28 +342,31 @@ bool FCheckLoadLobbyMenuShowsMouseCursor::Update()
 }
 
 
-bool FCheckLoadMainMenuKeepsOnlyFirstController::Update()
+bool FCheckLoadMainMenuKeepsOnlyFirstPlayer::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* testInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
-
-		sessionUtilities.spawnInPIEAnInstanceOf<APlayerController>();
-		sessionUtilities.spawnInPIEAnInstanceOf<APlayerController>();
-		
-		testInstance->loadMainMenu();
-		
 		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		
-		bool onlyFirstController = testWorld->GetNumPlayerControllers() == 0 && testWorld->GetFirstPlayerController();
-		if(onlyFirstController)
+		int playersInWorld = testWorld->GetNumPlayerControllers();
+		if(playersInWorld > 1)
 		{
-			test->TestTrue(test->conditionMessage(), onlyFirstController);
-			return true;
+			UE_LOG(LogTemp, Log, TEXT("quantity of players: %d"), playersInWorld);
+		
+			testInstance->loadMainMenu();
+
+			UE_LOG(LogTemp, Log, TEXT("quantity of players after loading the main menu: %d"), playersInWorld);
+		
+			bool onlyFirstController = playersInWorld == 1 && testWorld->GetFirstPlayerController();
+			if(onlyFirstController)
+			{
+				test->TestTrue(test->conditionMessage(), onlyFirstController);
+				return true;
+			}
+			return test->manageTickCountTowardsLimit();
 		}
-		return test->manageTickCountTowardsLimit();
 	}
 	return false;
 }
