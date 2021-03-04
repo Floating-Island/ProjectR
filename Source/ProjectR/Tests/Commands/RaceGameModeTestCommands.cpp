@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "../../Public/UI/RaceResultsUI.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "RaceGameModeTestCommands.h"
@@ -17,6 +16,8 @@
 #include "GameInstance/ProjectRGameInstance.h"
 #include "PlayerState/RacePlayerState.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "UI/RaceResultsUI.h"
+#include "PlayerController/ProjectRPlayerController.h"
 
 #include "../Mocks/LapManagerMOCK.h"
 #include "Tests/AutomationEditorCommon.h"
@@ -80,6 +81,43 @@ bool FSpawnAJetOnFinalLapMakeItFinish::Update()
 	FVector behind = testTrack->locationAt(testTrack->length() - behindDistance) + testTrack->upVectorAt(behindDistance) * height;
 
 	AJet* jetBehind = sessionUtilities.spawnInPIEAnInstanceOf<AJet>(behind);
+
+	testGameMode->createLapManagerMOCK();
+	testGameMode->addToRunningJets(jetBehind);
+
+	ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
+	testManager->makeJetsPhaseFinal();
+	testManager->changeLapTo(testGameMode->laps(), jetBehind);
+
+	FVector atInitialPhase = sessionUtilities.retrieveFromPIEAnInstanceOf<AInitialLapPhase>()->GetActorLocation() + testTrack->upVectorAt(behindDistance) * height;
+	jetBehind->SetActorLocation(atInitialPhase);
+
+	return true;
+}
+
+
+bool FSpawnAControlledJetOnFinalLapMakeItFinish::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+	ARaceGameModeMOCK* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameModeMOCK>();
+
+	ATrackGenerator* testTrack = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
+
+	float behindDistance = 700;
+	int height = 200;
+	FVector behind = testTrack->locationAt(testTrack->length() - behindDistance) + testTrack->upVectorAt(behindDistance) * height;
+
+	AJet* jetBehind = sessionUtilities.spawnInPIEAnInstanceOf<AJet>(behind);
+	AProjectRPlayerController* testController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
+
+	jetBehind->SetOwner(testController);
+	testController->Possess(jetBehind);
+	
 
 	testGameMode->createLapManagerMOCK();
 	testGameMode->addToRunningJets(jetBehind);

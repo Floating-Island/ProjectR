@@ -263,7 +263,7 @@ bool FARaceGameModeLoadsResultsUIOnFinalistJetControllerTest::RunTest(const FStr
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAJetOnFinalLapMakeItFinish);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAControlledJetOnFinalLapMakeItFinish);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckGameModeRaceResultsLoaded(this));
 
