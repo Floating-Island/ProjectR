@@ -20,6 +20,9 @@ class AProjectRPlayerController;
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FServerLoadAnnouncers, int, clientQuantity, FSimplePIETestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FServerLoadResults, int, clientQuantity, FSimplePIETestBase*, test);
+
+
 
 
  //Test check commands:
@@ -52,6 +55,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPRPlayerControllerLoadsPlay
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckServerRemoveAnnouncerUIRemovesFromClient, int, clientQuantity, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckClientLoadsResults, int, clientQuantity, FSimplePIETestBase*, test);
 
 
 
