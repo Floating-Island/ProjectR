@@ -191,21 +191,24 @@ bool FCheckClientMapSelectorCollapsed::Update()
 				TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
 				UWidgetBlueprintLibrary::GetAllWidgetsOfClass(clientWorld,retrievedWidgets, UMapSelectorWidget::StaticClass(), false);
 
-				UMapSelectorWidget* testSelector = Cast<UMapSelectorWidget, UUserWidget>(retrievedWidgets.Pop());
+				if(retrievedWidgets.Num() > 0)
+				{
+					UMapSelectorWidget* testSelector = Cast<UMapSelectorWidget, UUserWidget>(retrievedWidgets.Pop());
 
 				
-				bool isCollapsed = testSelector->GetVisibility() == ESlateVisibility::Collapsed;
+					bool isCollapsed = testSelector->GetVisibility() == ESlateVisibility::Collapsed;
 
-				if(isCollapsed)
-				{
-					test->TestTrue(test->conditionMessage(), isCollapsed);
-					for(auto context : GEditor->GetWorldContexts())
+					if(isCollapsed)
 					{
-						context.World()->bDebugFrameStepExecution = true;
+						test->TestTrue(test->conditionMessage(), isCollapsed);
+						for(auto context : GEditor->GetWorldContexts())
+						{
+							context.World()->bDebugFrameStepExecution = true;
+						}
+						return true;
 					}
-					return true;
+					return test->manageTickCountTowardsLimit();
 				}
-				return test->manageTickCountTowardsLimit();
 			}
 		}
 	}
