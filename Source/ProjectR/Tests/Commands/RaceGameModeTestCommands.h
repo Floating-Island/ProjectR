@@ -70,6 +70,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckSameRaceUIQuantityAsControl
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckServerRaceGameModePreventsPausing, int, clientQuantity, FSimplePIETestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckGameModeRaceResultsLoaded, FSimplePIETestBase*, test);
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

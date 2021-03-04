@@ -98,6 +98,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceGameModePreventsPausingOnNetworked
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceGameModeLoadsResultsUIOnFinalistJetControllerTest, FSimplePIETestBase,
+	"ProjectR.RaceGameMode Tests.Unit.016: Makes the finalist jet's controller to load the results UI", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

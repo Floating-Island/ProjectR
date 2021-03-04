@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "../../Public/UI/RaceResultsUI.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "RaceGameModeTestCommands.h"
@@ -627,6 +628,37 @@ bool FCheckServerRaceGameModePreventsPausing::Update()
 	return false;
 }
 
+
+bool FCheckGameModeRaceResultsLoaded::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		ARaceGameMode* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameMode>();
+		
+		if (testGameMode)
+		{
+			UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+			TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+			UWidgetBlueprintLibrary::GetAllWidgetsOfClass(testWorld,retrievedWidgets, URaceResultsUI::StaticClass(), false);
+
+			bool hasLoadedResults = retrievedWidgets.Num() > 0;
+
+			if(hasLoadedResults)
+			{
+				test->TestTrue(test->conditionMessage(), hasLoadedResults);
+				for(auto context : GEditor->GetWorldContexts())
+				{
+					context.World()->bDebugFrameStepExecution = true;
+				}
+				return true;
+			}
+			return test->manageTickCountTowardsLimit();
+		}
+	}
+	return false;
+}
 
 
 
