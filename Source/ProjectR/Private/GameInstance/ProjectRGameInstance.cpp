@@ -33,7 +33,6 @@ bool UProjectRGameInstance::menuIsInViewport(UMenu* aMenu)
 void UProjectRGameInstance::keepFirstControllerOnly()
 {
 	APlayerController* firstController = GetWorld()->GetFirstPlayerController();
-	UE_LOG(LogTemp, Log, TEXT("quantity of players: %d"), GetWorld()->GetNumPlayerControllers());
 
 	TArray<APlayerController*> controllersToDestroy = TArray<APlayerController*>();
 	for(auto controllerIterator = GetWorld()->GetControllerIterator(); controllerIterator; ++controllerIterator)
