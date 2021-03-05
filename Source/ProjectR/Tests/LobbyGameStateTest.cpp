@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "../Public/GameState/LobbyGameState.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 
 #include "LobbyGameStateTest.h"
+#include "GameState/LobbyGameState.h"
 
 
 bool FALobbyGameStateIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
