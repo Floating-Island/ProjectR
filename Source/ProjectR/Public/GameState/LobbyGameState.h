@@ -34,4 +34,6 @@ public:
 		void updateSelectedMap(FString anUpdatedMap);
 
 	void subscribeToLobbyMapUpdate(ULobbyMenu* aLobbyMenu);
+
+	FString selectedMapName();
 };

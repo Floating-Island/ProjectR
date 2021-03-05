@@ -25,6 +25,11 @@ void ALobbyGameState::subscribeToLobbyMapUpdate(ULobbyMenu* aLobbyMenu)
 	fireLobbyMapUpdateEvent();
 }
 
+FString ALobbyGameState::selectedMapName()
+{
+	return selectedMap;
+}
+
 
 void ALobbyGameState::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
 {
