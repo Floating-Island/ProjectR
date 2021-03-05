@@ -13,11 +13,17 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALobbyGameStateIsntNullWhenInstantiatedTest, 
 	"ProjectR.LobbyGameState Tests.Unit.000: Isn't null when instantiated",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FALobbyGameStateClickingReturnGoesToMainMenuTest, FSimplePIETestBase,
+	"ProjectR.LobbyGameState Tests.Integration.001: Exists in the lobby map",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
