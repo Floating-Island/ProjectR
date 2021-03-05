@@ -234,8 +234,7 @@ bool FCheckClientMapSelectedReplicates::Update()
 				
 				if(retrievedClientWidgets.Num() > 0)
 				{
-					if(needsToSelectMap)
-					{
+					
 						TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
 						UWidgetBlueprintLibrary::GetAllWidgetsOfClass(serverWorld,retrievedWidgets, UStringHolderButton::StaticClass(), false);
 
@@ -249,11 +248,8 @@ bool FCheckClientMapSelectedReplicates::Update()
 
 							PIESessionUtilities sessionUtilities = PIESessionUtilities();
 							sessionUtilities.processEditorClick(selectedButtonCoordinates);
-
-							needsToSelectMap = false;
-							return false;
 						}
-					}
+					
 						
 					TArray<UUserWidget*> retrievedServerWidgets = TArray<UUserWidget*>();
 					UWidgetBlueprintLibrary::GetAllWidgetsOfClass(serverWorld,retrievedServerWidgets, ULobbyMenu::StaticClass(), false);
