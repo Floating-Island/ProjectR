@@ -8,6 +8,7 @@
 #include "UI/LobbyMenu.h"
 #include "Tests/AutomationEditorCommon.h"
 #include "Commands/LobbyMenuTestCommands.h"
+#include "Commands/NetworkCommands.h"
 
 
 bool FULobbyMenuIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
@@ -82,6 +83,79 @@ bool FULobbyMenuGameStatePlayerArrayQuantityChangeIsUpdatedTest::RunTest(const F
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
+
+
+bool FULobbyMenuCollapsesMapSelectorWidgetIfNotAuthorityTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/lobby"));
+	establishTestMessageTo(FString("The lobby menu should update its playersConnected when the PlayerArray quantity in GameState changes."));
+	establishTickLimitTo(10);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckClientMapSelectorCollapsed(numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+//bool FULobbyMenuReplicatesSelectedMapToClientsTest::RunTest(const FString& Parameters)
+//{
+//	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/lobby"));
+//	establishTestMessageTo(FString("The lobby menu should replicate its selected map when clicking one."));
+//	establishTickLimitTo(10);
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+//	int32 numberOfPlayers = 2;
+//	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FCheckClientMapSelectedReplicates(FString("this isn't a selected map"), true, numberOfPlayers, this));
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+//	return true;
+//}
+
+
+bool FULobbyMenuClickingAMapButtonChangesLobbyGameStateSelectedMapTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/lobby"));
+	establishTestMessageTo(FString("The lobby menu should make the lobby game state update its map when clicking a map."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckClickingAMapChangesLobbyGameState(FString(), true, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FULobbyMenuClickingAMapButtonChangesLobbyMenuSelectedMapTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/lobby"));
+	establishTestMessageTo(FString("The lobby menu should update its map when clicking a map."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckClickingAMapUpdatesMap(FString(), true, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+
 
 
 

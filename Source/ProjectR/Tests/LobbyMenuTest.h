@@ -42,6 +42,26 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULobbyMenuGameStatePlayerArrayQuantityC
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULobbyMenuCollapsesMapSelectorWidgetIfNotAuthorityTest, FSimplePIETestBase,
+	"ProjectR.LobbyMenu Tests.Replication.006: Collapses the maps selector widget if local player isn't authority",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+//Can't use this. Jenkins can't click on a window behind another (happens because the client viewport is created in front of the server)...
+//IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULobbyMenuReplicatesSelectedMapToClientsTest, FSimplePIETestBase,
+//	"ProjectR.LobbyMenu Tests.Replication.007: Replicates selected map to clients",
+//	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULobbyMenuClickingAMapButtonChangesLobbyGameStateSelectedMapTest, FSimplePIETestBase,
+	"ProjectR.LobbyMenu Tests.Integration.007: Clicking a map makes the lobby game state to update its selected map",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULobbyMenuClickingAMapButtonChangesLobbyMenuSelectedMapTest, FSimplePIETestBase,
+	"ProjectR.LobbyMenu Tests.Integration.008: Clicking a map makes the lobby menu update its selected map",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

@@ -7,6 +7,7 @@
 #include "Components/TextBlock.h"
 #include "Components/Button.h"
 #include "UI/MapSelectorWidget.h"
+#include "GameState/LobbyGameState.h"
 
 void ULobbyMenu::returnToMainMenu()
 {
@@ -15,10 +16,13 @@ void ULobbyMenu::returnToMainMenu()
 
 void ULobbyMenu::startRace()
 {
-	focusPlayersOnGame();
-	FString mapSelected = mapListing->selectedMap();
-	FString travelURL = mapSelected + FString("?listen") + FString("?numControllers=") + FString::FromInt(GetWorld()->GetNumPlayerControllers());
-	GetWorld()->ServerTravel(travelURL, false, false);
+	if(localOwnerHasAuthority())
+	{
+		focusPlayersOnGame();
+		FString mapSelected = mapListing->selectedMap();
+		FString travelURL = mapSelected + FString("?listen") + FString("?numControllers=") + FString::FromInt(GetWorld()->GetNumPlayerControllers());
+		GetWorld()->ServerTravel(travelURL, false, false);
+	}
 }
 
 void ULobbyMenu::focusPlayersOnGame()
@@ -47,12 +51,46 @@ void ULobbyMenu::updatePlayersInLobby()
 	}
 }
 
+bool ULobbyMenu::localOwnerHasAuthority()
+{
+	ULocalPlayer* localPlayer = GetOwningLocalPlayer();
+	return localPlayer?  localPlayer->PlayerController->HasAuthority() : true;
+}
+
+void ULobbyMenu::subscribeGameStateToMapUpdateEvent()
+{
+	ALobbyGameState* gameState = Cast<ALobbyGameState, AGameStateBase>(GetWorld()->GetGameState());
+	if(gameState)
+	{
+		if(localOwnerHasAuthority())
+		{
+			mapListing->subscribeToMapUpdate(gameState);
+			mapListing->subscribeToMapUpdate(this);
+		}
+		else
+		{
+			gameState->subscribeToLobbyMapUpdate(this);
+		}
+	}
+	else
+	{
+		GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ULobbyMenu::subscribeGameStateToMapUpdateEvent);
+	}
+}
+
+void ULobbyMenu::updateSelectedMapText(FString aText)
+{
+	selectedMapText->SetText(FText::FromString(aText));	
+}
+
 bool ULobbyMenu::Initialize()
 {
 	bool initializeResult = Super::Initialize();
 
 	bIsFocusable = true;
 
+	bool doesntHaveAuthority = localOwnerHasAuthority() == false;
+	
 	if(returnButton)
 	{
 		returnButton->OnClicked.AddDynamic(this, &ULobbyMenu::returnToMainMenu);
@@ -64,6 +102,10 @@ bool ULobbyMenu::Initialize()
 	if(mapListing)
 	{
 		mapListing->bIsFocusable = true;
+		if(doesntHaveAuthority)
+		{
+			mapListing->SetVisibility(ESlateVisibility::Collapsed);
+		}
 	}
 
 	if(startRaceButton)
@@ -72,8 +114,13 @@ bool ULobbyMenu::Initialize()
 		startRaceButton->OnPressed.AddDynamic(this, &ULobbyMenu::startRace);
 		startRaceButton->IsFocusable = true;
 		startRaceButton->SetClickMethod(EButtonClickMethod::MouseDown);
-	}
 
+		if(doesntHaveAuthority)
+		{
+			startRaceButton->SetVisibility(ESlateVisibility::Collapsed);
+		}
+	}
+	subscribeGameStateToMapUpdateEvent();
 	return initializeResult;
 }
 
@@ -100,4 +147,9 @@ int ULobbyMenu::connectedPlayers()
 		return FCString::Atoi(*playersInLobbyText->GetText().ToString());
 	}
 	return -1;
+}
+
+FString ULobbyMenu::selectedMap()
+{
+	return selectedMapText->GetText().ToString();
 }

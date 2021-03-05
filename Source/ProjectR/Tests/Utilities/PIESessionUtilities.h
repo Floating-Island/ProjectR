@@ -39,6 +39,8 @@ public:
 
 	void processEditorClick(FVector2D atCoordinates);
 
+	void processEditorClickAtWindow(FVector2D atCoordinates, TSharedPtr<FGenericWindow> aWindow);
+
 
 	template <typename anActorDerivedClass>
 	anActorDerivedClass* spawnInPIEAnInstanceOf(FVector atLocation = FVector(0));

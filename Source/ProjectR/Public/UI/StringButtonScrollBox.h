@@ -6,6 +6,11 @@
 #include "Components/ScrollBox.h"
 #include "StringButtonScrollBox.generated.h"
 
+class ULobbyMenu;
+class ALobbyGameState;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSelectedStringUpdateEvent, FString, anUpdatedSelectedString);
+
+
 class UStringHolderButton;
 /**
  * 
@@ -25,6 +30,12 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "String Holder Button Class")
 		TSubclassOf<UStringHolderButton> stringHolderButtonClass;
 
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+		FSelectedStringUpdateEvent mapUpdateEvent;
+
+	UFUNCTION()
+		void fireSelectedStringUpdateEvent();
+
 	
 public:
 	virtual bool Initialize() override;
@@ -32,4 +43,7 @@ public:
 	int stringButtonsQuantity();
 	FString selectedString();
 	void childClicked(UStringHolderButton* aChild);
+
+	void subscribeToSelectedStringUpdate(ALobbyGameState* aGameState);
+	void subscribeToSelectedStringUpdate(ULobbyMenu* aLobbyMenu);
 };

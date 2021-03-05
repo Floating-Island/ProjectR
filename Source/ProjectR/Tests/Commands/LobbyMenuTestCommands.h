@@ -32,6 +32,18 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLobbyMenuLoadedByLevelBluep
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckLobbyMenuUpdatesPlayersConnected, bool, playersQuantityMatch, FSimplePIETestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckClientMapSelectorCollapsed, int, clientQuantity, FSimplePIETestBase*, test);
+
+
+//DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckClientMapSelectedReplicates, FString, selectedMap, bool, needsToSelectMap, int, clientQuantity, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckClickingAMapChangesLobbyGameState, FString, selectedMap, bool, needsToSelectMap, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckClickingAMapUpdatesMap, FString, selectedMap, bool, needsToSelectMap, FSimplePIETestBase*, test);
+
+
 
 
 

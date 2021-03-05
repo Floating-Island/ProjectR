@@ -58,7 +58,7 @@ UProjectRGameInstance::UProjectRGameInstance()
 UMainMenu* UProjectRGameInstance::loadMainMenu()
 {
 	expectedPlayers(1);//obscure. Necessary to set the number of players when coming from a pause or going back to main menu from the local multiplayer menu.
-	GetTimerManager().SetTimerForNextTick(this, &UProjectRGameInstance::keepFirstControllerOnly);
+	keepFirstControllerOnly();
 	mainMenu = loadMenuOfClass<UMainMenu>(mainMenuClass, FName("Main Menu"));
 	return mainMenu;
 }

@@ -139,3 +139,34 @@ void PIESessionUtilities::processEditorClick(FVector2D atCoordinates)
 	bool mouseClick = slateApplication.ProcessMouseButtonDoubleClickEvent(genericWindow, mouseMoveAndClickEvent);
 	UE_LOG(LogTemp, Log, TEXT("a mouse click %s been done."), *FString(mouseClick ? "has" : "hasn't"));
 }
+
+void PIESessionUtilities::processEditorClickAtWindow(FVector2D atCoordinates, TSharedPtr<FGenericWindow> aWindow)
+{
+	//Get our slate application
+	FSlateApplication& slateApplication = FSlateApplication::Get();
+
+	const TSet<FKey> pressedButtons = TSet<FKey>({ EKeys::LeftMouseButton });
+
+	FPointerEvent mouseMoveAndClickEvent(
+		0,
+		slateApplication.CursorPointerIndex,
+		atCoordinates,
+		FVector2D(0, 0),
+		pressedButtons,
+		EKeys::LeftMouseButton,
+		0,
+		slateApplication.GetPlatformApplication()->GetModifierKeys()
+	);
+
+	aWindow->BringToFront();
+	
+	/*
+	 *It's not necessary to move before clicking because when using process mouse button double click, it also moves the cursor to the desired position.
+	 *UE_LOG(LogTemp, Log, TEXT("Attempting a mouse move:"));
+	 *bool mouseMove = SlateApp.ProcessMouseMoveEvent(mouseMoveAndClickEvent);
+	 *UE_LOG(LogTemp, Log, TEXT("a mouse move %s been done."), *FString(mouseMove ? "has" : "hasn't"));
+	*/
+	UE_LOG(LogTemp, Log, TEXT("Attempting click at coordinates: %s."), *atCoordinates.ToString());
+	bool mouseClick = slateApplication.ProcessMouseButtonDoubleClickEvent(aWindow, mouseMoveAndClickEvent);
+	UE_LOG(LogTemp, Log, TEXT("a mouse click %s been done."), *FString(mouseClick ? "has" : "hasn't"));
+}
