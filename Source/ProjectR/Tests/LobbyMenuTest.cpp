@@ -126,7 +126,7 @@ bool FULobbyMenuCollapsesMapSelectorWidgetIfNotAuthorityTest::RunTest(const FStr
 bool FULobbyMenuClickingAMapButtonChangesLobbyGameStateSelectedMapTest::RunTest(const FString& Parameters)
 {
 	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/lobby"));
-	establishTestMessageTo(FString("The lobby menu should update its playersConnected when the PlayerArray quantity in GameState changes."));
+	establishTestMessageTo(FString("The lobby menu should the lobby game state update its map when clicking a map."));
 	establishTickLimitTo(3);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
