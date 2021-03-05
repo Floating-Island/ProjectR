@@ -104,6 +104,25 @@ bool FULobbyMenuCollapsesMapSelectorWidgetIfNotAuthorityTest::RunTest(const FStr
 }
 
 
+bool FULobbyMenuReplicatesSelectedMapToClientsTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/lobby"));
+	establishTestMessageTo(FString("The lobby menu should update its playersConnected when the PlayerArray quantity in GameState changes."));
+	establishTickLimitTo(10);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckClientMapSelectedReplicates(FString("this isn't a selected map"), true, numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 
 
 

@@ -47,6 +47,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULobbyMenuCollapsesMapSelectorWidgetIfN
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULobbyMenuReplicatesSelectedMapToClientsTest, FSimplePIETestBase,
+	"ProjectR.LobbyMenu Tests.Replication.007: Replicates selected map to clients",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

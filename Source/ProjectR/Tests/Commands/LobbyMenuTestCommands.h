@@ -35,6 +35,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckLobbyMenuUpdatesPlayersConn
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckClientMapSelectorCollapsed, int, clientQuantity, FSimplePIETestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckClientMapSelectedReplicates, FString, selectedMap, bool, needsToSelectMap, int, clientQuantity, FSimplePIETestBase*, test);
+
+
 
 
 
