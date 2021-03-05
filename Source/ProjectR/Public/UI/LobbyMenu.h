@@ -38,16 +38,26 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 		UTextBlock* playersInLobbyText;
 
+	UPROPERTY(meta = (BindWidget))
+		UTextBlock* selectedMapText;
+
 	void focusPlayersOnGame();
 	void updatePlayersInLobby();
 	bool localOwnerHasAuthority();
+
+	UFUNCTION()
+		void subscribeGameStateToMapUpdateEvent();
+
 
 public:
 	virtual bool Initialize() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 	FVector2D returnButtonAbsoluteCenterPosition();
 	FVector2D startRaceButtonAbsoluteCenterPosition();
+	UFUNCTION()
+		void updateSelectedMapText(FString aText);
 
 	int connectedPlayers();
+	FString selectedMap();
 	
 };

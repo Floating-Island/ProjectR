@@ -48,6 +48,16 @@ FString UMapSelectorWidget::selectedMap()
 	return mapListing->selectedString();
 }
 
+void UMapSelectorWidget::subscribeToMapUpdate(ALobbyGameState* aGameState)
+{
+	mapListing->subscribeToSelectedStringUpdate(aGameState);
+}
+
+void UMapSelectorWidget::subscribeToMapUpdate(ULobbyMenu* ALobbyMenu)
+{
+	mapListing->subscribeToSelectedStringUpdate(ALobbyMenu);
+}
+
 void UMapSelectorWidget::createMapButtons()
 {
 	TArray<FString> mapsFound = mapsCollected();

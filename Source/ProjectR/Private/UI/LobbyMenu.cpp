@@ -7,6 +7,7 @@
 #include "Components/TextBlock.h"
 #include "Components/Button.h"
 #include "UI/MapSelectorWidget.h"
+#include "GameState/LobbyGameState.h"
 
 void ULobbyMenu::returnToMainMenu()
 {
@@ -52,7 +53,34 @@ void ULobbyMenu::updatePlayersInLobby()
 
 bool ULobbyMenu::localOwnerHasAuthority()
 {
-	return GetOwningLocalPlayer()->PlayerController->HasAuthority();
+	ULocalPlayer* localPlayer = GetOwningLocalPlayer();
+	return localPlayer?  localPlayer->PlayerController->HasAuthority() : true;
+}
+
+void ULobbyMenu::subscribeGameStateToMapUpdateEvent()
+{
+	ALobbyGameState* gameState = Cast<ALobbyGameState, AGameStateBase>(GetWorld()->GetGameState());
+	if(gameState)
+	{
+		if(localOwnerHasAuthority())
+		{
+			mapListing->subscribeToMapUpdate(gameState);
+			mapListing->subscribeToMapUpdate(this);
+		}
+		else
+		{
+			gameState->subscribeToLobbyMapUpdate(this);
+		}
+	}
+	else
+	{
+		GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ULobbyMenu::subscribeGameStateToMapUpdateEvent);
+	}
+}
+
+void ULobbyMenu::updateSelectedMapText(FString aText)
+{
+	selectedMapText->SetText(FText::FromString(aText));	
 }
 
 bool ULobbyMenu::Initialize()
@@ -92,7 +120,7 @@ bool ULobbyMenu::Initialize()
 			startRaceButton->SetVisibility(ESlateVisibility::Collapsed);
 		}
 	}
-
+	subscribeGameStateToMapUpdateEvent();
 	return initializeResult;
 }
 
@@ -119,4 +147,9 @@ int ULobbyMenu::connectedPlayers()
 		return FCString::Atoi(*playersInLobbyText->GetText().ToString());
 	}
 	return -1;
+}
+
+FString ULobbyMenu::selectedMap()
+{
+	return selectedMapText->GetText().ToString();
 }

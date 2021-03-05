@@ -3,6 +3,10 @@
 
 #include "UI/StringButtonScrollBox.h"
 
+
+
+#include "../../Public/UI/LobbyMenu.h"
+#include "GameState/LobbyGameState.h"
 #include "UI/StringHolderButton.h"
 
 
@@ -11,7 +15,25 @@ void UStringButtonScrollBox::childClicked(UStringHolderButton* aChild)
 	if(selectedChild != aChild && aChild->GetTypedOuter(StaticClass()))
 	{
 		selectedChild = aChild;
+		fireSelectedStringUpdateEvent();
 	}
+}
+
+void UStringButtonScrollBox::subscribeToSelectedStringUpdate(ALobbyGameState* aGameState)
+{
+	mapUpdateEvent.AddUniqueDynamic(aGameState, &ALobbyGameState::updateSelectedMap);
+	fireSelectedStringUpdateEvent();
+}
+
+void UStringButtonScrollBox::subscribeToSelectedStringUpdate(ULobbyMenu* aLobbyMenu)
+{
+	mapUpdateEvent.AddUniqueDynamic(aLobbyMenu, &ULobbyMenu::updateSelectedMapText);
+	fireSelectedStringUpdateEvent();
+}
+
+void UStringButtonScrollBox::fireSelectedStringUpdateEvent()
+{
+	mapUpdateEvent.Broadcast(selectedString());
 }
 
 bool UStringButtonScrollBox::Initialize()

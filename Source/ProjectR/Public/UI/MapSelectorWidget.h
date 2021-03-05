@@ -3,9 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "StringButtonScrollBox.h"
 #include "Blueprint/UserWidget.h"
 #include "MapSelectorWidget.generated.h"
 
+class ULobbyMenu;
+class ALobbyGameState;
 class UStringButtonScrollBox;
 /**
  * 
@@ -20,6 +24,9 @@ public:
 	TArray<FString> mapsCollected();
 	FString selectedMap();
 
+	void subscribeToMapUpdate(ALobbyGameState* aGameState);
+	void subscribeToMapUpdate(ULobbyMenu* ALobbyMenu);
+	
 protected:
 
 	UPROPERTY(meta = (BindWidget))
