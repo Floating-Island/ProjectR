@@ -27,6 +27,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FALobbyGameStateClickingReturnGoesToMain
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FALobbyGameStateUpdatingSelectedMapUpdatesMapOfLobbyMenuClientTest, FSimplePIETestBase,
+	"ProjectR.LobbyGameState Tests.Replication.002: Updating selected map updates the client lobby menu",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

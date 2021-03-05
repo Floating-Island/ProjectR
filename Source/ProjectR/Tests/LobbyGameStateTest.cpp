@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "Commands/NetworkCommands.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 
@@ -34,6 +35,26 @@ bool FALobbyGameStateClickingReturnGoesToMainMenuTest::RunTest(const FString& Pa
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
+
+
+bool FALobbyGameStateUpdatingSelectedMapUpdatesMapOfLobbyMenuClientTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/lobby"));
+	establishTestMessageTo(FString("The lobby game state should update the selected map of client lobby menus when updating its own."));
+	establishTickLimitTo(10);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLobbyGameStateUpdatesClientLobbyMenus(FString("this is a map update"), true, numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
 
 
 
