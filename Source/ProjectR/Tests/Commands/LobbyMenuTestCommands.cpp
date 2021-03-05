@@ -247,7 +247,7 @@ bool FCheckClientMapSelectedReplicates::Update()
 							FVector2D selectedButtonCoordinates = testButton->GetTickSpaceGeometry().GetAbsolutePositionAtCoordinates(buttonCenter);
 
 							PIESessionUtilities sessionUtilities = PIESessionUtilities();
-							sessionUtilities.processEditorClick(selectedButtonCoordinates);
+							sessionUtilities.processEditorClickAtWindow(selectedButtonCoordinates, testButton->GetWorld()->GetGameViewport()->GetWindow()->GetNativeWindow());
 						}
 					
 						
