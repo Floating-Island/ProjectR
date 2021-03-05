@@ -328,6 +328,48 @@ bool FCheckClickingAMapChangesLobbyGameState::Update()
 }
 
 
+bool FCheckClickingAMapChangesLobbyGameState::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+		TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+		UWidgetBlueprintLibrary::GetAllWidgetsOfClass(testWorld,retrievedWidgets, UStringHolderButton::StaticClass(), false);
+
+		if(needsToSelectMap && retrievedWidgets.Num() > 0 )
+		{
+			UStringHolderButton* testButton = Cast<UStringHolderButton, UUserWidget>(retrievedWidgets.Pop());
+
+			selectedMap = testButton->storedString();
+			FVector2D buttonCenter = FVector2D(0.5f, 0.5f);
+			FVector2D selectedButtonCoordinates = testButton->GetTickSpaceGeometry().GetAbsolutePositionAtCoordinates(buttonCenter);
+
+			TSharedPtr<FGenericWindow> buttonWindow = testButton->GetWorld()->GetGameViewport()->GetWindow()->GetNativeWindow();
+			sessionUtilities.processEditorClickAtWindow(selectedButtonCoordinates, buttonWindow);
+			needsToSelectMap = false;
+			return false;
+		}
+
+		retrievedWidgets.Empty();
+		UWidgetBlueprintLibrary::GetAllWidgetsOfClass(testWorld,retrievedWidgets, ULobbyMenu::StaticClass(), false);
+		ULobbyMenu* testLoby = Cast<ULobbyMenu, UUserWidget>(retrievedWidgets.Pop());
+
+		bool mapsCoincident = testLoby->selectedMap() == selectedMap;
+
+		if(mapsCoincident)
+		{
+			test->TestTrue(test->conditionMessage(), mapsCoincident);
+			testWorld->bDebugFrameStepExecution = true;
+			return true;
+		}
+		return test->manageTickCountTowardsLimit();
+	}
+	return false;
+}
+
+
 
 
 

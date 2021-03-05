@@ -57,6 +57,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULobbyMenuClickingAMapButtonChangesLobb
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULobbyMenuClickingAMapButtonChangesLobbyMenuSelectedMapTest, FSimplePIETestBase,
+	"ProjectR.LobbyMenu Tests.Integration.008: Clicking a map makes the lobby menu update its selected map",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

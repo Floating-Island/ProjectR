@@ -126,13 +126,29 @@ bool FULobbyMenuCollapsesMapSelectorWidgetIfNotAuthorityTest::RunTest(const FStr
 bool FULobbyMenuClickingAMapButtonChangesLobbyGameStateSelectedMapTest::RunTest(const FString& Parameters)
 {
 	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/lobby"));
-	establishTestMessageTo(FString("The lobby menu should the lobby game state update its map when clicking a map."));
+	establishTestMessageTo(FString("The lobby menu should make the lobby game state update its map when clicking a map."));
 	establishTickLimitTo(3);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 	
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckClickingAMapChangesLobbyGameState(FString(), true, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FULobbyMenuClickingAMapButtonChangesLobbyMenuSelectedMapTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/lobby"));
+	establishTestMessageTo(FString("The lobby menu should update its map when clicking a map."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckClickingAMapUpdatesMap(FString(), true, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

@@ -41,6 +41,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckClientMapSelectorCollapsed,
 DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckClickingAMapChangesLobbyGameState, FString, selectedMap, bool, needsToSelectMap, FSimplePIETestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckClickingAMapUpdatesMap, FString, selectedMap, bool, needsToSelectMap, FSimplePIETestBase*, test);
+
+
 
 
 
