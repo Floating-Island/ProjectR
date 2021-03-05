@@ -13,6 +13,7 @@
 #include "GameFramework/GameStateBase.h"
 #include "UI/MapSelectorWidget.h"
 #include "../Utilities/NetworkedPIESessionUtilities.h"
+#include "GameState/LobbyGameState.h"
 
 
 //Test preparation commands:
