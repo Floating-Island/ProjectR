@@ -227,31 +227,34 @@ bool FCheckClientMapSelectedReplicates::Update()
 			UWorld* clientWorld = clientContext.World();
 			if(clientWorld)
 			{
-				if(needsToSelectMap)
-				{
-					TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
-					UWidgetBlueprintLibrary::GetAllWidgetsOfClass(serverWorld,retrievedWidgets, UStringHolderButton::StaticClass(), false);
-
-					if(retrievedWidgets.Num() > 0 )
-					{
-						UStringHolderButton* testButton = Cast<UStringHolderButton, UUserWidget>(retrievedWidgets.Pop());
-
-						selectedMap = testButton->storedString();
-						FVector2D buttonCenter = FVector2D(0.5f, 0.5f);
-						FVector2D selectedButtonCoordinates = testButton->GetTickSpaceGeometry().GetAbsolutePositionAtCoordinates(buttonCenter);
-
-						PIESessionUtilities sessionUtilities = PIESessionUtilities();
-						sessionUtilities.processEditorClick(selectedButtonCoordinates);
-
-						needsToSelectMap = false;
-					}
-				}
 
 				TArray<UUserWidget*> retrievedClientWidgets = TArray<UUserWidget*>();
 				UWidgetBlueprintLibrary::GetAllWidgetsOfClass(clientWorld,retrievedClientWidgets, ULobbyMenu::StaticClass(), false);
 
+				
 				if(retrievedClientWidgets.Num() > 0)
 				{
+					if(needsToSelectMap)
+					{
+						TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+						UWidgetBlueprintLibrary::GetAllWidgetsOfClass(serverWorld,retrievedWidgets, UStringHolderButton::StaticClass(), false);
+
+						if(retrievedWidgets.Num() > 0 )
+						{
+							UStringHolderButton* testButton = Cast<UStringHolderButton, UUserWidget>(retrievedWidgets.Pop());
+
+							selectedMap = testButton->storedString();
+							FVector2D buttonCenter = FVector2D(0.5f, 0.5f);
+							FVector2D selectedButtonCoordinates = testButton->GetTickSpaceGeometry().GetAbsolutePositionAtCoordinates(buttonCenter);
+
+							PIESessionUtilities sessionUtilities = PIESessionUtilities();
+							sessionUtilities.processEditorClick(selectedButtonCoordinates);
+
+							needsToSelectMap = false;
+							return false;
+						}
+					}
+						
 					TArray<UUserWidget*> retrievedServerWidgets = TArray<UUserWidget*>();
 					UWidgetBlueprintLibrary::GetAllWidgetsOfClass(serverWorld,retrievedServerWidgets, ULobbyMenu::StaticClass(), false);
 

@@ -1,12 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Editor/UnrealEd/Public/Tests/AutomationEditorCommon.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 
 #include "LobbyGameStateTest.h"
 #include "GameState/LobbyGameState.h"
+#include "Tests/AutomationEditorCommon.h"
+#include "Commands/LobbyGameStateTestCommands.h"
 
 
 bool FALobbyGameStateIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)

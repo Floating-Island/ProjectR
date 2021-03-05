@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "../../Public/GameState/LobbyGameState.h"
-#include "../Utilities/PIESessionUtilities.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "LobbyGameStateTestCommands.h"
+#include "GameState/LobbyGameState.h"
+#include "../Utilities/PIESessionUtilities.h"
 
 //Test preparation commands:
 
