@@ -215,74 +215,111 @@ bool FCheckClientMapSelectorCollapsed::Update()
 }
 
 
-bool FCheckClientMapSelectedReplicates::Update()
+//bool FCheckClientMapSelectedReplicates::Update()
+//{
+//	if(GEditor->IsPlayingSessionInEditor())
+//	{
+//		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+//		UWorld* serverWorld = serverContext.World();
+//		if(serverWorld)
+//		{
+//			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+//			UWorld* clientWorld = clientContext.World();
+//			if(clientWorld)
+//			{
+//
+//				TArray<UUserWidget*> retrievedClientWidgets = TArray<UUserWidget*>();
+//				UWidgetBlueprintLibrary::GetAllWidgetsOfClass(clientWorld,retrievedClientWidgets, ULobbyMenu::StaticClass(), false);
+//
+//				
+//				if(retrievedClientWidgets.Num() > 0)
+//				{
+//					
+//						TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+//						UWidgetBlueprintLibrary::GetAllWidgetsOfClass(serverWorld,retrievedWidgets, UStringHolderButton::StaticClass(), false);
+//
+//						if(retrievedWidgets.Num() > 0 )
+//						{
+//							UStringHolderButton* testButton = Cast<UStringHolderButton, UUserWidget>(retrievedWidgets.Pop());
+//
+//							selectedMap = testButton->storedString();
+//							FVector2D buttonCenter = FVector2D(0.5f, 0.5f);
+//							FVector2D selectedButtonCoordinates = testButton->GetTickSpaceGeometry().GetAbsolutePositionAtCoordinates(buttonCenter);
+//
+//							PIESessionUtilities sessionUtilities = PIESessionUtilities();
+//							TSharedPtr<FGenericWindow> buttonWindow = testButton->GetWorld()->GetGameViewport()->GetWindow()->GetNativeWindow();
+//							sessionUtilities.processEditorClickAtWindow(selectedButtonCoordinates, buttonWindow);
+//						}
+//					
+//						
+//					TArray<UUserWidget*> retrievedServerWidgets = TArray<UUserWidget*>();
+//					UWidgetBlueprintLibrary::GetAllWidgetsOfClass(serverWorld,retrievedServerWidgets, ULobbyMenu::StaticClass(), false);
+//
+//					ULobbyMenu* testServerMenu = Cast<ULobbyMenu, UUserWidget>(retrievedServerWidgets.Pop());
+//
+//					ULobbyMenu* testClientMenu = Cast<ULobbyMenu, UUserWidget>(retrievedClientWidgets.Pop());
+//
+//					UE_LOG(LogTemp, Log, TEXT("Selected map: %s"), *selectedMap);
+//
+//					FString serverMap = testServerMenu->selectedMap();
+//					UE_LOG(LogTemp, Log, TEXT("Server map: %s"), *serverMap);
+//
+//					FString clientMap = testClientMenu->selectedMap();
+//					UE_LOG(LogTemp, Log, TEXT("Client map: %s"), *clientMap);
+//
+//					bool selectedMapsMatch = serverMap == selectedMap && clientMap == selectedMap;
+//
+//					if(selectedMapsMatch)
+//					{
+//						test->TestTrue(test->conditionMessage(), selectedMapsMatch);
+//						for(auto context : GEditor->GetWorldContexts())
+//						{
+//							context.World()->bDebugFrameStepExecution = true;
+//						}
+//						return true;
+//					}
+//					return test->manageTickCountTowardsLimit();
+//				}
+//			}
+//		}
+//	}
+//	return false;
+//}
+
+
+bool FCheckClickingAMapChangesLobbyGameState::Update()
 {
-	if(GEditor->IsPlayingSessionInEditor())
+	if (GEditor->IsPlayingSessionInEditor())
 	{
-		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
-		UWorld* serverWorld = serverContext.World();
-		if(serverWorld)
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.currentPIEWorld();
+
+		TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+		UWidgetBlueprintLibrary::GetAllWidgetsOfClass(testWorld,retrievedWidgets, UStringHolderButton::StaticClass(), false);
+
+		if(retrievedWidgets.Num() > 0 )
 		{
-			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
-			UWorld* clientWorld = clientContext.World();
-			if(clientWorld)
-			{
+			UStringHolderButton* testButton = Cast<UStringHolderButton, UUserWidget>(retrievedWidgets.Pop());
 
-				TArray<UUserWidget*> retrievedClientWidgets = TArray<UUserWidget*>();
-				UWidgetBlueprintLibrary::GetAllWidgetsOfClass(clientWorld,retrievedClientWidgets, ULobbyMenu::StaticClass(), false);
+			selectedMap = testButton->storedString();
+			FVector2D buttonCenter = FVector2D(0.5f, 0.5f);
+			FVector2D selectedButtonCoordinates = testButton->GetTickSpaceGeometry().GetAbsolutePositionAtCoordinates(buttonCenter);
 
-				
-				if(retrievedClientWidgets.Num() > 0)
-				{
-					
-						TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
-						UWidgetBlueprintLibrary::GetAllWidgetsOfClass(serverWorld,retrievedWidgets, UStringHolderButton::StaticClass(), false);
-
-						if(retrievedWidgets.Num() > 0 )
-						{
-							UStringHolderButton* testButton = Cast<UStringHolderButton, UUserWidget>(retrievedWidgets.Pop());
-
-							selectedMap = testButton->storedString();
-							FVector2D buttonCenter = FVector2D(0.5f, 0.5f);
-							FVector2D selectedButtonCoordinates = testButton->GetTickSpaceGeometry().GetAbsolutePositionAtCoordinates(buttonCenter);
-
-							PIESessionUtilities sessionUtilities = PIESessionUtilities();
-							TSharedPtr<FGenericWindow> buttonWindow = testButton->GetWorld()->GetGameViewport()->GetWindow()->GetNativeWindow();
-							buttonWindow->BringToFront();
-							sessionUtilities.processEditorClickAtWindow(selectedButtonCoordinates, buttonWindow);
-						}
-					
-						
-					TArray<UUserWidget*> retrievedServerWidgets = TArray<UUserWidget*>();
-					UWidgetBlueprintLibrary::GetAllWidgetsOfClass(serverWorld,retrievedServerWidgets, ULobbyMenu::StaticClass(), false);
-
-					ULobbyMenu* testServerMenu = Cast<ULobbyMenu, UUserWidget>(retrievedServerWidgets.Pop());
-
-					ULobbyMenu* testClientMenu = Cast<ULobbyMenu, UUserWidget>(retrievedClientWidgets.Pop());
-
-					UE_LOG(LogTemp, Log, TEXT("Selected map: %s"), *selectedMap);
-
-					FString serverMap = testServerMenu->selectedMap();
-					UE_LOG(LogTemp, Log, TEXT("Server map: %s"), *serverMap);
-
-					FString clientMap = testClientMenu->selectedMap();
-					UE_LOG(LogTemp, Log, TEXT("Client map: %s"), *clientMap);
-
-					bool selectedMapsMatch = serverMap == selectedMap && clientMap == selectedMap;
-
-					if(selectedMapsMatch)
-					{
-						test->TestTrue(test->conditionMessage(), selectedMapsMatch);
-						for(auto context : GEditor->GetWorldContexts())
-						{
-							context.World()->bDebugFrameStepExecution = true;
-						}
-						return true;
-					}
-					return test->manageTickCountTowardsLimit();
-				}
-			}
+			TSharedPtr<FGenericWindow> buttonWindow = testButton->GetWorld()->GetGameViewport()->GetWindow()->GetNativeWindow();
+			sessionUtilities.processEditorClickAtWindow(selectedButtonCoordinates, buttonWindow);
 		}
+			
+		ALobbyGameState* gameState = sessionUtilities.retrieveFromPIEAnInstanceOf<ALobbyGameState>();
+
+		bool mapsCoincident = gameState->selectedMapName() == selectedMap;
+
+		if(mapsCoincident)
+		{
+			test->TestTrue(test->conditionMessage(), mapsCoincident);
+			testWorld->bDebugFrameStepExecution = true;
+			return true;
+		}
+		return test->manageTickCountTowardsLimit();
 	}
 	return false;
 }

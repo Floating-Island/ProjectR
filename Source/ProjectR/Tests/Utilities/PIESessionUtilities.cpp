@@ -157,6 +157,9 @@ void PIESessionUtilities::processEditorClickAtWindow(FVector2D atCoordinates, TS
 		0,
 		slateApplication.GetPlatformApplication()->GetModifierKeys()
 	);
+
+	aWindow->BringToFront();
+	
 	/*
 	 *It's not necessary to move before clicking because when using process mouse button double click, it also moves the cursor to the desired position.
 	 *UE_LOG(LogTemp, Log, TEXT("Attempting a mouse move:"));
