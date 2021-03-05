@@ -328,7 +328,7 @@ bool FCheckClickingAMapChangesLobbyGameState::Update()
 }
 
 
-bool FCheckClickingAMapChangesLobbyGameState::Update()
+bool FCheckClickingAMapUpdatesMap::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
