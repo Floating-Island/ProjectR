@@ -19,15 +19,11 @@ class FSimplePIETestBase : public FAutomationTestBase
 	FString testMessage;
 	int tickCount;
 	int tickLimit;
+	float timeLimit;
 	FTimerHandle failureTimer;
 
 	void appendTestFailureWhen(bool aTickCountExceedsLimit);
-	void pauseCurrentPIEWorldWhen(bool aTickCountExceedsLimit);
-
-	UFUNCTION()
-		void timeLimitReached();
-
-
+	void pauseCurrentPIEWorldsWhen(bool aTickCountExceedsLimit);
 
 public:
 	FSimplePIETestBase(const FString& InName, const bool bInComplexTask)
@@ -38,6 +34,7 @@ public:
 		testMessage = FString();
 		tickCount = 0;
 		tickLimit = 0;
+		timeLimit = 0;
 	}
 
 	/**
@@ -80,30 +77,7 @@ public:
 	* returns the test initial world name.
 	*/
 	FString initialWorldName();
-
-
-	/**
-	 * method that only sets the time limit on the first time it's called. Starts countdown.
-	 * Only use it when you're already in a PIE session.
-	 */
-	void establishTimeLimitAt(float anAmountOfSeconds = 60);
 };
-
-
-/**
- * Latent command used to set the test time limit. Checks that the editor is in a PIE session.
- */
-DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FSetTimeLimitOnPIE, float, secondsToStop, FSimplePIETestBase*, test);
-
-inline bool FSetTimeLimitOnPIE::Update()
-{
-	if(GEditor->IsPlayingSessionInEditor())
-	{
-		test->establishTimeLimitAt(secondsToStop);
-		return true;
-	}
-	return false;
-}
 
 
 

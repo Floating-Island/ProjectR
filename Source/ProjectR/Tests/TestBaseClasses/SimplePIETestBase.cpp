@@ -11,25 +11,20 @@ void FSimplePIETestBase::appendTestFailureWhen(bool aTickCountExceedsLimit)
 {
 	if(aTickCountExceedsLimit)
 	{
-		FString limitReachedMessage = FString(TEXT("Tick limit of %d reached. "), tickLimit) + testMessage;
+		FString limitReachedMessage = FString(("Tick limit of %d reached. "), tickLimit) + testMessage;
 		TestFalse(*limitReachedMessage, aTickCountExceedsLimit);
 	}
 }
 
-void FSimplePIETestBase::pauseCurrentPIEWorldWhen(bool aTickCountExceedsLimit)
+void FSimplePIETestBase::pauseCurrentPIEWorldsWhen(bool aTickCountExceedsLimit)
 {
 	if(aTickCountExceedsLimit)
 	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+		for(auto context : GEditor->GetWorldContexts())
+		{
+			context.World()->bDebugFrameStepExecution = true;
+		}
 	}
-}
-
-void FSimplePIETestBase::timeLimitReached()
-{
-	bool timeUp = true;
-	FString limitReachedMessage = FString(TEXT("Time limit of %f reached. "), timeLimit) + testMessage;
-	TestFalse(*limitReachedMessage, timeUp);
 }
 
 void FSimplePIETestBase::increaseTickCount()
@@ -71,7 +66,7 @@ bool FSimplePIETestBase::manageTickCountTowardsLimit()
 	bool tickCountExceedsTheLimit = tickCountExceedsLimit();
 
 	appendTestFailureWhen(tickCountExceedsTheLimit);
-	pauseCurrentPIEWorldWhen(tickCountExceedsTheLimit);
+	pauseCurrentPIEWorldsWhen(tickCountExceedsTheLimit);
 	increaseTickCount();
 
 	return tickCountExceedsTheLimit;
@@ -98,20 +93,6 @@ FString FSimplePIETestBase::initialWorldName()
 		initialWorld = mapName;
 	}
 	return initialWorld;
-}
-
-void FSimplePIETestBase::establishTimeLimitAt(float anAmountOfSeconds)
-{
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	FTimerManager& globalTimer = sessionUtilities.currentPIEWorld()->GetTimerManager();
-
-	if(globalTimer.TimerExists(failureTimer))
-	{
-		return;
-	}
-	FTimerDelegate countdownDelegate = FTimerDelegate::CreateUObject(this, &FSimplePIETestBase::timeLimitReached);
-	globalTimer.SetTimer(failureTimer, countdownDelegate, anAmountOfSeconds, false);
 }
 
 
