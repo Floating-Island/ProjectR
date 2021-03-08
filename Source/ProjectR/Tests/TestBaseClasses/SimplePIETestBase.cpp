@@ -25,6 +25,13 @@ void FSimplePIETestBase::pauseCurrentPIEWorldWhen(bool aTickCountExceedsLimit)
 	}
 }
 
+void FSimplePIETestBase::timeLimitReached()
+{
+	bool timeUp = true;
+	FString limitReachedMessage = FString(TEXT("Time limit of %f reached. "), timeLimit) + testMessage;
+	TestFalse(*limitReachedMessage, timeUp);
+}
+
 void FSimplePIETestBase::increaseTickCount()
 {
 	++tickCount;
@@ -91,6 +98,17 @@ FString FSimplePIETestBase::initialWorldName()
 		initialWorld = mapName;
 	}
 	return initialWorld;
+}
+
+void FSimplePIETestBase::establishTimeLimitAt(float anAmountOfSeconds)
+{
+	if(timeLimit == 0)
+	{
+		timeLimit = anAmountOfSeconds;
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		FTimerDelegate countdownDelegate = FTimerDelegate::CreateUObject(this, &FSimplePIETestBase::timeLimitReached);
+		sessionUtilities.currentPIEWorld()->GetTimerManager().SetTimer(failureTimer, countdownDelegate, timeLimit, false);
+	}
 }
 
 
