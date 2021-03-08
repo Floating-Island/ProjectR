@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * This file cointains the latent commands necessary for the tests.
+ * This file contains the latent commands necessary for the tests.
  */
 
 #include "Misc/AutomationTest.h"

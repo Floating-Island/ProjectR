@@ -13,6 +13,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -22,7 +23,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMixedMotorStateIsntNullWhenInstantiatedTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMixedMotorStateActivateAcceleratesMotorDriveTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUMixedMotorStateActivateAcceleratesMotorDriveTest, FSimplePIETestBase,
 	"ProjectR.MixedMotorState Tests.Integration.001: activate makes the motor drive component passed as parameter add force combining acceleration and brake values", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 

@@ -26,11 +26,15 @@ bool FULeftSteerStateIsntNullWhenInstantiatedTest::RunTest(const FString& Parame
 
 bool FULeftSteerStateActivateTurnsLeftSteeringTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The left steer state should steer left the steering component passed as parameter."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
-
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	UClass* jetClass = AJetMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(jetClass, FTransform()));
@@ -39,11 +43,9 @@ bool FULeftSteerStateActivateTurnsLeftSteeringTest::RunTest(const FString& Param
 
 	UClass* containerClass = AObjectContainerActor::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(containerClass, FTransform()));
-	
-	int tickCount = 0;
-	int tickLimit = 3;
+
 	FVector location = FVector(0);
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSteersLeft(tickCount, tickLimit, location, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSteersLeft(location, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

@@ -3,13 +3,15 @@
 #pragma once
 
 /**
- * This file cointains the latent commands necessary for the tests.
+ * This file contains the latent commands necessary for the tests.
  */
 
 #include "Misc/AutomationTest.h"
+#include "../TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
+class USteerState;
 
 //Test preparation commands:
 
@@ -36,19 +38,18 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientCenterSteerStateManager, i
 
 //Test check commands:
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSteerStateManagerCurrentState, UClass*, expectedState, FString, message, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckSteerStateManagerCurrentState, UClass*, expectedState, FSimplePIETestBase*, test);
 
 
-class USteerState;
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSteerStateManagerCurrentStateAgainstPreviousOnSteerLeft, USteerState*, previousState, FString, message, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckSteerStateManagerCurrentStateAgainstPreviousOnSteerLeft, USteerState*, previousState, FSimplePIETestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSteerStateManagerCurrentStateAgainstPreviousOnSteerRight, USteerState*, previousState, FString, message, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckSteerStateManagerCurrentStateAgainstPreviousOnSteerRight, USteerState*, previousState, FSimplePIETestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSteerStateManagerCurrentStateAgainstPreviousOnCenter, USteerState*, previousState, FString, message, int, tickCount, int, tickLimit, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckSteerStateManagerCurrentStateAgainstPreviousOnCenter, USteerState*, previousState, FSimplePIETestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSteerStateManagerServerAndClientExpectedState, UClass*, expectedStateClass, int, tickCount, int, tickLimit, int, clientQuantity, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckSteerStateManagerServerAndClientExpectedState, UClass*, expectedStateClass, int, clientQuantity, FSimplePIETestBase*, test);
 
 #endif //WITH_DEV_AUTOMATION_TESTS

@@ -20,14 +20,17 @@ bool FULocalMultiplayerMenuIsntNullWhenInstantiatedTest::RunTest(const FString& 
 
 bool FULocalMultiplayerMenuClickingGoBackButtonRemovesFromViewportTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The local multiplayer menu should be removed from viewport when clicking the go back button."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckLocalMultiplayerMenuClickGoBackRemovesFromViewport(tickCount, tickLimit, nullptr, false, this));
+	
+	
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLocalMultiplayerMenuClickGoBackRemovesFromViewport(nullptr, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -36,14 +39,17 @@ bool FULocalMultiplayerMenuClickingGoBackButtonRemovesFromViewportTest::RunTest(
 
 bool FULocalMultiplayerMenuClickingGoBackButtonBringsMainMenuTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The local multiplayer menu should change to the main menu when clicking the go back button."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckLocalMultiplayerMenuClickGoBackBringsMainMenu(tickCount, tickLimit, nullptr,this));
+	
+	
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLocalMultiplayerMenuClickGoBackBringsMainMenu(nullptr,this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -52,15 +58,18 @@ bool FULocalMultiplayerMenuClickingGoBackButtonBringsMainMenuTest::RunTest(const
 
 bool FULocalMultiplayerMenuClickingPlayButtonSetsPlayerQuantityTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The local multiplayer menu should set the expected players set in the combo box."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	int tickCount = 0;
-	int tickLimit = 3;
+	
+	
+
 	int numberOfPlayers = 0;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckLocalMultiplayerMenuClickPlaySetsPlayers(tickCount, tickLimit, nullptr, numberOfPlayers, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLocalMultiplayerMenuClickPlaySetsPlayers(nullptr, numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -69,14 +78,17 @@ bool FULocalMultiplayerMenuClickingPlayButtonSetsPlayerQuantityTest::RunTest(con
 
 bool FULocalMultiplayerMenuClickingPlayButtonChangesMapTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The local multiplayer menu should change the current map when clicking the play button."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FChecklocalMultiplayerMenuClickPlayButtonChangesMap(tickCount, tickLimit, nullptr, false, this));
+	
+	
+
+	ADD_LATENT_AUTOMATION_COMMAND(FChecklocalMultiplayerMenuClickPlayButtonChangesMap(nullptr, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

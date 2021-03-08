@@ -36,14 +36,17 @@ bool FARaceGameModeIsAbleToBeSetInAWorldTest::RunTest(const FString& Parameters)
 
 bool FARaceGameModeCreatesExpectedNumberOfJetsTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode"));
+	establishTestMessageTo(FString("Race game mode should have the same number of jets than the world."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	int tickCount = 0;
-	int tickLimit = 2;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeCreatesAllJets(tickCount, tickLimit, this));
+	
+	
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeCreatesAllJets(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -52,14 +55,17 @@ bool FARaceGameModeCreatesExpectedNumberOfJetsTest::RunTest(const FString& Param
 
 bool FARaceGameModePositionsJetsBehindTheInitialLapPhaseTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode"));
+	establishTestMessageTo(FString("Race game mode should position the jets behind the initial lap phase."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	int tickCount = 0;
-	int tickLimit = 2;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeJetsPositioning(tickCount, tickLimit, this));
+	
+	
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceGameModeJetsPositioning(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -140,14 +146,17 @@ bool FARaceGameModeCreatesTheNecessaryGamePlayersTest::RunTest(const FString& Pa
 
 bool FARaceGameModeSameOrMoreNumberOfJetsAsPlayersTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK"));
+	establishTestMessageTo(FString("Race game mode should create the same or more jets than players."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckCreatesSameOrMoreJetsThanPlayers(tickCount, tickLimit, this));
+	
+	
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckCreatesSameOrMoreJetsThanPlayers(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -156,14 +165,17 @@ bool FARaceGameModeSameOrMoreNumberOfJetsAsPlayersTest::RunTest(const FString& P
 
 bool FARaceGameModeSpawnedJetsWithTrackRotationTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode"));
+	establishTestMessageTo(FString("Race game mode should coincede jets rotation with their track section rotation."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetsSameRotationAsTrack(tickCount, tickLimit, this));
+	
+	
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetsSameRotationAsTrack(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -178,6 +190,9 @@ bool FARaceGameModeLapCompletedByJetUpdatesPlayerStateLapTest::RunTest(const FSt
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerStateLapUpdated(nullptr, this));
 
@@ -195,6 +210,9 @@ bool FARaceGameModeupdateJetPositionsUpdatesPlayerStatePositionTest::RunTest(con
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerStatePositionUpdated(nullptr, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
@@ -211,6 +229,9 @@ bool FARaceGameModeSetsPlayerStateTotalLapsBeforeBeginningStageTest::RunTest(con
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerStateTotalLapsUpdated(nullptr, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
@@ -226,6 +247,9 @@ bool FARaceGameModeLoadsRaceUIForEachControllerBeforeBeginningStageTest::RunTest
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckSameRaceUIQuantityAsControllers(this));
 
@@ -246,6 +270,9 @@ bool FARaceGameModePreventsPausingOnNetworkedSessionsTest::RunTest(const FString
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckServerRaceGameModePreventsPausing(numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
@@ -262,6 +289,9 @@ bool FARaceGameModeLoadsResultsUIOnFinalistJetControllerTest::RunTest(const FStr
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAControlledJetOnFinalLapMakeItFinish);
 

@@ -39,16 +39,20 @@ bool FASteerStateManagerDoesntTickTest::RunTest(const FString& Parameters)
 
 bool FASteerStateManagerDefaultStateIsCenterTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	establishTestMessageTo(FString(FString("The default state should be CenterSteerState")));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(steerStateManagerClass, FTransform()));
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentState(UCenterSteerState::StaticClass(), FString("The default state should be CenterSteerState"), tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentState(UCenterSteerState::StaticClass(), this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -57,18 +61,22 @@ bool FASteerStateManagerDefaultStateIsCenterTest::RunTest(const FString& Paramet
 
 bool FASteerStateManagerSteerLeftChangesStateToLeftSteerTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	UClass* expectedStateClass = ULeftSteerState::StaticClass();
+	establishTestMessageTo((FString("After leftSteer, the current state should be %s."), *expectedStateClass->GetName()));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(steerStateManagerClass, FTransform()));
 	ADD_LATENT_AUTOMATION_COMMAND(FLeftSteerASteerStateManagerMOCK);
-	int tickCount = 0;
-	int tickLimit = 3;
-	UClass* expectedStateClass = ULeftSteerState::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentState(expectedStateClass, (FString("After leftSteer, the current state should be %s."), *expectedStateClass->GetName()), tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentState(expectedStateClass, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -77,18 +85,22 @@ bool FASteerStateManagerSteerLeftChangesStateToLeftSteerTest::RunTest(const FStr
 
 bool FASteerStateManagerSteerRightChangesStateToRightSteerTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	UClass* expectedStateClass = URightSteerState::StaticClass();
+	establishTestMessageTo((FString("After rightSteer, the current state should be %s."), *expectedStateClass->GetName()));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(steerStateManagerClass, FTransform()));
 	ADD_LATENT_AUTOMATION_COMMAND(FRightSteerASteerStateManagerMOCK);
-	int tickCount = 0;
-	int tickLimit = 3;
-	UClass* expectedStateClass = URightSteerState::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentState(expectedStateClass, (FString("After rightSteer, the current state should be %s."), *expectedStateClass->GetName()), tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentState(expectedStateClass, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -97,18 +109,22 @@ bool FASteerStateManagerSteerRightChangesStateToRightSteerTest::RunTest(const FS
 
 bool FASteerStateManagerCenterChangesStateToCenterSteerTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	UClass* expectedStateClass = UCenterSteerState::StaticClass();
+	establishTestMessageTo((FString("After center, the current state should be %s."), *expectedStateClass->GetName()));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(steerStateManagerClass, FTransform()));
 	ADD_LATENT_AUTOMATION_COMMAND(FCenterASteerStateManagerMOCK);
-	int tickCount = 0;
-	int tickLimit = 3;
-	UClass* expectedStateClass = UCenterSteerState::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentState(expectedStateClass, (FString("After center, the current state should be %s."), *expectedStateClass->GetName()), tickCount, tickLimit, this));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentState(expectedStateClass, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;	
@@ -117,17 +133,21 @@ bool FASteerStateManagerCenterChangesStateToCenterSteerTest::RunTest(const FStri
 
 bool FASteerStateManagerSteerLeftKeepsStateIfAlreadyLeftSteerStateTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	establishTestMessageTo(FString("steerLeft should keep the current state if it's a LeftSteerState."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(steerStateManagerClass, FTransform()));
-	int tickCount = 0;
-	int tickLimit = 3;
+
 	USteerState* previousState = nullptr;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentStateAgainstPreviousOnSteerLeft(previousState, FString("steerLeft should keep the current state if it's a LeftSteerState."), tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentStateAgainstPreviousOnSteerLeft(previousState, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;	
@@ -136,17 +156,21 @@ bool FASteerStateManagerSteerLeftKeepsStateIfAlreadyLeftSteerStateTest::RunTest(
 
 bool FASteerStateManagerSteerRightKeepsStateIfAlreadyRightSteerStateTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	establishTestMessageTo(FString(FString("steerRight should keep the current state if it's a RightSteerState.")));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(steerStateManagerClass, FTransform()));
-	int tickCount = 0;
-	int tickLimit = 3;
+
 	USteerState* previousState = nullptr;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentStateAgainstPreviousOnSteerRight(previousState, FString("steerRight should keep the current state if it's a RightSteerState."), tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentStateAgainstPreviousOnSteerRight(previousState, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;	
@@ -155,17 +179,21 @@ bool FASteerStateManagerSteerRightKeepsStateIfAlreadyRightSteerStateTest::RunTes
 
 bool FASteerStateManagerCenterKeepsStateIfAlreadyCenterSteerStateTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	establishTestMessageTo(FString("center should keep the current state if it's a CenterSteerState."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(steerStateManagerClass, FTransform()));
-	int tickCount = 0;
-	int tickLimit = 3;
+
 	USteerState* previousState = nullptr;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentStateAgainstPreviousOnCenter(previousState, FString("center should keep the current state if it's a CenterSteerState."), tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerCurrentStateAgainstPreviousOnCenter(previousState, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;	
@@ -194,23 +222,26 @@ bool FASteerStateManagerIsAlwaysRelevantToNetworkTest::RunTest(const FString& Pa
 
 bool FASteerStateManagerReplicatesStateWhenCallingSteerLeftTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	UClass* expectedStateClass = ULeftSteerState::StaticClass();
+	establishTestMessageTo((FString("The current state of server and client should be %s."), *expectedStateClass->GetName()));
+	establishTickLimitTo(10);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	int32 numberOfPlayers = 2;
 	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	
+	
 
 	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(steerStateManagerClass, FTransform(), numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientSteerLeftSteerStateManager(numberOfPlayers));
 
-	int tickCount = 0;
-	int tickLimit = 10;
-	UClass* expectedStateClass = ULeftSteerState::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerServerAndClientExpectedState(expectedStateClass, tickCount, tickLimit, numberOfPlayers, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerServerAndClientExpectedState(expectedStateClass, numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -219,23 +250,26 @@ bool FASteerStateManagerReplicatesStateWhenCallingSteerLeftTest::RunTest(const F
 
 bool FASteerStateManagerReplicatesStateWhenCallingSteerRightTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	UClass* expectedStateClass = URightSteerState::StaticClass();
+	establishTestMessageTo((FString("The current state of server and client should be %s."), *expectedStateClass->GetName()));
+	establishTickLimitTo(10);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	int32 numberOfPlayers = 2;
 	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
+	
+	
+
 	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(steerStateManagerClass, FTransform(), numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientSteerRightSteerStateManager(numberOfPlayers));
-
-	int tickCount = 0;
-	int tickLimit = 10;
-	UClass* expectedStateClass = URightSteerState::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerServerAndClientExpectedState(expectedStateClass, tickCount, tickLimit, numberOfPlayers, this));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerServerAndClientExpectedState(expectedStateClass, numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -244,23 +278,26 @@ bool FASteerStateManagerReplicatesStateWhenCallingSteerRightTest::RunTest(const 
 
 bool FASteerStateManagerReplicatesStateWhenCallingCenterTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	UClass* expectedStateClass = UCenterSteerState::StaticClass();
+	establishTestMessageTo((FString("The current state of server and client should be %s."), *expectedStateClass->GetName()));
+	establishTickLimitTo(10);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	int32 numberOfPlayers = 2;
 	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
+	
+	
+
 	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(steerStateManagerClass, FTransform(), numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientCenterSteerStateManager(numberOfPlayers));
-
-	int tickCount = 0;
-	int tickLimit = 10;
-	UClass* expectedStateClass = UCenterSteerState::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerServerAndClientExpectedState(expectedStateClass, tickCount, tickLimit, numberOfPlayers, this));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerServerAndClientExpectedState(expectedStateClass, numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

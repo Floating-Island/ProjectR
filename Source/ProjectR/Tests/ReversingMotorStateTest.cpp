@@ -22,17 +22,19 @@ bool FUReversingMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& P
 
 bool FUReversingMotorStateActivateReversesMotorDriveTest::RunTest(const FString& Parameters)
 {
-	
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The motor drive's jet velocity should be negative after a brake (after ticking) from idle."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
-
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetAndActivateReversingMotorState);
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetVelocityDecrease(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetVelocityDecrease(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

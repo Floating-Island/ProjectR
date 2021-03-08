@@ -32,6 +32,9 @@ bool FUStringButtonScrollBoxPopulatesScrollBoxWithStringHolderButtonsTest::RunTe
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnGameModeDefaultPawn);
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAStringScrollBoxPopulateBoxNumberOfChilds(this));
 
@@ -49,6 +52,9 @@ bool FUStringButtonScrollClickingChildButtonUpdatesSelectedStringTest::RunTest(c
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnGameModeDefaultPawn);
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAStringScrollBoxChildClicked(nullptr, this));
 
@@ -65,6 +71,9 @@ bool FUStringButtonScrollPopulatingBoxWithDifferentArraysLeavesOnlyTheLastTest::
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnGameModeDefaultPawn);
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAStringScrollBoxKeepsArraySize(nullptr, this));

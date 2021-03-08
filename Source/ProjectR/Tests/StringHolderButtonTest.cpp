@@ -30,6 +30,9 @@ bool FUStringHolderButtonStoresStringsTest::RunTest(const FString& Parameters)
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnGameModeDefaultPawn);
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAStringHolderButtonStoresAndRetrievesString(this));
 

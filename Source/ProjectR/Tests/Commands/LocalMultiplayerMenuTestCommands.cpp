@@ -41,7 +41,7 @@ bool FCheckLocalMultiplayerMenuClickGoBackRemovesFromViewport::Update()
 			return false;
 		}
 
-		test->TestTrue(TEXT("The local multiplayer menu should be removed from viewport when clicking the go back button."), !localMultiplayerMenuInstance->IsInViewport());
+		test->TestTrue(test->conditionMessage(), !localMultiplayerMenuInstance->IsInViewport());
 		sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 		return true;
 	}
@@ -60,7 +60,7 @@ bool FCheckLocalMultiplayerMenuClickGoBackBringsMainMenu::Update()
 
 		if(mainMenuInViewport)
 		{
-			test->TestTrue(TEXT("The local multiplayer menu should change to the main menu when clicking the go back button."), mainMenuInViewport);
+			test->TestTrue(test->conditionMessage(), mainMenuInViewport);
 			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
@@ -77,13 +77,7 @@ bool FCheckLocalMultiplayerMenuClickGoBackBringsMainMenu::Update()
 			sessionUtilities.processEditorClick(goBackButtonCoordinates);
 		}
 
-		++tickCount;
-		if (tickCount > tickLimit)
-		{
-			test->TestTrue(TEXT("The local multiplayer menu should change to the main menu when clicking the go back button."), gameInstance->isMainMenuInViewport());
-			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
-			return true;
-		}
+		return test->manageTickCountTowardsLimit();
 	}
 	return false;
 }
@@ -114,16 +108,13 @@ bool FCheckLocalMultiplayerMenuClickPlaySetsPlayers::Update()
 		}
 		
 		bool expectedPlayersAreSelectedPlayersQuantity = gameInstance->necessaryPlayers() == aSelectedNumberOfPlayers;
-		++tickCount;
-		if (tickCount > tickLimit)
+		if(expectedPlayersAreSelectedPlayersQuantity)
 		{
-			test->TestTrue(TEXT("The local multiplayer menu should set the expected players set in the combo box."), expectedPlayersAreSelectedPlayersQuantity);
+			test->TestTrue(test->conditionMessage(), expectedPlayersAreSelectedPlayersQuantity);
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
-		test->TestTrue(TEXT("The local multiplayer menu should set the expected players set in the combo box."), expectedPlayersAreSelectedPlayersQuantity);
-		sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-		return true;
+		return test->manageTickCountTowardsLimit();
 	}
 	return false;
 }
@@ -152,18 +143,12 @@ bool FChecklocalMultiplayerMenuClickPlayButtonChangesMap::Update()
 
 		if (isInAnotherWorld)
 		{
-			test->TestTrue(TEXT("The local multiplayer menu should change the current map when clicking the play button."), isInAnotherWorld);
+			test->TestTrue(test->conditionMessage(), isInAnotherWorld);
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
 
-		++tickCount;
-		if (tickCount > tickLimit)
-		{
-			test->TestTrue(TEXT("The local multiplayer menu should change the current map when clicking the play button."), isInAnotherWorld);
-			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-			return true;
-		}
+		return test->manageTickCountTowardsLimit();
 	}
 	return false;
 }

@@ -3,10 +3,11 @@
 #pragma once
 
 /**
- * This file cointains the latent commands necessary for the tests.
+ * This file contains the latent commands necessary for the tests.
  */
 
 #include "Misc/AutomationTest.h"
+#include "../TestBaseClasses/SimplePIETestBase.h"
 
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -20,7 +21,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetAndActivateMixedMotorState);
 
  //Test check commands:
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckMixedStateActivation, int, tickCount, int, tickLimit, float, previousSpeed, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckMixedStateActivation, float, previousSpeed, FSimplePIETestBase*, test);
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

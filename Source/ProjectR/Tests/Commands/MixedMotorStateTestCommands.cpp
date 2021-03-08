@@ -69,19 +69,12 @@ bool FCheckMixedStateActivation::Update()
 
 			if (speedHasBeenUpdated)
 			{
-				test->TestTrue(TEXT("Activating the mixed state should accelerate and brake the jet."), speedHasBeenUpdated);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
-
-			++tickCount;
-			if (tickCount > tickLimit)
-			{
-				test->TestFalse(TEXT("Tick limit reached for this test. Activating the mixed state didn't accelerate and brake the jet."), tickCount > tickLimit);
+				test->TestTrue(test->conditionMessage(), speedHasBeenUpdated);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
 			previousSpeed = currentSpeed;
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;

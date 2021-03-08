@@ -251,6 +251,9 @@ bool FUProjectRGameInstanceLoadLobbyMenuCreatesLobbyMenuTest::RunTest(const FStr
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckCreatesLobbyMenu(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
@@ -266,6 +269,9 @@ bool FUProjectRGameInstanceLoadLobbyMenuCreatesOneLobbyMenuTest::RunTest(const F
 	
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	
+	
+	
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckCreatesOneLobbyMenu(this));
 
@@ -283,6 +289,9 @@ bool FUProjectRGameInstanceLoadLobbyMenuShowsMouseCursorTest::RunTest(const FStr
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckLoadLobbyMenuShowsMouseCursor(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
@@ -298,6 +307,9 @@ bool FUProjectRGameInstanceLoadMainMenuDestroysPlayersButFirstTest::RunTest(cons
 	
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	
+	
+	
 
 	ADD_LATENT_AUTOMATION_COMMAND(FGameInstanceCreateMorePlayers);
 

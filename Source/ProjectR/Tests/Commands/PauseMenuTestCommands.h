@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * This file cointains the latent commands necessary for the tests.
+ * This file contains the latent commands necessary for the tests.
  */
 
 #include "Misc/AutomationTest.h"
@@ -24,7 +24,7 @@ class UPauseMenu;
 DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckPauseMenuClickReturnButtonChangesToMainMenuMap, UPauseMenu*, pauseMenuInstance, bool, menuIsInstantiated, FSimplePIETestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckPauseMenuClickResumeButtonRemovesMenuAndResumes, int, tickCount, int, tickLimit, UPauseMenu*, pauseMenuInstance, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPauseMenuClickResumeButtonRemovesMenuAndResumes, UPauseMenu*, pauseMenuInstance, FSimplePIETestBase*, test);
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

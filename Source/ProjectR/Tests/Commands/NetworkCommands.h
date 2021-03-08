@@ -6,7 +6,7 @@
 #include "Misc/AutomationTest.h"
 
 /**
- * This file cointains common latent commands necessary for networked tests.
+ * This file contains common latent commands necessary for networked tests.
  */
 
 /**

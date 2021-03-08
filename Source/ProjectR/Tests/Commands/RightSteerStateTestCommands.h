@@ -3,10 +3,11 @@
 #pragma once
 
 /**
- * This file cointains the latent commands necessary for the tests.
+ * This file contains the latent commands necessary for the tests.
  */
 
 #include "Misc/AutomationTest.h"
+#include "../TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -17,6 +18,6 @@
 
 //Test check commands:
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckAJetSteersRight, int, tickCount, int, tickLimit, FVector, previousLocation, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckAJetSteersRight, FVector, previousLocation, FSimplePIETestBase*, test);
 
 #endif //WITH_DEV_AUTOMATION_TESTS

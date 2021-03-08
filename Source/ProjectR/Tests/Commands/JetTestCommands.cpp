@@ -630,24 +630,17 @@ bool FCheckAJetLocation::Update()
 			bool hasMoved = currentXLocation > 0;
 			bool isAtOrigin = FMath::IsNearlyZero(currentXLocation, 0.1f);
 
-
 			UE_LOG(LogTemp, Log, TEXT("Jet location: %s."), *testJet->GetActorLocation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet %s moved."), *FString(hasMoved ? "is" : "isn't"));
 			UE_LOG(LogTemp, Log, TEXT("Jet %s at origin (0,0,0)."), *FString(isAtOrigin ? "is" : "isn't"));
+
 			if (hasMoved && !isAtOrigin)//it would be better to align the ship first and then check against it's forward vector. We have to be careful of gravity in this test.
 			{
-				test->TestTrue(TEXT("The Jet X location should increase after an acceleration is added (after ticking)."), hasMoved && !isAtOrigin);
+				test->TestTrue(test->conditionMessage(), hasMoved && !isAtOrigin);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++tickCount;
-
-			if (tickCount > tickLimit)
-			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet X Location never changed from zero."), tickCount > tickLimit);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;
@@ -679,19 +672,12 @@ bool FCheckAJetSpeedIncrease::Update()
 
 			if (isMovingForwards && !isIdle)
 			{
-				test->TestTrue(TEXT("The Jet speed should increase after accelerating (after ticking)."), isMovingForwards && !isIdle);
+				test->TestTrue(test->conditionMessage(), isMovingForwards && !isIdle);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
 
-			++tickCount;
-
-			if (tickCount > tickLimit)
-			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet speed never changed from zero."), tickCount > tickLimit);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;
@@ -722,18 +708,11 @@ bool FCheckAJetVelocityDecrease::Update()
 
 			if (isMovingBackwards && !isIdle)
 			{
-				test->TestTrue(TEXT("The Jet velocity should be negative after a brake (after ticking) from idle."), isMovingBackwards && !isIdle);
+				test->TestTrue(test->conditionMessage(), isMovingBackwards && !isIdle);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++tickCount;
-
-			if (tickCount > tickLimit)
-			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet velocity never changed from zero."), tickCount > tickLimit);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;
@@ -755,11 +734,11 @@ bool FCheckAJetSpeedAgainstTopSpeed::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet speed: %f"), currentSpeed);
 			UE_LOG(LogTemp, Log, TEXT("Jet top speed: %f"), testJet->settedTopSpeed());
 			UE_LOG(LogTemp, Log, TEXT("Jet %s at currentSpeed"), *FString(isAtTopSpeed ? "is" : "isn't"));
-			++tickCount;
-
-			if (tickCount > tickLimit)
+			
+			test->increaseTickCount();
+			if (test->tickCountExceedsLimit())
 			{
-				test->TestTrue(TEXT("If a jet is at top speed, it should never increase it after an acceleration is added (after ticking)."), isAtTopSpeed);
+				test->TestTrue(test->conditionMessage(), isAtTopSpeed);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -788,18 +767,11 @@ bool FCheckAJetRotatedYawRight::Update()
 
 			if (hasSteeredRight && !isMinimalSteering)
 			{
-				test->TestTrue(TEXT("The Jet yaw rotation (around Z axis) should be greater than zero after steering right (after ticking)."), hasSteeredRight && !isMinimalSteering);
+				test->TestTrue(test->conditionMessage(), hasSteeredRight && !isMinimalSteering);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++tickCount;
-
-			if (tickCount > tickLimit)
-			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet yaw rotation (around Z axis) never changed from zero."), tickCount > tickLimit);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;
@@ -826,18 +798,11 @@ bool FCheckAJetZLocation::Update()
 
 			if (isBeingLifted && !isMinimalLifting)
 			{
-				test->TestTrue(TEXT("The Jet Z veocity should increase due to anti-gravity activation near floor."), isBeingLifted && !isMinimalLifting);
+				test->TestTrue(test->conditionMessage(), isBeingLifted && !isMinimalLifting);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++tickCount;
-
-			if (tickCount > tickLimit)
-			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet never lifted from the ground."), tickCount > tickLimit);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;
@@ -868,18 +833,11 @@ bool FCheckAJetLocationCoincidentToForwardVector::Update()
 
 			if (hasMoved && locationIsAlignedToForwardVector)//We have to be careful of gravity in this test. That's why a up vector on XY is used.
 			{
-				test->TestTrue(TEXT("The Jet should accelerate in the direction of it's forward vector after being rotated."), hasMoved && locationIsAlignedToForwardVector);
+				test->TestTrue(test->conditionMessage(), hasMoved && locationIsAlignedToForwardVector);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++tickCount;
-
-			if (tickCount > tickLimit)
-			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet acceleration wasn't aligned to it's forward vector."), tickCount > tickLimit);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;
@@ -910,18 +868,11 @@ bool FCheckAJetLocationParallelToForwardVector::Update()
 
 			if (hasMoved && locationIsAlignedToBackwardsVector)
 			{
-				test->TestTrue(TEXT("The Jet should brake contrary to the direction of it's forward vector after being rotated."), hasMoved && locationIsAlignedToBackwardsVector);
+				test->TestTrue(test->conditionMessage(), hasMoved && locationIsAlignedToBackwardsVector);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++tickCount;
-
-			if (tickCount > tickLimit)
-			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet acceleration wasn't aligned to it's forward vector."), tickCount > tickLimit);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;
@@ -951,10 +902,10 @@ bool FCheckAJetLocationParallelToForwardVector::Update()
 //			UE_LOG(LogTemp, Log, TEXT("Jet velocity %s aligned to previous forward vector."), *FString(velocityAlignedToPreviousForwardVector ? "is" : "isn't"));
 //			UE_LOG(LogTemp, Log, TEXT("End of tick."));
 //
-//			++tickCount;
-//			if (tickCount > tickLimit)
+//			test->increaseTickCount();
+//			if (test->tickCountExceedsLimit())
 //			{
-//				test->TestTrue(TEXT("The Jet should update it's velocity to match the direction of the forward vector after steering."), !speedNearlyZero && velocityAlignedToPreviousForwardVector);
+//				test->TestTrue(test->conditionMessage(), !speedNearlyZero && velocityAlignedToPreviousForwardVector);
 //				testWorld->bDebugFrameStepExecution = true;
 //				return true;
 //			}
@@ -992,18 +943,11 @@ bool FCheckAJetInvertSteeringWhenInReverse::Update()
 
 			if (!speedNearlyZero && !isMinimalSteering && hasSteeredLeft && isMovingBackwards)
 			{
-				test->TestTrue(TEXT("The Jet should steer right counterclockwise if it's in reverse."), !speedNearlyZero && !isMinimalSteering && hasSteeredLeft && isMovingBackwards);
+				test->TestTrue(test->conditionMessage(), !speedNearlyZero && !isMinimalSteering && hasSteeredLeft && isMovingBackwards);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++tickCount;
-
-			if (tickCount > tickLimit)
-			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet didn't steer right counterclockwise in reverse."), tickCount > tickLimit);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;
@@ -1030,10 +974,10 @@ bool FCheckAJetUnableToSteerWhenIdle::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet speed %s nearly zero."), *FString(speedNearlyZero ? "is" : "isn't"));
 			UE_LOG(LogTemp, Log, TEXT("Jet %s rotated from previous rotation."), *FString(hasRotatedFromPreviousRotation ? "has" : "hasn't"));
 
-			++tickCount;
-			if (tickCount > tickLimit || hasRotatedFromPreviousRotation)
+			test->increaseTickCount();
+			if (test->tickCountExceedsLimit() || hasRotatedFromPreviousRotation)
 			{
-				test->TestTrue(TEXT("The Jet should update it's velocity to match the direction of the forward vector after steering."), speedNearlyZero && !hasRotatedFromPreviousRotation);
+				test->TestTrue(test->conditionMessage(), speedNearlyZero && !hasRotatedFromPreviousRotation);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -1101,10 +1045,10 @@ bool FCheckAJetFallSpeed::Update()
 		bool fallAtSameSpeed = FMath::IsNearlyEqual(jetAFallSpeed, jetBFallSpeed, 0.01f);
 		UE_LOG(LogTemp, Log, TEXT("Jets %s fall at same speed."), *FString(fallAtSameSpeed ? "do" : "don't"));
 
-		++tickCount;
-		if (tickCount > tickLimit)
+		test->increaseTickCount();
+		if (test->tickCountExceedsLimit())
 		{
-			test->TestTrue(TEXT("The Jet should keep falling even if it's steering."), fallAtSameSpeed);
+			test->TestTrue(test->conditionMessage(), fallAtSameSpeed);
 			testWorld->bDebugFrameStepExecution = true;
 			return true;
 		}
@@ -1133,18 +1077,11 @@ bool FCheckAJetSteersAroundUpVector::Update()
 
 			if (hasSteeredRight && !isMinimalSteering)
 			{
-				test->TestTrue(TEXT("The Jet pitch rotation should be greater than zero after being tilted and steered."), hasSteeredRight && !isMinimalSteering);
+				test->TestTrue(test->conditionMessage(), hasSteeredRight && !isMinimalSteering);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++tickCount;
-
-			if (tickCount > tickLimit)
-			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet pitch rotation never changed from zero."), tickCount > tickLimit);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;
@@ -1181,11 +1118,10 @@ bool FCheckAJetSpeedOrthogonalityToFloor::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet %s moving."), *FString(isMoving ? "is" : "isn't"));
 			UE_LOG(LogTemp, Log, TEXT("Jet %s parallel to floor up vector."), *FString(speedOnFloorIsSameAsJetSpeed ? "moves" : "doesn't move"));
 
-			++tickCount;
-
-			if (tickCount > tickLimit)
+			test->increaseTickCount();
+			if (test->tickCountExceedsLimit())
 			{
-				test->TestTrue(TEXT("The Jet should move parallel to the floor. Then, the speed, floor speed and velocity magnitude (gravity is being canceled) should be the same."), isMoving && speedOnFloorIsSameAsJetSpeed && speedOnFloorIsSameAsJetVelocityMagnitude);
+				test->TestTrue(test->conditionMessage(), isMoving && speedOnFloorIsSameAsJetSpeed && speedOnFloorIsSameAsJetVelocityMagnitude);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -1223,19 +1159,13 @@ bool FCheckAJetSidewaysRejectsFloor::Update()
 
 			if (!sidewaysVelocityNearZero && isRejectingFloor)
 			{
-				test->TestTrue(TEXT("The jet should reject the nearest floor along the floor up vector."), !sidewaysVelocityNearZero && isRejectingFloor);
+				test->TestTrue(test->conditionMessage(), !sidewaysVelocityNearZero && isRejectingFloor);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
 
-			++tickCount;
-			if (tickCount > tickLimit)
-			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The jet didn't reject the nearest floor along the floor up vector."), tickCount > tickLimit);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
 			aPreviousDistance = currentDistance;
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;
@@ -1270,11 +1200,10 @@ bool FCheckAJetVelocityMagnitudeOrthogonalityToFloor::Update()
 			UE_LOG(LogTemp, Log, TEXT("Jet %s moving."), *FString(isMoving ? "is" : "isn't"));
 			UE_LOG(LogTemp, Log, TEXT("Jet %s parallel to floor up vector."), *FString(speedOnFloorIsSameAsJetVelocityMagnitude ? "moves" : "doesn't move"));
 
-			++tickCount;
-
-			if (tickCount > tickLimit)
+			test->increaseTickCount();
+			if (test->tickCountExceedsLimit())
 			{
-				test->TestTrue(TEXT("The Jet should move parallel to the floor. Then, the floor speed and velocity magnitude (gravity is being canceled) should be the same."), isMoving && speedOnFloorIsSameAsJetVelocityMagnitude);
+				test->TestTrue(test->conditionMessage(), isMoving && speedOnFloorIsSameAsJetVelocityMagnitude);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -1312,7 +1241,7 @@ bool FServerCheckJetAccelerated::Update()
 
 				if(hasAcceleratedAlongX)
 				{
-					test->TestTrue(TEXT("The Jet should replicate its acceleration action to other clients when using accelerate."), hasAcceleratedAlongX);
+					test->TestTrue(test->conditionMessage(), hasAcceleratedAlongX);
 					for(auto context : GEditor->GetWorldContexts())
 					{
 						context.World()->bDebugFrameStepExecution = true;
@@ -1321,16 +1250,7 @@ bool FServerCheckJetAccelerated::Update()
 				}
 				previousLocation = currentLocation;
 
-				++tickCount;
-				if(tickCount > tickLimit)
-				{
-					test->TestTrue(TEXT("The Jet should replicate its acceleration action to other clients when using accelerate."), hasAcceleratedAlongX);
-					for(auto context : GEditor->GetWorldContexts())
-					{
-						context.World()->bDebugFrameStepExecution = true;
-					}
-					return true;
-				}
+				return test->manageTickCountTowardsLimit();
 			}
 		}
 	}
@@ -1364,7 +1284,7 @@ bool FServerCheckJetBrake::Update()
 
 					if(hasBrakedAlongX)
 					{
-						test->TestTrue(TEXT("The Jet should replicate its braking action to other clients when using brake."), hasBrakedAlongX);
+						test->TestTrue(test->conditionMessage(), hasBrakedAlongX);
 						for(auto context : GEditor->GetWorldContexts())
 						{
 							context.World()->bDebugFrameStepExecution = true;
@@ -1373,16 +1293,7 @@ bool FServerCheckJetBrake::Update()
 					}
 					previousLocation = currentLocation;
 
-					++tickCount;
-					if(tickCount > tickLimit)
-					{
-						test->TestTrue(TEXT("The Jet should replicate its braking action to other clients when using brake."), hasBrakedAlongX);
-						for(auto context : GEditor->GetWorldContexts())
-						{
-							context.World()->bDebugFrameStepExecution = true;
-						}
-						return true;
-					}
+					return test->manageTickCountTowardsLimit();
 				}	
 			}
 		}
@@ -1412,7 +1323,7 @@ bool FServerCheckJetSteer::Update()
 
 				if(hasSteeredTowardsY)
 				{
-					test->TestTrue(TEXT("The Jet should replicate its steering action to other clients when using steerRight."), hasSteeredTowardsY);
+					test->TestTrue(test->conditionMessage(), hasSteeredTowardsY);
 					for(auto context : GEditor->GetWorldContexts())
 					{
 						context.World()->bDebugFrameStepExecution = true;
@@ -1421,16 +1332,7 @@ bool FServerCheckJetSteer::Update()
 				}
 				previousLocation = currentLocation;
 
-				++tickCount;
-				if(tickCount > tickLimit)
-				{
-					test->TestTrue(TEXT("The Jet should replicate its steering action to other clients when using steerRight."), hasSteeredTowardsY);
-					for(auto context : GEditor->GetWorldContexts())
-					{
-						context.World()->bDebugFrameStepExecution = true;
-					}
-					return true;
-				}
+				return test->manageTickCountTowardsLimit();
 			}
 		}
 	}
@@ -1455,19 +1357,11 @@ bool FCheckAJetToExpectedMotorState::Update()
 
 			if (isExpectedState)
 			{
-				test->TestTrue((TEXT("The Jet motor state should be %s."), *expectedStateClass->GetName()), isExpectedState);
+				test->TestTrue(test->conditionMessage(), isExpectedState);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-
-			++tickCount;
-
-			if (tickCount > tickLimit)
-			{
-				test->TestFalse((TEXT("Tick limit reached for this test. The Jet never changed its motor state to %s."), *expectedStateClass->GetName()), tickCount > tickLimit);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;
@@ -1501,24 +1395,14 @@ bool FServerCheckJetExpectedMotorState::Update()
 
 					if(bothAsExpected)
 					{
-						test->TestTrue((TEXT("The server should replicate its state to %s."), *expectedStateClass->GetName()), bothAsExpected);
+						test->TestTrue(test->conditionMessage(), bothAsExpected);
 						for(auto context : GEditor->GetWorldContexts())
 						{
 							context.World()->bDebugFrameStepExecution = true;
 						}
 						return true;
 					}
-
-					++tickCount;
-					if(tickCount > tickLimit)
-					{
-						test->TestTrue((TEXT("Tick limit reached. The server should have replicated its state to %s."), *expectedStateClass->GetName()), bothAsExpected);
-						for(auto context : GEditor->GetWorldContexts())
-						{
-							context.World()->bDebugFrameStepExecution = true;
-						}
-						return true;
-					}
+					return test->manageTickCountTowardsLimit();
 				}
 			}
 		}
@@ -1546,18 +1430,11 @@ bool FCheckAJetRotatedYawLeft::Update()
 
 			if (hasSteeredLeft && !isMinimalSteering)
 			{
-				test->TestTrue(TEXT("The Jet yaw rotation (around Z axis) should be greater than zero after steering right (after ticking)."), hasSteeredLeft && !isMinimalSteering);
+				test->TestTrue(test->conditionMessage(), hasSteeredLeft && !isMinimalSteering);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-			++tickCount;
-
-			if (tickCount > tickLimit)
-			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The Jet yaw rotation (around Z axis) never changed from zero."), tickCount > tickLimit);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;
@@ -1583,19 +1460,11 @@ bool FCheckAJetToExpectedSteerState::Update()
 
 				if (isExpectedState)
 				{
-					test->TestTrue((TEXT("The Jet steer state should be %s."), *expectedStateClass->GetName()), isExpectedState);
+					test->TestTrue(test->conditionMessage(), isExpectedState);
 					testWorld->bDebugFrameStepExecution = true;
 					return true;
 				}
-
-				++tickCount;
-
-				if (tickCount > tickLimit)
-				{
-					test->TestFalse((TEXT("Tick limit reached for this test. The Jet never changed its steer state to %s."), *expectedStateClass->GetName()), tickCount > tickLimit);
-					testWorld->bDebugFrameStepExecution = true;
-					return true;
-				}
+				return test->manageTickCountTowardsLimit();
 			}
 		}
 	}
@@ -1630,24 +1499,14 @@ bool FServerCheckJetExpectedSteerState::Update()
 
 					if(bothAsExpected)
 					{
-						test->TestTrue((TEXT("The server should replicate its state to %s."), *expectedStateClass->GetName()), bothAsExpected);
+						test->TestTrue(test->conditionMessage(), bothAsExpected);
 						for(auto context : GEditor->GetWorldContexts())
 						{
 							context.World()->bDebugFrameStepExecution = true;
 						}
 						return true;
 					}
-
-					++tickCount;
-					if(tickCount > tickLimit)
-					{
-						test->TestTrue((TEXT("Tick limit reached. The server should have replicated its state to %s."), *expectedStateClass->GetName()), bothAsExpected);
-						for(auto context : GEditor->GetWorldContexts())
-						{
-							context.World()->bDebugFrameStepExecution = true;
-						}
-						return true;
-					}
+					return test->manageTickCountTowardsLimit();
 				}
 			}
 		}

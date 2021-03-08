@@ -13,6 +13,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -22,7 +23,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUAcceleratingMotorStateIsntNullWhenInstantiate
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUAcceleratingMotorStateActivateAcceleratesMotorDriveTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUAcceleratingMotorStateActivateAcceleratesMotorDriveTest, FSimplePIETestBase, 
 	"ProjectR.AcceleratingMotorState Tests.Integration.001: activate accelerates the motor drive component passed as parameter", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 

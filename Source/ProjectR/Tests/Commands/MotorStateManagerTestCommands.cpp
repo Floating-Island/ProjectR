@@ -246,7 +246,7 @@ bool FCheckMotorStateManagerDefaultState::Update()
 		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
 		if(testManager)
 		{
-			test->TestTrue(TEXT("The default state should be NeutralMotorState"), testManager->currentState()->GetClass() == UNeutralMotorState::StaticClass() );
+			test->TestTrue(test->conditionMessage(), testManager->currentState()->GetClass() == UNeutralMotorState::StaticClass() );
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;	
 		}
@@ -263,7 +263,7 @@ bool FCheckMotorStateManagerStateChangesToAccelerating::Update()
 		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
 		if(testManager)
 		{
-			test->TestTrue(TEXT("After accelerate, the motorState should be Accelerating"), testManager->currentState()->GetClass() == UAcceleratingMotorState::StaticClass() );
+			test->TestTrue(test->conditionMessage(), testManager->currentState()->GetClass() == UAcceleratingMotorState::StaticClass() );
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;	
 		}
@@ -280,7 +280,7 @@ bool FCheckMotorStateManagerStateChangesToReversing::Update()
 		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
 		if(testManager)
 		{
-			test->TestTrue(TEXT("After brake, the motorState should be Reversing"), testManager->currentState()->GetClass() == UReversingMotorState::StaticClass() );
+			test->TestTrue(test->conditionMessage(), testManager->currentState()->GetClass() == UReversingMotorState::StaticClass() );
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;	
 		}
@@ -297,7 +297,7 @@ bool FCheckMotorStateManagerStateChangesToNeutral::Update()
 		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
 		if(testManager)
 		{
-			test->TestTrue(TEXT("After neutralize, the motorState should be Neutral"), testManager->currentState()->GetClass() == UNeutralMotorState::StaticClass() );
+			test->TestTrue(test->conditionMessage(), testManager->currentState()->GetClass() == UNeutralMotorState::StaticClass() );
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;	
 		}
@@ -320,19 +320,13 @@ bool FCheckMotorStateManagerAccelerateKeepsStateIfAccelerating::Update()
 			
 			if(statesMatch)
 			{
-				test->TestTrue(TEXT("Should keep its state if accelerate when already Accelerating"), statesMatch );
+				test->TestTrue(test->conditionMessage(), statesMatch );
 				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 				return true;	
 			}
 			previousState = currentState;
 
-			++tickCount;
-			if(tickCount > tickLimit)
-			{
-				test->TestTrue(TEXT("Should keep its state if accelerate when already Accelerating"), statesMatch );
-				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-				return true;
-			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;
@@ -353,19 +347,13 @@ bool FCheckMotorStateManagerBrakeKeepsStateIfReversing::Update()
 			
 			if(statesMatch)
 			{
-				test->TestTrue(TEXT("Should keep its state if brake when already Reversing"), statesMatch );
+				test->TestTrue(test->conditionMessage(), statesMatch );
 				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 				return true;	
 			}
 			previousState = currentState;
 			
-			++tickCount;
-			if(tickCount > tickLimit)
-			{
-				test->TestTrue(TEXT("Should keep its state if brake when already Reversing"), statesMatch );
-				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-				return true;
-			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;
@@ -386,19 +374,13 @@ bool FCheckMotorStateManagerNeutralizeKeepsStateIfNeutral::Update()
 			
 			if(statesMatch)
 			{
-				test->TestTrue(TEXT("Should keep its state if neutralize when already Neutral"), statesMatch );
+				test->TestTrue(test->conditionMessage(), statesMatch );
 				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 				return true;	
 			}
 			previousState = currentState;
 			
-			++tickCount;
-			if(tickCount > tickLimit)
-			{
-				test->TestTrue(TEXT("Should keep its state if neutralize when already Neutral"), statesMatch );
-				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-				return true;
-			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;
@@ -450,7 +432,7 @@ bool FCheckMotorStateManagerServerAndClientExpectedState::Update()
 
 				if(statesMatch)
 				{
-					test->TestTrue((TEXT("The current state of server and client should be %s."), *expectedStateClass->GetName()), statesMatch);
+					test->TestTrue(test->conditionMessage(), statesMatch);
 					for(auto context : GEditor->GetWorldContexts())
 					{
 						context.World()->bDebugFrameStepExecution = true;
@@ -458,16 +440,7 @@ bool FCheckMotorStateManagerServerAndClientExpectedState::Update()
 					return true;
 				}
 
-				++tickCount;
-				if(tickCount > tickLimit)
-				{
-					test->TestTrue((TEXT("The current state of server and client should be %s."), *expectedStateClass->GetName()), statesMatch);
-					for(auto context : GEditor->GetWorldContexts())
-					{
-						context.World()->bDebugFrameStepExecution = true;
-					}
-					return true;
-				}
+				return test->manageTickCountTowardsLimit();
 			}
 		}
 	}
@@ -483,7 +456,7 @@ bool FCheckMotorStateManagerStateChangesToMixed::Update()
 		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
 		if(testManager)
 		{
-			test->TestTrue(TEXT("After mix, the motorState should be Mixed"), testManager->currentState()->GetClass() == UMixedMotorState::StaticClass() );
+			test->TestTrue(test->conditionMessage(), testManager->currentState()->GetClass() == UMixedMotorState::StaticClass() );
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;	
 		}
@@ -506,19 +479,13 @@ bool FCheckMotorStateManagerMixKeepsStateIfMixed::Update()
 			
 			if(statesMatch)
 			{
-				test->TestTrue(TEXT("Should keep its state if mix when already Mixed"), statesMatch );
+				test->TestTrue(test->conditionMessage(), statesMatch );
 				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 				return true;	
 			}
 			previousState = currentState;
 
-			++tickCount;
-			if(tickCount > tickLimit)
-			{
-				test->TestTrue(TEXT("Should keep its state if mix when already Mixed"), statesMatch );
-				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-				return true;
-			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;

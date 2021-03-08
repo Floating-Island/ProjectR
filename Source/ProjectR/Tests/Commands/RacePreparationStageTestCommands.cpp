@@ -106,27 +106,19 @@ bool FCheckPlayersQuantityOnStart::Update()
 
 				if (requiredPlayerQuantityAchieved)
 				{
-					test->TestTrue(TEXT("Race preparation start should generate the remaining necessary players in the game."), requiredPlayerQuantityAchieved);
+					test->TestTrue(test->conditionMessage(), requiredPlayerQuantityAchieved);
 					testWorld->bDebugFrameStepExecution = true;
 					return true;
 				}
 
-				++tickCount;
-				if (tickCount > tickLimit)
-				{
-					test->TestTrue(TEXT("Tick limit reached, race preparation start should generate the remaining necessary players in the game."), requiredPlayerQuantityAchieved);
-					testWorld->bDebugFrameStepExecution = true;
-					return true;
-				}
+				return test->manageTickCountTowardsLimit();
 			}
-			else
-			{
-				int expectedPlayersInGame = 3;
-				UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(testWorld->GetGameInstance());
-				gameInstance->expectedPlayers(expectedPlayersInGame);
-				testPreparation->start();
-				stageHasStarted = true;
-			}
+			
+			int expectedPlayersInGame = 3;
+			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(testWorld->GetGameInstance());
+			gameInstance->expectedPlayers(expectedPlayersInGame);
+			testPreparation->start();
+			stageHasStarted = true;
 		}
 		else
 		{
@@ -169,29 +161,18 @@ bool FCheckPlayersPossessingJets::Update()
 				int necessaryPlayers = Cast<UProjectRGameInstance, UGameInstance>(testWorld->GetGameInstance())->necessaryPlayers();
 				UE_LOG(LogTemp, Log, TEXT("number of necessary player controllers in world: %d."), necessaryPlayers);
 
-
-
 				if (controllersPossessJets)
 				{
-					test->TestTrue(TEXT("Race preparation start should make the controllers possess the jets."), controllersPossessJets);
+					test->TestTrue(test->conditionMessage(), controllersPossessJets);
 					testWorld->bDebugFrameStepExecution = true;
 					return true;
 				}
 
-				++tickCount;
-				if (tickCount > tickLimit)
-				{
-					test->TestTrue(TEXT("Tick limit reached, race preparation start should generate the remaining necessary players in the game."), controllersPossessJets);
-					testWorld->bDebugFrameStepExecution = true;
-					return true;
-				}
+				return test->manageTickCountTowardsLimit();
 			}
-			else
-			{
-				sessionUtilities.spawnLocalPlayer();//if expectedPlayers in game instance is set to 1. If more, spawn more.
-				testPreparation->start();
-				stageHasStarted = true;
-			}
+			sessionUtilities.spawnLocalPlayer();//if expectedPlayers in game instance is set to 1. If more, spawn more.
+			testPreparation->start();
+			stageHasStarted = true;
 		}
 		else
 		{
@@ -230,25 +211,16 @@ bool FCheckJetsInputDisabled::Update()
 				
 				if (jetsHaveInputDisabled)
 				{
-					test->TestTrue(TEXT("Race preparation start should disable the jets input."), jetsHaveInputDisabled);
+					test->TestTrue(test->conditionMessage(), jetsHaveInputDisabled);
 					testWorld->bDebugFrameStepExecution = true;
 					return true;
 				}
 
-				++tickCount;
-				if (tickCount > tickLimit)
-				{
-					test->TestTrue(TEXT("Tick limit reached, race preparation start should disable the jets input."), jetsHaveInputDisabled);
-					testWorld->bDebugFrameStepExecution = true;
-					return true;
-				}
+				return test->manageTickCountTowardsLimit();
 			}
-			else
-			{
-				sessionUtilities.spawnLocalPlayer();//if expectedPlayers in game instance is set to 1. If more, spawn more.
-				testPreparation->start();
-				stageHasStarted = true;
-			}
+			sessionUtilities.spawnLocalPlayer();//if expectedPlayers in game instance is set to 1. If more, spawn more.
+			testPreparation->start();
+			stageHasStarted = true;
 		}
 		else
 		{

@@ -3,7 +3,7 @@
 #pragma once
 
 /**
- * This file cointains the latent commands necessary for the tests.
+ * This file contains the latent commands necessary for the tests.
  */
 
 #include "Misc/AutomationTest.h"
@@ -20,22 +20,22 @@ class UMainMenu;
 
 //Test check commands:
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckMainMenuClickQuits, bool, inPIE, int, tickCount, int, tickLimit, UMainMenu*, mainMenuInstance, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckMainMenuClickQuits, bool, inPIE, UMainMenu*, mainMenuInstance, FSimplePIETestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckMainMenuClickSingleplayerRemovesMenuFromViewport, int, tickCount, int, tickLimit, UMainMenu*, mainMenuInstance, bool, isMenuInstanciated,  FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckMainMenuClickSingleplayerRemovesMenuFromViewport, UMainMenu*, mainMenuInstance, bool, isMenuInstanciated, FSimplePIETestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckMainMenuClickSingleplayerBringsSingleplayerMenu, int, tickCount, int, tickLimit, UMainMenu*, mainMenuInstance, bool, isMenuInstanciated,  FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckMainMenuClickSingleplayerBringsSingleplayerMenu, UMainMenu*, mainMenuInstance, bool, isMenuInstanciated, FSimplePIETestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckMainMenuClickLocalMultiplayerRemovesMenuFromViewport, int, tickCount, int, tickLimit, UMainMenu*, mainMenuInstance, bool, isMenuInstanciated,  FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckMainMenuClickLocalMultiplayerRemovesMenuFromViewport, UMainMenu*, mainMenuInstance, bool, isMenuInstanciated, FSimplePIETestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FIVE_PARAMETER(FCheckSoloMainMenuClickLocalMultiplayerBringsLocalMultiplayerMenu, int, tickCount, int, tickLimit, UMainMenu*, mainMenuInstance, bool, isMenuInstanciated,  FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckSoloMainMenuClickLocalMultiplayerBringsLocalMultiplayerMenu, UMainMenu*, mainMenuInstance, bool, isMenuInstanciated, FSimplePIETestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckMainMenuClickLanMultiplayerRemovesMenuFromViewport, UMainMenu*, mainMenuInstance, bool, isMenuInstanciated,  FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckMainMenuClickLanMultiplayerRemovesMenuFromViewport, UMainMenu*, mainMenuInstance, bool, isMenuInstanciated, FSimplePIETestBase*, test);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckMainMenuClickLanMultiplayerBringsLanMultiplayerMenu, UMainMenu*, mainMenuInstance, FSimplePIETestBase*, test);

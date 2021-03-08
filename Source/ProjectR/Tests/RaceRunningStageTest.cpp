@@ -58,16 +58,19 @@ bool FARaceRunningStageSpawnsEndedStageWhenNoRunningJetsTest::RunTest(const FStr
 
 bool FARaceRunningStageEnablesJetsInputOnStartTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK"));
+	establishTestMessageTo(FString("Race running start should enable jets input."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARaceRunningAndStart);
 
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckARaceRunningStartEnablesJetsInput(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckARaceRunningStartEnablesJetsInput(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -82,6 +85,9 @@ bool FARaceRunningStageStartInitiatesRemovalOfAnnouncerUIsTest::RunTest(const FS
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	UClass* raceStageClass = ARaceRunningStageMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(raceStageClass, FTransform()));

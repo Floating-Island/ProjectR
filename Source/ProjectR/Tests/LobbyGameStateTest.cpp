@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Commands/NetworkCommands.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 
@@ -9,6 +8,7 @@
 #include "GameState/LobbyGameState.h"
 #include "Tests/AutomationEditorCommon.h"
 #include "Commands/LobbyGameStateTestCommands.h"
+#include "Commands/NetworkCommands.h"
 
 
 bool FALobbyGameStateIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
@@ -29,6 +29,9 @@ bool FALobbyGameStateClickingReturnGoesToMainMenuTest::RunTest(const FString& Pa
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 	
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckLobbyGameStateExistsInLobby(this));
 
@@ -48,6 +51,9 @@ bool FALobbyGameStateUpdatingSelectedMapUpdatesMapOfLobbyMenuClientTest::RunTest
 	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	
+	
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckLobbyGameStateUpdatesClientLobbyMenus(FString("this is a map update"), true, numberOfPlayers, this));
 

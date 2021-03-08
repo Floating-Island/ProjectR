@@ -13,6 +13,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -22,7 +23,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FURightSteerStateIsntNullWhenInstantiatedTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FURightSteerStateActivateTurnsRightSteeringTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FURightSteerStateActivateTurnsRightSteeringTest, FSimplePIETestBase,
 	"ProjectR.RightSteerState Tests.Integration.001: activate steers right the steering component passed as parameter", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 

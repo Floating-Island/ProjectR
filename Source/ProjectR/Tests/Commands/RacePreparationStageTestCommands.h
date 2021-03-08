@@ -3,10 +3,11 @@
 #pragma once
 
 /**
- * This file cointains the latent commands necessary for the tests.
+ * This file contains the latent commands necessary for the tests.
  */
 
 #include "Misc/AutomationTest.h"
+#include "../TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -29,13 +30,13 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnARacePreparationMakeItStart);
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLapManagerSpawned, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckPlayersQuantityOnStart, int, tickCount, int, tickLimit, bool, stageHasStarted, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayersQuantityOnStart, bool, stageHasStarted, FSimplePIETestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckPlayersPossessingJets, int, tickCount, int, tickLimit, bool, stageHasStarted, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckPlayersPossessingJets, bool, stageHasStarted, FSimplePIETestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckJetsInputDisabled, int, tickCount, int, tickLimit, bool, stageHasStarted, FAutomationTestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckJetsInputDisabled, bool, stageHasStarted, FSimplePIETestBase*, test);
 
 
 

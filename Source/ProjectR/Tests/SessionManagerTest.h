@@ -13,6 +13,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -27,12 +28,12 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerCreateLANSessionStartsTheCreati
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerCreateLANSessionTravelsToLobbyWhenStartedTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUSessionManagerCreateLANSessionTravelsToLobbyWhenStartedTest, FSimplePIETestBase,
 	"ProjectR.SessionManager Tests.Unit.002: createLANSession travels to lobby when it starts", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSessionManagerDestroyCurrentSessionStartsSessionDestructionTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUSessionManagerDestroyCurrentSessionStartsSessionDestructionTest, FSimplePIETestBase,
 	"ProjectR.SessionManager Tests.Unit.003: destroyCurrentSession starts session destruction", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 

@@ -24,12 +24,15 @@ bool FUPauseMenuIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 
 bool FUPauseMenuClickingReturnButtonChangesToMainMenuMapTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-PlayerController");
+	establishInitialMapDirectoryTo("/Game/Tests/TestMaps/VoidWorld-PlayerController");
 	establishTestMessageTo(FString("The pause menu should change to the main menu map when clicking the return button."));
 	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	
+	
+	
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckPauseMenuClickReturnButtonChangesToMainMenuMap(nullptr, false, this));
 
@@ -40,14 +43,17 @@ bool FUPauseMenuClickingReturnButtonChangesToMainMenuMapTest::RunTest(const FStr
 
 bool FUPauseMenuClickingResumeButtonRemovesMenuFromViewportAndResumeTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-PlayerControllerMOCK");
+	establishInitialMapDirectoryTo("/Game/Tests/TestMaps/VoidWorld-PlayerControllerMOCK");
+	establishTestMessageTo(FString("The pause menu should be removed from viewport and resume the game when clicking on the resume button."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
-
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckPauseMenuClickResumeButtonRemovesMenuAndResumes(tickCount, tickLimit, nullptr, this));
+	
+	
+	
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckPauseMenuClickResumeButtonRemovesMenuAndResumes(nullptr, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

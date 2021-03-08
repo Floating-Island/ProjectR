@@ -9,6 +9,7 @@
 #include "Mocks/LapManagerMOCK.h"
 #include "Commands/LapManagerTestCommands.h"
 #include "Tests/AutomationEditorCommon.h"
+#include "Jet/SteerStates/CenterSteerState.h"
 
 
 bool FALapManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
@@ -22,15 +23,18 @@ bool FALapManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters
 
 bool FALapManagerHasJetsListedWhenSpawnedTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The lap manager should have the jets that are already spawned in world."));
+	establishTickLimitTo(3);
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAndJet);
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckALapManagerStoresJets(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckALapManagerStoresJets(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -39,15 +43,18 @@ bool FALapManagerHasJetsListedWhenSpawnedTest::RunTest(const FString& Parameters
 
 bool FALapManagerJetsHaveInitialLapPhaseAsDefaultPhaseTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The lap manager jets should have the initial lap phase as default phase."));
+	establishTickLimitTo(1);
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAInitialLapPhaseAndJet);
-	int tickCount = 0;
-	int tickLimit = 1;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetsInitialLapPhase(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetsInitialLapPhase(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -56,15 +63,18 @@ bool FALapManagerJetsHaveInitialLapPhaseAsDefaultPhaseTest::RunTest(const FStrin
 
 bool FALapManagerJetsHaveInitialLapCountSetToOneTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The lap manager jets should have the initial lap count set to one."));
+	establishTickLimitTo(1);
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAInitialLapPhaseAndJet);
-	int tickCount = 0;
-	int tickLimit = 1;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetsInitialLapCount(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetsInitialLapCount(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -73,15 +83,18 @@ bool FALapManagerJetsHaveInitialLapCountSetToOneTest::RunTest(const FString& Par
 
 bool FALapManagerJetOverlappingIntermediateChangesPhaseToItFromInitialTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The jet should change their lap phase from initial to intermediate when overlapping intermediate."));
+	establishTickLimitTo(1);
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerInitalAndIntermediateLapPhasesAndJet);
-	int tickCount = 0;
-	int tickLimit = 1;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetChangeFromInitialToIntermediate(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetChangeFromInitialToIntermediate(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -90,15 +103,18 @@ bool FALapManagerJetOverlappingIntermediateChangesPhaseToItFromInitialTest::RunT
 
 bool FALapManagerJetOverlappingFinalChangesPhaseToItFromIntermediateTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The jet should change their lap phase from intermediate to final when overlapping final."));
+	establishTickLimitTo(1);
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerIntermediateAndFinalLapPhasesAndJet);
-	int tickCount = 0;
-	int tickLimit = 1;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetChangeFromIntermediateToFinal(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetChangeFromIntermediateToFinal(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -107,15 +123,18 @@ bool FALapManagerJetOverlappingFinalChangesPhaseToItFromIntermediateTest::RunTes
 
 bool FALapManagerJetOverlappingInitialChangesPhaseToItFromFinalTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The jet should change their lap phase from final to initial when overlapping initial."));
+	establishTickLimitTo(1);
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerInitialAndFinalLapPhasesAndJet);
-	int tickCount = 0;
-	int tickLimit = 1;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetChangeFromFinalToInitial(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetChangeFromFinalToInitial(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -124,15 +143,18 @@ bool FALapManagerJetOverlappingInitialChangesPhaseToItFromFinalTest::RunTest(con
 
 bool FALapManagerJetOverlappingInitialIncreasesLapCountFromFinalTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The jet should increase its lap count from final to initial phase when overlapping initial."));
+	establishTickLimitTo(1);
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerInitialAndFinalLapPhasesAndJet);
-	int tickCount = 0;
-	int tickLimit = 1;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetLapCountChangeFromFinalToInitial(tickCount, tickLimit, std::numeric_limits<int>::max(), this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetLapCountChangeFromFinalToInitial(std::numeric_limits<int>::max(), this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

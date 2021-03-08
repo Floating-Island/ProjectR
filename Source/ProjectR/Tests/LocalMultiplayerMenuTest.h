@@ -13,6 +13,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -21,22 +22,22 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FULocalMultiplayerMenuIsntNullWhenInstantiatedT
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FULocalMultiplayerMenuClickingGoBackButtonRemovesFromViewportTest,
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULocalMultiplayerMenuClickingGoBackButtonRemovesFromViewportTest, FSimplePIETestBase,
 	"ProjectR.LocalMultiplayerMenu Tests.Integration.001: Clicking the go back button removes the menu from viewport",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FULocalMultiplayerMenuClickingGoBackButtonBringsMainMenuTest,
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULocalMultiplayerMenuClickingGoBackButtonBringsMainMenuTest, FSimplePIETestBase,
 	"ProjectR.LocalMultiplayerMenu Tests.Integration.002: Clicking the go back button brings the mainMenu",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FULocalMultiplayerMenuClickingPlayButtonSetsPlayerQuantityTest,
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULocalMultiplayerMenuClickingPlayButtonSetsPlayerQuantityTest, FSimplePIETestBase,
 	"ProjectR.LocalMultiplayerMenu Tests.Integration.003: Clicking the play button sets the expected local players in a game",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FULocalMultiplayerMenuClickingPlayButtonChangesMapTest,
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULocalMultiplayerMenuClickingPlayButtonChangesMapTest, FSimplePIETestBase,
 	"ProjectR.LocalMultiplayerMenu Tests.Integration.004: Clicking the play button changes the map",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 

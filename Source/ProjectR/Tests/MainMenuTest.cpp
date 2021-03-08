@@ -21,15 +21,18 @@ bool FUMainMenuIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 
 bool FUMainMenuClickingQuitButtonQuitsTheGameTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The main menu should quit the game when clicking the quit button."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	int tickCount = 0;
-	int tickLimit = 3;
+	
+	
+	
 	bool inPIE = false;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickQuits(inPIE, tickCount, tickLimit, nullptr, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickQuits(inPIE, nullptr, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -38,14 +41,17 @@ bool FUMainMenuClickingQuitButtonQuitsTheGameTest::RunTest(const FString& Parame
 
 bool FUMainMenuClickingSingleplayerButtonRemovesMenuFromViewportTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The main menu should be removed from viewport when clicking the singleplayer button."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
 	
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickSingleplayerRemovesMenuFromViewport(tickCount, tickLimit, nullptr, false, this));
+	
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickSingleplayerRemovesMenuFromViewport(nullptr, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -54,14 +60,17 @@ bool FUMainMenuClickingSingleplayerButtonRemovesMenuFromViewportTest::RunTest(co
 
 bool FUMainMenuClickingSingleplayerButtonBringsSingleplayerMenuTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The main menu should change to the singleplayer menu when clicking the singleplayer button."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
 	
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickSingleplayerBringsSingleplayerMenu(tickCount, tickLimit, nullptr, false, this));
+	
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickSingleplayerBringsSingleplayerMenu(nullptr, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -70,14 +79,17 @@ bool FUMainMenuClickingSingleplayerButtonBringsSingleplayerMenuTest::RunTest(con
 
 bool FUMainMenuClickingLocalMultiplayerButtonRemovesMenuFromViewportTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The main menu should be removed from viewport when clicking the local multiplayer button."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
 	
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickLocalMultiplayerRemovesMenuFromViewport(tickCount, tickLimit, nullptr, false, this));
+	
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickLocalMultiplayerRemovesMenuFromViewport(nullptr, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -86,14 +98,17 @@ bool FUMainMenuClickingLocalMultiplayerButtonRemovesMenuFromViewportTest::RunTes
 
 bool FUMainMenuClickingLocalMultiplayerButtonBringsLocalMultiplayerMenuTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The main menu should change to the local multiplayer menu when clicking the local multiplayer button."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
 	
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSoloMainMenuClickLocalMultiplayerBringsLocalMultiplayerMenu(tickCount, tickLimit, nullptr, false, this));
+	
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckSoloMainMenuClickLocalMultiplayerBringsLocalMultiplayerMenu(nullptr, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -102,13 +117,16 @@ bool FUMainMenuClickingLocalMultiplayerButtonBringsLocalMultiplayerMenuTest::Run
 
 bool FUMainMenuClickingLanMultiplayerButtonRemovesMenuFromViewportTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The main menu should be removed from viewport when clicking the lan multiplayer button."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
 	
-	int tickCount = 0;
-	int tickLimit = 3;
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickLanMultiplayerRemovesMenuFromViewport(nullptr, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
@@ -118,12 +136,15 @@ bool FUMainMenuClickingLanMultiplayerButtonRemovesMenuFromViewportTest::RunTest(
 
 bool FUMainMenuClickingLanMultiplayerButtonBringsLanMultiplayerMenuTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
 	establishTestMessageTo(FString("The main menu should load the lan multiplayer menu when clicking the lan multiplayer button."));
 	establishTickLimitTo(10);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 	
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuClickLanMultiplayerBringsLanMultiplayerMenu(nullptr, this));
 

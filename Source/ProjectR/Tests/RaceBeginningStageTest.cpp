@@ -63,6 +63,9 @@ bool FARaceBeginningStageLoadsAnnouncerUIOnStartTest::RunTest(const FString& Par
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	
+	
+	
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnARaceBeginningMOCK);
 
@@ -81,6 +84,9 @@ bool FARaceBeginningStageCountdownToStartModifiesGameStateAnnouncerTextTest::Run
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	
+	
+	
 
 	UClass* raceStageClass = ARaceBeginningStageMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(raceStageClass, FTransform()));

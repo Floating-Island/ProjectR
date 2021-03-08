@@ -29,9 +29,10 @@ bool FAMotorStateManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Par
 
 bool FAMotorStateManagerDefaultStateIsNeutralTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The default state should be NeutralMotorState"));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
@@ -45,9 +46,10 @@ bool FAMotorStateManagerDefaultStateIsNeutralTest::RunTest(const FString& Parame
 
 bool FAMotorStateManagerAccelerateChangesStateToAcceleratingTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("After accelerate, the motorState should be Accelerating"));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
@@ -62,9 +64,10 @@ bool FAMotorStateManagerAccelerateChangesStateToAcceleratingTest::RunTest(const 
 
 bool FAMotorStateManagerBrakeChangesStateToReversingTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("After brake, the motorState should be Reversing"));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
@@ -79,9 +82,10 @@ bool FAMotorStateManagerBrakeChangesStateToReversingTest::RunTest(const FString&
 
 bool FAMotorStateManagerNeutralizeChangesStateToNeutralTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("After neutralize, the motorState should be Neutral"));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
@@ -96,16 +100,20 @@ bool FAMotorStateManagerNeutralizeChangesStateToNeutralTest::RunTest(const FStri
 
 bool FAMotorStateManagerAccelerateKeepsStateIfAlreadyAcceleratingTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("Should keep its state if accelerate when already Accelerating"));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(motorStateManagerClass, FTransform()));
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerAccelerateKeepsStateIfAccelerating(tickCount, tickLimit, nullptr, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerAccelerateKeepsStateIfAccelerating(nullptr, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -114,16 +122,20 @@ bool FAMotorStateManagerAccelerateKeepsStateIfAlreadyAcceleratingTest::RunTest(c
 
 bool FAMotorStateManagerBrakeKeepsStateIfAlreadyReversingingTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("Should keep its state if brake when already Reversing"));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(motorStateManagerClass, FTransform()));
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerBrakeKeepsStateIfReversing(tickCount, tickLimit, nullptr, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerBrakeKeepsStateIfReversing(nullptr, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -132,17 +144,21 @@ bool FAMotorStateManagerBrakeKeepsStateIfAlreadyReversingingTest::RunTest(const 
 
 bool FAMotorStateManagerNeutralizeKeepsStateIfAlreadyNeutralTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("Should keep its state if neutralize when already Neutral"));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(motorStateManagerClass, FTransform()));
 	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAMotorStateManagerAndAccelerateIt);
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerNeutralizeKeepsStateIfNeutral(tickCount, tickLimit, nullptr, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerNeutralizeKeepsStateIfNeutral(nullptr, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -186,23 +202,27 @@ bool FAMotorStateManagerAlwaysRelevantTest::RunTest(const FString& Parameters)
 
 bool FAMotorStateManagerReplicatesStateWhenCallingAccelerateTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	UClass* expectedStateClass = UAcceleratingMotorState::StaticClass();
+	establishTestMessageTo((FString("The current state of server and client should be %s."), *expectedStateClass->GetName()));
+	establishTickLimitTo(10);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	int32 numberOfPlayers = 2;
 	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	
+	
 
 	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(motorStateManagerClass, FTransform(), numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientAccelerateMotorStateManager(numberOfPlayers));
 
-	int tickCount = 0;
-	int tickLimit = 10;
-	UClass* expectedStateClass = UAcceleratingMotorState::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerServerAndClientExpectedState(expectedStateClass , tickCount, tickLimit, numberOfPlayers, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerServerAndClientExpectedState(expectedStateClass , numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -211,23 +231,26 @@ bool FAMotorStateManagerReplicatesStateWhenCallingAccelerateTest::RunTest(const 
 
 bool FAMotorStateManagerReplicatesStateWhenCallingBrakeTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	UClass* expectedStateClass = UReversingMotorState::StaticClass();
+	establishTestMessageTo((FString("The current state of server and client should be %s."), *expectedStateClass->GetName()));
+	establishTickLimitTo(10);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	int32 numberOfPlayers = 2;
 	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
+	
+	
+
 	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(motorStateManagerClass, FTransform(), numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientBrakeMotorStateManager(numberOfPlayers));
-
-	int tickCount = 0;
-	int tickLimit = 10;
-	UClass* expectedStateClass = UReversingMotorState::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerServerAndClientExpectedState(expectedStateClass , tickCount, tickLimit, numberOfPlayers, this));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerServerAndClientExpectedState(expectedStateClass , numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -236,23 +259,26 @@ bool FAMotorStateManagerReplicatesStateWhenCallingBrakeTest::RunTest(const FStri
 
 bool FAMotorStateManagerReplicatesStateWhenCallingNeutralizeTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	UClass* expectedStateClass = UNeutralMotorState::StaticClass();
+	establishTestMessageTo((FString("The current state of server and client should be %s."), *expectedStateClass->GetName()));
+	establishTickLimitTo(10);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	int32 numberOfPlayers = 2;
 	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	
+	
 
 	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(motorStateManagerClass, FTransform(), numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientNeutralizeMotorStateManager(numberOfPlayers));
 
-	int tickCount = 0;
-	int tickLimit = 10;
-	UClass* expectedStateClass = UNeutralMotorState::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerServerAndClientExpectedState(expectedStateClass , tickCount, tickLimit, numberOfPlayers, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerServerAndClientExpectedState(expectedStateClass , numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -261,9 +287,10 @@ bool FAMotorStateManagerReplicatesStateWhenCallingNeutralizeTest::RunTest(const 
 
 bool FAMotorStateManagerMixChangesStateToMixedTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("After mix, the motorState should be Mixed"));
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
@@ -278,16 +305,20 @@ bool FAMotorStateManagerMixChangesStateToMixedTest::RunTest(const FString& Param
 
 bool FAMotorStateManagerMixKeepsStateIfAlreadyMixedTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("Should keep its state if mix when already Mixed"));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(motorStateManagerClass, FTransform()));
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerMixKeepsStateIfMixed(tickCount, tickLimit, nullptr, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerMixKeepsStateIfMixed(nullptr, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -296,23 +327,26 @@ bool FAMotorStateManagerMixKeepsStateIfAlreadyMixedTest::RunTest(const FString& 
 
 bool FAMotorStateManagerReplicatesStateWhenCallingMixTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	UClass* expectedStateClass = UMixedMotorState::StaticClass();
+	establishTestMessageTo((FString("The current state of server and client should be %s."), *expectedStateClass->GetName()));
+	establishTickLimitTo(10);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	int32 numberOfPlayers = 2;
 	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
+	
+	
+
 	UClass* motorStateManagerClass = AMotorStateManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(motorStateManagerClass, FTransform(), numberOfPlayers));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FClientMixMotorStateManager(numberOfPlayers));
-
-	int tickCount = 0;
-	int tickLimit = 10;
-	UClass* expectedStateClass = UMixedMotorState::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerServerAndClientExpectedState(expectedStateClass , tickCount, tickLimit, numberOfPlayers, this));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMotorStateManagerServerAndClientExpectedState(expectedStateClass , numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

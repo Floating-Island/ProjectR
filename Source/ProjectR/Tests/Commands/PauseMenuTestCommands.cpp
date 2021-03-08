@@ -106,18 +106,12 @@ bool FCheckPauseMenuClickResumeButtonRemovesMenuAndResumes::Update()
 			bool gameResumedAndNoMenu = !isPaused && !testPlayerController->pauseMenuIsInViewport();
 			if (gameResumedAndNoMenu)
 			{
-				test->TestTrue(TEXT("The pause menu should be removed from viewport and resume the game when clicking on the resume button."), gameResumedAndNoMenu);
+				test->TestTrue(test->conditionMessage(), gameResumedAndNoMenu);
 				sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
 				return true;
 			}
 
-			++tickCount;
-			if (tickCount > tickLimit)
-			{
-				test->TestTrue(TEXT("The pause menu should be removed from viewport and resume the game when clicking on the resume button."), gameResumedAndNoMenu);
-				sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
-				return true;
-			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;

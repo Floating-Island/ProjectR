@@ -31,6 +31,9 @@ bool FAProjectRGameStateUpdateAnnouncerWithUpdatesTextFromSubscribedAnnouncerUIT
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	
+	
+	
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnGameModeDefaultPawn);
 
@@ -52,6 +55,9 @@ bool FAProjectRGameStateServerUpdateAnnouncerWithUpdatesTextFromClientSubscribed
 	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+	
+	
+	
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckServerGameStateUpdatesClientAnnouncerUIDisplayText(numberOfPlayers, this));
 

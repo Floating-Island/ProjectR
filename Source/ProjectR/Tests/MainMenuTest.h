@@ -22,32 +22,32 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuIsntNullWhenInstantiatedTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingQuitButtonQuitsTheGameTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingQuitButtonQuitsTheGameTest, FSimplePIETestBase,
 	"ProjectR.MainMenu Tests.Unit.001: Clicking the quit button quits the game",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingSingleplayerButtonRemovesMenuFromViewportTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingSingleplayerButtonRemovesMenuFromViewportTest, FSimplePIETestBase,
 	"ProjectR.MainMenu Tests.Integration.002: Clicking the singleplayer button removes the menu from viewport",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingSingleplayerButtonBringsSingleplayerMenuTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingSingleplayerButtonBringsSingleplayerMenuTest, FSimplePIETestBase,
 	"ProjectR.MainMenu Tests.Integration.003: Clicking the singleplayer button brings the singleplayer menu",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingLocalMultiplayerButtonRemovesMenuFromViewportTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingLocalMultiplayerButtonRemovesMenuFromViewportTest, FSimplePIETestBase,
 	"ProjectR.MainMenu Tests.Integration.004: Clicking the local multiplayer button removes the menu from viewport",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingLocalMultiplayerButtonBringsLocalMultiplayerMenuTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingLocalMultiplayerButtonBringsLocalMultiplayerMenuTest, FSimplePIETestBase,
 	"ProjectR.MainMenu Tests.Integration.005: Clicking the local multiplayer button brings the localMultiplayer menu",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingLanMultiplayerButtonRemovesMenuFromViewportTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingLanMultiplayerButtonRemovesMenuFromViewportTest, FSimplePIETestBase,
 	"ProjectR.MainMenu Tests.Integration.006: Clicking the lan multiplayer button removes the menu from viewport",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 

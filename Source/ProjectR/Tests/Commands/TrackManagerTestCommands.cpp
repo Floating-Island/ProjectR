@@ -67,10 +67,10 @@ bool FCheckATrackManagerTrackGenerators::Update()
 			bool spawnedTrackGeneratorInTrackManager = testManager->trackGenerators().Contains(Cast<ATrackGenerator, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGenerator::StaticClass())));
 
 			UE_LOG(LogTemp, Log, TEXT("Track manager %s the track generator listed."), *FString(spawnedTrackGeneratorInTrackManager ? "has" : "doesn't have"));
-			++tickCount;
-			if (tickCount > tickLimit)
+			test->increaseTickCount();
+			if (test->tickCountExceedsLimit())
 			{
-				test->TestTrue(TEXT("The track manager should have track generators already spawned in world."), spawnedTrackGeneratorInTrackManager);
+				test->TestTrue(test->conditionMessage(), spawnedTrackGeneratorInTrackManager);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -94,18 +94,11 @@ bool FCheckATrackManagerStoresJetsWhenOverlap::Update()
 
 			if (hasJetsStored)
 			{
-				test->TestTrue(TEXT("The track manager should store the jets that overlap with a track generator's magnet box."), hasJetsStored);
+				test->TestTrue(test->conditionMessage(), hasJetsStored);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
-
-			++tickCount;
-			if (tickCount > tickLimit)
-			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The track manager didn't store the jets that overlapped with a track generator's magnet box."), tickCount > tickLimit);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;
@@ -140,19 +133,13 @@ bool FCheckATrackManagerAttractsJets::Update()
 
 			if (!velocityNearZero && isVelocityFullyAlongNormal && isPulling)
 			{
-				test->TestTrue(TEXT("The track generator should attract a Jet along the track normal vector when a track manager is present."), !velocityNearZero && isVelocityFullyAlongNormal && isPulling);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}
-
-			++tickCount;
-			if (tickCount > tickLimit)
-			{
-				test->TestFalse(TEXT("Tick limit reached for this test. The track generator didn't attract the jet along the track normal vector when a track manager was present."), tickCount > tickLimit);
+				test->TestTrue(test->conditionMessage(), !velocityNearZero && isVelocityFullyAlongNormal && isPulling);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
 			aPreviousDistance = currentDistance;
+
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;

@@ -73,6 +73,9 @@ bool FAProjectRPlayerControllerEscKeyLoadsPauseMenuTest::RunTest(const FString& 
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	
+	
+	
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerControllerPressEscBringsPauseMenu(nullptr, this));
 
@@ -89,6 +92,9 @@ bool FAProjectRPlayerControllerEscKeyRemovesPauseMenuIfInViewportTest::RunTest(c
 	
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	
+	
+	
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerControllerPressEscRemovesPauseMenuInViewport(nullptr, this));
 
@@ -142,6 +148,9 @@ bool FAProjectRPlayerControllerLoadRaceUILoadsthePlayerStateUITest::RunTest(cons
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	
+	
+	
 
 	
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
@@ -161,6 +170,9 @@ bool FAProjectRPlayerControllerLoadRaceUIMakesRacePlayerUISynchronizeVariablesTe
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	
+	
+	
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
 
@@ -182,6 +194,9 @@ bool FAProjectRPlayerControllerServerRemoveAnnouncerUIRemovesClientLoadedAnnounc
 	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+	
+	
+	
 
 	ADD_LATENT_AUTOMATION_COMMAND(FServerLoadAnnouncers(numberOfPlayers, this));
 
@@ -203,6 +218,9 @@ bool FAProjectRPlayerControllerServerLoadResultsUILoadsClientRaceResultsUITest::
 	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+	
+	
+	
 
 	ADD_LATENT_AUTOMATION_COMMAND(FServerLoadResults(numberOfPlayers, this));
 

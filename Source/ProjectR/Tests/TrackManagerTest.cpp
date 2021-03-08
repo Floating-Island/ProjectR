@@ -25,10 +25,15 @@ bool FATrackManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Paramete
 
 bool FATrackManagerHasTrackGeneratorsListedWhenSpawnedTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	establishTestMessageTo(FString("The track manager should have track generators already spawned in world."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	UClass* trackGeneratorClass = ATrackGenerator::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(trackGeneratorClass, FTransform()));
@@ -36,9 +41,8 @@ bool FATrackManagerHasTrackGeneratorsListedWhenSpawnedTest::RunTest(const FStrin
 	UClass* trackManagerClass = ATrackManagerMOCK::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(trackManagerClass, FTransform()));
 	
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackManagerTrackGenerators(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackManagerTrackGenerators(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -47,15 +51,19 @@ bool FATrackManagerHasTrackGeneratorsListedWhenSpawnedTest::RunTest(const FStrin
 
 bool FATrackManagerStoresJetsOverlappingWithTrackGeneratorsTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	establishTestMessageTo(FString("The track manager should store the jets that overlap with a track generator's magnet box."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningARotatedTrackGeneratorAndJetCloseToIt);
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackManagerStoresJetsWhenOverlap(tickCount, tickLimit, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackManagerStoresJetsWhenOverlap(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -64,15 +72,19 @@ bool FATrackManagerStoresJetsOverlappingWithTrackGeneratorsTest::RunTest(const F
 
 bool FATrackManagerAttractsJetsTowardsTrackGeneratorsTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	establishTestMessageTo(FString("The track generator should attract a Jet along the track normal vector when a track manager is present."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningARotatedTrackGeneratorAndJetCloseToIt);
-	int tickCount = 0;
-	int tickLimit = 3;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackManagerAttractsJets(tickCount, tickLimit, std::numeric_limits<float>::min(), this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckATrackManagerAttractsJets(std::numeric_limits<float>::min(), this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

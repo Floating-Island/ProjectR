@@ -131,18 +131,12 @@ bool FCheckARaceRunningStartEnablesJetsInput::Update()
 
 		if (jetsHaveInputEnabled)
 		{
-			test->TestTrue(TEXT("Race running start should enable jets input."), jetsHaveInputEnabled);
+			test->TestTrue(test->conditionMessage(), jetsHaveInputEnabled);
 			testWorld->bDebugFrameStepExecution = true;
 			return true;
 		}
 
-		++tickCount;
-		if (tickCount > tickLimit)
-		{
-			test->TestTrue(TEXT("Race running start should enable jets input."), jetsHaveInputEnabled);
-			testWorld->bDebugFrameStepExecution = true;
-			return true;
-		}
+		return test->manageTickCountTowardsLimit();
 	}
 	return false;
 }

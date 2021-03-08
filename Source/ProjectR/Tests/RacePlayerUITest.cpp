@@ -30,6 +30,9 @@ bool FARacePlayerUISetTotalLapsToChangesTotalLapsTextTest::RunTest(const FString
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnGameModeDefaultPawn);
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckARacePlayerUIChangesTotalLapsText(this));
 
@@ -46,6 +49,9 @@ bool FARacePlayerUISetTotalLapsChangesTotalLapsTextOnceTest::RunTest(const FStri
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnGameModeDefaultPawn);
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckARacePlayerUIChangesTotalLapsTextOnce(this));

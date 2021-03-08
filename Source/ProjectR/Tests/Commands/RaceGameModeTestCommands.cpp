@@ -187,18 +187,12 @@ bool FCheckRaceGameModeCreatesAllJets::Update()
 
 		if (sameNumberOfJetsInGameMode)
 		{
-			test->TestTrue(TEXT("Race game mode should have the same number of jets than the world."), sameNumberOfJetsInGameMode);
+			test->TestTrue(test->conditionMessage(), sameNumberOfJetsInGameMode);
 			testWorld->bDebugFrameStepExecution = true;
 			return true;
 		}
 
-		++tickCount;
-		if (tickCount > tickLimit)
-		{
-			test->TestTrue(TEXT("Tick limit reached. Race game mode should have the same number of jets than the world."), sameNumberOfJetsInGameMode);
-			testWorld->bDebugFrameStepExecution = true;
-			return true;
-		}
+		return test->manageTickCountTowardsLimit();
 	}
 	return false;
 }
@@ -247,18 +241,12 @@ bool FCheckRaceGameModeJetsPositioning::Update()
 
 		if (sameNumberOfJetsInGameMode && jetsAreBehindInitialPhase)
 		{
-			test->TestTrue(TEXT("Race game mode should position the jets behind the initial lap phase."), sameNumberOfJetsInGameMode && jetsAreBehindInitialPhase);
+			test->TestTrue(test->conditionMessage(), sameNumberOfJetsInGameMode && jetsAreBehindInitialPhase);
 			testWorld->bDebugFrameStepExecution = true;
 			return true;
 		}
 
-		++tickCount;
-		if (tickCount > tickLimit)
-		{
-			test->TestTrue(TEXT("Tick limit reached. Race game mode should position the jets behind the initial lap phase."), sameNumberOfJetsInGameMode && jetsAreBehindInitialPhase);
-			testWorld->bDebugFrameStepExecution = true;
-			return true;
-		}
+		return test->manageTickCountTowardsLimit();
 	}
 	return false;
 }
@@ -395,18 +383,12 @@ bool FCheckCreatesSameOrMoreJetsThanPlayers::Update()
 
 		if (playerQuantityAsExpected)
 		{
-			test->TestTrue(TEXT("Race game mode should create the same or more jets than players."), playerQuantityAsExpected);
+			test->TestTrue(test->conditionMessage(), playerQuantityAsExpected);
 			testWorld->bDebugFrameStepExecution = true;
 			return true;
 		}
 
-		++tickCount;
-		if (tickCount > tickLimit)
-		{
-			test->TestTrue(TEXT("Race game mode should create the same or more jets than players."), playerQuantityAsExpected);
-			testWorld->bDebugFrameStepExecution = true;
-			return true;
-		}
+		return test->manageTickCountTowardsLimit();
 	}
 	return false;
 }
@@ -444,18 +426,12 @@ bool FCheckJetsSameRotationAsTrack::Update()
 
 		if (jetsWithSameRotationAsTrackSections)
 		{
-			test->TestTrue(TEXT("Race game mode should coincede jets rotation with their track section rotation."), jetsWithSameRotationAsTrackSections);
+			test->TestTrue(test->conditionMessage(), jetsWithSameRotationAsTrackSections);
 			testWorld->bDebugFrameStepExecution = true;
 			return true;
 		}
 
-		++tickCount;
-		if (tickCount > tickLimit)
-		{
-			test->TestTrue(TEXT("Tick limit reached. Race game mode should coincede jets rotation with their track section rotation."), jetsWithSameRotationAsTrackSections);
-			testWorld->bDebugFrameStepExecution = true;
-			return true;
-		}
+		return test->manageTickCountTowardsLimit();
 	}
 	return false;
 }

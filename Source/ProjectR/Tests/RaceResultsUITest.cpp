@@ -31,6 +31,9 @@ bool FURaceResultsUIFillsInfoBoxWithRaceGameStatePlayerStatesInfoTest::RunTest(c
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	
+	
+	
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnGameModeDefaultPawn);
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckRaceResultsInfoBoxQuantitySameAsPlayerStates(this));
 

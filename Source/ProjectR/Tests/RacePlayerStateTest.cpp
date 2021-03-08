@@ -31,6 +31,9 @@ bool FARacePlayerStateUpdateLapToUpdatesSubscribedRacePlayerUICurrentLapTest::Ru
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnGameModeDefaultPawn);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerStateUpdatesRacePlayerUICurrentLap(nullptr, this));
@@ -48,6 +51,9 @@ bool FARacePlayerStateUpdatePositionToUpdatesSubscribedRacePlayerUICurrentPositi
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnGameModeDefaultPawn);
 
@@ -70,6 +76,9 @@ bool FARacePlayerStateServerUpdateLapToUpdatesSubscribedClientRacePlayerUICurren
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckServerUpdatesLapReplicatesToClientRaceUI(TArray<ARacePlayerState*>(), numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
@@ -89,6 +98,9 @@ bool FARacePlayerStateServerUpdatePositionToUpdatesSubscribedClientRacePlayerUIC
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckServerUpdatesPositionReplicatesToClientRaceUI(TArray<ARacePlayerState*>(), numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
@@ -107,6 +119,9 @@ bool FARacePlayerStateServerSetTotalLapsToSetsSubscribedClientRacePlayerUITotalL
 	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	
+	
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckServerUpdatesTotalLapsReplicatesToClientRaceUI(TArray<ARacePlayerState*>(), numberOfPlayers, this));
 

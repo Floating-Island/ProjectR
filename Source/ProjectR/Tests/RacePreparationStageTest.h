@@ -13,6 +13,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -31,17 +32,17 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARacePreparationStagStartSpawnsLapManagerTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARacePreparationStagStartCreatesNecessaryPlayersTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARacePreparationStagStartCreatesNecessaryPlayersTest, FSimplePIETestBase,
 	"ProjectR.RacePreparationStage Tests.Unit.003: start creates the necessary players", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARacePreparationStagStartMakesControllersPossessJetsTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARacePreparationStagStartMakesControllersPossessJetsTest, FSimplePIETestBase,
 	"ProjectR.RacePreparationStage Tests.Unit.004: start makes controllers possess the jets", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FARacePreparationStagStartDisablesJetsInputTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARacePreparationStagStartDisablesJetsInputTest, FSimplePIETestBase,
 	"ProjectR.RacePreparationStage Tests.Unit.005: start disables jets input", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 

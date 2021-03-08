@@ -88,7 +88,7 @@ bool FUSessionManagerCheckTravelToLobby::Update()
 
 		if (isInAnotherWorld)
 		{
-			test->TestTrue(TEXT("The session manager should travel to the lobby when the session starts."), isInAnotherWorld);
+			test->TestTrue(test->conditionMessage(), isInAnotherWorld);
 
 			AObjectContainerActor* objectContainer = sessionUtilities.spawnInPIEAnInstanceOf<AObjectContainerActor>();
 			objectContainer->storeObjectOfType<USessionManager>();
@@ -99,13 +99,7 @@ bool FUSessionManagerCheckTravelToLobby::Update()
 			return true;
 		}
 
-		++tickCount;
-		if (tickCount > tickLimit)
-		{
-			test->TestTrue(TEXT("The session manager should travel to the lobby when the session starts."), isInAnotherWorld);
-			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-			return true;
-		}
+		return test->manageTickCountTowardsLimit();
 	}
 	return false;
 }
@@ -127,18 +121,12 @@ bool FUSessionManagerCheckSessionDestructionStarting::Update()
 			objectContainer->storeObjectOfType<USessionManager>();
 			USessionManager* testManager = Cast<USessionManager, UObject>(objectContainer->retrieveStoredObject());
 			
-			test->TestTrue(TEXT("The session manager should start session destruction when calling destroyCurrentSession."), testManager->destroyCurrentSession());
+			test->TestTrue(test->conditionMessage(), testManager->destroyCurrentSession());
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 
 		}
-		++tickCount;
-		if (tickCount > tickLimit)
-		{
-			test->TestTrue(TEXT("The session manager should start session destruction when calling destroyCurrentSession."), isInAnotherWorld);
-			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-			return true;
-		}
+		return test->manageTickCountTowardsLimit();
 	}
 	return false;
 }

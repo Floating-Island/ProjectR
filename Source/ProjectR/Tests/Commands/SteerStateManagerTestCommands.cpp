@@ -175,18 +175,11 @@ bool FCheckSteerStateManagerCurrentState::Update()
 			bool statesMatch = testManager->currentState()->GetClass() == expectedState;
 			if (statesMatch)
 			{
-				test->TestTrue((TEXT("%s"), *message), statesMatch);
+				test->TestTrue(test->conditionMessage(), statesMatch);
 				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 				return true;
 			}
-
-			++tickCount;
-			if (tickCount > tickLimit)
-			{
-				test->TestTrue((TEXT("Tick limit reached. %s"), *message), statesMatch);
-				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-				return true;
-			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;
@@ -209,19 +202,12 @@ bool FCheckSteerStateManagerCurrentStateAgainstPreviousOnSteerLeft::Update()
 			bool statesMatch = currentState == previousState;
 			if (statesMatch)
 			{
-				test->TestTrue((TEXT("%s"), *message), statesMatch);
+				test->TestTrue(test->conditionMessage(), statesMatch);
 				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 				return true;
 			}
 			previousState = currentState;
-
-			++tickCount;
-			if (tickCount > tickLimit)
-			{
-				test->TestTrue((TEXT("Tick limit reached. %s"), *message), statesMatch);
-				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-				return true;
-			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;
@@ -244,19 +230,12 @@ bool FCheckSteerStateManagerCurrentStateAgainstPreviousOnSteerRight::Update()
 			bool statesMatch = currentState == previousState;
 			if (statesMatch)
 			{
-				test->TestTrue((TEXT("%s"), *message), statesMatch);
+				test->TestTrue(test->conditionMessage(), statesMatch);
 				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 				return true;
 			}
 			previousState = currentState;
-
-			++tickCount;
-			if (tickCount > tickLimit)
-			{
-				test->TestTrue((TEXT("Tick limit reached. %s"), *message), statesMatch);
-				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-				return true;
-			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;
@@ -279,19 +258,12 @@ bool FCheckSteerStateManagerCurrentStateAgainstPreviousOnCenter::Update()
 			bool statesMatch = currentState == previousState;
 			if (statesMatch)
 			{
-				test->TestTrue((TEXT("%s"), *message), statesMatch);
+				test->TestTrue(test->conditionMessage(), statesMatch);
 				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 				return true;
 			}
 			previousState = currentState;
-
-			++tickCount;
-			if (tickCount > tickLimit)
-			{
-				test->TestTrue((TEXT("Tick limit reached. %s"), *message), statesMatch);
-				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-				return true;
-			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;
@@ -325,24 +297,14 @@ bool FCheckSteerStateManagerServerAndClientExpectedState::Update()
 
 				if(statesMatch)
 				{
-					test->TestTrue((TEXT("The current state of server and client should be %s."), *expectedStateClass->GetName()), statesMatch);
+					test->TestTrue(test->conditionMessage(), statesMatch);
 					for(auto context : GEditor->GetWorldContexts())
 					{
 						context.World()->bDebugFrameStepExecution = true;
 					}
 					return true;
 				}
-
-				++tickCount;
-				if(tickCount > tickLimit)
-				{
-					test->TestTrue((TEXT("The current state of server and client should be %s."), *expectedStateClass->GetName()), statesMatch);
-					for(auto context : GEditor->GetWorldContexts())
-					{
-						context.World()->bDebugFrameStepExecution = true;
-					}
-					return true;
-				}
+				return test->manageTickCountTowardsLimit();
 			}
 		}
 	}

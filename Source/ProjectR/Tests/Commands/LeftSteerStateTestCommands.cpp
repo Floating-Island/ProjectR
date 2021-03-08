@@ -53,19 +53,13 @@ bool FCheckAJetSteersLeft::Update()
 
 			if(hasSteeredTowardsY)
 			{
-				test->TestTrue(TEXT("The left steer state should steer left the steering component passed as parameter."), hasSteeredTowardsY);
+				test->TestTrue(test->conditionMessage(), hasSteeredTowardsY);
 				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 				return true;
 			}
 			previousLocation = currentLocation;
 
-			++tickCount;
-			if(tickCount > tickLimit)
-			{
-				test->TestTrue(TEXT("The left steer state should steer left the steering component passed as parameter."), hasSteeredTowardsY);
-				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-				return true;
-			}
+			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;

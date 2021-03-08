@@ -21,18 +21,20 @@ bool FUMixedMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& Param
 
 bool FUMixedMotorStateActivateAcceleratesMotorDriveTest::RunTest(const FString& Parameters)
 {
-	
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	establishTestMessageTo(FString("Activating the mixed state should accelerate and brake the jet."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
-
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetAndActivateMixedMotorState);
-	int tickCount = 0;
-	int tickLimit = 3;
+
 	float previousSpeed = 0;
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckMixedStateActivation(tickCount, tickLimit, previousSpeed, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMixedStateActivation(previousSpeed, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

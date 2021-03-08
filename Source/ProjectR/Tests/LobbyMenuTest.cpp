@@ -29,6 +29,9 @@ bool FULobbyMenuClickingReturnGoesToMainMenuTest::RunTest(const FString& Paramet
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 	
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckLobbyMenuClickReturnToMainMenu(nullptr, true, this));
 
@@ -45,6 +48,9 @@ bool FULobbyMenuClickingAMapAndStartRaceChangesWorldTest::RunTest(const FString&
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 	
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckLobbyMenuClickSelectMapAndStartRace(nullptr, true, false, this));
 
@@ -61,6 +67,9 @@ bool FULobbyMenuIsLoadedInLobbyMapLevelBlueprintTest::RunTest(const FString& Par
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 	
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckLobbyMenuLoadedByLevelBlueprint(this));
 
@@ -77,6 +86,9 @@ bool FULobbyMenuGameStatePlayerArrayQuantityChangeIsUpdatedTest::RunTest(const F
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 	
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckLobbyMenuUpdatesPlayersConnected(false, this));
 
@@ -97,6 +109,9 @@ bool FULobbyMenuCollapsesMapSelectorWidgetIfNotAuthorityTest::RunTest(const FStr
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 
+	
+	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckClientMapSelectorCollapsed(numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
@@ -116,6 +131,9 @@ bool FULobbyMenuCollapsesMapSelectorWidgetIfNotAuthorityTest::RunTest(const FStr
 //
 //	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
 //
+//	
+//	
+//
 //	ADD_LATENT_AUTOMATION_COMMAND(FCheckClientMapSelectedReplicates(FString("this isn't a selected map"), true, numberOfPlayers, this));
 //
 //	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
@@ -131,6 +149,9 @@ bool FULobbyMenuClickingAMapButtonChangesLobbyGameStateSelectedMapTest::RunTest(
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 	
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckClickingAMapChangesLobbyGameState(FString(), true, this));
 
@@ -147,6 +168,9 @@ bool FULobbyMenuClickingAMapButtonChangesLobbyMenuSelectedMapTest::RunTest(const
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 	
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckClickingAMapUpdatesMap(FString(), true, this));
 

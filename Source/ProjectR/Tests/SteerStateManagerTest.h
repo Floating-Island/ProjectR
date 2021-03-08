@@ -13,6 +13,7 @@
  */
 
 #include "Misc/AutomationTest.h"
+#include "TestBaseClasses/SimplePIETestBase.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -27,37 +28,37 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerDoesntTickTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerDefaultStateIsCenterTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FASteerStateManagerDefaultStateIsCenterTest, FSimplePIETestBase,
 	"ProjectR.SteerStateManager Tests.Unit.002: The default state is CenterSteerState", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerSteerLeftChangesStateToLeftSteerTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FASteerStateManagerSteerLeftChangesStateToLeftSteerTest, FSimplePIETestBase,
 	"ProjectR.SteerStateManager Tests.Unit.003: steerLeft changes the current state to LeftSteerState", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerSteerRightChangesStateToRightSteerTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FASteerStateManagerSteerRightChangesStateToRightSteerTest, FSimplePIETestBase,
 	"ProjectR.SteerStateManager Tests.Unit.004: steerRight changes the current state to RightSteerState", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerCenterChangesStateToCenterSteerTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FASteerStateManagerCenterChangesStateToCenterSteerTest, FSimplePIETestBase,
 	"ProjectR.SteerStateManager Tests.Unit.005: center changes the current state to CenterSteerState", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerSteerLeftKeepsStateIfAlreadyLeftSteerStateTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FASteerStateManagerSteerLeftKeepsStateIfAlreadyLeftSteerStateTest, FSimplePIETestBase,
 	"ProjectR.SteerStateManager Tests.Unit.006: steerLeft keeps current state if it's already a LeftSteerState", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerSteerRightKeepsStateIfAlreadyRightSteerStateTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FASteerStateManagerSteerRightKeepsStateIfAlreadyRightSteerStateTest, FSimplePIETestBase,
 	"ProjectR.SteerStateManager Tests.Unit.007: steerRight keeps current state if it's already a RightSteerState", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerCenterKeepsStateIfAlreadyCenterSteerStateTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FASteerStateManagerCenterKeepsStateIfAlreadyCenterSteerStateTest, FSimplePIETestBase,
 	"ProjectR.SteerStateManager Tests.Unit.008: center keeps current state if it's already a CenterSteerState", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
@@ -72,17 +73,17 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerIsAlwaysRelevantToNetworkTes
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerReplicatesStateWhenCallingSteerLeftTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FASteerStateManagerReplicatesStateWhenCallingSteerLeftTest, FSimplePIETestBase,
 	"ProjectR.SteerStateManager Tests.Replication.011: Replicates its state when client calls steerLeft", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerReplicatesStateWhenCallingSteerRightTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FASteerStateManagerReplicatesStateWhenCallingSteerRightTest, FSimplePIETestBase,
 	"ProjectR.SteerStateManager Tests.Replication.012: Replicates its state when client calls steerRight", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerReplicatesStateWhenCallingCenterTest, 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FASteerStateManagerReplicatesStateWhenCallingCenterTest, FSimplePIETestBase,
 	"ProjectR.SteerStateManager Tests.Replication.013: Replicates its state when client calls center", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 

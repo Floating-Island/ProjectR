@@ -42,19 +42,22 @@ bool FUSessionManagerCreateLANSessionStartsTheCreationOfSessionTest::RunTest(con
 
 bool FUSessionManagerCreateLANSessionTravelsToLobbyWhenStartedTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/lobby"));
+	establishTestMessageTo(FString("The session manager should travel to the lobby when the session starts."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	UClass* containerClass = AObjectContainerActor::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(containerClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FUSessionManagerCreateSession);
 
-	int tickCount = 0;
-	int tickLimit = 10;
-	ADD_LATENT_AUTOMATION_COMMAND(FUSessionManagerCheckTravelToLobby(tickCount, tickLimit, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FUSessionManagerCheckTravelToLobby(this));
 	//to the command above add destroy session after checking. If not, further tests that want to create a session will fail...
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
@@ -63,20 +66,23 @@ bool FUSessionManagerCreateLANSessionTravelsToLobbyWhenStartedTest::RunTest(cons
 
 bool FUSessionManagerDestroyCurrentSessionStartsSessionDestructionTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/lobby"));
+	establishTestMessageTo(FString("The session manager should start session destruction when calling destroyCurrentSession."));
+	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
 
 	UClass* containerClass = AObjectContainerActor::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(containerClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FUSessionManagerCreateSession);
 
-	int tickCount = 0;
-	int tickLimit = 10;
-	ADD_LATENT_AUTOMATION_COMMAND(FUSessionManagerCheckSessionDestructionStarting(tickCount, tickLimit, this));
-	
+	ADD_LATENT_AUTOMATION_COMMAND(FUSessionManagerCheckSessionDestructionStarting(this));
+
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
@@ -92,10 +98,8 @@ bool FUSessionManagerSearchLANSessionsStartsTheSearchOfSessionsTest::RunTest(con
 	UClass* containerClass = AObjectContainerActor::StaticClass();
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(containerClass, FTransform()));
 
-	int tickCount = 0;
-	int tickLimit = 10;
-	ADD_LATENT_AUTOMATION_COMMAND(FUSessionManagerCheckSessionSearching(tickCount, tickLimit, this));
-	
+	ADD_LATENT_AUTOMATION_COMMAND(FUSessionManagerCheckSessionSearching(this));
+
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
@@ -112,7 +116,7 @@ bool FUSessionManagerSessionSearchResultsReturnsIDsFromSearchResultsTest::RunTes
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(containerClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckSessionManagerSearchResults(this));
-	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
@@ -129,7 +133,7 @@ bool FUSessionManagerJoinSessionDoesntStartWithArbitraryDataTest::RunTest(const 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(containerClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckSessionManagerDoesntStartSessionJoin(this));
-	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
@@ -146,7 +150,7 @@ bool FUSessionManagerIsBoundToFOnCreateSessionCompleteDelegateTest::RunTest(cons
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(containerClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckSessionManagerBoundToFOnCreateSessionCompleteDelegate(this));
-	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
@@ -163,7 +167,7 @@ bool FUSessionManagerIsBoundToFOnStartSessionCompleteDelegateTest::RunTest(const
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(containerClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckSessionManagerBoundToFOnStartSessionCompleteDelegate(this));
-	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
@@ -180,7 +184,7 @@ bool FUSessionManagerIsBoundToFOnFindSessionsCompleteDelegateTest::RunTest(const
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(containerClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckSessionManagerBoundToFOnFindSessionsCompleteDelegate(this));
-	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
@@ -197,7 +201,7 @@ bool FUSessionManagerIsBoundToFOnJoinSessionCompleteDelegateTest::RunTest(const 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(containerClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckSessionManagerBoundToFOnJoinSessionCompleteDelegate(this));
-	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
@@ -214,7 +218,7 @@ bool FUSessionManagerFOnCreateSessionCompleteDelegateHandleIsSetTest::RunTest(co
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(containerClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckSessionManagerFOnCreateSessionCompleteDelegateHandleSet(this));
-	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
@@ -231,7 +235,7 @@ bool FUSessionManagerFOnStartSessionCompleteDelegateHandleIsSetTest::RunTest(con
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(containerClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckSessionManagerFOnStartSessionCompleteDelegateHandleSet(this));
-	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
@@ -248,7 +252,7 @@ bool FUSessionManagerFOnFindSessionsCompleteDelegateHandleIsSetTest::RunTest(con
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(containerClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckSessionManagerFOnFindSessionsCompleteDelegateHandleSet(this));
-	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
@@ -265,7 +269,7 @@ bool FUSessionManagerFOnJoinSessionCompleteDelegateHandleIsSetTest::RunTest(cons
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(containerClass, FTransform()));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckSessionManagerFOnJoinSessionCompleteDelegateHandleSet(this));
-	
+
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
