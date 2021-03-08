@@ -102,13 +102,16 @@ FString FSimplePIETestBase::initialWorldName()
 
 void FSimplePIETestBase::establishTimeLimitAt(float anAmountOfSeconds)
 {
-	if(timeLimit == 0)
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	FTimerManager& globalTimer = sessionUtilities.currentPIEWorld()->GetTimerManager();
+
+	if(globalTimer.TimerExists(failureTimer))
 	{
-		timeLimit = anAmountOfSeconds;
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		FTimerDelegate countdownDelegate = FTimerDelegate::CreateUObject(this, &FSimplePIETestBase::timeLimitReached);
-		sessionUtilities.currentPIEWorld()->GetTimerManager().SetTimer(failureTimer, countdownDelegate, timeLimit, false);
+		return;
 	}
+	FTimerDelegate countdownDelegate = FTimerDelegate::CreateUObject(this, &FSimplePIETestBase::timeLimitReached);
+	globalTimer.SetTimer(failureTimer, countdownDelegate, anAmountOfSeconds, false);
 }
 
 

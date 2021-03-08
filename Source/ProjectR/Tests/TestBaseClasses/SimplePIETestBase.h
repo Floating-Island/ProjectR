@@ -19,7 +19,6 @@ class FSimplePIETestBase : public FAutomationTestBase
 	FString testMessage;
 	int tickCount;
 	int tickLimit;
-	float timeLimit;
 	FTimerHandle failureTimer;
 
 	void appendTestFailureWhen(bool aTickCountExceedsLimit);
@@ -39,7 +38,6 @@ public:
 		testMessage = FString();
 		tickCount = 0;
 		tickLimit = 0;
-		timeLimit = 0;
 	}
 
 	/**
