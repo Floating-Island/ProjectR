@@ -152,6 +152,11 @@ void AJetMOCK::setSteerManagerMOCK()
 	steerManager = GetWorld()->SpawnActor<ASteerStateManagerMOCK>(spawnParameters);
 }
 
+bool AJetMOCK::hasPhysicsMeshHidden()
+{
+	return physicsMeshComponent->IsVisible();
+}
+
 //bool AJetMOCK::hasAnAntiGravitySystem()
 //{
 //	return antiGravitySystem? true : false;
