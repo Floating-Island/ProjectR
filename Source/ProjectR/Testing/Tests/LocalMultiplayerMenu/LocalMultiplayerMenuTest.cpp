@@ -76,19 +76,16 @@ bool FULocalMultiplayerMenuClickingPlayButtonSetsPlayerQuantityTest::RunTest(con
 }
 
 
-bool FULocalMultiplayerMenuClickingPlayButtonChangesMapTest::RunTest(const FString& Parameters)
+bool FULocalMultiplayerMenuClickingMapAndPlayButtonChangesMapTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
-	establishTestMessageTo(FString("The local multiplayer menu should change the current map when clicking the play button."));
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	establishTestMessageTo(FString("The local multiplayer menu should change the current map when clicking a map and the play button."));
 	establishTickLimitTo(3);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	
-	
-
-	ADD_LATENT_AUTOMATION_COMMAND(FChecklocalMultiplayerMenuClickPlayButtonChangesMap(nullptr, false, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLocalMultiplayerMenuClickMapAndPlayButtonChangesMap(nullptr, true, false, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

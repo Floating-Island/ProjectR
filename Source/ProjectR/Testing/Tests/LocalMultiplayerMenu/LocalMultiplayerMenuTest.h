@@ -37,8 +37,8 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULocalMultiplayerMenuClickingPlayButton
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULocalMultiplayerMenuClickingPlayButtonChangesMapTest, FSimplePIETestBase,
-	"ProjectR.LocalMultiplayerMenu Tests.Integration.004: Clicking the play button changes the map",
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FULocalMultiplayerMenuClickingMapAndPlayButtonChangesMapTest, FSimplePIETestBase,
+	"ProjectR.LocalMultiplayerMenu Tests.Integration.004: Clicking a map button and then play changes the map",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
