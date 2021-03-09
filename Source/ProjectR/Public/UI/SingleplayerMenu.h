@@ -6,6 +6,7 @@
 #include "UI/Menu.h"
 #include "SingleplayerMenu.generated.h"
 
+class UMapSelectorWidget;
 class UButton;
 /**
  * 
@@ -29,8 +30,8 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 		UButton* goBackButton;
 
-	UPROPERTY(EditAnywhere, Category="Race Map")
-		FName raceLevel;
+	UPROPERTY(meta = (BindWidget))
+		UMapSelectorWidget* mapListing;
 
 public:
 	virtual bool Initialize() override;
