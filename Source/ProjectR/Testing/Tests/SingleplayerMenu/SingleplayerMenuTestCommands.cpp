@@ -1,13 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "SingleplayerMenuTestCommands.h"
 #include "UI/SingleplayerMenu.h"
 #include "../../Utilities/PIESessionUtilities.h"
 #include "GameInstance/ProjectRGameInstance.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
+#include "UI/StringHolderButton.h"
 
 //Test preparation commands:
 
@@ -26,34 +27,54 @@
 //Test check commands:
 
 
-bool FCheckSingleplayerMenuClickPlayButtonChangesMap::Update()
+bool FCheckSingleplayerMenuClickMapAndPlayButtonChangesMap::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		bool isInAnotherWorld = !sessionUtilities.currentPIEWorld()->GetMapName().Contains("VoidWorld");
+		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
-		if (isInAnotherWorld)
+		bool inInitialWorld = sessionUtilities.currentPIEWorld()->GetMapName().Contains(test->initialWorldName());
+		
+		if (inInitialWorld)
 		{
-			test->TestTrue(test->conditionMessage(), isInAnotherWorld);
-			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-			return true;
+			if(menuNeedsInstantiation)
+			{
+				singleplayerMenuInstance = gameInstance->loadSingleplayerMenu();
+				menuNeedsInstantiation = false;
+				return false;
+			}
+			if(singleplayerMenuInstance && singleplayerMenuInstance->IsInViewport())
+			{
+				if(!hasSelectedMap)
+				{
+					TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+					UWidgetBlueprintLibrary::GetAllWidgetsOfClass(sessionUtilities.currentPIEWorld(),retrievedWidgets, UStringHolderButton::StaticClass(), false);
+
+					if(retrievedWidgets.Num() == 0)
+					{
+						return false;
+					}
+					
+					UStringHolderButton* testButton = Cast<UStringHolderButton, UUserWidget>(retrievedWidgets.Pop(true));
+
+					FVector2D mapSelectionButtonCoordinates = testButton->buttonCoordinates();
+					sessionUtilities.processEditorClick(mapSelectionButtonCoordinates);
+					
+					hasSelectedMap = true;
+				}
+				else
+				{
+					FVector2D startRaceButtonCoordinates = singleplayerMenuInstance->playButtonAbsoluteCenterPosition();
+					sessionUtilities.processEditorClick(startRaceButtonCoordinates);
+				}
+				return test->manageTickCountTowardsLimit();
+			}
 		}
 		
-		if (isMenuInstanciated && !isInAnotherWorld)
-		{
-			FVector2D playButtonCoordinates = singleplayerMenuInstance->playButtonAbsoluteCenterPosition();
-			sessionUtilities.processEditorClick(playButtonCoordinates);
-			return test->manageTickCountTowardsLimit();
-		}
-
-		if (!isMenuInstanciated && singleplayerMenuInstance == nullptr)
-		{
-			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
-			singleplayerMenuInstance = gameInstance->loadSingleplayerMenu();
-			isMenuInstanciated = true;
-			return false;
-		}
+		test->TestTrue(test->conditionMessage(), !inInitialWorld);
+		sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+		return true;
 	}
 	return false;
 }

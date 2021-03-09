@@ -22,8 +22,8 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FUSingleplayerMenuIsntNullWhenInstantiatedTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUSingleplayerMenuClickingPlayButtonChangesMapTest, FSimplePIETestBase,
-	"ProjectR.SingleplayerMenu Tests.Integration.001: Clicking the play button changes the map",
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUSingleplayerMenuClickingMapAndPlayButtonChangesMapTest, FSimplePIETestBase,
+	"ProjectR.SingleplayerMenu Tests.Integration.001: Clicking a map button and then play changes the map",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
