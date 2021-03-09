@@ -153,5 +153,25 @@ bool FUMainMenuClickingLanMultiplayerButtonBringsLanMultiplayerMenuTest::RunTest
 }
 
 
+bool FUMainMenuIsLoadedInMainMenuMapLevelBlueprintTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/MainMenu"));
+	establishTestMessageTo(FString("The main menu should be loaded by the level blueprint of the MainMenu map."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckMainMenuLoadedByLevelBlueprint(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+
 
 #endif //WITH_DEV_AUTOMATION_TESTS
