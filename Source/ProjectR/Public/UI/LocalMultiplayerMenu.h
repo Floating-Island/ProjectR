@@ -6,6 +6,7 @@
 #include "UI/Menu.h"
 #include "LocalMultiplayerMenu.generated.h"
 
+class UMapSelectorWidget;
 class UComboBoxString;
 /**
  * 
@@ -33,8 +34,8 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 		UComboBoxString* playersQuantitySelection;
 
-	UPROPERTY(EditAnywhere, Category="Race Map")
-		FName raceLevel;
+	UPROPERTY(meta = (BindWidget))
+		UMapSelectorWidget* mapListing;
 
 public:
 	virtual bool Initialize() override;

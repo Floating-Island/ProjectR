@@ -29,6 +29,6 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckLocalMultiplayerMenuClickGo
 DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckLocalMultiplayerMenuClickPlaySetsPlayers, ULocalMultiplayerMenu*, localMultiplayerMenuInstance, int, aSelectedNumberOfPlayers, FSimplePIETestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FChecklocalMultiplayerMenuClickPlayButtonChangesMap, ULocalMultiplayerMenu*, localMultiplayerMenuInstance, bool, isMenuInstanciated, FSimplePIETestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckLocalMultiplayerMenuClickMapAndPlayButtonChangesMap, ULocalMultiplayerMenu*, localMultiplayerMenuInstance, bool, menuNeedsInstantiation, bool, hasSelectedMap, FSimplePIETestBase*, test);
 
 #endif //WITH_DEV_AUTOMATION_TESTS

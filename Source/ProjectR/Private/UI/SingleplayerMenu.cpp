@@ -5,12 +5,18 @@
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameInstance/ProjectRGameInstance.h"
+#include "UI/MapSelectorWidget.h"
 
 
 void USingleplayerMenu::play()
 {
 	focusOnGame();
-	UGameplayStatics::OpenLevel(GetWorld(), raceLevel);
+	FString mapSelected = mapListing->selectedMap();
+	if(mapSelected.IsEmpty())
+	{
+		return;
+	}
+	UGameplayStatics::OpenLevel(GetWorld(), FName(*mapSelected));
 }
 
 void USingleplayerMenu::focusOnGame()

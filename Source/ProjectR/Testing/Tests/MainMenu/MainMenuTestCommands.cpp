@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "MainMenuTestCommands.h"
@@ -9,6 +8,7 @@
 #include "UI/MainMenu.h"
 #include "GameInstance/ProjectRGameInstance.h"
 #include "Kismet/GameplayStatics.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 
 //Test preparation commands:
 
@@ -238,6 +238,30 @@ bool FCheckMainMenuClickLanMultiplayerBringsLanMultiplayerMenu::Update()
 	}
 	return false;
 }
+
+
+bool FCheckMainMenuLoadedByLevelBlueprint::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+		UWidgetBlueprintLibrary::GetAllWidgetsOfClass(sessionUtilities.currentPIEWorld(),retrievedWidgets, UMainMenu::StaticClass(), false);
+
+		bool mainMenuPresent = retrievedWidgets.Num() == 1;
+		
+		if(mainMenuPresent)
+		{
+			test->TestTrue(test->conditionMessage(), mainMenuPresent);
+			sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+		return test->manageTickCountTowardsLimit();
+	}
+	return false;
+}
+
 
 
 

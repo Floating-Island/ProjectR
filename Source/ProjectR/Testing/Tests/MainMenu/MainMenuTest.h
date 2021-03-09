@@ -57,6 +57,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUMainMenuClickingLanMultiplayerButtonBr
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FUMainMenuIsLoadedInMainMenuMapLevelBlueprintTest, FSimplePIETestBase,
+	"ProjectR.MainMenu Tests.Integration.008: Is loaded by the level blueprint in the main menu map",
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

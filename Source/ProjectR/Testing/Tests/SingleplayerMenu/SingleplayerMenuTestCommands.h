@@ -12,6 +12,7 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
+class USingleplayerMenu;
 
  //Test preparation commands:
 
@@ -21,8 +22,7 @@
 
  //Test check commands:
 
-class USingleplayerMenu;
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckSingleplayerMenuClickPlayButtonChangesMap, USingleplayerMenu*, singleplayerMenuInstance, bool, isMenuInstanciated, FSimplePIETestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_FOUR_PARAMETER(FCheckSingleplayerMenuClickMapAndPlayButtonChangesMap, USingleplayerMenu*, singleplayerMenuInstance, bool, menuNeedsInstantiation, bool, hasSelectedMap, FSimplePIETestBase*, test);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckSingleplayerMenuClickGoBackRemovesFromViewport, USingleplayerMenu*, singleplayerMenuInstance, bool, isMenuInstanciated, FSimplePIETestBase*, test);

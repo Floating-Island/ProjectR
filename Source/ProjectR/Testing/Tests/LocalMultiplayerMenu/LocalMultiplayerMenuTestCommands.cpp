@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "LocalMultiplayerMenuTestCommands.h"
@@ -9,7 +8,8 @@
 #include "UI/LocalMultiplayerMenu.h"
 #include "GameInstance/ProjectRGameInstance.h"
 #include "../../Utilities/PIESessionUtilities.h"
-
+#include "Blueprint/WidgetBlueprintLibrary.h"
+#include "UI/StringHolderButton.h"
 
 //Test preparation commands:
 
@@ -89,22 +89,17 @@ bool FCheckLocalMultiplayerMenuClickPlaySetsPlayers::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
-		bool isInInitialWorld = sessionUtilities.currentPIEWorld()->GetMapName().Contains("VoidWorld");//beware of map changes. The current world changes so the menu becomes unavailable...
 
-		if(isInInitialWorld)
+		if (localMultiplayerMenuInstance == nullptr)
 		{
-			if (localMultiplayerMenuInstance == nullptr)
-			{
-				localMultiplayerMenuInstance = gameInstance->loadLocalMultiplayerMenu();
-				return false;
-			}
-			if (localMultiplayerMenuInstance->IsInViewport())
-			{
-				aSelectedNumberOfPlayers = localMultiplayerMenuInstance->selectedPlayerQuantity();
-				FVector2D playButtonCoordinates = localMultiplayerMenuInstance->playButtonAbsoluteCenterPosition();
-				sessionUtilities.processEditorClick(playButtonCoordinates);
-				return false;
-			}
+			localMultiplayerMenuInstance = gameInstance->loadLocalMultiplayerMenu();
+			return false;
+		}
+		if (localMultiplayerMenuInstance->IsInViewport())
+		{
+			aSelectedNumberOfPlayers = localMultiplayerMenuInstance->selectedPlayerQuantity();
+			FVector2D playButtonCoordinates = localMultiplayerMenuInstance->playButtonAbsoluteCenterPosition();
+			sessionUtilities.processEditorClick(playButtonCoordinates);
 		}
 		
 		bool expectedPlayersAreSelectedPlayersQuantity = gameInstance->necessaryPlayers() == aSelectedNumberOfPlayers;
@@ -120,35 +115,54 @@ bool FCheckLocalMultiplayerMenuClickPlaySetsPlayers::Update()
 }
 
 
-bool FChecklocalMultiplayerMenuClickPlayButtonChangesMap::Update()
+bool FCheckLocalMultiplayerMenuClickMapAndPlayButtonChangesMap::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		bool isInAnotherWorld = !sessionUtilities.currentPIEWorld()->GetMapName().Contains("VoidWorld");
+		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance,UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
 
-		if (isMenuInstanciated && !isInAnotherWorld)
+		bool inInitialWorld = sessionUtilities.currentPIEWorld()->GetMapName().Contains(test->initialWorldName());
+		
+		if (inInitialWorld)
 		{
-			FVector2D playButtonCoordinates = localMultiplayerMenuInstance->playButtonAbsoluteCenterPosition();
-			sessionUtilities.processEditorClick(playButtonCoordinates);
-		}
+			if(menuNeedsInstantiation)
+			{
+				localMultiplayerMenuInstance = gameInstance->loadLocalMultiplayerMenu();
+				menuNeedsInstantiation = false;
+				return false;
+			}
+			if(localMultiplayerMenuInstance && localMultiplayerMenuInstance->IsInViewport())
+			{
+				if(!hasSelectedMap)
+				{
+					TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
+					UWidgetBlueprintLibrary::GetAllWidgetsOfClass(sessionUtilities.currentPIEWorld(),retrievedWidgets, UStringHolderButton::StaticClass(), false);
 
-		if (localMultiplayerMenuInstance == nullptr)
-		{
-			UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.defaultPIEWorld()->GetGameInstance());
-			localMultiplayerMenuInstance = gameInstance->loadLocalMultiplayerMenu();
-			isMenuInstanciated = true;
-			return false;
-		}
+					if(retrievedWidgets.Num() == 0)
+					{
+						return false;
+					}
+					
+					UStringHolderButton* testButton = Cast<UStringHolderButton, UUserWidget>(retrievedWidgets.Pop(true));
 
-		if (isInAnotherWorld)
-		{
-			test->TestTrue(test->conditionMessage(), isInAnotherWorld);
-			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
-			return true;
+					FVector2D mapSelectionButtonCoordinates = testButton->buttonCoordinates();
+					sessionUtilities.processEditorClick(mapSelectionButtonCoordinates);
+					
+					hasSelectedMap = true;
+				}
+				else
+				{
+					FVector2D startRaceButtonCoordinates = localMultiplayerMenuInstance->playButtonAbsoluteCenterPosition();
+					sessionUtilities.processEditorClick(startRaceButtonCoordinates);
+				}
+				return test->manageTickCountTowardsLimit();
+			}
 		}
-
-		return test->manageTickCountTowardsLimit();
+		
+		test->TestTrue(test->conditionMessage(), !inInitialWorld);
+		sessionUtilities.defaultPIEWorld()->bDebugFrameStepExecution = true;
+		return true;
 	}
 	return false;
 }
