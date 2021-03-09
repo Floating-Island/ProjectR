@@ -58,6 +58,8 @@ AJet::AJet()
 	SetReplicateMovement(true);
 	motorManager = nullptr;
 	steerManager = nullptr;
+
+	physicsMeshComponent->SetVisibility(false, true);
 }
 
 void AJet::BeginPlay()
