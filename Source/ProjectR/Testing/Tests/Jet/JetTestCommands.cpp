@@ -1515,6 +1515,25 @@ bool FServerCheckJetExpectedSteerState::Update()
 }
 
 
+bool FCheckAJetHidesPhysicsMesh::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+
+		if(testJet)
+		{
+			test->TestTrue(test->conditionMessage(), testJet->hasPhysicsMeshHidden()));
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+		return test->manageTickCountTowardsLimit();
+	}
+	return false;
+}
+
+
 
 
 
