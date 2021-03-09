@@ -1524,7 +1524,7 @@ bool FCheckAJetHidesPhysicsMesh::Update()
 
 		if(testJet)
 		{
-			test->TestTrue(test->conditionMessage(), testJet->hasPhysicsMeshHidden()));
+			test->TestTrue(test->conditionMessage(), testJet->hasPhysicsMeshHidden());
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}
