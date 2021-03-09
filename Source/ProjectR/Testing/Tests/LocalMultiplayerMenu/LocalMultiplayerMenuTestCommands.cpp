@@ -89,22 +89,17 @@ bool FCheckLocalMultiplayerMenuClickPlaySetsPlayers::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(sessionUtilities.currentPIEWorld()->GetGameInstance());
-		bool isInInitialWorld = sessionUtilities.currentPIEWorld()->GetMapName().Contains("VoidWorld");//beware of map changes. The current world changes so the menu becomes unavailable...
 
-		if(isInInitialWorld)
+		if (localMultiplayerMenuInstance == nullptr)
 		{
-			if (localMultiplayerMenuInstance == nullptr)
-			{
-				localMultiplayerMenuInstance = gameInstance->loadLocalMultiplayerMenu();
-				return false;
-			}
-			if (localMultiplayerMenuInstance->IsInViewport())
-			{
-				aSelectedNumberOfPlayers = localMultiplayerMenuInstance->selectedPlayerQuantity();
-				FVector2D playButtonCoordinates = localMultiplayerMenuInstance->playButtonAbsoluteCenterPosition();
-				sessionUtilities.processEditorClick(playButtonCoordinates);
-				return false;
-			}
+			localMultiplayerMenuInstance = gameInstance->loadLocalMultiplayerMenu();
+			return false;
+		}
+		if (localMultiplayerMenuInstance->IsInViewport())
+		{
+			aSelectedNumberOfPlayers = localMultiplayerMenuInstance->selectedPlayerQuantity();
+			FVector2D playButtonCoordinates = localMultiplayerMenuInstance->playButtonAbsoluteCenterPosition();
+			sessionUtilities.processEditorClick(playButtonCoordinates);
 		}
 		
 		bool expectedPlayersAreSelectedPlayersQuantity = gameInstance->necessaryPlayers() == aSelectedNumberOfPlayers;
