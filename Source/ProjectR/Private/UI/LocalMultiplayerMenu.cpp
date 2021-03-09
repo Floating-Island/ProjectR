@@ -8,6 +8,7 @@
 #include "Components/Button.h"
 #include "GameInstance/ProjectRGameInstance.h"
 #include "Components/ComboBoxString.h"
+#include "UI/MapSelectorWidget.h"
 
 
 void ULocalMultiplayerMenu::goBack()
@@ -22,7 +23,12 @@ void ULocalMultiplayerMenu::play()
 	UProjectRGameInstance* gameInstance = Cast<UProjectRGameInstance, UGameInstance>(GetWorld()->GetGameInstance());
 	gameInstance->expectedPlayers(selectedPlayerQuantity());
 	focusOnGame();
-	UGameplayStatics::OpenLevel(GetWorld(), raceLevel);
+	FString mapSelected = mapListing->selectedMap();
+	if(mapSelected.IsEmpty())
+	{
+		return;
+	}
+	UGameplayStatics::OpenLevel(GetWorld(), FName(*mapSelected));
 }
 
 void ULocalMultiplayerMenu::focusOnGame()
