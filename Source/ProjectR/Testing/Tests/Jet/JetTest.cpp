@@ -1571,7 +1571,6 @@ bool FAJetHidesItsPhysicsMeshTest::RunTest(const FString& Parameters)
 bool FAJetHasAModelMeshTest::RunTest(const FString& Parameters)
 {
 	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest"));
-	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
 	establishTestMessageTo(FString("The Jet should have a jet model mesh."));
 	establishTickLimitTo(3);
 
