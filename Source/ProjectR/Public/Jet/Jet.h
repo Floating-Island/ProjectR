@@ -30,6 +30,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		UStaticMeshComponent* physicsMeshComponent;
 
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		UStaticMeshComponent* jetModelMeshComponent;
+
 	//spring arm component
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 		USpringArmComponent* springArm;

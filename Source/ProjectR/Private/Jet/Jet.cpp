@@ -60,6 +60,11 @@ AJet::AJet()
 	steerManager = nullptr;
 
 	physicsMeshComponent->SetVisibility(false, true);
+
+	jetModelMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(*FString("Jet Model Mesh Component"));
+	
+	jetModelMeshComponent->SetupAttachment(physicsMeshComponent);
+	
 }
 
 void AJet::BeginPlay()
