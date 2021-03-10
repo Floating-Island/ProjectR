@@ -157,6 +157,11 @@ bool AJetMOCK::hasPhysicsMeshHidden()
 	return physicsMeshComponent->IsVisible();
 }
 
+bool AJetMOCK::hasJetModelMeshSet()
+{
+	return jetModelMeshComponent->GetStaticMesh() ? true : false;
+}
+
 //bool AJetMOCK::hasAnAntiGravitySystem()
 //{
 //	return antiGravitySystem? true : false;

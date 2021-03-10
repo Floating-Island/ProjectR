@@ -76,6 +76,8 @@ public:
 	void setSteerManagerMOCK();
 
 	bool hasPhysicsMeshHidden();
+
+	bool hasJetModelMeshSet();
 };
 
 template <class aMotorStateType>
