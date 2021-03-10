@@ -1553,6 +1553,26 @@ bool FCheckAJetHasAModelMesh::Update()
 }
 
 
+bool FCheckAJetModelMeshMass::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+
+		if(testJet)
+		{
+			bool zeroMass = FMath::IsNearlyEqual(testJet->jetModelMeshMass(), 0, 0.001);
+			test->TestTrue(test->conditionMessage(), zeroMass);
+			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+			return true;
+		}
+		return test->manageTickCountTowardsLimit();
+	}
+	return false;
+}
+
+
 
 
 
