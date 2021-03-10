@@ -154,7 +154,7 @@ void AJetMOCK::setSteerManagerMOCK()
 
 bool AJetMOCK::hasPhysicsMeshHidden()
 {
-	return physicsMeshComponent->IsVisible();
+	return !physicsMeshComponent->IsVisible();
 }
 
 bool AJetMOCK::hasJetModelMeshSet()
