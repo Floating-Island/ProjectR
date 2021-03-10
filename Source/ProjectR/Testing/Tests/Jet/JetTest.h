@@ -388,8 +388,8 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetHasAModelMeshTest, FSimplePIETestBa
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetModelMeshHasZeroMassTest, FSimplePIETestBase,
-	"ProjectR.Jet Tests.Unit.072: Jet model mesh has zero mass", 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetModelMeshIsAttachedToRootTest, FSimplePIETestBase,
+	"ProjectR.Jet Tests.Unit.072: Jet model mesh is attached to root", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

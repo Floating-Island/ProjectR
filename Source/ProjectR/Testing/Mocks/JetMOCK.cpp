@@ -162,10 +162,6 @@ bool AJetMOCK::hasJetModelMeshSet()
 	return jetModelMeshComponent->GetStaticMesh() ? true : false;
 }
 
-float AJetMOCK::jetModelMeshMass()
-{
-	return jetModelMeshComponent->GetMass();
-}
 
 //bool AJetMOCK::hasAnAntiGravitySystem()
 //{

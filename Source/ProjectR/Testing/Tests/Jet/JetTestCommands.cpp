@@ -1553,7 +1553,7 @@ bool FCheckAJetHasAModelMesh::Update()
 }
 
 
-bool FCheckAJetModelMeshMass::Update()
+bool FCheckAJetModelMeshAttachment::Update()
 {
 	if(GEditor->IsPlayingSessionInEditor())
 	{
@@ -1562,8 +1562,8 @@ bool FCheckAJetModelMeshMass::Update()
 
 		if(testJet)
 		{
-			bool zeroMass = FMath::IsNearlyZero(testJet->jetModelMeshMass(), 0.001f);
-			test->TestTrue(test->conditionMessage(), zeroMass);
+			bool areAttached = testJet->modelMeshAttachedToRoot();
+			test->TestTrue(test->conditionMessage(), areAttached);
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
 		}

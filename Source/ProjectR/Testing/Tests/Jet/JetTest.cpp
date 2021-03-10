@@ -1589,11 +1589,11 @@ bool FAJetHasAModelMeshTest::RunTest(const FString& Parameters)
 }
 
 
-bool FAJetModelMeshHasZeroMassTest::RunTest(const FString& Parameters)
+bool FAJetModelMeshIsAttachedToRootTest::RunTest(const FString& Parameters)
 {
 	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest"));
 	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
-	establishTestMessageTo(FString("The Jet model mesh should have zero mass."));
+	establishTestMessageTo(FString("The Jet model mesh should be attached to root."));
 	establishTickLimitTo(3);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
@@ -1604,7 +1604,7 @@ bool FAJetModelMeshHasZeroMassTest::RunTest(const FString& Parameters)
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetModelMeshMass(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetModelMeshAttachment(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
