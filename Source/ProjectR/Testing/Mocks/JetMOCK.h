@@ -78,6 +78,8 @@ public:
 	bool hasPhysicsMeshHidden();
 
 	bool hasJetModelMeshSet();
+
+	bool modelMeshAttachedToRoot();
 };
 
 template <class aMotorStateType>
