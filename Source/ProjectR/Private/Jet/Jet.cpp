@@ -64,6 +64,8 @@ AJet::AJet()
 	jetModelMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(*FString("Jet Model Mesh Component"));
 	
 	jetModelMeshComponent->SetupAttachment(physicsMeshComponent);
+
+	jetModelMeshComponent->SetMassOverrideInKg(NAME_None, 0);
 	
 }
 
