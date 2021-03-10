@@ -33,6 +33,7 @@ AJet::AJet()
 	UStaticMesh* physicsMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/jetMesh")));
 	physicsMeshComponent->SetStaticMesh(physicsMesh);
 
+	physicsMeshComponent->SetMassOverrideInKg(NAME_None, 100, true);
 
 	physicsMeshComponent->SetGenerateOverlapEvents(true);
 	physicsMeshComponent->SetCollisionObjectType(ECC_Pawn);
@@ -62,9 +63,10 @@ AJet::AJet()
 
 	jetModelMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(*FString("Jet Model Mesh Component"));
 	
-	jetModelMeshComponent->SetupAttachment(RootComponent);
+	jetModelMeshComponent->SetupAttachment(physicsMeshComponent);
 
-	physicsMeshComponent->SetMassOverrideInKg(NAME_None, 100, true);
+	jetModelMeshComponent->SetMassOverrideInKg(NAME_None, 0);
+	
 }
 
 void AJet::BeginPlay()
