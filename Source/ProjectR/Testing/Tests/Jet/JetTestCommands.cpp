@@ -1562,7 +1562,7 @@ bool FCheckAJetModelMeshMass::Update()
 
 		if(testJet)
 		{
-			bool zeroMass = FMath::IsNearlyEqual(testJet->jetModelMeshMass(), 0, 0.001);
+			bool zeroMass = FMath::IsNearlyZero(testJet->jetModelMeshMass(), 0.001f);
 			test->TestTrue(test->conditionMessage(), zeroMass);
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;
