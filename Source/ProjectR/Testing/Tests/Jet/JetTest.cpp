@@ -1589,11 +1589,11 @@ bool FAJetHasAModelMeshTest::RunTest(const FString& Parameters)
 }
 
 
-bool FAJetModelMeshIsAttachedToRootTest::RunTest(const FString& Parameters)
+bool FAJetModelMeshIsAttachedToPhysicsComponentTest::RunTest(const FString& Parameters)
 {
 	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest"));
 	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
-	establishTestMessageTo(FString("The Jet model mesh should be attached to root."));
+	establishTestMessageTo(FString("The Jet model mesh should be attached to the physics component."));
 	establishTickLimitTo(3);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));

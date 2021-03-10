@@ -1562,7 +1562,7 @@ bool FCheckAJetModelMeshAttachment::Update()
 
 		if(testJet)
 		{
-			bool areAttached = testJet->modelMeshAttachedToRoot();
+			bool areAttached = testJet->modelMeshAttachedToPhysicsComponent();
 			test->TestTrue(test->conditionMessage(), areAttached);
 			sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
 			return true;

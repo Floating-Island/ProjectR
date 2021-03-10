@@ -79,7 +79,7 @@ public:
 
 	bool hasJetModelMeshSet();
 
-	bool modelMeshAttachedToRoot();
+	bool modelMeshAttachedToPhysicsComponent();
 };
 
 template <class aMotorStateType>

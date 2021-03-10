@@ -162,9 +162,9 @@ bool AJetMOCK::hasJetModelMeshSet()
 	return jetModelMeshComponent->GetStaticMesh() ? true : false;
 }
 
-bool AJetMOCK::modelMeshAttachedToRoot()
+bool AJetMOCK::modelMeshAttachedToPhysicsComponent()
 {
-	return jetModelMeshComponent->IsAttachedTo(RootComponent);
+	return jetModelMeshComponent->IsAttachedTo(physicsMeshComponent);
 }
 
 
