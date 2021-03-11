@@ -17,7 +17,7 @@
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAndJet);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAInitialLapPhaseAndJet);
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAFinalLapPhaseAndJet);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerInitalAndIntermediateLapPhasesAndJet);
@@ -36,7 +36,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerInitialAndFinalLapPhasesAnd
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckALapManagerStoresJets, FSimplePIETestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckJetsInitialLapPhase, FSimplePIETestBase*, test);
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckJetsFinalLapPhase, FSimplePIETestBase*, test);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckJetsInitialLapCount, FSimplePIETestBase*, test);

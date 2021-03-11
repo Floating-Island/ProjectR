@@ -9,12 +9,12 @@
 #include "LapPhases/IntermediateLapPhase.h"
 #include "LapPhases/FinalLapPhase.h"
 
-bool ALapManagerMOCK::defaultLapPhaseIsInitialLapPhase()
+bool ALapManagerMOCK::defaultLapPhaseIsFinalLapPhase()
 {
-	AInitialLapPhase* initialPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
+	AFinalLapPhase* FinalPhase = Cast<AFinalLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AFinalLapPhase::StaticClass()));
 	for (const auto& jet : jetsInPlay())
 	{
-		if (jet.Value.currentLapPhase != initialPhase)
+		if (jet.Value.currentLapPhase != FinalPhase)
 		{
 			return false;
 		}

@@ -15,7 +15,7 @@ class PROJECTR_API ALapManagerMOCK : public ALapManager
 	GENERATED_BODY()
 
 public:
-	bool defaultLapPhaseIsInitialLapPhase();
+	bool defaultLapPhaseIsFinalLapPhase();
 	bool InitialLapCountSetToOne();
 	bool jetsMovedFromInitialToIntermediatePhase();
 	void makeJetsPhaseIntermediate();

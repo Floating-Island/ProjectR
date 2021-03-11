@@ -27,8 +27,8 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FALapManagerHasJetsListedWhenSpawnedTest
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FALapManagerJetsHaveInitialLapPhaseAsDefaultPhaseTest, FSimplePIETestBase,
-	"ProjectR.LapManager Tests.Integration.002: Jets have the initial lap phase as the default phase", 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FALapManagerJetsHaveFinalLapPhaseAsDefaultPhaseTest, FSimplePIETestBase,
+	"ProjectR.LapManager Tests.Integration.002: Jets have the Final lap phase as the default phase", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
