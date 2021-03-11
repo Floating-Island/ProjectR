@@ -63,7 +63,8 @@ bool FSpawningALapManagerInitalAndIntermediateLapPhasesAndJet::Update()
 	sessionUtilities.spawnInPIEAnInstanceOf<AInitialLapPhase>();
 	FVector intermediatePhaseLocation = jetLocation + FVector(0, 0, -20);
 	sessionUtilities.spawnInPIEAnInstanceOf<AIntermediateLapPhase>(intermediatePhaseLocation);
-	sessionUtilities.spawnInPIEAnInstanceOf<ALapManagerMOCK>();
+	ALapManagerMOCK* testManager = sessionUtilities.spawnInPIEAnInstanceOf<ALapManagerMOCK>();
+	testManager->makeJetsPhaseInitial();
 
 	return true;
 }

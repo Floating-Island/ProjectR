@@ -23,4 +23,5 @@ public:
 	void makeJetsPhaseFinal();
 	bool jetsMovedFromFinalToInitialPhase();
 	void changeLapTo(int aLapNumber, AJet* anAffectedJet);
+	void makeJetsPhaseInitial();
 };
