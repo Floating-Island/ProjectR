@@ -32,8 +32,8 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FALapManagerJetsHaveFinalLapPhaseAsDefau
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FALapManagerJetsHaveInitialLapCountSetToOneTest, FSimplePIETestBase,
-	"ProjectR.LapManager Tests.Integration.003: Jets have the initial lap count set to one", 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FALapManagerJetsHaveInitialLapCountSetToZeroTest, FSimplePIETestBase,
+	"ProjectR.LapManager Tests.Integration.003: Jets have the initial lap count set to zero", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

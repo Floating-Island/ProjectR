@@ -61,7 +61,7 @@ bool FALapManagerJetsHaveFinalLapPhaseAsDefaultPhaseTest::RunTest(const FString&
 }
 
 
-bool FALapManagerJetsHaveInitialLapCountSetToOneTest::RunTest(const FString& Parameters)
+bool FALapManagerJetsHaveInitialLapCountSetToZeroTest::RunTest(const FString& Parameters)
 {
 	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
 	establishTestMessageTo(FString("The lap manager jets should have the initial lap count set to one."));

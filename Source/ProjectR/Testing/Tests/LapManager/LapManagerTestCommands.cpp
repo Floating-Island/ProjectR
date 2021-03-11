@@ -183,14 +183,14 @@ bool FCheckJetsInitialLapCount::Update()
 		ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
 		if (testManager)
 		{
-			bool jetsInitialLapCountIsOne = testManager->InitialLapCountSetToOne();
+			bool jetsInitialLapCountIsZero = testManager->InitialLapCountSetToZero();
 
-			UE_LOG(LogTemp, Log, TEXT("Lap manager jets %s the initial lap count set as one."), *FString(jetsInitialLapCountIsOne ? "have" : "don't have"));
+			UE_LOG(LogTemp, Log, TEXT("Lap manager jets %s the initial lap count set as zero."), *FString(jetsInitialLapCountIsZero ? "have" : "don't have"));
 
 			test->increaseTickCount();
 			if (test->tickCountExceedsLimit())
 			{
-				test->TestTrue(test->conditionMessage(), jetsInitialLapCountIsOne);
+				test->TestTrue(test->conditionMessage(), jetsInitialLapCountIsZero);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}

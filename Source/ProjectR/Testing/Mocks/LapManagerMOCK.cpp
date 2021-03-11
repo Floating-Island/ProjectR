@@ -22,11 +22,11 @@ bool ALapManagerMOCK::defaultLapPhaseIsFinalLapPhase()
 	return true;
 }
 
-bool ALapManagerMOCK::InitialLapCountSetToOne()
+bool ALapManagerMOCK::InitialLapCountSetToZero()
 {
 	for (const auto& jet : jetsInPlay())
 	{
-		if (jet.Value.lap != 1)
+		if (jet.Value.lap != 0)
 		{
 			return false;
 		}
