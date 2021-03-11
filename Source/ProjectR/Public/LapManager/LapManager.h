@@ -21,7 +21,7 @@ struct FLapData
 {
 	GENERATED_BODY()
 
-	int lap = 1;
+	int lap = 0;
 	ALapPhase* currentLapPhase;
 };
 
