@@ -45,7 +45,7 @@ void ALapManager::checkPhaseAndSubscribe(ALapPhase* aPhase)
 {
 	if (aPhase)
 	{
-		aPhase->OnActorBeginOverlap.AddDynamic(this, &ALapManager::lapPhaseOverlap);
+		aPhase->OnActorBeginOverlap.AddUniqueDynamic(this, &ALapManager::lapPhaseOverlap);
 	}
 }
 
@@ -109,6 +109,6 @@ int ALapManager::currentLapOf(AJet* aJet)
 
 void ALapManager::subscribeToLapCross(ARaceGameMode* aRaceMode)
 {
-	lapCompletedEvent.AddDynamic(aRaceMode, &ARaceGameMode::lapCompletedByJet);
+	lapCompletedEvent.AddUniqueDynamic(aRaceMode, &ARaceGameMode::lapCompletedByJet);
 }
 
