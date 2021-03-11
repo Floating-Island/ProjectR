@@ -407,31 +407,41 @@ bool FCheckJetsSameRotationAsTrack::Update()
 	if (testGameMode)
 	{
 		TSet<AJet*> gameModeJets = testGameMode->jetsRacing();
-		ATrackGenerator* testTrack = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
-
-		bool jetsWithSameRotationAsTrackSections = false;
-		for (const auto& jet : gameModeJets)
+		if(gameModeJets.Num() > 0)
 		{
-			float distanceBetweenJetAndTrack = testTrack->distanceAlongSplineOf(jet);
-			FRotator trackSectionRotation = testTrack->rotationAt(distanceBetweenJetAndTrack);
-			FRotator jetRotation = jet->GetActorRotation();
+			ATrackGenerator* testTrack = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
 
-			jetsWithSameRotationAsTrackSections = true;
-			if (!jetRotation.Equals(trackSectionRotation, 0.01))
+			bool jetsWithSameRotationAsTrackSections = false;
+			for (const auto& jet : gameModeJets)
 			{
-				jetsWithSameRotationAsTrackSections = false;
-				break;
+				UE_LOG(LogTemp, Log, TEXT("Checking jet."));
+
+				float distanceBetweenJetAndTrack = testTrack->distanceAlongSplineOf(jet);
+				UE_LOG(LogTemp, Log, TEXT("Distance between jet and track: %f."), distanceBetweenJetAndTrack);
+
+				FRotator trackSectionRotation = testTrack->rotationAt(distanceBetweenJetAndTrack);
+				UE_LOG(LogTemp, Log, TEXT("Track section rotation: %s."), *trackSectionRotation.ToString());
+
+				FRotator jetRotation = jet->GetActorRotation();
+				UE_LOG(LogTemp, Log, TEXT("Jet rotation: %s."), *jetRotation.ToString());
+
+				jetsWithSameRotationAsTrackSections = true;
+				if (!jetRotation.Equals(trackSectionRotation, 0.01))
+				{
+					jetsWithSameRotationAsTrackSections = false;
+					break;
+				}
 			}
+
+			if (jetsWithSameRotationAsTrackSections)
+			{
+				test->TestTrue(test->conditionMessage(), jetsWithSameRotationAsTrackSections);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			return test->manageTickCountTowardsLimit();
 		}
 
-		if (jetsWithSameRotationAsTrackSections)
-		{
-			test->TestTrue(test->conditionMessage(), jetsWithSameRotationAsTrackSections);
-			testWorld->bDebugFrameStepExecution = true;
-			return true;
-		}
-
-		return test->manageTickCountTowardsLimit();
 	}
 	return false;
 }
