@@ -32,9 +32,9 @@ void ALapManager::BeginPlay()
 
 void ALapManager::subscribeToLapPhases()
 {
-	initialLapPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
+	AInitialLapPhase* initialLapPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
 	AIntermediateLapPhase* intermediatePhase = Cast<AIntermediateLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AIntermediateLapPhase::StaticClass()));
-	AFinalLapPhase* finalPhase = Cast<AFinalLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AFinalLapPhase::StaticClass()));
+	finalPhase = Cast<AFinalLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AFinalLapPhase::StaticClass()));
 
 	checkPhaseAndSubscribe(initialLapPhase);
 	checkPhaseAndSubscribe(intermediatePhase);
@@ -60,9 +60,9 @@ void ALapManager::configureJetLaps()
 		if (castedJet)
 		{
 			FLapData jetLapData = FLapData();
-			if (initialLapPhase)
+			if (finalPhase)
 			{
-				jetLapData.currentLapPhase = initialLapPhase;
+				jetLapData.currentLapPhase = finalPhase;
 			}
 			jetLaps.Add(castedJet, jetLapData);
 		}
