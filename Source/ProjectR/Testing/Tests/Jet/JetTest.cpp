@@ -1547,6 +1547,71 @@ bool FAJetServerChangesSteerToCenterSteerStateWhenPressingSteerRightKeyAndSteerL
 }
 
 
+bool FAJetHidesItsPhysicsMeshTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest"));
+	establishTestMessageTo(FString("The Jet should hide its physics mesh."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetHidesPhysicsMesh(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetHasAModelMeshTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest"));
+	establishTestMessageTo(FString("The Jet should have a jet model mesh."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetHasAModelMesh(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetModelMeshIsAttachedToPhysicsComponentTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest"));
+	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
+	establishTestMessageTo(FString("The Jet model mesh should be attached to the physics component."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	
+	
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnLocalPlayerInPIE);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetModelMeshAttachment(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+
 
 
 

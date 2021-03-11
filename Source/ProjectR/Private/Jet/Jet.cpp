@@ -58,6 +58,15 @@ AJet::AJet()
 	SetReplicateMovement(true);
 	motorManager = nullptr;
 	steerManager = nullptr;
+
+	physicsMeshComponent->SetVisibility(false, true);
+
+	jetModelMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(*FString("Jet Model Mesh Component"));
+	
+	jetModelMeshComponent->SetupAttachment(physicsMeshComponent);
+
+	jetModelMeshComponent->SetMassOverrideInKg(NAME_None, 0);
+	
 }
 
 void AJet::BeginPlay()

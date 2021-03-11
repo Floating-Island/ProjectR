@@ -74,6 +74,12 @@ public:
 	USteerState* currentSteerState();
 
 	void setSteerManagerMOCK();
+
+	bool hasPhysicsMeshHidden();
+
+	bool hasJetModelMeshSet();
+
+	bool modelMeshAttachedToPhysicsComponent();
 };
 
 template <class aMotorStateType>

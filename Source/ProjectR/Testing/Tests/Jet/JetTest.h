@@ -344,37 +344,52 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetChangesToCenterSteerStateWhenPressi
 
 
 IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetServerChangesSteerToLeftSteerWhenPressingSteerLeftKeyTest, FSimplePIETestBase,
-	"ProjectR.Jet Tests.Replication.065: server changes steer state to LeftSteer when client pressess SteerLeft key", 
+	"ProjectR.Jet Tests.Replication.065: Server changes steer state to LeftSteer when client pressess SteerLeft key", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetServerChangesSteerToCenterSteerWhenReleasingSteerLeftKeyTest, FSimplePIETestBase,
-	"ProjectR.Jet Tests.Replication.065: server changes steer state to CenterSteer when client releases SteerLeft key", 
+	"ProjectR.Jet Tests.Replication.065: Server changes steer state to CenterSteer when client releases SteerLeft key", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetServerChangesSteerToCenterSteerWhenReleasingSteerRightKeyTest, FSimplePIETestBase,
-	"ProjectR.Jet Tests.Replication.066: server changes steer state to CenterSteer when client releases SteerRight key", 
+	"ProjectR.Jet Tests.Replication.066: Server changes steer state to CenterSteer when client releases SteerRight key", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetServerChangesSteerToLeftSteerStateWhenReleasingSteerRightKeyAndSteerLeftIsPressedTest, FSimplePIETestBase,
-	"ProjectR.Jet Tests.Replication.067: server changes steer state to LeftSteer when client releases SteerRight key while the steer left is pressed", 
+	"ProjectR.Jet Tests.Replication.067: Server changes steer state to LeftSteer when client releases SteerRight key while the steer left is pressed", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetServerChangesSteerToRightSteerStateWhenReleasingSteerLeftKeyAndSteerRightIsPressedTest, FSimplePIETestBase,
-	"ProjectR.Jet Tests.Replication.068: server changes steer state to RightSteer when client releases SteerLeft key while the steerRight is pressed", 
+	"ProjectR.Jet Tests.Replication.068: Server changes steer state to RightSteer when client releases SteerLeft key while the steerRight is pressed", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetServerChangesSteerToCenterSteerStateWhenPressingSteerLeftKeyAndSteerRightIsPressedTest, FSimplePIETestBase,
-	"ProjectR.Jet Tests.Replication.069: server changes steer state to CenterSteer when client pressess SteerLeft key while the steerRight is pressed", 
+	"ProjectR.Jet Tests.Replication.069: Server changes steer state to CenterSteer when client pressess SteerLeft key while the steerRight is pressed", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetServerChangesSteerToCenterSteerStateWhenPressingSteerRightKeyAndSteerLeftIsPressedTest, FSimplePIETestBase,
-	"ProjectR.Jet Tests.Replication.069: server changes steer state to CenterSteer when client pressess SteerRight key while the steerLeft is pressed", 
+	"ProjectR.Jet Tests.Replication.069: Server changes steer state to CenterSteer when client pressess SteerRight key while the steerLeft is pressed", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetHidesItsPhysicsMeshTest, FSimplePIETestBase,
+	"ProjectR.Jet Tests.Unit.070: Hides its physics mesh model", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetHasAModelMeshTest, FSimplePIETestBase,
+	"ProjectR.Jet Tests.Unit.071: Has a jet model mesh", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetModelMeshIsAttachedToPhysicsComponentTest, FSimplePIETestBase,
+	"ProjectR.Jet Tests.Unit.072: Jet model mesh is attached to physics component", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

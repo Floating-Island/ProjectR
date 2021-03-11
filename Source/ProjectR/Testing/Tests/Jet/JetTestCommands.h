@@ -174,4 +174,13 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckAJetToExpectedSteerState, U
 
 DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FServerCheckJetExpectedSteerState, UClass*, expectedStateClass, int, clientQuantity, FSimplePIETestBase*, test);
 
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckAJetHidesPhysicsMesh, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckAJetHasAModelMesh, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckAJetModelMeshAttachment, FSimplePIETestBase*, test);
+
 #endif //WITH_DEV_AUTOMATION_TESTS

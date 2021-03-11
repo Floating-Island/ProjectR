@@ -7,6 +7,7 @@
 #include "GameMode/RaceGameMode.h"
 #include "RaceGameModeTestCommands.h"
 #include "../../Commands/NetworkCommands.h"
+#include "../../Commands/CommonPIECommands.h"
 
 #include "Tests/AutomationEditorCommon.h"
 
@@ -171,8 +172,6 @@ bool FARaceGameModeSpawnedJetsWithTrackRotationTest::RunTest(const FString& Para
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
-
-	
 	
 	
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetsSameRotationAsTrack(this));
