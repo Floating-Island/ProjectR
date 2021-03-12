@@ -235,7 +235,7 @@ void ARaceGameMode::lapCompletedByJet(AJet* aCrossingJet)
 		{
 			runningJets.Remove(aCrossingJet);
 			finalizedJets.Add(aCrossingJet);
-			AProjectRPlayerController* jetController = Cast<AProjectRPlayerController, AActor>(aCrossingJet->GetOwner());
+			AProjectRPlayerController* jetController = Cast<AProjectRPlayerController, AController>(aCrossingJet->GetController());
 			if(jetController)
 			{
 				jetController->loadResultsUI();
@@ -285,7 +285,6 @@ void ARaceGameMode::possessJets()
 	{
 		APlayerController* controller = iterator->Get();
 		AJet* unPossessedJet = unPossessedJets.Pop();
-		unPossessedJet->SetOwner(controller);
 		controller->Possess(unPossessedJet);
 		prepareRaceUIOf(controller);
 	}//if when testing the splitscreen only the first player moves, try to spawn more players.
