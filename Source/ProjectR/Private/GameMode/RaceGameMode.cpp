@@ -12,6 +12,7 @@
 #include "GameMode/RaceStages/RacePreparationStage.h"
 #include "GameInstance/ProjectRGameInstance.h"
 #include "TimerManager.h"
+#include "../../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/GameFramework/PlayerInput.h"
 #include "PlayerController/ProjectRPlayerController.h"
 #include "PlayerState/RacePlayerState.h"
 
@@ -234,11 +235,12 @@ void ARaceGameMode::lapCompletedByJet(AJet* aCrossingJet)
 		{
 			runningJets.Remove(aCrossingJet);
 			finalizedJets.Add(aCrossingJet);
-			UE_LOG(LogTemp, Log, TEXT("A Jet has finished laps!!!"));
 			AProjectRPlayerController* jetController = Cast<AProjectRPlayerController, AActor>(aCrossingJet->GetOwner());
 			if(jetController)
 			{
 				jetController->loadResultsUI();
+
+				aCrossingJet->DisableInput(jetController);
 			}
 		}
 		else
