@@ -32,9 +32,9 @@ void ALapManager::BeginPlay()
 
 void ALapManager::subscribeToLapPhases()
 {
-	initialLapPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
+	AInitialLapPhase* initialLapPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
 	AIntermediateLapPhase* intermediatePhase = Cast<AIntermediateLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AIntermediateLapPhase::StaticClass()));
-	AFinalLapPhase* finalPhase = Cast<AFinalLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AFinalLapPhase::StaticClass()));
+	finalPhase = Cast<AFinalLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AFinalLapPhase::StaticClass()));
 
 	checkPhaseAndSubscribe(initialLapPhase);
 	checkPhaseAndSubscribe(intermediatePhase);
@@ -45,7 +45,7 @@ void ALapManager::checkPhaseAndSubscribe(ALapPhase* aPhase)
 {
 	if (aPhase)
 	{
-		aPhase->OnActorBeginOverlap.AddDynamic(this, &ALapManager::lapPhaseOverlap);
+		aPhase->OnActorBeginOverlap.AddUniqueDynamic(this, &ALapManager::lapPhaseOverlap);
 	}
 }
 
@@ -60,9 +60,9 @@ void ALapManager::configureJetLaps()
 		if (castedJet)
 		{
 			FLapData jetLapData = FLapData();
-			if (initialLapPhase)
+			if (finalPhase)
 			{
-				jetLapData.currentLapPhase = initialLapPhase;
+				jetLapData.currentLapPhase = finalPhase;
 			}
 			jetLaps.Add(castedJet, jetLapData);
 		}
@@ -109,6 +109,6 @@ int ALapManager::currentLapOf(AJet* aJet)
 
 void ALapManager::subscribeToLapCross(ARaceGameMode* aRaceMode)
 {
-	lapCompletedEvent.AddDynamic(aRaceMode, &ARaceGameMode::lapCompletedByJet);
+	lapCompletedEvent.AddUniqueDynamic(aRaceMode, &ARaceGameMode::lapCompletedByJet);
 }
 

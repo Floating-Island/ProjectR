@@ -183,7 +183,7 @@ bool FARaceGameModeSpawnedJetsWithTrackRotationTest::RunTest(const FString& Para
 
 bool FARaceGameModeLapCompletedByJetUpdatesPlayerStateLapTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameMode"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK"));
 	establishTestMessageTo(FString("The game mode should update a jet player state's currentLap when calling lapCompletedByJet."));
 	establishTickLimitTo(3);
 
@@ -191,7 +191,7 @@ bool FARaceGameModeLapCompletedByJetUpdatesPlayerStateLapTest::RunTest(const FSt
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	
-	
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnControlledJetMakeItCrossLap);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerStateLapUpdated(nullptr, this));
 
@@ -295,6 +295,25 @@ bool FARaceGameModeLoadsResultsUIOnFinalistJetControllerTest::RunTest(const FStr
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAControlledJetOnFinalLapMakeItFinish);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckGameModeRaceResultsLoaded(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FARaceGameModeDisablesInputOnFinalistJetTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK"));
+	establishTestMessageTo(FString("The game mode should make the finalist jet disable its input when finishing laps."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAControlledJetOnFinalLapMakeItFinish);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckGameModeDisablesInput(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

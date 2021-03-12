@@ -25,6 +25,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FServerLoadResults, int, clientQu
 
 
 
+
+
+
  //Test check commands:
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckPlayerControllerBringsPauseMenu, FAutomationTestBase*, test);
@@ -58,6 +61,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckServerRemoveAnnouncerUIRemo
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckClientLoadsResults, int, clientQuantity, FSimplePIETestBase*, test);
+
+
+
 
 
 

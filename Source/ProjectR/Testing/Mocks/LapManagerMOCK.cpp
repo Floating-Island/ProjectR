@@ -9,12 +9,12 @@
 #include "LapPhases/IntermediateLapPhase.h"
 #include "LapPhases/FinalLapPhase.h"
 
-bool ALapManagerMOCK::defaultLapPhaseIsInitialLapPhase()
+bool ALapManagerMOCK::defaultLapPhaseIsFinalLapPhase()
 {
-	AInitialLapPhase* initialPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
+	AFinalLapPhase* FinalPhase = Cast<AFinalLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AFinalLapPhase::StaticClass()));
 	for (const auto& jet : jetsInPlay())
 	{
-		if (jet.Value.currentLapPhase != initialPhase)
+		if (jet.Value.currentLapPhase != FinalPhase)
 		{
 			return false;
 		}
@@ -22,11 +22,11 @@ bool ALapManagerMOCK::defaultLapPhaseIsInitialLapPhase()
 	return true;
 }
 
-bool ALapManagerMOCK::InitialLapCountSetToOne()
+bool ALapManagerMOCK::InitialLapCountSetToZero()
 {
 	for (const auto& jet : jetsInPlay())
 	{
-		if (jet.Value.lap != 1)
+		if (jet.Value.lap != 0)
 		{
 			return false;
 		}
@@ -69,10 +69,10 @@ bool ALapManagerMOCK::jetsMovedFromIntermediateToFinalPhase()
 
 void ALapManagerMOCK::makeJetsPhaseFinal()
 {
-	AFinalLapPhase* finalPhase = Cast<AFinalLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AFinalLapPhase::StaticClass()));
+	AFinalLapPhase* finalLapPhase = Cast<AFinalLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AFinalLapPhase::StaticClass()));
 	for (auto& jetLapData : jetLaps)
 	{
-		jetLapData.Value.currentLapPhase = finalPhase;
+		jetLapData.Value.currentLapPhase = finalLapPhase;
 	}
 }
 
@@ -92,4 +92,13 @@ void ALapManagerMOCK::changeLapTo(int aLapNumber, AJet* anAffectedJet)
 {
 	FLapData* oldJetData = jetLaps.Find(anAffectedJet);
 	oldJetData->lap = aLapNumber;
+}
+
+void ALapManagerMOCK::makeJetsPhaseInitial()
+{
+	AInitialLapPhase* initialPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
+	for (auto& jetLapData : jetLaps)
+	{
+		jetLapData.Value.currentLapPhase = initialPhase;
+	}
 }

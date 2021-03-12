@@ -71,7 +71,6 @@ bool FSpawnAJetOnFinalLapMakeItFinish::Update()
 		return false;
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 	ARaceGameModeMOCK* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameModeMOCK>();
 
 	ATrackGenerator* testTrack = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
@@ -103,7 +102,6 @@ bool FSpawnAControlledJetOnFinalLapMakeItFinish::Update()
 		return false;
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 	ARaceGameModeMOCK* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameModeMOCK>();
 
 	ATrackGenerator* testTrack = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
@@ -114,7 +112,6 @@ bool FSpawnAControlledJetOnFinalLapMakeItFinish::Update()
 
 	AJet* jetBehind = sessionUtilities.spawnInPIEAnInstanceOf<AJet>(behind);
 	AProjectRPlayerController* testController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
-
 	jetBehind->SetOwner(testController);
 	testController->Possess(jetBehind);
 	
@@ -125,6 +122,42 @@ bool FSpawnAControlledJetOnFinalLapMakeItFinish::Update()
 	ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
 	testManager->makeJetsPhaseFinal();
 	testManager->changeLapTo(testGameMode->laps(), jetBehind);
+
+	FVector atInitialPhase = sessionUtilities.retrieveFromPIEAnInstanceOf<AInitialLapPhase>()->GetActorLocation() + testTrack->upVectorAt(behindDistance) * height;
+	jetBehind->SetActorLocation(atInitialPhase);
+
+	return true;
+}
+
+
+bool FSpawnControlledJetMakeItCrossLap::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+	ARaceGameModeMOCK* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameModeMOCK>();
+
+	ATrackGenerator* testTrack = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
+
+	float behindDistance = 700;
+	int height = 200;
+	FVector behind = testTrack->locationAt(testTrack->length() - behindDistance) + testTrack->upVectorAt(behindDistance) * height;
+
+	AJet* jetBehind = sessionUtilities.spawnInPIEAnInstanceOf<AJet>(behind);
+	AProjectRPlayerController* testController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
+	jetBehind->SetOwner(testController);
+	testController->Possess(jetBehind);
+	
+
+	testGameMode->createLapManagerMOCK();
+	testGameMode->addToRunningJets(jetBehind);
+
+	ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
+	testManager->makeJetsPhaseFinal();
+	int arbitraryCurrentLap = 1;
+	testManager->changeLapTo(arbitraryCurrentLap, jetBehind);
 
 	FVector atInitialPhase = sessionUtilities.retrieveFromPIEAnInstanceOf<AInitialLapPhase>()->GetActorLocation() + testTrack->upVectorAt(behindDistance) * height;
 	jetBehind->SetActorLocation(atInitialPhase);
@@ -451,13 +484,10 @@ bool FCheckPlayerStateLapUpdated::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
-	
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 
 		ARaceGameMode* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameMode>();
-		ARaceBeginningStage* testStage = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceBeginningStage>();
-		if (testGameMode && testStage)
+		if (testGameMode)
 		{
 			if(selectedJet == nullptr)
 			{
@@ -676,6 +706,33 @@ bool FCheckGameModeRaceResultsLoaded::Update()
 				{
 					context.World()->bDebugFrameStepExecution = true;
 				}
+				return true;
+			}
+			return test->manageTickCountTowardsLimit();
+		}
+	}
+	return false;
+}
+
+
+bool FCheckGameModeDisablesInput::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+		ARaceGameMode* testGameMode = sessionUtilities.retrieveFromPIEAnInstanceOf<ARaceGameMode>();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+		
+		if(testJet)
+		{
+			bool hasInputDisabled = !testJet->InputEnabled();
+
+			if(hasInputDisabled)
+			{
+				test->TestTrue(test->conditionMessage(), hasInputDisabled);
+				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
 			return test->manageTickCountTowardsLimit();

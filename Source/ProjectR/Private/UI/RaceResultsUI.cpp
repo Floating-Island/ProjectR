@@ -7,6 +7,7 @@
 #include "Components/VerticalBox.h"
 #include "PlayerState/RacePlayerState.h"
 #include "UI/PlayerPositionRow.h"
+#include "TimerManager.h"
 
 
 void URaceResultsUI::repopulateInfoBox()
@@ -35,7 +36,7 @@ void URaceResultsUI::repopulateInfoBox()
 
 void URaceResultsUI::fillInfoBoxWith(const TTuple<FString, int>& aPlayerNameAndPositionTuple)
 {
-	UPlayerPositionRow* playerInfoRow = Cast<UPlayerPositionRow, UUserWidget>(CreateWidget(infoBox, playerPositionRowClass));
+	UPlayerPositionRow* playerInfoRow = Cast<UPlayerPositionRow, UUserWidget>(CreateWidget(this, playerPositionRowClass));
 	if(playerInfoRow)
 	{
 		playerInfoRow->updateInfoWith(aPlayerNameAndPositionTuple.Key, FString::FromInt(aPlayerNameAndPositionTuple.Value));
@@ -43,11 +44,17 @@ void URaceResultsUI::fillInfoBoxWith(const TTuple<FString, int>& aPlayerNameAndP
 	}
 }
 
-void URaceResultsUI::NativeTick(const FGeometry& MyGeometry, float InDeltaTime)
+bool URaceResultsUI::Initialize()
 {
-	Super::NativeTick(MyGeometry, InDeltaTime);
+	bool superInitializeResult = Super::Initialize();
 
-	repopulateInfoBox();
+	if(infoBox)
+	{
+		repopulateInfoBox();
+		GetWorld()->GetTimerManager().SetTimer(repopulateBoxTimer, this, &URaceResultsUI::repopulateInfoBox, 1.0f, true);
+	}
+
+	return superInitializeResult;
 }
 
 int URaceResultsUI::rowsQuantity()
