@@ -231,25 +231,6 @@ bool FAProjectRPlayerControllerServerLoadResultsUILoadsClientRaceResultsUITest::
 }
 
 
-bool FAProjectRPlayerControllerLoadResultsUIDisablesJetsInputTest::RunTest(const FString& Parameters)
-{
-	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK"));
-	establishTestMessageTo(FString("loadResultsUI should disable the player controller input that calls it."));
-	establishTickLimitTo(3);
-	
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
-	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
-	
-	ADD_LATENT_AUTOMATION_COMMAND(FPlayerControllerLoadResultsUI);
-	
-
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerControllerDisablesInput(this));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	return true;
-}
-
-
 
 
 

@@ -23,7 +23,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FServerLoadAnnouncers, int, clien
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FServerLoadResults, int, clientQuantity, FSimplePIETestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FPlayerControllerLoadResultsUI);
+
 
 
 
@@ -63,7 +63,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckServerRemoveAnnouncerUIRemo
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckClientLoadsResults, int, clientQuantity, FSimplePIETestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckPlayerControllerDisablesInput, FSimplePIETestBase*, test);
+
 
 
 

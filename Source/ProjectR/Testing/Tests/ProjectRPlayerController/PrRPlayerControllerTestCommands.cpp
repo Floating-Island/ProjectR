@@ -75,29 +75,6 @@ bool FServerLoadResults::Update()
 }
 
 
-bool FPlayerControllerLoadResultsUI::Update()
-{
-	if(GEditor->IsPlayingSessionInEditor())
-	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-		
-		TArray<AActor*> retrievedActors = TArray<AActor*>();
-		UGameplayStatics::GetAllActorsOfClass(testWorld, AProjectRPlayerController::StaticClass(), retrievedActors);
-		if(retrievedActors.Num() > 0)
-		{
-			for(auto& actor : retrievedActors)
-			{
-				AProjectRPlayerController* controller = Cast<AProjectRPlayerController, AActor>(actor);
-				controller->loadResultsUI();
-			}
-			return true;
-		}
-	}
-	return false;
-}
-
-
 
 
 
@@ -468,47 +445,6 @@ bool FCheckClientLoadsResults::Update()
 				}
 				return test->manageTickCountTowardsLimit();
 			}
-		}
-	}
-	return false;
-}
-
-
-bool FCheckPlayerControllerDisablesInput::Update()
-{
-	if(GEditor->IsPlayingSessionInEditor())
-	{
-		PIESessionUtilities sessionUtilities = PIESessionUtilities();
-		UWorld* testWorld = sessionUtilities.currentPIEWorld();
-
-		TArray<UUserWidget*> retrievedWidgets = TArray<UUserWidget*>();
-		UWidgetBlueprintLibrary::GetAllWidgetsOfClass(testWorld,retrievedWidgets, URaceResultsUI::StaticClass(), false);
-
-		bool hasLoadedResults = retrievedWidgets.Num() > 0;
-
-		if(hasLoadedResults)		
-		{
-			TArray<AActor*> retrievedActors = TArray<AActor*>();
-			UGameplayStatics::GetAllActorsOfClass(testWorld, AProjectRPlayerController::StaticClass(), retrievedActors);
-
-			bool hasInputDisabled = true;
-			for(auto& actor : retrievedActors)
-			{
-				AProjectRPlayerController* controller = Cast<AProjectRPlayerController, AActor>(actor);
-				if(controller->InputEnabled())
-				{
-					hasInputDisabled = false;
-					break;
-				}
-			}
-
-			if(hasInputDisabled)
-			{
-				test->TestTrue(test->conditionMessage(), hasLoadedResults);
-				testWorld->bDebugFrameStepExecution = true;
-				return true;
-			}	
-			return test->manageTickCountTowardsLimit();
 		}
 	}
 	return false;

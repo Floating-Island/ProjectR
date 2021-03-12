@@ -80,10 +80,5 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerServerLoadResu
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerLoadResultsUIDisablesJetsInputTest, FSimplePIETestBase,
-	"ProjectR.ProjectRPlayerController Tests.Unit.013: loadResultsUI disables jets input", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
 
 #endif //WITH_DEV_AUTOMATION_TESTS
