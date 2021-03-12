@@ -186,7 +186,7 @@ bool FAProjectRPlayerControllerLoadRaceUIMakesRacePlayerUISynchronizeVariablesTe
 bool FAProjectRPlayerControllerServerRemoveAnnouncerUIRemovesClientLoadedAnnouncerUITest::RunTest(const FString& Parameters)
 {
 	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK"));
-	establishTestMessageTo(FString("The race player state should update subscribed client racePlayerUIs currentLap when calling updateLapTo."));
+	establishTestMessageTo(FString("The ProjectRPlayerController should remove the client's AnnouncerUI when calling removeAnnouncerUI."));
 	establishTickLimitTo(10);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
@@ -210,7 +210,7 @@ bool FAProjectRPlayerControllerServerRemoveAnnouncerUIRemovesClientLoadedAnnounc
 bool FAProjectRPlayerControllerServerLoadResultsUILoadsClientRaceResultsUITest::RunTest(const FString& Parameters)
 {
 	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK"));
-	establishTestMessageTo(FString("The race player state should update subscribed client racePlayerUIs currentLap when calling updateLapTo."));
+	establishTestMessageTo(FString("The ProjectRPlayerController server should load the RaceResultsUI in the client when calling loadResultsUI."));
 	establishTickLimitTo(10);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
@@ -225,6 +225,25 @@ bool FAProjectRPlayerControllerServerLoadResultsUILoadsClientRaceResultsUITest::
 	ADD_LATENT_AUTOMATION_COMMAND(FServerLoadResults(numberOfPlayers, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckClientLoadsResults(numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAProjectRPlayerControllerLoadResultsUIDisablesJetsInputTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK"));
+	establishTestMessageTo(FString("loadResultsUI should disable the player controller input that calls it."));
+	establishTickLimitTo(3);
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FPlayerControllerLoadResultsUI);
+	
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerControllerDisablesInput(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
