@@ -25,12 +25,16 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Settings")
 		TSubclassOf<UPlayerPositionRow> playerPositionRowClass;
+
+	UFUNCTION()
+		void repopulateInfoBox();
 	
-	void repopulateInfoBox();
 	void fillInfoBoxWith(const TTuple<FString, int>& aPlayerNameAndPositionTuple);
+
+	FTimerHandle repopulateBoxTimer;
 	
 public:
-	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+	virtual bool Initialize() override;
 	int rowsQuantity();
 	
 };
