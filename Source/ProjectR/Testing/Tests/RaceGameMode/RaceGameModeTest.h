@@ -106,11 +106,6 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceGameModeLoadsResultsUIOnFinalistJe
 
 
 
-// disable controllers before starting the race and enable them when it starts.
-
-
-
-
 
 
 
