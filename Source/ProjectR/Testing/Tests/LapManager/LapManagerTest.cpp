@@ -41,7 +41,7 @@ bool FALapManagerHasJetsListedWhenSpawnedTest::RunTest(const FString& Parameters
 }
 
 
-bool FALapManagerJetsHaveInitialLapPhaseAsDefaultPhaseTest::RunTest(const FString& Parameters)
+bool FALapManagerJetsHaveFinalLapPhaseAsDefaultPhaseTest::RunTest(const FString& Parameters)
 {
 	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
 	establishTestMessageTo(FString("The lap manager jets should have the initial lap phase as default phase."));
@@ -52,16 +52,16 @@ bool FALapManagerJetsHaveInitialLapPhaseAsDefaultPhaseTest::RunTest(const FStrin
 	
 	
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAInitialLapPhaseAndJet);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAFinalLapPhaseAndJet);
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetsInitialLapPhase(this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetsFinalLapPhase(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
 
 
-bool FALapManagerJetsHaveInitialLapCountSetToOneTest::RunTest(const FString& Parameters)
+bool FALapManagerJetsHaveInitialLapCountSetToZeroTest::RunTest(const FString& Parameters)
 {
 	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
 	establishTestMessageTo(FString("The lap manager jets should have the initial lap count set to one."));
@@ -72,7 +72,7 @@ bool FALapManagerJetsHaveInitialLapCountSetToOneTest::RunTest(const FString& Par
 	
 	
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAInitialLapPhaseAndJet);
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerAFinalLapPhaseAndJet);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetsInitialLapCount(this));
 

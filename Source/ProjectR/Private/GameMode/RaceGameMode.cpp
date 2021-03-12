@@ -12,6 +12,7 @@
 #include "GameMode/RaceStages/RacePreparationStage.h"
 #include "GameInstance/ProjectRGameInstance.h"
 #include "TimerManager.h"
+#include "../../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/GameFramework/PlayerInput.h"
 #include "PlayerController/ProjectRPlayerController.h"
 #include "PlayerState/RacePlayerState.h"
 
@@ -234,11 +235,14 @@ void ARaceGameMode::lapCompletedByJet(AJet* aCrossingJet)
 		{
 			runningJets.Remove(aCrossingJet);
 			finalizedJets.Add(aCrossingJet);
-			UE_LOG(LogTemp, Log, TEXT("A Jet has finished laps!!!"));
 			AProjectRPlayerController* jetController = Cast<AProjectRPlayerController, AActor>(aCrossingJet->GetOwner());
 			if(jetController)
 			{
 				jetController->loadResultsUI();
+				jetController->PlayerInput->FlushPressedKeys();
+				aCrossingJet->neutralize();
+				aCrossingJet->centerSteer();
+				aCrossingJet->DisableInput(Cast<APlayerController, AController>(aCrossingJet->GetController()));
 			}
 		}
 		else
@@ -281,8 +285,8 @@ void ARaceGameMode::possessJets()
 	{
 		APlayerController* controller = iterator->Get();
 		AJet* unPossessedJet = unPossessedJets.Pop();
-		unPossessedJet->SetOwner(controller);
 		controller->Possess(unPossessedJet);
+		unPossessedJet->SetOwner(controller);
 		prepareRaceUIOf(controller);
 	}//if when testing the splitscreen only the first player moves, try to spawn more players.
 }

@@ -32,7 +32,7 @@ bool FSpawningALapManagerAndJet::Update()
 }
 
 
-bool FSpawningALapManagerAInitialLapPhaseAndJet::Update()
+bool FSpawningALapManagerAFinalLapPhaseAndJet::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -42,7 +42,7 @@ bool FSpawningALapManagerAInitialLapPhaseAndJet::Update()
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
 	sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
-	sessionUtilities.spawnInPIEAnInstanceOf<AInitialLapPhase>();
+	sessionUtilities.spawnInPIEAnInstanceOf<AFinalLapPhase>();
 	sessionUtilities.spawnInPIEAnInstanceOf<ALapManagerMOCK>();
 
 	return true;
@@ -63,7 +63,8 @@ bool FSpawningALapManagerInitalAndIntermediateLapPhasesAndJet::Update()
 	sessionUtilities.spawnInPIEAnInstanceOf<AInitialLapPhase>();
 	FVector intermediatePhaseLocation = jetLocation + FVector(0, 0, -20);
 	sessionUtilities.spawnInPIEAnInstanceOf<AIntermediateLapPhase>(intermediatePhaseLocation);
-	sessionUtilities.spawnInPIEAnInstanceOf<ALapManagerMOCK>();
+	ALapManagerMOCK* testManager = sessionUtilities.spawnInPIEAnInstanceOf<ALapManagerMOCK>();
+	testManager->makeJetsPhaseInitial();
 
 	return true;
 }
@@ -147,7 +148,7 @@ bool FCheckALapManagerStoresJets::Update()
 }
 
 
-bool FCheckJetsInitialLapPhase::Update()
+bool FCheckJetsFinalLapPhase::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
@@ -156,14 +157,14 @@ bool FCheckJetsInitialLapPhase::Update()
 		ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
 		if (testManager)
 		{
-			bool jetsDefaultPhaseIsInitialLapPhase = testManager->defaultLapPhaseIsInitialLapPhase();
+			bool jetsDefaultPhaseIsFinalLapPhase = testManager->defaultLapPhaseIsFinalLapPhase();
 
-			UE_LOG(LogTemp, Log, TEXT("Lap manager jets %s the initial lap phase as default phase."), *FString(jetsDefaultPhaseIsInitialLapPhase ? "have" : "don't have"));
+			UE_LOG(LogTemp, Log, TEXT("Lap manager jets %s the final lap phase as default phase."), *FString(jetsDefaultPhaseIsFinalLapPhase ? "have" : "don't have"));
 
 			test->increaseTickCount();
 			if (test->tickCountExceedsLimit())
 			{
-				test->TestTrue(test->conditionMessage(), jetsDefaultPhaseIsInitialLapPhase);
+				test->TestTrue(test->conditionMessage(), jetsDefaultPhaseIsFinalLapPhase);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
@@ -182,14 +183,14 @@ bool FCheckJetsInitialLapCount::Update()
 		ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
 		if (testManager)
 		{
-			bool jetsInitialLapCountIsOne = testManager->InitialLapCountSetToOne();
+			bool jetsInitialLapCountIsZero = testManager->InitialLapCountSetToZero();
 
-			UE_LOG(LogTemp, Log, TEXT("Lap manager jets %s the initial lap count set as one."), *FString(jetsInitialLapCountIsOne ? "have" : "don't have"));
+			UE_LOG(LogTemp, Log, TEXT("Lap manager jets %s the initial lap count set as zero."), *FString(jetsInitialLapCountIsZero ? "have" : "don't have"));
 
 			test->increaseTickCount();
 			if (test->tickCountExceedsLimit())
 			{
-				test->TestTrue(test->conditionMessage(), jetsInitialLapCountIsOne);
+				test->TestTrue(test->conditionMessage(), jetsInitialLapCountIsZero);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}

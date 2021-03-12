@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 
 
-#include "../LapPhases/FinalLapPhase.h"
 #include "GameFramework/Actor.h"
 #include "LapManager.generated.h"
 
@@ -13,7 +12,7 @@
 class ARaceGameMode;
 class AJet;
 class ALapPhase;
-class AInitialLapPhase;
+class AFinalLapPhase;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FLapCompletedEvent, AJet*, aCrossingJet);
 
@@ -22,7 +21,7 @@ struct FLapData
 {
 	GENERATED_BODY()
 
-	int lap = 1;
+	int lap = 0;
 	ALapPhase* currentLapPhase;
 };
 
@@ -32,7 +31,7 @@ class PROJECTR_API ALapManager : public AActor
 	GENERATED_BODY()
 
 private:
-	AInitialLapPhase* initialLapPhase;
+	AFinalLapPhase* finalPhase;
 
 public:
 	// Sets default values for this actor's properties
