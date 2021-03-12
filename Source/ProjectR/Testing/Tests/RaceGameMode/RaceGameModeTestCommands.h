@@ -24,6 +24,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAJetOnFinalLapMakeItFinish);
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnAControlledJetOnFinalLapMakeItFinish);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnControlledJetMakeItCrossLap);
+
+
 
 
 
