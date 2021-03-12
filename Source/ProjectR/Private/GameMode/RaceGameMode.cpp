@@ -239,7 +239,9 @@ void ARaceGameMode::lapCompletedByJet(AJet* aCrossingJet)
 			if(jetController)
 			{
 				jetController->loadResultsUI();
-
+				jetController->PlayerInput->FlushPressedKeys();
+				aCrossingJet->neutralize();
+				aCrossingJet->centerSteer();
 				aCrossingJet->DisableInput(jetController);
 			}
 		}
