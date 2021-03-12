@@ -103,6 +103,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceGameModeLoadsResultsUIOnFinalistJe
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FARaceGameModeDisablesInputOnFinalistJetTest, FSimplePIETestBase,
+	"ProjectR.RaceGameMode Tests.Integration.017: Makes the finalist jet disable its input", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

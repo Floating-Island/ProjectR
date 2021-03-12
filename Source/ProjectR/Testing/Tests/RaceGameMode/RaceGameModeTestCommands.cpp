@@ -685,6 +685,34 @@ bool FCheckGameModeRaceResultsLoaded::Update()
 }
 
 
+bool FCheckGameModeDisablesInput::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+		AProjectRPlayerController* testController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerController>();
+
+		if(testController)
+		{
+			bool hasInputDisabled = !testController->AcknowledgedPawn->InputEnabled();
+
+			if(hasInputDisabled)
+			{
+				test->TestTrue(test->conditionMessage(), hasInputDisabled);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+
+		
+			return test->manageTickCountTowardsLimit();
+		}
+	}
+	return false;
+}
+
+
 
 
 

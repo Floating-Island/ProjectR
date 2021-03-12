@@ -301,4 +301,23 @@ bool FARaceGameModeLoadsResultsUIOnFinalistJetControllerTest::RunTest(const FStr
 }
 
 
+bool FARaceGameModeDisablesInputOnFinalistJetTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK"));
+	establishTestMessageTo(FString("The game mode should make the finalist jet disable its input when finishing laps."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawnAControlledJetOnFinalLapMakeItFinish);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckGameModeDisablesInput(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS
