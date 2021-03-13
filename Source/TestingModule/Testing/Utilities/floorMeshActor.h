@@ -7,7 +7,7 @@
 #include "FloorMeshActor.generated.h"
 
 UCLASS()
-class PROJECTR_API AFloorMeshActor : public AActor
+class TESTINGMODULE_API AFloorMeshActor : public AActor
 {
 	GENERATED_BODY()
 

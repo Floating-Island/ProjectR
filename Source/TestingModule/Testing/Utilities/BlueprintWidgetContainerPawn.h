@@ -7,7 +7,7 @@
 #include "BlueprintWidgetContainerPawn.generated.h"
 
 UCLASS()
-class PROJECTR_API ABlueprintWidgetContainerPawn : public APawn
+class TESTINGMODULE_API ABlueprintWidgetContainerPawn : public APawn
 {
 	GENERATED_BODY()
 

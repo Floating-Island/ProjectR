@@ -10,7 +10,7 @@
  *
  */
 UCLASS()
-class PROJECTR_API ALapPhaseMOCK : public ALapPhase
+class TESTINGMODULE_API ALapPhaseMOCK : public ALapPhase
 {
 	GENERATED_BODY()
 

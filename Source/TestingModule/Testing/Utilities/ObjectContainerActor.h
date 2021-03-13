@@ -7,7 +7,7 @@
 #include "ObjectContainerActor.generated.h"
 
 UCLASS()
-class PROJECTR_API AObjectContainerActor : public AActor
+class TESTINGMODULE_API AObjectContainerActor : public AActor
 {
 	GENERATED_BODY()
 

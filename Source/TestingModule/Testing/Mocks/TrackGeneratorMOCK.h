@@ -10,7 +10,7 @@
  *
  */
 UCLASS()
-class PROJECTR_API ATrackGeneratorMOCK : public ATrackGenerator
+class TESTINGMODULE_API ATrackGeneratorMOCK : public ATrackGenerator
 {
 	GENERATED_BODY()
 public:

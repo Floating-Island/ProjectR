@@ -10,7 +10,7 @@
  *
  */
 UCLASS()
-class PROJECTR_API ATrackManagerMOCK : public ATrackManager
+class TESTINGMODULE_API ATrackManagerMOCK : public ATrackManager
 {
 	GENERATED_BODY()
 
