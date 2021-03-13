@@ -7,7 +7,7 @@
 #include "Track/TrackGenerator.h"
 #include "LapPhases/InitialLapPhase.h"
 #include "GameMode/RaceStages/RaceStage.h"
-#include "ProjectR/Testing/Mocks/LapManagerMOCK.h"
+#include "LapManagerMOCK.h"
 
 void ARaceGameModeMOCK2::StartPlay()
 {

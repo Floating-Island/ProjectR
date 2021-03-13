@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ProjectR/Testing/Mocks/MotorStateManagerMOCK.h"
+#include "MotorStateManagerMOCK.h"
 #include "Jet/Jet.h"
 #include "JetMOCK2.generated.h"
 

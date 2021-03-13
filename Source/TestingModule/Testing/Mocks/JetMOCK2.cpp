@@ -7,7 +7,7 @@
 #include "Jet/MotorStates/MotorStateManager.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-#include "ProjectR/Testing/Mocks/SteerStateManagerMOCK.h"
+#include "SteerStateManagerMOCK.h"
 
 AJetMOCK2::AJetMOCK2()
 {
