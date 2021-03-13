@@ -13,15 +13,11 @@ public class TestingModule : ModuleRules
             "UnrealEd", 
             "UMG", 
             "OnlineSubsystem", 
-            "OnlineSubsystemUtils"
+            "OnlineSubsystemUtils",
+            "ProjectR", 
+            "Slate", 
+            "SlateCore"
         });
-        PrivateDependencyModuleNames.AddRange(
-            new string[] 
-            {
-                "ProjectR", 
-                "Slate", 
-                "SlateCore"
-            });
 
         DynamicallyLoadedModuleNames.Add("OnlineSubsystemNull");
     }
