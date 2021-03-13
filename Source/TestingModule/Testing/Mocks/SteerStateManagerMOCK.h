@@ -11,7 +11,7 @@ class USteerState;
  * 
  */
 UCLASS()
-class PROJECTR_API ASteerStateManagerMOCK : public ASteerStateManager
+class TESTINGMODULE_API ASteerStateManagerMOCK : public ASteerStateManager
 {
 	GENERATED_BODY()
 

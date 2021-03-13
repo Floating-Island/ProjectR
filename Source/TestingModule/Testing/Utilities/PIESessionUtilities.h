@@ -18,7 +18,7 @@ class ATrackManagerMOCK;
 /**
  * This class is intended to be used in tests only and when the editor is playing a PIE session.
  */
-class PROJECTR_API PIESessionUtilities
+class TESTINGMODULE_API PIESessionUtilities
 {
 private:
 	UWorld* pieWorld;

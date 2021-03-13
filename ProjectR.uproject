@@ -13,6 +13,15 @@
 				"CoreUObject",
 				"UMG"
 			]
+		},
+		{
+			"Name": "TestingModule",
+			"Type": "Editor",
+			"LoadingPhase": "PostDefault",
+			"AdditionalDependencies": [
+				"Engine",
+				"ProjectR"
+			]
 		}
 	],
 	"Plugins": [

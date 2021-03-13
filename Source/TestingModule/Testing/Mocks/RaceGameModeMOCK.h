@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class PROJECTR_API ARaceGameModeMOCK : public ARaceGameMode
+class TESTINGMODULE_API ARaceGameModeMOCK : public ARaceGameMode
 {
 	GENERATED_BODY()
 public:

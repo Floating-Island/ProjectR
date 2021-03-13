@@ -14,7 +14,7 @@ class USteerState;
  *
  */
 UCLASS()
-class PROJECTR_API AJetMOCK : public AJet
+class TESTINGMODULE_API AJetMOCK : public AJet
 {
 	GENERATED_BODY()
 

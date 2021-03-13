@@ -8,7 +8,7 @@
 /**
  * 
  */
-class PROJECTR_API NetworkedPIESessionUtilities
+class TESTINGMODULE_API NetworkedPIESessionUtilities
 {
 public:
 	NetworkedPIESessionUtilities();

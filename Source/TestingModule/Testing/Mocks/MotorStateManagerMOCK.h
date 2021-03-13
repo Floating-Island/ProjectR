@@ -11,7 +11,7 @@
  * 
  */
 UCLASS()
-class PROJECTR_API AMotorStateManagerMOCK : public AMotorStateManager
+class TESTINGMODULE_API AMotorStateManagerMOCK : public AMotorStateManager
 {
 	GENERATED_BODY()
 

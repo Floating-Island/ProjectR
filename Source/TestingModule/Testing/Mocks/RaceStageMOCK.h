@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class PROJECTR_API ARaceStageMOCK : public ARaceStage
+class TESTINGMODULE_API ARaceStageMOCK : public ARaceStage
 {
 	GENERATED_BODY()
 

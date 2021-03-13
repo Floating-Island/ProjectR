@@ -10,7 +10,7 @@
  *
  */
 UCLASS()
-class PROJECTR_API ALapManagerMOCK : public ALapManager
+class TESTINGMODULE_API ALapManagerMOCK : public ALapManager
 {
 	GENERATED_BODY()
 

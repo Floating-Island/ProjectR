@@ -10,7 +10,7 @@
  * 
  */
 UCLASS()
-class PROJECTR_API USessionManagerMOCK : public USessionManager
+class TESTINGMODULE_API USessionManagerMOCK : public USessionManager
 {
 	GENERATED_BODY()
 
