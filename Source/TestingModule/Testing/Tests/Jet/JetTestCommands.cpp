@@ -1597,6 +1597,39 @@ bool FCheckAJetHasMovementsStored::Update()
 }
 
 
+bool FCheckAJetHasMovementHistorySizeLimited::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+
+		if(testJet)
+		{
+			int historySize = testJet->movementHistoryPrefixedSize();
+
+			while(testJet->retrieveMovementHistory().Num() < historySize)
+			{
+				testJet->addToHistory(FMovementData());
+			}
+
+			testJet->addToHistory(FMovementData());
+			
+			bool movementHistoryRespectsPrefixedSize = testJet->retrieveMovementHistory().Num() == historySize;
+
+			if(movementHistoryRespectsPrefixedSize)
+			{
+				test->TestTrue(test->conditionMessage(), movementHistoryRespectsPrefixedSize);
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+		return test->manageTickCountTowardsLimit();
+	}
+	return false;
+}
+
+
 
 
 

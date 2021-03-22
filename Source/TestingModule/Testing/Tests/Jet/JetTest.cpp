@@ -1628,6 +1628,23 @@ bool FAJetStoresItsMovementEachTickTest::RunTest(const FString& Parameters)
 }
 
 
+bool FAJetMovementHistorySizeIsLimitedTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKTestWorld"));
+	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
+	establishTestMessageTo(FString("The Jet should limit the movementHistory size to the one set."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetHasMovementHistorySizeLimited(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 
 
 
