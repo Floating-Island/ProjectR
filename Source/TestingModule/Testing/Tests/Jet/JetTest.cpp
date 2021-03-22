@@ -1611,6 +1611,23 @@ bool FAJetModelMeshIsAttachedToPhysicsComponentTest::RunTest(const FString& Para
 }
 
 
+bool FAJetModelMeshIsAttachedToPhysicsComponentTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKTestWorld"));
+	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
+	establishTestMessageTo(FString("The Jet should store its current movement each tick."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetHasMovementsStored(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 
 
 

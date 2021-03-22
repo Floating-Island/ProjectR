@@ -1573,6 +1573,30 @@ bool FCheckAJetModelMeshAttachment::Update()
 }
 
 
+bool FCheckAJetHasMovementsStored::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+
+		if(testJet)
+		{
+			bool hasMovementsStored = testJet->movementHistory().Num() > 0;
+
+			if(hasMovementsStored)
+			{
+				test->TestTrue(test->conditionMessage(), hasMovementsStored);
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+		return test->manageTickCountTowardsLimit();
+	}
+	return false;
+}
+
+
 
 
 
