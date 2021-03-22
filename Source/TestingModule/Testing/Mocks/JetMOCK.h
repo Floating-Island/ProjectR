@@ -80,6 +80,8 @@ public:
 	bool hasJetModelMeshSet();
 
 	bool modelMeshAttachedToPhysicsComponent();
+
+	TArray<FMovementData>& retrieveMovementHistory();
 };
 
 template <class aMotorStateType>
