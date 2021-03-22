@@ -84,6 +84,8 @@ public:
 	TArray<FMovementData>& retrieveMovementHistory();
 
 	int movementHistoryPrefixedSize();
+
+	void addToHistory(FMovementData aMovement);
 };
 
 template <class aMotorStateType>

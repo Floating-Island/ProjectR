@@ -177,6 +177,11 @@ int AJetMOCK::movementHistoryPrefixedSize()
 	return movementHistorySize;
 }
 
+void AJetMOCK::addToHistory(FMovementData aMovement)
+{
+	addToMovementHistory(aMovement);
+}
+
 
 //bool AJetMOCK::hasAnAntiGravitySystem()
 //{
