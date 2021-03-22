@@ -66,13 +66,15 @@ AJet::AJet()
 	jetModelMeshComponent->SetupAttachment(physicsMeshComponent);
 
 	jetModelMeshComponent->SetMassOverrideInKg(NAME_None, 0);
+
+	movementHistorySize = 60;
 	
 }
 
 void AJet::BeginPlay()
 {
+	movementHistory.SetNum(movementHistorySize, false);
 	Super::BeginPlay();
-
 }
 
 void AJet::addMovementToHistory()

@@ -120,6 +120,9 @@ protected:
 
 	UFUNCTION()
 		void addMovementToHistory();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Replication")
+		int movementHistorySize;
 	
 public:
 	virtual void Tick(float DeltaTime) override;
