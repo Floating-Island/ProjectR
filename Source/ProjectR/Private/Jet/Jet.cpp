@@ -75,6 +75,14 @@ void AJet::BeginPlay()
 
 }
 
+void AJet::addMovementToHistory()
+{
+	if(IsValid(motorManager) && IsValid(steerManager))
+	{
+		movementHistory.Add(FMovementData(this, EMovementType::routine, motorManager->stateClass(), steerManager->stateClass()));
+	}
+}
+
 void AJet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -86,6 +94,7 @@ void AJet::Tick(float DeltaTime)
 	{
 		steerManager->activate(steeringSystem);
 	}
+	addMovementToHistory();
 }
 
 void AJet::PostInitializeComponents()

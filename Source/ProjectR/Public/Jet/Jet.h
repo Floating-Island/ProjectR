@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <chrono>
+
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Jet.generated.h"
@@ -15,6 +17,47 @@ class USteeringComponent;
 class UMotorDriveComponent;
 class AMotorStateManager;
 class ASteerStateManager;
+
+UENUM()
+enum EMovementType {routine, sendOrReceive  };
+
+USTRUCT()
+struct FMovementData
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+		int64 timestamp;
+	UPROPERTY()
+		FVector location;
+	UPROPERTY()
+		FRotator rotation;
+	UPROPERTY()
+		FVector linearVelocity;
+	UPROPERTY()
+		FVector angularVelocityInRadians;
+	UPROPERTY()
+		UClass* motorStateClass;
+	UPROPERTY()
+		UClass* steerStateClass;
+	UPROPERTY()
+		EMovementType type;
+
+	FMovementData(AActor* actor, EMovementType movementType, UClass* classOfMotorState, UClass* classOfSteerState)
+	{
+		timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+		location = actor->GetActorLocation();
+		rotation = actor->GetActorRotation();
+		linearVelocity = Cast<UPrimitiveComponent, UActorComponent>(actor->GetRootComponent())->GetPhysicsLinearVelocity();
+		angularVelocityInRadians = Cast<UPrimitiveComponent, UActorComponent>(actor->GetRootComponent())->GetPhysicsAngularVelocityInRadians();
+		type = movementType;
+		motorStateClass = classOfMotorState;
+		steerStateClass = classOfSteerState;
+	}
+};
+
+
+
 
 UCLASS()
 class PROJECTR_API AJet : public APawn
@@ -60,6 +103,11 @@ protected:
 
 	UPROPERTY(Replicated)
 		ASteerStateManager* steerManager;
+
+	TArray<FMovementData> movementHistory;
+
+	UFUNCTION()
+		void addMovementToHistory();
 	
 public:
 	virtual void Tick(float DeltaTime) override;
