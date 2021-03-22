@@ -19,7 +19,7 @@ class AMotorStateManager;
 class ASteerStateManager;
 
 UENUM()
-enum EMovementType {routine, sendOrReceive  };
+enum class EMovementType : uint8 {routine, sendOrReceive  };
 
 USTRUCT()
 struct FMovementData
