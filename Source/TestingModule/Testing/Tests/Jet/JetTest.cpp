@@ -1611,7 +1611,7 @@ bool FAJetModelMeshIsAttachedToPhysicsComponentTest::RunTest(const FString& Para
 }
 
 
-bool FAJetModelMeshIsAttachedToPhysicsComponentTest::RunTest(const FString& Parameters)
+bool FAJetStoresItsMovementEachTickTest::RunTest(const FString& Parameters)
 {
 	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKTestWorld"));
 	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
