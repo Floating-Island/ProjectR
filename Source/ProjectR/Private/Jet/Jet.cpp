@@ -73,7 +73,7 @@ AJet::AJet()
 
 void AJet::BeginPlay()
 {
-	movementHistory.SetNum(movementHistorySize, false);
+	movementHistory.SetNumZeroed(movementHistorySize, false);
 	Super::BeginPlay();
 }
 
@@ -81,8 +81,14 @@ void AJet::addMovementToHistory()
 {
 	if(IsValid(motorManager) && IsValid(steerManager))
 	{
-		movementHistory.Add(FMovementData(this, EMovementType::routine, motorManager->stateClass(), steerManager->stateClass()));
+		addToMovementHistory(FMovementData(this, EMovementType::routine, motorManager->stateClass(), steerManager->stateClass()));
 	}
+}
+
+void AJet::addToMovementHistory(FMovementData aMovement)
+{
+	movementHistory.RemoveAt(0);//remove first element (oldest).
+	movementHistory.Add(aMovement);//add element to end (newest).
 }
 
 void AJet::Tick(float DeltaTime)

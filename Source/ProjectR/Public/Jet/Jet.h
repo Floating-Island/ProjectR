@@ -116,6 +116,7 @@ protected:
 	UPROPERTY(Replicated)
 		ASteerStateManager* steerManager;
 
+	/** don't add objects directly, use addMovementToHistory instead.*/
 	TArray<FMovementData> movementHistory;
 
 	UFUNCTION()
@@ -123,6 +124,8 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Replication")
 		int movementHistorySize;
+
+	void addToMovementHistory(FMovementData aMovement);
 	
 public:
 	virtual void Tick(float DeltaTime) override;
