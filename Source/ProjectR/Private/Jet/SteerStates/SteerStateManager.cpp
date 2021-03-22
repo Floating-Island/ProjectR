@@ -111,3 +111,8 @@ void ASteerStateManager::activate(USteeringComponent* aSteeringDrive)
 		steerState->activate(aSteeringDrive);
 	}
 }
+
+UClass* ASteerStateManager::stateClass()
+{
+	return steerState->GetClass();
+}

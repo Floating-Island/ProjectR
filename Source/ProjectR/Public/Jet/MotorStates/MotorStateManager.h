@@ -67,6 +67,7 @@ public:
 	void mix();
 
 	void activate(UMotorDriveComponent* aMotorDrive);
+	UClass* stateClass();
 };
 
 template <class aMotorStateType>

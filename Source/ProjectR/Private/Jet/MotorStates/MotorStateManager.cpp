@@ -137,3 +137,8 @@ void AMotorStateManager::activate(UMotorDriveComponent* aMotorDrive)
 		motorState->activate(aMotorDrive);
 	}
 }
+
+UClass* AMotorStateManager::stateClass()
+{
+	return motorState->GetClass();
+}
