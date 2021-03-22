@@ -1582,7 +1582,7 @@ bool FCheckAJetHasMovementsStored::Update()
 
 		if(testJet)
 		{
-			bool hasMovementsStored = testJet->movementHistory().Num() > 0;
+			bool hasMovementsStored = testJet->retrieveMovementHistory().Num() > 0;
 
 			if(hasMovementsStored)
 			{
