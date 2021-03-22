@@ -41,7 +41,7 @@ struct FMovementData
 	UPROPERTY()
 		UClass* steerStateClass;
 	UPROPERTY()
-		EMovementType type;
+		TEnumAsByte<EMovementType> type;
 
 	FMovementData(AActor* actor, EMovementType movementType, UClass* classOfMotorState, UClass* classOfSteerState)
 	{
