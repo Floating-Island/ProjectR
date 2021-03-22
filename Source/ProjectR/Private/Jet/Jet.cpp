@@ -87,7 +87,7 @@ void AJet::addMovementToHistory()
 
 void AJet::addToMovementHistory(FMovementData aMovement)
 {
-	movementHistory.RemoveAt(0);//remove first element (oldest).
+	movementHistory.RemoveAt(0, 1, false);//remove first element (oldest).
 	movementHistory.Add(aMovement);//add element to end (newest).
 }
 
