@@ -19,7 +19,7 @@ class AMotorStateManager;
 class ASteerStateManager;
 
 UENUM()
-enum class EMovementType : uint8 {routine, sendOrReceive  };
+enum class EMovementType : uint8 {routine UMETA(DisplayName = "routine"), sendOrReceive UMETA(DisplayName = "sendOrReceive") };
 
 USTRUCT()
 struct FMovementData
@@ -41,8 +41,20 @@ struct FMovementData
 	UPROPERTY()
 		UClass* steerStateClass;
 	UPROPERTY()
-		TEnumAsByte<EMovementType> type;
+		EMovementType type;
 
+	FMovementData()
+	{
+		timestamp = 0;
+		location = FVector(0);
+		rotation = FRotator(0);
+		linearVelocity = FVector(0);
+		angularVelocityInRadians = FVector(0);
+		motorStateClass = nullptr;
+		steerStateClass = nullptr;
+		type = EMovementType::routine;
+	}
+	
 	FMovementData(AActor* actor, EMovementType movementType, UClass* classOfMotorState, UClass* classOfSteerState)
 	{
 		timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
