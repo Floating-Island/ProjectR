@@ -82,6 +82,8 @@ public:
 	bool modelMeshAttachedToPhysicsComponent();
 
 	TArray<FMovementData>& retrieveMovementHistory();
+
+	int movementHistoryPrefixedSize();
 };
 
 template <class aMotorStateType>

@@ -172,6 +172,11 @@ TArray<FMovementData>& AJetMOCK::retrieveMovementHistory()
 	return movementHistory;
 }
 
+int AJetMOCK::movementHistoryPrefixedSize()
+{
+	return movementHistorySize;
+}
+
 
 //bool AJetMOCK::hasAnAntiGravitySystem()
 //{
