@@ -434,7 +434,7 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetServerAndClientHaveSameMovesAfterCe
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpawnsAdjustingIfPossibleButAlwaysSpawnTest,
-	"ProjectR.Jet Tests.Unit.080: Collision handling method is set as adjust if possible but always spawn", 
+	"ProjectR.Jet Tests.Unit.081: Collision handling method is set as adjust if possible but always spawn", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
