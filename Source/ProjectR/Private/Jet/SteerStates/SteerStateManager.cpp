@@ -89,6 +89,7 @@ void ASteerStateManager::steerRight()
 	{
 		return;
 	}
+	updateStateTo<URightSteerState>();
 	serverSteerRight();
 }
 
