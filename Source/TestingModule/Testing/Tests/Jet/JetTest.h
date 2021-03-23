@@ -413,6 +413,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetServerAndClientHaveSameMovesAfterBr
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetServerAndClientHaveSameMovesAfterNeutralizeTest, FSimplePIETestBase,
+	"ProjectR.Jet Tests.Replication.077: Server and client have the same movements after neutralize", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 //jet mesh should be set to collision enabled. (query and physics or physics only).
 //delete tests that check velocity alignment to forward or backwards vectors after steering. Or see if it's possible to remade them.
 //create a state with state factory to handle the direction that the jet is heading (forwards or backwards). It should update itself every time that acceleration or brake is called.
