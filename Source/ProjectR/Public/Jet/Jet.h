@@ -66,6 +66,20 @@ struct FMovementData
 		motorStateClass = classOfMotorState;
 		steerStateClass = classOfSteerState;
 	}
+
+	FString ToString()
+	{
+		return FString("Movement Data:\n") + 
+			FString("Movement type: ") + FString(StaticEnum<EMovementType>()->GetValueAsString(type)) + FString("\n") +
+			FString("Movement timestamp: ") + FString::Printf(TEXT("%lld"), timestamp) + FString("\n") +
+			FString("Location: ") + location.ToString() + FString("\n") +
+			FString("Linear velocity: ") + linearVelocity.ToString() + FString("\n") +
+			FString("Rotation: ") + rotation.ToString() + FString("\n") +
+			FString("Angular velocity in radians: ") + angularVelocityInRadians.ToString() + FString("\n") +
+			FString("Motor state class: ") + FString(motorStateClass? motorStateClass->GetFName().ToString() : "nullptr") + FString("\n") +
+			FString("Steer state class: ") + FString(steerStateClass? steerStateClass->GetFName().ToString() : "nullptr")
+		;
+	}
 };
 
 
