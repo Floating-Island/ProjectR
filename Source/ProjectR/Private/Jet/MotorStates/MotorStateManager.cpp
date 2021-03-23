@@ -107,6 +107,7 @@ void AMotorStateManager::brake()
 	{
 		return;
 	}
+	updateStateTo<UReversingMotorState>();
 	serverBrake();
 }
 
