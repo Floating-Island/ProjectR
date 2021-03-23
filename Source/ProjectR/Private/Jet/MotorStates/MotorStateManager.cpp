@@ -127,6 +127,7 @@ void AMotorStateManager::mix()
 	{
 		return;
 	}
+	updateStateTo<UMixedMotorState>();
 	serverMix();
 }
 
