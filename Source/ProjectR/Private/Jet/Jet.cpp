@@ -29,12 +29,12 @@ AJet::AJet()
 	physicsMeshComponent->SetSimulatePhysics(true);
 	physicsMeshComponent->SetEnableGravity(true);
 	physicsMeshComponent->SetCanEverAffectNavigation(false);
-	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 	UStaticMesh* physicsMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/jetMesh")));
 	physicsMeshComponent->SetStaticMesh(physicsMesh);
 
 	physicsMeshComponent->SetMassOverrideInKg(NAME_None, 100, true);
 
+	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 	physicsMeshComponent->SetGenerateOverlapEvents(true);
 	physicsMeshComponent->SetCollisionObjectType(ECC_Pawn);
 

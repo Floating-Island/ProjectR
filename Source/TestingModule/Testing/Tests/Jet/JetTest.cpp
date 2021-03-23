@@ -1759,6 +1759,17 @@ bool FAJetServerAndClientHaveSameMovesAfterCenterSteerTest::RunTest(const FStrin
 }
 
 
+bool FAJetSpawnsAdjustingIfPossibleButAlwaysSpawnTest::RunTest(const FString& Parameters)
+{
+	AJet* testJet = NewObject<AJet>();
+
+	TestTrue(FString("Spawn collision method should be set as adjust if possible but always spawn"), 
+		testJet->SpawnCollisionHandlingMethod == ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn);
+	
+	return true;
+}
+
+
 
 
 
