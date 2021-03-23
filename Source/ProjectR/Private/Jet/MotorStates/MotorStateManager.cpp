@@ -117,6 +117,7 @@ void AMotorStateManager::neutralize()
 	{
 		return;
 	}
+	updateStateTo<UNeutralMotorState>();
 	serverNeutralize();
 }
 
