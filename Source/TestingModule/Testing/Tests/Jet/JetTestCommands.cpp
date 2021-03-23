@@ -1640,7 +1640,12 @@ bool FServerAndClientCheckSameMovementsStored::Update()
 			if(clientWorld)
 			{
 				AJetMOCK* testClientJet = Cast<AJetMOCK, APawn>(clientWorld->GetFirstPlayerController()->AcknowledgedPawn);
-				const FUniqueNetIdRepl clientID = clientWorld->GetFirstPlayerController()->PlayerState->GetUniqueId();
+				APlayerState* clientPlayerState = clientWorld->GetFirstPlayerController()->PlayerState;
+				if(clientPlayerState == nullptr)
+				{
+					return false;
+				}
+				const FUniqueNetIdRepl clientID = clientPlayerState->GetUniqueId();
 
 				AJetMOCK* testServerJet = nullptr;
 				for (auto controllerIterator = serverWorld->GetPlayerControllerIterator(); controllerIterator; ++controllerIterator)
@@ -1654,7 +1659,7 @@ bool FServerAndClientCheckSameMovementsStored::Update()
 				if(testServerJet && testClientJet)
 				{
 					bool bothAsExpected = true;
-
+					testClientJet->accelerate();
 					std::deque<FMovementData> clientHistory = testClientJet->retrieveMovementHistory();
 					std::deque<FMovementData> serverHistory = testServerJet->retrieveMovementHistory();
 
@@ -1667,17 +1672,22 @@ bool FServerAndClientCheckSameMovementsStored::Update()
 						UClass* serverSteerStateClass = serverHistory[index].steerStateClass;
 						UClass* serverMotorStateClass = serverHistory[index].motorStateClass;
 
-						UE_LOG(LogTemp, Log, TEXT("Client steer state: %s"), *clientSteerStateClass->GetName());
-						UE_LOG(LogTemp, Log, TEXT("Server steer state: %s"), *serverSteerStateClass->GetName());
-						UE_LOG(LogTemp, Log, TEXT("Client motor state: %s"), *clientMotorStateClass->GetName());
-						UE_LOG(LogTemp, Log, TEXT("Server motor state: %s"), *serverMotorStateClass->GetName());
+						UE_LOG(LogTemp, Log, TEXT("Client: \n"));
+						UE_LOG(LogTemp, Log, TEXT("%s"), *clientHistory[index].ToString());
+
+						UE_LOG(LogTemp, Log, TEXT("Server: \n"));
+						UE_LOG(LogTemp, Log, TEXT("%s"), *serverHistory[index].ToString());
+
+						if(clientMotorStateClass == nullptr || clientSteerStateClass == nullptr)
+						{
+							return false;
+						}
 
 						if(clientSteerStateClass->GetName() != serverSteerStateClass->GetName() || clientMotorStateClass->GetName() != serverMotorStateClass->GetName())
 						{
 							bothAsExpected = false;
 							break;
 						}
-						
 					}
 
 					if(bothAsExpected)

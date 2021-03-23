@@ -1656,8 +1656,6 @@ bool FAJetServerAndClientHaveSameMovesAfterAcceleratingTest::RunTest(const FStri
 	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
 
 	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("AccelerateAction")), numberOfPlayers));
 	
 	ADD_LATENT_AUTOMATION_COMMAND(FServerAndClientCheckSameMovementsStored(numberOfPlayers, this));
 
