@@ -198,4 +198,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FServerAndClientCheckSameMovement
 
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FServerAndClientCheckSameMovementsStoredNeutralize, int, clientQuantity, FSimplePIETestBase*, test);
 
+
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FServerAndClientCheckSameMovementsStoredSteerLeft, int, clientQuantity, FSimplePIETestBase*, test);
+
 #endif //WITH_DEV_AUTOMATION_TESTS
