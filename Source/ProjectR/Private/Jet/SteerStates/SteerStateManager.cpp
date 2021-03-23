@@ -114,5 +114,9 @@ void ASteerStateManager::activate(USteeringComponent* aSteeringDrive)
 
 UClass* ASteerStateManager::stateClass()
 {
-	return steerState->GetClass();
+	if(IsValid(steerState))
+	{
+		return steerState->GetClass();
+	}
+	return nullptr;
 }

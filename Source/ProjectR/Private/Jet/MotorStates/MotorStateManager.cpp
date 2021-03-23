@@ -140,5 +140,9 @@ void AMotorStateManager::activate(UMotorDriveComponent* aMotorDrive)
 
 UClass* AMotorStateManager::stateClass()
 {
-	return motorState->GetClass();
+	if(IsValid(motorState))
+	{
+		return motorState->GetClass();
+	}
+	return nullptr;
 }
