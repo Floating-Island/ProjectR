@@ -88,10 +88,7 @@ void AMotorStateManager::multicastMix_Implementation()
 void AMotorStateManager::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	if (HasAuthority())
-	{
-		serverNeutralize();
-	}
+	updateStateTo<UNeutralMotorState>();
 }
 
 void AMotorStateManager::accelerate()
@@ -100,6 +97,7 @@ void AMotorStateManager::accelerate()
 	{
 		return;
 	}
+	updateStateTo<UAcceleratingMotorState>();
 	serverAccelerate();
 }
 

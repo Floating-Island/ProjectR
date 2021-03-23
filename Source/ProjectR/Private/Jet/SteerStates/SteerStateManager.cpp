@@ -70,11 +70,7 @@ void ASteerStateManager::multicastCenter_Implementation()
 void ASteerStateManager::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-
-	if(HasAuthority())
-	{
-		serverCenter();
-	}
+	updateStateTo<UCenterSteerState>();
 }
 
 void ASteerStateManager::steerLeft()
