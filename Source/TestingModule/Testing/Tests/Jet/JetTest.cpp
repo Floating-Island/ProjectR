@@ -1721,6 +1721,25 @@ bool FAJetServerAndClientHaveSameMovesAfterSteerLeftTest::RunTest(const FString&
 }
 
 
+bool FAJetServerAndClientHaveSameMovesAfterSteerRightTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest"));
+	establishTestMessageTo((FString("The server and client should have the same movements states after steering right.")));
+	establishTickLimitTo(10);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FServerAndClientCheckSameMovementsStoredSteerRight(numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
 
 
 
