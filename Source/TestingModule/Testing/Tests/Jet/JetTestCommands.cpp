@@ -1582,7 +1582,7 @@ bool FCheckAJetHasMovementsStored::Update()
 
 		if(testJet)
 		{
-			bool hasMovementsStored = testJet->retrieveMovementHistory().Num() > 0;
+			bool hasMovementsStored = testJet->retrieveMovementHistory().size() > 0;
 
 			if(hasMovementsStored)
 			{
@@ -1608,14 +1608,14 @@ bool FCheckAJetHasMovementHistorySizeLimited::Update()
 		{
 			int historySize = testJet->movementHistoryPrefixedSize();
 
-			while(testJet->retrieveMovementHistory().Num() < historySize)
+			while(testJet->retrieveMovementHistory().size() < historySize)
 			{
 				testJet->addToHistory(FMovementData());
 			}
 
 			testJet->addToHistory(FMovementData());
 			
-			bool movementHistoryRespectsPrefixedSize = testJet->retrieveMovementHistory().Num() == historySize;
+			bool movementHistoryRespectsPrefixedSize = testJet->retrieveMovementHistory().size() == historySize;
 
 			if(movementHistoryRespectsPrefixedSize)
 			{

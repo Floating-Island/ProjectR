@@ -81,7 +81,7 @@ public:
 
 	bool modelMeshAttachedToPhysicsComponent();
 
-	TArray<FMovementData>& retrieveMovementHistory();
+	std::deque<FMovementData>& retrieveMovementHistory();
 
 	int movementHistoryPrefixedSize();
 

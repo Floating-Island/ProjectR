@@ -167,7 +167,7 @@ bool AJetMOCK::modelMeshAttachedToPhysicsComponent()
 	return jetModelMeshComponent->IsAttachedTo(physicsMeshComponent);
 }
 
-TArray<FMovementData>& AJetMOCK::retrieveMovementHistory()
+std::deque<FMovementData>& AJetMOCK::retrieveMovementHistory()
 {
 	return movementHistory;
 }
