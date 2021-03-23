@@ -1645,6 +1645,25 @@ bool FAJetMovementHistorySizeIsLimitedTest::RunTest(const FString& Parameters)
 }
 
 
+bool FAJetServerAndClientHaveSameMovesAfterAcceleratingTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest"));
+	establishTestMessageTo((FString("The server and client should have the same movements states after accelerating.")));
+	establishTickLimitTo(10);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FClientPressActionKey(FName(TEXT("AccelerateAction")), numberOfPlayers));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FServerAndClientCheckSameMovementsStored(numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
 
 
 
