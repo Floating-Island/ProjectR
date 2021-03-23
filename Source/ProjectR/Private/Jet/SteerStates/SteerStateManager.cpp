@@ -99,6 +99,7 @@ void ASteerStateManager::center()
 	{
 		return;
 	}
+	updateStateTo<UCenterSteerState>();
 	serverCenter();
 }
 
