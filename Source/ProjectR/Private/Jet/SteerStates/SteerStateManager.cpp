@@ -79,6 +79,7 @@ void ASteerStateManager::steerLeft()
 	{
 		return;
 	}
+	updateStateTo<ULeftSteerState>();
 	serverSteerLeft();
 }
 
