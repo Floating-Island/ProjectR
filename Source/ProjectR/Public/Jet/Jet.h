@@ -117,11 +117,14 @@ protected:
 		ASteerStateManager* steerManager;
 
 	/** don't add objects directly, use addMovementToHistory instead.*/
-	TArray<FMovementData> movementHistory;
+	std::deque<FMovementData> movementHistory;
 
 	UFUNCTION()
 		void addMovementToHistory();
 
+	/**With 60 we will have 1000 milliseconds of movements into the past
+	 * (assuming 60fps).
+	 */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Replication")
 		int movementHistorySize;
 

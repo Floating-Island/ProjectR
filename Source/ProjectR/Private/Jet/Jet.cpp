@@ -73,8 +73,8 @@ AJet::AJet()
 
 void AJet::BeginPlay()
 {
-	movementHistory.SetNumZeroed(movementHistorySize, false);
 	Super::BeginPlay();
+	movementHistory = std::deque<FMovementData>(movementHistorySize, FMovementData());
 }
 
 void AJet::addMovementToHistory()
@@ -87,8 +87,8 @@ void AJet::addMovementToHistory()
 
 void AJet::addToMovementHistory(FMovementData aMovement)
 {
-	movementHistory.RemoveAt(0, 1, false);//remove first element (oldest).
-	movementHistory.Add(aMovement);//add element to end (newest).
+	movementHistory.push_front(aMovement);
+	movementHistory.pop_back();
 }
 
 void AJet::Tick(float DeltaTime)
