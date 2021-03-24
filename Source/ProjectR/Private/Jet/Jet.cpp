@@ -81,7 +81,11 @@ void AJet::addMovementToHistory()
 {
 	if(IsValid(motorManager) && IsValid(steerManager))
 	{
-		addToMovementHistory(FMovementData(this, EMovementType::routine, motorManager->stateClass(), steerManager->stateClass()));
+		addToMovementHistory(FMovementData(this, 
+			generateSendOrReceiveMovementType? EMovementType::sendOrReceive : EMovementType::routine, 
+			motorManager->stateClass(), 
+			steerManager->stateClass()));
+		generateSendOrReceiveMovementType = false;
 	}
 }
 
@@ -346,6 +350,15 @@ bool AJet::keyIsPressedFor(const FName anActionMappingName)
 		}
 	}
 	return false;
+}
+
+FStateData AJet::generateCurrentStateDataToSend()
+{
+	FStateData currentStates = FStateData(motorManager->stateClass(), steerManager->stateClass());
+
+	generateSendOrReceiveMovementType = true;
+	
+	return currentStates;
 }
 
 void AJet::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const

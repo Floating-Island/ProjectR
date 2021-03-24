@@ -18,6 +18,40 @@ class UMotorDriveComponent;
 class AMotorStateManager;
 class ASteerStateManager;
 
+USTRUCT()
+struct FStateData
+{
+	GENERATED_BODY()
+	UPROPERTY()
+		int64 timestamp;
+	UPROPERTY()
+		UClass* motorStateClass;
+	UPROPERTY()
+		UClass* steerStateClass;
+
+	FStateData()
+	{
+		timestamp = 0;
+		motorStateClass = nullptr;
+		steerStateClass = nullptr;
+	}
+
+	FStateData(UClass* classOfMotorState, UClass* classOfSteerState)
+	{
+		timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+		motorStateClass = classOfMotorState;
+		steerStateClass = classOfSteerState;
+	}
+
+	FString ToString() const
+	{
+		return FString("Movement timestamp: ") + FString::Printf(TEXT("%lld"), timestamp) + FString("\n") +
+				FString("Motor state class: ") + FString(motorStateClass? motorStateClass->GetFName().ToString() : "nullptr") + FString("\n") +
+				FString("Steer state class: ") + FString(steerStateClass? steerStateClass->GetFName().ToString() : "nullptr")
+		;
+	}
+};
+
 UENUM()
 enum class EMovementType : uint8 {routine UMETA(DisplayName = "routine"), sendOrReceive UMETA(DisplayName = "sendOrReceive") };
 
@@ -27,7 +61,7 @@ struct FMovementData
 	GENERATED_BODY()
 
 	UPROPERTY()
-		int64 timestamp;
+		FStateData timestampedStates;
 	UPROPERTY()
 		FVector location;
 	UPROPERTY()
@@ -37,47 +71,37 @@ struct FMovementData
 	UPROPERTY()
 		FVector angularVelocityInRadians;
 	UPROPERTY()
-		UClass* motorStateClass;
-	UPROPERTY()
-		UClass* steerStateClass;
-	UPROPERTY()
 		EMovementType type;
 
 	FMovementData()
 	{
-		timestamp = 0;
+		timestampedStates = FStateData();
 		location = FVector(0);
 		rotation = FRotator(0);
 		linearVelocity = FVector(0);
 		angularVelocityInRadians = FVector(0);
-		motorStateClass = nullptr;
-		steerStateClass = nullptr;
 		type = EMovementType::routine;
 	}
 	
 	FMovementData(AActor* actor, EMovementType movementType, UClass* classOfMotorState, UClass* classOfSteerState)
 	{
-		timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+		timestampedStates = FStateData(classOfMotorState, classOfSteerState);
 		location = actor->GetActorLocation();
 		rotation = actor->GetActorRotation();
 		linearVelocity = Cast<UPrimitiveComponent, UActorComponent>(actor->GetRootComponent())->GetPhysicsLinearVelocity();
 		angularVelocityInRadians = Cast<UPrimitiveComponent, UActorComponent>(actor->GetRootComponent())->GetPhysicsAngularVelocityInRadians();
 		type = movementType;
-		motorStateClass = classOfMotorState;
-		steerStateClass = classOfSteerState;
 	}
 
-	FString ToString()
+	FString ToString() const
 	{
 		return FString("Movement Data:\n") + 
 			FString("Movement type: ") + FString(StaticEnum<EMovementType>()->GetValueAsString(type)) + FString("\n") +
-			FString("Movement timestamp: ") + FString::Printf(TEXT("%lld"), timestamp) + FString("\n") +
+			timestampedStates.ToString() + FString("\n") +
 			FString("Location: ") + location.ToString() + FString("\n") +
 			FString("Linear velocity: ") + linearVelocity.ToString() + FString("\n") +
 			FString("Rotation: ") + rotation.ToString() + FString("\n") +
-			FString("Angular velocity in radians: ") + angularVelocityInRadians.ToString() + FString("\n") +
-			FString("Motor state class: ") + FString(motorStateClass? motorStateClass->GetFName().ToString() : "nullptr") + FString("\n") +
-			FString("Steer state class: ") + FString(steerStateClass? steerStateClass->GetFName().ToString() : "nullptr")
+			FString("Angular velocity in radians: ") + angularVelocityInRadians.ToString()
 		;
 	}
 };
@@ -143,6 +167,10 @@ protected:
 		int movementHistorySize;
 
 	void addToMovementHistory(FMovementData aMovement);
+
+private:
+	bool generateSendOrReceiveMovementType;
+	
 	
 public:
 	virtual void Tick(float DeltaTime) override;
@@ -186,4 +214,6 @@ public:
 	FVector rightVectorProjectionOnFloor();
 
 	bool keyIsPressedFor(const FName anActionMappingName);
+
+	FStateData generateCurrentStateDataToSend();
 };
