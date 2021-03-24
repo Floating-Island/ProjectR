@@ -361,6 +361,46 @@ FStateData AJet::generateCurrentStateDataToSend()
 	return currentStates;
 }
 
+FMovementData AJet::retrieveCurrentMovementDataToSend()
+{
+	generateSendOrReceiveMovementType = true;
+	return FMovementData(this, EMovementType::sendOrReceive, motorManager->stateClass(), steerManager->stateClass());
+}
+
+void AJet::synchronizeMovementHistoryWith(FStateData aBunchOfStates)
+{
+	//never change timestamps!!!
+	//go back into the movement history and find the movement previous to the states timestamp.
+	//using that movement location, rotation and velocities, calculate the next movement with the states of aBunchOfStates
+	//take the next move (the one that would come after the states timestamp), set the aBunchOfStates as the movement states.
+	//Set the movement as the one calculated.
+	//
+	//Start the loop (from the move that follows until the current movement in history):
+	//if the movement type is SendOrReceive, keep the states as is.
+	//if the movement type is routine (but only before the first SendOrReceive of the loop), overwrite the states with the ones on the previous movement.
+	////(you could use a boolean to check if you can overwrite)
+	//calculate the current movement using the current states and the movement of the previous move.
+	//set the current movement in the structure.
+	//advance to next movement.
+}
+
+void AJet::synchronizeMovementHistoryWith(FMovementData aMovementStructure)
+{
+	//never change timestamps!!!
+	//go back into the movement history and find the movement following (in time) the movement structure parameter.
+	//calculate the time delta (in milliseconds) and transform it to seconds.
+	//Calculate the movement that would be made on that time delta utilizing the movement structure parameter.
+	//Set the calculated movement structure (including its states) as the movement following it.
+	//
+	//Start the loop (from the move that follows until the current movement in history):
+	//if the movement type is SendOrReceive, keep the states as is.
+	//if the movement type is routine (but only before the first SendOrReceive of the loop), overwrite the states with the ones on the previous movement.
+	////(you could use a boolean to check if you can overwrite)
+	//calculate the current movement using the current states and the movement of the previous move.
+	//set the current movement in the structure.
+	//advance to next movement.
+}
+
 void AJet::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
 {
     Super::GetLifetimeReplicatedProps(OutLifetimeProps);

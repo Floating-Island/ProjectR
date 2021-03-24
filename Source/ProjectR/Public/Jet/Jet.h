@@ -216,4 +216,9 @@ public:
 	bool keyIsPressedFor(const FName anActionMappingName);
 
 	FStateData generateCurrentStateDataToSend();
+
+	FMovementData retrieveCurrentMovementDataToSend();
+
+	void synchronizeMovementHistoryWith(FStateData aBunchOfStates);
+	void synchronizeMovementHistoryWith(FMovementData aMovementStructure);
 };
