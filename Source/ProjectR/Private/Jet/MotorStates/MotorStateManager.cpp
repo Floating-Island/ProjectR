@@ -8,6 +8,7 @@
 #include "Jet/MotorStates/AcceleratingMotorState.h"
 #include "Jet/MotorStates/ReversingMotorState.h"
 #include "Jet/MotorStates/MixedMotorState.h"
+#include "Jet/Jet.h"
 
 // Sets default values
 AMotorStateManager::AMotorStateManager()
@@ -22,14 +23,17 @@ AMotorStateManager::AMotorStateManager()
 void AMotorStateManager::BeginPlay()
 {
 	Super::BeginPlay();
+	owningJet = Cast<AJet, AActor>(GetOwner());
 }
 
-void AMotorStateManager::serverAccelerate_Implementation()
+void AMotorStateManager::serverAccelerateBasedOn_Implementation(FStateData aBunchOfStates)
 {
-	multicastAccelerate();
+	owningJet->synchronizeMovementHistoryWith(aBunchOfStates);
+	FMovementData updatedDataToSend = owningJet->retrieveCurrentMovementDataToSend();
+	multicastAccelerateWith(updatedDataToSend);
 }
 
-bool AMotorStateManager::serverAccelerate_Validate()
+bool AMotorStateManager::serverAccelerateBasedOn_Validate(FStateData aBunchOfStates)
 {
 	return true;
 }
@@ -65,9 +69,9 @@ bool AMotorStateManager::serverMix_Validate()
 }
 
 
-void AMotorStateManager::multicastAccelerate_Implementation()
+void AMotorStateManager::multicastAccelerateWith_Implementation(FMovementData aMovementStructure)
 {
-	updateStateTo<UAcceleratingMotorState>();
+	owningJet->synchronizeMovementHistoryWith(aMovementStructure);
 }
 
 void AMotorStateManager::multicastBrake_Implementation()
@@ -98,7 +102,8 @@ void AMotorStateManager::accelerate()
 		return;
 	}
 	updateStateTo<UAcceleratingMotorState>();
-	serverAccelerate();
+	FStateData localStates = owningJet->generateCurrentStateDataToSend();
+	serverAccelerateBasedOn(localStates);
 }
 
 void AMotorStateManager::brake()

@@ -7,7 +7,10 @@
 #include "Jet/MotorStates/MotorState.h"
 #include "MotorStateManager.generated.h"
 
+struct FMovementData;
+struct FStateData;
 class UMotorDriveComponent;
+class AJet;
 
 UCLASS()
 class PROJECTR_API AMotorStateManager : public AActor
@@ -24,10 +27,13 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY()
+	AJet* owningJet;
+	
+	UPROPERTY()
 		UMotorState* motorState;
 
 	UFUNCTION(Server, Reliable, WithValidation)
-		void serverAccelerate();
+		void serverAccelerateBasedOn(FStateData aBunchOfStates);
 
 	UFUNCTION(Server, Reliable, WithValidation)
 		void serverBrake();
@@ -39,7 +45,7 @@ protected:
 		void serverMix();
 
 	UFUNCTION(NetMulticast, Reliable)
-		void multicastAccelerate();
+		void multicastAccelerateWith(FMovementData aMovementStructure);
 
 	UFUNCTION(NetMulticast, Reliable)
 		void multicastBrake();
