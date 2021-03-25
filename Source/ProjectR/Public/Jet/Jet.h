@@ -104,6 +104,18 @@ struct FMovementData
 			FString("Angular velocity in radians: ") + angularVelocityInRadians.ToString()
 		;
 	}
+
+	/**copies everything from anotherMovement except the timestampedStates timestamp*/
+	void regenerateMoveFrom(FMovementData anotherMovement, EMovementType aNewMovementType)
+	{
+		location = anotherMovement.location;
+		rotation = anotherMovement.rotation;
+		linearVelocity = anotherMovement.linearVelocity;
+		angularVelocityInRadians = anotherMovement.angularVelocityInRadians;
+		timestampedStates.motorStateClass = anotherMovement.timestampedStates.motorStateClass;
+		timestampedStates.steerStateClass = anotherMovement.timestampedStates.steerStateClass;
+		type = aNewMovementType;
+	}
 };
 
 
@@ -167,6 +179,15 @@ protected:
 		int movementHistorySize;
 
 	void addToMovementHistory(FMovementData aMovement);
+
+	FMovementData createMovementHistoryRevisionWith(FMovementData aBaseMovement, FStateData aStatesBase);
+	FMovementData createMovementHistoryRevisionWith(FMovementData aBaseMovement, int64 aTimeDelta);
+
+	void reshapeHistoryFrom(int aMomentInHistory);
+
+	FMovementData simulateNextMovementFrom(FMovementData aPreviousMovement, float simulationDuration = 0);
+	
+	void asCurrentMovementSet(FMovementData anotherMovement);
 
 private:
 	bool generateSendOrReceiveMovementType;

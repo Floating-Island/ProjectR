@@ -77,24 +77,6 @@ void AJet::BeginPlay()
 	movementHistory = std::deque<FMovementData>(movementHistorySize, FMovementData());
 }
 
-void AJet::addMovementToHistory()
-{
-	if(IsValid(motorManager) && IsValid(steerManager))
-	{
-		addToMovementHistory(FMovementData(this, 
-			generateSendOrReceiveMovementType? EMovementType::sendOrReceive : EMovementType::routine, 
-			motorManager->stateClass(), 
-			steerManager->stateClass()));
-		generateSendOrReceiveMovementType = false;
-	}
-}
-
-void AJet::addToMovementHistory(FMovementData aMovement)
-{
-	movementHistory.push_front(aMovement);
-	movementHistory.pop_back();
-}
-
 void AJet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -352,6 +334,24 @@ bool AJet::keyIsPressedFor(const FName anActionMappingName)
 	return false;
 }
 
+void AJet::addMovementToHistory()
+{
+	if(IsValid(motorManager) && IsValid(steerManager))
+	{
+		addToMovementHistory(FMovementData(this, 
+			generateSendOrReceiveMovementType? EMovementType::sendOrReceive : EMovementType::routine, 
+			motorManager->stateClass(), 
+			steerManager->stateClass()));
+		generateSendOrReceiveMovementType = false;
+	}
+}
+
+void AJet::addToMovementHistory(FMovementData aMovement)
+{
+	movementHistory.push_front(aMovement);
+	movementHistory.pop_back();
+}
+
 FStateData AJet::generateCurrentStateDataToSend()
 {
 	FStateData currentStates = FStateData(motorManager->stateClass(), steerManager->stateClass());
@@ -366,6 +366,119 @@ FMovementData AJet::retrieveCurrentMovementDataToSend()
 	generateSendOrReceiveMovementType = true;
 	return FMovementData(this, EMovementType::sendOrReceive, motorManager->stateClass(), steerManager->stateClass());
 }
+
+FMovementData AJet::createMovementHistoryRevisionWith(FMovementData aBaseMovement, FStateData aStatesBase)
+{
+	aBaseMovement.timestampedStates.motorStateClass = aStatesBase.motorStateClass;
+	aBaseMovement.timestampedStates.steerStateClass = aStatesBase.steerStateClass;
+
+	FMovementData revisedMovement = FMovementData();
+
+	revisedMovement = simulateNextMovementFrom(aBaseMovement);//calculate next movement with these values...
+
+	return revisedMovement;
+}
+
+FMovementData AJet::createMovementHistoryRevisionWith(FMovementData aBaseMovement, int64 aTimeDelta)
+{
+	FMovementData revisedMovement = FMovementData();
+
+	revisedMovement = simulateNextMovementFrom(aBaseMovement, aTimeDelta);//calculate next movement with these values using the time delta instead of the tick delta time...
+
+	return revisedMovement;
+}
+
+void AJet::reshapeHistoryFrom(int aMomentInHistory)
+{
+	bool needsToChangeStates = true;
+
+	FMovementData finalMovement = FMovementData();
+	while(aMomentInHistory > 0)
+	{
+		FMovementData currentMovementInHistory = movementHistory[aMomentInHistory];
+		FMovementData nextMovementInHistory = movementHistory[aMomentInHistory - 1];
+		if(needsToChangeStates && nextMovementInHistory.type != EMovementType::sendOrReceive)
+		{
+			nextMovementInHistory.timestampedStates.motorStateClass = currentMovementInHistory.timestampedStates.motorStateClass;
+			nextMovementInHistory.timestampedStates.steerStateClass = currentMovementInHistory.timestampedStates.steerStateClass;
+		}
+		else //found the first movement in history that was already sent or received from the server...
+		{
+			needsToChangeStates = false;
+		}
+		FStateData nextMovementStates = nextMovementInHistory.timestampedStates;
+
+		FMovementData rewrittenNextMovement = FMovementData();
+
+		rewrittenNextMovement = simulateNextMovementFrom(currentMovementInHistory);//calculate rewritten next movement with these values... 
+
+		nextMovementInHistory.regenerateMoveFrom(rewrittenNextMovement, nextMovementInHistory.type);
+		nextMovementInHistory.timestampedStates = nextMovementStates;
+
+		--aMomentInHistory;
+		finalMovement = nextMovementInHistory;
+	}
+	asCurrentMovementSet(finalMovement);
+}
+
+FMovementData AJet::simulateNextMovementFrom(FMovementData aPreviousMovement, float simulationDuration)
+{
+	
+	asCurrentMovementSet(aPreviousMovement);
+	FVector sumOfLinearAccelerations = FVector(0);
+	FVector sumOfAngularAccelerations = FVector(0);
+	sumOfAngularAccelerations += antiGravitySystem->currentTotalAngularAccelerationMade();
+	sumOfAngularAccelerations += aPreviousMovement.timestampedStates.steerStateClass->ClassDefaultObject->angularAccelerationGeneratedTo(this);
+	sumOfLinearAccelerations += aPreviousMovement.timestampedStates.motorStateClass->ClassDefaultObject->linearAccelerationsGeneratedTo(this);
+	sumOfLinearAccelerations += retrieveTrackLinearAccelerations();
+
+	if(simulationDuration == 0)
+	{
+		simulationDuration = GetWorld()->GetDeltaSeconds();
+	}
+
+	FVector netForceApplied = sumOfLinearAccelerations * physicsMeshComponent->GetMass();
+	FVector netTorqueApplied = sumOfAngularAccelerations * physicsMeshComponent->GetMass();
+
+	PxVec3 linearVelocityDelta = PxVec3();
+	PxVec3 angularVelocityDelta = PxVec3();
+
+	PxRigidBody* body = FPhysicsInterface_PhysX::GetPxRigidBody_AssumesLocked(physicsMeshComponent->BodyInstance.GetPhysicsActorHandle());
+
+	PxRigidBodyExt::computeVelocityDeltaFromImpulse(*body, 
+		U2PVector(netForceApplied) * simulationDuration, 
+		U2PVector(netTorqueApplied) * simulationDuration, 
+		linearVelocityDelta, 
+		angularVelocityDelta
+	);
+
+	FMovementData simulatedMove = aPreviousMovement;
+
+	simulatedMove.linearVelocity += P2UVector(linearVelocityDelta);
+	
+	simulatedMove.location += simulatedMove.linearVelocity * simulationDuration;
+	
+	simulatedMove.angularVelocityInRadians += P2UVector(angularVelocityDelta); //FVector::DegreesToRadians ??
+	
+	simulatedMove.rotation =  (simulatedMove.rotation.Quaternion() * 
+		FQuat(simulatedMove.angularVelocityInRadians.GetSafeNormal(), 
+			simulatedMove.angularVelocityInRadians.Size())
+		).Rotator();//this is wrong, check
+
+	
+	return simulatedMove;
+}
+
+void AJet::asCurrentMovementSet(FMovementData anotherMovement)
+{
+	SetActorLocation(anotherMovement.location);
+	SetActorRotation(anotherMovement.rotation);
+	physicsMeshComponent->SetPhysicsAngularVelocityInRadians(anotherMovement.angularVelocityInRadians);
+	physicsMeshComponent->SetPhysicsLinearVelocity(anotherMovement.linearVelocity);
+	motorManager->overrideStateTo(anotherMovement.timestampedStates.motorStateClass, this);
+	steerManager->overrideStateTo(anotherMovement.timestampedStates.steerStateClass, this);
+}
+
 
 void AJet::synchronizeMovementHistoryWith(FStateData aBunchOfStates)
 {
@@ -382,6 +495,26 @@ void AJet::synchronizeMovementHistoryWith(FStateData aBunchOfStates)
 	//calculate the current movement using the current states and the movement of the previous move.
 	//set the current movement in the structure.
 	//advance to next movement.
+
+	int historyMoment = 0;
+	if(aBunchOfStates.timestamp < movementHistory[0].timestampedStates.timestamp)//check that the states don't come from the future...
+	{
+		while (historyMoment < movementHistory.size())
+		{
+			if(movementHistory[historyMoment].timestampedStates.timestamp <= aBunchOfStates.timestamp)//we found the moment previous to the received states...
+			{
+				break;
+			}
+			++historyMoment;
+		}
+	}
+	if(historyMoment != movementHistory.size())
+	{
+		FMovementData historyRevisionStart = createMovementHistoryRevisionWith(movementHistory[historyMoment], aBunchOfStates);
+		++historyMoment;//advance to next moment...
+		movementHistory[historyMoment].regenerateMoveFrom(historyRevisionStart, historyRevisionStart.type);
+		reshapeHistoryFrom(historyMoment);//chain reaction of history rewrite
+	}
 }
 
 void AJet::synchronizeMovementHistoryWith(FMovementData aMovementStructure)
@@ -399,6 +532,28 @@ void AJet::synchronizeMovementHistoryWith(FMovementData aMovementStructure)
 	//calculate the current movement using the current states and the movement of the previous move.
 	//set the current movement in the structure.
 	//advance to next movement.
+
+	int historyMoment = 0;
+	if(aMovementStructure.timestampedStates.timestamp < movementHistory[0].timestampedStates.timestamp)//check that the movement don't come from the future...
+	{
+		while (historyMoment < movementHistory.size())
+		{
+			if(movementHistory[historyMoment].timestampedStates.timestamp <= aMovementStructure.timestampedStates.timestamp)//we found the moment previous to the received movement...
+			{
+				break;
+			}
+			++historyMoment;
+		}
+	}
+	if(historyMoment != movementHistory.size())
+	{
+		++historyMoment;//advance to next moment...
+		int64 timeBetweenMovements = movementHistory[historyMoment].timestampedStates.timestamp - aMovementStructure.timestampedStates.timestamp;
+		FMovementData historyRevisionStart = createMovementHistoryRevisionWith(aMovementStructure, timeBetweenMovements);
+		movementHistory[historyMoment].regenerateMoveFrom(historyRevisionStart, historyRevisionStart.type);
+		reshapeHistoryFrom(historyMoment);//chain reaction of history rewrite
+	}
+	
 }
 
 void AJet::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
