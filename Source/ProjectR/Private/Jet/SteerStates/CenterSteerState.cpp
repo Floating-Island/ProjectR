@@ -7,3 +7,8 @@ void UCenterSteerState::activate(USteeringComponent* aSteeringComponent)
 {
 	
 }
+
+FVector UCenterSteerState::angularAccelerationGeneratedTo(AJet* aJet)
+{
+	return FVector(0);
+}

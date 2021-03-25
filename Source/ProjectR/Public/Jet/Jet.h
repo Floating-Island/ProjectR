@@ -220,6 +220,7 @@ public:
 	float steerRadius();
 	void steerRight();
 	void steerLeft();
+	void InReverseInverts(float& aDirection);
 	void centerSteer();
 
 	float antiGravityHeight();

@@ -15,5 +15,6 @@ class PROJECTR_API UCenterSteerState : public USteerState
 	GENERATED_BODY()
 
 public:
-	virtual void activate(USteeringComponent* aSteeringComponent) override;	
+	virtual void activate(USteeringComponent* aSteeringComponent) override;
+	virtual FVector angularAccelerationGeneratedTo(AJet* aJet) override;
 };

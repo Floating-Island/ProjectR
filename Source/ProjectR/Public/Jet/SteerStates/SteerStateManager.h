@@ -25,6 +25,9 @@ protected:
 	UPROPERTY()
 		USteerState* steerState;
 
+	UPROPERTY()
+		AJet* owningJet;
+
 	template<class aSteerStateType>
 	bool steerStateIsOfType();
 
@@ -58,6 +61,7 @@ public:
 	void activate(USteeringComponent* aSteeringDrive);
 
 	UClass* stateClass();
+	void overrideStateTo(UClass* anotherState, AJet* owner);
 };
 
 template <class aSteerStateType>

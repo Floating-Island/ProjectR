@@ -229,6 +229,14 @@ void AJet::steerLeft()
 	}
 }
 
+void AJet::InReverseInverts(float& aDirection)
+{
+	if (goesBackwards())
+	{
+		aDirection = -aDirection;//invert direction
+	}
+}
+
 void AJet::centerSteer()
 {
 	if(IsValid(steerManager))
@@ -415,6 +423,8 @@ void AJet::reshapeHistoryFrom(int aMomentInHistory)
 		nextMovementInHistory.regenerateMoveFrom(rewrittenNextMovement, nextMovementInHistory.type);
 		nextMovementInHistory.timestampedStates = nextMovementStates;
 
+		//align velocity!!!
+		
 		--aMomentInHistory;
 		finalMovement = nextMovementInHistory;
 	}
@@ -425,12 +435,14 @@ FMovementData AJet::simulateNextMovementFrom(FMovementData aPreviousMovement, fl
 {
 	
 	asCurrentMovementSet(aPreviousMovement);
-	FVector sumOfLinearAccelerations = FVector(0);
+
 	FVector sumOfAngularAccelerations = FVector(0);
 	sumOfAngularAccelerations += antiGravitySystem->currentTotalAngularAccelerationMade();
 	sumOfAngularAccelerations += aPreviousMovement.timestampedStates.steerStateClass->ClassDefaultObject->angularAccelerationGeneratedTo(this);
+
+	FVector sumOfLinearAccelerations = FVector(0);
 	sumOfLinearAccelerations += Cast<UMotorState, UObject>(aPreviousMovement.timestampedStates.motorStateClass->ClassDefaultObject)->linearAccelerationsGeneratedTo(this);
-	sumOfLinearAccelerations += retrieveTrackLinearAccelerations();
+	sumOfLinearAccelerations += retrieveTrackMagnetizationLinearAcceleration();
 
 	if(simulationDuration == 0)
 	{

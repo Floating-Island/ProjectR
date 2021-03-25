@@ -20,6 +20,7 @@ ASteerStateManager::ASteerStateManager()
 void ASteerStateManager::BeginPlay()
 {
 	Super::BeginPlay();
+	owningJet = Cast<AJet, AActor>(GetOwner());
 }
 
 void ASteerStateManager::serverSteerLeft_Implementation()
@@ -118,4 +119,13 @@ UClass* ASteerStateManager::stateClass()
 		return steerState->GetClass();
 	}
 	return nullptr;
+}
+
+void ASteerStateManager::overrideStateTo(UClass* anotherState, AJet* owner)
+{
+	if(owningJet == owner)
+	{
+		steerState = nullptr;
+		steerState = NewObject<USteerState>(this, anotherState, anotherState->GetFName());
+	}
 }
