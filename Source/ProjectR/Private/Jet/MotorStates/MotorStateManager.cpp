@@ -8,7 +8,6 @@
 #include "Jet/MotorStates/AcceleratingMotorState.h"
 #include "Jet/MotorStates/ReversingMotorState.h"
 #include "Jet/MotorStates/MixedMotorState.h"
-#include "Jet/Jet.h"
 
 // Sets default values
 AMotorStateManager::AMotorStateManager()

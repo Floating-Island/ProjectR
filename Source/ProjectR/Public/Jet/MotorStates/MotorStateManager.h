@@ -5,12 +5,10 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Jet/MotorStates/MotorState.h"
+#include "Jet/Jet.h"
 #include "MotorStateManager.generated.h"
 
-struct FMovementData;
-struct FStateData;
 class UMotorDriveComponent;
-class AJet;
 
 UCLASS()
 class PROJECTR_API AMotorStateManager : public AActor
