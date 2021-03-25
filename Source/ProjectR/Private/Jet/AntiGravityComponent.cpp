@@ -70,3 +70,37 @@ void UAntiGravityComponent::antiGravityLifting()
 	}
 }
 
+FVector UAntiGravityComponent::currentTotalAngularAccelerationMade()
+{
+	TArray<FName> vertexSockets = ownerPrimitiveComponent->GetAllSocketNames();
+	TArray<FVector> socketLocations = TArray<FVector>();
+	for (const auto& socket : vertexSockets)
+	{
+		if (!socket.IsEqual(FName("BackSteeringPoint")) && !socket.IsEqual(FName("FrontSteeringPoint")))
+		{
+			socketLocations.Add(ownerPrimitiveComponent->GetSocketLocation(socket));
+		}
+	}
+	FVector ownerLowerBound = owner->GetActorLocation();//should take consideration the actor bounds...
+	FVector antiGravityExtensionLimit = ownerLowerBound - owner->GetActorUpVector() * triggerHeight();//should use the up vector of the actor and extend it downwards. (if its sideways, current implementation doesn't work).
+	FHitResult obstacle;
+	FCollisionQueryParams collisionParameters;
+	collisionParameters.AddIgnoredActor(owner);
+	collisionParameters.bTraceComplex = false;
+	collisionParameters.bReturnPhysicalMaterial = false;
+
+	FVector totalAngularAcceleration = FVector(0);
+	for (const auto& socketLocation : socketLocations)
+	{
+		bool inAntiGravityRange = owner->GetWorld()->LineTraceSingleByChannel(obstacle, socketLocation, antiGravityExtensionLimit, ECollisionChannel::ECC_Visibility, collisionParameters);
+
+		if (inAntiGravityRange)
+		{
+			float antiGravityIntensity = obstacle.Distance / levitationHeight;
+			float effectiveAntiGravityForceValue = FMath::Lerp(antiGravityForceValue, 0.0f, antiGravityIntensity);
+			FVector socketAngularAcceleration = effectiveAntiGravityForceValue * obstacle.ImpactNormal;
+			totalAngularAcceleration += FVector::CrossProduct(socketLocation, socketAngularAcceleration);
+		}
+	}
+	return totalAngularAcceleration;
+}
