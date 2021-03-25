@@ -1667,10 +1667,10 @@ bool FServerAndClientCheckSameMovementsStoredAcceleration::Update()
 					{
 						UE_LOG(LogTemp, Log, TEXT("index: %s"), *FString::FromInt(index));
 
-						UClass* clientSteerStateClass = clientHistory[index].steerStateClass;
-						UClass* clientMotorStateClass = clientHistory[index].motorStateClass;
-						UClass* serverSteerStateClass = serverHistory[index].steerStateClass;
-						UClass* serverMotorStateClass = serverHistory[index].motorStateClass;
+						UClass* clientSteerStateClass = clientHistory[index].timestampedStates.steerStateClass;
+						UClass* clientMotorStateClass = clientHistory[index].timestampedStates.motorStateClass;
+						UClass* serverSteerStateClass = serverHistory[index].timestampedStates.steerStateClass;
+						UClass* serverMotorStateClass = serverHistory[index].timestampedStates.motorStateClass;
 
 						UE_LOG(LogTemp, Log, TEXT("Client: \n"));
 						UE_LOG(LogTemp, Log, TEXT("%s"), *clientHistory[index].ToString());
@@ -1748,10 +1748,10 @@ bool FServerAndClientCheckSameMovementsStoredBraking::Update()
 					{
 						UE_LOG(LogTemp, Log, TEXT("index: %s"), *FString::FromInt(index));
 
-						UClass* clientSteerStateClass = clientHistory[index].steerStateClass;
-						UClass* clientMotorStateClass = clientHistory[index].motorStateClass;
-						UClass* serverSteerStateClass = serverHistory[index].steerStateClass;
-						UClass* serverMotorStateClass = serverHistory[index].motorStateClass;
+						UClass* clientSteerStateClass = clientHistory[index].timestampedStates.steerStateClass;
+						UClass* clientMotorStateClass = clientHistory[index].timestampedStates.motorStateClass;
+						UClass* serverSteerStateClass = serverHistory[index].timestampedStates.steerStateClass;
+						UClass* serverMotorStateClass = serverHistory[index].timestampedStates.motorStateClass;
 
 						UE_LOG(LogTemp, Log, TEXT("Client: \n"));
 						UE_LOG(LogTemp, Log, TEXT("%s"), *clientHistory[index].ToString());
@@ -1829,10 +1829,10 @@ bool FServerAndClientCheckSameMovementsStoredNeutralize::Update()
 					{
 						UE_LOG(LogTemp, Log, TEXT("index: %s"), *FString::FromInt(index));
 
-						UClass* clientSteerStateClass = clientHistory[index].steerStateClass;
-						UClass* clientMotorStateClass = clientHistory[index].motorStateClass;
-						UClass* serverSteerStateClass = serverHistory[index].steerStateClass;
-						UClass* serverMotorStateClass = serverHistory[index].motorStateClass;
+						UClass* clientSteerStateClass = clientHistory[index].timestampedStates.steerStateClass;
+						UClass* clientMotorStateClass = clientHistory[index].timestampedStates.motorStateClass;
+						UClass* serverSteerStateClass = serverHistory[index].timestampedStates.steerStateClass;
+						UClass* serverMotorStateClass = serverHistory[index].timestampedStates.motorStateClass;
 
 						UE_LOG(LogTemp, Log, TEXT("Client: \n"));
 						UE_LOG(LogTemp, Log, TEXT("%s"), *clientHistory[index].ToString());
@@ -1910,10 +1910,10 @@ bool FServerAndClientCheckSameMovementsStoredSteerLeft::Update()
 					{
 						UE_LOG(LogTemp, Log, TEXT("index: %s"), *FString::FromInt(index));
 
-						UClass* clientSteerStateClass = clientHistory[index].steerStateClass;
-						UClass* clientMotorStateClass = clientHistory[index].motorStateClass;
-						UClass* serverSteerStateClass = serverHistory[index].steerStateClass;
-						UClass* serverMotorStateClass = serverHistory[index].motorStateClass;
+						UClass* clientSteerStateClass = clientHistory[index].timestampedStates.steerStateClass;
+						UClass* clientMotorStateClass = clientHistory[index].timestampedStates.motorStateClass;
+						UClass* serverSteerStateClass = serverHistory[index].timestampedStates.steerStateClass;
+						UClass* serverMotorStateClass = serverHistory[index].timestampedStates.motorStateClass;
 
 						UE_LOG(LogTemp, Log, TEXT("Client: \n"));
 						UE_LOG(LogTemp, Log, TEXT("%s"), *clientHistory[index].ToString());
@@ -1991,10 +1991,10 @@ bool FServerAndClientCheckSameMovementsStoredSteerRight::Update()
 					{
 						UE_LOG(LogTemp, Log, TEXT("index: %s"), *FString::FromInt(index));
 
-						UClass* clientSteerStateClass = clientHistory[index].steerStateClass;
-						UClass* clientMotorStateClass = clientHistory[index].motorStateClass;
-						UClass* serverSteerStateClass = serverHistory[index].steerStateClass;
-						UClass* serverMotorStateClass = serverHistory[index].motorStateClass;
+						UClass* clientSteerStateClass = clientHistory[index].timestampedStates.steerStateClass;
+						UClass* clientMotorStateClass = clientHistory[index].timestampedStates.motorStateClass;
+						UClass* serverSteerStateClass = serverHistory[index].timestampedStates.steerStateClass;
+						UClass* serverMotorStateClass = serverHistory[index].timestampedStates.motorStateClass;
 
 						UE_LOG(LogTemp, Log, TEXT("Client: \n"));
 						UE_LOG(LogTemp, Log, TEXT("%s"), *clientHistory[index].ToString());
@@ -2073,10 +2073,10 @@ bool FServerAndClientCheckSameMovementsStoredCenterSteer::Update()
 					{
 						UE_LOG(LogTemp, Log, TEXT("index: %s"), *FString::FromInt(index));
 
-						UClass* clientSteerStateClass = clientHistory[index].steerStateClass;
-						UClass* clientMotorStateClass = clientHistory[index].motorStateClass;
-						UClass* serverSteerStateClass = serverHistory[index].steerStateClass;
-						UClass* serverMotorStateClass = serverHistory[index].motorStateClass;
+						UClass* clientSteerStateClass = clientHistory[index].timestampedStates.steerStateClass;
+						UClass* clientMotorStateClass = clientHistory[index].timestampedStates.motorStateClass;
+						UClass* serverSteerStateClass = serverHistory[index].timestampedStates.steerStateClass;
+						UClass* serverMotorStateClass = serverHistory[index].timestampedStates.motorStateClass;
 
 						UE_LOG(LogTemp, Log, TEXT("Client: \n"));
 						UE_LOG(LogTemp, Log, TEXT("%s"), *clientHistory[index].ToString());
