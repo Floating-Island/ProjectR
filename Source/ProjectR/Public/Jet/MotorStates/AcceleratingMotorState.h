@@ -16,4 +16,5 @@ class PROJECTR_API UAcceleratingMotorState : public UMotorState
 
 public:
 	virtual void activate(UMotorDriveComponent* aMotorDriveComponent) override;
+	virtual FVector linearAccelerationsGeneratedTo(AJet* aJet);
 };

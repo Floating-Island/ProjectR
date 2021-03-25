@@ -7,3 +7,8 @@ void UNeutralMotorState::activate(UMotorDriveComponent* aMotorDriveComponent)
 {
 	//it's neutral so it doesn't do anything.
 }
+
+FVector UNeutralMotorState::linearAccelerationsGeneratedTo(AJet* aJet)
+{
+	return FVector(0);
+}

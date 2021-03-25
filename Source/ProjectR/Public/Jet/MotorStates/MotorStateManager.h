@@ -74,6 +74,8 @@ public:
 
 	void activate(UMotorDriveComponent* aMotorDrive);
 	UClass* stateClass();
+
+	void overrideStateTo(UClass* anotherState, AJet* owner);
 };
 
 template <class aMotorStateType>

@@ -429,7 +429,7 @@ FMovementData AJet::simulateNextMovementFrom(FMovementData aPreviousMovement, fl
 	FVector sumOfAngularAccelerations = FVector(0);
 	sumOfAngularAccelerations += antiGravitySystem->currentTotalAngularAccelerationMade();
 	sumOfAngularAccelerations += aPreviousMovement.timestampedStates.steerStateClass->ClassDefaultObject->angularAccelerationGeneratedTo(this);
-	sumOfLinearAccelerations += aPreviousMovement.timestampedStates.motorStateClass->ClassDefaultObject->linearAccelerationsGeneratedTo(this);
+	sumOfLinearAccelerations += Cast<UMotorState, UObject>(aPreviousMovement.timestampedStates.motorStateClass->ClassDefaultObject)->linearAccelerationsGeneratedTo(this);
 	sumOfLinearAccelerations += retrieveTrackLinearAccelerations();
 
 	if(simulationDuration == 0)

@@ -152,3 +152,12 @@ UClass* AMotorStateManager::stateClass()
 	}
 	return nullptr;
 }
+
+void AMotorStateManager::overrideStateTo(UClass* anotherState, AJet* owner)
+{
+	if(owningJet == owner)
+	{
+		motorState = nullptr;
+		motorState = NewObject<UMotorState>(this, anotherState, anotherState->GetFName());
+	}
+}
