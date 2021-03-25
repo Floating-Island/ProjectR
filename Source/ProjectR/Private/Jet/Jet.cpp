@@ -17,6 +17,12 @@
 #include "GameFramework/PlayerInput.h"
 #include "GameFramework/PlayerController.h"
 
+#include "extensions/PxRigidBodyExt.h"
+#include "PhysXPublic.h"
+#include "Track/TrackManager.h"
+#include "Kismet/GameplayStatics.h"
+
+
 
 
 AJet::AJet()
@@ -342,6 +348,9 @@ bool AJet::keyIsPressedFor(const FName anActionMappingName)
 	return false;
 }
 
+
+
+
 void AJet::addMovementToHistory()
 {
 	if(IsValid(motorManager) && IsValid(steerManager))
@@ -438,7 +447,7 @@ FMovementData AJet::simulateNextMovementFrom(FMovementData aPreviousMovement, fl
 
 	FVector sumOfAngularAccelerations = FVector(0);
 	sumOfAngularAccelerations += antiGravitySystem->currentTotalAngularAccelerationMade();
-	sumOfAngularAccelerations += aPreviousMovement.timestampedStates.steerStateClass->ClassDefaultObject->angularAccelerationGeneratedTo(this);
+	sumOfAngularAccelerations += Cast<USteerState, UObject>(aPreviousMovement.timestampedStates.steerStateClass->ClassDefaultObject)->angularAccelerationGeneratedTo(this);
 
 	FVector sumOfLinearAccelerations = FVector(0);
 	sumOfLinearAccelerations += Cast<UMotorState, UObject>(aPreviousMovement.timestampedStates.motorStateClass->ClassDefaultObject)->linearAccelerationsGeneratedTo(this);
@@ -471,7 +480,8 @@ FMovementData AJet::simulateNextMovementFrom(FMovementData aPreviousMovement, fl
 	simulatedMove.location += simulatedMove.linearVelocity * simulationDuration;
 	
 	simulatedMove.angularVelocityInRadians += P2UVector(angularVelocityDelta); //FVector::DegreesToRadians ??
-	
+
+	//fix rotation!!!
 	simulatedMove.rotation =  (simulatedMove.rotation.Quaternion() * 
 		FQuat(simulatedMove.angularVelocityInRadians.GetSafeNormal(), 
 			simulatedMove.angularVelocityInRadians.Size())
@@ -479,6 +489,16 @@ FMovementData AJet::simulateNextMovementFrom(FMovementData aPreviousMovement, fl
 
 	
 	return simulatedMove;
+}
+
+FVector AJet::retrieveTrackMagnetizationLinearAcceleration()
+{
+	ATrackManager* trackManager = Cast<ATrackManager, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ATrackManager::StaticClass()));
+	if(trackManager == nullptr)
+	{
+		return FVector(0, 0, - FMath::Abs(GetWorld()->GetGravityZ()));
+	}
+	return trackManager->pullingAccelerationTo(this);
 }
 
 void AJet::asCurrentMovementSet(FMovementData anotherMovement)
@@ -567,6 +587,10 @@ void AJet::synchronizeMovementHistoryWith(FMovementData aMovementStructure)
 	}
 	
 }
+
+
+
+
 
 void AJet::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
 {

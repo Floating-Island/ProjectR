@@ -186,6 +186,8 @@ protected:
 	void reshapeHistoryFrom(int aMomentInHistory);
 
 	FMovementData simulateNextMovementFrom(FMovementData aPreviousMovement, float simulationDuration = 0);
+
+	FVector retrieveTrackMagnetizationLinearAcceleration();
 	
 	void asCurrentMovementSet(FMovementData anotherMovement);
 
