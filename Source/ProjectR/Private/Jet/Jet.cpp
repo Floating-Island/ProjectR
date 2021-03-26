@@ -61,7 +61,7 @@ AJet::AJet()
 	motorDriveSystem = CreateDefaultSubobject<UMotorDriveComponent>(TEXT("Motor Drive System"));
 
 	SetReplicates(true);
-	SetReplicateMovement(true);
+	SetReplicateMovement(false);//change test
 	motorManager = nullptr;
 	steerManager = nullptr;
 
@@ -560,13 +560,16 @@ FMovementData AJet::simulateNextMovementFrom(FMovementData aPreviousMovement, fl
 	
 	simulatedMove.location += simulatedMove.linearVelocity * simulationDuration;
 	
-	simulatedMove.angularVelocityInRadians += P2UVector(angularVelocityDelta); //FVector::DegreesToRadians ??
+	simulatedMove.angularVelocityInRadians += FVector::DegreesToRadians(P2UVector(angularVelocityDelta)); //FVector::DegreesToRadians ??
 
+	
 	//fix rotation!!!
-	simulatedMove.rotation =  (simulatedMove.rotation.Quaternion() * 
-		FQuat(simulatedMove.angularVelocityInRadians.GetSafeNormal() * simulationDuration, 
-			simulatedMove.angularVelocityInRadians.Size() * simulationDuration)
-		).Rotator();//this is wrong, check
+
+	FVector angularRotation = simulatedMove.angularVelocityInRadians * simulationDuration;
+	
+	FQuat angularVelocityQuaternion = FQuat(angularRotation.GetSafeNormal(), angularRotation.Size());
+
+	simulatedMove.rotation =  ( angularVelocityQuaternion * simulatedMove.rotation.Quaternion() ).Rotator();//this is wrong, check
 
 	
 	return simulatedMove;
