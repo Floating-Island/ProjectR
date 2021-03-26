@@ -419,7 +419,7 @@ void AJet::synchronizeMovementHistoryWith(FStateData aBunchOfStates)
 		if(historyMoment >=0)
 		{
 			movementHistory[historyMoment].regenerateMoveFrom(historyRevisionStart, historyRevisionStart.type);
-		reshapeHistoryFrom(historyMoment);//chain reaction of history rewrite
+			reshapeHistoryFrom(historyMoment);//chain reaction of history rewrite
 		}
 	}
 }
@@ -458,9 +458,9 @@ void AJet::synchronizeMovementHistoryWith(FMovementData aMovementStructure)
 		if(historyMoment >=0)
 		{
 			float timeBetweenMovements = (movementHistory[historyMoment].timestampedStates.timestamp - aMovementStructure.timestampedStates.timestamp) / 1000.0f;
-		FMovementData historyRevisionStart = createMovementHistoryRevisionWith(aMovementStructure, timeBetweenMovements);
-		movementHistory[historyMoment].regenerateMoveFrom(historyRevisionStart, historyRevisionStart.type);
-		reshapeHistoryFrom(historyMoment);//chain reaction of history rewrite
+			FMovementData historyRevisionStart = createMovementHistoryRevisionWith(aMovementStructure, timeBetweenMovements);
+			movementHistory[historyMoment].regenerateMoveFrom(historyRevisionStart, historyRevisionStart.type);
+			reshapeHistoryFrom(historyMoment);//chain reaction of history rewrite
 		}
 	}	
 }
@@ -513,7 +513,7 @@ void AJet::reshapeHistoryFrom(int aMomentInHistory)
 		nextMovementInHistory.regenerateMoveFrom(rewrittenNextMovement, nextMovementInHistory.type);
 		nextMovementInHistory.timestampedStates = nextMovementStates;
 
-		//align velocity!!!
+		//align velocity!!! only if left or right steering == not center steering...
 		
 		--aMomentInHistory;
 		finalMovement = nextMovementInHistory;
