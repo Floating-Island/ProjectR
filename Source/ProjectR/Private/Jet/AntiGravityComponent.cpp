@@ -99,7 +99,7 @@ FVector UAntiGravityComponent::currentTotalAngularAccelerationMade()
 			float antiGravityIntensity = obstacle.Distance / levitationHeight;
 			float effectiveAntiGravityForceValue = FMath::Lerp(antiGravityForceValue, 0.0f, antiGravityIntensity);
 			FVector socketAngularAcceleration = effectiveAntiGravityForceValue * obstacle.ImpactNormal;
-			totalAngularAcceleration += FVector::CrossProduct(socketLocation, socketAngularAcceleration);
+			totalAngularAcceleration += FVector::CrossProduct(socketLocation - ownerPrimitiveComponent->GetComponentLocation(), socketAngularAcceleration);
 		}
 	}
 	return totalAngularAcceleration;
