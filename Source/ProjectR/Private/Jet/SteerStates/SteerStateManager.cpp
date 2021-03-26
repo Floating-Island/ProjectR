@@ -16,92 +16,18 @@ ASteerStateManager::ASteerStateManager()
 	bAlwaysRelevant = true;
 }
 
-// Called when the game starts or when spawned
-void ASteerStateManager::BeginPlay()
-{
-	Super::BeginPlay();
-	owningJet = Cast<AJet, AActor>(GetOwner());
-}
-
-void ASteerStateManager::serverSteerLeft_Implementation()
-{
-	multicastSteerLeft();
-}
-
-bool ASteerStateManager::serverSteerLeft_Validate()
-{
-	return true;
-}
-
-void ASteerStateManager::serverSteerRight_Implementation()
-{
-	multicastSteerRight();
-}
-
-bool ASteerStateManager::serverSteerRight_Validate()
-{
-	return true;
-}
-
-void ASteerStateManager::serverCenter_Implementation()
-{
-	multicastCenter();
-}
-
-bool ASteerStateManager::serverCenter_Validate()
-{
-	return true;
-}
-
-void ASteerStateManager::multicastSteerLeft_Implementation()
-{
-	updateStateTo<ULeftSteerState>();
-}
-
-void ASteerStateManager::multicastSteerRight_Implementation()
-{
-	updateStateTo<URightSteerState>();
-}
-
-void ASteerStateManager::multicastCenter_Implementation()
-{
-	updateStateTo<UCenterSteerState>();
-}
-
 void ASteerStateManager::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 	updateStateTo<UCenterSteerState>();
 }
 
-void ASteerStateManager::steerLeft()
+// Called when the game starts or when spawned
+void ASteerStateManager::BeginPlay()
 {
-	if(IsValid(steerState) && steerStateIsOfType<ULeftSteerState>())
-	{
-		return;
-	}
-	updateStateTo<ULeftSteerState>();
-	serverSteerLeft();
-}
+	Super::BeginPlay();
+	owningJet = Cast<AJet, AActor>(GetOwner());
 
-void ASteerStateManager::steerRight()
-{
-	if(IsValid(steerState) && steerStateIsOfType<URightSteerState>())
-	{
-		return;
-	}
-	updateStateTo<URightSteerState>();
-	serverSteerRight();
-}
-
-void ASteerStateManager::center()
-{
-	if(IsValid(steerState) && steerStateIsOfType<UCenterSteerState>())
-	{
-		return;
-	}
-	updateStateTo<UCenterSteerState>();
-	serverCenter();
 }
 
 void ASteerStateManager::activate(USteeringComponent* aSteeringDrive)
@@ -128,4 +54,40 @@ void ASteerStateManager::overrideStateTo(UClass* anotherState, AJet* owner)
 		steerState = nullptr;
 		steerState = NewObject<USteerState>(this, anotherState, anotherState->GetFName());
 	}
+}
+
+void ASteerStateManager::steerLeft()
+{
+	makeSteerStateBe<ULeftSteerState>();
+}
+
+void ASteerStateManager::center()
+{
+	makeSteerStateBe<UCenterSteerState>();
+}
+
+void ASteerStateManager::steerRight()
+{
+	makeSteerStateBe<URightSteerState>();
+}
+
+void ASteerStateManager::serverUpdateMovementBasedOn_Implementation(FStateData aBunchOfStates)
+{
+	multicastSynchronizeMovementWith(updatedDataSynchronizedWith(aBunchOfStates));
+}
+
+bool ASteerStateManager::serverUpdateMovementBasedOn_Validate(FStateData aBunchOfStates)
+{
+	return true;
+}
+
+void ASteerStateManager::multicastSynchronizeMovementWith_Implementation(FMovementData aMovementStructure)
+{
+	owningJet->synchronizeMovementHistoryWith(aMovementStructure);
+}
+
+FMovementData ASteerStateManager::updatedDataSynchronizedWith(FStateData aBunchOfStates)
+{
+	owningJet->synchronizeMovementHistoryWith(aBunchOfStates);
+	return owningJet->retrieveCurrentMovementDataToSend();
 }

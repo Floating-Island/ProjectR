@@ -23,44 +23,28 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	FMovementData updatedDataSynchronizedWith(FStateData aBunchOfStates);
 
 	UPROPERTY()
-	AJet* owningJet;
+		AJet* owningJet;
 	
 	UPROPERTY()
 		UMotorState* motorState;
 
 	UFUNCTION(Server, Reliable, WithValidation)
-		void serverAccelerateBasedOn(FStateData aBunchOfStates);
-
-	UFUNCTION(Server, Reliable, WithValidation)
-		void serverBrake();
-
-	UFUNCTION(Server, Reliable, WithValidation)
-		void serverNeutralize();
-
-	UFUNCTION(Server, Reliable, WithValidation)
-		void serverMix();
+		void serverUpdateMovementBasedOn(FStateData aBunchOfStates);
 
 	UFUNCTION(NetMulticast, Reliable)
-		void multicastAccelerateWith(FMovementData aMovementStructure);
-
-	UFUNCTION(NetMulticast, Reliable)
-		void multicastBrake();
-
-	UFUNCTION(NetMulticast, Reliable)
-		void multicastNeutralize();
-
-	UFUNCTION(NetMulticast, Reliable)
-		void multicastMix();
-
-	
+		void multicastSynchronizeMovementWith(FMovementData aMovementStructure);
 	
 	template<class aMotorStateType>
 	void updateStateTo();
 
 	template<class aMotorStateType>
 	bool motorStateIsOfType();
+
+	template<class aMotorStateType>
+	void makeMotorStateBe();
 	
 public:
 	virtual void PostInitializeComponents() override;
@@ -72,7 +56,6 @@ public:
 
 	void activate(UMotorDriveComponent* aMotorDrive);
 	UClass* stateClass();
-
 	void overrideStateTo(UClass* anotherState, AJet* owner);
 };
 
@@ -92,4 +75,16 @@ template <class aMotorStateType>
 bool AMotorStateManager::motorStateIsOfType()
 {
 	return motorState->IsA(aMotorStateType::StaticClass()) ? true : false;
+}
+
+template <class aMotorStateType>
+void AMotorStateManager::makeMotorStateBe()
+{
+	if (IsValid(motorState) && motorStateIsOfType<aMotorStateType>())
+	{
+		return;
+	}
+	updateStateTo<aMotorStateType>();
+	FStateData localStates = owningJet->generateCurrentStateDataToSend();
+	serverUpdateMovementBasedOn(localStates);
 }

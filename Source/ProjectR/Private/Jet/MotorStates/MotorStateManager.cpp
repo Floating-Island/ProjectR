@@ -18,121 +18,17 @@ AMotorStateManager::AMotorStateManager()
 	motorState = nullptr;
 }
 
-// Called when the game starts or when spawned
-void AMotorStateManager::BeginPlay()
-{
-	Super::BeginPlay();
-	owningJet = Cast<AJet, AActor>(GetOwner());
-}
-
-void AMotorStateManager::serverAccelerateBasedOn_Implementation(FStateData aBunchOfStates)
-{
-	owningJet->synchronizeMovementHistoryWith(aBunchOfStates);
-	FMovementData updatedDataToSend = owningJet->retrieveCurrentMovementDataToSend();
-	multicastAccelerateWith(updatedDataToSend);
-}
-
-bool AMotorStateManager::serverAccelerateBasedOn_Validate(FStateData aBunchOfStates)
-{
-	return true;
-}
-
-void AMotorStateManager::serverBrake_Implementation()
-{
-	multicastBrake();
-}
-
-bool AMotorStateManager::serverBrake_Validate()
-{
-	return true;
-}
-
-void AMotorStateManager::serverNeutralize_Implementation()
-{
-	multicastNeutralize();
-}
-
-bool AMotorStateManager::serverNeutralize_Validate()
-{
-	return true;
-}
-
-void AMotorStateManager::serverMix_Implementation()
-{
-	multicastMix();
-}
-
-bool AMotorStateManager::serverMix_Validate()
-{
-	return true;
-}
-
-
-void AMotorStateManager::multicastAccelerateWith_Implementation(FMovementData aMovementStructure)
-{
-	owningJet->synchronizeMovementHistoryWith(aMovementStructure);
-}
-
-void AMotorStateManager::multicastBrake_Implementation()
-{
-	updateStateTo<UReversingMotorState>();
-}
-
-void AMotorStateManager::multicastNeutralize_Implementation()
-{
-	updateStateTo<UNeutralMotorState>();
-}
-
-void AMotorStateManager::multicastMix_Implementation()
-{
-	updateStateTo<UMixedMotorState>();
-}
-
 void AMotorStateManager::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 	updateStateTo<UNeutralMotorState>();
 }
 
-void AMotorStateManager::accelerate()
+// Called when the game starts or when spawned
+void AMotorStateManager::BeginPlay()
 {
-	if (IsValid(motorState) && motorStateIsOfType<UAcceleratingMotorState>())
-	{
-		return;
-	}
-	updateStateTo<UAcceleratingMotorState>();
-	FStateData localStates = owningJet->generateCurrentStateDataToSend();
-	serverAccelerateBasedOn(localStates);
-}
-
-void AMotorStateManager::brake()
-{
-	if (IsValid(motorState) && motorStateIsOfType<UReversingMotorState>())
-	{
-		return;
-	}
-	updateStateTo<UReversingMotorState>();
-	serverBrake();
-}
-
-void AMotorStateManager::neutralize()
-{
-	if (IsValid(motorState) && motorStateIsOfType<UNeutralMotorState>())
-	{
-		return;
-	}
-	updateStateTo<UNeutralMotorState>();
-	serverNeutralize();
-}
-
-void AMotorStateManager::mix()
-{
-	if (IsValid(motorState) && motorStateIsOfType<UMixedMotorState>())
-	{
-		return;
-	}
-	updateStateTo<UMixedMotorState>();
-	serverMix();
+	Super::BeginPlay();
+	owningJet = Cast<AJet, AActor>(GetOwner());
 }
 
 void AMotorStateManager::activate(UMotorDriveComponent* aMotorDrive)
@@ -159,4 +55,45 @@ void AMotorStateManager::overrideStateTo(UClass* anotherState, AJet* owner)
 		motorState = nullptr;
 		motorState = NewObject<UMotorState>(this, anotherState, anotherState->GetFName());
 	}
+}
+
+void AMotorStateManager::accelerate()
+{
+	makeMotorStateBe<UAcceleratingMotorState>();
+}
+
+void AMotorStateManager::brake()
+{
+	makeMotorStateBe<UReversingMotorState>();
+}
+
+void AMotorStateManager::neutralize()
+{
+	makeMotorStateBe<UNeutralMotorState>();
+}
+
+void AMotorStateManager::mix()
+{
+	makeMotorStateBe<UMixedMotorState>();
+}
+
+void AMotorStateManager::serverUpdateMovementBasedOn_Implementation(FStateData aBunchOfStates)
+{
+	multicastSynchronizeMovementWith(updatedDataSynchronizedWith(aBunchOfStates));
+}
+
+bool AMotorStateManager::serverUpdateMovementBasedOn_Validate(FStateData aBunchOfStates)
+{
+	return true;
+}
+
+FMovementData AMotorStateManager::updatedDataSynchronizedWith(FStateData aBunchOfStates)
+{
+	owningJet->synchronizeMovementHistoryWith(aBunchOfStates);
+	return owningJet->retrieveCurrentMovementDataToSend();
+}
+
+void AMotorStateManager::multicastSynchronizeMovementWith_Implementation(FMovementData aMovementStructure)
+{
+	owningJet->synchronizeMovementHistoryWith(aMovementStructure);
 }

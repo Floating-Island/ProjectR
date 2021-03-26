@@ -4,8 +4,9 @@
 
 #include "CoreMinimal.h"
 
-#include "SteerState.h"
 #include "GameFramework/Actor.h"
+#include "SteerState.h"
+#include "Jet/Jet.h"
 #include "SteerStateManager.generated.h"
 
 
@@ -21,6 +22,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	FMovementData updatedDataSynchronizedWith(FStateData aBunchOfStates);
 
 	UPROPERTY()
 		USteerState* steerState;
@@ -34,23 +36,14 @@ protected:
 	template<class aSteerStateType>
 	void updateStateTo();
 
-	UFUNCTION(Server, Reliable, WithValidation)
-		void serverSteerLeft();
+	template<class aSteerStateType>
+	void makeSteerStateBe();
 
 	UFUNCTION(Server, Reliable, WithValidation)
-		void serverSteerRight();
-
-	UFUNCTION(Server, Reliable, WithValidation)
-		void serverCenter();
-	
-	UFUNCTION(NetMulticast, Reliable)
-		void multicastSteerLeft();
+		void serverUpdateMovementBasedOn(FStateData aBunchOfStates);
 
 	UFUNCTION(NetMulticast, Reliable)
-		void multicastSteerRight();
-
-	UFUNCTION(NetMulticast, Reliable)
-		void multicastCenter();
+		void multicastSynchronizeMovementWith(FMovementData aMovementStructure);
 
 public:
 	virtual void PostInitializeComponents() override;
@@ -80,4 +73,16 @@ void ASteerStateManager::updateStateTo()
 	
 	steerState = nullptr;
 	steerState = NewObject<aSteerStateType>(this, aSteerStateType::StaticClass()->GetFName());
+}
+
+template <class aSteerStateType>
+void ASteerStateManager::makeSteerStateBe()
+{
+	if (IsValid(steerState) && steerStateIsOfType<aSteerStateType>())
+	{
+		return;
+	}
+	updateStateTo<aSteerStateType>();
+	FStateData localStates = owningJet->generateCurrentStateDataToSend();
+	serverUpdateMovementBasedOn(localStates);
 }
