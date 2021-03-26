@@ -384,6 +384,87 @@ FMovementData AJet::retrieveCurrentMovementDataToSend()
 	return FMovementData(this, EMovementType::sendOrReceive, motorManager->stateClass(), steerManager->stateClass());
 }
 
+void AJet::synchronizeMovementHistoryWith(FStateData aBunchOfStates)
+{
+	//never change timestamps!!!
+	//go back into the movement history and find the movement previous to the states timestamp.
+	//using that movement location, rotation and velocities, calculate the next movement with the states of aBunchOfStates
+	//take the next move (the one that would come after the states timestamp), set the aBunchOfStates as the movement states.
+	//Set the movement as the one calculated.
+	//
+	//Start the loop (from the move that follows until the current movement in history):
+	//if the movement type is SendOrReceive, keep the states as is.
+	//if the movement type is routine (but only before the first SendOrReceive of the loop), overwrite the states with the ones on the previous movement.
+	////(you could use a boolean to check if you can overwrite)
+	//calculate the current movement using the current states and the movement of the previous move.
+	//set the current movement in the structure.
+	//advance to next movement.
+
+	int historyMoment = 0;
+	if(aBunchOfStates.timestamp < movementHistory[0].timestampedStates.timestamp)//check that the states don't come from the future...
+	{
+		while (historyMoment < movementHistory.size())
+		{
+			if(movementHistory[historyMoment].timestampedStates.timestamp <= aBunchOfStates.timestamp)//we found the moment previous to the received states...
+			{
+				break;
+			}
+			++historyMoment;
+		}
+	}
+	if(historyMoment != movementHistory.size())
+	{
+		FMovementData historyRevisionStart = createMovementHistoryRevisionWith(movementHistory[historyMoment], aBunchOfStates);
+		--historyMoment;//historyMoment is previous to --historyMoment
+		if(historyMoment >=0)
+		{
+			movementHistory[historyMoment].regenerateMoveFrom(historyRevisionStart, historyRevisionStart.type);
+		reshapeHistoryFrom(historyMoment);//chain reaction of history rewrite
+		}
+	}
+}
+
+void AJet::synchronizeMovementHistoryWith(FMovementData aMovementStructure)
+{
+	//never change timestamps!!!
+	//go back into the movement history and find the movement following (in time) the movement structure parameter.
+	//calculate the time delta (in milliseconds) and transform it to seconds.
+	//Calculate the movement that would be made on that time delta utilizing the movement structure parameter.
+	//Set the calculated movement structure (including its states) as the movement following it.
+	//
+	//Start the loop (from the move that follows until the current movement in history):
+	//if the movement type is SendOrReceive, keep the states as is.
+	//if the movement type is routine (but only before the first SendOrReceive of the loop), overwrite the states with the ones on the previous movement.
+	////(you could use a boolean to check if you can overwrite)
+	//calculate the current movement using the current states and the movement of the previous move.
+	//set the current movement in the structure.
+	//advance to next movement.
+
+	int historyMoment = 0;
+	if(aMovementStructure.timestampedStates.timestamp < movementHistory[0].timestampedStates.timestamp)//check that the movement don't come from the future...
+	{
+		while (historyMoment < movementHistory.size())
+		{
+			if(movementHistory[historyMoment].timestampedStates.timestamp <= aMovementStructure.timestampedStates.timestamp)//we found the moment previous to the received movement...
+			{
+				break;
+			}
+			++historyMoment;
+		}
+	}
+	if(historyMoment != movementHistory.size())
+	{
+		--historyMoment;//go to a more recent movement...
+		if(historyMoment >=0)
+		{
+			float timeBetweenMovements = (movementHistory[historyMoment].timestampedStates.timestamp - aMovementStructure.timestampedStates.timestamp) / 1000.0f;
+		FMovementData historyRevisionStart = createMovementHistoryRevisionWith(aMovementStructure, timeBetweenMovements);
+		movementHistory[historyMoment].regenerateMoveFrom(historyRevisionStart, historyRevisionStart.type);
+		reshapeHistoryFrom(historyMoment);//chain reaction of history rewrite
+		}
+	}	
+}
+
 FMovementData AJet::createMovementHistoryRevisionWith(FMovementData aBaseMovement, FStateData aStatesBase)
 {
 	aBaseMovement.timestampedStates.motorStateClass = aStatesBase.motorStateClass;
@@ -396,7 +477,7 @@ FMovementData AJet::createMovementHistoryRevisionWith(FMovementData aBaseMovemen
 	return revisedMovement;
 }
 
-FMovementData AJet::createMovementHistoryRevisionWith(FMovementData aBaseMovement, int64 aTimeDelta)
+FMovementData AJet::createMovementHistoryRevisionWith(FMovementData aBaseMovement, float aTimeDelta)
 {
 	FMovementData revisedMovement = FMovementData();
 
@@ -483,8 +564,8 @@ FMovementData AJet::simulateNextMovementFrom(FMovementData aPreviousMovement, fl
 
 	//fix rotation!!!
 	simulatedMove.rotation =  (simulatedMove.rotation.Quaternion() * 
-		FQuat(simulatedMove.angularVelocityInRadians.GetSafeNormal(), 
-			simulatedMove.angularVelocityInRadians.Size())
+		FQuat(simulatedMove.angularVelocityInRadians.GetSafeNormal() * simulationDuration, 
+			simulatedMove.angularVelocityInRadians.Size() * simulationDuration)
 		).Rotator();//this is wrong, check
 
 	
@@ -510,84 +591,6 @@ void AJet::asCurrentMovementSet(FMovementData anotherMovement)
 	motorManager->overrideStateTo(anotherMovement.timestampedStates.motorStateClass, this);
 	steerManager->overrideStateTo(anotherMovement.timestampedStates.steerStateClass, this);
 }
-
-
-void AJet::synchronizeMovementHistoryWith(FStateData aBunchOfStates)
-{
-	//never change timestamps!!!
-	//go back into the movement history and find the movement previous to the states timestamp.
-	//using that movement location, rotation and velocities, calculate the next movement with the states of aBunchOfStates
-	//take the next move (the one that would come after the states timestamp), set the aBunchOfStates as the movement states.
-	//Set the movement as the one calculated.
-	//
-	//Start the loop (from the move that follows until the current movement in history):
-	//if the movement type is SendOrReceive, keep the states as is.
-	//if the movement type is routine (but only before the first SendOrReceive of the loop), overwrite the states with the ones on the previous movement.
-	////(you could use a boolean to check if you can overwrite)
-	//calculate the current movement using the current states and the movement of the previous move.
-	//set the current movement in the structure.
-	//advance to next movement.
-
-	int historyMoment = 0;
-	if(aBunchOfStates.timestamp < movementHistory[0].timestampedStates.timestamp)//check that the states don't come from the future...
-	{
-		while (historyMoment < movementHistory.size())
-		{
-			if(movementHistory[historyMoment].timestampedStates.timestamp <= aBunchOfStates.timestamp)//we found the moment previous to the received states...
-			{
-				break;
-			}
-			++historyMoment;
-		}
-	}
-	if(historyMoment != movementHistory.size())
-	{
-		FMovementData historyRevisionStart = createMovementHistoryRevisionWith(movementHistory[historyMoment], aBunchOfStates);
-		++historyMoment;//advance to next moment...
-		movementHistory[historyMoment].regenerateMoveFrom(historyRevisionStart, historyRevisionStart.type);
-		reshapeHistoryFrom(historyMoment);//chain reaction of history rewrite
-	}
-}
-
-void AJet::synchronizeMovementHistoryWith(FMovementData aMovementStructure)
-{
-	//never change timestamps!!!
-	//go back into the movement history and find the movement following (in time) the movement structure parameter.
-	//calculate the time delta (in milliseconds) and transform it to seconds.
-	//Calculate the movement that would be made on that time delta utilizing the movement structure parameter.
-	//Set the calculated movement structure (including its states) as the movement following it.
-	//
-	//Start the loop (from the move that follows until the current movement in history):
-	//if the movement type is SendOrReceive, keep the states as is.
-	//if the movement type is routine (but only before the first SendOrReceive of the loop), overwrite the states with the ones on the previous movement.
-	////(you could use a boolean to check if you can overwrite)
-	//calculate the current movement using the current states and the movement of the previous move.
-	//set the current movement in the structure.
-	//advance to next movement.
-
-	int historyMoment = 0;
-	if(aMovementStructure.timestampedStates.timestamp < movementHistory[0].timestampedStates.timestamp)//check that the movement don't come from the future...
-	{
-		while (historyMoment < movementHistory.size())
-		{
-			if(movementHistory[historyMoment].timestampedStates.timestamp <= aMovementStructure.timestampedStates.timestamp)//we found the moment previous to the received movement...
-			{
-				break;
-			}
-			++historyMoment;
-		}
-	}
-	if(historyMoment != movementHistory.size())
-	{
-		++historyMoment;//advance to next moment...
-		int64 timeBetweenMovements = movementHistory[historyMoment].timestampedStates.timestamp - aMovementStructure.timestampedStates.timestamp;
-		FMovementData historyRevisionStart = createMovementHistoryRevisionWith(aMovementStructure, timeBetweenMovements);
-		movementHistory[historyMoment].regenerateMoveFrom(historyRevisionStart, historyRevisionStart.type);
-		reshapeHistoryFrom(historyMoment);//chain reaction of history rewrite
-	}
-	
-}
-
 
 
 

@@ -181,7 +181,7 @@ protected:
 	void addToMovementHistory(FMovementData aMovement);
 
 	FMovementData createMovementHistoryRevisionWith(FMovementData aBaseMovement, FStateData aStatesBase);
-	FMovementData createMovementHistoryRevisionWith(FMovementData aBaseMovement, int64 aTimeDelta);
+	FMovementData createMovementHistoryRevisionWith(FMovementData aBaseMovement, float aTimeDelta);
 
 	void reshapeHistoryFrom(int aMomentInHistory);
 
