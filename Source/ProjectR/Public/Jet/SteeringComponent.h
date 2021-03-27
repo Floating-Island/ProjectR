@@ -37,4 +37,6 @@ public:
 
 	void steerLeft();
 	void steerRight();
+
+	float accelerationMagnitudeToAlignVelocityFrom(FVector aPreviousLocation);
 };
