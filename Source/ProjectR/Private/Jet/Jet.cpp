@@ -19,6 +19,7 @@
 
 #include "extensions/PxRigidBodyExt.h"
 #include "PhysXPublic.h"
+#include "Jet/SteerStates/CenterSteerState.h"
 #include "Track/TrackManager.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -400,8 +401,11 @@ void AJet::synchronizeMovementHistoryWith(FStateData aBunchOfStates)
 	//set the current movement in the structure.
 	//advance to next movement.
 
+	UE_LOG(LogTemp, Log, TEXT("\n\n ******** Starting Server synchronization ******** \n\n"));
+	UE_LOG(LogTemp, Log, TEXT("\n\n ****** Current Move: ****** \n %s \n\n"), *movementHistory[0].ToString());
+	
 	int historyMoment = 0;
-	if(aBunchOfStates.timestamp < movementHistory[0].timestampedStates.timestamp)//check that the states don't come from the future...
+	if(aBunchOfStates.timestamp < movementHistory[0].timestampedStates.timestamp)//check that the states doesn't come from the future...
 	{
 		while (historyMoment < movementHistory.size())
 		{
@@ -422,6 +426,7 @@ void AJet::synchronizeMovementHistoryWith(FStateData aBunchOfStates)
 			reshapeHistoryFrom(historyMoment);//chain reaction of history rewrite
 		}
 	}
+	UE_LOG(LogTemp, Log, TEXT("\n\n ******** Server synchronization Finalized ******** \n\n"));
 }
 
 void AJet::synchronizeMovementHistoryWith(FMovementData aMovementStructure)
@@ -440,8 +445,11 @@ void AJet::synchronizeMovementHistoryWith(FMovementData aMovementStructure)
 	//set the current movement in the structure.
 	//advance to next movement.
 
+	UE_LOG(LogTemp, Log, TEXT("\n\n ******** Starting Client synchronization ******** \n\n"));
+	UE_LOG(LogTemp, Log, TEXT("\n\n ****** Current Move: ****** \n %s \n\n"), *movementHistory[0].ToString());
+	
 	int historyMoment = 0;
-	if(aMovementStructure.timestampedStates.timestamp < movementHistory[0].timestampedStates.timestamp)//check that the movement don't come from the future...
+	if(aMovementStructure.timestampedStates.timestamp < movementHistory[0].timestampedStates.timestamp)//check that the movement doesn't come from the future...
 	{
 		while (historyMoment < movementHistory.size())
 		{
@@ -462,7 +470,8 @@ void AJet::synchronizeMovementHistoryWith(FMovementData aMovementStructure)
 			movementHistory[historyMoment].regenerateMoveFrom(historyRevisionStart, historyRevisionStart.type);
 			reshapeHistoryFrom(historyMoment);//chain reaction of history rewrite
 		}
-	}	
+	}
+	UE_LOG(LogTemp, Log, TEXT("\n\n ******** Client synchronization Finalized ******** \n\n"));
 }
 
 FMovementData AJet::createMovementHistoryRevisionWith(FMovementData aBaseMovement, FStateData aStatesBase)
@@ -490,7 +499,9 @@ void AJet::reshapeHistoryFrom(int aMomentInHistory)
 {
 	bool needsToChangeStates = true;
 
-	FMovementData finalMovement = FMovementData();
+	FVector steerCounterAcceleration = FVector(0);
+	FVector steerAlignAcceleration = FVector(0);
+	bool needsToAlign = false;
 	while(aMomentInHistory > 0)
 	{
 		FMovementData currentMovementInHistory = movementHistory[aMomentInHistory];
@@ -510,15 +521,36 @@ void AJet::reshapeHistoryFrom(int aMomentInHistory)
 
 		rewrittenNextMovement = simulateNextMovementFrom(currentMovementInHistory);//calculate rewritten next movement with these values... 
 
+
+		
 		nextMovementInHistory.regenerateMoveFrom(rewrittenNextMovement, nextMovementInHistory.type);
 		nextMovementInHistory.timestampedStates = nextMovementStates;
 
 		//align velocity!!! only if left or right steering == not center steering...
+		if(needsToAlign)
+		{
+			UE_LOG(LogTemp, Log, TEXT("\n aligning velocity \n"));
+			needsToAlign = false;
+			float timeBetweenMovements = (nextMovementInHistory.timestampedStates.timestamp - currentMovementInHistory.timestampedStates.timestamp) / 1000.0f;
+			nextMovementInHistory.linearVelocity += (steerCounterAcceleration + steerAlignAcceleration) * timeBetweenMovements;
+			nextMovementInHistory.location = currentMovementInHistory.location + nextMovementInHistory.linearVelocity * timeBetweenMovements;
+		}
 		
+		if(currentMovementInHistory.timestampedStates.steerStateClass != UCenterSteerState::StaticClass())
+		{
+			UE_LOG(LogTemp, Log, TEXT("\n needs to align velocity \n"));
+			needsToAlign = true;
+			asCurrentMovementSet(currentMovementInHistory);
+			FVector currentForwardProjection = ForwardProjectionOnFloor();
+			FVector currentLocation = GetActorLocation();
+			asCurrentMovementSet(nextMovementInHistory);
+			float alignmentAcceleration =  steeringSystem->accelerationMagnitudeToAlignVelocityFrom(currentLocation);
+			steerCounterAcceleration = (-currentForwardProjection) * alignmentAcceleration;
+			steerAlignAcceleration = ForwardProjectionOnFloor() * alignmentAcceleration;
+		}
 		--aMomentInHistory;
-		finalMovement = nextMovementInHistory;
 	}
-	asCurrentMovementSet(finalMovement);
+	asCurrentMovementSet(movementHistory[0]);
 }
 
 FMovementData AJet::simulateNextMovementFrom(FMovementData aPreviousMovement, float simulationDuration)
@@ -560,17 +592,17 @@ FMovementData AJet::simulateNextMovementFrom(FMovementData aPreviousMovement, fl
 	
 	simulatedMove.location += simulatedMove.linearVelocity * simulationDuration;
 	
-	simulatedMove.angularVelocityInRadians += FVector::DegreesToRadians(P2UVector(angularVelocityDelta)); //FVector::DegreesToRadians ??
-
-	
-	//fix rotation!!!
+	simulatedMove.angularVelocityInRadians += FVector::DegreesToRadians(P2UVector(angularVelocityDelta));
 
 	FVector angularRotation = simulatedMove.angularVelocityInRadians * simulationDuration;
 	
 	FQuat angularVelocityQuaternion = FQuat(angularRotation.GetSafeNormal(), angularRotation.Size());
 
-	simulatedMove.rotation =  ( angularVelocityQuaternion * simulatedMove.rotation.Quaternion() ).Rotator();//this is wrong, check
+	simulatedMove.rotation =  ( angularVelocityQuaternion * simulatedMove.rotation.Quaternion() ).Rotator();
 
+	UE_LOG(LogTemp, Log, TEXT("\n simulated movement: \n %s \n"), *simulatedMove.ToString());
+	UE_LOG(LogTemp, Log, TEXT(">>angular velocity delta: %s"), *P2UVector(angularVelocityDelta).ToString());
+	UE_LOG(LogTemp, Log, TEXT(">>angular velocity delta 'in radians': %s\n"), *FVector::DegreesToRadians(P2UVector(angularVelocityDelta)).ToString());
 	
 	return simulatedMove;
 }
