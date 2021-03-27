@@ -655,10 +655,10 @@ bool FAJetReplicatesTest::RunTest(const FString& Parameters)
 }
 
 
-bool FAJetReplicatesMovementTest::RunTest(const FString& Parameters)
+bool FAJetDoesntReplicateMovementTest::RunTest(const FString& Parameters)
 {
 	AJet* testJet = NewObject<AJet>();
-	TestTrue(TEXT("Jet should replicate to other objects."), testJet->IsReplicatingMovement());
+	TestTrue(TEXT("Jet shouldn't replicate movement to other objects."), testJet->IsReplicatingMovement());
 
 	return true;
 }

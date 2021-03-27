@@ -213,8 +213,8 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetReplicatesTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetReplicatesMovementTest, 
-	"ProjectR.Jet Tests.Replication.039: Replicates movement to other clients", 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetDoesntReplicateMovementTest, 
+	"ProjectR.Jet Tests.Replication.039: Doesn't replicate movement to other clients", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

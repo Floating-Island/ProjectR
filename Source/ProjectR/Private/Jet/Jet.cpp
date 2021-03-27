@@ -62,7 +62,6 @@ AJet::AJet()
 	motorDriveSystem = CreateDefaultSubobject<UMotorDriveComponent>(TEXT("Motor Drive System"));
 
 	SetReplicates(true);
-	SetReplicateMovement(false);//change test
 	motorManager = nullptr;
 	steerManager = nullptr;
 
