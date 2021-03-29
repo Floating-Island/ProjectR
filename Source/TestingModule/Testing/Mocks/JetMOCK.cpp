@@ -4,6 +4,8 @@
 #include "JetMOCK.h"
 
 
+
+#include "DeloreanReplicationMachineMOCK.h"
 #include "Jet/MotorStates/MotorStateManager.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
@@ -150,6 +152,8 @@ void AJetMOCK::setSteerManagerMOCK()
 	FActorSpawnParameters spawnParameters = FActorSpawnParameters();
 	spawnParameters.Owner = this;
 	steerManager = GetWorld()->SpawnActor<ASteerStateManagerMOCK>(spawnParameters);
+	replicationMachine = NewObject<UDeloreanReplicationMachineMOCK>();
+	replicationMachine->setDefaultVariablesTo(this, movementHistorySize);
 }
 
 bool AJetMOCK::hasPhysicsMeshHidden()
@@ -169,7 +173,7 @@ bool AJetMOCK::modelMeshAttachedToPhysicsComponent()
 
 std::deque<FMovementData>& AJetMOCK::retrieveMovementHistory()
 {
-	return movementHistory;
+	return Cast<UDeloreanReplicationMachineMOCK, UDeloreanReplicationMachine>(replicationMachine)->movementHistoryReference();
 }
 
 int AJetMOCK::movementHistoryPrefixedSize()
@@ -179,7 +183,7 @@ int AJetMOCK::movementHistoryPrefixedSize()
 
 void AJetMOCK::addToHistory(FMovementData aMovement)
 {
-	addToMovementHistory(aMovement);
+	Cast<UDeloreanReplicationMachineMOCK, UDeloreanReplicationMachine>(replicationMachine)->addToHistory(aMovement);
 }
 
 
