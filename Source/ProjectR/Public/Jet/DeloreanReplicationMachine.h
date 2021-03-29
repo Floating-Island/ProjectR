@@ -120,7 +120,7 @@ struct FMovementData
 /**
  * Class responsible to synchronize data sent to and received from the server.
  * Has a movement history used to re simulate past movements until the present.
- * It rewrites an object's history.
+ * It rewrites a jet's history.
  */
 UCLASS()
 class PROJECTR_API UDeloreanReplicationMachine : public UObject
