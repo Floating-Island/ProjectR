@@ -76,7 +76,8 @@ bool FRetrieveAJetMOCKSetVelocityToTopSpeed::Update()
 		if(testJet)
 		{
 			testJet->setCurrentXVelocityTo(testJet->settedTopSpeed());
-
+			UE_LOG(LogTemp, Log, TEXT("Jet setted top speed: %f."), testJet->settedTopSpeed());
+			UE_LOG(LogTemp, Log, TEXT("Jet current speed: %f."), testJet->currentSpeed());
 			return true;
 		}
 	}
