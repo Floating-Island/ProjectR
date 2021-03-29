@@ -13,8 +13,6 @@
 AMotorStateManager::AMotorStateManager()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	SetReplicates(true);
-	bAlwaysRelevant = true;
 	motorState = nullptr;
 }
 
@@ -75,25 +73,4 @@ void AMotorStateManager::neutralize()
 void AMotorStateManager::mix()
 {
 	makeMotorStateBe<UMixedMotorState>();
-}
-
-void AMotorStateManager::serverUpdateMovementBasedOn_Implementation(FStateData aBunchOfStates)
-{
-	multicastSynchronizeMovementWith(updatedDataSynchronizedWith(aBunchOfStates));
-}
-
-bool AMotorStateManager::serverUpdateMovementBasedOn_Validate(FStateData aBunchOfStates)
-{
-	return true;
-}
-
-FMovementData AMotorStateManager::updatedDataSynchronizedWith(FStateData aBunchOfStates)
-{
-	owningJet->synchronizeMovementHistoryWith(aBunchOfStates);
-	return owningJet->retrieveCurrentMovementDataToSend();
-}
-
-void AMotorStateManager::multicastSynchronizeMovementWith_Implementation(FMovementData aMovementStructure)
-{
-	owningJet->synchronizeMovementHistoryWith(aMovementStructure);
 }

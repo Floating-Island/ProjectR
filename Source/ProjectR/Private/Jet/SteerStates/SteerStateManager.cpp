@@ -12,8 +12,6 @@ ASteerStateManager::ASteerStateManager()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	steerState = nullptr;
-	SetReplicates(true);
-	bAlwaysRelevant = true;
 }
 
 void ASteerStateManager::PostInitializeComponents()
@@ -47,9 +45,9 @@ UClass* ASteerStateManager::stateClass()
 	return nullptr;
 }
 
-void ASteerStateManager::overrideStateTo(UClass* anotherState, AJet* owner)
+void ASteerStateManager::overrideStateTo(UClass* anotherState, AJet* anOwningJet)
 {
-	if(owningJet == owner)
+	if(owningJet == anOwningJet)
 	{
 		steerState = nullptr;
 		steerState = NewObject<USteerState>(this, anotherState, anotherState->GetFName());
@@ -69,25 +67,4 @@ void ASteerStateManager::center()
 void ASteerStateManager::steerRight()
 {
 	makeSteerStateBe<URightSteerState>();
-}
-
-void ASteerStateManager::serverUpdateMovementBasedOn_Implementation(FStateData aBunchOfStates)
-{
-	multicastSynchronizeMovementWith(updatedDataSynchronizedWith(aBunchOfStates));
-}
-
-bool ASteerStateManager::serverUpdateMovementBasedOn_Validate(FStateData aBunchOfStates)
-{
-	return true;
-}
-
-void ASteerStateManager::multicastSynchronizeMovementWith_Implementation(FMovementData aMovementStructure)
-{
-	owningJet->synchronizeMovementHistoryWith(aMovementStructure);
-}
-
-FMovementData ASteerStateManager::updatedDataSynchronizedWith(FStateData aBunchOfStates)
-{
-	owningJet->synchronizeMovementHistoryWith(aBunchOfStates);
-	return owningJet->retrieveCurrentMovementDataToSend();
 }

@@ -62,6 +62,7 @@ AJet::AJet()
 	motorDriveSystem = CreateDefaultSubobject<UMotorDriveComponent>(TEXT("Motor Drive System"));
 
 	SetReplicates(true);
+	SetReplicateMovement(false);
 	motorManager = nullptr;
 	steerManager = nullptr;
 
@@ -100,14 +101,12 @@ void AJet::Tick(float DeltaTime)
 void AJet::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	if(HasAuthority())
-	{
-		FActorSpawnParameters spawnParameters = FActorSpawnParameters();
-		spawnParameters.Owner = this;
-		
-		motorManager = GetWorld()->SpawnActor<AMotorStateManager>(spawnParameters);
-		steerManager = GetWorld()->SpawnActor<ASteerStateManager>(spawnParameters);
-	}
+
+	FActorSpawnParameters spawnParameters = FActorSpawnParameters();
+	spawnParameters.Owner = this;
+	
+	motorManager = GetWorld()->SpawnActor<AMotorStateManager>(spawnParameters);
+	steerManager = GetWorld()->SpawnActor<ASteerStateManager>(spawnParameters);
 }
 
 void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -404,7 +403,7 @@ void AJet::synchronizeMovementHistoryWith(FStateData aBunchOfStates)
 	UE_LOG(LogTemp, Log, TEXT("\n\n ****** Current Move: ****** \n %s \n\n"), *movementHistory[0].ToString());
 	
 	int historyMoment = 0;
-	if(aBunchOfStates.timestamp < movementHistory[0].timestampedStates.timestamp)//check that the states doesn't come from the future...
+	if(aBunchOfStates.timestamp < movementHistory[0].timestampedStates.timestamp)//check that the states don't come from the future...
 	{
 		while (historyMoment < movementHistory.size())
 		{
@@ -448,7 +447,7 @@ void AJet::synchronizeMovementHistoryWith(FMovementData aMovementStructure)
 	UE_LOG(LogTemp, Log, TEXT("\n\n ****** Current Move: ****** \n %s \n\n"), *movementHistory[0].ToString());
 	
 	int historyMoment = 0;
-	if(aMovementStructure.timestampedStates.timestamp < movementHistory[0].timestampedStates.timestamp)//check that the movement doesn't come from the future...
+	if(aMovementStructure.timestampedStates.timestamp < movementHistory[0].timestampedStates.timestamp)//check that the movement don't come from the future...
 	{
 		while (historyMoment < movementHistory.size())
 		{
@@ -629,10 +628,34 @@ void AJet::asCurrentMovementSet(FMovementData anotherMovement)
 
 
 
-void AJet::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
-{
-    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-    DOREPLIFETIME(AJet, motorManager);
-	DOREPLIFETIME(AJet, steerManager);
+
+void AJet::sendMovementToServerRequestedBy(UObject* aSubObject)
+{
+	/*if(Cast<AJet, UObject>(aSubObject->GetTypedOuter(AJet::StaticClass())) == this)
+	{*/
+		serverUpdateMovementWith(generateCurrentStateDataToSend());
+	//}
+}
+
+void AJet::serverUpdateMovementWith_Implementation(FStateData aBunchOfStates)
+{
+	multicastSynchronizeMovementWith(updatedDataSynchronizedWith(aBunchOfStates));
+}
+
+bool AJet::serverUpdateMovementWith_Validate(FStateData aBunchOfStates)
+{
+	return true;
+}
+
+void AJet::multicastSynchronizeMovementWith_Implementation(FMovementData aMovementStructure)
+{
+	synchronizeMovementHistoryWith(aMovementStructure);
+}
+
+
+FMovementData AJet::updatedDataSynchronizedWith(FStateData aBunchOfStates)
+{
+	synchronizeMovementHistoryWith(aBunchOfStates);
+	return retrieveCurrentMovementDataToSend();
 }

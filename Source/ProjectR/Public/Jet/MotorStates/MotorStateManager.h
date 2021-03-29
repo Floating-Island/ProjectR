@@ -23,19 +23,12 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	FMovementData updatedDataSynchronizedWith(FStateData aBunchOfStates);
 
 	UPROPERTY()
 		AJet* owningJet;
 	
 	UPROPERTY()
 		UMotorState* motorState;
-
-	UFUNCTION(Server, Reliable, WithValidation)
-		void serverUpdateMovementBasedOn(FStateData aBunchOfStates);
-
-	UFUNCTION(NetMulticast, Reliable)
-		void multicastSynchronizeMovementWith(FMovementData aMovementStructure);
 	
 	template<class aMotorStateType>
 	void updateStateTo();
@@ -85,6 +78,5 @@ void AMotorStateManager::makeMotorStateBe()
 		return;
 	}
 	updateStateTo<aMotorStateType>();
-	FStateData localStates = owningJet->generateCurrentStateDataToSend();
-	serverUpdateMovementBasedOn(localStates);
+	owningJet->sendMovementToServerRequestedBy(this);
 }

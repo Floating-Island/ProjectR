@@ -22,7 +22,6 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	FMovementData updatedDataSynchronizedWith(FStateData aBunchOfStates);
 
 	UPROPERTY()
 		USteerState* steerState;
@@ -39,12 +38,6 @@ protected:
 	template<class aSteerStateType>
 	void makeSteerStateBe();
 
-	UFUNCTION(Server, Reliable, WithValidation)
-		void serverUpdateMovementBasedOn(FStateData aBunchOfStates);
-
-	UFUNCTION(NetMulticast, Reliable)
-		void multicastSynchronizeMovementWith(FMovementData aMovementStructure);
-
 public:
 	virtual void PostInitializeComponents() override;
 	
@@ -54,7 +47,7 @@ public:
 	void activate(USteeringComponent* aSteeringDrive);
 
 	UClass* stateClass();
-	void overrideStateTo(UClass* anotherState, AJet* owner);
+	void overrideStateTo(UClass* anotherState, AJet* anOwningJet);
 };
 
 template <class aSteerStateType>
@@ -83,6 +76,5 @@ void ASteerStateManager::makeSteerStateBe()
 		return;
 	}
 	updateStateTo<aSteerStateType>();
-	FStateData localStates = owningJet->generateCurrentStateDataToSend();
-	serverUpdateMovementBasedOn(localStates);
+	owningJet->sendMovementToServerRequestedBy(this);
 }

@@ -12,7 +12,7 @@ void UAcceleratingMotorState::activate(UMotorDriveComponent* aMotorDriveComponen
 
 FVector UAcceleratingMotorState::linearAccelerationsGeneratedTo(AJet* aJet)
 {
-	if(aJet->currentSpeed() < aJet->settedTopSpeed())
+	if(aJet->currentSpeed() < aJet->settedTopSpeed() && !FMath::IsNearlyEqual(aJet->currentSpeed(), aJet->settedTopSpeed(), 1.0f))
 	{
 		return aJet->acceleration() * aJet->ForwardProjectionOnFloor();
 	}
