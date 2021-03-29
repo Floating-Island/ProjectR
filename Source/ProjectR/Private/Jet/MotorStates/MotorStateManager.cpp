@@ -31,19 +31,12 @@ void AMotorStateManager::BeginPlay()
 
 void AMotorStateManager::activate(UMotorDriveComponent* aMotorDrive)
 {
-	if (IsValid(motorState))
-	{
-		motorState->activate(aMotorDrive);
-	}
+	motorState->activate(aMotorDrive);
 }
 
 UClass* AMotorStateManager::stateClass()
 {
-	if(IsValid(motorState))
-	{
-		return motorState->GetClass();
-	}
-	return nullptr;
+	return motorState->GetClass();
 }
 
 void AMotorStateManager::overrideStateTo(UClass* anotherState, AJet* owner)

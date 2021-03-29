@@ -25,24 +25,16 @@ void ASteerStateManager::BeginPlay()
 {
 	Super::BeginPlay();
 	owningJet = Cast<AJet, AActor>(GetOwner());
-
 }
 
 void ASteerStateManager::activate(USteeringComponent* aSteeringDrive)
 {
-	if(IsValid(steerState))
-	{
-		steerState->activate(aSteeringDrive);
-	}
+	steerState->activate(aSteeringDrive);
 }
 
 UClass* ASteerStateManager::stateClass()
 {
-	if(IsValid(steerState))
-	{
-		return steerState->GetClass();
-	}
-	return nullptr;
+	return steerState->GetClass();
 }
 
 void ASteerStateManager::overrideStateTo(UClass* anotherState, AJet* anOwningJet)
