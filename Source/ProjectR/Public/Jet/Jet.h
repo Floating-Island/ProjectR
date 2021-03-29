@@ -71,37 +71,11 @@ protected:
 	UPROPERTY()
 		UDeloreanReplicationMachine* replicationMachine;
 
-
-//start of replication machine:
-	/** don't add objects directly, use addMovementToHistory instead.*/
-	std::deque<FMovementData> movementHistory;
-
-	UFUNCTION()
-		void addMovementToHistory();
-
 	/**With 60 we will have 1000 milliseconds of movements into the past
 	 * (assuming 60fps).
 	 */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Replication")
 		int movementHistorySize;
-
-	void addToMovementHistory(FMovementData aMovement);
-
-	FMovementData createMovementHistoryRevisionWith(FMovementData aBaseMovement, FStateData aStatesBase);
-	FMovementData createMovementHistoryRevisionWith(FMovementData aBaseMovement, float aTimeDelta);
-
-	void reshapeHistoryFrom(int aMomentInHistory);
-
-	FMovementData simulateNextMovementFrom(FMovementData aPreviousMovement, float simulationDuration = 0);
-
-	FVector retrieveTrackMagnetizationLinearAcceleration();
-	
-	void asCurrentMovementSet(FMovementData anotherMovement);
-
-private:
-	bool generateSendOrReceiveMovementType;
-
-//end of replication machine
 	
 public:
 	virtual void Tick(float DeltaTime) override;
@@ -148,21 +122,19 @@ public:
 	bool keyIsPressedFor(const FName anActionMappingName);
 
 
+//start of replication:
+	
+	float mass();
+	UClass* currentMotorStateClass();
+	UClass* currentSteerStateClass();
+	float accelerationMagnitudeToAlignVelocityFrom(FVector aCurrentLocation);
+	FVector angularAccelerationGeneratedByAntiGravity();
+	FPhysicsActorHandle& physicsHandleRequestedBy(UDeloreanReplicationMachine* aReplicationMachine);
 
-//replication machine:
-	FStateData generateCurrentStateDataToSend();
-
-	FMovementData retrieveCurrentMovementDataToSend();
-
-	void synchronizeMovementHistoryWith(FStateData aBunchOfStates);
-	void synchronizeMovementHistoryWith(FMovementData aMovementStructure);
-
-//end replication machine
-
-
+	void asCurrentMovementSet(FMovementData anotherMovement, UDeloreanReplicationMachine* aRequestingReplicationMachine);
+	
 	void sendMovementToServerRequestedBy(UObject* aSubObject);
 
-	
 protected:
 	UFUNCTION(Server, Reliable, WithValidation)
 		void serverUpdateMovementWith(FStateData aBunchOfStates);
@@ -171,4 +143,6 @@ protected:
 	
 	UFUNCTION(NetMulticast, Reliable)
 		void multicastSynchronizeMovementWith(FMovementData aMovementStructure);
+
+//end of replication
 };

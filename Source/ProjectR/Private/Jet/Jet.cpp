@@ -17,12 +17,6 @@
 #include "GameFramework/PlayerInput.h"
 #include "GameFramework/PlayerController.h"
 
-#include "extensions/PxRigidBodyExt.h"
-#include "PhysXPublic.h"
-#include "Jet/SteerStates/CenterSteerState.h"
-#include "Track/TrackManager.h"
-#include "Kismet/GameplayStatics.h"
-
 
 
 
@@ -75,27 +69,22 @@ AJet::AJet()
 	jetModelMeshComponent->SetMassOverrideInKg(NAME_None, 0);
 
 	movementHistorySize = 60;
-	
 }
 
 void AJet::BeginPlay()
 {
 	Super::BeginPlay();
-	movementHistory = std::deque<FMovementData>(movementHistorySize, FMovementData());
+	replicationMachine = NewObject<UDeloreanReplicationMachine>(this);
+	replicationMachine->setDefaultVariablesTo(this, movementHistorySize);
 }
 
 void AJet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if(IsValid(motorManager))
-	{
-		motorManager->activate(motorDriveSystem);
-	}
-	if(IsValid(steerManager))
-	{
-		steerManager->activate(steeringSystem);
-	}
-	addMovementToHistory();
+
+	motorManager->activate(motorDriveSystem);
+	steerManager->activate(steeringSystem);
+	replicationMachine->addMovementToHistory();
 }
 
 void AJet::PostInitializeComponents()
@@ -140,15 +129,12 @@ float AJet::settedTopSpeed()
 
 void AJet::accelerate()
 {
-	if(IsValid(motorManager))
+	if(keyIsPressedFor(FName("BrakeAction")))
 	{
-		if(keyIsPressedFor(FName("BrakeAction")))
-		{
-			motorManager->mix();
-			return;
-		}
-		motorManager->accelerate();
+		motorManager->mix();
+		return;
 	}
+	motorManager->accelerate();
 }
 
 float AJet::acceleration()
@@ -163,34 +149,28 @@ float AJet::brakeValue()
 
 void AJet::brake()
 {
-	if(IsValid(motorManager))
+	if(keyIsPressedFor(FName("AccelerateAction")))
 	{
-		if(keyIsPressedFor(FName("AccelerateAction")))
-		{
-			motorManager->mix();
-			return;
-		}
-		motorManager->brake();
+		motorManager->mix();
+		return;
 	}
+	motorManager->brake();
 }
 
 void AJet::neutralize()
 {
-	if(IsValid(motorManager))
+	if(keyIsPressedFor(FName("BrakeAction")))
 	{
-		if(keyIsPressedFor(FName("BrakeAction")))
-		{
-			motorManager->brake();
-			return;
-		}
-
-		if(keyIsPressedFor(FName("AccelerateAction")))
-		{
-			motorManager->accelerate();
-			return;
-		}
-		motorManager->neutralize();
+		motorManager->brake();
+		return;
 	}
+
+	if(keyIsPressedFor(FName("AccelerateAction")))
+	{
+		motorManager->accelerate();
+		return;
+	}
+	motorManager->neutralize();
 }
 
 bool AJet::goesForward()
@@ -210,28 +190,22 @@ float AJet::steerRadius()
 
 void AJet::steerRight()
 {
-	if(IsValid(steerManager))
+	if(keyIsPressedFor(FName("SteerLeftAction")))
 	{
-		if(keyIsPressedFor(FName("SteerLeftAction")))
-		{
-			steerManager->center();
-			return;
-		}
-		steerManager->steerRight();
+		steerManager->center();
+		return;
 	}
+	steerManager->steerRight();
 }
 
 void AJet::steerLeft()
 {
-	if(IsValid(steerManager))
+	if(keyIsPressedFor(FName("SteerRightAction")))
 	{
-		if(keyIsPressedFor(FName("SteerRightAction")))
-		{
-			steerManager->center();
-			return;
-		}
-		steerManager->steerLeft();
+		steerManager->center();
+		return;
 	}
+	steerManager->steerLeft();
 }
 
 void AJet::InReverseInverts(float& aDirection)
@@ -244,21 +218,18 @@ void AJet::InReverseInverts(float& aDirection)
 
 void AJet::centerSteer()
 {
-	if(IsValid(steerManager))
+	if(keyIsPressedFor(FName("SteerLeftAction")))
 	{
-		if(keyIsPressedFor(FName("SteerLeftAction")))
-		{
-			steerManager->steerLeft();
-			return;
-		}
-
-		if(keyIsPressedFor(FName("SteerRightAction")))
-		{
-			steerManager->steerRight();
-			return;
-		}
-		steerManager->center();
+		steerManager->steerLeft();
+		return;
 	}
+
+	if(keyIsPressedFor(FName("SteerRightAction")))
+	{
+		steerManager->steerRight();
+		return;
+	}
+	steerManager->center();
 }
 
 float AJet::antiGravityHeight()
@@ -275,10 +246,7 @@ FVector AJet::ForwardProjectionOnFloor()
 	{
 		return FVector::VectorPlaneProject(GetActorForwardVector(), obstacle.Normal);
 	}
-	else
-	{
-		return GetActorForwardVector();
-	}
+	return GetActorForwardVector();
 }
 
 bool AJet::traceToFind(FHitResult& anObstacle)
@@ -309,10 +277,7 @@ FVector AJet::velocityProjectionOnFloor()
 	{
 		return FVector::VectorPlaneProject(GetVelocity(), obstacle.Normal);
 	}
-	else
-	{
-		return FVector::VectorPlaneProject(GetVelocity(), GetActorUpVector());
-	}
+	return FVector::VectorPlaneProject(GetVelocity(), GetActorUpVector());
 }
 
 FVector AJet::rightVectorProjectionOnFloor()
@@ -324,10 +289,7 @@ FVector AJet::rightVectorProjectionOnFloor()
 	{
 		return FVector::VectorPlaneProject(GetActorRightVector(), obstacle.Normal);
 	}
-	else
-	{
-		return GetActorRightVector();
-	}
+	return GetActorRightVector();
 }
 
 bool AJet::keyIsPressedFor(const FName anActionMappingName)
@@ -347,294 +309,58 @@ bool AJet::keyIsPressedFor(const FName anActionMappingName)
 	return false;
 }
 
-
-
-
-void AJet::addMovementToHistory()
+float AJet::mass()
 {
-	if(IsValid(motorManager) && IsValid(steerManager))
+	return physicsMeshComponent->GetMass();
+}
+
+UClass* AJet::currentMotorStateClass()
+{
+	return motorManager->stateClass();
+}
+
+UClass* AJet::currentSteerStateClass()
+{
+	return steerManager->stateClass();
+}
+
+float AJet::accelerationMagnitudeToAlignVelocityFrom(FVector aCurrentLocation)
+{
+	return steeringSystem->accelerationMagnitudeToAlignVelocityFrom(aCurrentLocation);
+}
+
+FVector AJet::angularAccelerationGeneratedByAntiGravity()
+{
+	return antiGravitySystem->currentTotalAngularAccelerationMade();
+}
+
+FPhysicsActorHandle& AJet::physicsHandleRequestedBy(UDeloreanReplicationMachine* aReplicationMachine)
+{
+	if(aReplicationMachine != replicationMachine)
 	{
-		addToMovementHistory(FMovementData(this, 
-			generateSendOrReceiveMovementType? EMovementType::sendOrReceive : EMovementType::routine, 
-			motorManager->stateClass(), 
-			steerManager->stateClass()));
-		generateSendOrReceiveMovementType = false;
+		throw "attempting to get hold of the physics actor handle of a jet when the replication machine that called it isn't the one stored in the jet";
+	}
+	return physicsMeshComponent->BodyInstance.GetPhysicsActorHandle();
+}
+
+void AJet::asCurrentMovementSet(FMovementData anotherMovement, UDeloreanReplicationMachine* aRequestingReplicationMachine)
+{
+	if(aRequestingReplicationMachine == replicationMachine)
+	{
+		SetActorLocation(anotherMovement.location);
+		SetActorRotation(anotherMovement.rotation);
+		physicsMeshComponent->SetPhysicsAngularVelocityInRadians(anotherMovement.angularVelocityInRadians);
+		physicsMeshComponent->SetPhysicsLinearVelocity(anotherMovement.linearVelocity);
+		motorManager->overrideStateTo(anotherMovement.timestampedStates.motorStateClass, this);
+		steerManager->overrideStateTo(anotherMovement.timestampedStates.steerStateClass, this);
 	}
 }
-
-void AJet::addToMovementHistory(FMovementData aMovement)
-{
-	movementHistory.push_front(aMovement);
-	movementHistory.pop_back();
-}
-
-FStateData AJet::generateCurrentStateDataToSend()
-{
-	FStateData currentStates = FStateData(motorManager->stateClass(), steerManager->stateClass());
-
-	generateSendOrReceiveMovementType = true;
-	
-	return currentStates;
-}
-
-FMovementData AJet::retrieveCurrentMovementDataToSend()
-{
-	generateSendOrReceiveMovementType = true;
-	return FMovementData(this, EMovementType::sendOrReceive, motorManager->stateClass(), steerManager->stateClass());
-}
-
-void AJet::synchronizeMovementHistoryWith(FStateData aBunchOfStates)
-{
-	//never change timestamps!!!
-	//go back into the movement history and find the movement previous to the states timestamp.
-	//using that movement location, rotation and velocities, calculate the next movement with the states of aBunchOfStates
-	//take the next move (the one that would come after the states timestamp), set the aBunchOfStates as the movement states.
-	//Set the movement as the one calculated.
-	//
-	//Start the loop (from the move that follows until the current movement in history):
-	//if the movement type is SendOrReceive, keep the states as is.
-	//if the movement type is routine (but only before the first SendOrReceive of the loop), overwrite the states with the ones on the previous movement.
-	////(you could use a boolean to check if you can overwrite)
-	//calculate the current movement using the current states and the movement of the previous move.
-	//set the current movement in the structure.
-	//advance to next movement.
-
-	UE_LOG(LogTemp, Log, TEXT("\n\n ******** Starting Server synchronization ******** \n\n"));
-	UE_LOG(LogTemp, Log, TEXT("\n\n ****** Current Move: ****** \n %s \n\n"), *movementHistory[0].ToString());
-	
-	int historyMoment = 0;
-	if(aBunchOfStates.timestamp < movementHistory[0].timestampedStates.timestamp)//check that the states don't come from the future...
-	{
-		while (historyMoment < movementHistory.size())
-		{
-			if(movementHistory[historyMoment].timestampedStates.timestamp <= aBunchOfStates.timestamp)//we found the moment previous to the received states...
-			{
-				break;
-			}
-			++historyMoment;
-		}
-	}
-	if(historyMoment != movementHistory.size())
-	{
-		FMovementData historyRevisionStart = createMovementHistoryRevisionWith(movementHistory[historyMoment], aBunchOfStates);
-		--historyMoment;//historyMoment is previous to --historyMoment
-		if(historyMoment >=0)
-		{
-			movementHistory[historyMoment].regenerateMoveFrom(historyRevisionStart, historyRevisionStart.type);
-			reshapeHistoryFrom(historyMoment);//chain reaction of history rewrite
-		}
-	}
-	UE_LOG(LogTemp, Log, TEXT("\n\n ******** Server synchronization Finalized ******** \n\n"));
-}
-
-void AJet::synchronizeMovementHistoryWith(FMovementData aMovementStructure)
-{
-	//never change timestamps!!!
-	//go back into the movement history and find the movement following (in time) the movement structure parameter.
-	//calculate the time delta (in milliseconds) and transform it to seconds.
-	//Calculate the movement that would be made on that time delta utilizing the movement structure parameter.
-	//Set the calculated movement structure (including its states) as the movement following it.
-	//
-	//Start the loop (from the move that follows until the current movement in history):
-	//if the movement type is SendOrReceive, keep the states as is.
-	//if the movement type is routine (but only before the first SendOrReceive of the loop), overwrite the states with the ones on the previous movement.
-	////(you could use a boolean to check if you can overwrite)
-	//calculate the current movement using the current states and the movement of the previous move.
-	//set the current movement in the structure.
-	//advance to next movement.
-
-	UE_LOG(LogTemp, Log, TEXT("\n\n ******** Starting Client synchronization ******** \n\n"));
-	UE_LOG(LogTemp, Log, TEXT("\n\n ****** Current Move: ****** \n %s \n\n"), *movementHistory[0].ToString());
-	
-	int historyMoment = 0;
-	if(aMovementStructure.timestampedStates.timestamp < movementHistory[0].timestampedStates.timestamp)//check that the movement don't come from the future...
-	{
-		while (historyMoment < movementHistory.size())
-		{
-			if(movementHistory[historyMoment].timestampedStates.timestamp <= aMovementStructure.timestampedStates.timestamp)//we found the moment previous to the received movement...
-			{
-				break;
-			}
-			++historyMoment;
-		}
-	}
-	if(historyMoment != movementHistory.size())
-	{
-		--historyMoment;//go to a more recent movement...
-		if(historyMoment >=0)
-		{
-			float timeBetweenMovements = (movementHistory[historyMoment].timestampedStates.timestamp - aMovementStructure.timestampedStates.timestamp) / 1000.0f;
-			FMovementData historyRevisionStart = createMovementHistoryRevisionWith(aMovementStructure, timeBetweenMovements);
-			movementHistory[historyMoment].regenerateMoveFrom(historyRevisionStart, historyRevisionStart.type);
-			reshapeHistoryFrom(historyMoment);//chain reaction of history rewrite
-		}
-	}
-	UE_LOG(LogTemp, Log, TEXT("\n\n ******** Client synchronization Finalized ******** \n\n"));
-}
-
-FMovementData AJet::createMovementHistoryRevisionWith(FMovementData aBaseMovement, FStateData aStatesBase)
-{
-	aBaseMovement.timestampedStates.motorStateClass = aStatesBase.motorStateClass;
-	aBaseMovement.timestampedStates.steerStateClass = aStatesBase.steerStateClass;
-
-	FMovementData revisedMovement = FMovementData();
-
-	revisedMovement = simulateNextMovementFrom(aBaseMovement);//calculate next movement with these values...
-
-	return revisedMovement;
-}
-
-FMovementData AJet::createMovementHistoryRevisionWith(FMovementData aBaseMovement, float aTimeDelta)
-{
-	FMovementData revisedMovement = FMovementData();
-
-	revisedMovement = simulateNextMovementFrom(aBaseMovement, aTimeDelta);//calculate next movement with these values using the time delta instead of the tick delta time...
-
-	return revisedMovement;
-}
-
-void AJet::reshapeHistoryFrom(int aMomentInHistory)
-{
-	bool needsToChangeStates = true;
-
-	FVector steerCounterAcceleration = FVector(0);
-	FVector steerAlignAcceleration = FVector(0);
-	bool needsToAlign = false;
-	while(aMomentInHistory > 0)
-	{
-		FMovementData currentMovementInHistory = movementHistory[aMomentInHistory];
-		FMovementData nextMovementInHistory = movementHistory[aMomentInHistory - 1];
-		if(needsToChangeStates && nextMovementInHistory.type != EMovementType::sendOrReceive)
-		{
-			nextMovementInHistory.timestampedStates.motorStateClass = currentMovementInHistory.timestampedStates.motorStateClass;
-			nextMovementInHistory.timestampedStates.steerStateClass = currentMovementInHistory.timestampedStates.steerStateClass;
-		}
-		else //found the first movement in history that was already sent or received from the server...
-		{
-			needsToChangeStates = false;
-		}
-		FStateData nextMovementStates = nextMovementInHistory.timestampedStates;
-
-		FMovementData rewrittenNextMovement = FMovementData();
-
-		rewrittenNextMovement = simulateNextMovementFrom(currentMovementInHistory);//calculate rewritten next movement with these values... 
-
-
-		
-		nextMovementInHistory.regenerateMoveFrom(rewrittenNextMovement, nextMovementInHistory.type);
-		nextMovementInHistory.timestampedStates = nextMovementStates;
-
-		//align velocity!!! only if left or right steering == not center steering...
-		if(needsToAlign)
-		{
-			UE_LOG(LogTemp, Log, TEXT("\n aligning velocity \n"));
-			needsToAlign = false;
-			float timeBetweenMovements = (nextMovementInHistory.timestampedStates.timestamp - currentMovementInHistory.timestampedStates.timestamp) / 1000.0f;
-			nextMovementInHistory.linearVelocity += (steerCounterAcceleration + steerAlignAcceleration) * timeBetweenMovements;
-			nextMovementInHistory.location = currentMovementInHistory.location + nextMovementInHistory.linearVelocity * timeBetweenMovements;
-		}
-		
-		if(currentMovementInHistory.timestampedStates.steerStateClass != UCenterSteerState::StaticClass())
-		{
-			UE_LOG(LogTemp, Log, TEXT("\n needs to align velocity \n"));
-			needsToAlign = true;
-			asCurrentMovementSet(currentMovementInHistory);
-			FVector currentForwardProjection = ForwardProjectionOnFloor();
-			FVector currentLocation = GetActorLocation();
-			asCurrentMovementSet(nextMovementInHistory);
-			float alignmentAcceleration =  steeringSystem->accelerationMagnitudeToAlignVelocityFrom(currentLocation);
-			steerCounterAcceleration = (-currentForwardProjection) * alignmentAcceleration;
-			steerAlignAcceleration = ForwardProjectionOnFloor() * alignmentAcceleration;
-		}
-		--aMomentInHistory;
-	}
-	asCurrentMovementSet(movementHistory[0]);
-}
-
-FMovementData AJet::simulateNextMovementFrom(FMovementData aPreviousMovement, float simulationDuration)
-{
-	
-	asCurrentMovementSet(aPreviousMovement);
-
-	FVector sumOfAngularAccelerations = FVector(0);
-	sumOfAngularAccelerations += antiGravitySystem->currentTotalAngularAccelerationMade();
-	sumOfAngularAccelerations += Cast<USteerState, UObject>(aPreviousMovement.timestampedStates.steerStateClass->ClassDefaultObject)->angularAccelerationGeneratedTo(this);
-
-	FVector sumOfLinearAccelerations = FVector(0);
-	sumOfLinearAccelerations += Cast<UMotorState, UObject>(aPreviousMovement.timestampedStates.motorStateClass->ClassDefaultObject)->linearAccelerationsGeneratedTo(this);
-	sumOfLinearAccelerations += retrieveTrackMagnetizationLinearAcceleration();
-
-	if(simulationDuration == 0)
-	{
-		simulationDuration = GetWorld()->GetDeltaSeconds();
-	}
-
-	FVector netForceApplied = sumOfLinearAccelerations * physicsMeshComponent->GetMass();
-	FVector netTorqueApplied = sumOfAngularAccelerations * physicsMeshComponent->GetMass();
-
-	PxVec3 linearVelocityDelta = PxVec3();
-	PxVec3 angularVelocityDelta = PxVec3();
-
-	PxRigidBody* body = FPhysicsInterface_PhysX::GetPxRigidBody_AssumesLocked(physicsMeshComponent->BodyInstance.GetPhysicsActorHandle());
-
-	PxRigidBodyExt::computeVelocityDeltaFromImpulse(*body, 
-		U2PVector(netForceApplied) * simulationDuration, 
-		U2PVector(netTorqueApplied) * simulationDuration, 
-		linearVelocityDelta, 
-		angularVelocityDelta
-	);
-
-	FMovementData simulatedMove = aPreviousMovement;
-
-	simulatedMove.linearVelocity += P2UVector(linearVelocityDelta);
-	
-	simulatedMove.location += simulatedMove.linearVelocity * simulationDuration;
-	
-	simulatedMove.angularVelocityInRadians += FVector::DegreesToRadians(P2UVector(angularVelocityDelta));
-
-	FVector angularRotation = simulatedMove.angularVelocityInRadians * simulationDuration;
-	
-	FQuat angularVelocityQuaternion = FQuat(angularRotation.GetSafeNormal(), angularRotation.Size());
-
-	simulatedMove.rotation =  ( angularVelocityQuaternion * simulatedMove.rotation.Quaternion() ).Rotator();
-
-	UE_LOG(LogTemp, Log, TEXT("\n simulated movement: \n %s \n"), *simulatedMove.ToString());
-	UE_LOG(LogTemp, Log, TEXT(">>angular velocity delta: %s"), *P2UVector(angularVelocityDelta).ToString());
-	UE_LOG(LogTemp, Log, TEXT(">>angular velocity delta 'in radians': %s\n"), *FVector::DegreesToRadians(P2UVector(angularVelocityDelta)).ToString());
-	
-	return simulatedMove;
-}
-
-FVector AJet::retrieveTrackMagnetizationLinearAcceleration()
-{
-	ATrackManager* trackManager = Cast<ATrackManager, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ATrackManager::StaticClass()));
-	if(trackManager == nullptr)
-	{
-		return FVector(0, 0, - FMath::Abs(GetWorld()->GetGravityZ()));
-	}
-	return trackManager->pullingAccelerationTo(this);
-}
-
-void AJet::asCurrentMovementSet(FMovementData anotherMovement)
-{
-	SetActorLocation(anotherMovement.location);
-	SetActorRotation(anotherMovement.rotation);
-	physicsMeshComponent->SetPhysicsAngularVelocityInRadians(anotherMovement.angularVelocityInRadians);
-	physicsMeshComponent->SetPhysicsLinearVelocity(anotherMovement.linearVelocity);
-	motorManager->overrideStateTo(anotherMovement.timestampedStates.motorStateClass, this);
-	steerManager->overrideStateTo(anotherMovement.timestampedStates.steerStateClass, this);
-}
-
-
-
-
-
 
 void AJet::sendMovementToServerRequestedBy(UObject* aSubObject)
 {
 	/*if(Cast<AJet, UObject>(aSubObject->GetTypedOuter(AJet::StaticClass())) == this)
 	{*/
-		serverUpdateMovementWith(generateCurrentStateDataToSend());
+		serverUpdateMovementWith(replicationMachine->generateCurrentStateDataToSend());
 	//}
 }
 
@@ -650,12 +376,11 @@ bool AJet::serverUpdateMovementWith_Validate(FStateData aBunchOfStates)
 
 void AJet::multicastSynchronizeMovementWith_Implementation(FMovementData aMovementStructure)
 {
-	synchronizeMovementHistoryWith(aMovementStructure);
+	replicationMachine->synchronizeMovementHistoryWith(aMovementStructure);
 }
-
 
 FMovementData AJet::updatedDataSynchronizedWith(FStateData aBunchOfStates)
 {
-	synchronizeMovementHistoryWith(aBunchOfStates);
-	return retrieveCurrentMovementDataToSend();
+	replicationMachine->synchronizeMovementHistoryWith(aBunchOfStates);
+	return replicationMachine->retrieveCurrentMovementDataToSend();
 }
