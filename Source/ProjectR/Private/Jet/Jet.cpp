@@ -69,12 +69,12 @@ AJet::AJet()
 	jetModelMeshComponent->SetMassOverrideInKg(NAME_None, 0);
 
 	movementHistorySize = 60;
+	replicationMachine = CreateDefaultSubobject<UDeloreanReplicationMachine>(UDeloreanReplicationMachine::StaticClass()->GetFName());
 }
 
 void AJet::BeginPlay()
 {
 	Super::BeginPlay();
-	replicationMachine = NewObject<UDeloreanReplicationMachine>(this);
 	replicationMachine->setDefaultVariablesTo(this, movementHistorySize);
 }
 
