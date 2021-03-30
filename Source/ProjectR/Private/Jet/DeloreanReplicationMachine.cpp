@@ -21,7 +21,8 @@ void UDeloreanReplicationMachine::setDefaultVariablesTo(AJet* anOwner, int aMove
 {
 	owningJet = anOwner;
 	movementHistorySize = aMovementHistorySize;
-	movementHistory = std::deque<FMovementData>(movementHistorySize, FMovementData());
+	movementHistory = std::deque<FMovementData>(movementHistorySize, 
+		FMovementData(owningJet, EMovementType::routine, owningJet->currentMotorStateClass(), owningJet->currentSteerStateClass()));
 }
 
 void UDeloreanReplicationMachine::addMovementToHistory()
@@ -78,8 +79,10 @@ void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FStateData aBun
 	{
 		while (historyMoment < movementHistory.size())
 		{
+			UE_LOG(LogTemp, Log, TEXT("current movement history number: %s"), *FString::FromInt(historyMoment));
 			if(movementHistory[historyMoment].timestampedStates.timestamp <= aBunchOfStates.timestamp)//we found the moment previous to the received states...
 			{
+				UE_LOG(LogTemp, Log, TEXT("found timestamp lesser than received"));
 				break;
 			}
 			++historyMoment;
@@ -87,15 +90,37 @@ void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FStateData aBun
 	}
 	if(historyMoment != movementHistory.size())
 	{
+		UE_LOG(LogTemp, Log, TEXT("movement history number before history reshape: %s"), *FString::FromInt(historyMoment));
 		FMovementData historyRevisionStart = createMovementHistoryRevisionWith(movementHistory[historyMoment], aBunchOfStates);
-		--historyMoment;//historyMoment is previous to --historyMoment
-		if(historyMoment >=0)
+		if(historyMoment == 0)
 		{
 			movementHistory[historyMoment].regenerateMoveFrom(historyRevisionStart, historyRevisionStart.type);
-			reshapeHistoryFrom(historyMoment);//chain reaction of history rewrite
+		}
+		else
+		{
+			--historyMoment;//historyMoment is previous to --historyMoment
+			if(historyMoment >=0)
+			{
+				UE_LOG(LogTemp, Log, TEXT("movement history number to start reshaping: %s"), *FString::FromInt(historyMoment));
+				movementHistory[historyMoment].regenerateMoveFrom(historyRevisionStart, historyRevisionStart.type);
+				reshapeHistoryFrom(historyMoment);//chain reaction of history rewrite
+			}
 		}
 	}
 	UE_LOG(LogTemp, Log, TEXT("\n\n ******** Server synchronization Finalized ******** \n\n"));
+	UE_LOG(LogTemp, Log, TEXT("\n\n ****** Final server Move: ****** \n %s \n\n"), *movementHistory[0].ToString());
+}
+
+FMovementData UDeloreanReplicationMachine::createMovementHistoryRevisionWith(FMovementData aBaseMovement, FStateData aStatesBase)
+{
+	aBaseMovement.timestampedStates.motorStateClass = aStatesBase.motorStateClass;
+	aBaseMovement.timestampedStates.steerStateClass = aStatesBase.steerStateClass;
+
+	FMovementData revisedMovement = FMovementData();
+
+	revisedMovement = simulateNextMovementFrom(aBaseMovement);//calculate next movement with these values...
+
+	return revisedMovement;
 }
 
 void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FMovementData aMovementStructure)
@@ -122,8 +147,10 @@ void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FMovementData a
 	{
 		while (historyMoment < movementHistory.size())
 		{
+			UE_LOG(LogTemp, Log, TEXT("current movement history number: %s"), *FString::FromInt(historyMoment));
 			if(movementHistory[historyMoment].timestampedStates.timestamp <= aMovementStructure.timestampedStates.timestamp)//we found the moment previous to the received movement...
 			{
+				UE_LOG(LogTemp, Log, TEXT("found timestamp lesser than received"));
 				break;
 			}
 			++historyMoment;
@@ -131,9 +158,11 @@ void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FMovementData a
 	}
 	if(historyMoment != movementHistory.size())
 	{
+		UE_LOG(LogTemp, Log, TEXT("movement history number before history reshape: %s"), *FString::FromInt(historyMoment));
 		--historyMoment;//go to a more recent movement...
-		if(historyMoment >=0)
+		if(historyMoment >=0)// >0, otherwise it will attempt to reshape the movement -1
 		{
+			UE_LOG(LogTemp, Log, TEXT("movement history number to start reshaping: %s"), *FString::FromInt(historyMoment));
 			float timeBetweenMovements = (movementHistory[historyMoment].timestampedStates.timestamp - aMovementStructure.timestampedStates.timestamp) / 1000.0f;
 			FMovementData historyRevisionStart = createMovementHistoryRevisionWith(aMovementStructure, timeBetweenMovements);
 			movementHistory[historyMoment].regenerateMoveFrom(historyRevisionStart, historyRevisionStart.type);
@@ -141,19 +170,7 @@ void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FMovementData a
 		}
 	}
 	UE_LOG(LogTemp, Log, TEXT("\n\n ******** Client synchronization Finalized ******** \n\n"));
-}
-
-
-FMovementData UDeloreanReplicationMachine::createMovementHistoryRevisionWith(FMovementData aBaseMovement, FStateData aStatesBase)
-{
-	aBaseMovement.timestampedStates.motorStateClass = aStatesBase.motorStateClass;
-	aBaseMovement.timestampedStates.steerStateClass = aStatesBase.steerStateClass;
-
-	FMovementData revisedMovement = FMovementData();
-
-	revisedMovement = simulateNextMovementFrom(aBaseMovement);//calculate next movement with these values...
-
-	return revisedMovement;
+	UE_LOG(LogTemp, Log, TEXT("\n\n ****** Final client Move: ****** \n %s \n\n"), *movementHistory[0].ToString());
 }
 
 FMovementData UDeloreanReplicationMachine::createMovementHistoryRevisionWith(FMovementData aBaseMovement, float aTimeDelta)
