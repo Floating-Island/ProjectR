@@ -22,6 +22,7 @@ private:
 	bool alwaysCancelGravity;
 public:
 	AJetMOCK();
+	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
 	bool hasAPhysicsMesh();

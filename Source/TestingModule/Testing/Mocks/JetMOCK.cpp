@@ -16,6 +16,13 @@ AJetMOCK::AJetMOCK()
 	alwaysCancelGravity = false;
 }
 
+void AJetMOCK::BeginPlay()
+{
+	Super::BeginPlay();
+	replicationMachine = NewObject<UDeloreanReplicationMachineMOCK>(this);
+	replicationMachine->setDefaultVariablesTo(this, movementHistorySize);
+}
+
 void AJetMOCK::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -51,6 +58,7 @@ void AJetMOCK::setCurrentXVelocityTo(float aDesiredSpeed)
 {
 	FVector newVelocity = FVector(aDesiredSpeed, 0, 0);
 	physicsMeshComponent->SetPhysicsLinearVelocity(newVelocity);
+	retrieveMovementHistory()[0].linearVelocity = newVelocity;
 }
 
 bool AJetMOCK::hasASprinArm()
@@ -152,8 +160,6 @@ void AJetMOCK::setSteerManagerMOCK()
 	FActorSpawnParameters spawnParameters = FActorSpawnParameters();
 	spawnParameters.Owner = this;
 	steerManager = GetWorld()->SpawnActor<ASteerStateManagerMOCK>(spawnParameters);
-	replicationMachine = NewObject<UDeloreanReplicationMachineMOCK>();
-	replicationMachine->setDefaultVariablesTo(this, movementHistorySize);
 }
 
 bool AJetMOCK::hasPhysicsMeshHidden()
