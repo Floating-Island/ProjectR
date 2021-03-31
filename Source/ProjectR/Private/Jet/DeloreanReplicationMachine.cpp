@@ -15,6 +15,7 @@ UDeloreanReplicationMachine::UDeloreanReplicationMachine()
 {
 	generateSendOrReceiveMovementType = false;
 	owningJet = nullptr;
+	synchronizedMovement = FMovementData();
 }
 
 void UDeloreanReplicationMachine::setDefaultVariablesTo(AJet* anOwner, int aMovementHistorySize)
@@ -40,6 +41,41 @@ void UDeloreanReplicationMachine::addToMovementHistory(FMovementData aMovement)
 	movementHistory.pop_back();
 }
 
+int UDeloreanReplicationMachine::closestIndexTo(int64 aTimestamp)
+{
+	int historyMoment = 0;
+	int minimumDifference = std::numeric_limits<int>::max();
+	if(aTimestamp < movementHistory[0].timestampedStates.timestamp)//check that the timestamp doesn't come from the future...
+	{
+		while (historyMoment < movementHistory.size())
+		{
+			const int currentDifference = FMath::Abs(movementHistory[historyMoment].timestampedStates.timestamp - aTimestamp);
+
+			UE_LOG(LogTemp, Log, TEXT("current movement history number: %s"), *FString::FromInt(historyMoment));
+			UE_LOG(LogTemp, Log, TEXT("minimum difference: %s"), *FString::FromInt(minimumDifference));
+			UE_LOG(LogTemp, Log, TEXT("current difference: %s"), *FString::FromInt(currentDifference));
+
+			if( currentDifference < minimumDifference)
+			{
+				minimumDifference = currentDifference;
+			}
+			else
+			{
+				UE_LOG(LogTemp, Log, TEXT("found closest index to received timestamp."));
+				break;
+			}
+			++historyMoment;
+		}
+	}
+	return --historyMoment;
+}
+
+void UDeloreanReplicationMachine::establishMovementForTheClientFrom(int aMomentInHistory, int64 aClientTimestamp)
+{
+	synchronizedMovement = movementHistory[aMomentInHistory];
+	synchronizedMovement.timestampedStates.timestamp = aClientTimestamp;
+}
+
 FStateData UDeloreanReplicationMachine::generateCurrentStateDataToSend()
 {
 	FStateData currentStates = FStateData(owningJet->currentMotorStateClass(), owningJet->currentSteerStateClass());
@@ -51,8 +87,7 @@ FStateData UDeloreanReplicationMachine::generateCurrentStateDataToSend()
 
 FMovementData UDeloreanReplicationMachine::retrieveCurrentMovementDataToSend()
 {
-	generateSendOrReceiveMovementType = true;
-	return FMovementData(owningJet, EMovementType::sendOrReceive, owningJet->currentMotorStateClass(), owningJet->currentSteerStateClass());
+	return synchronizedMovement;
 }
 
 void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FStateData aBunchOfStates)
@@ -74,53 +109,34 @@ void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FStateData aBun
 	UE_LOG(LogTemp, Log, TEXT("\n\n ******** Starting Server synchronization ******** \n\n"));
 	UE_LOG(LogTemp, Log, TEXT("\n\n ****** Current Move: ****** \n %s \n\n"), *movementHistory[0].ToString());
 	
-	int historyMoment = 0;
-	if(aBunchOfStates.timestamp < movementHistory[0].timestampedStates.timestamp)//check that the states don't come from the future...
-	{
-		while (historyMoment < movementHistory.size())
-		{
-			UE_LOG(LogTemp, Log, TEXT("current movement history number: %s"), *FString::FromInt(historyMoment));
-			if(movementHistory[historyMoment].timestampedStates.timestamp <= aBunchOfStates.timestamp)//we found the moment previous to the received states...
-			{
-				UE_LOG(LogTemp, Log, TEXT("found timestamp lesser than received"));
-				break;
-			}
-			++historyMoment;
-		}
-	}
+	int historyMoment = closestIndexTo(aBunchOfStates.timestamp);
 	if(historyMoment != movementHistory.size())
 	{
 		UE_LOG(LogTemp, Log, TEXT("movement history number before history reshape: %s"), *FString::FromInt(historyMoment));
-		FMovementData historyRevisionStart = createMovementHistoryRevisionWith(movementHistory[historyMoment], aBunchOfStates);
-		if(historyMoment == 0)
+		if(historyMoment <= 0)
 		{
-			movementHistory[historyMoment].regenerateMoveFrom(historyRevisionStart, historyRevisionStart.type);
+			movementHistory[0].timestampedStates.motorStateClass = aBunchOfStates.motorStateClass;
+			movementHistory[0].timestampedStates.steerStateClass = aBunchOfStates.steerStateClass;
+			movementHistory[0].type = EMovementType::sendOrReceive;
+			establishMovementForTheClientFrom(historyMoment, aBunchOfStates.timestamp);//save moment to send to the client...
 		}
 		else
 		{
-			--historyMoment;//historyMoment is previous to --historyMoment
 			if(historyMoment >=0)
 			{
+				movementHistory[historyMoment].timestampedStates.motorStateClass = aBunchOfStates.motorStateClass;
+				movementHistory[historyMoment].timestampedStates.steerStateClass = aBunchOfStates.steerStateClass;
+				movementHistory[historyMoment].type = EMovementType::sendOrReceive;
 				UE_LOG(LogTemp, Log, TEXT("movement history number to start reshaping: %s"), *FString::FromInt(historyMoment));
-				movementHistory[historyMoment].regenerateMoveFrom(historyRevisionStart, historyRevisionStart.type);
-				reshapeHistoryFrom(historyMoment);//chain reaction of history rewrite
+				UE_LOG(LogTemp, Log, TEXT("\n** Base move to start reshaping: ** \n %s\n"), *movementHistory[historyMoment].ToString());
+				reshapeHistoryFrom(historyMoment, true);//chain reaction of history rewrite
+				establishMovementForTheClientFrom(historyMoment, aBunchOfStates.timestamp);//save moment to send to the client...
 			}
 		}
+		//send movement to client. If the jets calls it, it could be that the history moment was the same as the movement history size and it will return an invalid movement.
 	}
 	UE_LOG(LogTemp, Log, TEXT("\n\n ******** Server synchronization Finalized ******** \n\n"));
 	UE_LOG(LogTemp, Log, TEXT("\n\n ****** Final server Move: ****** \n %s \n\n"), *movementHistory[0].ToString());
-}
-
-FMovementData UDeloreanReplicationMachine::createMovementHistoryRevisionWith(FMovementData aBaseMovement, FStateData aStatesBase)
-{
-	aBaseMovement.timestampedStates.motorStateClass = aStatesBase.motorStateClass;
-	aBaseMovement.timestampedStates.steerStateClass = aStatesBase.steerStateClass;
-
-	FMovementData revisedMovement = FMovementData();
-
-	revisedMovement = simulateNextMovementFrom(aBaseMovement);//calculate next movement with these values...
-
-	return revisedMovement;
 }
 
 void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FMovementData aMovementStructure)
@@ -142,63 +158,39 @@ void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FMovementData a
 	UE_LOG(LogTemp, Log, TEXT("\n\n ******** Starting Client synchronization ******** \n\n"));
 	UE_LOG(LogTemp, Log, TEXT("\n\n ****** Current Move: ****** \n %s \n\n"), *movementHistory[0].ToString());
 	
-	int historyMoment = 0;
-	if(aMovementStructure.timestampedStates.timestamp < movementHistory[0].timestampedStates.timestamp)//check that the movement don't come from the future...
-	{
-		while (historyMoment < movementHistory.size())
-		{
-			UE_LOG(LogTemp, Log, TEXT("current movement history number: %s"), *FString::FromInt(historyMoment));
-			if(movementHistory[historyMoment].timestampedStates.timestamp <= aMovementStructure.timestampedStates.timestamp)//we found the moment previous to the received movement...
-			{
-				UE_LOG(LogTemp, Log, TEXT("found timestamp lesser than received"));
-				break;
-			}
-			++historyMoment;
-		}
-	}
+	int historyMoment = closestIndexTo(aMovementStructure.timestampedStates.timestamp);
 	if(historyMoment != movementHistory.size())
 	{
 		UE_LOG(LogTemp, Log, TEXT("movement history number before history reshape: %s"), *FString::FromInt(historyMoment));
-		--historyMoment;//go to a more recent movement...
 		if(historyMoment >=0)// >0, otherwise it will attempt to reshape the movement -1
 		{
 			UE_LOG(LogTemp, Log, TEXT("movement history number to start reshaping: %s"), *FString::FromInt(historyMoment));
-			float timeBetweenMovements = (movementHistory[historyMoment].timestampedStates.timestamp - aMovementStructure.timestampedStates.timestamp) / 1000.0f;
-			FMovementData historyRevisionStart = createMovementHistoryRevisionWith(aMovementStructure, timeBetweenMovements);
-			movementHistory[historyMoment].regenerateMoveFrom(historyRevisionStart, historyRevisionStart.type);
-			reshapeHistoryFrom(historyMoment);//chain reaction of history rewrite
+			movementHistory[historyMoment].copyMovesFrom(aMovementStructure);
+			reshapeHistoryFrom(historyMoment, false);//chain reaction of history rewrite
 		}
 	}
 	UE_LOG(LogTemp, Log, TEXT("\n\n ******** Client synchronization Finalized ******** \n\n"));
 	UE_LOG(LogTemp, Log, TEXT("\n\n ****** Final client Move: ****** \n %s \n\n"), *movementHistory[0].ToString());
 }
 
-FMovementData UDeloreanReplicationMachine::createMovementHistoryRevisionWith(FMovementData aBaseMovement, float aTimeDelta)
+void UDeloreanReplicationMachine::reshapeHistoryFrom(int aMomentInHistory, bool anOptionToChangeStates)
 {
-	FMovementData revisedMovement = FMovementData();
-
-	revisedMovement = simulateNextMovementFrom(aBaseMovement, aTimeDelta);//calculate next movement with these values using the time delta instead of the tick delta time...
-
-	return revisedMovement;
-}
-
-void UDeloreanReplicationMachine::reshapeHistoryFrom(int aMomentInHistory)
-{
-	bool needsToChangeStates = true;
+	bool needsToChangeStates = anOptionToChangeStates;
 
 	FVector steerCounterAcceleration = FVector(0);
 	FVector steerAlignAcceleration = FVector(0);
 	bool needsToAlign = false;
 	while(aMomentInHistory > 0)
 	{
-		FMovementData currentMovementInHistory = movementHistory[aMomentInHistory];
-		FMovementData nextMovementInHistory = movementHistory[aMomentInHistory - 1];
-		if(needsToChangeStates && nextMovementInHistory.type != EMovementType::sendOrReceive)
+		FMovementData& currentMovementInHistory = movementHistory[aMomentInHistory];
+		FMovementData& nextMovementInHistory = movementHistory[aMomentInHistory - 1];
+		if(needsToChangeStates && nextMovementInHistory.type == EMovementType::routine)
 		{
+			UE_LOG(LogTemp, Log, TEXT("\n changing states \n"));
 			nextMovementInHistory.timestampedStates.motorStateClass = currentMovementInHistory.timestampedStates.motorStateClass;
 			nextMovementInHistory.timestampedStates.steerStateClass = currentMovementInHistory.timestampedStates.steerStateClass;
 		}
-		else //found the first movement in history that was already sent or received from the server...
+		else //found the first movement in history that was already sent to or received from the server...
 		{
 			needsToChangeStates = false;
 		}
@@ -257,6 +249,15 @@ FMovementData UDeloreanReplicationMachine::simulateNextMovementFrom(FMovementDat
 	{
 		simulationDuration = GetWorld()->GetDeltaSeconds();
 	}
+
+	float effectiveLinearDamping = 1 - owningJet->linearDamping() * simulationDuration;
+	float effectiveAngularDamping = 1 - owningJet->angularDamping() * simulationDuration;
+
+	UE_LOG(LogTemp, Log, TEXT("effective linear damping %f"), effectiveLinearDamping);
+	UE_LOG(LogTemp, Log, TEXT("effective angular damping %f"), effectiveAngularDamping);
+	
+	sumOfLinearAccelerations *=  effectiveLinearDamping;
+	sumOfAngularAccelerations *= effectiveAngularDamping;
 
 	FVector netForceApplied = sumOfLinearAccelerations * owningJet->mass();
 	FVector netTorqueApplied = sumOfAngularAccelerations * owningJet->mass();

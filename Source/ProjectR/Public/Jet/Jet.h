@@ -135,7 +135,13 @@ public:
 	
 	void sendMovementToServerRequestedBy(UObject* aSubObject);
 
+	float linearDamping();
+	float angularDamping();
+
 protected:
+
+	bool needsToReplicateStates;
+	
 	UFUNCTION(Server, Reliable, WithValidation)
 		void serverUpdateMovementWith(FStateData aBunchOfStates);
 

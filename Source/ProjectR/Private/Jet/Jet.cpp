@@ -57,6 +57,7 @@ AJet::AJet()
 
 	SetReplicates(true);
 	SetReplicateMovement(false);
+	needsToReplicateStates = false;
 	motorManager = nullptr;
 	steerManager = nullptr;
 
@@ -85,6 +86,12 @@ void AJet::Tick(float DeltaTime)
 	motorManager->activate(motorDriveSystem);
 	steerManager->activate(steeringSystem);
 	replicationMachine->addMovementToHistory();
+
+	if(needsToReplicateStates)
+	{
+		needsToReplicateStates = false;
+		serverUpdateMovementWith(replicationMachine->generateCurrentStateDataToSend());
+	}
 }
 
 void AJet::PostInitializeComponents()
@@ -360,8 +367,18 @@ void AJet::sendMovementToServerRequestedBy(UObject* aSubObject)
 {
 	/*if(Cast<AJet, UObject>(aSubObject->GetTypedOuter(AJet::StaticClass())) == this)
 	{*/
-		serverUpdateMovementWith(replicationMachine->generateCurrentStateDataToSend());
+	needsToReplicateStates = true;
 	//}
+}
+
+float AJet::linearDamping()
+{
+	return physicsMeshComponent->GetLinearDamping();
+}
+
+float AJet::angularDamping()
+{
+	return physicsMeshComponent->GetAngularDamping();
 }
 
 void AJet::serverUpdateMovementWith_Implementation(FStateData aBunchOfStates)

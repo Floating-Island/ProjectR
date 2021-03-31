@@ -108,6 +108,15 @@ struct FMovementData
 		timestampedStates.steerStateClass = anotherMovement.timestampedStates.steerStateClass;
 		type = aNewMovementType;
 	}
+
+	/**copies movements from anotherMovement except the timestampedStates*/
+	void copyMovesFrom(FMovementData anotherMovement)
+	{
+		location = anotherMovement.location;
+		rotation = anotherMovement.rotation;
+		linearVelocity = anotherMovement.linearVelocity;
+		angularVelocityInRadians = anotherMovement.angularVelocityInRadians;
+	}
 };
 
 
@@ -130,6 +139,7 @@ class PROJECTR_API UDeloreanReplicationMachine : public UObject
 private:
 	AJet* owningJet;
 	bool generateSendOrReceiveMovementType;
+	FMovementData synchronizedMovement;
 
 protected:
 		/** don't add objects directly, use addMovementToHistory instead.*/
@@ -141,18 +151,16 @@ protected:
 	 */
 	int movementHistorySize;
 
-
-
-	FMovementData createMovementHistoryRevisionWith(FMovementData aBaseMovement, FStateData aStatesBase);
-	FMovementData createMovementHistoryRevisionWith(FMovementData aBaseMovement, float aTimeDelta);
-
-	void reshapeHistoryFrom(int aMomentInHistory);
+	void reshapeHistoryFrom(int aMomentInHistory, bool anOptionToChangeStates);
 
 	FMovementData simulateNextMovementFrom(FMovementData aPreviousMovement, float simulationDuration = 0);
 
 	FVector retrieveTrackMagnetizationLinearAcceleration();
 
 	void addToMovementHistory(FMovementData aMovement);
+
+	int closestIndexTo(int64 aTimestamp);
+	void establishMovementForTheClientFrom(int aMomentInHistory, int64 aClientTimestamp);
 	
 public:
 	UDeloreanReplicationMachine();
