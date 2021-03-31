@@ -11,7 +11,7 @@ void FSimplePIETestBase::appendTestFailureWhen(bool aTickCountExceedsLimit)
 {
 	if(aTickCountExceedsLimit)
 	{
-		FString limitReachedMessage = FString(("Tick limit of %d reached. "), tickLimit) + testMessage;
+		FString limitReachedMessage = FString("Tick limit of ") + FString::FromInt(tickLimit) + FString(" reached. ") + testMessage;
 		TestFalse(*limitReachedMessage, aTickCountExceedsLimit);
 	}
 }
@@ -50,6 +50,7 @@ void FSimplePIETestBase::establishTestMessageTo(FString aMessage)
 
 void FSimplePIETestBase::establishTickLimitTo(int aDesiredQuantity)
 {
+	resetTickCount();
 	if(tickLimit == 0)
 	{
 		tickLimit = aDesiredQuantity;
@@ -93,6 +94,11 @@ FString FSimplePIETestBase::initialWorldName()
 		initialWorld = mapName;
 	}
 	return initialWorld;
+}
+
+void FSimplePIETestBase::resetTickCount()
+{
+	tickCount = 0;
 }
 
 
