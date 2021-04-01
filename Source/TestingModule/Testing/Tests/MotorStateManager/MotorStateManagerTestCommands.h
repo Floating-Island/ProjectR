@@ -28,19 +28,19 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAMotorStateManagerAndNeutralizeIt);
 DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAMotorStateManagerBrakeAccelerateAndNeutralizeIt);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientAccelerateMotorStateManager, int, clientQuantity);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientBrakeMotorStateManager, int, clientQuantity);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientNeutralizeMotorStateManager, int, clientQuantity);
+//DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientAccelerateMotorStateManager, int, clientQuantity);
+//
+//
+//DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientBrakeMotorStateManager, int, clientQuantity);
+//
+//
+//DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientNeutralizeMotorStateManager, int, clientQuantity);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAMotorStateManagerAndMixIt);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientMixMotorStateManager, int, clientQuantity);
+//DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientMixMotorStateManager, int, clientQuantity);
 
 
 
@@ -71,7 +71,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckMotorStateManagerNeutralize
 //DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMotorStateManagerLeavesOneStateInWorld, FAutomationTestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckMotorStateManagerServerAndClientExpectedState, UClass*, expectedStateClass, int, clientQuantity, FSimplePIETestBase*, test);
+//DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckMotorStateManagerServerAndClientExpectedState, UClass*, expectedStateClass, int, clientQuantity, FSimplePIETestBase*, test);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckMotorStateManagerStateChangesToMixed, FSimplePIETestBase*, test);

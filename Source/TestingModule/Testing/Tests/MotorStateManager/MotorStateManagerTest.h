@@ -65,29 +65,29 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerNeutralizeKeepsStateI
 //	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerReplicatesTest, 
-	"ProjectR.MotorStateManager Tests.Replication.009: Replicates", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerAlwaysRelevantTest, 
-	"ProjectR.MotorStateManager Tests.Replication.010: Is always relevant for network", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerReplicatesStateWhenCallingAccelerateTest, FSimplePIETestBase,
-	"ProjectR.MotorStateManager Tests.Replication.011: Replicates state when calling accelerate", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerReplicatesStateWhenCallingBrakeTest, FSimplePIETestBase,
-	"ProjectR.MotorStateManager Tests.Replication.012: Replicates state when calling brake", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerReplicatesStateWhenCallingNeutralizeTest, FSimplePIETestBase,
-	"ProjectR.MotorStateManager Tests.Replication.013: Replicates state when calling neutralize", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerReplicatesTest, 
+//	"ProjectR.MotorStateManager Tests.Replication.009: Replicates", 
+//	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerAlwaysRelevantTest, 
+//	"ProjectR.MotorStateManager Tests.Replication.010: Is always relevant for network", 
+//	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//
+//IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerReplicatesStateWhenCallingAccelerateTest, FSimplePIETestBase,
+//	"ProjectR.MotorStateManager Tests.Replication.011: Replicates state when calling accelerate", 
+//	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//
+//IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerReplicatesStateWhenCallingBrakeTest, FSimplePIETestBase,
+//	"ProjectR.MotorStateManager Tests.Replication.012: Replicates state when calling brake", 
+//	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//
+//IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerReplicatesStateWhenCallingNeutralizeTest, FSimplePIETestBase,
+//	"ProjectR.MotorStateManager Tests.Replication.013: Replicates state when calling neutralize", 
+//	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerMixChangesStateToMixedTest, FSimplePIETestBase,
@@ -99,10 +99,10 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerMixKeepsStateIfAlread
 	"ProjectR.MotorStateManager Tests.Unit.015: mix keeps the state if it's already Mixed", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerReplicatesStateWhenCallingMixTest, FSimplePIETestBase,
-	"ProjectR.MotorStateManager Tests.Replication.016: Replicates state when calling mix", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerReplicatesStateWhenCallingMixTest, FSimplePIETestBase,
+//	"ProjectR.MotorStateManager Tests.Replication.016: Replicates state when calling mix", 
+//	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAMotorStateManagerDoesntTickTest, 

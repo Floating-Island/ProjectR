@@ -25,13 +25,13 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FRightSteerASteerStateManagerMOCK);
 DEFINE_LATENT_AUTOMATION_COMMAND(FCenterASteerStateManagerMOCK);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientSteerLeftSteerStateManager, int, clientQuantity);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientSteerRightSteerStateManager, int, clientQuantity);
-
-
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientCenterSteerStateManager, int, clientQuantity);
+//DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientSteerLeftSteerStateManager, int, clientQuantity);
+//
+//
+//DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientSteerRightSteerStateManager, int, clientQuantity);
+//
+//
+//DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FClientCenterSteerStateManager, int, clientQuantity);
 
 
 
@@ -50,6 +50,6 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckSteerStateManagerCurrentSta
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckSteerStateManagerCurrentStateAgainstPreviousOnCenter, USteerState*, previousState, FSimplePIETestBase*, test);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckSteerStateManagerServerAndClientExpectedState, UClass*, expectedStateClass, int, clientQuantity, FSimplePIETestBase*, test);
+//DEFINE_LATENT_AUTOMATION_COMMAND_THREE_PARAMETER(FCheckSteerStateManagerServerAndClientExpectedState, UClass*, expectedStateClass, int, clientQuantity, FSimplePIETestBase*, test);
 
 #endif //WITH_DEV_AUTOMATION_TESTS

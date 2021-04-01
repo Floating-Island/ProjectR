@@ -17,4 +17,6 @@ class TESTINGMODULE_API ASteerStateManagerMOCK : public ASteerStateManager
 
 public:
 	USteerState* currentState();
+
+	void setOwningJet(AJet* owner);
 };

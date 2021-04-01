@@ -61,7 +61,7 @@ bool FASteerStateManagerDefaultStateIsCenterTest::RunTest(const FString& Paramet
 
 bool FASteerStateManagerSteerLeftChangesStateToLeftSteerTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/JetMOCKTestWorld"));
 	UClass* expectedStateClass = ULeftSteerState::StaticClass();
 	establishTestMessageTo((FString("After leftSteer, the current state should be %s."), *expectedStateClass->GetName()));
 	establishTickLimitTo(3);
@@ -85,7 +85,7 @@ bool FASteerStateManagerSteerLeftChangesStateToLeftSteerTest::RunTest(const FStr
 
 bool FASteerStateManagerSteerRightChangesStateToRightSteerTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/JetMOCKTestWorld"));
 	UClass* expectedStateClass = URightSteerState::StaticClass();
 	establishTestMessageTo((FString("After rightSteer, the current state should be %s."), *expectedStateClass->GetName()));
 	establishTickLimitTo(3);
@@ -109,7 +109,7 @@ bool FASteerStateManagerSteerRightChangesStateToRightSteerTest::RunTest(const FS
 
 bool FASteerStateManagerCenterChangesStateToCenterSteerTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/JetMOCKTestWorld"));
 	UClass* expectedStateClass = UCenterSteerState::StaticClass();
 	establishTestMessageTo((FString("After center, the current state should be %s."), *expectedStateClass->GetName()));
 	establishTickLimitTo(3);
@@ -133,7 +133,7 @@ bool FASteerStateManagerCenterChangesStateToCenterSteerTest::RunTest(const FStri
 
 bool FASteerStateManagerSteerLeftKeepsStateIfAlreadyLeftSteerStateTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/JetMOCKTestWorld"));
 	establishTestMessageTo(FString("steerLeft should keep the current state if it's a LeftSteerState."));
 	establishTickLimitTo(3);
 
@@ -156,7 +156,7 @@ bool FASteerStateManagerSteerLeftKeepsStateIfAlreadyLeftSteerStateTest::RunTest(
 
 bool FASteerStateManagerSteerRightKeepsStateIfAlreadyRightSteerStateTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/JetMOCKTestWorld"));
 	establishTestMessageTo(FString(FString("steerRight should keep the current state if it's a RightSteerState.")));
 	establishTickLimitTo(3);
 
@@ -179,7 +179,7 @@ bool FASteerStateManagerSteerRightKeepsStateIfAlreadyRightSteerStateTest::RunTes
 
 bool FASteerStateManagerCenterKeepsStateIfAlreadyCenterSteerStateTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/JetMOCKTestWorld"));
 	establishTestMessageTo(FString("center should keep the current state if it's a CenterSteerState."));
 	establishTickLimitTo(3);
 
@@ -200,108 +200,108 @@ bool FASteerStateManagerCenterKeepsStateIfAlreadyCenterSteerStateTest::RunTest(c
 }
 
 
-bool FASteerStateManagerReplicatesTest::RunTest(const FString& Parameters)
-{
-	ASteerStateManager* testManager = NewObject<ASteerStateManager>();
-
-	TestTrue(TEXT("Should replicate to the network."), testManager->GetIsReplicated());
-
-	return true;	
-}
-
-
-bool FASteerStateManagerIsAlwaysRelevantToNetworkTest::RunTest(const FString& Parameters)
-{
-	ASteerStateManager* testManager = NewObject<ASteerStateManager>();
-
-	TestTrue(TEXT("Should be always relevant to the network."), testManager->bAlwaysRelevant);
-
-	return true;	
-}
-
-
-bool FASteerStateManagerReplicatesStateWhenCallingSteerLeftTest::RunTest(const FString& Parameters)
-{
-	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
-	UClass* expectedStateClass = ULeftSteerState::StaticClass();
-	establishTestMessageTo((FString("The current state of server and client should be %s."), *expectedStateClass->GetName()));
-	establishTickLimitTo(10);
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
-	int32 numberOfPlayers = 2;
-	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
-
-	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
-
-	
-	
-
-	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(steerStateManagerClass, FTransform(), numberOfPlayers));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FClientSteerLeftSteerStateManager(numberOfPlayers));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerServerAndClientExpectedState(expectedStateClass, numberOfPlayers, this));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	return true;
-}
-
-
-bool FASteerStateManagerReplicatesStateWhenCallingSteerRightTest::RunTest(const FString& Parameters)
-{
-	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
-	UClass* expectedStateClass = URightSteerState::StaticClass();
-	establishTestMessageTo((FString("The current state of server and client should be %s."), *expectedStateClass->GetName()));
-	establishTickLimitTo(10);
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
-	int32 numberOfPlayers = 2;
-	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
-
-	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
-
-	
-	
-
-	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(steerStateManagerClass, FTransform(), numberOfPlayers));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FClientSteerRightSteerStateManager(numberOfPlayers));
-	
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerServerAndClientExpectedState(expectedStateClass, numberOfPlayers, this));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	return true;
-}
-
-
-bool FASteerStateManagerReplicatesStateWhenCallingCenterTest::RunTest(const FString& Parameters)
-{
-	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
-	UClass* expectedStateClass = UCenterSteerState::StaticClass();
-	establishTestMessageTo((FString("The current state of server and client should be %s."), *expectedStateClass->GetName()));
-	establishTickLimitTo(10);
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
-	int32 numberOfPlayers = 2;
-	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
-
-	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
-
-	
-	
-
-	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(steerStateManagerClass, FTransform(), numberOfPlayers));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FClientCenterSteerStateManager(numberOfPlayers));
-	
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerServerAndClientExpectedState(expectedStateClass, numberOfPlayers, this));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	return true;
-}
+//bool FASteerStateManagerReplicatesTest::RunTest(const FString& Parameters)
+//{
+//	ASteerStateManager* testManager = NewObject<ASteerStateManager>();
+//
+//	TestTrue(TEXT("Should replicate to the network."), testManager->GetIsReplicated());
+//
+//	return true;	
+//}
+//
+//
+//bool FASteerStateManagerIsAlwaysRelevantToNetworkTest::RunTest(const FString& Parameters)
+//{
+//	ASteerStateManager* testManager = NewObject<ASteerStateManager>();
+//
+//	TestTrue(TEXT("Should be always relevant to the network."), testManager->bAlwaysRelevant);
+//
+//	return true;	
+//}
+//
+//
+//bool FASteerStateManagerReplicatesStateWhenCallingSteerLeftTest::RunTest(const FString& Parameters)
+//{
+//	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+//	UClass* expectedStateClass = ULeftSteerState::StaticClass();
+//	establishTestMessageTo((FString("The current state of server and client should be %s."), *expectedStateClass->GetName()));
+//	establishTickLimitTo(10);
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+//	int32 numberOfPlayers = 2;
+//	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+//
+//	
+//	
+//
+//	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
+//	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(steerStateManagerClass, FTransform(), numberOfPlayers));
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FClientSteerLeftSteerStateManager(numberOfPlayers));
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerServerAndClientExpectedState(expectedStateClass, numberOfPlayers, this));
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+//	return true;
+//}
+//
+//
+//bool FASteerStateManagerReplicatesStateWhenCallingSteerRightTest::RunTest(const FString& Parameters)
+//{
+//	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+//	UClass* expectedStateClass = URightSteerState::StaticClass();
+//	establishTestMessageTo((FString("The current state of server and client should be %s."), *expectedStateClass->GetName()));
+//	establishTickLimitTo(10);
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+//	int32 numberOfPlayers = 2;
+//	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+//
+//	
+//	
+//
+//	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
+//	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(steerStateManagerClass, FTransform(), numberOfPlayers));
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FClientSteerRightSteerStateManager(numberOfPlayers));
+//	
+//	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerServerAndClientExpectedState(expectedStateClass, numberOfPlayers, this));
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+//	return true;
+//}
+//
+//
+//bool FASteerStateManagerReplicatesStateWhenCallingCenterTest::RunTest(const FString& Parameters)
+//{
+//	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+//	UClass* expectedStateClass = UCenterSteerState::StaticClass();
+//	establishTestMessageTo((FString("The current state of server and client should be %s."), *expectedStateClass->GetName()));
+//	establishTickLimitTo(10);
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+//	int32 numberOfPlayers = 2;
+//	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+//
+//	
+//	
+//
+//	UClass* steerStateManagerClass = ASteerStateManagerMOCK::StaticClass();
+//	ADD_LATENT_AUTOMATION_COMMAND(FServerSpawnActorOfClass(steerStateManagerClass, FTransform(), numberOfPlayers));
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FClientCenterSteerStateManager(numberOfPlayers));
+//	
+//	ADD_LATENT_AUTOMATION_COMMAND(FCheckSteerStateManagerServerAndClientExpectedState(expectedStateClass, numberOfPlayers, this));
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+//	return true;
+//}
 
 
 

@@ -7,3 +7,8 @@ USteerState* ASteerStateManagerMOCK::currentState()
 {
 	return steerState;
 }
+
+void ASteerStateManagerMOCK::setOwningJet(AJet* owner)
+{
+	owningJet = owner;
+}
