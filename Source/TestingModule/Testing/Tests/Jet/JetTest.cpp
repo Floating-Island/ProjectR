@@ -183,21 +183,14 @@ bool FAJetDefaultTopSpeedIsGreaterThanZeroTest::RunTest(const FString& Parameter
 
 bool FAJetDoesntAccelerateWhenAtTopSpeedTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKTestWorld"));
 	establishTestMessageTo(FString("If a jet is at top speed, it should never increase it after an acceleration is added (after ticking)."));
 	establishTickLimitTo(3);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	
-	
-
-	UClass* jetClass = AJetMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(jetClass, FTransform()));
-
 	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetVelocityToTopSpeed);
-	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMakeItAccelerate);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedAgainstTopSpeed(this));
 
@@ -208,18 +201,13 @@ bool FAJetDoesntAccelerateWhenAtTopSpeedTest::RunTest(const FString& Parameters)
 
 bool FAJetRotatesYawRightWhenSteeringRightTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKTestWorld"));
 	establishTestMessageTo(FString("The Jet yaw rotation (around Z axis) should be greater than zero after steering right (after ticking)."));
 	establishTickLimitTo(3);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	
-	
-
-	UClass* jetClass = AJetMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(jetClass, FTransform()));
 	float desiredSpeed = 10000;
 	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetVelocityToDesiredSpeed(desiredSpeed));//to be able to steer...
 	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMakeItSteerRight);
@@ -463,18 +451,13 @@ bool FAJetInvertsSteeringWhenInReverseTest::RunTest(const FString& Parameters)
 
 bool FAJetIsntAbleToSteerWhenIdleTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKTestWorld"));
 	establishTestMessageTo(FString("The Jet should update it's velocity to match the direction of the forward vector after steering."));
 	establishTickLimitTo(3);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	
-	
-
-	UClass* jetClass = AJetMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(jetClass, FTransform()));
 	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMakeItSteerRight);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetUnableToSteerWhenIdle(FRotator(0), this));
@@ -627,7 +610,7 @@ bool FAJetBrakesOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters
 
 bool FAJetSteersOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKWithFloorNoGWorld"));
 	establishTestMessageTo(FString("The Jet should move parallel to the floor. Then, the speed, floor speed and velocity magnitude (gravity is being canceled) should be the same."));
 	establishTickLimitTo(3);
 
@@ -637,7 +620,7 @@ bool FAJetSteersOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters
 	
 	
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotatedOverFloorAccelerateAndSteerItRight);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetRotatedOverFloorAccelerateAndSteerItRight);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetVelocityMagnitudeOrthogonalityToFloor(this));
 
@@ -658,7 +641,7 @@ bool FAJetReplicatesTest::RunTest(const FString& Parameters)
 bool FAJetDoesntReplicateMovementTest::RunTest(const FString& Parameters)
 {
 	AJet* testJet = NewObject<AJet>();
-	TestTrue(TEXT("Jet shouldn't replicate movement to other objects."), testJet->IsReplicatingMovement());
+	TestFalse(TEXT("Jet shouldn't replicate movement to other objects."), testJet->IsReplicatingMovement());
 
 	return true;
 }

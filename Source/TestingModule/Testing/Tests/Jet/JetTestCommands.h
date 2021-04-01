@@ -55,7 +55,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetAndFloorSideWays);
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotatedOverFloorAndBrakeIt);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotatedOverFloorAccelerateAndSteerItRight);
+DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAJetRotatedOverFloorAccelerateAndSteerItRight);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FClientPressKey, FName, keyName, int, clientQuantity);

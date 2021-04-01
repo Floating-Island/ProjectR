@@ -12,6 +12,7 @@
 #include "Jet/MotorStates/MixedMotorState.h"
 #include "Jet/MotorStates/ReversingMotorState.h"
 #include "Jet/SteerStates/SteerState.h"
+#include "Jet/SteerStates/RightSteerState.h"
 
 #include "Editor.h"
 #include "Kismet/GameplayStatics.h"
@@ -328,7 +329,7 @@ bool FSpawningAJetRotatedOverFloorAndBrakeIt::Update()
 }
 
 
-bool FSpawningAJetRotatedOverFloorAccelerateAndSteerItRight::Update()
+bool FRetrieveAJetRotatedOverFloorAccelerateAndSteerItRight::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -336,16 +337,7 @@ bool FSpawningAJetRotatedOverFloorAccelerateAndSteerItRight::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-
-	AFloorMeshActor* meshActor = sessionUtilities.spawnInPIEAnInstanceOf<AFloorMeshActor>();
-
-	FVector scale = FVector(4, 4, 1);
-	meshActor->SetActorScale3D(scale);
-
-	FVector spawnLocation = meshActor->GetActorLocation() + FVector(0, 0, 1000);
-
-	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>(spawnLocation);
+	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 	FRotator pitchUp = FRotator(30, 0, 0);
 	testJet->SetActorRotation(pitchUp);
 	testJet->accelerate();
@@ -583,7 +575,7 @@ bool FRetrieveAJetMakeItSteerLeft::Update()
 
 		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 
-		if(testJet)
+		if(testJet && testJet->HasActorBegunPlay())
 		{
 			testJet->steerLeft();
 
@@ -724,14 +716,15 @@ bool FCheckAJetSpeedAgainstTopSpeed::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-		if (testJet)
+		if (testJet && FMath::IsNearlyEqual(testJet->currentSpeed(), testJet->settedTopSpeed(), 5.0f))
 		{
+			testJet->accelerate();
 			float currentSpeed = testJet->currentSpeed();
 			bool isAtTopSpeed = FMath::IsNearlyEqual(currentSpeed, testJet->settedTopSpeed(), 2.0f);
 			UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet speed: %f"), currentSpeed);
 			UE_LOG(LogTemp, Log, TEXT("Jet top speed: %f"), testJet->settedTopSpeed());
-			UE_LOG(LogTemp, Log, TEXT("Jet %s at currentSpeed"), *FString(isAtTopSpeed ? "is" : "isn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet %s at top speed"), *FString(isAtTopSpeed ? "is" : "isn't"));
 			
 			test->increaseTickCount();
 			if (test->tickCountExceedsLimit())
@@ -753,11 +746,11 @@ bool FCheckAJetRotatedYawRight::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-		if (testJet)
+		if (testJet && testJet->currentSteerStateClass() == URightSteerState::StaticClass())
 		{
 			float currentZRotation = testJet->GetActorRotation().Yaw;
 			bool hasSteeredRight = currentZRotation > 0;
-			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotation, 0.1f);
+			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotation, 0.01f);
 
 			UE_LOG(LogTemp, Log, TEXT("Jet rotation vector: %s"), *testJet->GetActorRotation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet %s steered right."), *FString(hasSteeredRight ? "has" : "hasn't"));
@@ -1066,7 +1059,7 @@ bool FCheckAJetSteersAroundUpVector::Update()
 		{
 			float currentZRotationAroundUpVector = testJet->GetActorRotation().Pitch;//we rolled, so now it's not the yaw what's changed, it's the pitch.
 			bool hasSteeredRight = currentZRotationAroundUpVector < 0;//roll right, then steers right so the pitch is negative.
-			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotationAroundUpVector, 0.001f);
+			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotationAroundUpVector, 0.0001f);
 
 			UE_LOG(LogTemp, Log, TEXT("Jet rotation vector: %s"), *testJet->GetActorRotation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet rotation around up vector: %f"), currentZRotationAroundUpVector);
@@ -1228,7 +1221,7 @@ bool FServerCheckJetAccelerated::Update()
 			AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(serverWorld, AJet::StaticClass()));
 			AJet* testClientJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, AJet::StaticClass()));
 			
-			if(testJet && testClientJet)
+			if(testJet && IsValid(testClientJet))
 			{
 				testClientJet->accelerate();
 				UE_LOG(LogTemp, Log, TEXT("Previous jet location: %s"), *previousLocation.ToString());
@@ -1384,10 +1377,10 @@ bool FServerCheckJetExpectedMotorState::Update()
 				if(testServerJet && testClientJet)
 				{
 					bool bothAsExpected = false;
-					if(testClientJet->currentMotorState() && testServerJet->currentMotorState())
+					if(testClientJet->currentMotorStateClass() && testServerJet->currentMotorStateClass())
 					{
-						bool clientStateIsAsExpected = testClientJet->currentMotorState()->GetClass() == expectedStateClass;
-						bool serverStateIsAsExpected = testServerJet->currentMotorState()->GetClass() == expectedStateClass;
+						bool clientStateIsAsExpected = testClientJet->currentMotorStateClass() == expectedStateClass;
+						bool serverStateIsAsExpected = testServerJet->currentMotorStateClass() == expectedStateClass;
 						bothAsExpected = serverStateIsAsExpected && clientStateIsAsExpected;
 					}
 
@@ -1488,10 +1481,10 @@ bool FServerCheckJetExpectedSteerState::Update()
 				if(testServerJet && testClientJet)
 				{
 					bool bothAsExpected = false;
-					if(testClientJet->currentSteerState() && testServerJet->currentSteerState())
+					if(testClientJet->currentSteerStateClass() && testServerJet->currentSteerStateClass())
 					{
-						bool clientStateIsAsExpected = testClientJet->currentSteerState()->GetClass() == expectedStateClass;
-						bool serverStateIsAsExpected = testServerJet->currentSteerState()->GetClass() == expectedStateClass;
+						bool clientStateIsAsExpected = testClientJet->currentSteerStateClass() == expectedStateClass;
+						bool serverStateIsAsExpected = testServerJet->currentSteerStateClass() == expectedStateClass;
 						bothAsExpected = serverStateIsAsExpected && clientStateIsAsExpected;
 					}
 
@@ -1578,7 +1571,7 @@ bool FCheckAJetHasMovementsStored::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 
-		if(testJet)
+		if(testJet && testJet->HasActorBegunPlay())
 		{
 			bool hasMovementsStored = testJet->retrieveMovementHistory().size() > 0;
 
