@@ -118,6 +118,7 @@ void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FStateData aBun
 			movementHistory[0].timestampedStates.motorStateClass = aBunchOfStates.motorStateClass;
 			movementHistory[0].timestampedStates.steerStateClass = aBunchOfStates.steerStateClass;
 			movementHistory[0].type = EMovementType::sendOrReceive;
+			owningJet->asCurrentMovementSet(movementHistory[0], this);
 			establishMovementForTheClientFrom(0, aBunchOfStates.timestamp);//save moment to send to the client...
 		}
 		else
