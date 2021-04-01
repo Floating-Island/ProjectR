@@ -76,7 +76,6 @@ AJet::AJet()
 void AJet::BeginPlay()
 {
 	Super::BeginPlay();
-	replicationMachine->setDefaultVariablesTo(this, movementHistorySize);
 }
 
 void AJet::Tick(float DeltaTime)
@@ -103,6 +102,7 @@ void AJet::PostInitializeComponents()
 	
 	motorManager = GetWorld()->SpawnActor<AMotorStateManager>(spawnParameters);
 	steerManager = GetWorld()->SpawnActor<ASteerStateManager>(spawnParameters);
+	replicationMachine->setDefaultVariablesTo(this, movementHistorySize);
 }
 
 void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

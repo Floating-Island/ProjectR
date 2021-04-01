@@ -20,13 +20,13 @@ void AMotorStateManager::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 	updateStateTo<UNeutralMotorState>();
+	owningJet = Cast<AJet, AActor>(GetOwner());
 }
 
 // Called when the game starts or when spawned
 void AMotorStateManager::BeginPlay()
 {
 	Super::BeginPlay();
-	owningJet = Cast<AJet, AActor>(GetOwner());
 }
 
 void AMotorStateManager::activate(UMotorDriveComponent* aMotorDrive)

@@ -18,13 +18,13 @@ void ASteerStateManager::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 	updateStateTo<UCenterSteerState>();
+	owningJet = Cast<AJet, AActor>(GetOwner());
 }
 
 // Called when the game starts or when spawned
 void ASteerStateManager::BeginPlay()
 {
 	Super::BeginPlay();
-	owningJet = Cast<AJet, AActor>(GetOwner());
 }
 
 void ASteerStateManager::activate(USteeringComponent* aSteeringDrive)
