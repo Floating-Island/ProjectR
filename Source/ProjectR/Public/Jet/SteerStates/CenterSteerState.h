@@ -16,5 +16,5 @@ class PROJECTR_API UCenterSteerState : public USteerState
 
 public:
 	virtual void activate(USteeringComponent* aSteeringComponent) override;
-	virtual FVector angularAccelerationGeneratedTo(AJet* aJet) override;
+	virtual void changesMadeTo(AJet* aJet, FVector& aLinearAcceleration, FVector& anAngularAcceleration) override;
 };

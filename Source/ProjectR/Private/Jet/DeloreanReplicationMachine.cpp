@@ -237,11 +237,25 @@ FMovementData UDeloreanReplicationMachine::simulateNextMovementFrom(FMovementDat
 	
 	owningJet->asCurrentMovementSet(aPreviousMovement, this);
 
-	FVector sumOfAngularAccelerations = FVector(0);
-	sumOfAngularAccelerations += owningJet->angularAccelerationGeneratedByAntiGravity();
-	sumOfAngularAccelerations += Cast<USteerState, UObject>(aPreviousMovement.timestampedStates.steerStateClass->ClassDefaultObject)->angularAccelerationGeneratedTo(owningJet);
+
+	FVector auxiliaryLinearAcceleration = FVector(0);
+	FVector auxiliaryAngularAcceleration = FVector(0);
+	owningJet->changesGeneratedByAntiGravityTo(auxiliaryLinearAcceleration, auxiliaryAngularAcceleration);
 
 	FVector sumOfLinearAccelerations = FVector(0);
+	sumOfLinearAccelerations += auxiliaryLinearAcceleration;
+	
+	FVector sumOfAngularAccelerations = FVector(0);
+	sumOfAngularAccelerations += auxiliaryAngularAcceleration;
+
+	auxiliaryLinearAcceleration = FVector(0);
+	auxiliaryAngularAcceleration = FVector(0);
+	Cast<USteerState, UObject>(aPreviousMovement.timestampedStates.steerStateClass->ClassDefaultObject)->changesMadeTo(owningJet, auxiliaryLinearAcceleration, auxiliaryAngularAcceleration);
+	
+	sumOfAngularAccelerations += auxiliaryAngularAcceleration;
+	sumOfLinearAccelerations += auxiliaryLinearAcceleration;
+
+	
 	sumOfLinearAccelerations += Cast<UMotorState, UObject>(aPreviousMovement.timestampedStates.motorStateClass->ClassDefaultObject)->linearAccelerationsGeneratedTo(owningJet);
 	sumOfLinearAccelerations += retrieveTrackMagnetizationLinearAcceleration();
 
@@ -250,14 +264,14 @@ FMovementData UDeloreanReplicationMachine::simulateNextMovementFrom(FMovementDat
 		simulationDuration = GetWorld()->GetDeltaSeconds();
 	}
 
-	float effectiveLinearDamping = 1 - owningJet->linearDamping() * simulationDuration;
-	float effectiveAngularDamping = 1 - owningJet->angularDamping() * simulationDuration;
+	float effectiveLinearDampingEffect = 1 - owningJet->linearDamping() * simulationDuration;
+	float effectiveAngularDampingEffect = 1 - owningJet->angularDamping() * simulationDuration;
 
-	UE_LOG(LogTemp, Log, TEXT("effective linear damping %f"), effectiveLinearDamping);
-	UE_LOG(LogTemp, Log, TEXT("effective angular damping %f"), effectiveAngularDamping);
+	UE_LOG(LogTemp, Log, TEXT("effective linear damping %f"), effectiveLinearDampingEffect);
+	UE_LOG(LogTemp, Log, TEXT("effective angular damping %f"), effectiveAngularDampingEffect);
 	
-	sumOfLinearAccelerations *=  effectiveLinearDamping;
-	sumOfAngularAccelerations *= effectiveAngularDamping;
+	sumOfLinearAccelerations *=  effectiveLinearDampingEffect;
+	sumOfAngularAccelerations *= effectiveAngularDampingEffect;
 
 	FVector netForceApplied = sumOfLinearAccelerations * owningJet->mass();
 	FVector netTorqueApplied = sumOfAngularAccelerations * owningJet->mass();
@@ -273,6 +287,8 @@ FMovementData UDeloreanReplicationMachine::simulateNextMovementFrom(FMovementDat
 		linearVelocityDelta, 
 		angularVelocityDelta
 	);
+
+	
 
 	FMovementData simulatedMove = aPreviousMovement;
 

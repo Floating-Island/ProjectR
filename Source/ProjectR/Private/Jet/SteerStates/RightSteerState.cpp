@@ -9,15 +9,18 @@ void URightSteerState::activate(USteeringComponent* aSteeringComponent)
 	aSteeringComponent->steerRight();
 }
 
-FVector URightSteerState::angularAccelerationGeneratedTo(AJet* aJet)
+void URightSteerState::changesMadeTo(AJet* aJet, FVector& aLinearAcceleration, FVector& anAngularAcceleration)
 {
 	float aDirection = 1;
 	aJet->InReverseInverts(aDirection);
 	UPrimitiveComponent* ownerPrimitiveComponent = Cast<UPrimitiveComponent, UActorComponent>(aJet->GetComponentByClass(UPrimitiveComponent::StaticClass()));
 
-	FVector steeringLocation = ownerPrimitiveComponent->GetSocketLocation(FName("FrontSteeringPoint")) - ownerPrimitiveComponent->GetComponentLocation();
-	//check if substracting the component location changes torque
+	FVector steeringLocation = ownerPrimitiveComponent->GetSocketLocation(FName("FrontSteeringPoint"));
+	
 	float centripetalAcceleration = FMath::Pow(aJet->forwardVelocity().Size(), 2) / aJet->steerRadius();
 	FVector steerAcceleration = aJet->rightVectorProjectionOnFloor() * aDirection * centripetalAcceleration;
-	return FVector::CrossProduct(steeringLocation, steerAcceleration);
+
+	aLinearAcceleration = steerAcceleration;
+	FVector primitiveComponentCenterOfMass = ownerPrimitiveComponent->GetCenterOfMass();
+	anAngularAcceleration = FVector::CrossProduct(steeringLocation - primitiveComponentCenterOfMass, steerAcceleration);
 }

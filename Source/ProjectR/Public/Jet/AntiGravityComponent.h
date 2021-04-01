@@ -35,5 +35,5 @@ public:
 
 	float triggerHeight();
 
-	FVector currentTotalAngularAccelerationMade();
+	void currentChangesMadeTo(FVector& aLinearAcceleration, FVector& anAngularAcceleration);
 };

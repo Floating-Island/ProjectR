@@ -70,7 +70,7 @@ void UAntiGravityComponent::antiGravityLifting()
 	}
 }
 
-FVector UAntiGravityComponent::currentTotalAngularAccelerationMade()
+void UAntiGravityComponent::currentChangesMadeTo(FVector& aLinearAcceleration, FVector& anAngularAcceleration)
 {
 	TArray<FName> vertexSockets = ownerPrimitiveComponent->GetAllSocketNames();
 	TArray<FVector> socketLocations = TArray<FVector>();
@@ -89,7 +89,9 @@ FVector UAntiGravityComponent::currentTotalAngularAccelerationMade()
 	collisionParameters.bTraceComplex = false;
 	collisionParameters.bReturnPhysicalMaterial = false;
 
+	FVector totalLinearAcceleration = FVector(0);
 	FVector totalAngularAcceleration = FVector(0);
+	FVector primitiveComponentCenterOfMass = ownerPrimitiveComponent->GetCenterOfMass();
 	for (const auto& socketLocation : socketLocations)
 	{
 		bool inAntiGravityRange = owner->GetWorld()->LineTraceSingleByChannel(obstacle, socketLocation, antiGravityExtensionLimit, ECollisionChannel::ECC_Visibility, collisionParameters);
@@ -98,9 +100,12 @@ FVector UAntiGravityComponent::currentTotalAngularAccelerationMade()
 		{
 			float antiGravityIntensity = obstacle.Distance / levitationHeight;
 			float effectiveAntiGravityForceValue = FMath::Lerp(antiGravityForceValue, 0.0f, antiGravityIntensity);
-			FVector socketAngularAcceleration = effectiveAntiGravityForceValue * obstacle.ImpactNormal;
-			totalAngularAcceleration += FVector::CrossProduct(socketLocation - ownerPrimitiveComponent->GetComponentLocation(), socketAngularAcceleration);
+			FVector socketLinearAcceleration = effectiveAntiGravityForceValue * obstacle.ImpactNormal;
+			totalLinearAcceleration += socketLinearAcceleration;
+			totalAngularAcceleration += FVector::CrossProduct(socketLocation - primitiveComponentCenterOfMass, socketLinearAcceleration);
 		}
 	}
-	return totalAngularAcceleration;
+
+	aLinearAcceleration = totalLinearAcceleration;
+	anAngularAcceleration = totalAngularAcceleration;
 }

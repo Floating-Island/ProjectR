@@ -336,9 +336,9 @@ float AJet::accelerationMagnitudeToAlignVelocityFrom(FVector aCurrentLocation)
 	return steeringSystem->accelerationMagnitudeToAlignVelocityFrom(aCurrentLocation);
 }
 
-FVector AJet::angularAccelerationGeneratedByAntiGravity()
+void AJet::changesGeneratedByAntiGravityTo(FVector& aLinearAcceleration, FVector& anAngularAcceleration)
 {
-	return antiGravitySystem->currentTotalAngularAccelerationMade();
+	antiGravitySystem->currentChangesMadeTo(aLinearAcceleration, anAngularAcceleration);
 }
 
 FPhysicsActorHandle& AJet::physicsHandleRequestedBy(UDeloreanReplicationMachine* aReplicationMachine)

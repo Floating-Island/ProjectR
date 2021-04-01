@@ -13,7 +13,7 @@ void UMixedMotorState::activate(UMotorDriveComponent* aMotorDriveComponent)
 
 FVector UMixedMotorState::linearAccelerationsGeneratedTo(AJet* aJet)
 {
-	if(aJet->currentSpeed() < aJet->settedTopSpeed())
+	if(aJet->currentSpeed() < aJet->settedTopSpeed() && !FMath::IsNearlyEqual(aJet->currentSpeed(), aJet->settedTopSpeed(), 1.0f))
 	{
 		return (aJet->acceleration() - aJet->brakeValue()) * aJet->ForwardProjectionOnFloor();
 	}
