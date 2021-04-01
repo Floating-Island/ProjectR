@@ -133,7 +133,8 @@ public:
 
 	void asCurrentMovementSet(FMovementData anotherMovement, UDeloreanReplicationMachine* aRequestingReplicationMachine);
 	
-	void sendMovementToServerRequestedBy(UObject* aSubObject);
+	void sendMovementToServerRequestedBy(AMotorStateManager* aMotorManager);
+	void sendMovementToServerRequestedBy(ASteerStateManager* aSteerManager);
 
 	float linearDamping();
 	float angularDamping();

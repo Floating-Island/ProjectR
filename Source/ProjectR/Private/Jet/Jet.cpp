@@ -363,12 +363,20 @@ void AJet::asCurrentMovementSet(FMovementData anotherMovement, UDeloreanReplicat
 	}
 }
 
-void AJet::sendMovementToServerRequestedBy(UObject* aSubObject)
+void AJet::sendMovementToServerRequestedBy(AMotorStateManager* aMotorManager)
 {
-	/*if(Cast<AJet, UObject>(aSubObject->GetTypedOuter(AJet::StaticClass())) == this)
-	{*/
-	needsToReplicateStates = true;
-	//}
+	if(aMotorManager == motorManager)
+	{
+		needsToReplicateStates = true;
+	}
+}
+
+void AJet::sendMovementToServerRequestedBy(ASteerStateManager* aSteerManager)
+{
+	if(aSteerManager == steerManager)
+	{
+		needsToReplicateStates = true;
+	}
 }
 
 float AJet::linearDamping()
