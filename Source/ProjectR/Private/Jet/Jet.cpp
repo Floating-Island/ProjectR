@@ -251,23 +251,9 @@ FVector AJet::ForwardProjectionOnFloor()
 
 	if (nearFloor)
 	{
-		return FVector::VectorPlaneProject(GetActorForwardVector(), obstacle.Normal);
+		return FVector::VectorPlaneProject(physicsMeshComponent->GetForwardVector(), obstacle.Normal);
 	}
 	return GetActorForwardVector();
-}
-
-bool AJet::traceToFind(FHitResult& anObstacle)
-{
-	FVector jetLocation = GetActorLocation();//should take consideration the actor bounds...
-	float rayExtension = 1000;
-	FVector rayEnd = -GetActorUpVector() * rayExtension;
-
-	FCollisionQueryParams collisionParameters;
-	collisionParameters.AddIgnoredActor(this);
-	collisionParameters.bTraceComplex = false;
-	collisionParameters.bReturnPhysicalMaterial = false;
-
-	return  GetWorld()->LineTraceSingleByChannel(anObstacle, jetLocation, rayEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
 }
 
 FVector AJet::forwardVelocity()
@@ -284,7 +270,7 @@ FVector AJet::velocityProjectionOnFloor()
 	{
 		return FVector::VectorPlaneProject(GetVelocity(), obstacle.Normal);
 	}
-	return FVector::VectorPlaneProject(GetVelocity(), GetActorUpVector());
+	return FVector::VectorPlaneProject(GetVelocity(), physicsMeshComponent->GetUpVector());
 }
 
 FVector AJet::rightVectorProjectionOnFloor()
@@ -294,9 +280,23 @@ FVector AJet::rightVectorProjectionOnFloor()
 
 	if (nearFloor)
 	{
-		return FVector::VectorPlaneProject(GetActorRightVector(), obstacle.Normal);
+		return FVector::VectorPlaneProject(physicsMeshComponent->GetRightVector(), obstacle.Normal);
 	}
-	return GetActorRightVector();
+	return physicsMeshComponent->GetRightVector();
+}
+
+bool AJet::traceToFind(FHitResult& anObstacle)
+{
+	FVector jetLocation = physicsMeshComponent->GetComponentLocation();//should take consideration the actor bounds...
+	float rayExtension = 1000;
+	FVector rayEnd = -(physicsMeshComponent->GetUpVector()) * rayExtension;
+
+	FCollisionQueryParams collisionParameters;
+	collisionParameters.AddIgnoredActor(this);
+	collisionParameters.bTraceComplex = false;
+	collisionParameters.bReturnPhysicalMaterial = false;
+
+	return  GetWorld()->LineTraceSingleByChannel(anObstacle, jetLocation, rayEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
 }
 
 bool AJet::keyIsPressedFor(const FName anActionMappingName)
