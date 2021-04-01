@@ -4,11 +4,12 @@
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "SteerStateManagerTestCommands.h"
-#include "Jet/SteerStates/CenterSteerState.h"
+//#include "Jet/SteerStates/CenterSteerState.h"
 
+#include "Jet/Jet.h"
 #include "../../Mocks/SteerStateManagerMOCK.h"
 #include "../../Utilities/PIESessionUtilities.h"
-#include "../../Utilities/NetworkedPIESessionUtilities.h"
+//#include "../../Utilities/NetworkedPIESessionUtilities.h"
 
 //Test preparation commands:
 
@@ -19,10 +20,11 @@ bool FLeftSteerASteerStateManagerMOCK::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
-
-		if (testManager)
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+		
+		if (testManager && testJet)
 		{
-			testManager->setOwningJet(sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>());
+			testManager->setOwningJet(testJet);
 			testManager->steerLeft();
 			return true;
 		}
@@ -37,10 +39,11 @@ bool FRightSteerASteerStateManagerMOCK::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 
-		if (testManager)
+		if (testManager && testJet)
 		{
-			testManager->setOwningJet(sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>());
+			testManager->setOwningJet(testJet);
 			testManager->steerRight();
 			return true;
 		}
@@ -55,10 +58,11 @@ bool FCenterASteerStateManagerMOCK::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 
-		if (testManager)
+		if (testManager && testJet)
 		{
-			testManager->setOwningJet(sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>());
+			testManager->setOwningJet(testJet);
 			testManager->center();
 			return true;
 		}
@@ -195,9 +199,11 @@ bool FCheckSteerStateManagerCurrentStateAgainstPreviousOnSteerLeft::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
-		if (testManager)
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+
+		if (testManager && testJet)
 		{
-			testManager->setOwningJet(sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>());
+			testManager->setOwningJet(testJet);
 			testManager->steerLeft();
 			UE_LOG(LogTemp, Log, TEXT("previous state: %s"), *(previousState ? previousState->GetName() : FString("nullptr")));
 			USteerState* currentState = testManager->currentState();
@@ -224,9 +230,11 @@ bool FCheckSteerStateManagerCurrentStateAgainstPreviousOnSteerRight::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
-		if (testManager)
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+
+		if (testManager && testJet)
 		{
-			testManager->setOwningJet(sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>());
+			testManager->setOwningJet(testJet);
 			testManager->steerRight();
 			UE_LOG(LogTemp, Log, TEXT("previous state: %s"), *(previousState ? previousState->GetName() : FString("nullptr")));
 			USteerState* currentState = testManager->currentState();
@@ -253,9 +261,11 @@ bool FCheckSteerStateManagerCurrentStateAgainstPreviousOnCenter::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
-		if (testManager)
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+
+		if (testManager && testJet)
 		{
-			testManager->setOwningJet(sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>());
+			testManager->setOwningJet(testJet);
 			testManager->center();
 			UE_LOG(LogTemp, Log, TEXT("previous state: %s"), *(previousState ? previousState->GetName() : FString("nullptr")));
 			USteerState* currentState = testManager->currentState();

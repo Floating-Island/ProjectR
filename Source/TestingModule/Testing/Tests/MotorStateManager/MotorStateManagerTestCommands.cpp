@@ -24,10 +24,11 @@ bool FRetrieveAMotorStateManagerAndAccelerateIt::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 
-		if(testManager)
+		if(testManager && testJet)
 		{
-			testManager->setOwningJet(sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>());
+			testManager->setOwningJet(testJet);
 			testManager->accelerate();
 			return true;
 		}
@@ -42,10 +43,11 @@ bool FRetrieveAMotorStateManagerAndBrakeIt::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 
-		if(testManager)
+		if(testManager && testJet)
 		{
-			testManager->setOwningJet(sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>());
+			testManager->setOwningJet(testJet);
 			testManager->brake();
 			return true;
 		}
@@ -60,10 +62,11 @@ bool FRetrieveAMotorStateManagerAndNeutralizeIt::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 
-		if(testManager)
+		if(testManager && testJet)
 		{
-			testManager->setOwningJet(sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>());
+			testManager->setOwningJet(testJet);
 			testManager->brake();//first change it to another state.
 			testManager->neutralize();
 			return true;
@@ -188,10 +191,11 @@ bool FRetrieveAMotorStateManagerAndMixIt::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 
-		if(testManager)
+		if(testManager && testJet)
 		{
-			testManager->setOwningJet(sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>());
+			testManager->setOwningJet(testJet);
 			testManager->mix();
 			return true;
 		}
@@ -316,9 +320,11 @@ bool FCheckMotorStateManagerAccelerateKeepsStateIfAccelerating::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
-		if(testManager)
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+
+		if(testManager && testJet)
 		{
-			testManager->setOwningJet(sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>());
+			testManager->setOwningJet(testJet);
 			testManager->accelerate();
 			UMotorState* currentState = testManager->currentState();
 			bool statesMatch = previousState == currentState;
@@ -344,9 +350,11 @@ bool FCheckMotorStateManagerBrakeKeepsStateIfReversing::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
-		if(testManager)
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+
+		if(testManager && testJet)
 		{
-			testManager->setOwningJet(sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>());
+			testManager->setOwningJet(testJet);
 			testManager->brake();
 			UMotorState* currentState = testManager->currentState();
 			bool statesMatch = previousState == currentState;
@@ -372,9 +380,11 @@ bool FCheckMotorStateManagerNeutralizeKeepsStateIfNeutral::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
-		if(testManager)
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+
+		if(testManager && testJet)
 		{
-			testManager->setOwningJet(sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>());
+			testManager->setOwningJet(testJet);
 			testManager->neutralize();
 			UMotorState* currentState = testManager->currentState();
 			bool statesMatch = previousState == currentState;
@@ -478,9 +488,11 @@ bool FCheckMotorStateManagerMixKeepsStateIfMixed::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		AMotorStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<AMotorStateManagerMOCK>();
-		if(testManager)
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+
+		if(testManager && testJet)
 		{
-			testManager->setOwningJet(sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>());
+			testManager->setOwningJet(testJet);
 			testManager->mix();
 			UMotorState* currentState = testManager->currentState();
 			bool statesMatch = previousState == currentState;
