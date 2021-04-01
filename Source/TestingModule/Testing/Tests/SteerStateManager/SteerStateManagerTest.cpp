@@ -39,7 +39,7 @@ bool FASteerStateManagerDoesntTickTest::RunTest(const FString& Parameters)
 
 bool FASteerStateManagerDefaultStateIsCenterTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
 	establishTestMessageTo(FString(FString("The default state should be CenterSteerState")));
 	establishTickLimitTo(3);
 
@@ -61,7 +61,7 @@ bool FASteerStateManagerDefaultStateIsCenterTest::RunTest(const FString& Paramet
 
 bool FASteerStateManagerSteerLeftChangesStateToLeftSteerTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/JetMOCKTestWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKTestWorld"));
 	UClass* expectedStateClass = ULeftSteerState::StaticClass();
 	establishTestMessageTo((FString("After leftSteer, the current state should be %s."), *expectedStateClass->GetName()));
 	establishTickLimitTo(3);
@@ -85,7 +85,7 @@ bool FASteerStateManagerSteerLeftChangesStateToLeftSteerTest::RunTest(const FStr
 
 bool FASteerStateManagerSteerRightChangesStateToRightSteerTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/JetMOCKTestWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKTestWorld"));
 	UClass* expectedStateClass = URightSteerState::StaticClass();
 	establishTestMessageTo((FString("After rightSteer, the current state should be %s."), *expectedStateClass->GetName()));
 	establishTickLimitTo(3);
@@ -109,7 +109,7 @@ bool FASteerStateManagerSteerRightChangesStateToRightSteerTest::RunTest(const FS
 
 bool FASteerStateManagerCenterChangesStateToCenterSteerTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/JetMOCKTestWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKTestWorld"));
 	UClass* expectedStateClass = UCenterSteerState::StaticClass();
 	establishTestMessageTo((FString("After center, the current state should be %s."), *expectedStateClass->GetName()));
 	establishTickLimitTo(3);
@@ -133,7 +133,7 @@ bool FASteerStateManagerCenterChangesStateToCenterSteerTest::RunTest(const FStri
 
 bool FASteerStateManagerSteerLeftKeepsStateIfAlreadyLeftSteerStateTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/JetMOCKTestWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKTestWorld"));
 	establishTestMessageTo(FString("steerLeft should keep the current state if it's a LeftSteerState."));
 	establishTickLimitTo(3);
 
@@ -156,7 +156,7 @@ bool FASteerStateManagerSteerLeftKeepsStateIfAlreadyLeftSteerStateTest::RunTest(
 
 bool FASteerStateManagerSteerRightKeepsStateIfAlreadyRightSteerStateTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/JetMOCKTestWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKTestWorld"));
 	establishTestMessageTo(FString(FString("steerRight should keep the current state if it's a RightSteerState.")));
 	establishTickLimitTo(3);
 
@@ -179,7 +179,7 @@ bool FASteerStateManagerSteerRightKeepsStateIfAlreadyRightSteerStateTest::RunTes
 
 bool FASteerStateManagerCenterKeepsStateIfAlreadyCenterSteerStateTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/JetMOCKTestWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKTestWorld"));
 	establishTestMessageTo(FString("center should keep the current state if it's a CenterSteerState."));
 	establishTickLimitTo(3);
 

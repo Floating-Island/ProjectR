@@ -21,7 +21,7 @@ bool FUMixedMotorStateIsntNullWhenInstantiatedTest::RunTest(const FString& Param
 
 bool FUMixedMotorStateActivateAcceleratesMotorDriveTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
 	establishTestMessageTo(FString("Activating the mixed state should accelerate and brake the jet."));
 	establishTickLimitTo(3);
 

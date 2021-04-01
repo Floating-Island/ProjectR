@@ -26,7 +26,7 @@ bool FURightSteerStateIsntNullWhenInstantiatedTest::RunTest(const FString& Param
 
 bool FURightSteerStateActivateTurnsRightSteeringTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
 	establishTestMessageTo(FString("The right steer state should steer right the steering component passed as parameter."));
 	establishTickLimitTo(3);
 

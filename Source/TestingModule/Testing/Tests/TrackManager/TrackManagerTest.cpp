@@ -25,7 +25,7 @@ bool FATrackManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Paramete
 
 bool FATrackManagerHasTrackGeneratorsListedWhenSpawnedTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
 	establishTestMessageTo(FString("The track manager should have track generators already spawned in world."));
 	establishTickLimitTo(3);
 
@@ -51,7 +51,7 @@ bool FATrackManagerHasTrackGeneratorsListedWhenSpawnedTest::RunTest(const FStrin
 
 bool FATrackManagerStoresJetsOverlappingWithTrackGeneratorsTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
 	establishTestMessageTo(FString("The track manager should store the jets that overlap with a track generator's magnet box."));
 	establishTickLimitTo(3);
 
@@ -72,7 +72,7 @@ bool FATrackManagerStoresJetsOverlappingWithTrackGeneratorsTest::RunTest(const F
 
 bool FATrackManagerAttractsJetsTowardsTrackGeneratorsTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Development/Maps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
 	establishTestMessageTo(FString("The track generator should attract a Jet along the track normal vector when a track manager is present."));
 	establishTickLimitTo(3);
 
