@@ -103,8 +103,10 @@ void UDeloreanReplicationMachine::smooth(int atPosition, const FMovementData& aT
 	int64 timePhaseShift = FMath::Abs(movementHistory[0].timestampedStates.timestamp - aTargetMovement.timestampedStates.timestamp);
 	float interpolationStep = timePhaseShift / 1000.0f;
 
-	FVector smoothedLocation = FMath::CubicInterp(movementHistory[atPosition].location, movementHistory[atPosition].linearVelocity, aTargetMovement.location, aTargetMovement.linearVelocity, interpolationStep);
-	FVector smoothedLinearVelocity = FMath::CubicInterpDerivative(movementHistory[atPosition].location, movementHistory[atPosition].linearVelocity, aTargetMovement.location, aTargetMovement.linearVelocity, interpolationStep);
+	FVector smoothedLocation = FMath::CubicInterp(movementHistory[atPosition].location, movementHistory[atPosition].linearVelocity, 
+		aTargetMovement.location, aTargetMovement.linearVelocity, interpolationStep);
+	FVector smoothedLinearVelocity = FMath::CubicInterpDerivative(movementHistory[atPosition].location, movementHistory[atPosition].linearVelocity, 
+		aTargetMovement.location, aTargetMovement.linearVelocity, interpolationStep);
 
 	movementHistory[atPosition].location = smoothedLocation;
 	movementHistory[atPosition].linearVelocity = smoothedLinearVelocity;
@@ -171,6 +173,43 @@ void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FMovementData a
 	}
 }
 
+void UDeloreanReplicationMachine::copyCurrentMovementStatesIf(bool& needsToChangeStates, FMovementData& aCurrentMovementInHistory, FMovementData& aNextMovementInHistory)
+{
+	if(needsToChangeStates && aNextMovementInHistory.type == EMovementType::routine)
+	{
+		aNextMovementInHistory.timestampedStates.motorStateClass = aCurrentMovementInHistory.timestampedStates.motorStateClass;
+		aNextMovementInHistory.timestampedStates.steerStateClass = aCurrentMovementInHistory.timestampedStates.steerStateClass;
+	}
+	else //found the first movement in history that was already sent to or received from the server...
+	{
+		needsToChangeStates = false;
+	}
+}
+
+void UDeloreanReplicationMachine::manageVelocityAlignementWhen(bool& needsToAlign, FVector& aSteerCounterAcceleration, FVector& aSteerAlignAcceleration,
+	FMovementData& aCurrentMovementInHistory, FMovementData& aNextMovementInHistory)
+{
+	if(needsToAlign)
+	{
+		needsToAlign = false;
+		float timeBetweenMovements = (aNextMovementInHistory.timestampedStates.timestamp - aCurrentMovementInHistory.timestampedStates.timestamp) / 1000.0f;
+		aNextMovementInHistory.linearVelocity += (aSteerCounterAcceleration + aSteerAlignAcceleration) * timeBetweenMovements;
+		aNextMovementInHistory.location = aCurrentMovementInHistory.location + aNextMovementInHistory.linearVelocity * timeBetweenMovements;
+	}
+		
+	if(aCurrentMovementInHistory.timestampedStates.steerStateClass != UCenterSteerState::StaticClass())
+	{
+		needsToAlign = true;
+		owningJet->asCurrentMovementSet(aCurrentMovementInHistory, this);
+		FVector currentForwardProjection = owningJet->ForwardProjectionOnFloor();
+		FVector currentLocation = owningJet->GetActorLocation();
+		owningJet->asCurrentMovementSet(aNextMovementInHistory, this);
+		float alignmentAcceleration =  owningJet->accelerationMagnitudeToAlignVelocityFrom(currentLocation);
+		aSteerCounterAcceleration = (-currentForwardProjection) * alignmentAcceleration;
+		aSteerAlignAcceleration = owningJet->ForwardProjectionOnFloor() * alignmentAcceleration;
+	}
+}
+
 void UDeloreanReplicationMachine::reshapeHistoryFrom(int aMomentInHistory, bool anOptionToChangeStates)
 {
 	bool needsToChangeStates = anOptionToChangeStates;
@@ -182,15 +221,7 @@ void UDeloreanReplicationMachine::reshapeHistoryFrom(int aMomentInHistory, bool 
 	{
 		FMovementData& currentMovementInHistory = movementHistory[aMomentInHistory];
 		FMovementData& nextMovementInHistory = movementHistory[aMomentInHistory - 1];
-		if(needsToChangeStates && nextMovementInHistory.type == EMovementType::routine)
-		{
-			nextMovementInHistory.timestampedStates.motorStateClass = currentMovementInHistory.timestampedStates.motorStateClass;
-			nextMovementInHistory.timestampedStates.steerStateClass = currentMovementInHistory.timestampedStates.steerStateClass;
-		}
-		else //found the first movement in history that was already sent to or received from the server...
-		{
-			needsToChangeStates = false;
-		}
+		copyCurrentMovementStatesIf(needsToChangeStates, currentMovementInHistory, nextMovementInHistory);
 		FStateData nextMovementStates = nextMovementInHistory.timestampedStates;
 
 		FMovementData rewrittenNextMovement = FMovementData();
@@ -200,95 +231,64 @@ void UDeloreanReplicationMachine::reshapeHistoryFrom(int aMomentInHistory, bool 
 		nextMovementInHistory.regenerateMoveFrom(rewrittenNextMovement, nextMovementInHistory.type);
 		nextMovementInHistory.timestampedStates = nextMovementStates;
 		
-		if(needsToAlign)
-		{
-			needsToAlign = false;
-			float timeBetweenMovements = (nextMovementInHistory.timestampedStates.timestamp - currentMovementInHistory.timestampedStates.timestamp) / 1000.0f;
-			nextMovementInHistory.linearVelocity += (steerCounterAcceleration + steerAlignAcceleration) * timeBetweenMovements;
-			nextMovementInHistory.location = currentMovementInHistory.location + nextMovementInHistory.linearVelocity * timeBetweenMovements;
-		}
-		
-		if(currentMovementInHistory.timestampedStates.steerStateClass != UCenterSteerState::StaticClass())
-		{
-			needsToAlign = true;
-			owningJet->asCurrentMovementSet(currentMovementInHistory, this);
-			FVector currentForwardProjection = owningJet->ForwardProjectionOnFloor();
-			FVector currentLocation = owningJet->GetActorLocation();
-			owningJet->asCurrentMovementSet(nextMovementInHistory, this);
-			float alignmentAcceleration =  owningJet->accelerationMagnitudeToAlignVelocityFrom(currentLocation);
-			steerCounterAcceleration = (-currentForwardProjection) * alignmentAcceleration;
-			steerAlignAcceleration = owningJet->ForwardProjectionOnFloor() * alignmentAcceleration;
-		}
+		manageVelocityAlignementWhen(needsToAlign, steerCounterAcceleration, steerAlignAcceleration, currentMovementInHistory,
+		                             nextMovementInHistory);
 		--aMomentInHistory;
 	}
 	owningJet->asCurrentMovementSet(movementHistory[0], this);
 }
 
-FMovementData UDeloreanReplicationMachine::simulateNextMovementFrom(FMovementData aPreviousMovement, float simulationDuration)
+FMovementData UDeloreanReplicationMachine::simulateNextMovementFrom(const FMovementData& aPreviousMovement, float simulationDuration)
 {
 	owningJet->asCurrentMovementSet(aPreviousMovement, this);
 
+	FVector sumOfLinearAccelerations;
+	FVector sumOfAngularAccelerations;
+	
+	calculateNextMovementChangesTo(sumOfLinearAccelerations, sumOfAngularAccelerations, simulationDuration, aPreviousMovement);
+
+	PxVec3 linearVelocityDelta = PxVec3();
+	PxVec3 angularVelocityDelta = PxVec3();
+
+	calculatePhysicsBodyChangesTo(linearVelocityDelta, angularVelocityDelta, simulationDuration, sumOfLinearAccelerations,
+	                              sumOfAngularAccelerations);
+	
+	return generateSimulatedMoveFrom(aPreviousMovement, P2UVector(linearVelocityDelta), P2UVector(angularVelocityDelta), simulationDuration);; 
+}
+
+void UDeloreanReplicationMachine::calculateNextMovementChangesTo(FVector& aSumOfLinearAccelerations, FVector& aSumOfAngularAccelerations, float& aSimulationDuration, const
+                                                                 FMovementData& aPreviousMovement)
+{
 	FVector auxiliaryLinearAcceleration = FVector(0);
 	FVector auxiliaryAngularAcceleration = FVector(0);
 	owningJet->changesGeneratedByAntiGravityTo(auxiliaryLinearAcceleration, auxiliaryAngularAcceleration);
 
-	FVector sumOfLinearAccelerations = FVector(0);
-	sumOfLinearAccelerations += auxiliaryLinearAcceleration;
-	
-	FVector sumOfAngularAccelerations = FVector(0);
-	sumOfAngularAccelerations += auxiliaryAngularAcceleration;
+	aSumOfLinearAccelerations = FVector(0);
+	aSumOfLinearAccelerations += auxiliaryLinearAcceleration;
+
+	aSumOfAngularAccelerations = FVector(0);
+	aSumOfAngularAccelerations += auxiliaryAngularAcceleration;
 
 	auxiliaryLinearAcceleration = FVector(0);
 	auxiliaryAngularAcceleration = FVector(0);
 	Cast<USteerState, UObject>(aPreviousMovement.timestampedStates.steerStateClass->ClassDefaultObject)->changesMadeTo(owningJet, auxiliaryLinearAcceleration, auxiliaryAngularAcceleration);
 	
-	sumOfAngularAccelerations += auxiliaryAngularAcceleration;
-	sumOfLinearAccelerations += auxiliaryLinearAcceleration;
+	aSumOfAngularAccelerations += auxiliaryAngularAcceleration;
+	aSumOfLinearAccelerations += auxiliaryLinearAcceleration;
 
-	sumOfLinearAccelerations += Cast<UMotorState, UObject>(aPreviousMovement.timestampedStates.motorStateClass->ClassDefaultObject)->linearAccelerationsGeneratedTo(owningJet);
-	sumOfLinearAccelerations += retrieveTrackMagnetizationLinearAcceleration();
+	aSumOfLinearAccelerations += Cast<UMotorState, UObject>(aPreviousMovement.timestampedStates.motorStateClass->ClassDefaultObject)->linearAccelerationsGeneratedTo(owningJet);
+	aSumOfLinearAccelerations += retrieveTrackMagnetizationLinearAcceleration();
 
-	if(simulationDuration == 0)
+	if(aSimulationDuration == 0)
 	{
-		simulationDuration = GetWorld()->GetDeltaSeconds();
+		aSimulationDuration = GetWorld()->GetDeltaSeconds();
 	}
 
-	float effectiveLinearDampingEffect = 1 - owningJet->linearDamping() * simulationDuration;
-	float effectiveAngularDampingEffect = 1 - owningJet->angularDamping() * simulationDuration;
+	float effectiveLinearDampingEffect = 1 - owningJet->linearDamping() * aSimulationDuration;
+	float effectiveAngularDampingEffect = 1 - owningJet->angularDamping() * aSimulationDuration;
 	
-	sumOfLinearAccelerations *=  effectiveLinearDampingEffect;
-	sumOfAngularAccelerations *= effectiveAngularDampingEffect;
-
-	FVector netForceApplied = sumOfLinearAccelerations * owningJet->mass();
-	FVector netTorqueApplied = sumOfAngularAccelerations * owningJet->mass();
-
-	PxVec3 linearVelocityDelta = PxVec3();
-	PxVec3 angularVelocityDelta = PxVec3();
-
-	PxRigidBody* body = FPhysicsInterface_PhysX::GetPxRigidBody_AssumesLocked(owningJet->physicsHandleRequestedBy(this));
-
-	PxRigidBodyExt::computeVelocityDeltaFromImpulse(*body, 
-		U2PVector(netForceApplied) * simulationDuration, 
-		U2PVector(netTorqueApplied) * simulationDuration, 
-		linearVelocityDelta, 
-		angularVelocityDelta
-	);
-
-	FMovementData simulatedMove = aPreviousMovement;
-
-	simulatedMove.linearVelocity += P2UVector(linearVelocityDelta);
-	
-	simulatedMove.location += simulatedMove.linearVelocity * simulationDuration;
-	
-	simulatedMove.angularVelocityInRadians += FVector::DegreesToRadians(P2UVector(angularVelocityDelta));
-
-	FVector angularRotation = simulatedMove.angularVelocityInRadians * simulationDuration;
-	
-	FQuat angularVelocityQuaternion = FQuat(angularRotation.GetSafeNormal(), angularRotation.Size());
-
-	simulatedMove.rotation =  ( angularVelocityQuaternion * simulatedMove.rotation.Quaternion() ).Rotator();
-	
-	return simulatedMove;
+	aSumOfLinearAccelerations *=  effectiveLinearDampingEffect;
+	aSumOfAngularAccelerations *= effectiveAngularDampingEffect;
 }
 
 FVector UDeloreanReplicationMachine::retrieveTrackMagnetizationLinearAcceleration()
@@ -299,4 +299,40 @@ FVector UDeloreanReplicationMachine::retrieveTrackMagnetizationLinearAcceleratio
 		return FVector(0, 0, - FMath::Abs(GetWorld()->GetGravityZ()));
 	}
 	return trackManager->pullingAccelerationTo(owningJet);
+}
+
+void UDeloreanReplicationMachine::calculatePhysicsBodyChangesTo(PxVec3& aLinearVelocityDelta, PxVec3& anANgularVelocityDelta, const float& simulationDuration, const FVector&
+                                                                aSumOfLinearAccelerations, const FVector& aSumOfAngularAccelerations)
+{
+	FVector netForceApplied = aSumOfLinearAccelerations * owningJet->mass();
+	FVector netTorqueApplied = aSumOfAngularAccelerations * owningJet->mass();
+
+	PxRigidBody* body = FPhysicsInterface_PhysX::GetPxRigidBody_AssumesLocked(owningJet->physicsHandleRequestedBy(this));
+
+	PxRigidBodyExt::computeVelocityDeltaFromImpulse(*body, 
+	                                                U2PVector(netForceApplied) * simulationDuration, 
+	                                                U2PVector(netTorqueApplied) * simulationDuration, 
+	                                                aLinearVelocityDelta, 
+	                                                anANgularVelocityDelta
+	);
+}
+
+FMovementData UDeloreanReplicationMachine::generateSimulatedMoveFrom(const FMovementData& aPreviousMovement,
+                                                                     FVector aLinearVelocityDelta, FVector anAngularVelocityDelta, float aSimulationDuration)
+{
+	FMovementData simulatedMove = aPreviousMovement;
+
+	simulatedMove.linearVelocity += aLinearVelocityDelta;
+	
+	simulatedMove.location += simulatedMove.linearVelocity * aSimulationDuration;
+	
+	simulatedMove.angularVelocityInRadians += FVector::DegreesToRadians(anAngularVelocityDelta);
+
+	FVector angularRotation = simulatedMove.angularVelocityInRadians * aSimulationDuration;
+	
+	FQuat angularVelocityQuaternion = FQuat(angularRotation.GetSafeNormal(), angularRotation.Size());
+
+	simulatedMove.rotation =  ( angularVelocityQuaternion * simulatedMove.rotation.Quaternion() ).Rotator();
+
+	return simulatedMove;
 }

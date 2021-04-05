@@ -153,14 +153,33 @@ protected:
 	int movementHistorySize;
 
 	void reshapeHistoryFrom(int aMomentInHistory, bool anOptionToChangeStates);
+	
 
-	FMovementData simulateNextMovementFrom(FMovementData aPreviousMovement, float simulationDuration = 0);
+	FMovementData simulateNextMovementFrom(const FMovementData& aPreviousMovement, float simulationDuration = 0);
+	
+	void calculateNextMovementChangesTo(FVector& aSumOfLinearAccelerations, FVector& aSumOfAngularAccelerations,
+	                                    float& aSimulationDuration, const FMovementData& aPreviousMovement);
 
 	FVector retrieveTrackMagnetizationLinearAcceleration();
+	
+	void calculatePhysicsBodyChangesTo(PxVec3& aLinearVelocityDelta, PxVec3& anANgularVelocityDelta,
+	                                   const float& simulationDuration,
+	                                   const FVector& aSumOfLinearAccelerations, const FVector& aSumOfAngularAccelerations);
+
+	FMovementData generateSimulatedMoveFrom(const FMovementData& aPreviousMovement, FVector aLinearVelocityDelta, FVector anAngularVelocityDelta, float aSimulationDuration);
+
 
 	void addToMovementHistory(FMovementData aMovement);
 
 	int closestIndexTo(int64 aTimestamp);
+
+	void copyCurrentMovementStatesIf(bool& needsToChangeStates, FMovementData& aCurrentMovementInHistory,
+	                                 FMovementData& aNextMovementInHistory);
+	
+	void manageVelocityAlignementWhen(bool& needsToAlign, FVector& aSteerCounterAcceleration,
+	                                  FVector& aSteerAlignAcceleration,
+	                                  FMovementData& aCurrentMovementInHistory, FMovementData& aNextMovementInHistory);
+
 	void establishMovementForTheClientFrom(int aMomentInHistory, int64 aClientTimestamp);
 
 	void smoothFinalMovementFrom(FMovementData initialMovement, int64 aTimestamp);
