@@ -391,7 +391,11 @@ float AJet::angularDamping()
 
 void AJet::serverUpdateMovementWith_Implementation(FStateData aBunchOfStates)
 {
-	multicastSynchronizeMovementWith(updatedDataSynchronizedWith(aBunchOfStates));
+	FMovementData movementForClient = updatedDataSynchronizedWith(aBunchOfStates);
+	if(replicationMachine->hasDataForClient())
+	{
+		multicastSynchronizeMovementWith(movementForClient);
+	}
 }
 
 bool AJet::serverUpdateMovementWith_Validate(FStateData aBunchOfStates)
@@ -399,13 +403,14 @@ bool AJet::serverUpdateMovementWith_Validate(FStateData aBunchOfStates)
 	return true;
 }
 
-void AJet::multicastSynchronizeMovementWith_Implementation(FMovementData aMovementStructure)
-{
-	replicationMachine->synchronizeMovementHistoryWith(aMovementStructure);
-}
-
 FMovementData AJet::updatedDataSynchronizedWith(FStateData aBunchOfStates)
 {
 	replicationMachine->synchronizeMovementHistoryWith(aBunchOfStates);
 	return replicationMachine->retrieveCurrentMovementDataToSend();
 }
+
+void AJet::multicastSynchronizeMovementWith_Implementation(FMovementData aMovementStructure)
+{
+	replicationMachine->synchronizeMovementHistoryWith(aMovementStructure);
+}
+

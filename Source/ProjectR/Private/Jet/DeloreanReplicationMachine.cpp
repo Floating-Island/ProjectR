@@ -16,6 +16,7 @@ UDeloreanReplicationMachine::UDeloreanReplicationMachine()
 	generateSendOrReceiveMovementType = false;
 	owningJet = nullptr;
 	synchronizedMovement = FMovementData();
+	readyToEstablishMovement = false;
 }
 
 void UDeloreanReplicationMachine::setDefaultVariablesTo(AJet* anOwner, int aMovementHistorySize)
@@ -24,6 +25,11 @@ void UDeloreanReplicationMachine::setDefaultVariablesTo(AJet* anOwner, int aMove
 	movementHistorySize = aMovementHistorySize;
 	movementHistory = std::deque<FMovementData>(movementHistorySize, 
 		FMovementData(owningJet, EMovementType::routine, owningJet->currentMotorStateClass(), owningJet->currentSteerStateClass()));
+}
+
+bool UDeloreanReplicationMachine::hasDataForClient()
+{
+	return readyToEstablishMovement;
 }
 
 void UDeloreanReplicationMachine::addMovementToHistory()
@@ -51,17 +57,12 @@ int UDeloreanReplicationMachine::closestIndexTo(int64 aTimestamp)
 		{
 			const int currentDifference = FMath::Abs(movementHistory[historyMoment].timestampedStates.timestamp - aTimestamp);
 
-			//UE_LOG(LogTemp, Log, TEXT("current movement history number: %s"), *FString::FromInt(historyMoment));
-			//UE_LOG(LogTemp, Log, TEXT("minimum difference: %s"), *FString::FromInt(minimumDifference));
-			//UE_LOG(LogTemp, Log, TEXT("current difference: %s"), *FString::FromInt(currentDifference));
-
 			if( currentDifference < minimumDifference)
 			{
 				minimumDifference = currentDifference;
 			}
 			else
 			{
-				//UE_LOG(LogTemp, Log, TEXT("found closest index to received timestamp."));
 				break;
 			}
 			++historyMoment;
@@ -74,15 +75,13 @@ void UDeloreanReplicationMachine::establishMovementForTheClientFrom(int aMomentI
 {
 	synchronizedMovement = movementHistory[aMomentInHistory];
 	synchronizedMovement.timestampedStates.timestamp = aClientTimestamp;
+	readyToEstablishMovement = true;
 }
 
 void UDeloreanReplicationMachine::smoothFinalMovementFrom(FMovementData initialMovement, int64 aTimestamp)
 {
 	int64 timePhaseShift = FMath::Abs(movementHistory[0].timestampedStates.timestamp - aTimestamp);
 	float interpolationStep = timePhaseShift / 1000.0f;
-
-	//UE_LOG(LogTemp, Log, TEXT("\n\n ****** Current Move: ****** \n %s \n\n"), *initialMovement.ToString());
-	//UE_LOG(LogTemp, Log, TEXT("\n\n ****** Simulated Move: ****** \n %s \n\n"), *movementHistory[0].ToString());
 
 	FVector smoothedLocation = FMath::LerpStable(initialMovement.location, movementHistory[0].location, interpolationStep);
 	//FMath::CubicInterp(initialMovement.location, initialMovement.linearVelocity, movementHistory[0].location, movementHistory[0].linearVelocity, interpolationStep);
@@ -97,17 +96,12 @@ void UDeloreanReplicationMachine::smoothFinalMovementFrom(FMovementData initialM
 	movementHistory[0].rotation = (FQuat::Slerp(initialMovement.rotation.Quaternion(), movementHistory[0].rotation.Quaternion(), interpolationStep)).Rotator();
 	//FMath::RInterpTo(initialMovement.rotation, movementHistory[0].rotation, interpolationStep, movementHistory[0].angularVelocityInRadians.Size());
 	owningJet->asCurrentMovementSet(movementHistory[0], this);
-
-	//UE_LOG(LogTemp, Log, TEXT("\n\n ****** Smoothed Move: ****** \n %s \n\n"), *movementHistory[0].ToString());
 }
 
 void UDeloreanReplicationMachine::smooth(int atPosition, const FMovementData& aTargetMovement)
 {
 	int64 timePhaseShift = FMath::Abs(movementHistory[0].timestampedStates.timestamp - aTargetMovement.timestampedStates.timestamp);
 	float interpolationStep = timePhaseShift / 1000.0f;
-
-	//UE_LOG(LogTemp, Log, TEXT("\n\n ****** Move to smooth: ****** \n %s \n\n"), *movementHistory[atPosition].ToString());
-	//UE_LOG(LogTemp, Log, TEXT("\n\n ****** Target Move: ****** \n %s \n\n"), *aTargetMovement.ToString());
 
 	FVector smoothedLocation = FMath::CubicInterp(movementHistory[atPosition].location, movementHistory[atPosition].linearVelocity, aTargetMovement.location, aTargetMovement.linearVelocity, interpolationStep);
 	FVector smoothedLinearVelocity = FMath::CubicInterpDerivative(movementHistory[atPosition].location, movementHistory[atPosition].linearVelocity, aTargetMovement.location, aTargetMovement.linearVelocity, interpolationStep);
@@ -118,7 +112,6 @@ void UDeloreanReplicationMachine::smooth(int atPosition, const FMovementData& aT
 	movementHistory[atPosition].angularVelocityInRadians = FMath::LerpStable(movementHistory[atPosition].angularVelocityInRadians, aTargetMovement.angularVelocityInRadians, interpolationStep);
 	
 	movementHistory[atPosition].rotation = (FQuat::Slerp(movementHistory[atPosition].rotation.Quaternion(), aTargetMovement.rotation.Quaternion(), interpolationStep)).Rotator();
-	//UE_LOG(LogTemp, Log, TEXT("\n\n ****** Smoothed Move: ****** \n %s \n\n"), *movementHistory[atPosition].ToString());
 }
 
 FStateData UDeloreanReplicationMachine::generateCurrentStateDataToSend()
@@ -136,28 +129,11 @@ FMovementData UDeloreanReplicationMachine::retrieveCurrentMovementDataToSend()
 }
 
 void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FStateData aBunchOfStates)
-{
-	//never change timestamps!!!
-	//go back into the movement history and find the movement previous to the states timestamp.
-	//using that movement location, rotation and velocities, calculate the next movement with the states of aBunchOfStates
-	//take the next move (the one that would come after the states timestamp), set the aBunchOfStates as the movement states.
-	//Set the movement as the one calculated.
-	//
-	//Start the loop (from the move that follows until the current movement in history):
-	//if the movement type is SendOrReceive, keep the states as is.
-	//if the movement type is routine (but only before the first SendOrReceive of the loop), overwrite the states with the ones on the previous movement.
-	////(you could use a boolean to check if you can overwrite)
-	//calculate the current movement using the current states and the movement of the previous move.
-	//set the current movement in the structure.
-	//advance to next movement.
-
-	//UE_LOG(LogTemp, Log, TEXT("\n\n ******** Starting Server synchronization ******** \n\n"));
-	//UE_LOG(LogTemp, Log, TEXT("\n\n ****** Current Move: ****** \n %s \n\n"), *movementHistory[0].ToString());
-	
+{	
+	readyToEstablishMovement = false;
 	int historyMoment = closestIndexTo(aBunchOfStates.timestamp);
 	if(historyMoment != movementHistory.size())
 	{
-		//UE_LOG(LogTemp, Log, TEXT("movement history number before history reshape: %s"), *FString::FromInt(historyMoment));
 		if(historyMoment <= 0)
 		{
 			movementHistory[0].timestampedStates.motorStateClass = aBunchOfStates.motorStateClass;
@@ -168,77 +144,31 @@ void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FStateData aBun
 		}
 		else
 		{
-			if(historyMoment >=0)
+			if(historyMoment > 0)
 			{
 				movementHistory[historyMoment].timestampedStates.motorStateClass = aBunchOfStates.motorStateClass;
 				movementHistory[historyMoment].timestampedStates.steerStateClass = aBunchOfStates.steerStateClass;
 				movementHistory[historyMoment].type = EMovementType::sendOrReceive;
-				//UE_LOG(LogTemp, Log, TEXT("\n\n ****** Move from closest index in server: ****** \n %s \n\n"), *movementHistory[historyMoment].ToString());
-				//UE_LOG(LogTemp, Log, TEXT("movement history number to start reshaping: %s"), *FString::FromInt(historyMoment));
-				//UE_LOG(LogTemp, Log, TEXT("\n** Base move to start reshaping: ** \n %s\n"), *movementHistory[historyMoment].ToString());
 				reshapeHistoryFrom(historyMoment, true);//chain reaction of history rewrite
 				establishMovementForTheClientFrom(historyMoment, aBunchOfStates.timestamp);//save moment to send to the client...
 			}
 		}
-		//send movement to client. If the jets calls it, it could be that the history moment was the same as the movement history size and it will return an invalid movement.
 	}
-	//UE_LOG(LogTemp, Log, TEXT("\n\n ******** Server synchronization Finalized ******** \n\n"));
-	//UE_LOG(LogTemp, Log, TEXT("\n\n ****** Final server Move: ****** \n %s \n\n"), *movementHistory[0].ToString());
 }
 
 void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FMovementData aMovementStructure)
-{
-	//never change timestamps!!!
-	//go back into the movement history and find the movement following (in time) the movement structure parameter.
-	//calculate the time delta (in milliseconds) and transform it to seconds.
-	//Calculate the movement that would be made on that time delta utilizing the movement structure parameter.
-	//Set the calculated movement structure (including its states) as the movement following it.
-	//
-	//Start the loop (from the move that follows until the current movement in history):
-	//if the movement type is SendOrReceive, keep the states as is.
-	//if the movement type is routine (but only before the first SendOrReceive of the loop), overwrite the states with the ones on the previous movement.
-	////(you could use a boolean to check if you can overwrite)
-	//calculate the current movement using the current states and the movement of the previous move.
-	//set the current movement in the structure.
-	//advance to next movement.
-
-	//UE_LOG(LogTemp, Log, TEXT("\n\n ******** Starting Client synchronization ******** \n\n"));
+{	
+	readyToEstablishMovement = false;
 	FMovementData initialCurrentMovement = movementHistory[0];
-	//UE_LOG(LogTemp, Log, TEXT("\n\n ****** Current Move: ****** \n %s \n\n"), *initialCurrentMovement.ToString());
 	
 	int historyMoment = closestIndexTo(aMovementStructure.timestampedStates.timestamp);
 	if(historyMoment != movementHistory.size() && historyMoment >=0)
 	{
-		/*if(owningJet->GetLocalRole() == ROLE_AutonomousProxy)
-		{
-			UE_LOG(LogTemp, Log, TEXT("\n\n ******** current client moves ******** \n\n"));
-			for (int position = historyMoment; position > 0; --position)
-			{
-				UE_LOG(LogTemp, Log, TEXT("\n%s\n"), *movementHistory[position].ToString());
-			}
-		}*/
-		
-
-		
-		//UE_LOG(LogTemp, Log, TEXT("movement history number before history reshape: %s"), *FString::FromInt(historyMoment));
-		//UE_LOG(LogTemp, Log, TEXT("\n\n ****** Move from closest index in client: ****** \n %s \n\n"), *movementHistory[historyMoment].ToString());
-		//UE_LOG(LogTemp, Log, TEXT("movement history number to start reshaping: %s"), *FString::FromInt(historyMoment));
-		/*smooth(historyMoment, aMovementStructure);*/ movementHistory[historyMoment].copyMovesFrom(aMovementStructure);
+		movementHistory[historyMoment].copyMovesFrom(aMovementStructure); /*smooth(historyMoment, aMovementStructure);*/ 
 		reshapeHistoryFrom(historyMoment, false);//chain reaction of history rewrite
 
 		smoothFinalMovementFrom(initialCurrentMovement, aMovementStructure.timestampedStates.timestamp);
-
-		/*if(owningJet->GetLocalRole() == ROLE_AutonomousProxy)
-		{
-			UE_LOG(LogTemp, Log, TEXT("\n\n ******** simulated client moves ******** \n\n"));
-			for (int position = historyMoment; position > 0; --position)
-			{
-				UE_LOG(LogTemp, Log, TEXT("\n%s\n"), *movementHistory[position].ToString());
-			}
-		}*/
 	}
-	//UE_LOG(LogTemp, Log, TEXT("\n\n ******** Client synchronization Finalized ******** \n\n"));
-	//UE_LOG(LogTemp, Log, TEXT("\n\n ****** Final client Move: ****** \n %s \n\n"), *movementHistory[0].ToString());
 }
 
 void UDeloreanReplicationMachine::reshapeHistoryFrom(int aMomentInHistory, bool anOptionToChangeStates)
@@ -254,7 +184,6 @@ void UDeloreanReplicationMachine::reshapeHistoryFrom(int aMomentInHistory, bool 
 		FMovementData& nextMovementInHistory = movementHistory[aMomentInHistory - 1];
 		if(needsToChangeStates && nextMovementInHistory.type == EMovementType::routine)
 		{
-			//UE_LOG(LogTemp, Log, TEXT("\n changing states \n"));
 			nextMovementInHistory.timestampedStates.motorStateClass = currentMovementInHistory.timestampedStates.motorStateClass;
 			nextMovementInHistory.timestampedStates.steerStateClass = currentMovementInHistory.timestampedStates.steerStateClass;
 		}
@@ -267,16 +196,12 @@ void UDeloreanReplicationMachine::reshapeHistoryFrom(int aMomentInHistory, bool 
 		FMovementData rewrittenNextMovement = FMovementData();
 
 		rewrittenNextMovement = simulateNextMovementFrom(currentMovementInHistory);//calculate rewritten next movement with these values... 
-
-
 		
 		nextMovementInHistory.regenerateMoveFrom(rewrittenNextMovement, nextMovementInHistory.type);
 		nextMovementInHistory.timestampedStates = nextMovementStates;
-
-		//align velocity!!! only if left or right steering == not center steering...
+		
 		if(needsToAlign)
 		{
-			//UE_LOG(LogTemp, Log, TEXT("\n aligning velocity \n"));
 			needsToAlign = false;
 			float timeBetweenMovements = (nextMovementInHistory.timestampedStates.timestamp - currentMovementInHistory.timestampedStates.timestamp) / 1000.0f;
 			nextMovementInHistory.linearVelocity += (steerCounterAcceleration + steerAlignAcceleration) * timeBetweenMovements;
@@ -285,7 +210,6 @@ void UDeloreanReplicationMachine::reshapeHistoryFrom(int aMomentInHistory, bool 
 		
 		if(currentMovementInHistory.timestampedStates.steerStateClass != UCenterSteerState::StaticClass())
 		{
-			//UE_LOG(LogTemp, Log, TEXT("\n needs to align velocity \n"));
 			needsToAlign = true;
 			owningJet->asCurrentMovementSet(currentMovementInHistory, this);
 			FVector currentForwardProjection = owningJet->ForwardProjectionOnFloor();
@@ -302,9 +226,7 @@ void UDeloreanReplicationMachine::reshapeHistoryFrom(int aMomentInHistory, bool 
 
 FMovementData UDeloreanReplicationMachine::simulateNextMovementFrom(FMovementData aPreviousMovement, float simulationDuration)
 {
-	
 	owningJet->asCurrentMovementSet(aPreviousMovement, this);
-
 
 	FVector auxiliaryLinearAcceleration = FVector(0);
 	FVector auxiliaryAngularAcceleration = FVector(0);
@@ -323,7 +245,6 @@ FMovementData UDeloreanReplicationMachine::simulateNextMovementFrom(FMovementDat
 	sumOfAngularAccelerations += auxiliaryAngularAcceleration;
 	sumOfLinearAccelerations += auxiliaryLinearAcceleration;
 
-	
 	sumOfLinearAccelerations += Cast<UMotorState, UObject>(aPreviousMovement.timestampedStates.motorStateClass->ClassDefaultObject)->linearAccelerationsGeneratedTo(owningJet);
 	sumOfLinearAccelerations += retrieveTrackMagnetizationLinearAcceleration();
 
@@ -334,9 +255,6 @@ FMovementData UDeloreanReplicationMachine::simulateNextMovementFrom(FMovementDat
 
 	float effectiveLinearDampingEffect = 1 - owningJet->linearDamping() * simulationDuration;
 	float effectiveAngularDampingEffect = 1 - owningJet->angularDamping() * simulationDuration;
-
-	//UE_LOG(LogTemp, Log, TEXT("effective linear damping %f"), effectiveLinearDampingEffect);
-	//UE_LOG(LogTemp, Log, TEXT("effective angular damping %f"), effectiveAngularDampingEffect);
 	
 	sumOfLinearAccelerations *=  effectiveLinearDampingEffect;
 	sumOfAngularAccelerations *= effectiveAngularDampingEffect;
@@ -356,8 +274,6 @@ FMovementData UDeloreanReplicationMachine::simulateNextMovementFrom(FMovementDat
 		angularVelocityDelta
 	);
 
-	
-
 	FMovementData simulatedMove = aPreviousMovement;
 
 	simulatedMove.linearVelocity += P2UVector(linearVelocityDelta);
@@ -371,10 +287,6 @@ FMovementData UDeloreanReplicationMachine::simulateNextMovementFrom(FMovementDat
 	FQuat angularVelocityQuaternion = FQuat(angularRotation.GetSafeNormal(), angularRotation.Size());
 
 	simulatedMove.rotation =  ( angularVelocityQuaternion * simulatedMove.rotation.Quaternion() ).Rotator();
-
-	//UE_LOG(LogTemp, Log, TEXT("\n simulated movement: \n %s \n"), *simulatedMove.ToString());
-	//UE_LOG(LogTemp, Log, TEXT(">>angular velocity delta: %s"), *P2UVector(angularVelocityDelta).ToString());
-	//UE_LOG(LogTemp, Log, TEXT(">>angular velocity delta 'in radians': %s\n"), *FVector::DegreesToRadians(P2UVector(angularVelocityDelta)).ToString());
 	
 	return simulatedMove;
 }

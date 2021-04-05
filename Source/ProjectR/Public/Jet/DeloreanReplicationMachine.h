@@ -140,6 +140,7 @@ private:
 	AJet* owningJet;
 	bool generateSendOrReceiveMovementType;
 	FMovementData synchronizedMovement;
+	bool readyToEstablishMovement;
 
 protected:
 		/** don't add objects directly, use addMovementToHistory instead.*/
@@ -175,9 +176,22 @@ public:
 
 	FMovementData retrieveCurrentMovementDataToSend();
 
+	/**Normally executed by the server.
+	*Looks for the nearest local movement using the aBunchOfStates timestamp.
+	*It copies the received states to the nearest movement found and starts to resimulate its movements from there (only if history moment > 0).
+	*Then it saves the closest move near to the timestamp received to the client, with the timestamp and states received.
+	*/
 	void synchronizeMovementHistoryWith(FStateData aBunchOfStates);
+
+	/**Normally executed by the client.
+	*Looks for the nearest local movement using the aMovementStructure timestamp.
+	*It copies the received moves to the movement with that same timestamp and starts to resimulate its movements from there (only if history moment >= 0).
+	*Finally, it tries to smooth the initial current move to the final one simulated.
+	*/
 	void synchronizeMovementHistoryWith(FMovementData aMovementStructure);
 
 
 	void setDefaultVariablesTo(AJet* anOwner, int aMovementHistorySize);
+
+	bool hasDataForClient();
 };
