@@ -128,7 +128,12 @@ public:
 	UClass* currentMotorStateClass();
 	UClass* currentSteerStateClass();
 	float accelerationMagnitudeToAlignVelocityFrom(FVector aCurrentLocation);
+
+	
 	void changesGeneratedByAntiGravityTo(FVector& aLinearAcceleration, FVector& anAngularAcceleration);
+
+	FVector retrieveTrackMagnetizationLinearAcceleration();
+	
 	FPhysicsActorHandle& physicsHandleRequestedBy(UDeloreanReplicationMachine* aReplicationMachine);
 
 	void asCurrentMovementSet(FMovementData anotherMovement, UDeloreanReplicationMachine* aRequestingReplicationMachine);

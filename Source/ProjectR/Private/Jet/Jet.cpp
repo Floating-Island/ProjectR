@@ -4,6 +4,9 @@
 #include "Jet/Jet.h"
 
 
+
+#include "../../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include "../../Public/Track/TrackManager.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -339,6 +342,16 @@ float AJet::accelerationMagnitudeToAlignVelocityFrom(FVector aCurrentLocation)
 void AJet::changesGeneratedByAntiGravityTo(FVector& aLinearAcceleration, FVector& anAngularAcceleration)
 {
 	antiGravitySystem->currentChangesMadeTo(aLinearAcceleration, anAngularAcceleration);
+}
+
+FVector AJet::retrieveTrackMagnetizationLinearAcceleration()
+{
+	ATrackManager* trackManager = Cast<ATrackManager, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ATrackManager::StaticClass()));
+	if(trackManager == nullptr)
+	{
+		return FVector(0, 0, - FMath::Abs(GetWorld()->GetGravityZ()));
+	}
+	return trackManager->pullingAccelerationTo(this);
 }
 
 FPhysicsActorHandle& AJet::physicsHandleRequestedBy(UDeloreanReplicationMachine* aReplicationMachine)

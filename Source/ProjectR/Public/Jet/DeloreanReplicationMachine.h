@@ -151,16 +151,15 @@ protected:
 	 * this information is also available in the jet header.
 	 */
 	int movementHistorySize;
+	
+	void changeHistoryMovementAtMomentWith(FStateData aBunchOfStates, int atHistoryMoment);
 
 	void reshapeHistoryFrom(int aMomentInHistory, bool anOptionToChangeStates);
-	
 
 	FMovementData simulateNextMovementFrom(const FMovementData& aPreviousMovement, float simulationDuration = 0);
 	
 	void calculateNextMovementChangesTo(FVector& aSumOfLinearAccelerations, FVector& aSumOfAngularAccelerations,
 	                                    float& aSimulationDuration, const FMovementData& aPreviousMovement);
-
-	FVector retrieveTrackMagnetizationLinearAcceleration();
 	
 	void calculatePhysicsBodyChangesTo(PxVec3& aLinearVelocityDelta, PxVec3& anANgularVelocityDelta,
 	                                   const float& simulationDuration,

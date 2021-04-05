@@ -8,8 +8,6 @@
 #include "extensions/PxRigidBodyExt.h"
 #include "PhysXPublic.h"
 #include "Jet/Jet.h"
-#include "Track/TrackManager.h"
-#include "Kismet/GameplayStatics.h"
 
 UDeloreanReplicationMachine::UDeloreanReplicationMachine()
 {
@@ -138,9 +136,7 @@ void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FStateData aBun
 	{
 		if(historyMoment <= 0)
 		{
-			movementHistory[0].timestampedStates.motorStateClass = aBunchOfStates.motorStateClass;
-			movementHistory[0].timestampedStates.steerStateClass = aBunchOfStates.steerStateClass;
-			movementHistory[0].type = EMovementType::sendOrReceive;
+			changeHistoryMovementAtMomentWith(aBunchOfStates, 0);
 			owningJet->asCurrentMovementSet(movementHistory[0], this);
 			establishMovementForTheClientFrom(0, aBunchOfStates.timestamp);//save moment to send to the client...
 		}
@@ -148,14 +144,19 @@ void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FStateData aBun
 		{
 			if(historyMoment > 0)
 			{
-				movementHistory[historyMoment].timestampedStates.motorStateClass = aBunchOfStates.motorStateClass;
-				movementHistory[historyMoment].timestampedStates.steerStateClass = aBunchOfStates.steerStateClass;
-				movementHistory[historyMoment].type = EMovementType::sendOrReceive;
+				changeHistoryMovementAtMomentWith(aBunchOfStates, historyMoment);
 				reshapeHistoryFrom(historyMoment, true);//chain reaction of history rewrite
 				establishMovementForTheClientFrom(historyMoment, aBunchOfStates.timestamp);//save moment to send to the client...
 			}
 		}
 	}
+}
+
+void UDeloreanReplicationMachine::changeHistoryMovementAtMomentWith(FStateData aBunchOfStates, int atHistoryMoment)
+{
+	movementHistory[atHistoryMoment].timestampedStates.motorStateClass = aBunchOfStates.motorStateClass;
+	movementHistory[atHistoryMoment].timestampedStates.steerStateClass = aBunchOfStates.steerStateClass;
+	movementHistory[atHistoryMoment].type = EMovementType::sendOrReceive;
 }
 
 void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FMovementData aMovementStructure)
@@ -277,7 +278,7 @@ void UDeloreanReplicationMachine::calculateNextMovementChangesTo(FVector& aSumOf
 	aSumOfLinearAccelerations += auxiliaryLinearAcceleration;
 
 	aSumOfLinearAccelerations += Cast<UMotorState, UObject>(aPreviousMovement.timestampedStates.motorStateClass->ClassDefaultObject)->linearAccelerationsGeneratedTo(owningJet);
-	aSumOfLinearAccelerations += retrieveTrackMagnetizationLinearAcceleration();
+	aSumOfLinearAccelerations += owningJet->retrieveTrackMagnetizationLinearAcceleration();
 
 	if(aSimulationDuration == 0)
 	{
@@ -289,16 +290,6 @@ void UDeloreanReplicationMachine::calculateNextMovementChangesTo(FVector& aSumOf
 	
 	aSumOfLinearAccelerations *=  effectiveLinearDampingEffect;
 	aSumOfAngularAccelerations *= effectiveAngularDampingEffect;
-}
-
-FVector UDeloreanReplicationMachine::retrieveTrackMagnetizationLinearAcceleration()
-{
-	ATrackManager* trackManager = Cast<ATrackManager, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ATrackManager::StaticClass()));
-	if(trackManager == nullptr)
-	{
-		return FVector(0, 0, - FMath::Abs(GetWorld()->GetGravityZ()));
-	}
-	return trackManager->pullingAccelerationTo(owningJet);
 }
 
 void UDeloreanReplicationMachine::calculatePhysicsBodyChangesTo(PxVec3& aLinearVelocityDelta, PxVec3& anANgularVelocityDelta, const float& simulationDuration, const FVector&
