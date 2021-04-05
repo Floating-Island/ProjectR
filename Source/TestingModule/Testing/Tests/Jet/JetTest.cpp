@@ -1753,6 +1753,15 @@ bool FAJetSpawnsAdjustingIfPossibleButAlwaysSpawnTest::RunTest(const FString& Pa
 }
 
 
+bool FAJetIsAlwaysRelevantTest::RunTest(const FString& Parameters)
+{
+	AJet* testJet = NewObject<AJet>();
+
+	TestTrue(FString("Should be always relevant to the network."), 
+		testJet->bAlwaysRelevant == true);
+	
+	return true;
+}
 
 
 
