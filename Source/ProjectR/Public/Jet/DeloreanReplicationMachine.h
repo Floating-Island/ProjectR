@@ -167,7 +167,6 @@ protected:
 
 	FMovementData generateSimulatedMoveFrom(const FMovementData& aPreviousMovement, FVector aLinearVelocityDelta, FVector anAngularVelocityDelta, float aSimulationDuration);
 
-
 	void addToMovementHistory(FMovementData aMovement);
 
 	int closestIndexTo(int64 aTimestamp);
