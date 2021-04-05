@@ -143,7 +143,7 @@ private:
 	bool readyToEstablishMovement;
 
 protected:
-		/** don't add objects directly, use addMovementToHistory instead.*/
+	/** don't add objects directly, use addMovementToHistory instead.*/
 	std::deque<FMovementData> movementHistory;
 
 	/**With 60 we will have 1000 milliseconds of movements into the past
@@ -182,7 +182,6 @@ protected:
 	void establishMovementForTheClientFrom(int aMomentInHistory, int64 aClientTimestamp);
 
 	void smoothFinalMovementFrom(FMovementData initialMovement, int64 aTimestamp);
-	void smooth(int atPosition, const FMovementData& aTargetMovement);
 	
 public:
 	UDeloreanReplicationMachine();

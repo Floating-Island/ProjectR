@@ -45,13 +45,6 @@ void UDeloreanReplicationMachine::addToMovementHistory(FMovementData aMovement)
 	movementHistory.pop_back();
 }
 
-void UDeloreanReplicationMachine::establishMovementForTheClientFrom(int aMomentInHistory, int64 aClientTimestamp)
-{
-	synchronizedMovement = movementHistory[aMomentInHistory];
-	synchronizedMovement.timestampedStates.timestamp = aClientTimestamp;
-	readyToEstablishMovement = true;
-}
-
 FStateData UDeloreanReplicationMachine::generateCurrentStateDataToSend()
 {
 	FStateData currentStates = FStateData(owningJet->currentMotorStateClass(), owningJet->currentSteerStateClass());
@@ -292,6 +285,13 @@ void UDeloreanReplicationMachine::manageVelocityAlignmentWhen(bool& needsToAlign
 	}
 }
 
+void UDeloreanReplicationMachine::establishMovementForTheClientFrom(int aMomentInHistory, int64 aClientTimestamp)
+{
+	synchronizedMovement = movementHistory[aMomentInHistory];
+	synchronizedMovement.timestampedStates.timestamp = aClientTimestamp;
+	readyToEstablishMovement = true;
+}
+
 void UDeloreanReplicationMachine::smoothFinalMovementFrom(FMovementData initialMovement, int64 aTimestamp)
 {
 	int64 timePhaseShift = FMath::Abs(movementHistory[0].timestampedStates.timestamp - aTimestamp);
@@ -310,22 +310,4 @@ void UDeloreanReplicationMachine::smoothFinalMovementFrom(FMovementData initialM
 	movementHistory[0].rotation = (FQuat::Slerp(initialMovement.rotation.Quaternion(), movementHistory[0].rotation.Quaternion(), interpolationStep)).Rotator();
 	//FMath::RInterpTo(initialMovement.rotation, movementHistory[0].rotation, interpolationStep, movementHistory[0].angularVelocityInRadians.Size());
 	owningJet->asCurrentMovementSet(movementHistory[0], this);
-}
-
-void UDeloreanReplicationMachine::smooth(int atPosition, const FMovementData& aTargetMovement)
-{
-	int64 timePhaseShift = FMath::Abs(movementHistory[0].timestampedStates.timestamp - aTargetMovement.timestampedStates.timestamp);
-	float interpolationStep = timePhaseShift / 1000.0f;
-
-	FVector smoothedLocation = FMath::CubicInterp(movementHistory[atPosition].location, movementHistory[atPosition].linearVelocity, 
-		aTargetMovement.location, aTargetMovement.linearVelocity, interpolationStep);
-	FVector smoothedLinearVelocity = FMath::CubicInterpDerivative(movementHistory[atPosition].location, movementHistory[atPosition].linearVelocity, 
-		aTargetMovement.location, aTargetMovement.linearVelocity, interpolationStep);
-
-	movementHistory[atPosition].location = smoothedLocation;
-	movementHistory[atPosition].linearVelocity = smoothedLinearVelocity;
-	
-	movementHistory[atPosition].angularVelocityInRadians = FMath::LerpStable(movementHistory[atPosition].angularVelocityInRadians, aTargetMovement.angularVelocityInRadians, interpolationStep);
-	
-	movementHistory[atPosition].rotation = (FQuat::Slerp(movementHistory[atPosition].rotation.Quaternion(), aTargetMovement.rotation.Quaternion(), interpolationStep)).Rotator();
 }
