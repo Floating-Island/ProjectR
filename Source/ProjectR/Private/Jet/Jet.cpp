@@ -74,6 +74,8 @@ AJet::AJet()
 
 	movementHistorySize = 60;
 	replicationMachine = CreateDefaultSubobject<UDeloreanReplicationMachine>(UDeloreanReplicationMachine::StaticClass()->GetFName());
+
+	bAlwaysRelevant = true;
 }
 
 void AJet::BeginPlay()
