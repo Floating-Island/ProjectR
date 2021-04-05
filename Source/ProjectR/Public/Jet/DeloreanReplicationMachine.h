@@ -172,10 +172,10 @@ protected:
 
 	int closestIndexTo(int64 aTimestamp);
 
-	void copyCurrentMovementStatesIf(bool& needsToChangeStates, FMovementData& aCurrentMovementInHistory,
+	void copyCurrentMovementStatesToNextIf(bool& needsToChangeStates, FMovementData& aCurrentMovementInHistory,
 	                                 FMovementData& aNextMovementInHistory);
 	
-	void manageVelocityAlignementWhen(bool& needsToAlign, FVector& aSteerCounterAcceleration,
+	void manageVelocityAlignmentWhen(bool& needsToAlign, FVector& aSteerCounterAcceleration,
 	                                  FVector& aSteerAlignAcceleration,
 	                                  FMovementData& aCurrentMovementInHistory, FMovementData& aNextMovementInHistory);
 

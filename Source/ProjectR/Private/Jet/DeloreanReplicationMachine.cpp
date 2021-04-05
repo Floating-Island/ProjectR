@@ -45,73 +45,11 @@ void UDeloreanReplicationMachine::addToMovementHistory(FMovementData aMovement)
 	movementHistory.pop_back();
 }
 
-int UDeloreanReplicationMachine::closestIndexTo(int64 aTimestamp)
-{
-	int historyMoment = 0;
-	int minimumDifference = std::numeric_limits<int>::max();
-	if(aTimestamp < movementHistory[0].timestampedStates.timestamp)//check that the timestamp doesn't come from the future...
-	{
-		while (historyMoment < movementHistory.size())
-		{
-			const int currentDifference = FMath::Abs(movementHistory[historyMoment].timestampedStates.timestamp - aTimestamp);
-
-			if( currentDifference < minimumDifference)
-			{
-				minimumDifference = currentDifference;
-			}
-			else
-			{
-				break;
-			}
-			++historyMoment;
-		}
-	}
-	return --historyMoment;
-}
-
 void UDeloreanReplicationMachine::establishMovementForTheClientFrom(int aMomentInHistory, int64 aClientTimestamp)
 {
 	synchronizedMovement = movementHistory[aMomentInHistory];
 	synchronizedMovement.timestampedStates.timestamp = aClientTimestamp;
 	readyToEstablishMovement = true;
-}
-
-void UDeloreanReplicationMachine::smoothFinalMovementFrom(FMovementData initialMovement, int64 aTimestamp)
-{
-	int64 timePhaseShift = FMath::Abs(movementHistory[0].timestampedStates.timestamp - aTimestamp);
-	float interpolationStep = timePhaseShift / 1000.0f;
-
-	FVector smoothedLocation = FMath::LerpStable(initialMovement.location, movementHistory[0].location, interpolationStep);
-	//FMath::CubicInterp(initialMovement.location, initialMovement.linearVelocity, movementHistory[0].location, movementHistory[0].linearVelocity, interpolationStep);
-	FVector smoothedLinearVelocity = FMath::LerpStable(initialMovement.linearVelocity, movementHistory[0].linearVelocity, interpolationStep);
-	//FMath::CubicInterpDerivative(initialMovement.location, initialMovement.linearVelocity, movementHistory[0].location, movementHistory[0].linearVelocity, interpolationStep);
-
-	movementHistory[0].location = smoothedLocation;
-	movementHistory[0].linearVelocity = smoothedLinearVelocity;
-
-	movementHistory[0].angularVelocityInRadians = FMath::LerpStable(initialMovement.angularVelocityInRadians, movementHistory[0].angularVelocityInRadians, interpolationStep);
-	
-	movementHistory[0].rotation = (FQuat::Slerp(initialMovement.rotation.Quaternion(), movementHistory[0].rotation.Quaternion(), interpolationStep)).Rotator();
-	//FMath::RInterpTo(initialMovement.rotation, movementHistory[0].rotation, interpolationStep, movementHistory[0].angularVelocityInRadians.Size());
-	owningJet->asCurrentMovementSet(movementHistory[0], this);
-}
-
-void UDeloreanReplicationMachine::smooth(int atPosition, const FMovementData& aTargetMovement)
-{
-	int64 timePhaseShift = FMath::Abs(movementHistory[0].timestampedStates.timestamp - aTargetMovement.timestampedStates.timestamp);
-	float interpolationStep = timePhaseShift / 1000.0f;
-
-	FVector smoothedLocation = FMath::CubicInterp(movementHistory[atPosition].location, movementHistory[atPosition].linearVelocity, 
-		aTargetMovement.location, aTargetMovement.linearVelocity, interpolationStep);
-	FVector smoothedLinearVelocity = FMath::CubicInterpDerivative(movementHistory[atPosition].location, movementHistory[atPosition].linearVelocity, 
-		aTargetMovement.location, aTargetMovement.linearVelocity, interpolationStep);
-
-	movementHistory[atPosition].location = smoothedLocation;
-	movementHistory[atPosition].linearVelocity = smoothedLinearVelocity;
-	
-	movementHistory[atPosition].angularVelocityInRadians = FMath::LerpStable(movementHistory[atPosition].angularVelocityInRadians, aTargetMovement.angularVelocityInRadians, interpolationStep);
-	
-	movementHistory[atPosition].rotation = (FQuat::Slerp(movementHistory[atPosition].rotation.Quaternion(), aTargetMovement.rotation.Quaternion(), interpolationStep)).Rotator();
 }
 
 FStateData UDeloreanReplicationMachine::generateCurrentStateDataToSend()
@@ -152,6 +90,30 @@ void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FStateData aBun
 	}
 }
 
+int UDeloreanReplicationMachine::closestIndexTo(int64 aTimestamp)
+{
+	int historyMoment = 0;
+	int minimumDifference = std::numeric_limits<int>::max();
+	if(aTimestamp < movementHistory[0].timestampedStates.timestamp)//check that the timestamp doesn't come from the future...
+	{
+		while (historyMoment < movementHistory.size())
+		{
+			const int currentDifference = FMath::Abs(movementHistory[historyMoment].timestampedStates.timestamp - aTimestamp);
+
+			if( currentDifference < minimumDifference)
+			{
+				minimumDifference = currentDifference;
+			}
+			else
+			{
+				break;
+			}
+			++historyMoment;
+		}
+	}
+	return --historyMoment;
+}
+
 void UDeloreanReplicationMachine::changeHistoryMovementAtMomentWith(FStateData aBunchOfStates, int atHistoryMoment)
 {
 	movementHistory[atHistoryMoment].timestampedStates.motorStateClass = aBunchOfStates.motorStateClass;
@@ -174,43 +136,6 @@ void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FMovementData a
 	}
 }
 
-void UDeloreanReplicationMachine::copyCurrentMovementStatesIf(bool& needsToChangeStates, FMovementData& aCurrentMovementInHistory, FMovementData& aNextMovementInHistory)
-{
-	if(needsToChangeStates && aNextMovementInHistory.type == EMovementType::routine)
-	{
-		aNextMovementInHistory.timestampedStates.motorStateClass = aCurrentMovementInHistory.timestampedStates.motorStateClass;
-		aNextMovementInHistory.timestampedStates.steerStateClass = aCurrentMovementInHistory.timestampedStates.steerStateClass;
-	}
-	else //found the first movement in history that was already sent to or received from the server...
-	{
-		needsToChangeStates = false;
-	}
-}
-
-void UDeloreanReplicationMachine::manageVelocityAlignementWhen(bool& needsToAlign, FVector& aSteerCounterAcceleration, FVector& aSteerAlignAcceleration,
-	FMovementData& aCurrentMovementInHistory, FMovementData& aNextMovementInHistory)
-{
-	if(needsToAlign)
-	{
-		needsToAlign = false;
-		float timeBetweenMovements = (aNextMovementInHistory.timestampedStates.timestamp - aCurrentMovementInHistory.timestampedStates.timestamp) / 1000.0f;
-		aNextMovementInHistory.linearVelocity += (aSteerCounterAcceleration + aSteerAlignAcceleration) * timeBetweenMovements;
-		aNextMovementInHistory.location = aCurrentMovementInHistory.location + aNextMovementInHistory.linearVelocity * timeBetweenMovements;
-	}
-		
-	if(aCurrentMovementInHistory.timestampedStates.steerStateClass != UCenterSteerState::StaticClass())
-	{
-		needsToAlign = true;
-		owningJet->asCurrentMovementSet(aCurrentMovementInHistory, this);
-		FVector currentForwardProjection = owningJet->ForwardProjectionOnFloor();
-		FVector currentLocation = owningJet->GetActorLocation();
-		owningJet->asCurrentMovementSet(aNextMovementInHistory, this);
-		float alignmentAcceleration =  owningJet->accelerationMagnitudeToAlignVelocityFrom(currentLocation);
-		aSteerCounterAcceleration = (-currentForwardProjection) * alignmentAcceleration;
-		aSteerAlignAcceleration = owningJet->ForwardProjectionOnFloor() * alignmentAcceleration;
-	}
-}
-
 void UDeloreanReplicationMachine::reshapeHistoryFrom(int aMomentInHistory, bool anOptionToChangeStates)
 {
 	bool needsToChangeStates = anOptionToChangeStates;
@@ -222,7 +147,9 @@ void UDeloreanReplicationMachine::reshapeHistoryFrom(int aMomentInHistory, bool 
 	{
 		FMovementData& currentMovementInHistory = movementHistory[aMomentInHistory];
 		FMovementData& nextMovementInHistory = movementHistory[aMomentInHistory - 1];
-		copyCurrentMovementStatesIf(needsToChangeStates, currentMovementInHistory, nextMovementInHistory);
+
+		copyCurrentMovementStatesToNextIf(needsToChangeStates, currentMovementInHistory, nextMovementInHistory);
+
 		FStateData nextMovementStates = nextMovementInHistory.timestampedStates;
 
 		FMovementData rewrittenNextMovement = FMovementData();
@@ -232,11 +159,24 @@ void UDeloreanReplicationMachine::reshapeHistoryFrom(int aMomentInHistory, bool 
 		nextMovementInHistory.regenerateMoveFrom(rewrittenNextMovement, nextMovementInHistory.type);
 		nextMovementInHistory.timestampedStates = nextMovementStates;
 		
-		manageVelocityAlignementWhen(needsToAlign, steerCounterAcceleration, steerAlignAcceleration, currentMovementInHistory,
+		manageVelocityAlignmentWhen(needsToAlign, steerCounterAcceleration, steerAlignAcceleration, currentMovementInHistory,
 		                             nextMovementInHistory);
 		--aMomentInHistory;
 	}
 	owningJet->asCurrentMovementSet(movementHistory[0], this);
+}
+
+void UDeloreanReplicationMachine::copyCurrentMovementStatesToNextIf(bool& needsToChangeStates, FMovementData& aCurrentMovementInHistory, FMovementData& aNextMovementInHistory)
+{
+	if(needsToChangeStates && aNextMovementInHistory.type == EMovementType::routine)
+	{
+		aNextMovementInHistory.timestampedStates.motorStateClass = aCurrentMovementInHistory.timestampedStates.motorStateClass;
+		aNextMovementInHistory.timestampedStates.steerStateClass = aCurrentMovementInHistory.timestampedStates.steerStateClass;
+	}
+	else //found the first movement in history that was already sent to or received from the server...
+	{
+		needsToChangeStates = false;
+	}
 }
 
 FMovementData UDeloreanReplicationMachine::simulateNextMovementFrom(const FMovementData& aPreviousMovement, float simulationDuration)
@@ -326,4 +266,66 @@ FMovementData UDeloreanReplicationMachine::generateSimulatedMoveFrom(const FMove
 	simulatedMove.rotation =  ( angularVelocityQuaternion * simulatedMove.rotation.Quaternion() ).Rotator();
 
 	return simulatedMove;
+}
+
+void UDeloreanReplicationMachine::manageVelocityAlignmentWhen(bool& needsToAlign, FVector& aSteerCounterAcceleration, FVector& aSteerAlignAcceleration,
+	FMovementData& aCurrentMovementInHistory, FMovementData& aNextMovementInHistory)
+{
+	if(needsToAlign)
+	{
+		needsToAlign = false;
+		float timeBetweenMovements = (aNextMovementInHistory.timestampedStates.timestamp - aCurrentMovementInHistory.timestampedStates.timestamp) / 1000.0f;
+		aNextMovementInHistory.linearVelocity += (aSteerCounterAcceleration + aSteerAlignAcceleration) * timeBetweenMovements;
+		aNextMovementInHistory.location = aCurrentMovementInHistory.location + aNextMovementInHistory.linearVelocity * timeBetweenMovements;
+	}
+		
+	if(aCurrentMovementInHistory.timestampedStates.steerStateClass != UCenterSteerState::StaticClass())
+	{
+		needsToAlign = true;
+		owningJet->asCurrentMovementSet(aCurrentMovementInHistory, this);
+		FVector currentForwardProjection = owningJet->ForwardProjectionOnFloor();
+		FVector currentLocation = owningJet->GetActorLocation();
+		owningJet->asCurrentMovementSet(aNextMovementInHistory, this);
+		float alignmentAcceleration =  owningJet->accelerationMagnitudeToAlignVelocityFrom(currentLocation);
+		aSteerCounterAcceleration = (-currentForwardProjection) * alignmentAcceleration;
+		aSteerAlignAcceleration = owningJet->ForwardProjectionOnFloor() * alignmentAcceleration;
+	}
+}
+
+void UDeloreanReplicationMachine::smoothFinalMovementFrom(FMovementData initialMovement, int64 aTimestamp)
+{
+	int64 timePhaseShift = FMath::Abs(movementHistory[0].timestampedStates.timestamp - aTimestamp);
+	float interpolationStep = timePhaseShift / 1000.0f;
+
+	FVector smoothedLocation = FMath::LerpStable(initialMovement.location, movementHistory[0].location, interpolationStep);
+	//FMath::CubicInterp(initialMovement.location, initialMovement.linearVelocity, movementHistory[0].location, movementHistory[0].linearVelocity, interpolationStep);
+	FVector smoothedLinearVelocity = FMath::LerpStable(initialMovement.linearVelocity, movementHistory[0].linearVelocity, interpolationStep);
+	//FMath::CubicInterpDerivative(initialMovement.location, initialMovement.linearVelocity, movementHistory[0].location, movementHistory[0].linearVelocity, interpolationStep);
+
+	movementHistory[0].location = smoothedLocation;
+	movementHistory[0].linearVelocity = smoothedLinearVelocity;
+
+	movementHistory[0].angularVelocityInRadians = FMath::LerpStable(initialMovement.angularVelocityInRadians, movementHistory[0].angularVelocityInRadians, interpolationStep);
+	
+	movementHistory[0].rotation = (FQuat::Slerp(initialMovement.rotation.Quaternion(), movementHistory[0].rotation.Quaternion(), interpolationStep)).Rotator();
+	//FMath::RInterpTo(initialMovement.rotation, movementHistory[0].rotation, interpolationStep, movementHistory[0].angularVelocityInRadians.Size());
+	owningJet->asCurrentMovementSet(movementHistory[0], this);
+}
+
+void UDeloreanReplicationMachine::smooth(int atPosition, const FMovementData& aTargetMovement)
+{
+	int64 timePhaseShift = FMath::Abs(movementHistory[0].timestampedStates.timestamp - aTargetMovement.timestampedStates.timestamp);
+	float interpolationStep = timePhaseShift / 1000.0f;
+
+	FVector smoothedLocation = FMath::CubicInterp(movementHistory[atPosition].location, movementHistory[atPosition].linearVelocity, 
+		aTargetMovement.location, aTargetMovement.linearVelocity, interpolationStep);
+	FVector smoothedLinearVelocity = FMath::CubicInterpDerivative(movementHistory[atPosition].location, movementHistory[atPosition].linearVelocity, 
+		aTargetMovement.location, aTargetMovement.linearVelocity, interpolationStep);
+
+	movementHistory[atPosition].location = smoothedLocation;
+	movementHistory[atPosition].linearVelocity = smoothedLinearVelocity;
+	
+	movementHistory[atPosition].angularVelocityInRadians = FMath::LerpStable(movementHistory[atPosition].angularVelocityInRadians, aTargetMovement.angularVelocityInRadians, interpolationStep);
+	
+	movementHistory[atPosition].rotation = (FQuat::Slerp(movementHistory[atPosition].rotation.Quaternion(), aTargetMovement.rotation.Quaternion(), interpolationStep)).Rotator();
 }
