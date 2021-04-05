@@ -161,6 +161,9 @@ protected:
 
 	int closestIndexTo(int64 aTimestamp);
 	void establishMovementForTheClientFrom(int aMomentInHistory, int64 aClientTimestamp);
+
+	void smoothFinalMovementFrom(FMovementData initialMovement, int64 aTimestamp);
+	void smooth(int atPosition, const FMovementData& aTargetMovement);
 	
 public:
 	UDeloreanReplicationMachine();
