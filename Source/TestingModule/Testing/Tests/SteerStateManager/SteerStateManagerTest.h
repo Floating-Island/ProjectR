@@ -63,29 +63,29 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FASteerStateManagerCenterKeepsStateIfAlr
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerReplicatesTest, 
-	"ProjectR.SteerStateManager Tests.Replication.009: Replicates to the network", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerIsAlwaysRelevantToNetworkTest, 
-	"ProjectR.SteerStateManager Tests.Replication.010: Is always relevant to the network", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FASteerStateManagerReplicatesStateWhenCallingSteerLeftTest, FSimplePIETestBase,
-	"ProjectR.SteerStateManager Tests.Replication.011: Replicates its state when client calls steerLeft", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FASteerStateManagerReplicatesStateWhenCallingSteerRightTest, FSimplePIETestBase,
-	"ProjectR.SteerStateManager Tests.Replication.012: Replicates its state when client calls steerRight", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
-
-
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FASteerStateManagerReplicatesStateWhenCallingCenterTest, FSimplePIETestBase,
-	"ProjectR.SteerStateManager Tests.Replication.013: Replicates its state when client calls center", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerReplicatesTest, 
+//	"ProjectR.SteerStateManager Tests.Replication.009: Replicates to the network", 
+//	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//
+//IMPLEMENT_SIMPLE_AUTOMATION_TEST(FASteerStateManagerIsAlwaysRelevantToNetworkTest, 
+//	"ProjectR.SteerStateManager Tests.Replication.010: Is always relevant to the network", 
+//	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//
+//IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FASteerStateManagerReplicatesStateWhenCallingSteerLeftTest, FSimplePIETestBase,
+//	"ProjectR.SteerStateManager Tests.Replication.011: Replicates its state when client calls steerLeft", 
+//	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//
+//IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FASteerStateManagerReplicatesStateWhenCallingSteerRightTest, FSimplePIETestBase,
+//	"ProjectR.SteerStateManager Tests.Replication.012: Replicates its state when client calls steerRight", 
+//	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//
+//
+//IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FASteerStateManagerReplicatesStateWhenCallingCenterTest, FSimplePIETestBase,
+//	"ProjectR.SteerStateManager Tests.Replication.013: Replicates its state when client calls center", 
+//	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 

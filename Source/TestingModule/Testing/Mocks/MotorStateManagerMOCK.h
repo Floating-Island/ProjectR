@@ -20,6 +20,8 @@ public:
 
 	template<class aMotorStateType>
 	void changeMotorStateTo();
+
+	void setOwningJet(AJet* owner);
 };
 
 template <class aMotorStateType>

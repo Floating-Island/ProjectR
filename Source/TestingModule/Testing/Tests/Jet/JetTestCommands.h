@@ -55,7 +55,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetAndFloorSideWays);
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotatedOverFloorAndBrakeIt);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotatedOverFloorAccelerateAndSteerItRight);
+DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAJetRotatedOverFloorAccelerateAndSteerItRight);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FClientPressKey, FName, keyName, int, clientQuantity);
@@ -182,5 +182,29 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckAJetHasAModelMesh, FSimpleP
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckAJetModelMeshAttachment, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckAJetHasMovementsStored, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckAJetHasMovementHistorySizeLimited, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FServerAndClientCheckSameMovementsStoredAcceleration, int, clientQuantity, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FServerAndClientCheckSameMovementsStoredBraking, int, clientQuantity, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FServerAndClientCheckSameMovementsStoredNeutralize, int, clientQuantity, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FServerAndClientCheckSameMovementsStoredSteerLeft, int, clientQuantity, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FServerAndClientCheckSameMovementsStoredSteerRight, int, clientQuantity, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FServerAndClientCheckSameMovementsStoredCenterSteer, int, clientQuantity, FSimplePIETestBase*, test);
 
 #endif //WITH_DEV_AUTOMATION_TESTS

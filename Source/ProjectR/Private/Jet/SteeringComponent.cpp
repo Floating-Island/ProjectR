@@ -49,20 +49,12 @@ void USteeringComponent::InReverseInverts(float& aDirectionMultiplier)
 
 void USteeringComponent::alignVelocityFrom(FVector aPreviousForwardVector, FVector aPreviousLocation)
 {
-	FVector currentForwardVelocity = owner->forwardVelocity();
-	FVector currentLocation = owner->GetActorLocation();
-
 	float mass = ownerPrimitiveComponent->GetMass();
-	float squareVelocityDelta = FMath::Pow(currentForwardVelocity.Size(), 2);
-	float distanceFromTick = (currentLocation - aPreviousLocation).Size();
-
 	//I use the kinetic energy formula into the work formula and get the force applied from there (v1 is zero):
-	float forceMagnitudeToRecreateVelocity = mass * squareVelocityDelta / (static_cast<float>((2 * distanceFromTick)));
+	float forceMagnitudeToRecreateVelocity = mass * accelerationMagnitudeToAlignVelocityFrom(aPreviousForwardVector);
 
 	FVector previousBackwardsVector = -aPreviousForwardVector;
-
 	FVector counterForce = previousBackwardsVector * forceMagnitudeToRecreateVelocity;
-
 	ownerPrimitiveComponent->AddForce(counterForce);//we cancel the current velocity.
 
 	FVector alignedForce = owner->ForwardProjectionOnFloor() * forceMagnitudeToRecreateVelocity;
@@ -82,5 +74,29 @@ void USteeringComponent::steerLeft()
 void USteeringComponent::steerRight()
 {
 	steer(1);
+}
+
+float USteeringComponent::accelerationMagnitudeToAlignVelocityFrom(FVector aPreviousLocation)
+{
+	FVector const currentForwardVelocity = owner->forwardVelocity();
+	FVector const currentLocation = owner->GetActorLocation();
+
+	float const squareVelocityDelta = FMath::Pow(currentForwardVelocity.Size(), 2);
+	float const distanceFromTick = (currentLocation - aPreviousLocation).Size();
+
+	//I use the kinetic energy formula into the work formula and get the force applied from there (v1 is zero).
+	//I only want the acceleration now so I simply cancel the mass on the formula.
+	// W = F * Dx
+	// W = (1/2) * m * v^2
+	// F * Dx = (1/2) * m * v^2
+	// m * a * Dx = (1/2) * m * v^2
+	// a * Dx = (1/2) * v^2
+	// a = (1/2) * (v^2) / Dx
+	// a = (v^2) / (2 * Dx)
+	// Dx is distanceFromTick
+	// v^2 is squareVelocityDelta
+	float const accelerationMagnitudeToRecreateVelocity = squareVelocityDelta / (static_cast<float>((2 * distanceFromTick)));
+
+	return accelerationMagnitudeToRecreateVelocity;
 }
 

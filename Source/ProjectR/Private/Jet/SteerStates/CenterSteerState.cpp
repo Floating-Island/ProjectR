@@ -7,3 +7,8 @@ void UCenterSteerState::activate(USteeringComponent* aSteeringComponent)
 {
 	
 }
+
+void UCenterSteerState::changesMadeTo(AJet* aJet, FVector& aLinearAcceleration, FVector& anAngularAcceleration)
+{
+	
+}

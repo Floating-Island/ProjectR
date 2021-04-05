@@ -16,4 +16,5 @@ class PROJECTR_API ULeftSteerState : public USteerState
 
 public:
 	virtual void activate(USteeringComponent* aSteeringComponent) override;
+	virtual void changesMadeTo(AJet* aJet, FVector& aLinearAcceleration, FVector& anAngularAcceleration) override;
 };

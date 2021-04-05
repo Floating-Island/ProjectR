@@ -7,3 +7,8 @@ UMotorState* AMotorStateManagerMOCK::currentState()
 {
 	return motorState;
 }
+
+void AMotorStateManagerMOCK::setOwningJet(AJet* owner)
+{
+	owningJet = owner;
+}

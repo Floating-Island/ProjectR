@@ -22,6 +22,7 @@ private:
 	bool alwaysCancelGravity;
 public:
 	AJetMOCK();
+	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
 	bool hasAPhysicsMesh();
@@ -80,6 +81,12 @@ public:
 	bool hasJetModelMeshSet();
 
 	bool modelMeshAttachedToPhysicsComponent();
+
+	std::deque<FMovementData>& retrieveMovementHistory();
+
+	int movementHistoryPrefixedSize();
+
+	void addToHistory(FMovementData aMovement);
 };
 
 template <class aMotorStateType>

@@ -134,3 +134,28 @@ void ATrackManager::addGeneratorAndSubscribe(ATrackGenerator* newGenerator)
 	trackGeneratorSet.Add(newGenerator);
 	newGenerator->toMagnetOverlapSubscribe(this);
 }
+
+FVector ATrackManager::pullingAccelerationTo(AJet* aJet)
+{
+	ATrackGenerator* const trackGenerator = *jetsToMagnetize.Find(aJet);
+
+	FVector jetLocation = aJet->GetActorLocation();
+	FVector generatorLocation = trackGenerator->closestLocationTo(jetLocation);
+	FHitResult hit;
+	FCollisionQueryParams collisionParameters;
+	collisionParameters.AddIgnoredActor(aJet);
+	collisionParameters.bTraceComplex = true;
+	int directionMultiplier = 2;
+	FVector traceEnd = (generatorLocation - jetLocation) * directionMultiplier + jetLocation;//get the direction of the trace, make it double and set it at the jet location.
+
+	bool hitBlocked = GetWorld()->LineTraceSingleByChannel(hit, jetLocation, traceEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
+
+	FVector magnetPullingAcceleration = FVector(0, 0, GetWorld()->GetGravityZ());
+	if (hitBlocked)
+	{
+		FVector roadNormal = hit.Component->GetUpVector();//could be a problem if the spline has roll... Change it to hit impact normal when it's needed.
+		magnetPullingAcceleration = roadNormal * GetWorld()->GetGravityZ();//gravity Z is already negative, roadNormal points 'up'
+	}
+	
+	return magnetPullingAcceleration;
+}

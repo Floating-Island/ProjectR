@@ -4,6 +4,9 @@
 #include "Jet/Jet.h"
 
 
+
+#include "../../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include "../../Public/Track/TrackManager.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -19,6 +22,7 @@
 
 
 
+
 AJet::AJet()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -29,12 +33,12 @@ AJet::AJet()
 	physicsMeshComponent->SetSimulatePhysics(true);
 	physicsMeshComponent->SetEnableGravity(true);
 	physicsMeshComponent->SetCanEverAffectNavigation(false);
-
 	UStaticMesh* physicsMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/jetMesh")));
 	physicsMeshComponent->SetStaticMesh(physicsMesh);
 
 	physicsMeshComponent->SetMassOverrideInKg(NAME_None, 100, true);
 
+	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 	physicsMeshComponent->SetGenerateOverlapEvents(true);
 	physicsMeshComponent->SetCollisionObjectType(ECC_Pawn);
 
@@ -55,7 +59,8 @@ AJet::AJet()
 	motorDriveSystem = CreateDefaultSubobject<UMotorDriveComponent>(TEXT("Motor Drive System"));
 
 	SetReplicates(true);
-	SetReplicateMovement(true);
+	SetReplicateMovement(false);
+	needsToReplicateStates = false;
 	motorManager = nullptr;
 	steerManager = nullptr;
 
@@ -66,39 +71,43 @@ AJet::AJet()
 	jetModelMeshComponent->SetupAttachment(physicsMeshComponent);
 
 	jetModelMeshComponent->SetMassOverrideInKg(NAME_None, 0);
-	
+
+	movementHistorySize = 60;
+	replicationMachine = CreateDefaultSubobject<UDeloreanReplicationMachine>(UDeloreanReplicationMachine::StaticClass()->GetFName());
+
+	bAlwaysRelevant = true;
 }
 
 void AJet::BeginPlay()
 {
 	Super::BeginPlay();
-
 }
 
 void AJet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if(IsValid(motorManager))
+
+	motorManager->activate(motorDriveSystem);
+	steerManager->activate(steeringSystem);
+	replicationMachine->addMovementToHistory();
+
+	if(needsToReplicateStates)
 	{
-		motorManager->activate(motorDriveSystem);
-	}
-	if(IsValid(steerManager))
-	{
-		steerManager->activate(steeringSystem);
+		needsToReplicateStates = false;
+		serverUpdateMovementWith(replicationMachine->generateCurrentStateDataToSend());
 	}
 }
 
 void AJet::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	if(HasAuthority())
-	{
-		FActorSpawnParameters spawnParameters = FActorSpawnParameters();
-		spawnParameters.Owner = this;
-		
-		motorManager = GetWorld()->SpawnActor<AMotorStateManager>(spawnParameters);
-		steerManager = GetWorld()->SpawnActor<ASteerStateManager>(spawnParameters);
-	}
+
+	FActorSpawnParameters spawnParameters = FActorSpawnParameters();
+	spawnParameters.Owner = this;
+	
+	motorManager = GetWorld()->SpawnActor<AMotorStateManager>(spawnParameters);
+	steerManager = GetWorld()->SpawnActor<ASteerStateManager>(spawnParameters);
+	replicationMachine->setDefaultVariablesTo(this, movementHistorySize);
 }
 
 void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -132,15 +141,12 @@ float AJet::settedTopSpeed()
 
 void AJet::accelerate()
 {
-	if(IsValid(motorManager))
+	if(keyIsPressedFor(FName("BrakeAction")))
 	{
-		if(keyIsPressedFor(FName("BrakeAction")))
-		{
-			motorManager->mix();
-			return;
-		}
-		motorManager->accelerate();
+		motorManager->mix();
+		return;
 	}
+	motorManager->accelerate();
 }
 
 float AJet::acceleration()
@@ -155,34 +161,28 @@ float AJet::brakeValue()
 
 void AJet::brake()
 {
-	if(IsValid(motorManager))
+	if(keyIsPressedFor(FName("AccelerateAction")))
 	{
-		if(keyIsPressedFor(FName("AccelerateAction")))
-		{
-			motorManager->mix();
-			return;
-		}
-		motorManager->brake();
+		motorManager->mix();
+		return;
 	}
+	motorManager->brake();
 }
 
 void AJet::neutralize()
 {
-	if(IsValid(motorManager))
+	if(keyIsPressedFor(FName("BrakeAction")))
 	{
-		if(keyIsPressedFor(FName("BrakeAction")))
-		{
-			motorManager->brake();
-			return;
-		}
-
-		if(keyIsPressedFor(FName("AccelerateAction")))
-		{
-			motorManager->accelerate();
-			return;
-		}
-		motorManager->neutralize();
+		motorManager->brake();
+		return;
 	}
+
+	if(keyIsPressedFor(FName("AccelerateAction")))
+	{
+		motorManager->accelerate();
+		return;
+	}
+	motorManager->neutralize();
 }
 
 bool AJet::goesForward()
@@ -202,47 +202,46 @@ float AJet::steerRadius()
 
 void AJet::steerRight()
 {
-	if(IsValid(steerManager))
+	if(keyIsPressedFor(FName("SteerLeftAction")))
 	{
-		if(keyIsPressedFor(FName("SteerLeftAction")))
-		{
-			steerManager->center();
-			return;
-		}
-		steerManager->steerRight();
+		steerManager->center();
+		return;
 	}
+	steerManager->steerRight();
 }
 
 void AJet::steerLeft()
 {
-	if(IsValid(steerManager))
+	if(keyIsPressedFor(FName("SteerRightAction")))
 	{
-		if(keyIsPressedFor(FName("SteerRightAction")))
-		{
-			steerManager->center();
-			return;
-		}
-		steerManager->steerLeft();
+		steerManager->center();
+		return;
+	}
+	steerManager->steerLeft();
+}
+
+void AJet::InReverseInverts(float& aDirection)
+{
+	if (goesBackwards())
+	{
+		aDirection = -aDirection;//invert direction
 	}
 }
 
 void AJet::centerSteer()
 {
-	if(IsValid(steerManager))
+	if(keyIsPressedFor(FName("SteerLeftAction")))
 	{
-		if(keyIsPressedFor(FName("SteerLeftAction")))
-		{
-			steerManager->steerLeft();
-			return;
-		}
-
-		if(keyIsPressedFor(FName("SteerRightAction")))
-		{
-			steerManager->steerRight();
-			return;
-		}
-		steerManager->center();
+		steerManager->steerLeft();
+		return;
 	}
+
+	if(keyIsPressedFor(FName("SteerRightAction")))
+	{
+		steerManager->steerRight();
+		return;
+	}
+	steerManager->center();
 }
 
 float AJet::antiGravityHeight()
@@ -257,26 +256,9 @@ FVector AJet::ForwardProjectionOnFloor()
 
 	if (nearFloor)
 	{
-		return FVector::VectorPlaneProject(GetActorForwardVector(), obstacle.Normal);
+		return FVector::VectorPlaneProject(physicsMeshComponent->GetForwardVector(), obstacle.Normal);
 	}
-	else
-	{
-		return GetActorForwardVector();
-	}
-}
-
-bool AJet::traceToFind(FHitResult& anObstacle)
-{
-	FVector jetLocation = GetActorLocation();//should take consideration the actor bounds...
-	float rayExtension = 1000;
-	FVector rayEnd = -GetActorUpVector() * rayExtension;
-
-	FCollisionQueryParams collisionParameters;
-	collisionParameters.AddIgnoredActor(this);
-	collisionParameters.bTraceComplex = false;
-	collisionParameters.bReturnPhysicalMaterial = false;
-
-	return  GetWorld()->LineTraceSingleByChannel(anObstacle, jetLocation, rayEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
+	return GetActorForwardVector();
 }
 
 FVector AJet::forwardVelocity()
@@ -293,10 +275,7 @@ FVector AJet::velocityProjectionOnFloor()
 	{
 		return FVector::VectorPlaneProject(GetVelocity(), obstacle.Normal);
 	}
-	else
-	{
-		return FVector::VectorPlaneProject(GetVelocity(), GetActorUpVector());
-	}
+	return FVector::VectorPlaneProject(GetVelocity(), physicsMeshComponent->GetUpVector());
 }
 
 FVector AJet::rightVectorProjectionOnFloor()
@@ -306,12 +285,23 @@ FVector AJet::rightVectorProjectionOnFloor()
 
 	if (nearFloor)
 	{
-		return FVector::VectorPlaneProject(GetActorRightVector(), obstacle.Normal);
+		return FVector::VectorPlaneProject(physicsMeshComponent->GetRightVector(), obstacle.Normal);
 	}
-	else
-	{
-		return GetActorRightVector();
-	}
+	return physicsMeshComponent->GetRightVector();
+}
+
+bool AJet::traceToFind(FHitResult& anObstacle)
+{
+	FVector jetLocation = physicsMeshComponent->GetComponentLocation();//should take consideration the actor bounds...
+	float rayExtension = 1000;
+	FVector rayEnd = -(physicsMeshComponent->GetUpVector()) * rayExtension;
+
+	FCollisionQueryParams collisionParameters;
+	collisionParameters.AddIgnoredActor(this);
+	collisionParameters.bTraceComplex = false;
+	collisionParameters.bReturnPhysicalMaterial = false;
+
+	return  GetWorld()->LineTraceSingleByChannel(anObstacle, jetLocation, rayEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
 }
 
 bool AJet::keyIsPressedFor(const FName anActionMappingName)
@@ -331,10 +321,111 @@ bool AJet::keyIsPressedFor(const FName anActionMappingName)
 	return false;
 }
 
-void AJet::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+float AJet::mass()
 {
-    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-    DOREPLIFETIME(AJet, motorManager);
-	DOREPLIFETIME(AJet, steerManager);
+	return physicsMeshComponent->GetMass();
 }
+
+UClass* AJet::currentMotorStateClass()
+{
+	return motorManager->stateClass();
+}
+
+UClass* AJet::currentSteerStateClass()
+{
+	return steerManager->stateClass();
+}
+
+float AJet::accelerationMagnitudeToAlignVelocityFrom(FVector aCurrentLocation)
+{
+	return steeringSystem->accelerationMagnitudeToAlignVelocityFrom(aCurrentLocation);
+}
+
+void AJet::changesGeneratedByAntiGravityTo(FVector& aLinearAcceleration, FVector& anAngularAcceleration)
+{
+	antiGravitySystem->currentChangesMadeTo(aLinearAcceleration, anAngularAcceleration);
+}
+
+FVector AJet::retrieveTrackMagnetizationLinearAcceleration()
+{
+	ATrackManager* trackManager = Cast<ATrackManager, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ATrackManager::StaticClass()));
+	if(trackManager == nullptr)
+	{
+		return FVector(0, 0, - FMath::Abs(GetWorld()->GetGravityZ()));
+	}
+	return trackManager->pullingAccelerationTo(this);
+}
+
+FPhysicsActorHandle& AJet::physicsHandleRequestedBy(UDeloreanReplicationMachine* aReplicationMachine)
+{
+	if(aReplicationMachine != replicationMachine)
+	{
+		throw "attempting to get hold of the physics actor handle of a jet when the replication machine that called it isn't the one stored in the jet";
+	}
+	return physicsMeshComponent->BodyInstance.GetPhysicsActorHandle();
+}
+
+void AJet::asCurrentMovementSet(FMovementData anotherMovement, UDeloreanReplicationMachine* aRequestingReplicationMachine)
+{
+	if(aRequestingReplicationMachine == replicationMachine)
+	{
+		SetActorLocation(anotherMovement.location);
+		SetActorRotation(anotherMovement.rotation);
+		physicsMeshComponent->SetPhysicsAngularVelocityInRadians(anotherMovement.angularVelocityInRadians);
+		physicsMeshComponent->SetPhysicsLinearVelocity(anotherMovement.linearVelocity);
+		motorManager->overrideStateTo(anotherMovement.timestampedStates.motorStateClass, this);
+		steerManager->overrideStateTo(anotherMovement.timestampedStates.steerStateClass, this);
+	}
+}
+
+void AJet::sendMovementToServerRequestedBy(AMotorStateManager* aMotorManager)
+{
+	if(aMotorManager == motorManager)
+	{
+		needsToReplicateStates = true;
+	}
+}
+
+void AJet::sendMovementToServerRequestedBy(ASteerStateManager* aSteerManager)
+{
+	if(aSteerManager == steerManager)
+	{
+		needsToReplicateStates = true;
+	}
+}
+
+float AJet::linearDamping()
+{
+	return physicsMeshComponent->GetLinearDamping();
+}
+
+float AJet::angularDamping()
+{
+	return physicsMeshComponent->GetAngularDamping();
+}
+
+void AJet::serverUpdateMovementWith_Implementation(FStateData aBunchOfStates)
+{
+	FMovementData movementForClient = updatedDataSynchronizedWith(aBunchOfStates);
+	if(replicationMachine->hasDataForClient())
+	{
+		multicastSynchronizeMovementWith(movementForClient);
+	}
+}
+
+bool AJet::serverUpdateMovementWith_Validate(FStateData aBunchOfStates)
+{
+	return true;
+}
+
+FMovementData AJet::updatedDataSynchronizedWith(FStateData aBunchOfStates)
+{
+	replicationMachine->synchronizeMovementHistoryWith(aBunchOfStates);
+	return replicationMachine->retrieveCurrentMovementDataToSend();
+}
+
+void AJet::multicastSynchronizeMovementWith_Implementation(FMovementData aMovementStructure)
+{
+	replicationMachine->synchronizeMovementHistoryWith(aMovementStructure);
+}
+

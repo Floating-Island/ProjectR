@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Jet/MotorStates/MotorState.h"
+#include "Jet/Jet.h"
 #include "MotorStateManager.generated.h"
 
 class UMotorDriveComponent;
@@ -24,39 +25,19 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY()
-		UMotorState* motorState;
-
-	UFUNCTION(Server, Reliable, WithValidation)
-		void serverAccelerate();
-
-	UFUNCTION(Server, Reliable, WithValidation)
-		void serverBrake();
-
-	UFUNCTION(Server, Reliable, WithValidation)
-		void serverNeutralize();
-
-	UFUNCTION(Server, Reliable, WithValidation)
-		void serverMix();
-
-	UFUNCTION(NetMulticast, Reliable)
-		void multicastAccelerate();
-
-	UFUNCTION(NetMulticast, Reliable)
-		void multicastBrake();
-
-	UFUNCTION(NetMulticast, Reliable)
-		void multicastNeutralize();
-
-	UFUNCTION(NetMulticast, Reliable)
-		void multicastMix();
-
+		AJet* owningJet;
 	
+	UPROPERTY()
+		UMotorState* motorState;
 	
 	template<class aMotorStateType>
 	void updateStateTo();
 
 	template<class aMotorStateType>
 	bool motorStateIsOfType();
+
+	template<class aMotorStateType>
+	void makeMotorStateBe();
 	
 public:
 	virtual void PostInitializeComponents() override;
@@ -67,6 +48,8 @@ public:
 	void mix();
 
 	void activate(UMotorDriveComponent* aMotorDrive);
+	UClass* stateClass();
+	void overrideStateTo(UClass* anotherState, AJet* owner);
 };
 
 template <class aMotorStateType>
@@ -85,4 +68,15 @@ template <class aMotorStateType>
 bool AMotorStateManager::motorStateIsOfType()
 {
 	return motorState->IsA(aMotorStateType::StaticClass()) ? true : false;
+}
+
+template <class aMotorStateType>
+void AMotorStateManager::makeMotorStateBe()
+{
+	if (IsValid(motorState) && motorStateIsOfType<aMotorStateType>())
+	{
+		return;
+	}
+	updateStateTo<aMotorStateType>();
+	owningJet->sendMovementToServerRequestedBy(this);
 }

@@ -4,11 +4,12 @@
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "SteerStateManagerTestCommands.h"
-#include "Jet/SteerStates/CenterSteerState.h"
+//#include "Jet/SteerStates/CenterSteerState.h"
 
+#include "Jet/Jet.h"
 #include "../../Mocks/SteerStateManagerMOCK.h"
 #include "../../Utilities/PIESessionUtilities.h"
-#include "../../Utilities/NetworkedPIESessionUtilities.h"
+//#include "../../Utilities/NetworkedPIESessionUtilities.h"
 
 //Test preparation commands:
 
@@ -19,9 +20,11 @@ bool FLeftSteerASteerStateManagerMOCK::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
-
-		if (testManager)
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+		
+		if (testManager && testJet)
 		{
+			testManager->setOwningJet(testJet);
 			testManager->steerLeft();
 			return true;
 		}
@@ -36,9 +39,11 @@ bool FRightSteerASteerStateManagerMOCK::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 
-		if (testManager)
+		if (testManager && testJet)
 		{
+			testManager->setOwningJet(testJet);
 			testManager->steerRight();
 			return true;
 		}
@@ -53,9 +58,11 @@ bool FCenterASteerStateManagerMOCK::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 
-		if (testManager)
+		if (testManager && testJet)
 		{
+			testManager->setOwningJet(testJet);
 			testManager->center();
 			return true;
 		}
@@ -64,89 +71,89 @@ bool FCenterASteerStateManagerMOCK::Update()
 }
 
 
-bool FClientSteerLeftSteerStateManager::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{		
-		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
-		UWorld* serverWorld = serverContext.World();
-
-		if(serverWorld)
-		{
-			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
-			UWorld* clientWorld = clientContext.World();
-
-			if(clientWorld)
-			{
-				ASteerStateManager* testClientManager = Cast<ASteerStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, ASteerStateManager::StaticClass()));
-				if (testClientManager)
-				{
-					UE_LOG(LogTemp, Log, TEXT("steering left steer state manager..."));
-					testClientManager->steerLeft();
-					return true;
-				}
-			}
-		}
-	}
-	return false;
-}
-
-
-bool FClientSteerRightSteerStateManager::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{		
-		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
-		UWorld* serverWorld = serverContext.World();
-
-		if(serverWorld)
-		{
-			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
-			UWorld* clientWorld = clientContext.World();
-
-			if(clientWorld)
-			{
-				ASteerStateManager* testClientManager = Cast<ASteerStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, ASteerStateManager::StaticClass()));
-				if (testClientManager)
-				{
-					UE_LOG(LogTemp, Log, TEXT("steering right steer state manager..."));
-					testClientManager->steerRight();
-					return true;
-				}
-			}
-		}
-	}
-	return false;
-}
-
-
-bool FClientCenterSteerStateManager::Update()
-{
-	if (GEditor->IsPlayingSessionInEditor())
-	{		
-		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
-		UWorld* serverWorld = serverContext.World();
-
-		if(serverWorld)
-		{
-			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
-			UWorld* clientWorld = clientContext.World();
-
-			if(clientWorld)
-			{
-				ASteerStateManager* testClientManager = Cast<ASteerStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, ASteerStateManager::StaticClass()));
-
-				if (testClientManager)
-				{
-					UE_LOG(LogTemp, Log, TEXT("centering steer state manager..."));
-					testClientManager->center();
-					return true;
-				}
-			}
-		}
-	}
-	return false;
-}
+//bool FClientSteerLeftSteerStateManager::Update()
+//{
+//	if (GEditor->IsPlayingSessionInEditor())
+//	{		
+//		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+//		UWorld* serverWorld = serverContext.World();
+//
+//		if(serverWorld)
+//		{
+//			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+//			UWorld* clientWorld = clientContext.World();
+//
+//			if(clientWorld)
+//			{
+//				ASteerStateManager* testClientManager = Cast<ASteerStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, ASteerStateManager::StaticClass()));
+//				if (testClientManager)
+//				{
+//					UE_LOG(LogTemp, Log, TEXT("steering left steer state manager..."));
+//					testClientManager->steerLeft();
+//					return true;
+//				}
+//			}
+//		}
+//	}
+//	return false;
+//}
+//
+//
+//bool FClientSteerRightSteerStateManager::Update()
+//{
+//	if (GEditor->IsPlayingSessionInEditor())
+//	{		
+//		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+//		UWorld* serverWorld = serverContext.World();
+//
+//		if(serverWorld)
+//		{
+//			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+//			UWorld* clientWorld = clientContext.World();
+//
+//			if(clientWorld)
+//			{
+//				ASteerStateManager* testClientManager = Cast<ASteerStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, ASteerStateManager::StaticClass()));
+//				if (testClientManager)
+//				{
+//					UE_LOG(LogTemp, Log, TEXT("steering right steer state manager..."));
+//					testClientManager->steerRight();
+//					return true;
+//				}
+//			}
+//		}
+//	}
+//	return false;
+//}
+//
+//
+//bool FClientCenterSteerStateManager::Update()
+//{
+//	if (GEditor->IsPlayingSessionInEditor())
+//	{		
+//		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+//		UWorld* serverWorld = serverContext.World();
+//
+//		if(serverWorld)
+//		{
+//			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+//			UWorld* clientWorld = clientContext.World();
+//
+//			if(clientWorld)
+//			{
+//				ASteerStateManager* testClientManager = Cast<ASteerStateManager, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, ASteerStateManager::StaticClass()));
+//
+//				if (testClientManager)
+//				{
+//					UE_LOG(LogTemp, Log, TEXT("centering steer state manager..."));
+//					testClientManager->center();
+//					return true;
+//				}
+//			}
+//		}
+//	}
+//	return false;
+//}
 
 
 
@@ -192,8 +199,11 @@ bool FCheckSteerStateManagerCurrentStateAgainstPreviousOnSteerLeft::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
-		if (testManager)
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+
+		if (testManager && testJet)
 		{
+			testManager->setOwningJet(testJet);
 			testManager->steerLeft();
 			UE_LOG(LogTemp, Log, TEXT("previous state: %s"), *(previousState ? previousState->GetName() : FString("nullptr")));
 			USteerState* currentState = testManager->currentState();
@@ -220,8 +230,11 @@ bool FCheckSteerStateManagerCurrentStateAgainstPreviousOnSteerRight::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
-		if (testManager)
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+
+		if (testManager && testJet)
 		{
+			testManager->setOwningJet(testJet);
 			testManager->steerRight();
 			UE_LOG(LogTemp, Log, TEXT("previous state: %s"), *(previousState ? previousState->GetName() : FString("nullptr")));
 			USteerState* currentState = testManager->currentState();
@@ -248,8 +261,11 @@ bool FCheckSteerStateManagerCurrentStateAgainstPreviousOnCenter::Update()
 	{
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		ASteerStateManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ASteerStateManagerMOCK>();
-		if (testManager)
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+
+		if (testManager && testJet)
 		{
+			testManager->setOwningJet(testJet);
 			testManager->center();
 			UE_LOG(LogTemp, Log, TEXT("previous state: %s"), *(previousState ? previousState->GetName() : FString("nullptr")));
 			USteerState* currentState = testManager->currentState();
@@ -270,46 +286,46 @@ bool FCheckSteerStateManagerCurrentStateAgainstPreviousOnCenter::Update()
 }
 
 
-bool FCheckSteerStateManagerServerAndClientExpectedState::Update()
-{
-	if(GEditor->IsPlayingSessionInEditor())
-	{
-		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
-		UWorld* serverWorld = serverContext.World();
-
-		if(serverWorld)
-		{
-			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
-			UWorld* clientWorld = clientContext.World();
-
-			if(clientWorld)
-			{
-				UE_LOG(LogTemp, Log, TEXT("retrieving steer state manager for checking..."));
-				ASteerStateManagerMOCK* testServerManager = Cast<ASteerStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(serverWorld, ASteerStateManagerMOCK::StaticClass()));
-				ASteerStateManagerMOCK* testClientManager = Cast<ASteerStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, ASteerStateManagerMOCK::StaticClass()));
-				bool statesMatch = false;
-				if(testClientManager)
-				{
-					bool clientStateIsTheExpected = testClientManager->currentState()->GetClass() == expectedStateClass;
-					bool serverStateIsTheExpected = testServerManager->currentState()->GetClass() == expectedStateClass;
-					statesMatch = serverStateIsTheExpected && clientStateIsTheExpected;
-				}
-
-				if(statesMatch)
-				{
-					test->TestTrue(test->conditionMessage(), statesMatch);
-					for(auto context : GEditor->GetWorldContexts())
-					{
-						context.World()->bDebugFrameStepExecution = true;
-					}
-					return true;
-				}
-				return test->manageTickCountTowardsLimit();
-			}
-		}
-	}
-	return false;
-}
+//bool FCheckSteerStateManagerServerAndClientExpectedState::Update()
+//{
+//	if(GEditor->IsPlayingSessionInEditor())
+//	{
+//		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+//		UWorld* serverWorld = serverContext.World();
+//
+//		if(serverWorld)
+//		{
+//			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+//			UWorld* clientWorld = clientContext.World();
+//
+//			if(clientWorld)
+//			{
+//				UE_LOG(LogTemp, Log, TEXT("retrieving steer state manager for checking..."));
+//				ASteerStateManagerMOCK* testServerManager = Cast<ASteerStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(serverWorld, ASteerStateManagerMOCK::StaticClass()));
+//				ASteerStateManagerMOCK* testClientManager = Cast<ASteerStateManagerMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, ASteerStateManagerMOCK::StaticClass()));
+//				bool statesMatch = false;
+//				if(testClientManager)
+//				{
+//					bool clientStateIsTheExpected = testClientManager->currentState()->GetClass() == expectedStateClass;
+//					bool serverStateIsTheExpected = testServerManager->currentState()->GetClass() == expectedStateClass;
+//					statesMatch = serverStateIsTheExpected && clientStateIsTheExpected;
+//				}
+//
+//				if(statesMatch)
+//				{
+//					test->TestTrue(test->conditionMessage(), statesMatch);
+//					for(auto context : GEditor->GetWorldContexts())
+//					{
+//						context.World()->bDebugFrameStepExecution = true;
+//					}
+//					return true;
+//				}
+//				return test->manageTickCountTowardsLimit();
+//			}
+//		}
+//	}
+//	return false;
+//}
 
 
 

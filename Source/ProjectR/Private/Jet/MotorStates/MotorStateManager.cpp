@@ -13,9 +13,14 @@
 AMotorStateManager::AMotorStateManager()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	SetReplicates(true);
-	bAlwaysRelevant = true;
 	motorState = nullptr;
+}
+
+void AMotorStateManager::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	updateStateTo<UNeutralMotorState>();
+	owningJet = Cast<AJet, AActor>(GetOwner());
 }
 
 // Called when the game starts or when spawned
@@ -24,116 +29,41 @@ void AMotorStateManager::BeginPlay()
 	Super::BeginPlay();
 }
 
-void AMotorStateManager::serverAccelerate_Implementation()
+void AMotorStateManager::activate(UMotorDriveComponent* aMotorDrive)
 {
-	multicastAccelerate();
+	motorState->activate(aMotorDrive);
 }
 
-bool AMotorStateManager::serverAccelerate_Validate()
+UClass* AMotorStateManager::stateClass()
 {
-	return true;
+	return motorState->GetClass();
 }
 
-void AMotorStateManager::serverBrake_Implementation()
+void AMotorStateManager::overrideStateTo(UClass* anotherState, AJet* owner)
 {
-	multicastBrake();
-}
-
-bool AMotorStateManager::serverBrake_Validate()
-{
-	return true;
-}
-
-void AMotorStateManager::serverNeutralize_Implementation()
-{
-	multicastNeutralize();
-}
-
-bool AMotorStateManager::serverNeutralize_Validate()
-{
-	return true;
-}
-
-void AMotorStateManager::serverMix_Implementation()
-{
-	multicastMix();
-}
-
-bool AMotorStateManager::serverMix_Validate()
-{
-	return true;
-}
-
-
-void AMotorStateManager::multicastAccelerate_Implementation()
-{
-	updateStateTo<UAcceleratingMotorState>();
-}
-
-void AMotorStateManager::multicastBrake_Implementation()
-{
-	updateStateTo<UReversingMotorState>();
-}
-
-void AMotorStateManager::multicastNeutralize_Implementation()
-{
-	updateStateTo<UNeutralMotorState>();
-}
-
-void AMotorStateManager::multicastMix_Implementation()
-{
-	updateStateTo<UMixedMotorState>();
-}
-
-void AMotorStateManager::PostInitializeComponents()
-{
-	Super::PostInitializeComponents();
-	if (HasAuthority())
+	if(owningJet == owner)
 	{
-		serverNeutralize();
+		motorState = nullptr;
+		motorState = NewObject<UMotorState>(this, anotherState, anotherState->GetFName());
 	}
 }
 
 void AMotorStateManager::accelerate()
 {
-	if (IsValid(motorState) && motorStateIsOfType<UAcceleratingMotorState>())
-	{
-		return;
-	}
-	serverAccelerate();
+	makeMotorStateBe<UAcceleratingMotorState>();
 }
 
 void AMotorStateManager::brake()
 {
-	if (IsValid(motorState) && motorStateIsOfType<UReversingMotorState>())
-	{
-		return;
-	}
-	serverBrake();
+	makeMotorStateBe<UReversingMotorState>();
 }
 
 void AMotorStateManager::neutralize()
 {
-	if (IsValid(motorState) && motorStateIsOfType<UNeutralMotorState>())
-	{
-		return;
-	}
-	serverNeutralize();
+	makeMotorStateBe<UNeutralMotorState>();
 }
 
 void AMotorStateManager::mix()
 {
-	if (IsValid(motorState) && motorStateIsOfType<UMixedMotorState>())
-	{
-		return;
-	}
-	serverMix();
-}
-
-void AMotorStateManager::activate(UMotorDriveComponent* aMotorDrive)
-{
-	if (IsValid(motorState))
-	{
-		motorState->activate(aMotorDrive);
-	}
+	makeMotorStateBe<UMixedMotorState>();
 }

@@ -213,8 +213,8 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetReplicatesTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetReplicatesMovementTest, 
-	"ProjectR.Jet Tests.Replication.039: Replicates movement to other clients", 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetDoesntReplicateMovementTest, 
+	"ProjectR.Jet Tests.Replication.039: Doesn't replicate movement to other clients", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
@@ -390,6 +390,56 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetHasAModelMeshTest, FSimplePIETestBa
 
 IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetModelMeshIsAttachedToPhysicsComponentTest, FSimplePIETestBase,
 	"ProjectR.Jet Tests.Unit.072: Jet model mesh is attached to physics component", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetStoresItsMovementEachTickTest, FSimplePIETestBase,
+	"ProjectR.Jet Tests.Unit.073: Stores its current movement each tick", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetMovementHistorySizeIsLimitedTest, FSimplePIETestBase,
+	"ProjectR.Jet Tests.Unit.074: movementHistory size is limited to the one set", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetServerAndClientHaveSameMovesAfterAcceleratingTest, FSimplePIETestBase,
+	"ProjectR.Jet Tests.Replication.075: Server and client have the same movements after accelerating", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetServerAndClientHaveSameMovesAfterBrakingTest, FSimplePIETestBase,
+	"ProjectR.Jet Tests.Replication.076: Server and client have the same movements after braking", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetServerAndClientHaveSameMovesAfterNeutralizeTest, FSimplePIETestBase,
+	"ProjectR.Jet Tests.Replication.077: Server and client have the same movements after neutralize", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetServerAndClientHaveSameMovesAfterSteerLeftTest, FSimplePIETestBase,
+	"ProjectR.Jet Tests.Replication.078: Server and client have the same movements after steering left", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetServerAndClientHaveSameMovesAfterSteerRightTest, FSimplePIETestBase,
+	"ProjectR.Jet Tests.Replication.079: Server and client have the same movements after steering right", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetServerAndClientHaveSameMovesAfterCenterSteerTest, FSimplePIETestBase,
+	"ProjectR.Jet Tests.Replication.080: Server and client have the same movements after center steering", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetSpawnsAdjustingIfPossibleButAlwaysSpawnTest,
+	"ProjectR.Jet Tests.Unit.081: Collision handling method is set as adjust if possible but always spawn", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAJetIsAlwaysRelevantTest,
+	"ProjectR.Jet Tests.Replication.082: Is always relevant for network", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

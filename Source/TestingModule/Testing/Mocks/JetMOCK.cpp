@@ -4,6 +4,8 @@
 #include "JetMOCK.h"
 
 
+
+#include "DeloreanReplicationMachineMOCK.h"
 #include "Jet/MotorStates/MotorStateManager.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
@@ -12,6 +14,13 @@
 AJetMOCK::AJetMOCK()
 {
 	alwaysCancelGravity = false;
+}
+
+void AJetMOCK::BeginPlay()
+{
+	Super::BeginPlay();
+	replicationMachine = NewObject<UDeloreanReplicationMachineMOCK>(this);
+	replicationMachine->setDefaultVariablesTo(this, movementHistorySize);
 }
 
 void AJetMOCK::Tick(float DeltaTime)
@@ -49,6 +58,7 @@ void AJetMOCK::setCurrentXVelocityTo(float aDesiredSpeed)
 {
 	FVector newVelocity = FVector(aDesiredSpeed, 0, 0);
 	physicsMeshComponent->SetPhysicsLinearVelocity(newVelocity);
+	retrieveMovementHistory()[0].linearVelocity = newVelocity;
 }
 
 bool AJetMOCK::hasASprinArm()
@@ -165,6 +175,21 @@ bool AJetMOCK::hasJetModelMeshSet()
 bool AJetMOCK::modelMeshAttachedToPhysicsComponent()
 {
 	return jetModelMeshComponent->IsAttachedTo(physicsMeshComponent);
+}
+
+std::deque<FMovementData>& AJetMOCK::retrieveMovementHistory()
+{
+	return Cast<UDeloreanReplicationMachineMOCK, UDeloreanReplicationMachine>(replicationMachine)->movementHistoryReference();
+}
+
+int AJetMOCK::movementHistoryPrefixedSize()
+{
+	return movementHistorySize;
+}
+
+void AJetMOCK::addToHistory(FMovementData aMovement)
+{
+	Cast<UDeloreanReplicationMachineMOCK, UDeloreanReplicationMachine>(replicationMachine)->addToHistory(aMovement);
 }
 
 

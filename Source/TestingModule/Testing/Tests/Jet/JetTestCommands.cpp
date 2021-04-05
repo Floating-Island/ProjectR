@@ -12,6 +12,7 @@
 #include "Jet/MotorStates/MixedMotorState.h"
 #include "Jet/MotorStates/ReversingMotorState.h"
 #include "Jet/SteerStates/SteerState.h"
+#include "Jet/SteerStates/RightSteerState.h"
 
 #include "Editor.h"
 #include "Kismet/GameplayStatics.h"
@@ -76,7 +77,8 @@ bool FRetrieveAJetMOCKSetVelocityToTopSpeed::Update()
 		if(testJet)
 		{
 			testJet->setCurrentXVelocityTo(testJet->settedTopSpeed());
-
+			UE_LOG(LogTemp, Log, TEXT("Jet setted top speed: %f."), testJet->settedTopSpeed());
+			UE_LOG(LogTemp, Log, TEXT("Jet current speed: %f."), testJet->currentSpeed());
 			return true;
 		}
 	}
@@ -327,7 +329,7 @@ bool FSpawningAJetRotatedOverFloorAndBrakeIt::Update()
 }
 
 
-bool FSpawningAJetRotatedOverFloorAccelerateAndSteerItRight::Update()
+bool FRetrieveAJetRotatedOverFloorAccelerateAndSteerItRight::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -335,16 +337,7 @@ bool FSpawningAJetRotatedOverFloorAccelerateAndSteerItRight::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-
-	AFloorMeshActor* meshActor = sessionUtilities.spawnInPIEAnInstanceOf<AFloorMeshActor>();
-
-	FVector scale = FVector(4, 4, 1);
-	meshActor->SetActorScale3D(scale);
-
-	FVector spawnLocation = meshActor->GetActorLocation() + FVector(0, 0, 1000);
-
-	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>(spawnLocation);
+	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 	FRotator pitchUp = FRotator(30, 0, 0);
 	testJet->SetActorRotation(pitchUp);
 	testJet->accelerate();
@@ -389,15 +382,12 @@ bool FClientPressActionKey::Update()
 
 		if(clientWorld)
 		{
-			AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, AJet::StaticClass()));
+			APlayerController* controller = clientContext.World()->GetFirstPlayerController();
+			AJet* testJet = Cast<AJet, APawn>(controller->AcknowledgedPawn);
 			if(testJet)
 			{
-				APlayerController* controller = clientContext.World()->GetFirstPlayerController();
-				if(controller->AcknowledgedPawn == testJet)
-				{
-					PIESessionUtilities::processActionKeyPressFrom(keyName, controller);
-					return true;
-				}
+				PIESessionUtilities::processActionKeyPressFrom(keyName, controller);
+				return true;
 			}
 		}
 	}
@@ -585,7 +575,7 @@ bool FRetrieveAJetMakeItSteerLeft::Update()
 
 		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 
-		if(testJet)
+		if(testJet && testJet->HasActorBegunPlay())
 		{
 			testJet->steerLeft();
 
@@ -726,14 +716,15 @@ bool FCheckAJetSpeedAgainstTopSpeed::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-		if (testJet)
+		if (testJet && FMath::IsNearlyEqual(testJet->currentSpeed(), testJet->settedTopSpeed(), 5.0f))
 		{
+			testJet->accelerate();
 			float currentSpeed = testJet->currentSpeed();
 			bool isAtTopSpeed = FMath::IsNearlyEqual(currentSpeed, testJet->settedTopSpeed(), 2.0f);
 			UE_LOG(LogTemp, Log, TEXT("Jet location: %s"), *testJet->GetActorLocation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet speed: %f"), currentSpeed);
 			UE_LOG(LogTemp, Log, TEXT("Jet top speed: %f"), testJet->settedTopSpeed());
-			UE_LOG(LogTemp, Log, TEXT("Jet %s at currentSpeed"), *FString(isAtTopSpeed ? "is" : "isn't"));
+			UE_LOG(LogTemp, Log, TEXT("Jet %s at top speed"), *FString(isAtTopSpeed ? "is" : "isn't"));
 			
 			test->increaseTickCount();
 			if (test->tickCountExceedsLimit())
@@ -755,11 +746,11 @@ bool FCheckAJetRotatedYawRight::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-		if (testJet)
+		if (testJet && testJet->currentSteerStateClass() == URightSteerState::StaticClass())
 		{
 			float currentZRotation = testJet->GetActorRotation().Yaw;
 			bool hasSteeredRight = currentZRotation > 0;
-			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotation, 0.1f);
+			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotation, 0.01f);
 
 			UE_LOG(LogTemp, Log, TEXT("Jet rotation vector: %s"), *testJet->GetActorRotation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet %s steered right."), *FString(hasSteeredRight ? "has" : "hasn't"));
@@ -1068,7 +1059,7 @@ bool FCheckAJetSteersAroundUpVector::Update()
 		{
 			float currentZRotationAroundUpVector = testJet->GetActorRotation().Pitch;//we rolled, so now it's not the yaw what's changed, it's the pitch.
 			bool hasSteeredRight = currentZRotationAroundUpVector < 0;//roll right, then steers right so the pitch is negative.
-			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotationAroundUpVector, 0.001f);
+			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotationAroundUpVector, 0.0001f);
 
 			UE_LOG(LogTemp, Log, TEXT("Jet rotation vector: %s"), *testJet->GetActorRotation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet rotation around up vector: %f"), currentZRotationAroundUpVector);
@@ -1230,7 +1221,7 @@ bool FServerCheckJetAccelerated::Update()
 			AJet* testJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(serverWorld, AJet::StaticClass()));
 			AJet* testClientJet = Cast<AJet, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, AJet::StaticClass()));
 			
-			if(testJet && testClientJet)
+			if(testJet && IsValid(testClientJet))
 			{
 				testClientJet->accelerate();
 				UE_LOG(LogTemp, Log, TEXT("Previous jet location: %s"), *previousLocation.ToString());
@@ -1386,10 +1377,10 @@ bool FServerCheckJetExpectedMotorState::Update()
 				if(testServerJet && testClientJet)
 				{
 					bool bothAsExpected = false;
-					if(testClientJet->currentMotorState() && testServerJet->currentMotorState())
+					if(testClientJet->currentMotorStateClass() && testServerJet->currentMotorStateClass())
 					{
-						bool clientStateIsAsExpected = testClientJet->currentMotorState()->GetClass() == expectedStateClass;
-						bool serverStateIsAsExpected = testServerJet->currentMotorState()->GetClass() == expectedStateClass;
+						bool clientStateIsAsExpected = testClientJet->currentMotorStateClass() == expectedStateClass;
+						bool serverStateIsAsExpected = testServerJet->currentMotorStateClass() == expectedStateClass;
 						bothAsExpected = serverStateIsAsExpected && clientStateIsAsExpected;
 					}
 
@@ -1490,10 +1481,10 @@ bool FServerCheckJetExpectedSteerState::Update()
 				if(testServerJet && testClientJet)
 				{
 					bool bothAsExpected = false;
-					if(testClientJet->currentSteerState() && testServerJet->currentSteerState())
+					if(testClientJet->currentSteerStateClass() && testServerJet->currentSteerStateClass())
 					{
-						bool clientStateIsAsExpected = testClientJet->currentSteerState()->GetClass() == expectedStateClass;
-						bool serverStateIsAsExpected = testServerJet->currentSteerState()->GetClass() == expectedStateClass;
+						bool clientStateIsAsExpected = testClientJet->currentSteerStateClass() == expectedStateClass;
+						bool serverStateIsAsExpected = testServerJet->currentSteerStateClass() == expectedStateClass;
 						bothAsExpected = serverStateIsAsExpected && clientStateIsAsExpected;
 					}
 
@@ -1571,6 +1562,551 @@ bool FCheckAJetModelMeshAttachment::Update()
 	}
 	return false;
 }
+
+
+bool FCheckAJetHasMovementsStored::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+
+		if(testJet && testJet->HasActorBegunPlay())
+		{
+			bool hasMovementsStored = testJet->retrieveMovementHistory().size() > 0;
+
+			if(hasMovementsStored)
+			{
+				test->TestTrue(test->conditionMessage(), hasMovementsStored);
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+		return test->manageTickCountTowardsLimit();
+	}
+	return false;
+}
+
+
+bool FCheckAJetHasMovementHistorySizeLimited::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
+
+		if(testJet)
+		{
+			int historySize = testJet->movementHistoryPrefixedSize();
+
+			while(testJet->retrieveMovementHistory().size() < historySize)
+			{
+				testJet->addToHistory(FMovementData());
+			}
+
+			testJet->addToHistory(FMovementData());
+			
+			bool movementHistoryRespectsPrefixedSize = testJet->retrieveMovementHistory().size() == historySize;
+
+			if(movementHistoryRespectsPrefixedSize)
+			{
+				test->TestTrue(test->conditionMessage(), movementHistoryRespectsPrefixedSize);
+				sessionUtilities.currentPIEWorld()->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+		return test->manageTickCountTowardsLimit();
+	}
+	return false;
+}
+
+
+bool FServerAndClientCheckSameMovementsStoredAcceleration::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+		if(serverWorld)
+		{
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+			if(clientWorld)
+			{
+				AJetMOCK* testClientJet = Cast<AJetMOCK, APawn>(clientWorld->GetFirstPlayerController()->AcknowledgedPawn);
+				APlayerState* clientPlayerState = clientWorld->GetFirstPlayerController()->PlayerState;
+				if(clientPlayerState == nullptr)
+				{
+					return false;
+				}
+				const FUniqueNetIdRepl clientID = clientPlayerState->GetUniqueId();
+
+				AJetMOCK* testServerJet = nullptr;
+				for (auto controllerIterator = serverWorld->GetPlayerControllerIterator(); controllerIterator; ++controllerIterator)
+				{
+					if(controllerIterator->Get()->PlayerState->GetUniqueId() == clientID)
+					{
+						testServerJet = Cast<AJetMOCK, AActor>(controllerIterator->Get()->AcknowledgedPawn);
+						break;
+					}
+				}
+				if(testServerJet && testClientJet)
+				{
+					bool bothAsExpected = true;
+					testClientJet->accelerate();
+					std::deque<FMovementData> clientHistory = testClientJet->retrieveMovementHistory();
+					std::deque<FMovementData> serverHistory = testServerJet->retrieveMovementHistory();
+
+					for(int index = 0; index < 10 && index < clientHistory.size(); ++index)
+					{
+						UE_LOG(LogTemp, Log, TEXT("index: %s"), *FString::FromInt(index));
+
+						UClass* clientSteerStateClass = clientHistory[index].timestampedStates.steerStateClass;
+						UClass* clientMotorStateClass = clientHistory[index].timestampedStates.motorStateClass;
+						UClass* serverSteerStateClass = serverHistory[index].timestampedStates.steerStateClass;
+						UClass* serverMotorStateClass = serverHistory[index].timestampedStates.motorStateClass;
+
+						UE_LOG(LogTemp, Log, TEXT("Client: \n"));
+						UE_LOG(LogTemp, Log, TEXT("%s"), *clientHistory[index].ToString());
+
+						UE_LOG(LogTemp, Log, TEXT("Server: \n"));
+						UE_LOG(LogTemp, Log, TEXT("%s"), *serverHistory[index].ToString());
+
+						if(clientMotorStateClass == nullptr || clientSteerStateClass == nullptr)
+						{
+							return false;
+						}
+
+						if(clientSteerStateClass->GetName() != serverSteerStateClass->GetName() || clientMotorStateClass->GetName() != serverMotorStateClass->GetName())
+						{
+							bothAsExpected = false;
+							break;
+						}
+					}
+
+					if(bothAsExpected)
+					{
+						test->TestTrue(test->conditionMessage(), bothAsExpected);
+						for(auto context : GEditor->GetWorldContexts())
+						{
+							context.World()->bDebugFrameStepExecution = true;
+						}
+						return true;
+					}
+					return test->manageTickCountTowardsLimit();
+				}
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FServerAndClientCheckSameMovementsStoredBraking::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+		if(serverWorld)
+		{
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+			if(clientWorld)
+			{
+				AJetMOCK* testClientJet = Cast<AJetMOCK, APawn>(clientWorld->GetFirstPlayerController()->AcknowledgedPawn);
+				APlayerState* clientPlayerState = clientWorld->GetFirstPlayerController()->PlayerState;
+				if(clientPlayerState == nullptr)
+				{
+					return false;
+				}
+				const FUniqueNetIdRepl clientID = clientPlayerState->GetUniqueId();
+
+				AJetMOCK* testServerJet = nullptr;
+				for (auto controllerIterator = serverWorld->GetPlayerControllerIterator(); controllerIterator; ++controllerIterator)
+				{
+					if(controllerIterator->Get()->PlayerState->GetUniqueId() == clientID)
+					{
+						testServerJet = Cast<AJetMOCK, AActor>(controllerIterator->Get()->AcknowledgedPawn);
+						break;
+					}
+				}
+				if(testServerJet && testClientJet)
+				{
+					bool bothAsExpected = true;
+					testClientJet->brake();
+					std::deque<FMovementData> clientHistory = testClientJet->retrieveMovementHistory();
+					std::deque<FMovementData> serverHistory = testServerJet->retrieveMovementHistory();
+
+					for(int index = 0; index < 10 && index < clientHistory.size(); ++index)
+					{
+						UE_LOG(LogTemp, Log, TEXT("index: %s"), *FString::FromInt(index));
+
+						UClass* clientSteerStateClass = clientHistory[index].timestampedStates.steerStateClass;
+						UClass* clientMotorStateClass = clientHistory[index].timestampedStates.motorStateClass;
+						UClass* serverSteerStateClass = serverHistory[index].timestampedStates.steerStateClass;
+						UClass* serverMotorStateClass = serverHistory[index].timestampedStates.motorStateClass;
+
+						UE_LOG(LogTemp, Log, TEXT("Client: \n"));
+						UE_LOG(LogTemp, Log, TEXT("%s"), *clientHistory[index].ToString());
+
+						UE_LOG(LogTemp, Log, TEXT("Server: \n"));
+						UE_LOG(LogTemp, Log, TEXT("%s"), *serverHistory[index].ToString());
+
+						if(clientMotorStateClass == nullptr || clientSteerStateClass == nullptr)
+						{
+							return false;
+						}
+
+						if(clientSteerStateClass->GetName() != serverSteerStateClass->GetName() || clientMotorStateClass->GetName() != serverMotorStateClass->GetName())
+						{
+							bothAsExpected = false;
+							break;
+						}
+					}
+
+					if(bothAsExpected)
+					{
+						test->TestTrue(test->conditionMessage(), bothAsExpected);
+						for(auto context : GEditor->GetWorldContexts())
+						{
+							context.World()->bDebugFrameStepExecution = true;
+						}
+						return true;
+					}
+					return test->manageTickCountTowardsLimit();
+				}
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FServerAndClientCheckSameMovementsStoredNeutralize::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+		if(serverWorld)
+		{
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+			if(clientWorld)
+			{
+				AJetMOCK* testClientJet = Cast<AJetMOCK, APawn>(clientWorld->GetFirstPlayerController()->AcknowledgedPawn);
+				APlayerState* clientPlayerState = clientWorld->GetFirstPlayerController()->PlayerState;
+				if(clientPlayerState == nullptr)
+				{
+					return false;
+				}
+				const FUniqueNetIdRepl clientID = clientPlayerState->GetUniqueId();
+
+				AJetMOCK* testServerJet = nullptr;
+				for (auto controllerIterator = serverWorld->GetPlayerControllerIterator(); controllerIterator; ++controllerIterator)
+				{
+					if(controllerIterator->Get()->PlayerState->GetUniqueId() == clientID)
+					{
+						testServerJet = Cast<AJetMOCK, AActor>(controllerIterator->Get()->AcknowledgedPawn);
+						break;
+					}
+				}
+				if(testServerJet && testClientJet)
+				{
+					bool bothAsExpected = true;
+					testClientJet->neutralize();
+					std::deque<FMovementData> clientHistory = testClientJet->retrieveMovementHistory();
+					std::deque<FMovementData> serverHistory = testServerJet->retrieveMovementHistory();
+
+					for(int index = 0; index < 10 && index < clientHistory.size(); ++index)
+					{
+						UE_LOG(LogTemp, Log, TEXT("index: %s"), *FString::FromInt(index));
+
+						UClass* clientSteerStateClass = clientHistory[index].timestampedStates.steerStateClass;
+						UClass* clientMotorStateClass = clientHistory[index].timestampedStates.motorStateClass;
+						UClass* serverSteerStateClass = serverHistory[index].timestampedStates.steerStateClass;
+						UClass* serverMotorStateClass = serverHistory[index].timestampedStates.motorStateClass;
+
+						UE_LOG(LogTemp, Log, TEXT("Client: \n"));
+						UE_LOG(LogTemp, Log, TEXT("%s"), *clientHistory[index].ToString());
+
+						UE_LOG(LogTemp, Log, TEXT("Server: \n"));
+						UE_LOG(LogTemp, Log, TEXT("%s"), *serverHistory[index].ToString());
+
+						if(clientMotorStateClass == nullptr || clientSteerStateClass == nullptr)
+						{
+							return false;
+						}
+
+						if(clientSteerStateClass->GetName() != serverSteerStateClass->GetName() || clientMotorStateClass->GetName() != serverMotorStateClass->GetName())
+						{
+							bothAsExpected = false;
+							break;
+						}
+					}
+
+					if(bothAsExpected)
+					{
+						test->TestTrue(test->conditionMessage(), bothAsExpected);
+						for(auto context : GEditor->GetWorldContexts())
+						{
+							context.World()->bDebugFrameStepExecution = true;
+						}
+						return true;
+					}
+					return test->manageTickCountTowardsLimit();
+				}
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FServerAndClientCheckSameMovementsStoredSteerLeft::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+		if(serverWorld)
+		{
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+			if(clientWorld)
+			{
+				AJetMOCK* testClientJet = Cast<AJetMOCK, APawn>(clientWorld->GetFirstPlayerController()->AcknowledgedPawn);
+				APlayerState* clientPlayerState = clientWorld->GetFirstPlayerController()->PlayerState;
+				if(clientPlayerState == nullptr)
+				{
+					return false;
+				}
+				const FUniqueNetIdRepl clientID = clientPlayerState->GetUniqueId();
+
+				AJetMOCK* testServerJet = nullptr;
+				for (auto controllerIterator = serverWorld->GetPlayerControllerIterator(); controllerIterator; ++controllerIterator)
+				{
+					if(controllerIterator->Get()->PlayerState->GetUniqueId() == clientID)
+					{
+						testServerJet = Cast<AJetMOCK, AActor>(controllerIterator->Get()->AcknowledgedPawn);
+						break;
+					}
+				}
+				if(testServerJet && testClientJet)
+				{
+					bool bothAsExpected = true;
+					testClientJet->steerLeft();
+					std::deque<FMovementData> clientHistory = testClientJet->retrieveMovementHistory();
+					std::deque<FMovementData> serverHistory = testServerJet->retrieveMovementHistory();
+
+					for(int index = 0; index < 10 && index < clientHistory.size(); ++index)
+					{
+						UE_LOG(LogTemp, Log, TEXT("index: %s"), *FString::FromInt(index));
+
+						UClass* clientSteerStateClass = clientHistory[index].timestampedStates.steerStateClass;
+						UClass* clientMotorStateClass = clientHistory[index].timestampedStates.motorStateClass;
+						UClass* serverSteerStateClass = serverHistory[index].timestampedStates.steerStateClass;
+						UClass* serverMotorStateClass = serverHistory[index].timestampedStates.motorStateClass;
+
+						UE_LOG(LogTemp, Log, TEXT("Client: \n"));
+						UE_LOG(LogTemp, Log, TEXT("%s"), *clientHistory[index].ToString());
+
+						UE_LOG(LogTemp, Log, TEXT("Server: \n"));
+						UE_LOG(LogTemp, Log, TEXT("%s"), *serverHistory[index].ToString());
+
+						if(clientMotorStateClass == nullptr || clientSteerStateClass == nullptr)
+						{
+							return false;
+						}
+
+						if(clientSteerStateClass->GetName() != serverSteerStateClass->GetName() || clientMotorStateClass->GetName() != serverMotorStateClass->GetName())
+						{
+							bothAsExpected = false;
+							break;
+						}
+					}
+
+					if(bothAsExpected)
+					{
+						test->TestTrue(test->conditionMessage(), bothAsExpected);
+						for(auto context : GEditor->GetWorldContexts())
+						{
+							context.World()->bDebugFrameStepExecution = true;
+						}
+						return true;
+					}
+					return test->manageTickCountTowardsLimit();
+				}
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FServerAndClientCheckSameMovementsStoredSteerRight::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+		if(serverWorld)
+		{
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+			if(clientWorld)
+			{
+				AJetMOCK* testClientJet = Cast<AJetMOCK, APawn>(clientWorld->GetFirstPlayerController()->AcknowledgedPawn);
+				APlayerState* clientPlayerState = clientWorld->GetFirstPlayerController()->PlayerState;
+				if(clientPlayerState == nullptr)
+				{
+					return false;
+				}
+				const FUniqueNetIdRepl clientID = clientPlayerState->GetUniqueId();
+
+				AJetMOCK* testServerJet = nullptr;
+				for (auto controllerIterator = serverWorld->GetPlayerControllerIterator(); controllerIterator; ++controllerIterator)
+				{
+					if(controllerIterator->Get()->PlayerState->GetUniqueId() == clientID)
+					{
+						testServerJet = Cast<AJetMOCK, AActor>(controllerIterator->Get()->AcknowledgedPawn);
+						break;
+					}
+				}
+				if(testServerJet && testClientJet)
+				{
+					bool bothAsExpected = true;
+					testClientJet->steerRight();
+					std::deque<FMovementData> clientHistory = testClientJet->retrieveMovementHistory();
+					std::deque<FMovementData> serverHistory = testServerJet->retrieveMovementHistory();
+
+					for(int index = 0; index < 10 && index < clientHistory.size(); ++index)
+					{
+						UE_LOG(LogTemp, Log, TEXT("index: %s"), *FString::FromInt(index));
+
+						UClass* clientSteerStateClass = clientHistory[index].timestampedStates.steerStateClass;
+						UClass* clientMotorStateClass = clientHistory[index].timestampedStates.motorStateClass;
+						UClass* serverSteerStateClass = serverHistory[index].timestampedStates.steerStateClass;
+						UClass* serverMotorStateClass = serverHistory[index].timestampedStates.motorStateClass;
+
+						UE_LOG(LogTemp, Log, TEXT("Client: \n"));
+						UE_LOG(LogTemp, Log, TEXT("%s"), *clientHistory[index].ToString());
+
+						UE_LOG(LogTemp, Log, TEXT("Server: \n"));
+						UE_LOG(LogTemp, Log, TEXT("%s"), *serverHistory[index].ToString());
+
+						if(clientMotorStateClass == nullptr || clientSteerStateClass == nullptr)
+						{
+							return false;
+						}
+
+						if(clientSteerStateClass->GetName() != serverSteerStateClass->GetName() || clientMotorStateClass->GetName() != serverMotorStateClass->GetName())
+						{
+							bothAsExpected = false;
+							break;
+						}
+					}
+
+					if(bothAsExpected)
+					{
+						test->TestTrue(test->conditionMessage(), bothAsExpected);
+						for(auto context : GEditor->GetWorldContexts())
+						{
+							context.World()->bDebugFrameStepExecution = true;
+						}
+						return true;
+					}
+					return test->manageTickCountTowardsLimit();
+				}
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FServerAndClientCheckSameMovementsStoredCenterSteer::Update()
+{
+	if(GEditor->IsPlayingSessionInEditor())
+	{
+		FWorldContext serverContext = NetworkedPIESessionUtilities::retrieveServerWorldContext(clientQuantity);
+		UWorld* serverWorld = serverContext.World();
+		if(serverWorld)
+		{
+			FWorldContext clientContext = NetworkedPIESessionUtilities::retrieveClientWorldContext();
+			UWorld* clientWorld = clientContext.World();
+			if(clientWorld)
+			{
+				AJetMOCK* testClientJet = Cast<AJetMOCK, APawn>(clientWorld->GetFirstPlayerController()->AcknowledgedPawn);
+				APlayerState* clientPlayerState = clientWorld->GetFirstPlayerController()->PlayerState;
+				if(clientPlayerState == nullptr)
+				{
+					return false;
+				}
+				const FUniqueNetIdRepl clientID = clientPlayerState->GetUniqueId();
+
+				AJetMOCK* testServerJet = nullptr;
+				for (auto controllerIterator = serverWorld->GetPlayerControllerIterator(); controllerIterator; ++controllerIterator)
+				{
+					if(controllerIterator->Get()->PlayerState->GetUniqueId() == clientID)
+					{
+						testServerJet = Cast<AJetMOCK, AActor>(controllerIterator->Get()->AcknowledgedPawn);
+						break;
+					}
+				}
+				if(testServerJet && testClientJet)
+				{
+					bool bothAsExpected = true;
+					testClientJet->steerRight();
+					testClientJet->centerSteer();
+					std::deque<FMovementData> clientHistory = testClientJet->retrieveMovementHistory();
+					std::deque<FMovementData> serverHistory = testServerJet->retrieveMovementHistory();
+
+					for(int index = 0; index < 10 && index < clientHistory.size(); ++index)
+					{
+						UE_LOG(LogTemp, Log, TEXT("index: %s"), *FString::FromInt(index));
+
+						UClass* clientSteerStateClass = clientHistory[index].timestampedStates.steerStateClass;
+						UClass* clientMotorStateClass = clientHistory[index].timestampedStates.motorStateClass;
+						UClass* serverSteerStateClass = serverHistory[index].timestampedStates.steerStateClass;
+						UClass* serverMotorStateClass = serverHistory[index].timestampedStates.motorStateClass;
+
+						UE_LOG(LogTemp, Log, TEXT("Client: \n"));
+						UE_LOG(LogTemp, Log, TEXT("%s"), *clientHistory[index].ToString());
+
+						UE_LOG(LogTemp, Log, TEXT("Server: \n"));
+						UE_LOG(LogTemp, Log, TEXT("%s"), *serverHistory[index].ToString());
+
+						if(clientMotorStateClass == nullptr || clientSteerStateClass == nullptr)
+						{
+							return false;
+						}
+
+						if(clientSteerStateClass->GetName() != serverSteerStateClass->GetName() || clientMotorStateClass->GetName() != serverMotorStateClass->GetName())
+						{
+							bothAsExpected = false;
+							break;
+						}
+					}
+
+					if(bothAsExpected)
+					{
+						test->TestTrue(test->conditionMessage(), bothAsExpected);
+						for(auto context : GEditor->GetWorldContexts())
+						{
+							context.World()->bDebugFrameStepExecution = true;
+						}
+						return true;
+					}
+					return test->manageTickCountTowardsLimit();
+				}
+			}
+		}
+	}
+	return false;
+}
+
 
 
 

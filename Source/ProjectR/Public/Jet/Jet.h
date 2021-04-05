@@ -2,10 +2,12 @@
 
 #pragma once
 
+#include <chrono>
+
 #include "CoreMinimal.h"
+#include "DeloreanReplicationMachine.h"
 #include "GameFramework/Pawn.h"
 #include "Jet.generated.h"
-
 
 
 class USpringArmComponent;
@@ -15,6 +17,11 @@ class USteeringComponent;
 class UMotorDriveComponent;
 class AMotorStateManager;
 class ASteerStateManager;
+
+
+
+
+
 
 UCLASS()
 class PROJECTR_API AJet : public APawn
@@ -55,11 +62,20 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 		UMotorDriveComponent* motorDriveSystem;
 
-	UPROPERTY(Replicated)
+	UPROPERTY()
 		AMotorStateManager* motorManager;
 
-	UPROPERTY(Replicated)
+	UPROPERTY()
 		ASteerStateManager* steerManager;
+
+	UPROPERTY()
+		UDeloreanReplicationMachine* replicationMachine;
+
+	/**With 60 we will have 1000 milliseconds of movements into the past
+	 * (assuming 60fps).
+	 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Replication")
+		int movementHistorySize;
 	
 public:
 	virtual void Tick(float DeltaTime) override;
@@ -88,6 +104,7 @@ public:
 	float steerRadius();
 	void steerRight();
 	void steerLeft();
+	void InReverseInverts(float& aDirection);
 	void centerSteer();
 
 	float antiGravityHeight();
@@ -103,4 +120,41 @@ public:
 	FVector rightVectorProjectionOnFloor();
 
 	bool keyIsPressedFor(const FName anActionMappingName);
+
+
+//start of replication:
+	
+	float mass();
+	UClass* currentMotorStateClass();
+	UClass* currentSteerStateClass();
+	float accelerationMagnitudeToAlignVelocityFrom(FVector aCurrentLocation);
+
+	
+	void changesGeneratedByAntiGravityTo(FVector& aLinearAcceleration, FVector& anAngularAcceleration);
+
+	FVector retrieveTrackMagnetizationLinearAcceleration();
+	
+	FPhysicsActorHandle& physicsHandleRequestedBy(UDeloreanReplicationMachine* aReplicationMachine);
+
+	void asCurrentMovementSet(FMovementData anotherMovement, UDeloreanReplicationMachine* aRequestingReplicationMachine);
+	
+	void sendMovementToServerRequestedBy(AMotorStateManager* aMotorManager);
+	void sendMovementToServerRequestedBy(ASteerStateManager* aSteerManager);
+
+	float linearDamping();
+	float angularDamping();
+
+protected:
+
+	bool needsToReplicateStates;
+	
+	UFUNCTION(Server, Reliable, WithValidation)
+		void serverUpdateMovementWith(FStateData aBunchOfStates);
+
+	FMovementData updatedDataSynchronizedWith(FStateData aBunchOfStates);
+	
+	UFUNCTION(NetMulticast, Reliable)
+		void multicastSynchronizeMovementWith(FMovementData aMovementStructure);
+
+//end of replication
 };

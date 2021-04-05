@@ -34,4 +34,6 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	float triggerHeight();
+
+	void currentChangesMadeTo(FVector& aLinearAcceleration, FVector& anAngularAcceleration);
 };

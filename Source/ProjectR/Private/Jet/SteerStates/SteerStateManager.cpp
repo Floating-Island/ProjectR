@@ -12,8 +12,13 @@ ASteerStateManager::ASteerStateManager()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	steerState = nullptr;
-	SetReplicates(true);
-	bAlwaysRelevant = true;
+}
+
+void ASteerStateManager::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	updateStateTo<UCenterSteerState>();
+	owningJet = Cast<AJet, AActor>(GetOwner());
 }
 
 // Called when the game starts or when spawned
@@ -22,92 +27,36 @@ void ASteerStateManager::BeginPlay()
 	Super::BeginPlay();
 }
 
-void ASteerStateManager::serverSteerLeft_Implementation()
+void ASteerStateManager::activate(USteeringComponent* aSteeringDrive)
 {
-	multicastSteerLeft();
+	steerState->activate(aSteeringDrive);
 }
 
-bool ASteerStateManager::serverSteerLeft_Validate()
+UClass* ASteerStateManager::stateClass()
 {
-	return true;
+	return steerState->GetClass();
 }
 
-void ASteerStateManager::serverSteerRight_Implementation()
+void ASteerStateManager::overrideStateTo(UClass* anotherState, AJet* anOwningJet)
 {
-	multicastSteerRight();
-}
-
-bool ASteerStateManager::serverSteerRight_Validate()
-{
-	return true;
-}
-
-void ASteerStateManager::serverCenter_Implementation()
-{
-	multicastCenter();
-}
-
-bool ASteerStateManager::serverCenter_Validate()
-{
-	return true;
-}
-
-void ASteerStateManager::multicastSteerLeft_Implementation()
-{
-	updateStateTo<ULeftSteerState>();
-}
-
-void ASteerStateManager::multicastSteerRight_Implementation()
-{
-	updateStateTo<URightSteerState>();
-}
-
-void ASteerStateManager::multicastCenter_Implementation()
-{
-	updateStateTo<UCenterSteerState>();
-}
-
-void ASteerStateManager::PostInitializeComponents()
-{
-	Super::PostInitializeComponents();
-
-	if(HasAuthority())
+	if(owningJet == anOwningJet)
 	{
-		serverCenter();
+		steerState = nullptr;
+		steerState = NewObject<USteerState>(this, anotherState, anotherState->GetFName());
 	}
 }
 
 void ASteerStateManager::steerLeft()
 {
-	if(IsValid(steerState) && steerStateIsOfType<ULeftSteerState>())
-	{
-		return;
-	}
-	serverSteerLeft();
-}
-
-void ASteerStateManager::steerRight()
-{
-	if(IsValid(steerState) && steerStateIsOfType<URightSteerState>())
-	{
-		return;
-	}
-	serverSteerRight();
+	makeSteerStateBe<ULeftSteerState>();
 }
 
 void ASteerStateManager::center()
 {
-	if(IsValid(steerState) && steerStateIsOfType<UCenterSteerState>())
-	{
-		return;
-	}
-	serverCenter();
+	makeSteerStateBe<UCenterSteerState>();
 }
 
-void ASteerStateManager::activate(USteeringComponent* aSteeringDrive)
+void ASteerStateManager::steerRight()
 {
-	if(IsValid(steerState))
-	{
-		steerState->activate(aSteeringDrive);
-	}
+	makeSteerStateBe<URightSteerState>();
 }

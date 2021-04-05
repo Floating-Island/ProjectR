@@ -183,21 +183,14 @@ bool FAJetDefaultTopSpeedIsGreaterThanZeroTest::RunTest(const FString& Parameter
 
 bool FAJetDoesntAccelerateWhenAtTopSpeedTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKTestWorld"));
 	establishTestMessageTo(FString("If a jet is at top speed, it should never increase it after an acceleration is added (after ticking)."));
 	establishTickLimitTo(3);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	
-	
-
-	UClass* jetClass = AJetMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(jetClass, FTransform()));
-
 	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetVelocityToTopSpeed);
-	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMakeItAccelerate);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedAgainstTopSpeed(this));
 
@@ -208,18 +201,13 @@ bool FAJetDoesntAccelerateWhenAtTopSpeedTest::RunTest(const FString& Parameters)
 
 bool FAJetRotatesYawRightWhenSteeringRightTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKTestWorld"));
 	establishTestMessageTo(FString("The Jet yaw rotation (around Z axis) should be greater than zero after steering right (after ticking)."));
 	establishTickLimitTo(3);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	
-	
-
-	UClass* jetClass = AJetMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(jetClass, FTransform()));
 	float desiredSpeed = 10000;
 	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetVelocityToDesiredSpeed(desiredSpeed));//to be able to steer...
 	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMakeItSteerRight);
@@ -463,18 +451,13 @@ bool FAJetInvertsSteeringWhenInReverseTest::RunTest(const FString& Parameters)
 
 bool FAJetIsntAbleToSteerWhenIdleTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKTestWorld"));
 	establishTestMessageTo(FString("The Jet should update it's velocity to match the direction of the forward vector after steering."));
 	establishTickLimitTo(3);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	
-	
-
-	UClass* jetClass = AJetMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(jetClass, FTransform()));
 	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMakeItSteerRight);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetUnableToSteerWhenIdle(FRotator(0), this));
@@ -627,7 +610,7 @@ bool FAJetBrakesOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters
 
 bool FAJetSteersOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKWithFloorNoGWorld"));
 	establishTestMessageTo(FString("The Jet should move parallel to the floor. Then, the speed, floor speed and velocity magnitude (gravity is being canceled) should be the same."));
 	establishTickLimitTo(3);
 
@@ -637,7 +620,7 @@ bool FAJetSteersOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters
 	
 	
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotatedOverFloorAccelerateAndSteerItRight);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetRotatedOverFloorAccelerateAndSteerItRight);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetVelocityMagnitudeOrthogonalityToFloor(this));
 
@@ -655,10 +638,10 @@ bool FAJetReplicatesTest::RunTest(const FString& Parameters)
 }
 
 
-bool FAJetReplicatesMovementTest::RunTest(const FString& Parameters)
+bool FAJetDoesntReplicateMovementTest::RunTest(const FString& Parameters)
 {
 	AJet* testJet = NewObject<AJet>();
-	TestTrue(TEXT("Jet should replicate to other objects."), testJet->IsReplicatingMovement());
+	TestFalse(TEXT("Jet shouldn't replicate movement to other objects."), testJet->IsReplicatingMovement());
 
 	return true;
 }
@@ -1611,8 +1594,174 @@ bool FAJetModelMeshIsAttachedToPhysicsComponentTest::RunTest(const FString& Para
 }
 
 
+bool FAJetStoresItsMovementEachTickTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKTestWorld"));
+	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
+	establishTestMessageTo(FString("The Jet should store its current movement each tick."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetHasMovementsStored(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
 
 
+bool FAJetMovementHistorySizeIsLimitedTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKTestWorld"));
+	UClass* expectedSteerStateClass = UCenterSteerState::StaticClass();
+	establishTestMessageTo(FString("The Jet should limit the movementHistory size to the one set."));
+	establishTickLimitTo(3);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetHasMovementHistorySizeLimited(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerAndClientHaveSameMovesAfterAcceleratingTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest"));
+	establishTestMessageTo((FString("The server and client should have the same movements states after accelerating.")));
+	establishTickLimitTo(10);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FServerAndClientCheckSameMovementsStoredAcceleration(numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerAndClientHaveSameMovesAfterBrakingTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest"));
+	establishTestMessageTo((FString("The server and client should have the same movements states after braking.")));
+	establishTickLimitTo(10);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FServerAndClientCheckSameMovementsStoredBraking(numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerAndClientHaveSameMovesAfterNeutralizeTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest"));
+	establishTestMessageTo((FString("The server and client should have the same movements states after neutralize.")));
+	establishTickLimitTo(10);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FServerAndClientCheckSameMovementsStoredNeutralize(numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerAndClientHaveSameMovesAfterSteerLeftTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest"));
+	establishTestMessageTo((FString("The server and client should have the same movements states after steering left.")));
+	establishTickLimitTo(10);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FServerAndClientCheckSameMovementsStoredSteerLeft(numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerAndClientHaveSameMovesAfterSteerRightTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest"));
+	establishTestMessageTo((FString("The server and client should have the same movements states after steering right.")));
+	establishTickLimitTo(10);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FServerAndClientCheckSameMovementsStoredSteerRight(numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetServerAndClientHaveSameMovesAfterCenterSteerTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-JetMOCKTest"));
+	establishTestMessageTo((FString("The server and client should have the same movements states after center steering.")));
+	establishTickLimitTo(10);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	int32 numberOfPlayers = 2;
+	EPlayNetMode networkMode = EPlayNetMode::PIE_ListenServer;
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartNetworkedPIESession(numberOfPlayers, networkMode));
+	
+	ADD_LATENT_AUTOMATION_COMMAND(FServerAndClientCheckSameMovementsStoredCenterSteer(numberOfPlayers, this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FAJetSpawnsAdjustingIfPossibleButAlwaysSpawnTest::RunTest(const FString& Parameters)
+{
+	AJet* testJet = NewObject<AJet>();
+
+	TestTrue(FString("Spawn collision method should be set as adjust if possible but always spawn"), 
+		testJet->SpawnCollisionHandlingMethod == ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn);
+	
+	return true;
+}
+
+
+bool FAJetIsAlwaysRelevantTest::RunTest(const FString& Parameters)
+{
+	AJet* testJet = NewObject<AJet>();
+
+	TestTrue(FString("Should be always relevant to the network."), 
+		testJet->bAlwaysRelevant == true);
+	
+	return true;
+}
 
 
 

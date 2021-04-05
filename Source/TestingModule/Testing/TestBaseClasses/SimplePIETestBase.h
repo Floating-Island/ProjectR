@@ -49,6 +49,7 @@ public:
 
 	/**
 	 * method that only sets the tick limit on the first time it's called.
+	 * It also calls resetTickCount whenever it's called.
 	 */
 	void establishTickLimitTo(int aDesiredQuantity);
 	void increaseTickCount();
@@ -77,6 +78,12 @@ public:
 	* returns the test initial world name.
 	*/
 	FString initialWorldName();
+
+
+	/**
+	 * Should be called at the beginning of RunTest so if an instance of the test is already loaded, the tick count doesn't carry over to the new run.
+	 */
+	void resetTickCount();
 };
 
 
