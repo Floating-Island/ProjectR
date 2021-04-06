@@ -117,3 +117,15 @@ bool ALapManagerMOCK::lastCrossedPhaseIs(UClass* aPhaseClass, AJet* anAffectedJe
 	}
 	return false;
 }
+
+UClass* ALapManagerMOCK::currentRecordedPhaseClassOf(AJet* aJet)
+{
+	FLapData* jetData = jetLaps.Find(aJet);
+
+	if(jetData == nullptr)
+	{
+		return nullptr;
+	}
+	
+	return jetData->currentLapPhase->GetClass();
+}

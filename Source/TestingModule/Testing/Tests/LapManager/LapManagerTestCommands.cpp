@@ -377,7 +377,7 @@ bool FCheckJetLastCrossedPhaseIsStillIntermediate::Update()
 		if (testManager)
 		{
 			bool jetLastCrossedPhaseIsFinalLapPhase = testManager->lastCrossedPhaseIs(AFinalLapPhase::StaticClass(), testJet);
-			bool jetCurrentPhaseIsIntermediate = testManager->currentRecordedPhaseClass() == AIntermediateLapPhase::StaticClass();
+			bool jetCurrentPhaseIsIntermediate = testManager->currentRecordedPhaseClassOf(testJet) == AIntermediateLapPhase::StaticClass();
 
 			UE_LOG(LogTemp, Log, TEXT("Lap manager jet %s the final lap phase as the last crossed one."), *FString(jetLastCrossedPhaseIsFinalLapPhase ? "have" : "don't have"));
 			UE_LOG(LogTemp, Log, TEXT("Lap manager jet %s the intermediate lap phase."), *FString(jetLastCrossedPhaseIsFinalLapPhase ? "is" : "isn't"));

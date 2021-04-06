@@ -25,4 +25,5 @@ public:
 	void changeLapTo(int aLapNumber, AJet* anAffectedJet);
 	void makeJetsPhaseInitial();
 	bool lastCrossedPhaseIs(UClass* aPhaseClass, AJet* anAffectedJet);
+	UClass* currentRecordedPhaseClassOf(AJet* aJet);
 };
