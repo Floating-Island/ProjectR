@@ -23,6 +23,7 @@ struct FLapData
 
 	int lap = 0;
 	ALapPhase* currentLapPhase;
+	ALapPhase* lastCrossedPhase;
 };
 
 UCLASS()

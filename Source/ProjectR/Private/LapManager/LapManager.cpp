@@ -62,6 +62,7 @@ void ALapManager::configureJetLaps()
 			if (finalPhase)
 			{
 				jetLapData.currentLapPhase = finalPhase;
+				jetLapData.lastCrossedPhase = finalPhase;
 			}
 			jetLaps.Add(castedJet, jetLapData);
 		}
@@ -91,6 +92,8 @@ void ALapManager::lapPhaseOverlap(AActor* OverlappedActor, AActor* OtherActor)
 			++jetLapData->lap;
 			lapCompletedEvent.Broadcast(overlappedJet);
 		}
+		
+		jetLapData->lastCrossedPhase = overlappingPhase;
 	}
 }
 
