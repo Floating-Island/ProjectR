@@ -49,6 +49,8 @@ protected:
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 		FLapCompletedEvent lapCompletedEvent;
 
+	void establishLapPhasesDistances();
+	
 public:
 
 	TMap<AJet*, FLapData> jetsInPlay();

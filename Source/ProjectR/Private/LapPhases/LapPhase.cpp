@@ -64,3 +64,8 @@ float ALapPhase::maximumAllowedDistance()
 	return allowedDistance;
 }
 
+void ALapPhase::establishDistanceTo(float aNewDistance)
+{
+	allowedDistance = aNewDistance;
+}
+

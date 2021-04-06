@@ -38,4 +38,5 @@ public:
 	virtual bool comesFromFinalLapPhase();
 
 	float maximumAllowedDistance();
+	void establishDistanceTo(float aNewDistance);
 };

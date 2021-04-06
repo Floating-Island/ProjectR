@@ -10,6 +10,7 @@
 #include "LapPhases/InitialLapPhase.h"
 #include "LapPhases/IntermediateLapPhase.h"
 #include "LapPhases/FinalLapPhase.h"
+#include "Track/TrackGenerator.h"
 
 // Sets default values
 ALapManager::ALapManager()
@@ -26,6 +27,8 @@ void ALapManager::BeginPlay()
 
 	subscribeToLapPhases();
 
+	establishLapPhasesDistances();
+	
 	configureJetLaps();
 }
 
@@ -65,6 +68,32 @@ void ALapManager::configureJetLaps()
 				jetLapData.lastCrossedPhase = finalPhase;
 			}
 			jetLaps.Add(castedJet, jetLapData);
+		}
+	}
+}
+
+void ALapManager::establishLapPhasesDistances()
+{
+	ATrackGenerator* track = Cast<ATrackGenerator, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ATrackGenerator::StaticClass()));
+
+	if(track)
+	{
+		AInitialLapPhase* initialLapPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
+		AIntermediateLapPhase* intermediatePhase = Cast<AIntermediateLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AIntermediateLapPhase::StaticClass()));
+
+		if(initialLapPhase && intermediatePhase)
+		{
+			initialLapPhase->establishDistanceTo(track->distanceAlongSplineOf(intermediatePhase));
+		}
+
+		if(intermediatePhase && finalPhase)
+		{
+			intermediatePhase->establishDistanceTo(track->distanceAlongSplineOf(finalPhase));
+		}
+
+		if(finalPhase)
+		{
+			finalPhase->establishDistanceTo(track->length());
 		}
 	}
 }
