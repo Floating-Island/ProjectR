@@ -750,7 +750,7 @@ bool FCheckAJetRotatedYawRight::Update()
 		{
 			float currentZRotation = testJet->GetActorRotation().Yaw;
 			bool hasSteeredRight = currentZRotation > 0;
-			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotation, 0.01f);
+			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotation, 0.001f);
 
 			UE_LOG(LogTemp, Log, TEXT("Jet rotation vector: %s"), *testJet->GetActorRotation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet %s steered right."), *FString(hasSteeredRight ? "has" : "hasn't"));
