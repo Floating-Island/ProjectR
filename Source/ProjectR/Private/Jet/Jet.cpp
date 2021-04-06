@@ -85,7 +85,6 @@ void AJet::PostLoad()
 
 void AJet::BeginPlay()
 {
-	nonCDOConstruction();
 	Super::BeginPlay();
 }
 
