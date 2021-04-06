@@ -22,7 +22,7 @@
 bool FALapPhaseIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
 	ALapPhase* testLapPhase = NewObject<ALapPhase>();
-	TestNotNull(TEXT("The LapPhase shouldn't be null after instantiating it."), testLapPhase);
+	TestNotNull(FString("The LapPhase shouldn't be null after instantiating it."), testLapPhase);
 
 	return true;
 }
@@ -31,7 +31,7 @@ bool FALapPhaseIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 bool FALapPhaseHasAStaticMeshComponentTest::RunTest(const FString& Parameters)
 {
 	ALapPhaseMOCK* testLapPhase = NewObject<ALapPhaseMOCK>();
-	TestTrue(TEXT("The LapPhase should have a static mesh component after instantiating it."), testLapPhase->hasAStaticMeshComponent());
+	TestTrue(FString("The LapPhase should have a static mesh component after instantiating it."), testLapPhase->hasAStaticMeshComponent());
 
 	return true;
 }
@@ -40,7 +40,7 @@ bool FALapPhaseHasAStaticMeshComponentTest::RunTest(const FString& Parameters)
 bool FALapPhaseHasAStaticMeshTest::RunTest(const FString& Parameters)
 {
 	ALapPhaseMOCK* testLapPhase = NewObject<ALapPhaseMOCK>();
-	TestTrue(TEXT("The LapPhase should have a static mesh set after instantiating it."), testLapPhase->hasAStaticMeshAssociated());
+	TestTrue(FString("The LapPhase should have a static mesh set after instantiating it."), testLapPhase->hasAStaticMeshAssociated());
 
 	return true;
 }
@@ -49,7 +49,7 @@ bool FALapPhaseHasAStaticMeshTest::RunTest(const FString& Parameters)
 bool FALapPhaseHasPhaseWallAsRootTest::RunTest(const FString& Parameters)
 {
 	ALapPhaseMOCK* testLapPhase = NewObject<ALapPhaseMOCK>();
-	TestTrue(TEXT("The LapPhase should have its phase wall as the root component."), testLapPhase->phaseWallIsRootComponent());
+	TestTrue(FString("The LapPhase should have its phase wall as the root component."), testLapPhase->phaseWallIsRootComponent());
 
 	return true;
 }
@@ -118,7 +118,7 @@ bool FALapPhaseGeneratesOverlapEventsTest::RunTest(const FString& Parameters)
 bool FALapPhaseUpdateStateReturnsItselfTest::RunTest(const FString& Parameters)
 {
 	ALapPhase* testLapPhase = NewObject<ALapPhase>();
-	TestTrue(TEXT("The LapPhase should return itself when calling updateState."), testLapPhase->updatePhase(testLapPhase) == testLapPhase);
+	TestTrue(FString("The LapPhase should return itself when calling updateState."), testLapPhase->updatePhase(testLapPhase) == testLapPhase);
 
 	return true;
 }
@@ -127,7 +127,16 @@ bool FALapPhaseUpdateStateReturnsItselfTest::RunTest(const FString& Parameters)
 bool FALapPhaseIsHiddenInGameTest::RunTest(const FString& Parameters)
 {
 	ALapPhaseMOCK* testLapPhase = NewObject<ALapPhaseMOCK>();
-	TestTrue(TEXT("The LapPhase should be hidden in game."), testLapPhase->IsHiddenInGame());
+	TestTrue(FString("The LapPhase should be hidden in game."), testLapPhase->IsHiddenInGame());
+
+	return true;
+}
+
+
+bool FALapPhaseDefaultAllowedDistanceIsZeroTest::RunTest(const FString& Parameters)
+{
+	ALapPhase* testLapPhase = NewObject<ALapPhase>();
+	TestTrue(FString("The LapPhase allowed distance should be zero by default."), FMath::IsNearlyZero(testLapPhase->maximumAllowedDistance()));
 
 	return true;
 }
