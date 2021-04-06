@@ -63,6 +63,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckJetLastCrossedPhaseIsFinal,
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckJetLastCrossedPhaseIsStillIntermediate, FSimplePIETestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLapPhasesWithDistancesSet, FSimplePIETestBase*, test);
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

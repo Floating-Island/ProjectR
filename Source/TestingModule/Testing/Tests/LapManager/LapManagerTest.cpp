@@ -10,6 +10,7 @@
 #include "LapManagerTestCommands.h"
 #include "Tests/AutomationEditorCommon.h"
 #include "Jet/SteerStates/CenterSteerState.h"
+#include "../../Commands/CommonPIECommands.h"
 
 
 bool FALapManagerIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
@@ -196,6 +197,21 @@ bool FALapManagerJetDoesntChangePhaseIfLastCrossedPhaseIsntTheCurrentOneTest::Ru
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerIntermediateAndFinalLapPhasesAndJetChangeLastOne);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetLastCrossedPhaseIsStillIntermediate(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FALapManagerEstablishesLapPhasesAllowedMaxDistancesAtBeginPlayTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld-RaceGameModeMOCK"));
+	establishTestMessageTo(FString("The lap manager should set the lap phases maximum allowed distance."));
+	establishTickLimitTo(3);
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckLapPhasesWithDistancesSet(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

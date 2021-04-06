@@ -71,6 +71,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FALapManagerJetDoesntChangePhaseIfLastCr
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FALapManagerEstablishesLapPhasesAllowedMaxDistancesAtBeginPlayTest, FSimplePIETestBase,
+	"ProjectR.LapManager Tests.Integration.011: Establishes the allowed max distances to each lap phase at begin play", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

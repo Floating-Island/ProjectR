@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "../../../../ProjectR/Public/GameMode/RaceGameMode.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "LapManagerTestCommands.h"
@@ -389,6 +390,49 @@ bool FCheckJetLastCrossedPhaseIsStillIntermediate::Update()
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
+		}
+	}
+	return false;
+}
+
+
+bool FCheckLapPhasesWithDistancesSet::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+		
+		ALapManager* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManager>();
+		if (testManager)
+		{
+			bool lapPhasesDistancesDifferentThanZero = true;
+
+			TArray<AActor*> actorsFound = TArray<AActor*>();
+			UGameplayStatics::GetAllActorsOfClass(testWorld, ALapPhase::StaticClass(), actorsFound);
+
+			for( const auto& actor : actorsFound)
+			{
+				ALapPhase* phase = Cast<ALapPhase, AActor>(actor);
+				if(phase && FMath::IsNearlyZero(phase->maximumAllowedDistance()) )
+				{
+					lapPhasesDistancesDifferentThanZero = false;
+				}
+			}
+			
+			if (lapPhasesDistancesDifferentThanZero)
+			{
+				test->TestTrue(test->conditionMessage(), lapPhasesDistancesDifferentThanZero);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			return test->manageTickCountTowardsLimit();
+		}
+
+		ARaceGameMode* gameMode = Cast<ARaceGameMode, AGameModeBase>(testWorld->GetAuthGameMode());
+		if(gameMode)
+		{
+			gameMode->createLapManager();
 		}
 	}
 	return false;
