@@ -12,7 +12,7 @@
 #include "GameMode/RaceStages/RacePreparationStage.h"
 #include "GameInstance/ProjectRGameInstance.h"
 #include "TimerManager.h"
-#include "../../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/GameFramework/PlayerInput.h"
+#include "GameFramework/PlayerInput.h"
 #include "PlayerController/ProjectRPlayerController.h"
 #include "PlayerState/RacePlayerState.h"
 
