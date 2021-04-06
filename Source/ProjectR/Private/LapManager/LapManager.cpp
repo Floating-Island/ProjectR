@@ -83,16 +83,19 @@ void ALapManager::lapPhaseOverlap(AActor* OverlappedActor, AActor* OtherActor)
 		FLapData* jetLapData = jetLaps.Find(overlappedJet);
 
 		ALapPhase* oldPhase = jetLapData->currentLapPhase;
-		jetLapData->currentLapPhase = jetLapData->currentLapPhase->updatePhase(overlappingPhase);
-		ALapPhase* currentPhase = jetLapData->currentLapPhase;
 
-		if (oldPhase->comesFromIntermediateLapPhase() && currentPhase->comesFromFinalLapPhase())
+		if(jetLapData->lastCrossedPhase == oldPhase)
 		{
-			//oldPhase is then the final phase and the current phase is the initial phase.
-			++jetLapData->lap;
-			lapCompletedEvent.Broadcast(overlappedJet);
+			jetLapData->currentLapPhase = jetLapData->currentLapPhase->updatePhase(overlappingPhase);
+			ALapPhase* currentPhase = jetLapData->currentLapPhase;
+
+			if (oldPhase->comesFromIntermediateLapPhase() && currentPhase->comesFromFinalLapPhase())
+			{
+				//oldPhase is then the final phase and the current phase is the initial phase.
+				++jetLapData->lap;
+				lapCompletedEvent.Broadcast(overlappedJet);
+			}
 		}
-		
 		jetLapData->lastCrossedPhase = overlappingPhase;
 	}
 }
