@@ -25,6 +25,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Phase Wall Mesh")
 		UStaticMesh* phaseWallMesh;
 
+	float allowedDistance;
 
 public:
 
@@ -35,4 +36,6 @@ public:
 	virtual bool comesFromInitialLapPhase();
 	virtual bool comesFromIntermediateLapPhase();
 	virtual bool comesFromFinalLapPhase();
+
+	float maximumAllowedDistance();
 };
