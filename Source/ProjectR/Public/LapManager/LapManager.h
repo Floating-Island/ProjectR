@@ -49,8 +49,6 @@ protected:
 		FLapCompletedEvent lapCompletedEvent;
 
 public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	TMap<AJet*, FLapData> jetsInPlay();
 
