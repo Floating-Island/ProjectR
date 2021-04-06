@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "../../../../ProjectR/Public/GameMode/RaceGameMode.h"
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "LapManagerTestCommands.h"
@@ -12,6 +11,7 @@
 #include "LapPhases/IntermediateLapPhase.h"
 #include "LapPhases/FinalLapPhase.h"
 #include "Jet/Jet.h"
+#include "GameMode/RaceGameMode.h"
 
 
 
