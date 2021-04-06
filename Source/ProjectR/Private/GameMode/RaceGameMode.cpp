@@ -186,7 +186,11 @@ TMap<AJet*, int8> ARaceGameMode::calculateJetPositions()
 
 	for (auto& jet : runningJets)
 	{
-		float scoredPosition = track->distanceAlongSplineOf(jet) + lapManager->currentLapOf(jet) * track->length();
+		float maximumAllowedDistanceOnPhase = lapManager->maximumAllowedDistanceOf(jet);
+		float jetDistance = track->distanceAlongSplineOf(jet);
+		float rangedDistance = jetDistance <= maximumAllowedDistanceOnPhase ? jetDistance : 0;
+		
+		float scoredPosition = rangedDistance + lapManager->currentLapOf(jet) * track->length();
 		scoredPositions.Add(jet, scoredPosition);
 	}
 

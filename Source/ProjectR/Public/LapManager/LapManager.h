@@ -61,4 +61,6 @@ public:
 	int currentLapOf(AJet* aJet);
 
 	void subscribeToLapCross(ARaceGameMode* aRaceMode);
+
+	float maximumAllowedDistanceOf(AJet* aJet);
 };

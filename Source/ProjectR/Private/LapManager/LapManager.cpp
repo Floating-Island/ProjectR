@@ -98,6 +98,17 @@ void ALapManager::establishLapPhasesDistances()
 	}
 }
 
+float ALapManager::maximumAllowedDistanceOf(AJet* aJet)
+{
+	FLapData* lapData = jetLaps.Find(aJet);
+
+	if(lapData)
+	{
+		return lapData->currentLapPhase->maximumAllowedDistance();
+	}
+	return std::numeric_limits<float>::max();
+}
+
 TMap<AJet*, FLapData> ALapManager::jetsInPlay()
 {
 	return jetLaps;
