@@ -414,7 +414,7 @@ bool FCheckLapPhasesWithDistancesSet::Update()
 			for( const auto& actor : actorsFound)
 			{
 				ALapPhase* phase = Cast<ALapPhase, AActor>(actor);
-				if(phase && FMath::IsNearlyZero(phase->maximumAllowedDistance()) )
+				if(phase && FMath::IsNearlyEqual(phase->maximumAllowedDistance(), std::numeric_limits<float>::max()) )
 				{
 					lapPhasesDistancesDifferentThanZero = false;
 				}

@@ -133,12 +133,13 @@ bool FALapPhaseIsHiddenInGameTest::RunTest(const FString& Parameters)
 }
 
 
-bool FALapPhaseDefaultAllowedDistanceIsZeroTest::RunTest(const FString& Parameters)
+bool FALapPhaseDefaultAllowedDistanceIsMaximumPossibleTest::RunTest(const FString& Parameters)
 {
 	ALapPhase* testLapPhase = NewObject<ALapPhase>();
-	TestTrue(FString("The LapPhase allowed distance should be zero by default."), FMath::IsNearlyZero(testLapPhase->maximumAllowedDistance()));
+	TestTrue(FString("The LapPhase allowed distance should be the maximum possible by default."), 
+		FMath::IsNearlyEqual(testLapPhase->maximumAllowedDistance(), std::numeric_limits<float>::max()));
 
-	return true;
+	return true;	
 }
 
 #endif //WITH_DEV_AUTOMATION_TESTS

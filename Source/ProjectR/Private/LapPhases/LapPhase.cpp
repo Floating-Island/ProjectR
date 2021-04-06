@@ -24,7 +24,7 @@ ALapPhase::ALapPhase()
 	phaseWall->SetGenerateOverlapEvents(true);
 	phaseWall->bHiddenInGame = true;
 
-	allowedDistance = 0;
+	allowedDistance = std::numeric_limits<float>::max();
 }
 
 // Called when the game starts or when spawned
