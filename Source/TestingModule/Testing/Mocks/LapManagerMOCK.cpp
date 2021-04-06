@@ -118,6 +118,15 @@ bool ALapManagerMOCK::lastCrossedPhaseIs(UClass* aPhaseClass, AJet* anAffectedJe
 	return false;
 }
 
+void ALapManagerMOCK::makeLastCrossedPhaseFinal()
+{
+	AFinalLapPhase* finalLapPhase = Cast<AFinalLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AFinalLapPhase::StaticClass()));
+	for (auto& jetLapData : jetLaps)
+	{
+		jetLapData.Value.lastCrossedPhase = finalLapPhase;
+	}
+}
+
 UClass* ALapManagerMOCK::currentRecordedPhaseClassOf(AJet* aJet)
 {
 	FLapData* jetData = jetLaps.Find(aJet);
