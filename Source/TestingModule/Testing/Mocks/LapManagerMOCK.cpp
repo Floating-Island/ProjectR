@@ -102,3 +102,15 @@ void ALapManagerMOCK::makeJetsPhaseInitial()
 		jetLapData.Value.currentLapPhase = initialPhase;
 	}
 }
+
+bool ALapManagerMOCK::lastCrossedPhaseIs(UClass* aPhaseClass, AJet* anAffectedJet)
+{
+	for (auto& jetLapData : jetLaps)
+	{
+		if(jetLapData.Key == anAffectedJet && jetLapData.Value.lastCrossedPhase->GetClass() == aPhaseClass)
+		{
+			return true;
+		}
+	}
+	return false;
+}
