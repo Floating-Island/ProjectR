@@ -69,26 +69,23 @@ AJet::AJet()
 	replicationMachine = CreateDefaultSubobject<UDeloreanReplicationMachine>(UDeloreanReplicationMachine::StaticClass()->GetFName());
 
 	bAlwaysRelevant = true;
-
-	nonCDOConstruction();
 }
 
-void AJet::nonCDOConstruction()
+void AJet::PostLoad()
 {
-	if (HasAnyFlags(RF_ClassDefaultObject))
-	{
-		return;
-	}
+	Super::PostLoad();
+
 	physicsMeshComponent->SetMassOverrideInKg(NAME_None, 100, true);
 	
 	centerOfMassHeight = -100;
 	physicsMeshComponent->SetCenterOfMass(FVector(0, 0, centerOfMassHeight));
-	
-	jetModelMeshComponent->SetMassOverrideInKg(NAME_None, 0);
+
+	jetModelMeshComponent->SetMassOverrideInKg(NAME_None, 0, true);
 }
 
 void AJet::BeginPlay()
 {
+	nonCDOConstruction();
 	Super::BeginPlay();
 }
 

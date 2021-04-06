@@ -28,9 +28,10 @@ class PROJECTR_API AJet : public APawn
 {
 	GENERATED_BODY()
 
-	void nonCDOConstruction();
 public:
 	AJet();
+
+	virtual void PostLoad() override;
 
 protected:
 	virtual void BeginPlay() override;
