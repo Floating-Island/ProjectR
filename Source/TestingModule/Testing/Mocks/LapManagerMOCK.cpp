@@ -52,6 +52,7 @@ void ALapManagerMOCK::makeJetsPhaseIntermediate()
 	for (auto& jetLapData : jetLaps)
 	{
 		jetLapData.Value.currentLapPhase = intermediatePhase;
+		jetLapData.Value.lastCrossedPhase = intermediatePhase;
 	}
 }
 
@@ -73,6 +74,7 @@ void ALapManagerMOCK::makeJetsPhaseFinal()
 	for (auto& jetLapData : jetLaps)
 	{
 		jetLapData.Value.currentLapPhase = finalLapPhase;
+		jetLapData.Value.lastCrossedPhase = finalLapPhase;
 	}
 }
 
@@ -100,6 +102,7 @@ void ALapManagerMOCK::makeJetsPhaseInitial()
 	for (auto& jetLapData : jetLaps)
 	{
 		jetLapData.Value.currentLapPhase = initialPhase;
+		jetLapData.Value.lastCrossedPhase = initialPhase;
 	}
 }
 
