@@ -66,6 +66,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FALapManagerJetsLastCrossedPhaseIsTheLas
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FALapManagerJetDoesntChangePhaseIfLastCrossedPhaseIsntTheCurrentOneTest, FSimplePIETestBase,
+	"ProjectR.LapManager Tests.Integration.010: Jet doesn't change phases is the last crossed isn't the current one", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

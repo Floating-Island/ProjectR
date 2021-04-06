@@ -171,14 +171,31 @@ bool FALapManagerDoesntTickTest::RunTest(const FString& Parameters)
 bool FALapManagerJetsLastCrossedPhaseIsTheLastOneTest::RunTest(const FString& Parameters)
 {
 	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
-	establishTestMessageTo(FString("The jet should increase its lap count from final to initial phase when overlapping initial."));
-	establishTickLimitTo(1);
+	establishTestMessageTo(FString("The jet last crossed phase is the last one."));
+	establishTickLimitTo(3);
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerIntermediateAndFinalLapPhasesAndJet);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetLastCrossedPhaseIsFinal(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+	return true;
+}
+
+
+bool FALapManagerJetDoesntChangePhaseIfLastCrossedPhaseIsntTheCurrentOneTest::RunTest(const FString& Parameters)
+{
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishTestMessageTo(FString("The jet doesn't change lap phase if the last one isn't the current one."));
+	establishTickLimitTo(3);
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerIntermediateAndFinalLapPhasesAndJetChangeLastOne);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckJetLastCrossedPhaseIsStillIntermediate(this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;

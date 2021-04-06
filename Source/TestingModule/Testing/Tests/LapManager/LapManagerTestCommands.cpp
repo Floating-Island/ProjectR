@@ -112,6 +112,27 @@ bool FSpawningALapManagerInitialAndFinalLapPhasesAndJet::Update()
 }
 
 
+bool FSpawningALapManagerIntermediateAndFinalLapPhasesAndJetChangeLastOne::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	FVector jetLocation = FVector(0, 0, -100);
+	sessionUtilities.spawnInPIEAnInstanceOf<AJet>(jetLocation);
+	sessionUtilities.spawnInPIEAnInstanceOf<AIntermediateLapPhase>();
+	FVector finalPhaseLocation = jetLocation + FVector(0, 0, -20);
+	sessionUtilities.spawnInPIEAnInstanceOf<AFinalLapPhase>(finalPhaseLocation);
+	ALapManagerMOCK* testManager = sessionUtilities.spawnInPIEAnInstanceOf<ALapManagerMOCK>();
+	testManager->makeJetsPhaseIntermediate();
+	testManager->makeLastCrossedPhaseFinal();
+
+	return true;
+}
+
 
 
 
@@ -336,6 +357,35 @@ bool FCheckJetLastCrossedPhaseIsFinal::Update()
 			if (test->tickCountExceedsLimit())
 			{
 				test->TestTrue(test->conditionMessage(), jetLastCrossedPhaseIsFinalLapPhase);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FCheckJetLastCrossedPhaseIsStillIntermediate::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+		ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
+		if (testManager)
+		{
+			bool jetLastCrossedPhaseIsFinalLapPhase = testManager->lastCrossedPhaseIs(AFinalLapPhase::StaticClass(), testJet);
+			bool jetCurrentPhaseIsIntermediate = testManager->currentRecordedPhaseClass() == AIntermediateLapPhase::StaticClass();
+
+			UE_LOG(LogTemp, Log, TEXT("Lap manager jet %s the final lap phase as the last crossed one."), *FString(jetLastCrossedPhaseIsFinalLapPhase ? "have" : "don't have"));
+			UE_LOG(LogTemp, Log, TEXT("Lap manager jet %s the intermediate lap phase."), *FString(jetLastCrossedPhaseIsFinalLapPhase ? "is" : "isn't"));
+
+			test->increaseTickCount();
+			if (test->tickCountExceedsLimit())
+			{
+				test->TestTrue(test->conditionMessage(), jetLastCrossedPhaseIsFinalLapPhase && jetCurrentPhaseIsIntermediate);
 				testWorld->bDebugFrameStepExecution = true;
 				return true;
 			}
