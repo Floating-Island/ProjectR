@@ -3,7 +3,7 @@
 
 #include "GameState/LobbyGameState.h"
 
-#include "../../Public/UI/LobbyMenu.h"
+#include "UI/LobbyMenu.h"
 #include "Net/UnrealNetwork.h"
 
 void ALobbyGameState::fireLobbyMapUpdateEvent()
