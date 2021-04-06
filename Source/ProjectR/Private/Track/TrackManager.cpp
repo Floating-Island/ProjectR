@@ -58,20 +58,23 @@ void ATrackManager::manageMagnetization()
 	for (auto jetTrackGeneratorPair : jetsToMagnetize)
 	{
 		AJet* jet = jetTrackGeneratorPair.Key;
-		ATrackGenerator* trackGenerator = jetTrackGeneratorPair.Value;
+		if(IsValid(jet))
+		{
+			ATrackGenerator* trackGenerator = jetTrackGeneratorPair.Value;
 
-		FVector jetLocation = jet->GetActorLocation();
-		FVector generatorLocation = trackGenerator->closestLocationTo(jetLocation);
-		FHitResult hit;
-		FCollisionQueryParams collisionParameters;
-		collisionParameters.AddIgnoredActor(jet);
-		collisionParameters.bTraceComplex = true;
-		int directionMultiplier = 2;
-		FVector traceEnd = (generatorLocation - jetLocation) * directionMultiplier + jetLocation;//get the direction of the trace, make it double and set it at the jet location.
+			FVector jetLocation = jet->GetActorLocation();
+			FVector generatorLocation = trackGenerator->closestLocationTo(jetLocation);
+			FHitResult hit;
+			FCollisionQueryParams collisionParameters;
+			collisionParameters.AddIgnoredActor(jet);
+			collisionParameters.bTraceComplex = true;
+			int directionMultiplier = 2;
+			FVector traceEnd = (generatorLocation - jetLocation) * directionMultiplier + jetLocation;//get the direction of the trace, make it double and set it at the jet location.
 
-		bool hitBlocked = GetWorld()->LineTraceSingleByChannel(hit, jetLocation, traceEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
+			bool hitBlocked = GetWorld()->LineTraceSingleByChannel(hit, jetLocation, traceEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
 
-		prepareMagnetization(jet, hit, hitBlocked);
+			prepareMagnetization(jet, hit, hitBlocked);
+		}
 	}
 }
 
