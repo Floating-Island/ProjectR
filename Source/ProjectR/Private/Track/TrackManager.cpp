@@ -82,7 +82,7 @@ void ATrackManager::prepareMagnetization(AJet* aJet, FHitResult aHit, bool wasHi
 {
 	if (wasHitBlocked)
 	{
-		FVector roadNormal = aHit.Component->GetUpVector();//could be a problem if the spline has roll... Change it to hit impact normal when it's needed.
+		FVector roadNormal = aHit.ImpactNormal;//could be a problem if the spline has roll... Change it to hit impact normal when it's needed.
 
 		UStaticMeshComponent* jetRoot = Cast<UStaticMeshComponent, USceneComponent>(aJet->GetRootComponent());
 
