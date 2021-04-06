@@ -318,4 +318,32 @@ bool FCheckJetLapCountChangeFromFinalToInitial::Update()
 }
 
 
+bool FCheckJetLastCrossedPhaseIsFinal::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+		ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
+		if (testManager)
+		{
+			bool jetLastCrossedPhaseIsFinalLapPhase = testManager->lastCrossedPhaseIs(AFinalLapPhase::StaticClass(), testJet);
+
+			UE_LOG(LogTemp, Log, TEXT("Lap manager jet %s the final lap phase as the last crossed one."), *FString(jetLastCrossedPhaseIsFinalLapPhase ? "have" : "don't have"));
+
+			test->increaseTickCount();
+			if (test->tickCountExceedsLimit())
+			{
+				test->TestTrue(test->conditionMessage(), jetLastCrossedPhaseIsFinalLapPhase);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS

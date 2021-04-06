@@ -61,6 +61,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FALapManagerDoesntTickTest, FSimplePIETe
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FALapManagerJetsLastCrossedPhaseIsTheLastOneTest, FSimplePIETestBase,
+	"ProjectR.LapManager Tests.Integration.009: Jets lastCrossedPhase is the last one", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

@@ -54,6 +54,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckJetChangeFromFinalToInitial
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckJetLapCountChangeFromFinalToInitial, int, previousLapCount, FSimplePIETestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckJetLastCrossedPhaseIsFinal, FSimplePIETestBase*, test);
 
 
 
