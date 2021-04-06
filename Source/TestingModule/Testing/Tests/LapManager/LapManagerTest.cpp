@@ -160,4 +160,15 @@ bool FALapManagerJetOverlappingInitialIncreasesLapCountFromFinalTest::RunTest(co
 	return true;
 }
 
+
+bool FALapManagerDoesntTickTest::RunTest(const FString& Parameters)
+{
+	ALapManager* testManager = NewObject<ALapManager>();
+
+	TestFalse(FString("Should tick every frame."), testManager->CanEverTick());
+
+	return true;
+}
+
+
 #endif //WITH_DEV_AUTOMATION_TESTS

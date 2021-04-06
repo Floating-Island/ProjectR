@@ -56,6 +56,11 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FALapManagerJetOverlappingInitialIncreas
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FALapManagerDoesntTickTest, FSimplePIETestBase,
+	"ProjectR.LapManager Tests.Unit.008: Doesn't tick", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 
