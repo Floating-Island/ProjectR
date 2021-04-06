@@ -5,7 +5,7 @@
 
 
 
-#include "../../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include "Kismet/GameplayStatics.h"
 #include "../../Public/Track/TrackManager.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/InputComponent.h"
@@ -22,7 +22,6 @@
 
 
 
-
 AJet::AJet()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -33,17 +32,13 @@ AJet::AJet()
 	physicsMeshComponent->SetSimulatePhysics(true);
 	physicsMeshComponent->SetEnableGravity(true);
 	physicsMeshComponent->SetCanEverAffectNavigation(false);
+
 	UStaticMesh* physicsMesh = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), nullptr, TEXT("/Game/Development/Models/jetMesh")));
 	physicsMeshComponent->SetStaticMesh(physicsMesh);
-
-	physicsMeshComponent->SetMassOverrideInKg(NAME_None, 100, true);
 
 	SpawnCollisionHandlingMethod = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 	physicsMeshComponent->SetGenerateOverlapEvents(true);
 	physicsMeshComponent->SetCollisionObjectType(ECC_Pawn);
-
-	centerOfMassHeight = -100;
-	physicsMeshComponent->SetCenterOfMass(FVector(0, 0, centerOfMassHeight));
 
 	springArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm Component"));
 	springArm->SetupAttachment(RootComponent);
@@ -70,12 +65,26 @@ AJet::AJet()
 	
 	jetModelMeshComponent->SetupAttachment(physicsMeshComponent);
 
-	jetModelMeshComponent->SetMassOverrideInKg(NAME_None, 0);
-
 	movementHistorySize = 60;
 	replicationMachine = CreateDefaultSubobject<UDeloreanReplicationMachine>(UDeloreanReplicationMachine::StaticClass()->GetFName());
 
 	bAlwaysRelevant = true;
+
+	nonCDOConstruction();
+}
+
+void AJet::nonCDOConstruction()
+{
+	if (HasAnyFlags(RF_ClassDefaultObject))
+	{
+		return;
+	}
+	physicsMeshComponent->SetMassOverrideInKg(NAME_None, 100, true);
+	
+	centerOfMassHeight = -100;
+	physicsMeshComponent->SetCenterOfMass(FVector(0, 0, centerOfMassHeight));
+	
+	jetModelMeshComponent->SetMassOverrideInKg(NAME_None, 0);
 }
 
 void AJet::BeginPlay()

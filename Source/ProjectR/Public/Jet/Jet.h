@@ -28,6 +28,7 @@ class PROJECTR_API AJet : public APawn
 {
 	GENERATED_BODY()
 
+	void nonCDOConstruction();
 public:
 	AJet();
 
