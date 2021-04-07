@@ -6,7 +6,7 @@
 
 
 #include "Kismet/GameplayStatics.h"
-#include "../../Public/Track/TrackManager.h"
+#include "Track/TrackManager.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -16,7 +16,6 @@
 #include "Jet/MotorDriveComponent.h"
 #include "Jet/MotorStates/MotorStateManager.h"
 #include "Jet/SteerStates/SteerStateManager.h"
-#include "Net/UnrealNetwork.h"
 #include "GameFramework/PlayerInput.h"
 #include "GameFramework/PlayerController.h"
 
