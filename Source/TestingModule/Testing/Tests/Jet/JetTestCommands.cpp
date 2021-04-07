@@ -97,7 +97,8 @@ bool FRetrieveAJetMOCKSetVelocityToDesiredSpeed::Update()
 		if(testJet)
 		{
 			testJet->setCurrentXVelocityTo(desiredSpeed);
-
+			UE_LOG(LogTemp, Log, TEXT("Jet setted top speed: %f."), testJet->settedTopSpeed());
+			UE_LOG(LogTemp, Log, TEXT("Jet current speed: %f."), testJet->currentSpeed());
 			return true;
 		}
 	}
@@ -384,7 +385,7 @@ bool FClientPressActionKey::Update()
 		{
 			APlayerController* controller = clientContext.World()->GetFirstPlayerController();
 			AJet* testJet = Cast<AJet, APawn>(controller->AcknowledgedPawn);
-			if(testJet)
+			if(testJet && testJet->HasActorBegunPlay())
 			{
 				PIESessionUtilities::processActionKeyPressFrom(keyName, controller);
 				return true;
@@ -429,9 +430,9 @@ bool FClientSteerRightJet::Update()
 			
 			UE_LOG(LogTemp, Log, TEXT("retrieving jet..."));
 			AJetMOCK* testJet = Cast<AJetMOCK, AActor>(UGameplayStatics::GetActorOfClass(clientWorld, AJetMOCK::StaticClass()));
-			if (testJet)
+			if (testJet && testJet->HasActorBegunPlay())
 			{
-				UE_LOG(LogTemp, Log, TEXT("braking jet..."));
+				UE_LOG(LogTemp, Log, TEXT("steering jet..."));
 				testJet->steerRight();
 				return true;
 			}
@@ -914,14 +915,14 @@ bool FCheckAJetInvertSteeringWhenInReverse::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
-		if (testJet)
+		if (testJet && testJet->HasActorBegunPlay())
 		{
 			bool speedNearlyZero = FMath::IsNearlyZero(testJet->currentSpeed(), 0.1f);
 			FVector jetForwardDirection = testJet->GetActorForwardVector();
 			bool isMovingBackwards = testJet->goesBackwards();
 			float currentZRotation = testJet->GetActorRotation().Yaw;
 			bool hasSteeredLeft = currentZRotation < 0;
-			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotation, 0.1f);
+			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotation, 0.01f);
 
 			UE_LOG(LogTemp, Log, TEXT("Jet rotation vector: %s"), *testJet->GetActorRotation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet %s steered left."), *FString(hasSteeredLeft ? "has" : "hasn't"));
@@ -1409,11 +1410,11 @@ bool FCheckAJetRotatedYawLeft::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-		if (testJet)
+		if (testJet && testJet->HasActorBegunPlay())
 		{
 			float currentZRotation = testJet->GetActorRotation().Yaw;
 			bool hasSteeredLeft = currentZRotation < 0;
-			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotation, 0.1f);
+			bool isMinimalSteering = FMath::IsNearlyZero(currentZRotation, 0.01f);
 
 			UE_LOG(LogTemp, Log, TEXT("Jet rotation vector: %s"), *testJet->GetActorRotation().ToString());
 			UE_LOG(LogTemp, Log, TEXT("Jet %s steered left."), *FString(hasSteeredLeft ? "has" : "hasn't"));
