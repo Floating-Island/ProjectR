@@ -4,7 +4,7 @@
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "MapSelectorWidgetTest.h"
-#include "../Public/UI/MapSelectorWidget.h"
+#include "UI/MapSelectorWidget.h"
 #include "Tests/AutomationEditorCommon.h"
 #include "../../Commands/CommonPIECommands.h"
 #include "MapSelectorWidgetTestCommands.h"
