@@ -69,18 +69,17 @@ AJet::AJet()
 	replicationMachine = CreateDefaultSubobject<UDeloreanReplicationMachine>(UDeloreanReplicationMachine::StaticClass()->GetFName());
 
 	bAlwaysRelevant = true;
-}
 
-void AJet::PostLoad()
-{
-	Super::PostLoad();
-
-	physicsMeshComponent->SetMassOverrideInKg(NAME_None, 100, true);
+	//never use SetMassOverrideInKg in constructor, use this two lines instead:
+	physicsMeshComponent->BodyInstance.bOverrideMass = true;
+	physicsMeshComponent->BodyInstance.SetMassOverride(100);
 	
 	centerOfMassHeight = -100;
-	physicsMeshComponent->SetCenterOfMass(FVector(0, 0, centerOfMassHeight));
+	//never use SetCenterOfMass in constructor, use this instead:
+	physicsMeshComponent->BodyInstance.COMNudge = FVector(0, 0, centerOfMassHeight);
 
-	jetModelMeshComponent->SetMassOverrideInKg(NAME_None, 0, true);
+	jetModelMeshComponent->BodyInstance.bOverrideMass = true;
+	jetModelMeshComponent->BodyInstance.SetMassOverride(0);
 }
 
 void AJet::BeginPlay()
@@ -106,7 +105,7 @@ void AJet::Tick(float DeltaTime)
 void AJet::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-
+	
 	FActorSpawnParameters spawnParameters = FActorSpawnParameters();
 	spawnParameters.Owner = this;
 	
