@@ -29,6 +29,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerIntermediateAndFinalLapPhas
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerInitialAndFinalLapPhasesAndJet);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningALapManagerIntermediateAndFinalLapPhasesAndJetChangeLastOne);
+
+
 
 //Test check commands:
 
@@ -54,6 +57,13 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckJetChangeFromFinalToInitial
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckJetLapCountChangeFromFinalToInitial, int, previousLapCount, FSimplePIETestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckJetLastCrossedPhaseIsFinal, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckJetLastCrossedPhaseIsStillIntermediate, FSimplePIETestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckLapPhasesWithDistancesSet, FSimplePIETestBase*, test);
 
 
 

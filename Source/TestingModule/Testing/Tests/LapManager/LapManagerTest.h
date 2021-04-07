@@ -56,6 +56,26 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FALapManagerJetOverlappingInitialIncreas
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FALapManagerDoesntTickTest, FSimplePIETestBase,
+	"ProjectR.LapManager Tests.Unit.008: Doesn't tick", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FALapManagerJetsLastCrossedPhaseIsTheLastOneTest, FSimplePIETestBase,
+	"ProjectR.LapManager Tests.Integration.009: Jets lastCrossedPhase is the last one", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FALapManagerJetDoesntChangePhaseIfLastCrossedPhaseIsntTheCurrentOneTest, FSimplePIETestBase,
+	"ProjectR.LapManager Tests.Integration.010: Jet doesn't change phases is the last crossed isn't the current one", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FALapManagerEstablishesLapPhasesAllowedMaxDistancesAtBeginPlayTest, FSimplePIETestBase,
+	"ProjectR.LapManager Tests.Integration.011: Establishes the allowed max distances to each lap phase at begin play", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

@@ -23,6 +23,8 @@ ALapPhase::ALapPhase()
 	phaseWall->SetCollisionObjectType(ECollisionChannel::ECC_WorldStatic);
 	phaseWall->SetGenerateOverlapEvents(true);
 	phaseWall->bHiddenInGame = true;
+
+	allowedDistance = std::numeric_limits<float>::max();
 }
 
 // Called when the game starts or when spawned
@@ -55,5 +57,15 @@ bool ALapPhase::comesFromIntermediateLapPhase()
 bool ALapPhase::comesFromFinalLapPhase()
 {
 	return false;
+}
+
+float ALapPhase::maximumAllowedDistance()
+{
+	return allowedDistance;
+}
+
+void ALapPhase::establishDistanceTo(float aNewDistance)
+{
+	allowedDistance = aNewDistance;
 }
 

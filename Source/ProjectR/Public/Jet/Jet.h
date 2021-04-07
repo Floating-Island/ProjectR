@@ -30,6 +30,7 @@ class PROJECTR_API AJet : public APawn
 
 public:
 	AJet();
+	
 
 protected:
 	virtual void BeginPlay() override;

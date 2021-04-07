@@ -23,6 +23,7 @@ struct FLapData
 
 	int lap = 0;
 	ALapPhase* currentLapPhase;
+	ALapPhase* lastCrossedPhase;
 };
 
 UCLASS()
@@ -48,9 +49,9 @@ protected:
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 		FLapCompletedEvent lapCompletedEvent;
 
+	void establishLapPhasesDistances();
+	
 public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	TMap<AJet*, FLapData> jetsInPlay();
 
@@ -60,4 +61,6 @@ public:
 	int currentLapOf(AJet* aJet);
 
 	void subscribeToLapCross(ARaceGameMode* aRaceMode);
+
+	float maximumAllowedDistanceOf(AJet* aJet);
 };

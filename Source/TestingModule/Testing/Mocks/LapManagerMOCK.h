@@ -24,4 +24,7 @@ public:
 	bool jetsMovedFromFinalToInitialPhase();
 	void changeLapTo(int aLapNumber, AJet* anAffectedJet);
 	void makeJetsPhaseInitial();
+	bool lastCrossedPhaseIs(UClass* aPhaseClass, AJet* anAffectedJet);
+	void makeLastCrossedPhaseFinal();
+	UClass* currentRecordedPhaseClassOf(AJet* aJet);
 };

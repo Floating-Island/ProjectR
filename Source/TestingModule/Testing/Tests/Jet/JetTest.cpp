@@ -426,18 +426,13 @@ bool FAJetBrakesAlongItsBackwardsVectorWhileRotatedTest::RunTest(const FString& 
 
 bool FAJetInvertsSteeringWhenInReverseTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKTestWorld"));
 	establishTestMessageTo(FString("The Jet should steer right counterclockwise if it's in reverse."));
 	establishTickLimitTo(3);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	
-	
-
-	UClass* jetClass = AJetMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(jetClass, FTransform()));
 	float desiredSpeed = -10000;
 	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetVelocityToDesiredSpeed(desiredSpeed));
 	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMakeItSteerRight);
@@ -1128,18 +1123,13 @@ bool FAJetServerAcceleratesWhenAccelerateKeyIsPressedAndBrakeReleasedTest::RunTe
 
 bool FAJetRotatesYawLeftWhenSteeringLeftTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKTestWorld"));
 	establishTestMessageTo(FString("The Jet yaw rotation (around Z axis) should be greater than zero after steering right (after ticking)."));
 	establishTickLimitTo(3);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
 	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
 
-	
-	
-	
-	UClass* jetClass = AJetMOCK::StaticClass();
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawnInPIEAnActorOfClass(jetClass, FTransform()));
 	float desiredSpeed = 10000;
 	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMOCKSetVelocityToDesiredSpeed(desiredSpeed));
 	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetMakeItSteerLeft);

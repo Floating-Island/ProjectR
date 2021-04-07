@@ -66,6 +66,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseIsHiddenInGameTest,
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FALapPhaseDefaultAllowedDistanceIsMaximumPossibleTest, 
+	"ProjectR.LapPhase Tests.Unit.010: Default allowed distance is the maximum possible", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

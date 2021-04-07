@@ -10,12 +10,12 @@
 #include "LapPhases/InitialLapPhase.h"
 #include "LapPhases/IntermediateLapPhase.h"
 #include "LapPhases/FinalLapPhase.h"
+#include "Track/TrackGenerator.h"
 
 // Sets default values
 ALapManager::ALapManager()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	jetLaps = TMap<AJet*, FLapData>();
 }
 
@@ -27,6 +27,8 @@ void ALapManager::BeginPlay()
 
 	subscribeToLapPhases();
 
+	establishLapPhasesDistances();
+	
 	configureJetLaps();
 }
 
@@ -63,17 +65,48 @@ void ALapManager::configureJetLaps()
 			if (finalPhase)
 			{
 				jetLapData.currentLapPhase = finalPhase;
+				jetLapData.lastCrossedPhase = finalPhase;
 			}
 			jetLaps.Add(castedJet, jetLapData);
 		}
 	}
 }
 
-// Called every frame
-void ALapManager::Tick(float DeltaTime)
+void ALapManager::establishLapPhasesDistances()
 {
-	Super::Tick(DeltaTime);
+	ATrackGenerator* track = Cast<ATrackGenerator, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ATrackGenerator::StaticClass()));
 
+	if(track)
+	{
+		AInitialLapPhase* initialLapPhase = Cast<AInitialLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AInitialLapPhase::StaticClass()));
+		AIntermediateLapPhase* intermediatePhase = Cast<AIntermediateLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AIntermediateLapPhase::StaticClass()));
+
+		if(initialLapPhase && intermediatePhase)
+		{
+			initialLapPhase->establishDistanceTo(track->distanceAlongSplineOf(intermediatePhase));
+		}
+
+		if(intermediatePhase && finalPhase)
+		{
+			intermediatePhase->establishDistanceTo(track->distanceAlongSplineOf(finalPhase));
+		}
+
+		if(finalPhase)
+		{
+			finalPhase->establishDistanceTo(track->length());
+		}
+	}
+}
+
+float ALapManager::maximumAllowedDistanceOf(AJet* aJet)
+{
+	FLapData* lapData = jetLaps.Find(aJet);
+
+	if(lapData)
+	{
+		return lapData->currentLapPhase->maximumAllowedDistance();
+	}
+	return std::numeric_limits<float>::max();
 }
 
 TMap<AJet*, FLapData> ALapManager::jetsInPlay()
@@ -90,15 +123,20 @@ void ALapManager::lapPhaseOverlap(AActor* OverlappedActor, AActor* OtherActor)
 		FLapData* jetLapData = jetLaps.Find(overlappedJet);
 
 		ALapPhase* oldPhase = jetLapData->currentLapPhase;
-		jetLapData->currentLapPhase = jetLapData->currentLapPhase->updatePhase(overlappingPhase);
-		ALapPhase* currentPhase = jetLapData->currentLapPhase;
 
-		if (oldPhase->comesFromIntermediateLapPhase() && currentPhase->comesFromFinalLapPhase())
+		if(jetLapData->lastCrossedPhase == oldPhase)
 		{
-			//oldPhase is then the final phase and the current phase is the initial phase.
-			++jetLapData->lap;
-			lapCompletedEvent.Broadcast(overlappedJet);
+			jetLapData->currentLapPhase = jetLapData->currentLapPhase->updatePhase(overlappingPhase);
+			ALapPhase* currentPhase = jetLapData->currentLapPhase;
+
+			if (oldPhase->comesFromIntermediateLapPhase() && currentPhase->comesFromFinalLapPhase())
+			{
+				//oldPhase is then the final phase and the current phase is the initial phase.
+				++jetLapData->lap;
+				lapCompletedEvent.Broadcast(overlappedJet);
+			}
 		}
+		jetLapData->lastCrossedPhase = overlappingPhase;
 	}
 }
 

@@ -52,6 +52,7 @@ void ALapManagerMOCK::makeJetsPhaseIntermediate()
 	for (auto& jetLapData : jetLaps)
 	{
 		jetLapData.Value.currentLapPhase = intermediatePhase;
+		jetLapData.Value.lastCrossedPhase = intermediatePhase;
 	}
 }
 
@@ -73,6 +74,7 @@ void ALapManagerMOCK::makeJetsPhaseFinal()
 	for (auto& jetLapData : jetLaps)
 	{
 		jetLapData.Value.currentLapPhase = finalLapPhase;
+		jetLapData.Value.lastCrossedPhase = finalLapPhase;
 	}
 }
 
@@ -100,5 +102,39 @@ void ALapManagerMOCK::makeJetsPhaseInitial()
 	for (auto& jetLapData : jetLaps)
 	{
 		jetLapData.Value.currentLapPhase = initialPhase;
+		jetLapData.Value.lastCrossedPhase = initialPhase;
 	}
+}
+
+bool ALapManagerMOCK::lastCrossedPhaseIs(UClass* aPhaseClass, AJet* anAffectedJet)
+{
+	for (auto& jetLapData : jetLaps)
+	{
+		if(jetLapData.Key == anAffectedJet && jetLapData.Value.lastCrossedPhase->GetClass() == aPhaseClass)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+void ALapManagerMOCK::makeLastCrossedPhaseFinal()
+{
+	AFinalLapPhase* finalLapPhase = Cast<AFinalLapPhase, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), AFinalLapPhase::StaticClass()));
+	for (auto& jetLapData : jetLaps)
+	{
+		jetLapData.Value.lastCrossedPhase = finalLapPhase;
+	}
+}
+
+UClass* ALapManagerMOCK::currentRecordedPhaseClassOf(AJet* aJet)
+{
+	FLapData* jetData = jetLaps.Find(aJet);
+
+	if(jetData == nullptr)
+	{
+		return nullptr;
+	}
+	
+	return jetData->currentLapPhase->GetClass();
 }

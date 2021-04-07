@@ -11,6 +11,7 @@
 #include "LapPhases/IntermediateLapPhase.h"
 #include "LapPhases/FinalLapPhase.h"
 #include "Jet/Jet.h"
+#include "GameMode/RaceGameMode.h"
 
 
 
@@ -111,6 +112,27 @@ bool FSpawningALapManagerInitialAndFinalLapPhasesAndJet::Update()
 	return true;
 }
 
+
+bool FSpawningALapManagerIntermediateAndFinalLapPhasesAndJetChangeLastOne::Update()
+{
+	if (!GEditor->IsPlayingSessionInEditor())
+	{
+		return false;
+	}
+
+	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+
+	FVector jetLocation = FVector(0, 0, -100);
+	sessionUtilities.spawnInPIEAnInstanceOf<AJet>(jetLocation);
+	sessionUtilities.spawnInPIEAnInstanceOf<AIntermediateLapPhase>();
+	FVector finalPhaseLocation = jetLocation + FVector(0, 0, -20);
+	sessionUtilities.spawnInPIEAnInstanceOf<AFinalLapPhase>(finalPhaseLocation);
+	ALapManagerMOCK* testManager = sessionUtilities.spawnInPIEAnInstanceOf<ALapManagerMOCK>();
+	testManager->makeJetsPhaseIntermediate();
+	testManager->makeLastCrossedPhaseFinal();
+
+	return true;
+}
 
 
 
@@ -316,6 +338,106 @@ bool FCheckJetLapCountChangeFromFinalToInitial::Update()
 	}
 	return false;
 }
+
+
+bool FCheckJetLastCrossedPhaseIsFinal::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+		ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
+		if (testManager)
+		{
+			bool jetLastCrossedPhaseIsFinalLapPhase = testManager->lastCrossedPhaseIs(AFinalLapPhase::StaticClass(), testJet);
+
+			UE_LOG(LogTemp, Log, TEXT("Lap manager jet %s the final lap phase as the last crossed one."), *FString(jetLastCrossedPhaseIsFinalLapPhase ? "have" : "don't have"));
+
+			test->increaseTickCount();
+			if (test->tickCountExceedsLimit())
+			{
+				test->TestTrue(test->conditionMessage(), jetLastCrossedPhaseIsFinalLapPhase);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FCheckJetLastCrossedPhaseIsStillIntermediate::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
+		ALapManagerMOCK* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManagerMOCK>();
+		if (testManager)
+		{
+			bool jetLastCrossedPhaseIsFinalLapPhase = testManager->lastCrossedPhaseIs(AFinalLapPhase::StaticClass(), testJet);
+			bool jetCurrentPhaseIsIntermediate = testManager->currentRecordedPhaseClassOf(testJet) == AIntermediateLapPhase::StaticClass();
+
+			UE_LOG(LogTemp, Log, TEXT("Lap manager jet %s the final lap phase as the last crossed one."), *FString(jetLastCrossedPhaseIsFinalLapPhase ? "have" : "don't have"));
+			UE_LOG(LogTemp, Log, TEXT("Lap manager jet %s the intermediate lap phase."), *FString(jetLastCrossedPhaseIsFinalLapPhase ? "is" : "isn't"));
+
+			test->increaseTickCount();
+			if (test->tickCountExceedsLimit())
+			{
+				test->TestTrue(test->conditionMessage(), jetLastCrossedPhaseIsFinalLapPhase && jetCurrentPhaseIsIntermediate);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+bool FCheckLapPhasesWithDistancesSet::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
+		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
+		
+		ALapManager* testManager = sessionUtilities.retrieveFromPIEAnInstanceOf<ALapManager>();
+		if (testManager)
+		{
+			bool lapPhasesDistancesDifferentThanZero = true;
+
+			TArray<AActor*> actorsFound = TArray<AActor*>();
+			UGameplayStatics::GetAllActorsOfClass(testWorld, ALapPhase::StaticClass(), actorsFound);
+
+			for( const auto& actor : actorsFound)
+			{
+				ALapPhase* phase = Cast<ALapPhase, AActor>(actor);
+				if(phase && FMath::IsNearlyEqual(phase->maximumAllowedDistance(), std::numeric_limits<float>::max()) )
+				{
+					lapPhasesDistancesDifferentThanZero = false;
+				}
+			}
+			
+			if (lapPhasesDistancesDifferentThanZero)
+			{
+				test->TestTrue(test->conditionMessage(), lapPhasesDistancesDifferentThanZero);
+				testWorld->bDebugFrameStepExecution = true;
+				return true;
+			}
+			return test->manageTickCountTowardsLimit();
+		}
+
+		ARaceGameMode* gameMode = Cast<ARaceGameMode, AGameModeBase>(testWorld->GetAuthGameMode());
+		if(gameMode)
+		{
+			gameMode->createLapManager();
+		}
+	}
+	return false;
+}
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
