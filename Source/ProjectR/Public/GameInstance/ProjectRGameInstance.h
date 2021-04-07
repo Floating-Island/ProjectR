@@ -5,8 +5,8 @@
 #include "CoreMinimal.h"
 
 
-#include "../Session/SessionManager.h"
-#include "../UI/Menu.h"
+#include "Session/SessionManager.h"
+#include "UI/Menu.h"
 #include "Engine/GameInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "ProjectRGameInstance.generated.h"

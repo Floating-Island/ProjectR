@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 
-#include "../PlayerState/RacePlayerState.h"
+#include "PlayerState/RacePlayerState.h"
 #include "Blueprint/UserWidget.h"
 #include "RaceResultsUI.generated.h"
 

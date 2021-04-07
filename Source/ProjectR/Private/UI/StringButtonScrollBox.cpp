@@ -5,7 +5,7 @@
 
 
 
-#include "../../Public/UI/LobbyMenu.h"
+#include "UI/LobbyMenu.h"
 #include "GameState/LobbyGameState.h"
 #include "UI/StringHolderButton.h"
 
