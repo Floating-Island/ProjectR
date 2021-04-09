@@ -11,6 +11,7 @@ USteeringComponent::USteeringComponent()
 	owner = Cast<AJet, AActor>(GetOwner());
 
 	steerRadius = 2000;
+	steerMaximumForce = std::numeric_limits<float>::max();
 }
 
 void USteeringComponent::BeginPlay()
@@ -29,7 +30,8 @@ void USteeringComponent::steer(float aDirectionMultiplier)
 
 		FVector steeringLocation = ownerPrimitiveComponent->GetSocketLocation(FName("FrontSteeringPoint"));
 		float centripetalAcceleration = FMath::Pow(owner->forwardVelocity().Size(), 2) / steerRadius;
-		FVector steerForce = owner->rightVectorProjectionOnFloor() * aDirectionMultiplier * centripetalAcceleration;
+		float effectiveCentripetalAcceleration = FMath::Min(centripetalAcceleration, steerMaximumForce);
+		FVector steerForce = owner->rightVectorProjectionOnFloor() * aDirectionMultiplier * effectiveCentripetalAcceleration;
 		ownerPrimitiveComponent->AddForceAtLocation(steerForce, steeringLocation);
 
 		FVector currentForwardVector = owner->ForwardProjectionOnFloor();
@@ -98,5 +100,10 @@ float USteeringComponent::accelerationMagnitudeToAlignVelocityFrom(FVector aPrev
 	float const accelerationMagnitudeToRecreateVelocity = squareVelocityDelta / (static_cast<float>((2 * distanceFromTick)));
 
 	return accelerationMagnitudeToRecreateVelocity;
+}
+
+float USteeringComponent::maximumAllowedSteeringForce()
+{
+	return steerMaximumForce;
 }
 

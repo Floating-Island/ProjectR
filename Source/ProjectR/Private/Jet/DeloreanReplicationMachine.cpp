@@ -206,7 +206,7 @@ void UDeloreanReplicationMachine::calculateNextMovementChangesTo(FVector& aSumOf
 
 	auxiliaryLinearAcceleration = FVector(0);
 	auxiliaryAngularAcceleration = FVector(0);
-	Cast<USteerState, UObject>(aPreviousMovement.timestampedStates.steerStateClass->ClassDefaultObject)->changesMadeTo(owningJet, auxiliaryLinearAcceleration, auxiliaryAngularAcceleration);
+	Cast<USteerState, UObject>(aPreviousMovement.timestampedStates.steerStateClass->ClassDefaultObject)->changesMadeTo(owningJet, auxiliaryLinearAcceleration, auxiliaryAngularAcceleration, owningJet->maximumSteeringForce());
 	
 	aSumOfAngularAccelerations += auxiliaryAngularAcceleration;
 	aSumOfLinearAccelerations += auxiliaryLinearAcceleration;

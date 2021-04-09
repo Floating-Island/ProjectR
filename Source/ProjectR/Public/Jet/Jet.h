@@ -146,6 +146,7 @@ public:
 	float mass();
 	UClass* currentMotorStateClass();
 	UClass* currentSteerStateClass();
+	float maximumSteeringForce();
 	float accelerationMagnitudeToAlignVelocityFrom(FVector aCurrentLocation);
 
 	

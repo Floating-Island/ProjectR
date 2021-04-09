@@ -345,6 +345,11 @@ UClass* AJet::currentSteerStateClass()
 	return steerManager->stateClass();
 }
 
+float AJet::maximumSteeringForce()
+{
+	return steeringSystem->maximumAllowedSteeringForce();
+}
+
 float AJet::accelerationMagnitudeToAlignVelocityFrom(FVector aCurrentLocation)
 {
 	return steeringSystem->accelerationMagnitudeToAlignVelocityFrom(aCurrentLocation);
