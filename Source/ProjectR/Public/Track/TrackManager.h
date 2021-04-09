@@ -30,7 +30,7 @@ protected:
 	TMap<AJet*,ATrackGenerator*> jetsToMagnetize;
 
 	void manageMagnetization();
-	void prepareMagnetization(AJet* aJet, FHitResult aHit, bool wasHitBlocked);
+	void prepareMagnetizationOf(AJet* aJet, FVector aTrackUpVector);
 	void magnetize(UStaticMeshComponent* aJetRootComponent, FVector aJetWeightAbsolute, FVector aRoadNormal);
 	void CounterGravityForce(UStaticMeshComponent* aJetRootComponent, FVector aJetWeightAbsolute);
 	void pullTowardsFloor(UStaticMeshComponent* aJetRootComponent, FVector aJetWeightAbsolute, FVector aRoadNormal);
