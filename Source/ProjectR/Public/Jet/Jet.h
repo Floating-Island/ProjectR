@@ -75,6 +75,28 @@ protected:
 	 */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Replication")
 		int movementHistorySize;
+
+	/**
+	 * In seconds. Lower seconds gives better floor 'resolution'
+	 * (how many times per second we update the floor up vector).
+	 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Replication")
+		float floorUpVectorUpdateDelta;
+	
+	FVector floorUpVector;
+	
+	UFUNCTION()
+		void manageUpVectorUpdate();
+
+public:
+	void updateFloorUpVector();
+	
+protected:
+	
+	FTimerHandle floorUpVectorManagementHandle;
+	
+	bool traceToFind(FHitResult& anObstacle);
+
 	
 public:
 	virtual void Tick(float DeltaTime) override;
@@ -109,8 +131,6 @@ public:
 	float antiGravityHeight();
 
 	FVector ForwardProjectionOnFloor();
-
-	bool traceToFind(FHitResult& anObstacle);
 
 	FVector forwardVelocity();
 

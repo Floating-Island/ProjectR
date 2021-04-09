@@ -542,7 +542,7 @@ bool FAJetRotatesPitchRightWhenTiltedAndSteersRightTest::RunTest(const FString& 
 
 bool FAJetAcceleratesOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKWithFloorNoGWorld"));
 	establishTestMessageTo(FString("The Jet should move parallel to the floor. Then, the speed, floor speed and velocity magnitude (gravity is being canceled) should be the same."));
 	establishTickLimitTo(3);
 
@@ -552,7 +552,7 @@ bool FAJetAcceleratesOrthogonalToSurfaceNormalTest::RunTest(const FString& Param
 	
 	
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotatedOverFloorAndAccelerateIt);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetRotatedOverFloorAndAccelerateIt);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedOrthogonalityToFloor(this));
 
@@ -563,7 +563,7 @@ bool FAJetAcceleratesOrthogonalToSurfaceNormalTest::RunTest(const FString& Param
 
 bool FAJetSidewaysRejectsAFloorSidewaysTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKWithFloorNoGWorld"));
 	establishTestMessageTo(FString("The jet should reject the nearest floor along the floor up vector."));
 	establishTickLimitTo(3);
 
@@ -573,7 +573,7 @@ bool FAJetSidewaysRejectsAFloorSidewaysTest::RunTest(const FString& Parameters)
 	
 	
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetAndFloorSideWays);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndFloorSideWays);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSidewaysRejectsFloor(std::numeric_limits<float>::max(), this));
 
@@ -584,7 +584,7 @@ bool FAJetSidewaysRejectsAFloorSidewaysTest::RunTest(const FString& Parameters)
 
 bool FAJetBrakesOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters)
 {
-	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/JetMOCKWithFloorNoGWorld"));
 	establishTestMessageTo(FString("The Jet should move parallel to the floor. Then, the floor speed and velocity magnitude (gravity is being canceled) should be the same."));
 	establishTickLimitTo(3);
 
@@ -594,7 +594,7 @@ bool FAJetBrakesOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters
 	
 	
 
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotatedOverFloorAndBrakeIt);
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveAJetRotatedOverFloorAndBrakeIt);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSpeedOrthogonalityToFloor(this));
 

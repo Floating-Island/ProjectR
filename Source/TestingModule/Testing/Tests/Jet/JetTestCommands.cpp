@@ -13,6 +13,7 @@
 #include "Jet/MotorStates/ReversingMotorState.h"
 #include "Jet/SteerStates/SteerState.h"
 #include "Jet/SteerStates/RightSteerState.h"
+#include "Track/TrackGenerator.h"
 
 #include "Editor.h"
 #include "Kismet/GameplayStatics.h"
@@ -236,38 +237,27 @@ bool FSpawningAJetTiltItAndMakeItSteerRight::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-
 	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
 
 	float direction = 1;//1 is right, -1 is left...
 	FRotator rollRotator = FRotator(0, 0, roll);
 	testJet->SetActorRotation(rollRotator);
-	testJet->setCurrentXVelocityTo(10000);//we should set the speed to 1 first so the jet is able to steer.
+	testJet->setCurrentXVelocityTo(10000);//we should set the speed to 10000 first so the jet is able to steer.
 	testJet->steerRight();
 
 	return true;
 }
 
 
-bool FSpawningAJetRotatedOverFloorAndAccelerateIt::Update()
+bool FRetrieveAJetRotatedOverFloorAndAccelerateIt::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
 		return false;
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-
-	AFloorMeshActor* meshActor = sessionUtilities.spawnInPIEAnInstanceOf<AFloorMeshActor>();
-
-	FVector scale = FVector(4, 4, 1);
-	meshActor->SetActorScale3D(scale);
-
-	FVector spawnLocation = meshActor->GetActorLocation() + FVector(0, 0, 1000);
-
-	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>(spawnLocation);
+	
+	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 	FRotator pitchUp = FRotator(30, 0, 0);
 	testJet->SetActorRotation(pitchUp);
 	testJet->accelerate();
@@ -277,7 +267,7 @@ bool FSpawningAJetRotatedOverFloorAndAccelerateIt::Update()
 }
 
 
-bool FSpawningAJetAndFloorSideWays::Update()
+bool FRetrieveAJetAndFloorSideWays::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -285,17 +275,16 @@ bool FSpawningAJetAndFloorSideWays::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	AFloorMeshActor* testFloor = sessionUtilities.spawnInPIEAnInstanceOf<AFloorMeshActor>();
+	ATrackGenerator* testFloor = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
 	FRotator sideways = FRotator(0, 0, 90);
 	testFloor->SetActorRotation(sideways);
-	FVector floorScale = FVector(5, 5, 1);
-	testFloor->SetActorScale3D(floorScale);
 
-	AJet* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJet>();
+	AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
 
 	float distanceInRangeOfAntiGravityTrigger = testJet->antiGravityHeight() - 200;
 	FVector distanceFromFloor = FVector(0, distanceInRangeOfAntiGravityTrigger, 0);
-	FVector nearTheFloor = testFloor->GetActorLocation() + distanceFromFloor;
+	FVector aheadOfFloor = FVector(2000, 0, 0);
+	FVector nearTheFloor = testFloor->GetActorLocation() + distanceFromFloor + aheadOfFloor;
 	testJet->SetActorLocation(nearTheFloor);
 	testFloor->SetActorRotation(sideways);
 
@@ -303,7 +292,7 @@ bool FSpawningAJetAndFloorSideWays::Update()
 }
 
 
-bool FSpawningAJetRotatedOverFloorAndBrakeIt::Update()
+bool FRetrieveAJetRotatedOverFloorAndBrakeIt::Update()
 {
 	if (!GEditor->IsPlayingSessionInEditor())
 	{
@@ -311,16 +300,7 @@ bool FSpawningAJetRotatedOverFloorAndBrakeIt::Update()
 	}
 	PIESessionUtilities sessionUtilities = PIESessionUtilities();
 
-	UWorld* testWorld = sessionUtilities.defaultPIEWorld();
-
-	AFloorMeshActor* meshActor = sessionUtilities.spawnInPIEAnInstanceOf<AFloorMeshActor>();
-
-	FVector scale = FVector(4, 4, 1);
-	meshActor->SetActorScale3D(scale);
-
-	FVector spawnLocation = meshActor->GetActorLocation() + FVector(0, 0, 1000);
-
-	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>(spawnLocation);
+	AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
 	FRotator pitchDown = FRotator(-30, 0, 0);
 	testJet->SetActorRotation(pitchDown);
 	testJet->brake();
@@ -1087,7 +1067,7 @@ bool FCheckAJetSpeedOrthogonalityToFloor::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-		AFloorMeshActor* testFloor = sessionUtilities.retrieveFromPIEAnInstanceOf<AFloorMeshActor>();
+		ATrackGenerator* testFloor = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
 		if (testJet)
 		{
 			FVector floorNormal = testFloor->GetActorUpVector();
@@ -1130,7 +1110,7 @@ bool FCheckAJetSidewaysRejectsFloor::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJet* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJet>();
-		AFloorMeshActor* testFloor = sessionUtilities.retrieveFromPIEAnInstanceOf<AFloorMeshActor>();
+		ATrackGenerator* testFloor = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
 
 		if (testJet && testFloor)
 		{
@@ -1171,7 +1151,7 @@ bool FCheckAJetVelocityMagnitudeOrthogonalityToFloor::Update()
 		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		UWorld* testWorld = sessionUtilities.defaultPIEWorld();
 		AJetMOCK* testJet = sessionUtilities.retrieveFromPIEAnInstanceOf<AJetMOCK>();
-		AFloorMeshActor* testFloor = sessionUtilities.retrieveFromPIEAnInstanceOf<AFloorMeshActor>();
+		ATrackGenerator* testFloor = sessionUtilities.retrieveFromPIEAnInstanceOf<ATrackGenerator>();
 		if (testJet)
 		{
 			FVector floorNormal = testFloor->GetActorUpVector();

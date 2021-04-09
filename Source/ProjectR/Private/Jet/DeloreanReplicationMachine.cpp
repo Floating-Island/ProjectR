@@ -175,6 +175,7 @@ void UDeloreanReplicationMachine::copyCurrentMovementStatesToNextIf(bool& needsT
 FMovementData UDeloreanReplicationMachine::simulateNextMovementFrom(const FMovementData& aPreviousMovement, float simulationDuration)
 {
 	owningJet->asCurrentMovementSet(aPreviousMovement, this);
+	owningJet->updateFloorUpVector();
 
 	FVector sumOfLinearAccelerations;
 	FVector sumOfAngularAccelerations;

@@ -275,6 +275,11 @@ FVector ATrackGenerator::upVectorAt(float aDistanceAlongSpline)
 	return splineComponent->GetUpVectorAtDistanceAlongSpline(aDistanceAlongSpline, ESplineCoordinateSpace::World);
 }
 
+FVector ATrackGenerator::upVectorAt(FVector aNearWorldLocationToSpline)
+{
+	return splineComponent->FindUpVectorClosestToWorldLocation(aNearWorldLocationToSpline, ESplineCoordinateSpace::World);
+}
+
 FRotator ATrackGenerator::rotationAt(float aDistanceAlongSpline)
 {
 	return splineComponent->GetRotationAtDistanceAlongSpline(aDistanceAlongSpline, ESplineCoordinateSpace::World);

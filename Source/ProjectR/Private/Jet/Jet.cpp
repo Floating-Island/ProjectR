@@ -18,6 +18,7 @@
 #include "Jet/SteerStates/SteerStateManager.h"
 #include "GameFramework/PlayerInput.h"
 #include "GameFramework/PlayerController.h"
+#include "Track/TrackGenerator.h"
 
 
 
@@ -79,11 +80,51 @@ AJet::AJet()
 
 	jetModelMeshComponent->BodyInstance.bOverrideMass = true;
 	jetModelMeshComponent->BodyInstance.SetMassOverride(0);
+
+	floorUpVectorUpdateDelta = 0.3f;
+	floorUpVector = FVector(0);
 }
 
 void AJet::BeginPlay()
 {
 	Super::BeginPlay();
+	floorUpVector = GetActorUpVector();
+	manageUpVectorUpdate();
+}
+
+void AJet::manageUpVectorUpdate()
+{
+	updateFloorUpVector();
+	GetWorld()->GetTimerManager().SetTimer(floorUpVectorManagementHandle, this, &AJet::manageUpVectorUpdate, floorUpVectorUpdateDelta, false);
+}
+
+void AJet::updateFloorUpVector()
+{
+	FHitResult obstacle;
+	const bool nearFloor = traceToFind(obstacle);
+
+	if (nearFloor)
+	{
+		ATrackGenerator* track = Cast<ATrackGenerator, AActor>(obstacle.GetActor());
+		if(track)
+		{
+			floorUpVector = track->upVectorAt(GetActorLocation());
+		}
+	}
+}
+
+bool AJet::traceToFind(FHitResult& anObstacle)
+{
+	FVector jetLocation = physicsMeshComponent->GetComponentLocation();//should take consideration the actor bounds...
+	float rayExtension = 1000;
+	FVector rayEnd = -(physicsMeshComponent->GetUpVector()) * rayExtension;
+
+	FCollisionQueryParams collisionParameters;
+	collisionParameters.AddIgnoredActor(this);
+	collisionParameters.bTraceComplex = false;
+	collisionParameters.bReturnPhysicalMaterial = false;
+
+	return  GetWorld()->LineTraceSingleByChannel(anObstacle, jetLocation, rayEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
 }
 
 void AJet::Tick(float DeltaTime)
@@ -254,14 +295,7 @@ float AJet::antiGravityHeight()
 
 FVector AJet::ForwardProjectionOnFloor()
 {
-	FHitResult obstacle;
-	bool nearFloor = traceToFind(obstacle);
-
-	if (nearFloor)
-	{
-		return FVector::VectorPlaneProject(physicsMeshComponent->GetForwardVector(), obstacle.Normal);
-	}
-	return GetActorForwardVector();
+	return FVector::VectorPlaneProject(physicsMeshComponent->GetForwardVector(), floorUpVector);
 }
 
 FVector AJet::forwardVelocity()
@@ -271,40 +305,12 @@ FVector AJet::forwardVelocity()
 
 FVector AJet::velocityProjectionOnFloor()
 {
-	FHitResult obstacle;
-	bool nearFloor = traceToFind(obstacle);
-
-	if (nearFloor)
-	{
-		return FVector::VectorPlaneProject(GetVelocity(), obstacle.Normal);
-	}
-	return FVector::VectorPlaneProject(GetVelocity(), physicsMeshComponent->GetUpVector());
+	return FVector::VectorPlaneProject(GetVelocity(), floorUpVector);
 }
 
 FVector AJet::rightVectorProjectionOnFloor()
 {
-	FHitResult obstacle;
-	bool nearFloor = traceToFind(obstacle);
-
-	if (nearFloor)
-	{
-		return FVector::VectorPlaneProject(physicsMeshComponent->GetRightVector(), obstacle.Normal);
-	}
-	return physicsMeshComponent->GetRightVector();
-}
-
-bool AJet::traceToFind(FHitResult& anObstacle)
-{
-	FVector jetLocation = physicsMeshComponent->GetComponentLocation();//should take consideration the actor bounds...
-	float rayExtension = 1000;
-	FVector rayEnd = -(physicsMeshComponent->GetUpVector()) * rayExtension;
-
-	FCollisionQueryParams collisionParameters;
-	collisionParameters.AddIgnoredActor(this);
-	collisionParameters.bTraceComplex = false;
-	collisionParameters.bReturnPhysicalMaterial = false;
-
-	return  GetWorld()->LineTraceSingleByChannel(anObstacle, jetLocation, rayEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
+	return FVector::VectorPlaneProject(physicsMeshComponent->GetRightVector(), floorUpVector);
 }
 
 bool AJet::keyIsPressedFor(const FName anActionMappingName)
