@@ -601,7 +601,7 @@ bool FATrackGeneratorBoundsSplinesHaveSmoothInterpolationEnabledTest::RunTest(co
 
 bool FATrackGeneratorBoundsSplinesRollAfterSettingRollInEditorTest::RunTest(const FString& Parameters)
 {
-	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+	FString testWorldName = FString("/Game/Tests/TestMaps/BoundedTrackGeneratorMOCKWorld");
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
