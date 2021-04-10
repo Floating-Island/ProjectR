@@ -715,5 +715,18 @@ bool ATrackGeneratorMOCK::boundsSplinesCollisionsDisabled()
 	return true;
 }
 
+bool ATrackGeneratorMOCK::boundsSplinesCollisionsAsQueryAndPhysics()
+{
+	for (const auto& trackSection : trackSections)
+	{
+		if (trackSection.boundsSpline->GetCollisionEnabled() != ECollisionEnabled::QueryAndPhysics)
+		{
+			UE_LOG(LogTemp, Log, TEXT("bounds spline has collisions set as something different that query and physics."));
+			return false;
+		}
+	}
+	return true;
+}
+
 
 

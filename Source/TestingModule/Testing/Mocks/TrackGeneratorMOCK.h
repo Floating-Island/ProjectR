@@ -60,4 +60,5 @@ public:
 	bool boundsSplinesHaveSameRollAs(float aRollValue);
 	bool boundsSplinesHaveSameWidthAs(float aWidthValue);
 	bool boundsSplinesCollisionsDisabled();
+	bool boundsSplinesCollisionsAsQueryAndPhysics();
 };
