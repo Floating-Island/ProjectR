@@ -50,4 +50,6 @@ public:
 	void disableCollisions();
 	bool splineMeshComponentsCollisionsDisabled();
 	bool splineMeshComponentsExpectedCollisions();
+
+	bool boundsSplinesAreAttachedToRoadSplines();
 };

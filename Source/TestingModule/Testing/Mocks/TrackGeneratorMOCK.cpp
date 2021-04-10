@@ -549,5 +549,23 @@ bool ATrackGeneratorMOCK::splineMeshComponentsExpectedCollisions()
 	return collisionEnabledToQueryOnlyOnMagnetSplines() && roadSplinesHaveCollisionEnabledSetToQueryAndPhysics();
 }
 
+bool ATrackGeneratorMOCK::boundsSplinesAreAttachedToRoadSplines()
+{
+	for (const auto& trackSection : trackSections)
+	{
+		if (!trackSection.roadSpline || !trackSection.boundsSpline)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Road spline or bounds spline is nullptr."));
+			return false;
+		}
+		if (trackSection.boundsSpline->GetAttachParent() != trackSection.roadSpline)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Bounds spline isn't attached to road spline."));
+			return false;
+		}
+	}
+	return true;
+}
+
 
 
