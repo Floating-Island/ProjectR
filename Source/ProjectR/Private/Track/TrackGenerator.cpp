@@ -231,8 +231,7 @@ void ATrackGenerator::configureBoundsSpline(int32 aSplinePointIndex, USplineMesh
 	trackSections[aSplinePointIndex].boundsSpline = aBoundsSpline;
 	aBoundsSpline->Mobility = aRoadSpline->Mobility;
 	aBoundsSpline->SetHiddenInGame(true);
-
-	
+	aBoundsSpline->bSmoothInterpRollScale = true;
 	configureComponentPositionsAndTangents(aSplinePointIndex, aBoundsSpline);
 	aBoundsSpline->SetStaticMesh(trackSections[aSplinePointIndex].boundsMesh);
 	aBoundsSpline->AttachToComponent(aRoadSpline, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
