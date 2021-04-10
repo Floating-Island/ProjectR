@@ -779,6 +779,26 @@ bool FCheckBoundsSplinesMobility::Update()
 }
 
 
+bool FCheckBoundsSplinesTangents::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+		bool boundsSplinesAndPointsHaveSameTangents = testGenerator->boundsSplinesAndPointsHaveSameTangents();
+		UE_LOG(LogTemp, Log, TEXT("Bounds splines tangents are coincident with the tangents of spline points: %s."), *FString(boundsSplinesAndPointsHaveSameTangents ? "true" : "false"));
+
+		test->TestTrue(TEXT("At spawning, the tangents of bounds splines should be coincident with the spline points tangents."), boundsSplinesAndPointsHaveSameTangents);
+		return true;
+	}
+	return false;
+}
+
+
 
 
 

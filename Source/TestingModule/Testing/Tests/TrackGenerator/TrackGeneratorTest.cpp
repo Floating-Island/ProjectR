@@ -543,6 +543,22 @@ bool FATrackGeneratorBoundsSplinesHaveTheSameMobilityAsRoadSplinesAtSpawningTest
 }
 
 
+bool FATrackGeneratorBoundsSplinesTangentsAreTheSameAsSplinePointsAtSpawningTest::RunTest(const FString& Parameters)
+{
+		FString testWorldName = FString("/Game/Tests/TestMaps/BoundedTrackGeneratorMOCKWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckBoundsSplinesMobility(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckBoundsSplinesTangents(this));
+	
+	return true;
+
+}
+
+
+
 
 
 

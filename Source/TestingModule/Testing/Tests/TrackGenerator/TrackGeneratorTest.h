@@ -198,6 +198,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorBoundsSplinesHaveTheSameMobilit
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorBoundsSplinesTangentsAreTheSameAsSplinePointsAtSpawningTest, 
+	"ProjectR.TrackGenerator Tests.Unit.038: Bounds splines tangents are the same as spline points at spawning", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 
