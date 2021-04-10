@@ -212,6 +212,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorBoundsSplinesAreHiddenInGameTes
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorBoundsSplinesHaveSmoothInterpolationEnabledTest, 
+	"ProjectR.TrackGenerator Tests.Unit.041: Bounds splines have smooth interpolation enabled", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

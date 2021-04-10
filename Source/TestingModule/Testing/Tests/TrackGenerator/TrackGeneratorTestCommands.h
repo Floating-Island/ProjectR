@@ -134,6 +134,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundsSplinesMeshes, FAutom
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundsSplinesVisibility, FAutomationTestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundsSplinesSmoothInterpolation, FAutomationTestBase*, test);
+
+
 
 
 

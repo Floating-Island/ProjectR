@@ -843,6 +843,28 @@ bool FCheckBoundsSplinesVisibility::Update()
 }
 
 
+bool FCheckBoundsSplinesSmoothInterpolation::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool boundsSplinesHaveSmoothInterpolation = testGenerator->boundsSplinesHaveSmoothInterpolation();
+		UE_LOG(LogTemp, Log, TEXT("Bounds splines have smooth interpolation: %s."), *FString(boundsSplinesHaveSmoothInterpolation ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("The bounds splines should be set to have smooth interpolation."), boundsSplinesHaveSmoothInterpolation);
+		return true;
+	}
+	return false;
+}
+
+
 
 
 
