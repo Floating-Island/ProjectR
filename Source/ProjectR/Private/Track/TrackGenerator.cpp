@@ -236,6 +236,9 @@ void ATrackGenerator::configureBoundsSpline(int32 aSplinePointIndex, USplineMesh
 	aBoundsSpline->SetStaticMesh(trackSections[aSplinePointIndex].boundsMesh);
 	aBoundsSpline->AttachToComponent(aRoadSpline, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
 
+	aBoundsSpline->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	aBoundsSpline->SetCollisionResponseToAllChannels(ECR_Block);
+	
 	configureRollAndWidthOf(aBoundsSpline, aSplinePointIndex);
 	editorCollisionsEnabled(aBoundsSpline);
 }
