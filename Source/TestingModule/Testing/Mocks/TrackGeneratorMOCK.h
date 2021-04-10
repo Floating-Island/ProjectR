@@ -59,4 +59,5 @@ public:
 	bool boundsSplinesHaveSmoothInterpolation();
 	bool boundsSplinesHaveSameRollAs(float aRollValue);
 	bool boundsSplinesHaveSameWidthAs(float aWidthValue);
+	bool boundsSplinesCollisionsDisabled();
 };

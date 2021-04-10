@@ -702,5 +702,18 @@ bool ATrackGeneratorMOCK::boundsSplinesHaveSameWidthAs(float aWidthValue)
 	return true;
 }
 
+bool ATrackGeneratorMOCK::boundsSplinesCollisionsDisabled()
+{
+	for (const auto& trackSection : trackSections)
+	{
+		if (trackSection.boundsSpline->GetCollisionEnabled() != ECollisionEnabled::NoCollision)
+		{
+			UE_LOG(LogTemp, Log, TEXT("bounds spline has collisions enabled when setting it to disable."));
+			return false;
+		}
+	}
+	return true;
+}
+
 
 
