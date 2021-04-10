@@ -650,5 +650,31 @@ bool ATrackGeneratorMOCK::boundsSplinesHaveSmoothInterpolation()
 	return true;
 }
 
+bool ATrackGeneratorMOCK::boundsSplinesHaveSameRollAs(float aRollValue)
+{
+	int index = 0;
+	for (const auto& trackSection : trackSections)
+	{
+		float boundsStartRoll = trackSection.boundsSpline->GetStartRoll();
+		float boundsEndRoll = trackSection.boundsSpline->GetEndRoll();
+
+		UE_LOG(LogTemp, Log, TEXT("Specified roll: %f."), aRollValue);
+		UE_LOG(LogTemp, Log, TEXT("Spline point index: %d."), index);
+		UE_LOG(LogTemp, Log, TEXT("Bounds spline start roll: %f."), boundsStartRoll);
+		UE_LOG(LogTemp, Log, TEXT("Bounds spline end roll: %f."), boundsEndRoll);
+
+		bool boundsStartRollSimilarToSpecified = FMath::IsNearlyEqual(boundsStartRoll, aRollValue);
+		bool boundsEndRollSimilarToSpecified = FMath::IsNearlyEqual(boundsEndRoll, aRollValue);
+
+		if (!boundsStartRollSimilarToSpecified || !boundsEndRollSimilarToSpecified)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Bounds splines don't have roll similar to the specified."));
+			return false;
+		}
+		++index;
+	}
+	return true;
+}
+
 
 
