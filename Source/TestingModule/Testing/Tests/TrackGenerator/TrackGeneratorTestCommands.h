@@ -26,6 +26,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldDisableCollisi
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FRetrieveTrackGeneratorInEditorWorldRollSplineComponents, float, rollValue);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FRetrieveTrackGeneratorInEditorWorldWidenSplineComponents, float, widthValue);
+
+
 
 
 
@@ -143,6 +146,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundsSplinesSmoothInterpol
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckBoundSplinesRoll, float, rollValue, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckBoundSplinesWidth, float, widthValue, FAutomationTestBase*, test);
 
 
 

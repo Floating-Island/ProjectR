@@ -614,6 +614,21 @@ bool FATrackGeneratorBoundsSplinesRollAfterSettingRollInEditorTest::RunTest(cons
 }
 
 
+bool FATrackGeneratorBoundsSplinesWidenAfterSettingWidthInEditorTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/BoundedTrackGeneratorMOCKWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	float widthValue = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveTrackGeneratorInEditorWorldWidenSplineComponents(widthValue));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckBoundSplinesWidth(widthValue, this));
+
+	return true;
+}
+
+
 
 
 

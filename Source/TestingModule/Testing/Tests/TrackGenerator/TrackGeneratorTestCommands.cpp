@@ -81,6 +81,21 @@ bool FRetrieveTrackGeneratorInEditorWorldRollSplineComponents::Update()
 }
 
 
+bool FRetrieveTrackGeneratorInEditorWorldWidenSplineComponents::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+
+	testGenerator->widenSplines(widthValue);
+
+	return true;
+}
+
+
 
 
 
@@ -896,6 +911,28 @@ bool FCheckBoundSplinesRoll::Update()
 
 
 		test->TestTrue(TEXT("The bounds splines should be set to have the same roll."), boundsSplinesHaveSameRoll);
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckBoundSplinesWidth::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool boundsSplinesHaveSameWidth = testGenerator->boundsSplinesHaveSameWidthAs(widthValue);
+		UE_LOG(LogTemp, Log, TEXT("Bounds splines have the same width as %f: %s."), widthValue, *FString(boundsSplinesHaveSameWidth ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("The bounds splines should be set to have the same width."), boundsSplinesHaveSameWidth);
 		return true;
 	}
 	return false;
