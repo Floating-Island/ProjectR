@@ -624,5 +624,18 @@ bool ATrackGeneratorMOCK::boundsSplinesHaveMeshesSet()
 	return true;
 }
 
+bool ATrackGeneratorMOCK::boundsSplinesAreHiddenInGame()
+{
+	for (const auto& trackSection : trackSections)
+	{
+		if (!trackSection.boundsSpline->bHiddenInGame)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Bounds spline isn't set to be hidden in game."));
+			return false;
+		}
+	}
+	return true;
+}
+
 
 

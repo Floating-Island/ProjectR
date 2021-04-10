@@ -55,4 +55,5 @@ public:
 	bool boundsSplinesMobilitySameAsRoadSplines();
 	bool boundsSplinesAndPointsHaveSameTangents();
 	bool boundsSplinesHaveMeshesSet();
+	bool boundsSplinesAreHiddenInGame();
 };
