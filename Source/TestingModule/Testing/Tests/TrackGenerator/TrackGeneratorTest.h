@@ -183,10 +183,9 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorsSpawnOnlyOneTrackManagerAtBegi
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-
-
-//(when a custom mesh for magnet spline is already made) set location of magnet spline same as spline mesh,
-// attach and elevate the same amount as the bound of mesh (saved in constructor) multiplied by the scale (gotten in on construction).
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorBoundsSplinesQuantityIsTheSameAsSplinePointsAtSpawningTest, 
+	"ProjectR.TrackGenerator Tests.Unit.034: Bound splines quantity is the same as spline points at spawning", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 

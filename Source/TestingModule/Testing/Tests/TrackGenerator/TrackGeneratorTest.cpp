@@ -22,7 +22,7 @@
 bool FATrackGeneratorIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
 	ATrackGenerator* testGenerator = NewObject<ATrackGenerator>();
-	TestNotNull(TEXT("The track generator shouldn't be null when instantiated."), testGenerator);
+	TestNotNull(FString("The track generator shouldn't be null when instantiated."), testGenerator);
 
 	return true;
 }
@@ -31,7 +31,7 @@ bool FATrackGeneratorIsntNullWhenInstantiatedTest::RunTest(const FString& Parame
 bool FATrackGeneratorHasASplineComponentTest::RunTest(const FString& Parameters)
 {
 	ATrackGeneratorMOCK* testGenerator = NewObject<ATrackGeneratorMOCK>();
-	TestTrue(TEXT("The track generator should have a spline component."), testGenerator->hasSplineComponent());
+	TestTrue(FString("The track generator should have a spline component."), testGenerator->hasSplineComponent());
 
 	return true;
 }
@@ -40,7 +40,7 @@ bool FATrackGeneratorHasASplineComponentTest::RunTest(const FString& Parameters)
 bool FATrackGeneratorSplineComponentIsTheRootComponentTest::RunTest(const FString& Parameters)
 {
 	ATrackGeneratorMOCK* testGenerator = NewObject<ATrackGeneratorMOCK>();
-	TestTrue(TEXT("The track generator spline component should be the root component."), testGenerator->splineIsRootComponent());
+	TestTrue(FString("The track generator spline component should be the root component."), testGenerator->splineIsRootComponent());
 
 	return true;
 }
@@ -230,7 +230,7 @@ bool FATrackGeneratorMeshesHaveSameMobilityAsRootAtSpawningTest::RunTest(const F
 bool FATrackGeneratorSplineComponentLoopsTest::RunTest(const FString& Parameters)
 {
 	ATrackGeneratorMOCK* testGenerator = NewObject<ATrackGeneratorMOCK>();
-	TestTrue(TEXT("The track generator spline component should loop, these are race tracks."), testGenerator->isSplineComponentLooping());
+	TestTrue(FString("The track generator spline component should loop, these are race tracks."), testGenerator->isSplineComponentLooping());
 
 	return true;
 }
@@ -389,7 +389,7 @@ bool FATrackGeneratorSplineMeshComponentsHaveSmoothInterpolationEnabledTest::Run
 bool FATrackGeneratorGeneratesOverlapEventsWhenSpawnedTest::RunTest(const FString& Parameters)
 {
 	ATrackGenerator* testGenerator = NewObject<ATrackGenerator>();
-	TestTrue(TEXT("The track generator should generate overlap events when spawned."), testGenerator->bGenerateOverlapEventsDuringLevelStreaming);
+	TestTrue(FString("The track generator should generate overlap events when spawned."), testGenerator->bGenerateOverlapEventsDuringLevelStreaming);
 
 	return true;
 }
@@ -505,6 +505,22 @@ bool FATrackGeneratorsSpawnOnlyOneTrackManagerAtBeginPlayTest::RunTest(const FSt
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
+
+
+bool FATrackGeneratorBoundsSplinesQuantityIsTheSameAsSplinePointsAtSpawningTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/BoundedTrackGeneratorMOCKWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckBoundsSplinesQuantity(this));
+
+	return true;
+}
+
+
+
+
 
 
 

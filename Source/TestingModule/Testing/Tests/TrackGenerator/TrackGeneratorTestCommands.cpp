@@ -713,6 +713,30 @@ bool FCheckTrackGeneratorsSpawnOneTrackManagerInPIE::Update()
 }
 
 
+bool FCheckBoundsSplinesQuantity::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+		int32 boundsSplinesQuantity = testGenerator->boundsSplinesQuantity();
+		int32 splinePointsQuantity = testGenerator->splinePointsQuantity();
+		bool sameAmountOfSplinePointsAsBoundsSplines = boundsSplinesQuantity == splinePointsQuantity;//splines always have start and end points at the beginning...
+		UE_LOG(LogTemp, Log, TEXT("Spline points quantity in generator: %d."), splinePointsQuantity);
+		UE_LOG(LogTemp, Log, TEXT("Bounds splines quantity in generator: %d."), boundsSplinesQuantity);
+		UE_LOG(LogTemp, Log, TEXT("Bounds splines quantity is coincident with number of spline points: %s."), *FString(sameAmountOfSplinePointsAsBoundsSplines ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("At spawning, the number of road splines should be coincident with the spline points quantity."), sameAmountOfSplinePointsAsBoundsSplines);
+		return true;
+	}
+	return false;
+}
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS
