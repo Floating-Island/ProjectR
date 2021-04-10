@@ -188,6 +188,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorBoundsSplinesQuantityIsTheSameA
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorBoundsSplinesStartPositionsAreTheSameAsSplinePointsAtSpawningTest, 
+	"ProjectR.TrackGenerator Tests.Unit.035: Bounds splines start positions are the same as spline points at spawning", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

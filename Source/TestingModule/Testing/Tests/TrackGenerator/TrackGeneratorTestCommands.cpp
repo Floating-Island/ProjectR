@@ -715,7 +715,7 @@ bool FCheckTrackGeneratorsSpawnOneTrackManagerInPIE::Update()
 
 bool FCheckBoundsSplinesQuantity::Update()
 {
-	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
 	{
 		return false;
 	}
@@ -736,6 +736,30 @@ bool FCheckBoundsSplinesQuantity::Update()
 	}
 	return false;
 }
+
+
+bool FCheckBoundsSplinesStartPositions::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool boundsSplinesStartPositionsMatchSplinePoints = testGenerator->boundsSplinesAndPointsHaveSameStartPositions();
+		UE_LOG(LogTemp, Log, TEXT("Bounds splines start positions are coincident with the positions of spline points: %s."), *FString(boundsSplinesStartPositionsMatchSplinePoints ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("At spawning, the start positions of bounds splines should be coincident with the spline points positions."), boundsSplinesStartPositionsMatchSplinePoints);
+		return true;
+	}
+	return false;
+}
+
+
 
 
 
