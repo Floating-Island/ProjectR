@@ -130,7 +130,7 @@ void ATrackGenerator::createSplineMeshComponents()
 		configureMagnetSpline(splinePointIndex, roadSpline, magnetSpline);
 		
 		USplineMeshComponent* boundsSpline = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Bounds Spline Component "), splinePointIndex));
-		configureBoundsSpline(splinePointIndex, roadSpline, magnetSpline);
+		configureBoundsSpline(splinePointIndex, roadSpline, boundsSpline);
 	}
 }
 
