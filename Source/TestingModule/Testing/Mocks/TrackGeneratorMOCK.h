@@ -56,4 +56,5 @@ public:
 	bool boundsSplinesAndPointsHaveSameTangents();
 	bool boundsSplinesHaveMeshesSet();
 	bool boundsSplinesAreHiddenInGame();
+	bool boundsSplinesHaveSmoothInterpolation();
 };

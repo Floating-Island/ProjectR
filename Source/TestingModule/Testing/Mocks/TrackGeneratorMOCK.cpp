@@ -637,5 +637,18 @@ bool ATrackGeneratorMOCK::boundsSplinesAreHiddenInGame()
 	return true;
 }
 
+bool ATrackGeneratorMOCK::boundsSplinesHaveSmoothInterpolation()
+{
+	for (const auto& trackSection : trackSections)
+	{
+		if (!trackSection.boundsSpline->bSmoothInterpRollScale)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Bounds spline doesn't have smooth roll interpolation."));
+			return false;
+		}
+	}
+	return true;
+}
+
 
 
