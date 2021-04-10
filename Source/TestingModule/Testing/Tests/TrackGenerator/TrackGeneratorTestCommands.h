@@ -157,6 +157,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckBoundSplinesWidth, float, w
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundSplinesCollisionsDisabled, FAutomationTestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundSplinesCollisionsQueryAndPhysics, FAutomationTestBase*, test);
+
+
 
 
 #endif //WITH_DEV_AUTOMATION_TESTS

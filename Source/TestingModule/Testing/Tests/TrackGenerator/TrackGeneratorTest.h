@@ -232,6 +232,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorAllowsDisableCollisionsInEditor
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorBoundsSplinesHaveQueryAndPhysicsCollisionsInPIETest, 
+	"ProjectR.TrackGenerator Tests.Unit.045: Bounds splines have query and physics enabled collisions in PIE", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 
