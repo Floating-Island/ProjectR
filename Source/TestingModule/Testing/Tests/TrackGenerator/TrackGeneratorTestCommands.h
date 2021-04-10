@@ -29,6 +29,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FRetrieveTrackGeneratorInEditorWo
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FRetrieveTrackGeneratorInEditorWorldWidenSplineComponents, float, widthValue);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveTrackGeneratorInEditorDisableCollisions);
+
+
 
 
 
@@ -150,6 +153,8 @@ DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckBoundSplinesRoll, float, ro
 
 DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckBoundSplinesWidth, float, widthValue, FAutomationTestBase*, test);
 
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundSplinesCollisionsDisabled, FAutomationTestBase*, test);
 
 
 

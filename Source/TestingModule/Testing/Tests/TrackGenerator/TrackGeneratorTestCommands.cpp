@@ -96,6 +96,22 @@ bool FRetrieveTrackGeneratorInEditorWorldWidenSplineComponents::Update()
 }
 
 
+bool FRetrieveTrackGeneratorInEditorDisableCollisions::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+
+	testGenerator->disableCollisions();
+
+	return true;
+}
+
+
+
 
 
 
@@ -933,6 +949,26 @@ bool FCheckBoundSplinesWidth::Update()
 
 
 		test->TestTrue(TEXT("The bounds splines should be set to have the same width."), boundsSplinesHaveSameWidth);
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckBoundSplinesCollisionsDisabled::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+		bool BoundSplinesHavedCollisionsDisabled = testGenerator->boundsSplinesCollisionsDisabled();
+		UE_LOG(LogTemp, Log, TEXT("bound splines match setted collision disabled: %s."), *FString(BoundSplinesHavedCollisionsDisabled ? "true" : "false"));
+
+		test->TestTrue(TEXT("The bound splines should have their collision enable matching the one set."), BoundSplinesHavedCollisionsDisabled);
 		return true;
 	}
 	return false;

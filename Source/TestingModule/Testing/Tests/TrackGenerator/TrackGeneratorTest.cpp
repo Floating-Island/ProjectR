@@ -446,7 +446,6 @@ bool FATrackGeneratorAllowsDisableCollisionsInEditorTest::RunTest(const FString&
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	float widthValue = 30.0f;
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldDisableCollisions);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsCollision(this));
@@ -624,6 +623,20 @@ bool FATrackGeneratorBoundsSplinesWidenAfterSettingWidthInEditorTest::RunTest(co
 	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveTrackGeneratorInEditorWorldWidenSplineComponents(widthValue));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckBoundSplinesWidth(widthValue, this));
+
+	return true;
+}
+
+
+bool FATrackGeneratorAllowsDisableCollisionsInEditorForBoundsSplinesTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/BoundedTrackGeneratorMOCKWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveTrackGeneratorInEditorDisableCollisions);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckBoundSplinesCollisionsDisabled(this));
 
 	return true;
 }
