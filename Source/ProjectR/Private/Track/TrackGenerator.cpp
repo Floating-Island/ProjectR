@@ -123,14 +123,23 @@ void ATrackGenerator::createSplineMeshComponents()
 	int32 splineQuantity = splineComponent->GetNumberOfSplinePoints();
 	for (int32 splinePointIndex = 0; splinePointIndex < splineQuantity; ++splinePointIndex)
 	{
-		USplineMeshComponent* roadSpline = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Road Spline Component "), splinePointIndex));
-		configureRoadSpline(splinePointIndex, roadSpline);
+		if(defaultRoadMesh)
+		{
+			USplineMeshComponent* roadSpline = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Road Spline Component "), splinePointIndex));
+			configureRoadSpline(splinePointIndex, roadSpline);
 
-		USplineMeshComponent* magnetSpline = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Magnet Spline Component "), splinePointIndex));
-		configureMagnetSpline(splinePointIndex, roadSpline, magnetSpline);
-		
-		USplineMeshComponent* boundsSpline = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Bounds Spline Component "), splinePointIndex));
-		configureBoundsSpline(splinePointIndex, roadSpline, boundsSpline);
+			if(defaultMagnetMesh)
+			{
+				USplineMeshComponent* magnetSpline = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Magnet Spline Component "), splinePointIndex));
+				configureMagnetSpline(splinePointIndex, roadSpline, magnetSpline);
+			}
+
+			if(defaultBoundsMesh)
+			{
+				USplineMeshComponent* boundsSpline = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Bounds Spline Component "), splinePointIndex));
+				configureBoundsSpline(splinePointIndex, roadSpline, boundsSpline);
+			}
+		}
 	}
 }
 
