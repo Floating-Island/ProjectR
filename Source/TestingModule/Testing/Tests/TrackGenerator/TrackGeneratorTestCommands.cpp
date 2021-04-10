@@ -821,6 +821,30 @@ bool FCheckBoundsSplinesMeshes::Update()
 }
 
 
+bool FCheckBoundsSplinesVisibility::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool boundsSplinesAreHiddenInGame = testGenerator->boundsSplinesAreHiddenInGame();
+		UE_LOG(LogTemp, Log, TEXT("Bounds splines are hidden in game: %s."), *FString(boundsSplinesAreHiddenInGame ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("The bounds splines should be set hidden in game."), boundsSplinesAreHiddenInGame);
+		return true;
+	}
+	return false;
+}
+
+
+
+
 
 
 

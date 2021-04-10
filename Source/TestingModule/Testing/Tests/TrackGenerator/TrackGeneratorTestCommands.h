@@ -131,6 +131,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundsSplinesTangents, FAut
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundsSplinesMeshes, FAutomationTestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundsSplinesVisibility, FAutomationTestBase*, test);
+
+
 
 
 

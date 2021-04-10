@@ -207,6 +207,10 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorBoundsSplinesMeshesAreSetAtSpaw
 	"ProjectR.TrackGenerator Tests.Unit.039: Bounds splines meshes are set at spawning", 
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorBoundsSplinesAreHiddenInGameTest, 
+	"ProjectR.TrackGenerator Tests.Unit.040: Bounds splines are hidden in game", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
 
 
 
