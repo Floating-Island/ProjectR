@@ -738,7 +738,7 @@ bool FCheckBoundsSplinesQuantity::Update()
 }
 
 
-bool FCheckBoundsSplinesStartPositions::Update()
+bool FCheckBoundsSplinesAttachToRoadSplines::Update()
 {
 	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
 	{
@@ -749,15 +749,18 @@ bool FCheckBoundsSplinesStartPositions::Update()
 	if (testGenerator)
 	{
 
-		bool boundsSplinesStartPositionsMatchSplinePoints = testGenerator->boundsSplinesAndPointsHaveSameStartPositions();
-		UE_LOG(LogTemp, Log, TEXT("Bounds splines start positions are coincident with the positions of spline points: %s."), *FString(boundsSplinesStartPositionsMatchSplinePoints ? "true" : "false"));
+		bool boundsSplinesAreAttachedToRoadSplines = testGenerator->boundsSplinesAreAttachedToRoadSplines();
+		UE_LOG(LogTemp, Log, TEXT("Bounds splines are attached to road splines: %s."), *FString(boundsSplinesAreAttachedToRoadSplines ? "true" : "false"));
 
 
-		test->TestTrue(TEXT("At spawning, the start positions of bounds splines should be coincident with the spline points positions."), boundsSplinesStartPositionsMatchSplinePoints);
+		test->TestTrue(TEXT("At spawning, bounds splines should be attached to road splines."), boundsSplinesAreAttachedToRoadSplines);
 		return true;
 	}
 	return false;
 }
+
+
+
 
 
 
