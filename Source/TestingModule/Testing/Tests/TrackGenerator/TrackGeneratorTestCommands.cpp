@@ -977,19 +977,19 @@ bool FCheckBoundSplinesCollisionsDisabled::Update()
 
 bool FCheckBoundSplinesCollisionsQueryAndPhysics::Update()
 {
-	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	if (GEditor->IsPlayingSessionInEditor())
 	{
-		return false;
-	}
-	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
-	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
-	if (testGenerator)
-	{
-		bool BoundSplinesHavedCollisionsAsQueryAndPhysics = testGenerator->boundsSplinesCollisionsAsQueryAndPhysics();
-		UE_LOG(LogTemp, Log, TEXT("bound splines match setted collision as query and physics: %s."), *FString(BoundSplinesHavedCollisionsAsQueryAndPhysics ? "true" : "false"));
+		UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+		ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+		if (testGenerator)
+		{
+			bool BoundSplinesHavedCollisionsAsQueryAndPhysics = testGenerator->boundsSplinesCollisionsAsQueryAndPhysics();
+			UE_LOG(LogTemp, Log, TEXT("bound splines match setted collision as query and physics: %s."), *FString(BoundSplinesHavedCollisionsAsQueryAndPhysics ? "true" : "false"));
 
-		test->TestTrue(TEXT("The bound splines should have their collision as query and physics."), BoundSplinesHavedCollisionsAsQueryAndPhysics);
-		return true;
+			test->TestTrue(TEXT("The bound splines should have their collision as query and physics."), BoundSplinesHavedCollisionsAsQueryAndPhysics);
+			testWorld->bDebugFrameStepExecution = true;
+			return true;
+		}
 	}
 	return false;
 }
