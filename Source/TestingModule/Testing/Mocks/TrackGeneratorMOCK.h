@@ -52,4 +52,5 @@ public:
 	bool splineMeshComponentsExpectedCollisions();
 
 	bool boundsSplinesAreAttachedToRoadSplines();
+	bool boundsSplinesMobilitySameAsRoadSplines();
 };

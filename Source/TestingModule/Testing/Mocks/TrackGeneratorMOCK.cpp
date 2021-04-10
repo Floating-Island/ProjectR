@@ -567,5 +567,23 @@ bool ATrackGeneratorMOCK::boundsSplinesAreAttachedToRoadSplines()
 	return true;
 }
 
+bool ATrackGeneratorMOCK::boundsSplinesMobilitySameAsRoadSplines()
+{
+	for (const auto& trackSection : trackSections)
+	{
+		if (!trackSection.roadSpline || !trackSection.boundsSpline)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Road spline or bounds spline is nullptr."));
+			return false;
+		}
+		if (trackSection.boundsSpline->Mobility != trackSection.roadSpline->Mobility)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Bounds spline at doesn't have the same mobility as the road spline."));
+			return false;
+		}
+	}
+	return true;
+}
+
 
 
