@@ -193,6 +193,11 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorBoundsSplinesAreAttachedToRoadS
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorBoundsSplinesHaveTheSameMobilityAsRoadSplinesAtSpawningTest, 
+	"ProjectR.TrackGenerator Tests.Unit.037: Bounds splines have the same mobility as road splines at spawning", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
 
 
 

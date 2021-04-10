@@ -122,6 +122,9 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundsSplinesQuantity, FAut
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundsSplinesAttachToRoadSplines, FAutomationTestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundsSplinesMobility, FAutomationTestBase*, test);
+
+
 
 
 

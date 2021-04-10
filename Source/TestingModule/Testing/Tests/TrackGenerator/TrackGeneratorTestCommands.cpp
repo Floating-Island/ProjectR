@@ -730,7 +730,6 @@ bool FCheckBoundsSplinesQuantity::Update()
 		UE_LOG(LogTemp, Log, TEXT("Bounds splines quantity in generator: %d."), boundsSplinesQuantity);
 		UE_LOG(LogTemp, Log, TEXT("Bounds splines quantity is coincident with number of spline points: %s."), *FString(sameAmountOfSplinePointsAsBoundsSplines ? "true" : "false"));
 
-
 		test->TestTrue(TEXT("At spawning, the number of road splines should be coincident with the spline points quantity."), sameAmountOfSplinePointsAsBoundsSplines);
 		return true;
 	}
@@ -752,12 +751,33 @@ bool FCheckBoundsSplinesAttachToRoadSplines::Update()
 		bool boundsSplinesAreAttachedToRoadSplines = testGenerator->boundsSplinesAreAttachedToRoadSplines();
 		UE_LOG(LogTemp, Log, TEXT("Bounds splines are attached to road splines: %s."), *FString(boundsSplinesAreAttachedToRoadSplines ? "true" : "false"));
 
-
 		test->TestTrue(TEXT("At spawning, bounds splines should be attached to road splines."), boundsSplinesAreAttachedToRoadSplines);
 		return true;
 	}
 	return false;
 }
+
+
+bool FCheckBoundsSplinesMobility::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool boundsSplinesMobilitySameAsRoadSplines = testGenerator->boundsSplinesMobilitySameAsRoadSplines();
+		UE_LOG(LogTemp, Log, TEXT("Bounds splines have the same mobility as road splines: %s."), *FString(boundsSplinesMobilitySameAsRoadSplines ? "true" : "false"));
+
+		test->TestTrue(TEXT("At spawning, bounds splines should have the same mobility as road splines."), boundsSplinesMobilitySameAsRoadSplines);
+		return true;
+	}
+	return false;
+}
+
 
 
 
