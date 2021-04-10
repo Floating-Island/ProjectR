@@ -237,6 +237,7 @@ void ATrackGenerator::configureBoundsSpline(int32 aSplinePointIndex, USplineMesh
 	aBoundsSpline->AttachToComponent(aRoadSpline, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
 
 	configureRollAndWidthOf(aBoundsSpline, aSplinePointIndex);
+	editorCollisionsEnabled(aBoundsSpline);
 }
 
 void ATrackGenerator::configureCollisionOf(USplineMeshComponent* aMagnetSpline)
