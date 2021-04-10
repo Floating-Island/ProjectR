@@ -220,13 +220,12 @@ void ATrackGenerator::configureBoundsSpline(int32 aSplinePointIndex, USplineMesh
 {
 	aBoundsSpline->RegisterComponent();
 	trackSections[aSplinePointIndex].boundsSpline = aBoundsSpline;
-
 	aBoundsSpline->Mobility = aRoadSpline->Mobility;
 
+
 	
+	configureComponentPositionsAndTangents(aSplinePointIndex, aBoundsSpline);
 	aBoundsSpline->SetStaticMesh(trackSections[aSplinePointIndex].boundsMesh);
-
-
 	aBoundsSpline->AttachToComponent(aRoadSpline, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
 }
 
