@@ -823,7 +823,7 @@ bool FCheckBoundsSplinesMeshes::Update()
 
 bool FCheckBoundsSplinesVisibility::Update()
 {
-	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
 	{
 		return false;
 	}
