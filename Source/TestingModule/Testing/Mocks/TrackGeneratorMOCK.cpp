@@ -611,5 +611,18 @@ bool ATrackGeneratorMOCK::boundsSplinesAndPointsHaveSameTangents()
 	return true;
 }
 
+bool ATrackGeneratorMOCK::boundsSplinesHaveMeshesSet()
+{
+	for (const auto& trackSection : trackSections)
+	{
+		if (!trackSection.boundsSpline->GetStaticMesh())
+		{
+			UE_LOG(LogTemp, Log, TEXT("Bounds spline doesn't have static mesh set."));
+			return false;
+		}
+	}
+	return true;
+}
+
 
 

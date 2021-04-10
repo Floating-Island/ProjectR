@@ -54,4 +54,5 @@ public:
 	bool boundsSplinesAreAttachedToRoadSplines();
 	bool boundsSplinesMobilitySameAsRoadSplines();
 	bool boundsSplinesAndPointsHaveSameTangents();
+	bool boundsSplinesHaveMeshesSet();
 };
