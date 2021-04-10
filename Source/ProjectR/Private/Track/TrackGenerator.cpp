@@ -221,7 +221,7 @@ void ATrackGenerator::configureBoundsSpline(int32 aSplinePointIndex, USplineMesh
 	aBoundsSpline->RegisterComponent();
 	trackSections[aSplinePointIndex].boundsSpline = aBoundsSpline;
 	aBoundsSpline->Mobility = aRoadSpline->Mobility;
-
+	aBoundsSpline->SetHiddenInGame(true);
 
 	
 	configureComponentPositionsAndTangents(aSplinePointIndex, aBoundsSpline);
