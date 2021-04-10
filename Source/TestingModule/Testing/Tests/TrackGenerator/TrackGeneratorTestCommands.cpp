@@ -799,6 +799,28 @@ bool FCheckBoundsSplinesTangents::Update()
 }
 
 
+bool FCheckBoundsSplinesMeshes::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool boundsSplinesHaveMeshesSet = testGenerator->boundsSplinesHaveMeshesSet();
+		UE_LOG(LogTemp, Log, TEXT("Bounds splines meshes are set: %s."), *FString(boundsSplinesHaveMeshesSet ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("At spawning, the bounds splines meshes should be set."), boundsSplinesHaveMeshesSet);
+		return true;
+	}
+	return false;
+}
+
+
 
 
 
