@@ -17,6 +17,7 @@ public:
 	bool hasSplineComponent();
 	bool splineIsRootComponent();
 	int32 roadSplinesQuantity();
+	int32 boundsSplinesQuantity();
 	int32 splinePointsQuantity();
 	bool sameNumberOfRoadSplinesThanPoints();
 	bool roadSplinesAndPointsHaveSameStartPositions();

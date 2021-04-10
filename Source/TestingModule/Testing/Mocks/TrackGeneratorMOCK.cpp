@@ -21,6 +21,19 @@ int32 ATrackGeneratorMOCK::roadSplinesQuantity()
 	return trackSections.Num();
 }
 
+int32 ATrackGeneratorMOCK::boundsSplinesQuantity()
+{
+	int numberOfBounds = 0;
+	for( int position =0 ; position < trackSections.Num(); ++position)
+	{
+		if(trackSections[position].boundsSpline != nullptr)
+		{
+			++numberOfBounds;
+		}
+	}
+	return numberOfBounds;
+}
+
 int32 ATrackGeneratorMOCK::splinePointsQuantity()
 {
 	return splineComponent->GetNumberOfSplinePoints();
