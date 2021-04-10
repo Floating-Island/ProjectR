@@ -56,6 +56,7 @@ void ATrackGenerator::adjustRollArraySizeToSplinePointsQuantity()
 			trackSections.Add(FTrackSectionData());
 			trackSections.Last().roadMesh = defaultRoadMesh;
 			trackSections.Last().magnetMesh = defaultMagnetMesh;
+			trackSections.Last().boundsMesh = defaultBoundsMesh;
 		}
 		return;
 	}
@@ -76,6 +77,7 @@ void ATrackGenerator::cleanSplineMeshComponents()
 	{
 		trackSection.roadSpline = nullptr;
 		trackSection.magnetSpline = nullptr;
+		trackSection.boundsSpline = nullptr;
 	}
 }
 
@@ -90,6 +92,10 @@ void ATrackGenerator::destroySplineMeshComponents()
 		if (trackSection.magnetSpline)
 		{
 			trackSection.magnetSpline->DestroyComponent();
+		}
+		if (trackSection.boundsSpline)
+		{
+			trackSection.boundsSpline->DestroyComponent();
 		}
 	}
 }
@@ -122,6 +128,9 @@ void ATrackGenerator::createSplineMeshComponents()
 
 		USplineMeshComponent* magnetSpline = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Magnet Spline Component "), splinePointIndex));
 		configureMagnetSpline(splinePointIndex, roadSpline, magnetSpline);
+		
+		USplineMeshComponent* boundsSpline = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Bounds Spline Component "), splinePointIndex));
+		configureBoundsSpline(splinePointIndex, roadSpline, magnetSpline);
 	}
 }
 
@@ -204,6 +213,13 @@ void ATrackGenerator::configureMagnetSpline(int32 aSplinePointIndex, USplineMesh
 	configureCollisionOf(aMagnetSpline);
 
 	configureRollAndWidthOf(aMagnetSpline, aSplinePointIndex);
+}
+
+void ATrackGenerator::configureBoundsSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline,
+                                            USplineMeshComponent* aBoundsSpline)
+{
+	aBoundsSpline->RegisterComponent();
+	trackSections[aSplinePointIndex].boundsSpline = aBoundsSpline;
 }
 
 void ATrackGenerator::configureCollisionOf(USplineMeshComponent* aMagnetSpline)

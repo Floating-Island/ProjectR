@@ -19,11 +19,14 @@ struct FTrackSectionData
 
 	USplineMeshComponent* roadSpline = nullptr;
 	USplineMeshComponent* magnetSpline = nullptr;
+	USplineMeshComponent* boundsSpline = nullptr;
 
 	UPROPERTY(EditAnywhere, Category = "Default Meshes")
 		UStaticMesh* roadMesh = nullptr;
 	UPROPERTY(EditAnywhere, Category = "Default Meshes")
 		UStaticMesh* magnetMesh = nullptr;
+	UPROPERTY(EditAnywhere, Category = "Default Meshes")
+		UStaticMesh* boundsMesh = nullptr;
 
 	UPROPERTY(EditAnywhere, Category = "Section")
 		float startRoll = 0;
@@ -56,8 +59,9 @@ protected:
 	void createSplineMeshComponents();
 	void editorCollisionsEnabled(USplineMeshComponent* aSplineMeshComponent);
 
-	void configureMagnetSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline, USplineMeshComponent* aMagnetSpline);
 	void configureRoadSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline);
+	void configureMagnetSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline, USplineMeshComponent* aMagnetSpline);
+	void configureBoundsSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline, USplineMeshComponent* aBoundsSpline);
 	void configureComponentPositionsAndTangents(int32 aSplinePointIndex, USplineMeshComponent* aSplineMesh);
 	void configureRollAndWidthOf(USplineMeshComponent* aSplineMeshComponent, int32 AtASplinePointIndex);
 	void configureCollisionOf(USplineMeshComponent* aMagnetSpline);
@@ -65,11 +69,15 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Default Settings")
 		UStaticMesh* defaultRoadMesh;
 
-	float magnetSplineHeightDistanceToRoadSpline;
-
 	UPROPERTY(EditAnywhere, Category = "Default Settings")
 		UStaticMesh* defaultMagnetMesh;
 
+	UPROPERTY(EditAnywhere, Category = "Default Settings")
+		UStaticMesh* defaultBoundsMesh;
+
+	
+	float magnetSplineHeightDistanceToRoadSpline;
+	
 	UPROPERTY(EditAnywhere, Category = "Elements", EditFixedSize)
 		TArray<FTrackSectionData> trackSections;
 
