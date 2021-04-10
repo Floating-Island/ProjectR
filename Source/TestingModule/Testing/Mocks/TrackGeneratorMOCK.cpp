@@ -585,5 +585,31 @@ bool ATrackGeneratorMOCK::boundsSplinesMobilitySameAsRoadSplines()
 	return true;
 }
 
+bool ATrackGeneratorMOCK::boundsSplinesAndPointsHaveSameTangents()
+{
+	int index = 0;
+	for (const auto& trackSection : trackSections)
+	{
+		FVector boundsSplineStartTangent = (trackSection.boundsSpline)->GetStartTangent();
+		FVector boundsSplineEndTangent = (trackSection.boundsSpline)->GetEndTangent();
+		FVector currentSplinePointTangent = splineComponent->GetTangentAtSplinePoint(index, ESplineCoordinateSpace::Local);
+		FVector nextSplinePointTangent = splineComponent->GetTangentAtSplinePoint(nextSplineIndexOf(index), ESplineCoordinateSpace::Local);
+
+		UE_LOG(LogTemp, Log, TEXT("current spline point tangent: %s."), *currentSplinePointTangent.ToString());
+		UE_LOG(LogTemp, Log, TEXT("Bounds spline start tangent: %s."), *boundsSplineStartTangent.ToString());
+		UE_LOG(LogTemp, Log, TEXT("Next spline point tangent: %s."), *nextSplinePointTangent.ToString());
+		UE_LOG(LogTemp, Log, TEXT("Bounds spline end tangent: %s."), *boundsSplineEndTangent.ToString());
+
+		if (!boundsSplineStartTangent.Equals(currentSplinePointTangent) || !boundsSplineEndTangent.Equals(nextSplinePointTangent))
+		{
+			UE_LOG(LogTemp, Log, TEXT("Bounds spline tangents don't match spline point tangents."));
+			return false;
+		}
+		++index;
+	}
+
+	return true;
+}
+
 
 
