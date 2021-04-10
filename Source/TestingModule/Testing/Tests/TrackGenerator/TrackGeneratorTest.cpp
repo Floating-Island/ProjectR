@@ -599,6 +599,21 @@ bool FATrackGeneratorBoundsSplinesHaveSmoothInterpolationEnabledTest::RunTest(co
 }
 
 
+bool FATrackGeneratorBoundsSplinesRollAfterSettingRollInEditorTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	float rollValue = 30.0f;
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveTrackGeneratorInEditorWorldRollSplineComponents(rollValue));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckBoundSplinesRoll(rollValue, this));
+
+	return true;
+}
+
+
 
 
 

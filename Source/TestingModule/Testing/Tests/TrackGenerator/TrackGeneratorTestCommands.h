@@ -137,6 +137,10 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundsSplinesVisibility, FA
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundsSplinesSmoothInterpolation, FAutomationTestBase*, test);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FRetrieveTrackGeneratorInEditorWorldRollSplineComponents, float, rollValue);
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckBoundSplinesRoll, float, rollValue, FAutomationTestBase*, test);
+
+
 
 
 

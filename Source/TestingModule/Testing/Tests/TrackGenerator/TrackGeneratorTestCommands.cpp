@@ -66,6 +66,21 @@ bool FSpawnTrackGeneratorInEditorWorldDisableCollisions::Update()
 }
 
 
+bool FRetrieveTrackGeneratorInEditorWorldRollSplineComponents::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "VoidWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+
+	testGenerator->rollSplines(rollValue);
+
+	return true;
+}
+
+
 
 
 
@@ -859,6 +874,28 @@ bool FCheckBoundsSplinesSmoothInterpolation::Update()
 
 
 		test->TestTrue(TEXT("The bounds splines should be set to have smooth interpolation."), boundsSplinesHaveSmoothInterpolation);
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckBoundSplinesRoll::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool boundsSplinesHaveSameRoll = testGenerator->boundsSplinesHaveSameRollAs(rollValue);
+		UE_LOG(LogTemp, Log, TEXT("Bounds splines have the same roll as %f: %s."), rollValue, *FString(boundsSplinesHaveSameRoll ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("The bounds splines should be set to have the same roll."), boundsSplinesHaveSameRoll);
 		return true;
 	}
 	return false;
