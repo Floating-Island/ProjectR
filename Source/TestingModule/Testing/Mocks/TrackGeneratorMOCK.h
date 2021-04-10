@@ -58,4 +58,5 @@ public:
 	bool boundsSplinesAreHiddenInGame();
 	bool boundsSplinesHaveSmoothInterpolation();
 	bool boundsSplinesHaveSameRollAs(float aRollValue);
+	bool boundsSplinesHaveSameWidthAs(float aWidthValue);
 };

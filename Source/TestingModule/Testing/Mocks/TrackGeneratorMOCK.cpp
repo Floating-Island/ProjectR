@@ -676,5 +676,31 @@ bool ATrackGeneratorMOCK::boundsSplinesHaveSameRollAs(float aRollValue)
 	return true;
 }
 
+bool ATrackGeneratorMOCK::boundsSplinesHaveSameWidthAs(float aWidthValue)
+{
+	int index = 0;
+	for (const auto& trackSection : trackSections)
+	{
+		float boundsStartWidth = trackSection.boundsSpline->GetStartScale().X;
+		float boundsEndWidth = trackSection.boundsSpline->GetEndScale().X;
+
+		UE_LOG(LogTemp, Log, TEXT("Specified width: %f."), aWidthValue);
+		UE_LOG(LogTemp, Log, TEXT("Spline point index: %d."), index);
+		UE_LOG(LogTemp, Log, TEXT("Bounds spline start width: %f."), boundsStartWidth);
+		UE_LOG(LogTemp, Log, TEXT("Bounds spline end width: %f."), boundsEndWidth);
+
+		bool boundsStartWidthSimilarToSpecified = FMath::IsNearlyEqual(boundsStartWidth, aWidthValue);
+		bool boundsEndWidthSimilarToSpecified = FMath::IsNearlyEqual(boundsEndWidth, aWidthValue);
+
+		if (!boundsStartWidthSimilarToSpecified || !boundsEndWidthSimilarToSpecified)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Bounds splines don't have width similar to the specified."));
+			return false;
+		}
+		++index;
+	}
+	return true;
+}
+
 
 
