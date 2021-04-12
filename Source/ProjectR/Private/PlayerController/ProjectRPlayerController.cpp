@@ -16,7 +16,7 @@ void AProjectRPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	InputComponent->BindKey(EKeys::Escape, IE_Pressed, this, &AProjectRPlayerController::loadPauseMenuWrapper);
+	InputComponent->BindAction("PauseGameAction", EInputEvent::IE_Pressed, this, &AProjectRPlayerController::loadPauseMenuWrapper);
 }
 
 void AProjectRPlayerController::showRaceUI()
