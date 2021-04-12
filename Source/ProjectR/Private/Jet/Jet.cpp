@@ -111,20 +111,6 @@ void AJet::updateFloorUpVector()
 	}
 }
 
-bool AJet::traceToFind(FHitResult& anObstacle)
-{
-	FVector jetLocation = physicsMeshComponent->GetComponentLocation();//should take consideration the actor bounds...
-	float rayExtension = 1000;
-	FVector rayEnd = -(track->closestLocationTo(physicsMeshComponent->GetComponentLocation())) * rayExtension;
-
-	FCollisionQueryParams collisionParameters;
-	collisionParameters.AddIgnoredActor(this);
-	collisionParameters.bTraceComplex = false;
-	collisionParameters.bReturnPhysicalMaterial = false;
-
-	return  GetWorld()->LineTraceSingleByChannel(anObstacle, jetLocation, rayEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
-}
-
 void AJet::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);

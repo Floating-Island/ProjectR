@@ -96,8 +96,6 @@ protected:
 
 	ATrackGenerator* track;
 	FTimerHandle floorUpVectorManagementHandle;
-	
-	bool traceToFind(FHitResult& anObstacle);
 
 	
 public:
