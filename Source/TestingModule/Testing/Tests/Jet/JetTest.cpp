@@ -518,26 +518,26 @@ bool FAJetFallingSpeedWhenSteeringSameAsNoSteeringTest::RunTest(const FString& P
 }
 
 
-bool FAJetRotatesPitchRightWhenTiltedAndSteersRightTest::RunTest(const FString& Parameters)
-{
-	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
-	establishTestMessageTo(FString("The Jet pitch rotation should be greater than zero after being tilted and steered."));
-	establishTickLimitTo(3);
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
-	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
-
-	
-	
-	
-	float roll = 30;
-	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetTiltItAndMakeItSteerRight(roll));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSteersAroundUpVector(roll, this));
-
-	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
-	return true;
-}
+//bool FAJetRotatesPitchRightWhenTiltedAndSteersRightTest::RunTest(const FString& Parameters)
+//{
+//	establishInitialMapDirectoryTo(FString("/Game/Tests/TestMaps/VoidWorld"));
+//	establishTestMessageTo(FString("The Jet pitch rotation should be greater than zero after being tilted and steered."));
+//	establishTickLimitTo(3);
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(retrieveInitialMapDirectory()));
+//	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+//
+//	
+//	
+//	
+//	float roll = 30;
+//	ADD_LATENT_AUTOMATION_COMMAND(FSpawningAJetTiltItAndMakeItSteerRight(roll));
+//
+//	ADD_LATENT_AUTOMATION_COMMAND(FCheckAJetSteersAroundUpVector(roll, this));
+//
+//	//ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+//	return true;
+//}
 
 
 bool FAJetAcceleratesOrthogonalToSurfaceNormalTest::RunTest(const FString& Parameters)

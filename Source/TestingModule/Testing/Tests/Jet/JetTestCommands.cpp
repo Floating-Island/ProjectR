@@ -221,7 +221,6 @@ bool FSpawningTwoJetsMakeOneOfThemItAccelerateAndSteerRight::Update()
 	FVector aSomewhatDistancedPosition = FVector(10000, 10000, 0);
 	sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>(aSomewhatDistancedPosition);
 
-	float direction = 1;//1 is right, -1 is left...
 	testJet->setCurrentXVelocityTo(30);
 	testJet->steerRight();
 
@@ -229,24 +228,23 @@ bool FSpawningTwoJetsMakeOneOfThemItAccelerateAndSteerRight::Update()
 }
 
 
-bool FSpawningAJetTiltItAndMakeItSteerRight::Update()
-{
-	if (!GEditor->IsPlayingSessionInEditor())
-	{
-		return false;
-	}
-	PIESessionUtilities sessionUtilities = PIESessionUtilities();
-
-	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
-
-	float direction = 1;//1 is right, -1 is left...
-	FRotator rollRotator = FRotator(0, 0, roll);
-	testJet->SetActorRotation(rollRotator);
-	testJet->setCurrentXVelocityTo(10000);//we should set the speed to 10000 first so the jet is able to steer.
-	testJet->steerRight();
-
-	return true;
-}
+//bool FSpawningAJetTiltItAndMakeItSteerRight::Update()
+//{
+//	if (!GEditor->IsPlayingSessionInEditor())
+//	{
+//		return false;
+//	}
+//	PIESessionUtilities sessionUtilities = PIESessionUtilities();
+//
+//	AJetMOCK* testJet = sessionUtilities.spawnInPIEAnInstanceOf<AJetMOCK>();
+//
+//	FRotator rollRotator = FRotator(0, 0, roll);
+//	testJet->SetActorRotation(rollRotator);
+//	testJet->setCurrentXVelocityTo(10000);//we should set the speed to 10000 first so the jet is able to steer.
+//	testJet->steerRight();
+//
+//	return true;
+//}
 
 
 bool FRetrieveAJetRotatedOverFloorAndAccelerateIt::Update()

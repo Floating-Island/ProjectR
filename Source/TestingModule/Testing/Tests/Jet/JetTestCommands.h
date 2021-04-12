@@ -43,7 +43,7 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndRotateIt);
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningTwoJetsMakeOneOfThemItAccelerateAndSteerRight);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawningAJetTiltItAndMakeItSteerRight, float, roll);
+//DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawningAJetTiltItAndMakeItSteerRight, float, roll);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAJetRotatedOverFloorAndAccelerateIt);
