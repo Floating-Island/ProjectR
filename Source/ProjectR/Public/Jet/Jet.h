@@ -8,6 +8,7 @@
 #include "Jet.generated.h"
 
 
+class ATrackGenerator;
 class USpringArmComponent;
 class UCameraComponent;
 class UAntiGravityComponent;
@@ -92,7 +93,8 @@ public:
 	void updateFloorUpVector();
 	
 protected:
-	
+
+	ATrackGenerator* track;
 	FTimerHandle floorUpVectorManagementHandle;
 	
 	bool traceToFind(FHitResult& anObstacle);

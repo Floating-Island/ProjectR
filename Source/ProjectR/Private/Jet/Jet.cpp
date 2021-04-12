@@ -81,6 +81,7 @@ AJet::AJet()
 	jetModelMeshComponent->BodyInstance.bOverrideMass = true;
 	jetModelMeshComponent->BodyInstance.SetMassOverride(0);
 
+	track = nullptr;
 	floorUpVectorUpdateDelta = 0.3f;
 	floorUpVector = FVector(0);
 }
@@ -95,21 +96,18 @@ void AJet::BeginPlay()
 void AJet::manageUpVectorUpdate()
 {
 	updateFloorUpVector();
-	GetWorld()->GetTimerManager().SetTimer(floorUpVectorManagementHandle, this, &AJet::manageUpVectorUpdate, floorUpVectorUpdateDelta, false);
+	GetWorld()->GetTimerManager().SetTimerForNextTick(this, &AJet::manageUpVectorUpdate);
 }
 
 void AJet::updateFloorUpVector()
 {
-	FHitResult obstacle;
-	const bool nearFloor = traceToFind(obstacle);
-
-	if (nearFloor)
+	if(track == nullptr)
 	{
-		ATrackGenerator* track = Cast<ATrackGenerator, AActor>(obstacle.GetActor());
-		if(track)
-		{
-			floorUpVector = track->upVectorAt(GetActorLocation());
-		}
+		track = Cast<ATrackGenerator, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ATrackGenerator::StaticClass()));
+	}
+	if(track)
+	{
+		floorUpVector = track->upVectorAt(physicsMeshComponent->GetComponentLocation());
 	}
 }
 
@@ -117,7 +115,7 @@ bool AJet::traceToFind(FHitResult& anObstacle)
 {
 	FVector jetLocation = physicsMeshComponent->GetComponentLocation();//should take consideration the actor bounds...
 	float rayExtension = 1000;
-	FVector rayEnd = -(physicsMeshComponent->GetUpVector()) * rayExtension;
+	FVector rayEnd = -(track->closestLocationTo(physicsMeshComponent->GetComponentLocation())) * rayExtension;
 
 	FCollisionQueryParams collisionParameters;
 	collisionParameters.AddIgnoredActor(this);
