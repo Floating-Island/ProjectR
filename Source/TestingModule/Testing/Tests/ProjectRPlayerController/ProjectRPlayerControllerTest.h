@@ -36,12 +36,12 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerLoadPauseMenuShowsMou
 	"ProjectR.ProjectRPlayerController Tests.Integration.003: loadPauseMenu makes the mouse cursor show",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerEscKeyLoadsPauseMenuTest, FSimplePIETestBase,
-	"ProjectR.ProjectRPlayerController Tests.Integration.004: Pressing the Esc key brings the pause menu",
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerPauseGameActionKeyLoadsPauseMenuTest, FSimplePIETestBase,
+	"ProjectR.ProjectRPlayerController Tests.Integration.004: Pressing the PauseGameAction key brings the pause menu",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerEscKeyRemovesPauseMenuIfInViewportTest, FSimplePIETestBase,
-	"ProjectR.ProjectRPlayerController Tests.Integration.005: Pressing the Esc key removes the pause menu if it's already in viewport and hide the mouse cursor",
+IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAProjectRPlayerControllerPauseGameActionKeyRemovesPauseMenuIfInViewportTest, FSimplePIETestBase,
+	"ProjectR.ProjectRPlayerController Tests.Integration.005: Pressing the PauseGameAction key removes the pause menu if it's already in viewport and hide the mouse cursor",
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 

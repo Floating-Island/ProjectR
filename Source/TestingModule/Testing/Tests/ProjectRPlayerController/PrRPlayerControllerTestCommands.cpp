@@ -149,19 +149,19 @@ bool FCheckPlayerControllerShowsMouseCursor::Update()
 }
 
 
-bool FCheckPlayerControllerPressEscBringsPauseMenu::Update()
+bool FCheckPlayerControllerPressPauseGameActionBringsPauseMenu::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		if (testPlayerController == nullptr)
 		{
-			PIESessionUtilities sessionUtilities = PIESessionUtilities();
 			sessionUtilities.defaultPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
 			testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerControllerMOCK>();
 		}
 		else
 		{
-			testPlayerController->InputKey(EKeys::Escape, EInputEvent::IE_Pressed, 5.0f, false);
+			sessionUtilities.processLocalPlayerActionInputFrom(FName("PauseGameAction"));
 
 			if (testPlayerController->pauseMenuIsInViewport())
 			{
@@ -175,13 +175,13 @@ bool FCheckPlayerControllerPressEscBringsPauseMenu::Update()
 }
 
 
-bool FCheckPlayerControllerPressEscRemovesPauseMenuInViewport::Update()
+bool FCheckPlayerControllerPressPauseGameActionRemovesPauseMenuInViewport::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		if (testPlayerController == nullptr)
 		{
-			PIESessionUtilities sessionUtilities = PIESessionUtilities();
 			sessionUtilities.defaultPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
 			testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerControllerMOCK>();
 			testPlayerController->loadPauseMenu();
@@ -190,7 +190,7 @@ bool FCheckPlayerControllerPressEscRemovesPauseMenuInViewport::Update()
 		{
 			if (testPlayerController->pauseMenuIsInViewport())
 			{
-				testPlayerController->InputKey(EKeys::Escape, EInputEvent::IE_Pressed, 5.0f, false);
+				sessionUtilities.processLocalPlayerActionInputReleaseFrom(FName("PauseGameAction"));
 				return test->manageTickCountTowardsLimit();
 			}
 			test->TestTrue(test->conditionMessage(), !testPlayerController->pauseMenuIsInViewport() && !testPlayerController->ShouldShowMouseCursor());

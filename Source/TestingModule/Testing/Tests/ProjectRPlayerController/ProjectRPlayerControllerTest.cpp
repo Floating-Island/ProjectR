@@ -65,10 +65,10 @@ bool FAProjectRPlayerControllerLoadPauseMenuShowsMouseCursorTest::RunTest(const 
 }
 
 
-bool FAProjectRPlayerControllerEscKeyLoadsPauseMenuTest::RunTest(const FString& Parameters)
+bool FAProjectRPlayerControllerPauseGameActionKeyLoadsPauseMenuTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-PlayerControllerMOCK");
-	establishTestMessageTo(FString("Esc key should make the controller load the pause menu."));
+	establishTestMessageTo(FString("PauseGameAction key should make the controller load the pause menu."));
 	establishTickLimitTo(3);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
@@ -77,17 +77,17 @@ bool FAProjectRPlayerControllerEscKeyLoadsPauseMenuTest::RunTest(const FString& 
 	
 	
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerControllerPressEscBringsPauseMenu(nullptr, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerControllerPressPauseGameActionBringsPauseMenu(nullptr, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
 
 
-bool FAProjectRPlayerControllerEscKeyRemovesPauseMenuIfInViewportTest::RunTest(const FString& Parameters)
+bool FAProjectRPlayerControllerPauseGameActionKeyRemovesPauseMenuIfInViewportTest::RunTest(const FString& Parameters)
 {
 	FString testWorldName = FString("/Game/Tests/TestMaps/VoidWorld-PlayerControllerMOCK");
-	establishTestMessageTo(FString("Esc key makes the controller remove the pause menu present in viewport and hide the mouse cursor."));
+	establishTestMessageTo(FString("PauseGameAction key makes the controller remove the pause menu present in viewport and hide the mouse cursor."));
 	establishTickLimitTo(3);
 	
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
@@ -96,7 +96,7 @@ bool FAProjectRPlayerControllerEscKeyRemovesPauseMenuIfInViewportTest::RunTest(c
 	
 	
 
-	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerControllerPressEscRemovesPauseMenuInViewport(nullptr, this));
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckPlayerControllerPressPauseGameActionRemovesPauseMenuInViewport(nullptr, this));
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
