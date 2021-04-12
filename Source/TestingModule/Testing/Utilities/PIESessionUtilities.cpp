@@ -84,9 +84,12 @@ void PIESessionUtilities::processActionKeyPressFrom(FName anActionMappingName, A
 	//	PlayerInputComponent->BindAction("ActionMappingName", EInputEvent::IE_Pressed, this, &YourPawn::actionToBind);
 	//and in the constructor:
 	//AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
-	FKey actionKey = actionMappings[0].Key;
 
-	aController->InputKey(actionKey, EInputEvent::IE_Pressed, 5.0f, false);
+	for(const auto& action : actionMappings)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Pressing key: %s."), *action.Key.ToString());
+		aController->InputKey(action.Key, EInputEvent::IE_Pressed, 5.0f, false);
+	}
 }
 
 void PIESessionUtilities::processLocalPlayerActionInputReleaseFrom(FName anActionMappingName)
@@ -106,9 +109,12 @@ void PIESessionUtilities::processActionKeyReleaseFrom(FName anActionMappingName,
 	//	PlayerInputComponent->BindAction("ActionMappingName", EInputEvent::IE_Released, this, &YourPawn::actionToBind);
 	//and in the constructor:
 	//AutoPossessPlayer = EAutoReceiveInput::Player0;//this should be changed when we start doing multiplayer. It won't work.
-	FKey actionKey = actionMappings[0].Key;
 
-	aController->InputKey(actionKey, EInputEvent::IE_Released, 5.0f, false);
+	for(const auto& action : actionMappings)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Releasing key: %s."), *action.Key.ToString());
+		aController->InputKey(action.Key, EInputEvent::IE_Released, 5.0f, false);
+	}
 }
 
 void PIESessionUtilities::processEditorClick(FVector2D atCoordinates)

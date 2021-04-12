@@ -161,13 +161,19 @@ bool FCheckPlayerControllerPressPauseGameActionBringsPauseMenu::Update()
 		}
 		else
 		{
-			sessionUtilities.processLocalPlayerActionInputFrom(FName("PauseGameAction"));
-
 			if (testPlayerController->pauseMenuIsInViewport())
 			{
 				test->TestTrue(test->conditionMessage(), testPlayerController->pauseMenuIsInViewport());
 				return true;
 			}
+
+			FName const actionName = FName("PauseGameAction");
+			TArray<FInputActionKeyMapping> actionMappings = testPlayerController->PlayerInput->GetKeysForAction(actionName);
+
+			FInputActionKeyMapping action = actionMappings[0];
+			UE_LOG(LogTemp, Log, TEXT("Pressing key: %s."), *action.Key.ToString());
+			testPlayerController->InputKey(action.Key, EInputEvent::IE_Pressed, 5.0f, false);
+			
 			return test->manageTickCountTowardsLimit();
 		}
 	}
@@ -190,7 +196,13 @@ bool FCheckPlayerControllerPressPauseGameActionRemovesPauseMenuInViewport::Updat
 		{
 			if (testPlayerController->pauseMenuIsInViewport())
 			{
-				sessionUtilities.processLocalPlayerActionInputReleaseFrom(FName("PauseGameAction"));
+				FName const actionName = FName("PauseGameAction");
+				TArray<FInputActionKeyMapping> actionMappings = testPlayerController->PlayerInput->GetKeysForAction(actionName);
+
+				FInputActionKeyMapping action = actionMappings[0];
+				UE_LOG(LogTemp, Log, TEXT("Pressing key: %s."), *action.Key.ToString());
+				testPlayerController->InputKey(action.Key, EInputEvent::IE_Pressed, 5.0f, false);
+
 				return test->manageTickCountTowardsLimit();
 			}
 			test->TestTrue(test->conditionMessage(), !testPlayerController->pauseMenuIsInViewport() && !testPlayerController->ShouldShowMouseCursor());
