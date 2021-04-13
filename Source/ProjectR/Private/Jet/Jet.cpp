@@ -143,16 +143,20 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAction("AccelerateAction", EInputEvent::IE_Pressed, this, &AJet::accelerate);
+	PlayerInputComponent->BindAction("AccelerateAction", EInputEvent::IE_Repeat, this, &AJet::accelerate);
 	PlayerInputComponent->BindAction("AccelerateAction", EInputEvent::IE_Released, this, &AJet::neutralize);
 
 	PlayerInputComponent->BindAction("SteerRightAction", EInputEvent::IE_Pressed, this, &AJet::steerRight);
+	PlayerInputComponent->BindAction("SteerRightAction", EInputEvent::IE_Repeat, this, &AJet::steerRight);
 	PlayerInputComponent->BindAction("SteerRightAction", EInputEvent::IE_Released, this, &AJet::centerSteer);
 
 	PlayerInputComponent->BindAction("SteerLeftAction", EInputEvent::IE_Pressed, this, &AJet::steerLeft);
+	PlayerInputComponent->BindAction("SteerLeftAction", EInputEvent::IE_Repeat, this, &AJet::steerLeft);
 	PlayerInputComponent->BindAction("SteerLeftAction", EInputEvent::IE_Released, this, &AJet::centerSteer);
 
 
 	PlayerInputComponent->BindAction("BrakeAction", EInputEvent::IE_Pressed, this, &AJet::brake);
+	PlayerInputComponent->BindAction("BrakeAction", EInputEvent::IE_Repeat, this, &AJet::brake);
 	PlayerInputComponent->BindAction("BrakeAction", EInputEvent::IE_Released, this, &AJet::neutralize);
 }
 
