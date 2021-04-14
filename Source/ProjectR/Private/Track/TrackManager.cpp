@@ -63,7 +63,7 @@ void ATrackManager::manageMagnetization()
 			ATrackGenerator* trackGenerator = jetTrackGeneratorPair.Value;
 
 			FVector jetLocation = jet->GetActorLocation();
-			FVector trackUpVector = trackGenerator->upVectorAt(jetLocation);
+			FVector trackUpVector = jet->floorNormal();
 
 			prepareMagnetizationOf(jet, trackUpVector);
 		}

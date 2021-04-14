@@ -78,24 +78,25 @@ protected:
 		int movementHistorySize;
 
 	/**
-	 * In seconds. Lower seconds gives better floor 'resolution'
-	 * (how many times per second we update the floor up vector).
+	 * used to set the maximum distance downwards to search for a 'floor'.
+	 * Treat it as an absolute value.
 	 */
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Replication")
-		float floorUpVectorUpdateDelta;
+	float noTrackFloorQueryDistance;
 	
 	FVector floorUpVector;
 	
 	UFUNCTION()
 		void manageUpVectorUpdate();
+	void updateFloorVectorWithAnyFloor();
+	void updateFloorUpVectorWithTrack();
+	void fillWithDefaultOptions(FCollisionQueryParams& aCollisionQueryParameters);
 
 public:
 	void updateFloorUpVector();
-	
+
 protected:
 
 	ATrackGenerator* track;
-	FTimerHandle floorUpVectorManagementHandle;
 
 	
 public:
@@ -140,6 +141,7 @@ public:
 
 	bool keyIsPressedFor(const FName anActionMappingName);
 
+	FVector floorNormal();
 
 //start of replication:
 	

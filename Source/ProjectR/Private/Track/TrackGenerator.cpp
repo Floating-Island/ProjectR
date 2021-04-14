@@ -7,6 +7,22 @@
 #include "Track/TrackManager.h"
 #include "Kismet/GameplayStatics.h"
 
+float ATrackGenerator::smoothStepFrom(float start, float end, float target)
+{
+	if (target < start)
+	{
+		return 0.0f;
+	}
+
+	if (target >= end)
+	{
+		return 1.0f;
+	}
+	
+	const float InterpolationFraction = (target - start) / (end - start);
+	return InterpolationFraction * InterpolationFraction * (3.0f - 2.0f * InterpolationFraction);
+}
+
 ATrackGenerator::ATrackGenerator()
 {
 	bGenerateOverlapEventsDuringLevelStreaming = true;
@@ -111,11 +127,6 @@ void ATrackGenerator::OnConstruction(const FTransform& Transform)
 int32 ATrackGenerator::nextSplineIndexOf(int32 aCurrentIndex)
 {
 	return (aCurrentIndex + 1) % splineComponent->GetNumberOfSplinePoints();
-}
-
-FVector ATrackGenerator::closestLocationTo(FVector anotherLocation)
-{
-	return splineComponent->FindLocationClosestToWorldLocation(anotherLocation, ESplineCoordinateSpace::World);
 }
 
 void ATrackGenerator::createSplineMeshComponents()
@@ -238,6 +249,7 @@ void ATrackGenerator::configureBoundsSpline(int32 aSplinePointIndex, USplineMesh
 
 	aBoundsSpline->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	aBoundsSpline->SetCollisionResponseToAllChannels(ECR_Block);
+	aBoundsSpline->SetCollisionResponseToChannel(ECC_Visibility, ECR_Ignore);
 	
 	configureRollAndWidthOf(aBoundsSpline, aSplinePointIndex);
 	editorCollisionsEnabled(aBoundsSpline);
@@ -274,11 +286,9 @@ void ATrackGenerator::toMagnetOverlapSubscribe(ATrackManager* aManager)
 	}
 }
 
-float ATrackGenerator::distanceAlongSplineOf(AActor* anActor)
+float ATrackGenerator::distanceAlongSplineOf(FVector aLocation)
 {
-	FVector actorLocation = anActor->GetActorLocation();
-
-	float locationInputKey = splineComponent->FindInputKeyClosestToWorldLocation(actorLocation);
+	float locationInputKey = splineComponent->FindInputKeyClosestToWorldLocation(aLocation);
 
 	int32 splinePointFromInputKey = FMath::TruncToInt(locationInputKey);
 	float remainingSegmentParameter = locationInputKey - splinePointFromInputKey;
@@ -290,6 +300,13 @@ float ATrackGenerator::distanceAlongSplineOf(AActor* anActor)
 	float distanceAlongSpline = distanceToSplinePoint + remainingSegmentLength;
 
 	return distanceAlongSpline;
+}
+
+float ATrackGenerator::distanceAlongSplineOf(AActor* anActor)
+{
+	FVector actorLocation = anActor->GetActorLocation();
+
+	return distanceAlongSplineOf(actorLocation);
 }
 
 float ATrackGenerator::length()
@@ -312,12 +329,12 @@ FVector ATrackGenerator::upVectorAt(float aDistanceAlongSpline)
 	return splineComponent->GetUpVectorAtDistanceAlongSpline(aDistanceAlongSpline, ESplineCoordinateSpace::World);
 }
 
-FVector ATrackGenerator::upVectorAt(FVector aNearWorldLocationToSpline)
-{
-	return splineComponent->FindUpVectorClosestToWorldLocation(aNearWorldLocationToSpline, ESplineCoordinateSpace::World);
-}
-
 FRotator ATrackGenerator::rotationAt(float aDistanceAlongSpline)
 {
 	return splineComponent->GetRotationAtDistanceAlongSpline(aDistanceAlongSpline, ESplineCoordinateSpace::World);
+}
+
+FVector ATrackGenerator::closestLocationTo(FVector aNearWorldLocationToSpline)
+{
+	return splineComponent->FindLocationClosestToWorldLocation(aNearWorldLocationToSpline, ESplineCoordinateSpace::World);
 }

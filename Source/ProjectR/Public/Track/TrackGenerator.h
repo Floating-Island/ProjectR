@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "../Jet/Jet.h"
 #include "GameFramework/Actor.h"
 #include "TrackGenerator.generated.h"
 
@@ -39,6 +41,8 @@ class PROJECTR_API ATrackGenerator : public AActor
 {
 	GENERATED_BODY()
 
+	static float smoothStepFrom(float start, float end, float target);
+	
 public:
 	// Sets default values for this actor's properties
 	ATrackGenerator();
@@ -92,8 +96,8 @@ public:
 
 	int32 nextSplineIndexOf(int32 aCurrentIndex);
 
-	FVector closestLocationTo(FVector anotherLocation);
 	void toMagnetOverlapSubscribe(ATrackManager* aManager);
+	float distanceAlongSplineOf(FVector aLocation);
 
 	float distanceAlongSplineOf(AActor* anActor);
 
@@ -102,9 +106,8 @@ public:
 	FVector rightVectorAt(float aDistanceAlongSpline);
 	FVector locationAt(float aDistanceAlongSpline);
 	FVector upVectorAt(float aDistanceAlongSpline);
-	FVector upVectorAt(FVector aNearWorldLocationToSpline);
 	FRotator rotationAt(float aDistanceAlongSpline);
-
+	FVector closestLocationTo(FVector aNearWorldLocationToSpline);
 };
 
 

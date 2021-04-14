@@ -82,7 +82,7 @@ AJet::AJet()
 	jetModelMeshComponent->BodyInstance.SetMassOverride(0);
 
 	track = nullptr;
-	floorUpVectorUpdateDelta = 0.3f;
+	noTrackFloorQueryDistance = 2000;
 	floorUpVector = FVector(0);
 }
 
@@ -90,6 +90,7 @@ void AJet::BeginPlay()
 {
 	Super::BeginPlay();
 	floorUpVector = GetActorUpVector();
+	track = Cast<ATrackGenerator, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ATrackGenerator::StaticClass()));
 	manageUpVectorUpdate();
 }
 
@@ -101,14 +102,57 @@ void AJet::manageUpVectorUpdate()
 
 void AJet::updateFloorUpVector()
 {
-	if(track == nullptr)
-	{
-		track = Cast<ATrackGenerator, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ATrackGenerator::StaticClass()));
-	}
 	if(track)
 	{
-		floorUpVector = track->upVectorAt(physicsMeshComponent->GetComponentLocation());
+		updateFloorUpVectorWithTrack();
 	}
+	else
+	{
+		updateFloorVectorWithAnyFloor();
+	}
+}
+
+void AJet::updateFloorUpVectorWithTrack()
+{
+	FVector startLocation = physicsMeshComponent->GetComponentLocation();
+	const FVector trackLocation = track->closestLocationTo(startLocation);
+
+	FHitResult anObstacle;
+
+	FCollisionQueryParams collisionParameters;
+	fillWithDefaultOptions(collisionParameters);
+
+	if(GetWorld()->LineTraceSingleByChannel(anObstacle, startLocation, trackLocation, ECollisionChannel::ECC_Visibility, collisionParameters))
+	{
+		floorUpVector = anObstacle.Normal;
+	}
+}
+
+void AJet::updateFloorVectorWithAnyFloor()
+{
+	FVector startLocation = physicsMeshComponent->GetComponentLocation();
+	const FVector endLocation = physicsMeshComponent->GetUpVector() * (-noTrackFloorQueryDistance);
+
+	FHitResult anObstacle;
+
+	FCollisionQueryParams collisionParameters;
+	fillWithDefaultOptions(collisionParameters);
+
+	if(GetWorld()->LineTraceSingleByChannel(anObstacle, startLocation, endLocation, ECollisionChannel::ECC_Visibility, collisionParameters))
+	{
+		floorUpVector = anObstacle.Normal;
+	}
+	else
+	{
+		floorUpVector = physicsMeshComponent->GetUpVector();
+	}
+}
+
+void AJet::fillWithDefaultOptions(FCollisionQueryParams& aCollisionQueryParameters)
+{
+	aCollisionQueryParameters.AddIgnoredActor(this);
+	aCollisionQueryParameters.bTraceComplex = false;
+	aCollisionQueryParameters.bReturnPhysicalMaterial = false;
 }
 
 void AJet::Tick(float DeltaTime)
@@ -316,6 +360,11 @@ bool AJet::keyIsPressedFor(const FName anActionMappingName)
 		}
 	}
 	return false;
+}
+
+FVector AJet::floorNormal()
+{
+	return floorUpVector;
 }
 
 float AJet::mass()
