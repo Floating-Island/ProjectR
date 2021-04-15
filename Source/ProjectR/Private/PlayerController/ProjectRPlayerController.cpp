@@ -123,6 +123,13 @@ void AProjectRPlayerController::loadPauseMenuWrapper()
 	loadPauseMenu();
 }
 
+void AProjectRPlayerController::changeInputModeToGame_Implementation()
+{
+	FInputModeGameOnly inputModeData;
+	inputModeData.SetConsumeCaptureMouseDown(true);
+	SetInputMode(inputModeData);
+}
+
 void AProjectRPlayerController::loadResultsUI_Implementation()
 {
 	if(IsLocalPlayerController())

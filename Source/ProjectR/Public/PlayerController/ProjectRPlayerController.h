@@ -69,4 +69,7 @@ public:
 	
 	UFUNCTION(Client, Reliable)
 		void loadResultsUI();
+
+	UFUNCTION(Client, Reliable)
+		void changeInputModeToGame();
 };

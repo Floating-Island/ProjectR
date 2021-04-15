@@ -101,6 +101,7 @@ public:
 
 	void disableJetsInput();
 	void enableJetsInput();
+	void setToFocusOnGameTo(APlayerController* aController);
 	void prepareRaceUIOf(APlayerController* aController);
 
 	virtual void PostLogin(APlayerController* NewPlayer) override;

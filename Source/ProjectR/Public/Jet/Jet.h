@@ -144,6 +144,12 @@ public:
 	FVector floorNormal();
 
 //start of replication:
+
+	UFUNCTION(Client, Reliable)
+		void clientDisableInput();
+
+	UFUNCTION(Client, Reliable)
+		void clientEnableInput();
 	
 	float mass();
 	UClass* currentMotorStateClass();

@@ -368,6 +368,16 @@ FVector AJet::floorNormal()
 	return floorUpVector;
 }
 
+void AJet::clientDisableInput_Implementation()
+{
+	DisableInput(Cast<APlayerController,AController>(GetController()));
+}
+
+void AJet::clientEnableInput_Implementation()
+{
+	EnableInput(Cast<APlayerController,AController>(GetController()));
+}
+
 float AJet::mass()
 {
 	return physicsMeshComponent->GetMass();
@@ -478,6 +488,10 @@ FMovementData AJet::updatedDataSynchronizedWith(FStateData aBunchOfStates)
 
 void AJet::multicastSynchronizeMovementWith_Implementation(FMovementData aMovementStructure)
 {
+	if(GetLocalRole() == ENetRole::ROLE_Authority)
+	{
+		return;
+	}
 	replicationMachine->synchronizeMovementHistoryWith(aMovementStructure);
 }
 

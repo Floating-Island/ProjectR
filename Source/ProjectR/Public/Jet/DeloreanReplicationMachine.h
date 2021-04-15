@@ -17,6 +17,8 @@ struct FStateData
 	UPROPERTY()
 		int64 timestamp;
 	UPROPERTY()
+		int64 remoteTimestamp;
+	UPROPERTY()
 		UClass* motorStateClass;
 	UPROPERTY()
 		UClass* steerStateClass;
@@ -24,6 +26,7 @@ struct FStateData
 	FStateData()
 	{
 		timestamp = 0;
+		remoteTimestamp = 0;
 		motorStateClass = nullptr;
 		steerStateClass = nullptr;
 	}
@@ -31,6 +34,7 @@ struct FStateData
 	FStateData(UClass* classOfMotorState, UClass* classOfSteerState)
 	{
 		timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+		remoteTimestamp = 0;
 		motorStateClass = classOfMotorState;
 		steerStateClass = classOfSteerState;
 	}
@@ -38,6 +42,7 @@ struct FStateData
 	FString ToString() const
 	{
 		return FString("Movement timestamp: ") + FString::Printf(TEXT("%lld"), timestamp) + FString("\n") +
+				FString("Remote timestamp: ") + FString::Printf(TEXT("%lld"), remoteTimestamp) + FString("\n") +
 				FString("Motor state class: ") + FString(motorStateClass? motorStateClass->GetFName().ToString() : "nullptr") + FString("\n") +
 				FString("Steer state class: ") + FString(steerStateClass? steerStateClass->GetFName().ToString() : "nullptr")
 		;
@@ -154,7 +159,7 @@ protected:
 	
 	void changeHistoryMovementAtMomentWith(FStateData aBunchOfStates, int atHistoryMoment);
 
-	void reshapeHistoryFrom(int aMomentInHistory, bool anOptionToChangeStates);
+	void reshapeHistoryFrom(int aMomentInHistory);
 
 	FMovementData simulateNextMovementFrom(const FMovementData& aPreviousMovement, float simulationDuration = 0);
 	
@@ -210,4 +215,6 @@ public:
 	void setDefaultVariablesTo(AJet* anOwner, int aMovementHistorySize);
 
 	bool hasDataForClient();
+
+	FMovementData retrieveCurrentMovement();
 };
