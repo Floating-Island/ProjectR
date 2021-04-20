@@ -69,23 +69,12 @@ void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FStateData aBun
 	readyToEstablishMovement = false;
 	int historyMoment = closestIndexTo(aBunchOfStates.timestamp);
 
-	if(historyMoment != movementHistory.size())
+	if(historyMoment < movementHistory.size())
 	{
-		if(historyMoment <= 0)
-		{
-			changeHistoryMovementAtMomentWith(aBunchOfStates, 0);
-			owningJet->asCurrentMovementSet(movementHistory[0], this);
-			establishMovementForTheClientFrom(0, aBunchOfStates.timestamp);//save moment to send to the client...
-		}
-		else
-		{
-			if(historyMoment > 0)
-			{
-				changeHistoryMovementAtMomentWith(aBunchOfStates, historyMoment);
-				reshapeHistoryFrom(historyMoment);//chain reaction of history rewrite
-				establishMovementForTheClientFrom(historyMoment, aBunchOfStates.timestamp);//save moment to send to the client...
-			}
-		}
+		historyMoment = FMath::Max(0, historyMoment);
+		changeHistoryMovementAtMomentWith(aBunchOfStates, historyMoment);
+		reshapeHistoryFrom(historyMoment);//chain reaction of history rewrite
+		establishMovementForTheClientFrom(historyMoment, aBunchOfStates.timestamp);//save moment to send to the client...
 	}
 }
 
