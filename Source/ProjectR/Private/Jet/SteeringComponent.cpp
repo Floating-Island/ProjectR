@@ -3,7 +3,6 @@
 
 #include "Jet/SteeringComponent.h"
 
-#include "../../../../../../Program Files/Epic Games/UE_4.25/Engine/Source/Runtime/Engine/Public/DrawDebugHelpers.h"
 #include "Jet/Jet.h"
 
 
@@ -35,7 +34,7 @@ void USteeringComponent::steer(float aDirectionMultiplier)
 		float effectiveCentripetalAcceleration = FMath::Min(centripetalAcceleration, steerMaximumForce);
 		FVector steerForce = owner->rightVectorProjectionOnFloor() * aDirectionMultiplier * effectiveCentripetalAcceleration;
 		ownerPrimitiveComponent->AddForceAtLocation(steerForce, steeringLocation);
-
+	
 		FVector currentForwardVector = owner->ForwardProjectionOnFloor();
 		FVector currentLocation = owner->GetActorLocation();
 		FTimerDelegate alignVelocityOnNextTick = FTimerDelegate::CreateUObject(this, &USteeringComponent::alignVelocityFrom, currentForwardVector, currentLocation);
