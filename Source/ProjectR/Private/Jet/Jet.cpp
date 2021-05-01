@@ -108,7 +108,6 @@ void AJet::updateFloorUpVector()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Log, TEXT("no track pointer available."));
 		updateFloorVectorWithAnyFloor();
 	}
 }
