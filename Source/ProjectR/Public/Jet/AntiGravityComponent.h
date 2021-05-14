@@ -26,9 +26,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Anti-Gravity Settings")
 		float antiGravityForceValue;
 	
+	void activateAvoidanceTo(FHitResult anObstacle, FVector aVertexLocation);
 
 public:	
-	void activateAvoidanceTo(FHitResult anObstacle, FVector aVertexLocation);
 	void antiGravityLifting();
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
