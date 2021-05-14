@@ -61,12 +61,12 @@ protected:
 	void updateCurrentPlayerStateLapOf(AJet* aJet, int aCurrentLap);
 	void updatePlayerStatesPositions();
 	void setPlayerStateTotalLaps(APlayerController* controller);
+	void createJet(FVector atLocation, FRotator atRotation, int& aNumberOfRemainingJetsToCreate);
 	
 public:
 	ARaceGameMode();
 
 	void positionExpectedJets();
-	void createJet(FVector atLocation, FRotator atRotation, int& aNumberOfRemainingJetsToCreate);
 
 	virtual void StartPlay() override;
 
