@@ -234,8 +234,9 @@ int ARaceGameMode::laps()
 void ARaceGameMode::lapCompletedByJet(AJet* aCrossingJet)
 {
 	if (runningJets.Contains(aCrossingJet))
-	{	
-		if (lapManager->currentLapOf(aCrossingJet) > laps())
+	{
+		int currentLap = lapManager->currentLapOf(aCrossingJet);
+		if (currentLap > laps())
 		{
 			runningJets.Remove(aCrossingJet);
 			finalizedJets.Add(aCrossingJet);
@@ -251,7 +252,7 @@ void ARaceGameMode::lapCompletedByJet(AJet* aCrossingJet)
 		}
 		else
 		{
-			updateCurrentPlayerStateLapOf(aCrossingJet, lapManager->currentLapOf(aCrossingJet));
+			updateCurrentPlayerStateLapOf(aCrossingJet, currentLap);
 		}
 	}
 }
