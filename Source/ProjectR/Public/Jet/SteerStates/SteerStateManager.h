@@ -58,12 +58,7 @@ bool ASteerStateManager::steerStateIsOfType()
 
 template <class aSteerStateType>
 void ASteerStateManager::updateStateTo()
-{
-	if(IsValid(steerState) && steerStateIsOfType<aSteerStateType>())
-	{
-		return;
-	}
-	
+{	
 	steerState = nullptr;
 	steerState = NewObject<aSteerStateType>(this, aSteerStateType::StaticClass()->GetFName());
 }
