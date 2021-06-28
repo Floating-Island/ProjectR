@@ -29,14 +29,18 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Steering Settings")
 		float steerRadius;
+
+	UPROPERTY(EditAnywhere, Category = "Steering Settings")
+		float steerMaximumForce;
 	
+	void steer(float aDirectionMultiplier);
 public:	
 
-	void steer(float aDirectionMultiplier);
 	float steeringRadius();
 
 	void steerLeft();
 	void steerRight();
 
 	float accelerationMagnitudeToAlignVelocityFrom(FVector aPreviousLocation);
+	float maximumAllowedSteeringForce();
 };

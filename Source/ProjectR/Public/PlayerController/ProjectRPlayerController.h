@@ -35,6 +35,9 @@ protected:
 	UPROPERTY()
 		URaceResultsUI* raceResultsUI;
 
+	UPROPERTY(EditDefaultsOnly, Category= "Menus")
+		TSubclassOf<UPauseMenu> pauseMenuClass;
+	
 	void showRaceUI();
 
 	UFUNCTION()
@@ -53,8 +56,7 @@ public:
 	UFUNCTION(Client, Reliable)
 		void loadRaceUI();
 
-	UPROPERTY(EditDefaultsOnly, Category= "Menus")
-		TSubclassOf<UPauseMenu> pauseMenuClass;
+	
 
 	UPauseMenu* loadPauseMenu();
 
@@ -69,4 +71,7 @@ public:
 	
 	UFUNCTION(Client, Reliable)
 		void loadResultsUI();
+
+	UFUNCTION(Client, Reliable)
+		void changeInputModeToGame();
 };

@@ -16,7 +16,7 @@ void AProjectRPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	InputComponent->BindKey(EKeys::Escape, IE_Pressed, this, &AProjectRPlayerController::loadPauseMenuWrapper);
+	InputComponent->BindAction("PauseGameAction", EInputEvent::IE_Pressed, this, &AProjectRPlayerController::loadPauseMenuWrapper);
 }
 
 void AProjectRPlayerController::showRaceUI()
@@ -121,6 +121,13 @@ void AProjectRPlayerController::focusOnGame()
 void AProjectRPlayerController::loadPauseMenuWrapper()
 {
 	loadPauseMenu();
+}
+
+void AProjectRPlayerController::changeInputModeToGame_Implementation()
+{
+	FInputModeGameOnly inputModeData;
+	inputModeData.SetConsumeCaptureMouseDown(true);
+	SetInputMode(inputModeData);
 }
 
 void AProjectRPlayerController::loadResultsUI_Implementation()

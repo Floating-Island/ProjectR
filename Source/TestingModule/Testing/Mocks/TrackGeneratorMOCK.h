@@ -17,6 +17,7 @@ public:
 	bool hasSplineComponent();
 	bool splineIsRootComponent();
 	int32 roadSplinesQuantity();
+	int32 boundsSplinesQuantity();
 	int32 splinePointsQuantity();
 	bool sameNumberOfRoadSplinesThanPoints();
 	bool roadSplinesAndPointsHaveSameStartPositions();
@@ -49,4 +50,15 @@ public:
 	void disableCollisions();
 	bool splineMeshComponentsCollisionsDisabled();
 	bool splineMeshComponentsExpectedCollisions();
+
+	bool boundsSplinesAreAttachedToRoadSplines();
+	bool boundsSplinesMobilitySameAsRoadSplines();
+	bool boundsSplinesAndPointsHaveSameTangents();
+	bool boundsSplinesHaveMeshesSet();
+	bool boundsSplinesAreHiddenInGame();
+	bool boundsSplinesHaveSmoothInterpolation();
+	bool boundsSplinesHaveSameRollAs(float aRollValue);
+	bool boundsSplinesHaveSameWidthAs(float aWidthValue);
+	bool boundsSplinesCollisionsDisabled();
+	bool boundsSplinesCollisionsAsQueryAndPhysics();
 };

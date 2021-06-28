@@ -55,11 +55,6 @@ public:
 template <class aMotorStateType>
 void AMotorStateManager::updateStateTo()
 {
-	if(IsValid(motorState) && motorStateIsOfType<aMotorStateType>())
-	{
-		return;
-	}
-	
 	motorState = nullptr;
 	motorState = NewObject<aMotorStateType>(this, aMotorStateType::StaticClass()->GetFName());
 }

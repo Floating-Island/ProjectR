@@ -66,6 +66,52 @@ bool FSpawnTrackGeneratorInEditorWorldDisableCollisions::Update()
 }
 
 
+bool FRetrieveTrackGeneratorInEditorWorldRollSplineComponents::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+
+	testGenerator->rollSplines(rollValue);
+
+	return true;
+}
+
+
+bool FRetrieveTrackGeneratorInEditorWorldWidenSplineComponents::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+
+	testGenerator->widenSplines(widthValue);
+
+	return true;
+}
+
+
+bool FRetrieveTrackGeneratorInEditorDisableCollisions::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+
+	testGenerator->disableCollisions();
+
+	return true;
+}
+
+
+
 
 
 
@@ -711,6 +757,249 @@ bool FCheckTrackGeneratorsSpawnOneTrackManagerInPIE::Update()
 	}
 	return false;
 }
+
+
+bool FCheckBoundsSplinesQuantity::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+		int32 boundsSplinesQuantity = testGenerator->boundsSplinesQuantity();
+		int32 splinePointsQuantity = testGenerator->splinePointsQuantity();
+		bool sameAmountOfSplinePointsAsBoundsSplines = boundsSplinesQuantity == splinePointsQuantity;//splines always have start and end points at the beginning...
+		UE_LOG(LogTemp, Log, TEXT("Spline points quantity in generator: %d."), splinePointsQuantity);
+		UE_LOG(LogTemp, Log, TEXT("Bounds splines quantity in generator: %d."), boundsSplinesQuantity);
+		UE_LOG(LogTemp, Log, TEXT("Bounds splines quantity is coincident with number of spline points: %s."), *FString(sameAmountOfSplinePointsAsBoundsSplines ? "true" : "false"));
+
+		test->TestTrue(TEXT("At spawning, the number of road splines should be coincident with the spline points quantity."), sameAmountOfSplinePointsAsBoundsSplines);
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckBoundsSplinesAttachToRoadSplines::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool boundsSplinesAreAttachedToRoadSplines = testGenerator->boundsSplinesAreAttachedToRoadSplines();
+		UE_LOG(LogTemp, Log, TEXT("Bounds splines are attached to road splines: %s."), *FString(boundsSplinesAreAttachedToRoadSplines ? "true" : "false"));
+
+		test->TestTrue(TEXT("At spawning, bounds splines should be attached to road splines."), boundsSplinesAreAttachedToRoadSplines);
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckBoundsSplinesMobility::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool boundsSplinesMobilitySameAsRoadSplines = testGenerator->boundsSplinesMobilitySameAsRoadSplines();
+		UE_LOG(LogTemp, Log, TEXT("Bounds splines have the same mobility as road splines: %s."), *FString(boundsSplinesMobilitySameAsRoadSplines ? "true" : "false"));
+
+		test->TestTrue(TEXT("At spawning, bounds splines should have the same mobility as road splines."), boundsSplinesMobilitySameAsRoadSplines);
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckBoundsSplinesTangents::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+		bool boundsSplinesAndPointsHaveSameTangents = testGenerator->boundsSplinesAndPointsHaveSameTangents();
+		UE_LOG(LogTemp, Log, TEXT("Bounds splines tangents are coincident with the tangents of spline points: %s."), *FString(boundsSplinesAndPointsHaveSameTangents ? "true" : "false"));
+
+		test->TestTrue(TEXT("At spawning, the tangents of bounds splines should be coincident with the spline points tangents."), boundsSplinesAndPointsHaveSameTangents);
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckBoundsSplinesMeshes::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool boundsSplinesHaveMeshesSet = testGenerator->boundsSplinesHaveMeshesSet();
+		UE_LOG(LogTemp, Log, TEXT("Bounds splines meshes are set: %s."), *FString(boundsSplinesHaveMeshesSet ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("At spawning, the bounds splines meshes should be set."), boundsSplinesHaveMeshesSet);
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckBoundsSplinesVisibility::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool boundsSplinesAreHiddenInGame = testGenerator->boundsSplinesAreHiddenInGame();
+		UE_LOG(LogTemp, Log, TEXT("Bounds splines are hidden in game: %s."), *FString(boundsSplinesAreHiddenInGame ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("The bounds splines should be set hidden in game."), boundsSplinesAreHiddenInGame);
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckBoundsSplinesSmoothInterpolation::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool boundsSplinesHaveSmoothInterpolation = testGenerator->boundsSplinesHaveSmoothInterpolation();
+		UE_LOG(LogTemp, Log, TEXT("Bounds splines have smooth interpolation: %s."), *FString(boundsSplinesHaveSmoothInterpolation ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("The bounds splines should be set to have smooth interpolation."), boundsSplinesHaveSmoothInterpolation);
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckBoundSplinesRoll::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool boundsSplinesHaveSameRoll = testGenerator->boundsSplinesHaveSameRollAs(rollValue);
+		UE_LOG(LogTemp, Log, TEXT("Bounds splines have the same roll as %f: %s."), rollValue, *FString(boundsSplinesHaveSameRoll ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("The bounds splines should be set to have the same roll."), boundsSplinesHaveSameRoll);
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckBoundSplinesWidth::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+
+		bool boundsSplinesHaveSameWidth = testGenerator->boundsSplinesHaveSameWidthAs(widthValue);
+		UE_LOG(LogTemp, Log, TEXT("Bounds splines have the same width as %f: %s."), widthValue, *FString(boundsSplinesHaveSameWidth ? "true" : "false"));
+
+
+		test->TestTrue(TEXT("The bounds splines should be set to have the same width."), boundsSplinesHaveSameWidth);
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckBoundSplinesCollisionsDisabled::Update()
+{
+	if (GEditor->GetEditorWorldContext().World()->GetMapName() != "BoundedTrackGeneratorMOCKWorld")
+	{
+		return false;
+	}
+	UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+	ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+	if (testGenerator)
+	{
+		bool BoundSplinesHavedCollisionsDisabled = testGenerator->boundsSplinesCollisionsDisabled();
+		UE_LOG(LogTemp, Log, TEXT("bound splines match setted collision disabled: %s."), *FString(BoundSplinesHavedCollisionsDisabled ? "true" : "false"));
+
+		test->TestTrue(TEXT("The bound splines should have their collision enable matching the one set."), BoundSplinesHavedCollisionsDisabled);
+		return true;
+	}
+	return false;
+}
+
+
+bool FCheckBoundSplinesCollisionsQueryAndPhysics::Update()
+{
+	if (GEditor->IsPlayingSessionInEditor())
+	{
+		UWorld* testWorld = GEditor->GetEditorWorldContext().World();
+		ATrackGeneratorMOCK* testGenerator = Cast<ATrackGeneratorMOCK, AActor>(UGameplayStatics::GetActorOfClass(testWorld, ATrackGeneratorMOCK::StaticClass()));
+		if (testGenerator)
+		{
+			bool BoundSplinesHavedCollisionsAsQueryAndPhysics = testGenerator->boundsSplinesCollisionsAsQueryAndPhysics();
+			UE_LOG(LogTemp, Log, TEXT("bound splines match setted collision as query and physics: %s."), *FString(BoundSplinesHavedCollisionsAsQueryAndPhysics ? "true" : "false"));
+
+			test->TestTrue(TEXT("The bound splines should have their collision as query and physics."), BoundSplinesHavedCollisionsAsQueryAndPhysics);
+			testWorld->bDebugFrameStepExecution = true;
+			return true;
+		}
+	}
+	return false;
+}
+
+
+
+
+
+
+
 
 
 

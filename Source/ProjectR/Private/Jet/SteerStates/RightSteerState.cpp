@@ -9,7 +9,7 @@ void URightSteerState::activate(USteeringComponent* aSteeringComponent)
 	aSteeringComponent->steerRight();
 }
 
-void URightSteerState::changesMadeTo(AJet* aJet, FVector& aLinearAcceleration, FVector& anAngularAcceleration)
+void URightSteerState::changesMadeTo(AJet* aJet, FVector& aLinearAcceleration, FVector& anAngularAcceleration, float aSteeringMaximumForce)
 {
 	float aDirection = 1;
 	aJet->InReverseInverts(aDirection);
@@ -18,8 +18,8 @@ void URightSteerState::changesMadeTo(AJet* aJet, FVector& aLinearAcceleration, F
 	FVector steeringLocation = ownerPrimitiveComponent->GetSocketLocation(FName("FrontSteeringPoint"));
 	
 	float centripetalAcceleration = FMath::Pow(aJet->forwardVelocity().Size(), 2) / aJet->steerRadius();
-	FVector steerAcceleration = aJet->rightVectorProjectionOnFloor() * aDirection * centripetalAcceleration;
-
+	float effectiveCentripetalAcceleration = FMath::Min(centripetalAcceleration, aSteeringMaximumForce);
+	FVector steerAcceleration = aJet->rightVectorProjectionOnFloor() * aDirection * effectiveCentripetalAcceleration;
 	aLinearAcceleration = steerAcceleration;
 	FVector primitiveComponentCenterOfMass = ownerPrimitiveComponent->GetCenterOfMass();
 	anAngularAcceleration = FVector::CrossProduct(steeringLocation - primitiveComponentCenterOfMass, steerAcceleration);

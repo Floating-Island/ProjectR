@@ -21,6 +21,19 @@ int32 ATrackGeneratorMOCK::roadSplinesQuantity()
 	return trackSections.Num();
 }
 
+int32 ATrackGeneratorMOCK::boundsSplinesQuantity()
+{
+	int numberOfBounds = 0;
+	for( int position =0 ; position < trackSections.Num(); ++position)
+	{
+		if(trackSections[position].boundsSpline != nullptr)
+		{
+			++numberOfBounds;
+		}
+	}
+	return numberOfBounds;
+}
+
 int32 ATrackGeneratorMOCK::splinePointsQuantity()
 {
 	return splineComponent->GetNumberOfSplinePoints();
@@ -534,6 +547,185 @@ bool ATrackGeneratorMOCK::splineMeshComponentsCollisionsDisabled()
 bool ATrackGeneratorMOCK::splineMeshComponentsExpectedCollisions()
 {
 	return collisionEnabledToQueryOnlyOnMagnetSplines() && roadSplinesHaveCollisionEnabledSetToQueryAndPhysics();
+}
+
+bool ATrackGeneratorMOCK::boundsSplinesAreAttachedToRoadSplines()
+{
+	for (const auto& trackSection : trackSections)
+	{
+		if (!trackSection.roadSpline || !trackSection.boundsSpline)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Road spline or bounds spline is nullptr."));
+			return false;
+		}
+		if (trackSection.boundsSpline->GetAttachParent() != trackSection.roadSpline)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Bounds spline isn't attached to road spline."));
+			return false;
+		}
+	}
+	return true;
+}
+
+bool ATrackGeneratorMOCK::boundsSplinesMobilitySameAsRoadSplines()
+{
+	for (const auto& trackSection : trackSections)
+	{
+		if (!trackSection.roadSpline || !trackSection.boundsSpline)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Road spline or bounds spline is nullptr."));
+			return false;
+		}
+		if (trackSection.boundsSpline->Mobility != trackSection.roadSpline->Mobility)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Bounds spline at doesn't have the same mobility as the road spline."));
+			return false;
+		}
+	}
+	return true;
+}
+
+bool ATrackGeneratorMOCK::boundsSplinesAndPointsHaveSameTangents()
+{
+	int index = 0;
+	for (const auto& trackSection : trackSections)
+	{
+		FVector boundsSplineStartTangent = (trackSection.boundsSpline)->GetStartTangent();
+		FVector boundsSplineEndTangent = (trackSection.boundsSpline)->GetEndTangent();
+		FVector currentSplinePointTangent = splineComponent->GetTangentAtSplinePoint(index, ESplineCoordinateSpace::Local);
+		FVector nextSplinePointTangent = splineComponent->GetTangentAtSplinePoint(nextSplineIndexOf(index), ESplineCoordinateSpace::Local);
+
+		UE_LOG(LogTemp, Log, TEXT("current spline point tangent: %s."), *currentSplinePointTangent.ToString());
+		UE_LOG(LogTemp, Log, TEXT("Bounds spline start tangent: %s."), *boundsSplineStartTangent.ToString());
+		UE_LOG(LogTemp, Log, TEXT("Next spline point tangent: %s."), *nextSplinePointTangent.ToString());
+		UE_LOG(LogTemp, Log, TEXT("Bounds spline end tangent: %s."), *boundsSplineEndTangent.ToString());
+
+		if (!boundsSplineStartTangent.Equals(currentSplinePointTangent) || !boundsSplineEndTangent.Equals(nextSplinePointTangent))
+		{
+			UE_LOG(LogTemp, Log, TEXT("Bounds spline tangents don't match spline point tangents."));
+			return false;
+		}
+		++index;
+	}
+
+	return true;
+}
+
+bool ATrackGeneratorMOCK::boundsSplinesHaveMeshesSet()
+{
+	for (const auto& trackSection : trackSections)
+	{
+		if (!trackSection.boundsSpline->GetStaticMesh())
+		{
+			UE_LOG(LogTemp, Log, TEXT("Bounds spline doesn't have static mesh set."));
+			return false;
+		}
+	}
+	return true;
+}
+
+bool ATrackGeneratorMOCK::boundsSplinesAreHiddenInGame()
+{
+	for (const auto& trackSection : trackSections)
+	{
+		if (!trackSection.boundsSpline->bHiddenInGame)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Bounds spline isn't set to be hidden in game."));
+			return false;
+		}
+	}
+	return true;
+}
+
+bool ATrackGeneratorMOCK::boundsSplinesHaveSmoothInterpolation()
+{
+	for (const auto& trackSection : trackSections)
+	{
+		if (!trackSection.boundsSpline->bSmoothInterpRollScale)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Bounds spline doesn't have smooth roll interpolation."));
+			return false;
+		}
+	}
+	return true;
+}
+
+bool ATrackGeneratorMOCK::boundsSplinesHaveSameRollAs(float aRollValue)
+{
+	int index = 0;
+	for (const auto& trackSection : trackSections)
+	{
+		float boundsStartRoll = trackSection.boundsSpline->GetStartRoll();
+		float boundsEndRoll = trackSection.boundsSpline->GetEndRoll();
+
+		UE_LOG(LogTemp, Log, TEXT("Specified roll: %f."), aRollValue);
+		UE_LOG(LogTemp, Log, TEXT("Spline point index: %d."), index);
+		UE_LOG(LogTemp, Log, TEXT("Bounds spline start roll: %f."), boundsStartRoll);
+		UE_LOG(LogTemp, Log, TEXT("Bounds spline end roll: %f."), boundsEndRoll);
+
+		bool boundsStartRollSimilarToSpecified = FMath::IsNearlyEqual(boundsStartRoll, aRollValue);
+		bool boundsEndRollSimilarToSpecified = FMath::IsNearlyEqual(boundsEndRoll, aRollValue);
+
+		if (!boundsStartRollSimilarToSpecified || !boundsEndRollSimilarToSpecified)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Bounds splines don't have roll similar to the specified."));
+			return false;
+		}
+		++index;
+	}
+	return true;
+}
+
+bool ATrackGeneratorMOCK::boundsSplinesHaveSameWidthAs(float aWidthValue)
+{
+	int index = 0;
+	for (const auto& trackSection : trackSections)
+	{
+		float boundsStartWidth = trackSection.boundsSpline->GetStartScale().X;
+		float boundsEndWidth = trackSection.boundsSpline->GetEndScale().X;
+
+		UE_LOG(LogTemp, Log, TEXT("Specified width: %f."), aWidthValue);
+		UE_LOG(LogTemp, Log, TEXT("Spline point index: %d."), index);
+		UE_LOG(LogTemp, Log, TEXT("Bounds spline start width: %f."), boundsStartWidth);
+		UE_LOG(LogTemp, Log, TEXT("Bounds spline end width: %f."), boundsEndWidth);
+
+		bool boundsStartWidthSimilarToSpecified = FMath::IsNearlyEqual(boundsStartWidth, aWidthValue);
+		bool boundsEndWidthSimilarToSpecified = FMath::IsNearlyEqual(boundsEndWidth, aWidthValue);
+
+		if (!boundsStartWidthSimilarToSpecified || !boundsEndWidthSimilarToSpecified)
+		{
+			UE_LOG(LogTemp, Log, TEXT("Bounds splines don't have width similar to the specified."));
+			return false;
+		}
+		++index;
+	}
+	return true;
+}
+
+bool ATrackGeneratorMOCK::boundsSplinesCollisionsDisabled()
+{
+	for (const auto& trackSection : trackSections)
+	{
+		if (trackSection.boundsSpline->GetCollisionEnabled() != ECollisionEnabled::NoCollision)
+		{
+			UE_LOG(LogTemp, Log, TEXT("bounds spline has collisions enabled when setting it to disable."));
+			return false;
+		}
+	}
+	return true;
+}
+
+bool ATrackGeneratorMOCK::boundsSplinesCollisionsAsQueryAndPhysics()
+{
+	for (const auto& trackSection : trackSections)
+	{
+		if (trackSection.boundsSpline->GetCollisionEnabled() != ECollisionEnabled::QueryAndPhysics)
+		{
+			UE_LOG(LogTemp, Log, TEXT("bounds spline has collisions set as something different that query and physics."));
+			return false;
+		}
+	}
+	return true;
 }
 
 

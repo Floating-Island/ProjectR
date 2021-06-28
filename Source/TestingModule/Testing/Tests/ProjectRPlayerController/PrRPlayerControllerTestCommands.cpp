@@ -149,25 +149,31 @@ bool FCheckPlayerControllerShowsMouseCursor::Update()
 }
 
 
-bool FCheckPlayerControllerPressEscBringsPauseMenu::Update()
+bool FCheckPlayerControllerPressPauseGameActionBringsPauseMenu::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		if (testPlayerController == nullptr)
 		{
-			PIESessionUtilities sessionUtilities = PIESessionUtilities();
 			sessionUtilities.defaultPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
 			testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerControllerMOCK>();
 		}
 		else
 		{
-			testPlayerController->InputKey(EKeys::Escape, EInputEvent::IE_Pressed, 5.0f, false);
-
 			if (testPlayerController->pauseMenuIsInViewport())
 			{
 				test->TestTrue(test->conditionMessage(), testPlayerController->pauseMenuIsInViewport());
 				return true;
 			}
+
+			FName const actionName = FName("PauseGameAction");
+			TArray<FInputActionKeyMapping> actionMappings = testPlayerController->PlayerInput->GetKeysForAction(actionName);
+
+			FInputActionKeyMapping action = actionMappings[0];
+			UE_LOG(LogTemp, Log, TEXT("Pressing key: %s."), *action.Key.ToString());
+			testPlayerController->InputKey(action.Key, EInputEvent::IE_Pressed, 5.0f, false);
+			
 			return test->manageTickCountTowardsLimit();
 		}
 	}
@@ -175,13 +181,13 @@ bool FCheckPlayerControllerPressEscBringsPauseMenu::Update()
 }
 
 
-bool FCheckPlayerControllerPressEscRemovesPauseMenuInViewport::Update()
+bool FCheckPlayerControllerPressPauseGameActionRemovesPauseMenuInViewport::Update()
 {
 	if (GEditor->IsPlayingSessionInEditor())
 	{
+		PIESessionUtilities sessionUtilities = PIESessionUtilities();
 		if (testPlayerController == nullptr)
 		{
-			PIESessionUtilities sessionUtilities = PIESessionUtilities();
 			sessionUtilities.defaultPIEWorld()->GetAuthGameMode()->SpawnPlayerController(ENetRole::ROLE_None, FString(""));
 			testPlayerController = sessionUtilities.retrieveFromPIEAnInstanceOf<AProjectRPlayerControllerMOCK>();
 			testPlayerController->loadPauseMenu();
@@ -190,7 +196,13 @@ bool FCheckPlayerControllerPressEscRemovesPauseMenuInViewport::Update()
 		{
 			if (testPlayerController->pauseMenuIsInViewport())
 			{
-				testPlayerController->InputKey(EKeys::Escape, EInputEvent::IE_Pressed, 5.0f, false);
+				FName const actionName = FName("PauseGameAction");
+				TArray<FInputActionKeyMapping> actionMappings = testPlayerController->PlayerInput->GetKeysForAction(actionName);
+
+				FInputActionKeyMapping action = actionMappings[0];
+				UE_LOG(LogTemp, Log, TEXT("Pressing key: %s."), *action.Key.ToString());
+				testPlayerController->InputKey(action.Key, EInputEvent::IE_Pressed, 5.0f, false);
+
 				return test->manageTickCountTowardsLimit();
 			}
 			test->TestTrue(test->conditionMessage(), !testPlayerController->pauseMenuIsInViewport() && !testPlayerController->ShouldShowMouseCursor());

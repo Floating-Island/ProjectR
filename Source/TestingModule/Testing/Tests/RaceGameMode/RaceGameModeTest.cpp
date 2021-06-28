@@ -7,7 +7,7 @@
 #include "GameMode/RaceGameMode.h"
 #include "RaceGameModeTestCommands.h"
 #include "../../Commands/NetworkCommands.h"
-#include "../../Commands/CommonPIECommands.h"
+//#include "../../Commands/CommonPIECommands.h"
 
 #include "Tests/AutomationEditorCommon.h"
 

@@ -7,6 +7,22 @@
 #include "Track/TrackManager.h"
 #include "Kismet/GameplayStatics.h"
 
+float ATrackGenerator::smoothStepFrom(float start, float end, float target)
+{
+	if (target < start)
+	{
+		return 0.0f;
+	}
+
+	if (target >= end)
+	{
+		return 1.0f;
+	}
+	
+	const float InterpolationFraction = (target - start) / (end - start);
+	return InterpolationFraction * InterpolationFraction * (3.0f - 2.0f * InterpolationFraction);
+}
+
 ATrackGenerator::ATrackGenerator()
 {
 	bGenerateOverlapEventsDuringLevelStreaming = true;
@@ -56,6 +72,7 @@ void ATrackGenerator::adjustRollArraySizeToSplinePointsQuantity()
 			trackSections.Add(FTrackSectionData());
 			trackSections.Last().roadMesh = defaultRoadMesh;
 			trackSections.Last().magnetMesh = defaultMagnetMesh;
+			trackSections.Last().boundsMesh = defaultBoundsMesh;
 		}
 		return;
 	}
@@ -76,6 +93,7 @@ void ATrackGenerator::cleanSplineMeshComponents()
 	{
 		trackSection.roadSpline = nullptr;
 		trackSection.magnetSpline = nullptr;
+		trackSection.boundsSpline = nullptr;
 	}
 }
 
@@ -90,6 +108,10 @@ void ATrackGenerator::destroySplineMeshComponents()
 		if (trackSection.magnetSpline)
 		{
 			trackSection.magnetSpline->DestroyComponent();
+		}
+		if (trackSection.boundsSpline)
+		{
+			trackSection.boundsSpline->DestroyComponent();
 		}
 	}
 }
@@ -107,21 +129,28 @@ int32 ATrackGenerator::nextSplineIndexOf(int32 aCurrentIndex)
 	return (aCurrentIndex + 1) % splineComponent->GetNumberOfSplinePoints();
 }
 
-FVector ATrackGenerator::closestLocationTo(FVector anotherLocation)
-{
-	return splineComponent->FindLocationClosestToWorldLocation(anotherLocation, ESplineCoordinateSpace::World);
-}
-
 void ATrackGenerator::createSplineMeshComponents()
 {
 	int32 splineQuantity = splineComponent->GetNumberOfSplinePoints();
 	for (int32 splinePointIndex = 0; splinePointIndex < splineQuantity; ++splinePointIndex)
 	{
-		USplineMeshComponent* roadSpline = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Road Spline Component "), splinePointIndex));
-		configureRoadSpline(splinePointIndex, roadSpline);
+		if(defaultRoadMesh)
+		{
+			USplineMeshComponent* roadSpline = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Road Spline Component "), splinePointIndex));
+			configureRoadSpline(splinePointIndex, roadSpline);
 
-		USplineMeshComponent* magnetSpline = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Magnet Spline Component "), splinePointIndex));
-		configureMagnetSpline(splinePointIndex, roadSpline, magnetSpline);
+			if(defaultMagnetMesh)
+			{
+				USplineMeshComponent* magnetSpline = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Magnet Spline Component "), splinePointIndex));
+				configureMagnetSpline(splinePointIndex, roadSpline, magnetSpline);
+			}
+
+			if(defaultBoundsMesh)
+			{
+				USplineMeshComponent* boundsSpline = NewObject<USplineMeshComponent>(this, USplineMeshComponent::StaticClass(), FName(TEXT("Bounds Spline Component "), splinePointIndex));
+				configureBoundsSpline(splinePointIndex, roadSpline, boundsSpline);
+			}
+		}
 	}
 }
 
@@ -206,6 +235,26 @@ void ATrackGenerator::configureMagnetSpline(int32 aSplinePointIndex, USplineMesh
 	configureRollAndWidthOf(aMagnetSpline, aSplinePointIndex);
 }
 
+void ATrackGenerator::configureBoundsSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline,
+                                            USplineMeshComponent* aBoundsSpline)
+{
+	aBoundsSpline->RegisterComponent();
+	trackSections[aSplinePointIndex].boundsSpline = aBoundsSpline;
+	aBoundsSpline->Mobility = aRoadSpline->Mobility;
+	aBoundsSpline->SetHiddenInGame(true);
+	aBoundsSpline->bSmoothInterpRollScale = true;
+	configureComponentPositionsAndTangents(aSplinePointIndex, aBoundsSpline);
+	aBoundsSpline->SetStaticMesh(trackSections[aSplinePointIndex].boundsMesh);
+	aBoundsSpline->AttachToComponent(aRoadSpline, FAttachmentTransformRules(EAttachmentRule::KeepRelative, false));
+
+	aBoundsSpline->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	aBoundsSpline->SetCollisionResponseToAllChannels(ECR_Block);
+	aBoundsSpline->SetCollisionResponseToChannel(ECC_Visibility, ECR_Ignore);
+	
+	configureRollAndWidthOf(aBoundsSpline, aSplinePointIndex);
+	editorCollisionsEnabled(aBoundsSpline);
+}
+
 void ATrackGenerator::configureCollisionOf(USplineMeshComponent* aMagnetSpline)
 {
 	aMagnetSpline->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
@@ -237,11 +286,9 @@ void ATrackGenerator::toMagnetOverlapSubscribe(ATrackManager* aManager)
 	}
 }
 
-float ATrackGenerator::distanceAlongSplineOf(AActor* anActor)
+float ATrackGenerator::distanceAlongSplineOf(FVector aLocation)
 {
-	FVector actorLocation = anActor->GetActorLocation();
-
-	float locationInputKey = splineComponent->FindInputKeyClosestToWorldLocation(actorLocation);
+	float locationInputKey = splineComponent->FindInputKeyClosestToWorldLocation(aLocation);
 
 	int32 splinePointFromInputKey = FMath::TruncToInt(locationInputKey);
 	float remainingSegmentParameter = locationInputKey - splinePointFromInputKey;
@@ -253,6 +300,13 @@ float ATrackGenerator::distanceAlongSplineOf(AActor* anActor)
 	float distanceAlongSpline = distanceToSplinePoint + remainingSegmentLength;
 
 	return distanceAlongSpline;
+}
+
+float ATrackGenerator::distanceAlongSplineOf(AActor* anActor)
+{
+	FVector actorLocation = anActor->GetActorLocation();
+
+	return distanceAlongSplineOf(actorLocation);
 }
 
 float ATrackGenerator::length()
@@ -278,4 +332,9 @@ FVector ATrackGenerator::upVectorAt(float aDistanceAlongSpline)
 FRotator ATrackGenerator::rotationAt(float aDistanceAlongSpline)
 {
 	return splineComponent->GetRotationAtDistanceAlongSpline(aDistanceAlongSpline, ESplineCoordinateSpace::World);
+}
+
+FVector ATrackGenerator::closestLocationTo(FVector aNearWorldLocationToSpline)
+{
+	return splineComponent->FindLocationClosestToWorldLocation(aNearWorldLocationToSpline, ESplineCoordinateSpace::World);
 }

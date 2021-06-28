@@ -22,7 +22,7 @@
 bool FATrackGeneratorIsntNullWhenInstantiatedTest::RunTest(const FString& Parameters)
 {
 	ATrackGenerator* testGenerator = NewObject<ATrackGenerator>();
-	TestNotNull(TEXT("The track generator shouldn't be null when instantiated."), testGenerator);
+	TestNotNull(FString("The track generator shouldn't be null when instantiated."), testGenerator);
 
 	return true;
 }
@@ -31,7 +31,7 @@ bool FATrackGeneratorIsntNullWhenInstantiatedTest::RunTest(const FString& Parame
 bool FATrackGeneratorHasASplineComponentTest::RunTest(const FString& Parameters)
 {
 	ATrackGeneratorMOCK* testGenerator = NewObject<ATrackGeneratorMOCK>();
-	TestTrue(TEXT("The track generator should have a spline component."), testGenerator->hasSplineComponent());
+	TestTrue(FString("The track generator should have a spline component."), testGenerator->hasSplineComponent());
 
 	return true;
 }
@@ -40,7 +40,7 @@ bool FATrackGeneratorHasASplineComponentTest::RunTest(const FString& Parameters)
 bool FATrackGeneratorSplineComponentIsTheRootComponentTest::RunTest(const FString& Parameters)
 {
 	ATrackGeneratorMOCK* testGenerator = NewObject<ATrackGeneratorMOCK>();
-	TestTrue(TEXT("The track generator spline component should be the root component."), testGenerator->splineIsRootComponent());
+	TestTrue(FString("The track generator spline component should be the root component."), testGenerator->splineIsRootComponent());
 
 	return true;
 }
@@ -230,7 +230,7 @@ bool FATrackGeneratorMeshesHaveSameMobilityAsRootAtSpawningTest::RunTest(const F
 bool FATrackGeneratorSplineComponentLoopsTest::RunTest(const FString& Parameters)
 {
 	ATrackGeneratorMOCK* testGenerator = NewObject<ATrackGeneratorMOCK>();
-	TestTrue(TEXT("The track generator spline component should loop, these are race tracks."), testGenerator->isSplineComponentLooping());
+	TestTrue(FString("The track generator spline component should loop, these are race tracks."), testGenerator->isSplineComponentLooping());
 
 	return true;
 }
@@ -389,7 +389,7 @@ bool FATrackGeneratorSplineMeshComponentsHaveSmoothInterpolationEnabledTest::Run
 bool FATrackGeneratorGeneratesOverlapEventsWhenSpawnedTest::RunTest(const FString& Parameters)
 {
 	ATrackGenerator* testGenerator = NewObject<ATrackGenerator>();
-	TestTrue(TEXT("The track generator should generate overlap events when spawned."), testGenerator->bGenerateOverlapEventsDuringLevelStreaming);
+	TestTrue(FString("The track generator should generate overlap events when spawned."), testGenerator->bGenerateOverlapEventsDuringLevelStreaming);
 
 	return true;
 }
@@ -446,7 +446,6 @@ bool FATrackGeneratorAllowsDisableCollisionsInEditorTest::RunTest(const FString&
 
 	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
 
-	float widthValue = 30.0f;
 	ADD_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldDisableCollisions);
 
 	ADD_LATENT_AUTOMATION_COMMAND(FCheckComponentsCollision(this));
@@ -505,6 +504,166 @@ bool FATrackGeneratorsSpawnOnlyOneTrackManagerAtBeginPlayTest::RunTest(const FSt
 	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
 	return true;
 }
+
+
+bool FATrackGeneratorBoundsSplinesQuantityIsTheSameAsSplinePointsAtSpawningTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/BoundedTrackGeneratorMOCKWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckBoundsSplinesQuantity(this));
+
+	return true;
+}
+
+
+bool FATrackGeneratorBoundsSplinesAreAttachedToRoadSplinesAtSpawningTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/BoundedTrackGeneratorMOCKWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckBoundsSplinesAttachToRoadSplines(this));
+
+	return true;
+}
+
+
+bool FATrackGeneratorBoundsSplinesHaveTheSameMobilityAsRoadSplinesAtSpawningTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/BoundedTrackGeneratorMOCKWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckBoundsSplinesMobility(this));
+
+	return true;
+}
+
+
+bool FATrackGeneratorBoundsSplinesTangentsAreTheSameAsSplinePointsAtSpawningTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/BoundedTrackGeneratorMOCKWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckBoundsSplinesMobility(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckBoundsSplinesTangents(this));
+	
+	return true;
+}
+
+
+bool FATrackGeneratorBoundsSplinesMeshesAreSetAtSpawningTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/BoundedTrackGeneratorMOCKWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckBoundsSplinesMobility(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckBoundsSplinesMeshes(this));
+	
+	return true;
+}
+
+
+bool FATrackGeneratorBoundsSplinesAreHiddenInGameTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/BoundedTrackGeneratorMOCKWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckBoundsSplinesMobility(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckBoundsSplinesVisibility(this));
+	
+	return true;
+}
+
+
+bool FATrackGeneratorBoundsSplinesHaveSmoothInterpolationEnabledTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/BoundedTrackGeneratorMOCKWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckBoundsSplinesMobility(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckBoundsSplinesSmoothInterpolation(this));
+	
+	return true;
+}
+
+
+bool FATrackGeneratorBoundsSplinesRollAfterSettingRollInEditorTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/BoundedTrackGeneratorMOCKWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	float rollValue = 30.0f;
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveTrackGeneratorInEditorWorldRollSplineComponents(rollValue));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckBoundSplinesRoll(rollValue, this));
+
+	return true;
+}
+
+
+bool FATrackGeneratorBoundsSplinesWidenAfterSettingWidthInEditorTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/BoundedTrackGeneratorMOCKWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	float widthValue = 3;
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveTrackGeneratorInEditorWorldWidenSplineComponents(widthValue));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckBoundSplinesWidth(widthValue, this));
+
+	return true;
+}
+
+
+bool FATrackGeneratorAllowsDisableCollisionsInEditorForBoundsSplinesTest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/BoundedTrackGeneratorMOCKWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FRetrieveTrackGeneratorInEditorDisableCollisions);
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckBoundSplinesCollisionsDisabled(this));
+
+	return true;
+}
+
+
+bool FATrackGeneratorBoundsSplinesHaveQueryAndPhysicsCollisionsInPIETest::RunTest(const FString& Parameters)
+{
+	FString testWorldName = FString("/Game/Tests/TestMaps/BoundedTrackGeneratorMOCKWorld");
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEditorLoadMap(testWorldName));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FStartPIECommand(true));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FCheckBoundSplinesCollisionsQueryAndPhysics(this));
+
+	ADD_LATENT_AUTOMATION_COMMAND(FEndPlayMapCommand);
+
+	return true;
+}
+
+
+
+
+
+
+
+
 
 
 

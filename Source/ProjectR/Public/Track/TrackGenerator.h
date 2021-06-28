@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "../Jet/Jet.h"
 #include "GameFramework/Actor.h"
 #include "TrackGenerator.generated.h"
 
@@ -19,11 +21,14 @@ struct FTrackSectionData
 
 	USplineMeshComponent* roadSpline = nullptr;
 	USplineMeshComponent* magnetSpline = nullptr;
+	USplineMeshComponent* boundsSpline = nullptr;
 
 	UPROPERTY(EditAnywhere, Category = "Default Meshes")
 		UStaticMesh* roadMesh = nullptr;
 	UPROPERTY(EditAnywhere, Category = "Default Meshes")
 		UStaticMesh* magnetMesh = nullptr;
+	UPROPERTY(EditAnywhere, Category = "Default Meshes")
+		UStaticMesh* boundsMesh = nullptr;
 
 	UPROPERTY(EditAnywhere, Category = "Section")
 		float startRoll = 0;
@@ -36,6 +41,8 @@ class PROJECTR_API ATrackGenerator : public AActor
 {
 	GENERATED_BODY()
 
+	static float smoothStepFrom(float start, float end, float target);
+	
 public:
 	// Sets default values for this actor's properties
 	ATrackGenerator();
@@ -56,8 +63,9 @@ protected:
 	void createSplineMeshComponents();
 	void editorCollisionsEnabled(USplineMeshComponent* aSplineMeshComponent);
 
-	void configureMagnetSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline, USplineMeshComponent* aMagnetSpline);
 	void configureRoadSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline);
+	void configureMagnetSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline, USplineMeshComponent* aMagnetSpline);
+	void configureBoundsSpline(int32 aSplinePointIndex, USplineMeshComponent* aRoadSpline, USplineMeshComponent* aBoundsSpline);
 	void configureComponentPositionsAndTangents(int32 aSplinePointIndex, USplineMeshComponent* aSplineMesh);
 	void configureRollAndWidthOf(USplineMeshComponent* aSplineMeshComponent, int32 AtASplinePointIndex);
 	void configureCollisionOf(USplineMeshComponent* aMagnetSpline);
@@ -65,11 +73,15 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Default Settings")
 		UStaticMesh* defaultRoadMesh;
 
-	float magnetSplineHeightDistanceToRoadSpline;
-
 	UPROPERTY(EditAnywhere, Category = "Default Settings")
 		UStaticMesh* defaultMagnetMesh;
 
+	UPROPERTY(EditAnywhere, Category = "Default Settings")
+		UStaticMesh* defaultBoundsMesh;
+
+	
+	float magnetSplineHeightDistanceToRoadSpline;
+	
 	UPROPERTY(EditAnywhere, Category = "Elements", EditFixedSize)
 		TArray<FTrackSectionData> trackSections;
 
@@ -84,8 +96,8 @@ public:
 
 	int32 nextSplineIndexOf(int32 aCurrentIndex);
 
-	FVector closestLocationTo(FVector anotherLocation);
 	void toMagnetOverlapSubscribe(ATrackManager* aManager);
+	float distanceAlongSplineOf(FVector aLocation);
 
 	float distanceAlongSplineOf(AActor* anActor);
 
@@ -95,7 +107,7 @@ public:
 	FVector locationAt(float aDistanceAlongSpline);
 	FVector upVectorAt(float aDistanceAlongSpline);
 	FRotator rotationAt(float aDistanceAlongSpline);
-
+	FVector closestLocationTo(FVector aNearWorldLocationToSpline);
 };
 
 

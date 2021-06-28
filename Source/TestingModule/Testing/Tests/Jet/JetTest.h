@@ -183,9 +183,9 @@ IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetFallingSpeedWhenSteeringSameAsNoSte
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetRotatesPitchRightWhenTiltedAndSteersRightTest, FSimplePIETestBase,
-	"ProjectR.Jet Tests.Unit.033: Rotates pitch right when tilted and steers right", 
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+//IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetRotatesPitchRightWhenTiltedAndSteersRightTest, FSimplePIETestBase,
+//	"ProjectR.Jet Tests.Unit.033: Rotates pitch right when tilted and steers right", 
+//	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 IMPLEMENT_CUSTOM_SIMPLE_AUTOMATION_TEST(FAJetAcceleratesOrthogonalToSurfaceNormalTest, FSimplePIETestBase,

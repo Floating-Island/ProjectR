@@ -43,16 +43,16 @@ DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndRotateIt);
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningTwoJetsMakeOneOfThemItAccelerateAndSteerRight);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawningAJetTiltItAndMakeItSteerRight, float, roll);
+//DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawningAJetTiltItAndMakeItSteerRight, float, roll);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotatedOverFloorAndAccelerateIt);
+DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAJetRotatedOverFloorAndAccelerateIt);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetAndFloorSideWays);
+DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAJetAndFloorSideWays);
 
 
-DEFINE_LATENT_AUTOMATION_COMMAND(FSpawningAJetRotatedOverFloorAndBrakeIt);
+DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAJetRotatedOverFloorAndBrakeIt);
 
 
 DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveAJetRotatedOverFloorAccelerateAndSteerItRight);

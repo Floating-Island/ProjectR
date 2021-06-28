@@ -2,14 +2,13 @@
 
 #pragma once
 
-#include <chrono>
-
 #include "CoreMinimal.h"
 #include "DeloreanReplicationMachine.h"
 #include "GameFramework/Pawn.h"
 #include "Jet.generated.h"
 
 
+class ATrackGenerator;
 class USpringArmComponent;
 class UCameraComponent;
 class UAntiGravityComponent;
@@ -77,6 +76,28 @@ protected:
 	 */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Replication")
 		int movementHistorySize;
+
+	/**
+	 * used to set the maximum distance downwards to search for a 'floor'.
+	 * Treat it as an absolute value.
+	 */
+	float noTrackFloorQueryDistance;
+	
+	FVector floorUpVector;
+	
+	UFUNCTION()
+		void manageUpVectorUpdate();
+	void updateFloorVectorWithAnyFloor();
+	void updateFloorUpVectorWithTrack();
+	void fillWithDefaultOptions(FCollisionQueryParams& aCollisionQueryParameters);
+
+public:
+	void updateFloorUpVector();
+
+protected:
+
+	ATrackGenerator* track;
+
 	
 public:
 	virtual void Tick(float DeltaTime) override;
@@ -112,8 +133,6 @@ public:
 
 	FVector ForwardProjectionOnFloor();
 
-	bool traceToFind(FHitResult& anObstacle);
-
 	FVector forwardVelocity();
 
 	FVector velocityProjectionOnFloor();
@@ -122,12 +141,20 @@ public:
 
 	bool keyIsPressedFor(const FName anActionMappingName);
 
+	FVector floorNormal();
 
 //start of replication:
+
+	UFUNCTION(Client, Reliable)
+		void clientDisableInput();
+
+	UFUNCTION(Client, Reliable)
+		void clientEnableInput();
 	
 	float mass();
 	UClass* currentMotorStateClass();
 	UClass* currentSteerStateClass();
+	float maximumSteeringForce();
 	float accelerationMagnitudeToAlignVelocityFrom(FVector aCurrentLocation);
 
 	

@@ -2,6 +2,7 @@
 
 
 #include "Jet/SteeringComponent.h"
+
 #include "Jet/Jet.h"
 
 
@@ -11,6 +12,7 @@ USteeringComponent::USteeringComponent()
 	owner = Cast<AJet, AActor>(GetOwner());
 
 	steerRadius = 2000;
+	steerMaximumForce = std::numeric_limits<float>::max();
 }
 
 void USteeringComponent::BeginPlay()
@@ -29,9 +31,10 @@ void USteeringComponent::steer(float aDirectionMultiplier)
 
 		FVector steeringLocation = ownerPrimitiveComponent->GetSocketLocation(FName("FrontSteeringPoint"));
 		float centripetalAcceleration = FMath::Pow(owner->forwardVelocity().Size(), 2) / steerRadius;
-		FVector steerForce = owner->rightVectorProjectionOnFloor() * aDirectionMultiplier * centripetalAcceleration;
+		float effectiveCentripetalAcceleration = FMath::Min(centripetalAcceleration, steerMaximumForce);
+		FVector steerForce = owner->rightVectorProjectionOnFloor() * aDirectionMultiplier * effectiveCentripetalAcceleration;
 		ownerPrimitiveComponent->AddForceAtLocation(steerForce, steeringLocation);
-
+	
 		FVector currentForwardVector = owner->ForwardProjectionOnFloor();
 		FVector currentLocation = owner->GetActorLocation();
 		FTimerDelegate alignVelocityOnNextTick = FTimerDelegate::CreateUObject(this, &USteeringComponent::alignVelocityFrom, currentForwardVector, currentLocation);
@@ -51,7 +54,7 @@ void USteeringComponent::alignVelocityFrom(FVector aPreviousForwardVector, FVect
 {
 	float mass = ownerPrimitiveComponent->GetMass();
 	//I use the kinetic energy formula into the work formula and get the force applied from there (v1 is zero):
-	float forceMagnitudeToRecreateVelocity = mass * accelerationMagnitudeToAlignVelocityFrom(aPreviousForwardVector);
+	float forceMagnitudeToRecreateVelocity = mass * accelerationMagnitudeToAlignVelocityFrom(aPreviousLocation);
 
 	FVector previousBackwardsVector = -aPreviousForwardVector;
 	FVector counterForce = previousBackwardsVector * forceMagnitudeToRecreateVelocity;
@@ -80,7 +83,7 @@ float USteeringComponent::accelerationMagnitudeToAlignVelocityFrom(FVector aPrev
 {
 	FVector const currentForwardVelocity = owner->forwardVelocity();
 	FVector const currentLocation = owner->GetActorLocation();
-
+	
 	float const squareVelocityDelta = FMath::Pow(currentForwardVelocity.Size(), 2);
 	float const distanceFromTick = (currentLocation - aPreviousLocation).Size();
 
@@ -98,5 +101,10 @@ float USteeringComponent::accelerationMagnitudeToAlignVelocityFrom(FVector aPrev
 	float const accelerationMagnitudeToRecreateVelocity = squareVelocityDelta / (static_cast<float>((2 * distanceFromTick)));
 
 	return accelerationMagnitudeToRecreateVelocity;
+}
+
+float USteeringComponent::maximumAllowedSteeringForce()
+{
+	return steerMaximumForce;
 }
 

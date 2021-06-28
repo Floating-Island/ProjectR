@@ -63,35 +63,24 @@ void ATrackManager::manageMagnetization()
 			ATrackGenerator* trackGenerator = jetTrackGeneratorPair.Value;
 
 			FVector jetLocation = jet->GetActorLocation();
-			FVector generatorLocation = trackGenerator->closestLocationTo(jetLocation);
-			FHitResult hit;
-			FCollisionQueryParams collisionParameters;
-			collisionParameters.AddIgnoredActor(jet);
-			collisionParameters.bTraceComplex = true;
-			int directionMultiplier = 2;
-			FVector traceEnd = (generatorLocation - jetLocation) * directionMultiplier + jetLocation;//get the direction of the trace, make it double and set it at the jet location.
+			FVector trackUpVector = jet->floorNormal();
 
-			bool hitBlocked = GetWorld()->LineTraceSingleByChannel(hit, jetLocation, traceEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
-
-			prepareMagnetization(jet, hit, hitBlocked);
+			prepareMagnetizationOf(jet, trackUpVector);
 		}
 	}
 }
 
-void ATrackManager::prepareMagnetization(AJet* aJet, FHitResult aHit, bool wasHitBlocked)
+void ATrackManager::prepareMagnetizationOf(AJet* aJet, FVector aTrackUpVector)
 {
-	if (wasHitBlocked)
+	FVector roadNormal = aTrackUpVector;
+
+	UStaticMeshComponent* jetRoot = Cast<UStaticMeshComponent, USceneComponent>(aJet->GetRootComponent());
+
+	if (jetRoot && jetRoot->IsSimulatingPhysics())
 	{
-		FVector roadNormal = aHit.ImpactNormal;
-
-		UStaticMeshComponent* jetRoot = Cast<UStaticMeshComponent, USceneComponent>(aJet->GetRootComponent());
-
-		if (jetRoot && jetRoot->IsSimulatingPhysics())
-		{
-			FVector gravityAccelerationAbsolute = aJet->GetGravityDirection() * GetWorld()->GetGravityZ();
-			FVector jetWeightAbsolute = gravityAccelerationAbsolute * jetRoot->GetMass();
-			magnetize(jetRoot, jetWeightAbsolute, roadNormal);
-		}
+		FVector gravityAccelerationAbsolute = aJet->GetGravityDirection() * GetWorld()->GetGravityZ();
+		FVector jetWeightAbsolute = gravityAccelerationAbsolute * jetRoot->GetMass();
+		magnetize(jetRoot, jetWeightAbsolute, roadNormal);
 	}
 }
 

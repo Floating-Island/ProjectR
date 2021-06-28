@@ -234,8 +234,9 @@ int ARaceGameMode::laps()
 void ARaceGameMode::lapCompletedByJet(AJet* aCrossingJet)
 {
 	if (runningJets.Contains(aCrossingJet))
-	{	
-		if (lapManager->currentLapOf(aCrossingJet) > laps())
+	{
+		int currentLap = lapManager->currentLapOf(aCrossingJet);
+		if (currentLap > laps())
 		{
 			runningJets.Remove(aCrossingJet);
 			finalizedJets.Add(aCrossingJet);
@@ -251,7 +252,7 @@ void ARaceGameMode::lapCompletedByJet(AJet* aCrossingJet)
 		}
 		else
 		{
-			updateCurrentPlayerStateLapOf(aCrossingJet, lapManager->currentLapOf(aCrossingJet));
+			updateCurrentPlayerStateLapOf(aCrossingJet, currentLap);
 		}
 	}
 }
@@ -291,6 +292,7 @@ void ARaceGameMode::possessJets()
 		AJet* unPossessedJet = unPossessedJets.Pop();
 		controller->Possess(unPossessedJet);
 		unPossessedJet->SetOwner(controller);
+		setToFocusOnGameTo(controller);
 		prepareRaceUIOf(controller);
 	}//if when testing the splitscreen only the first player moves, try to spawn more players.
 }
@@ -321,6 +323,7 @@ void ARaceGameMode::disableJetsInput()
 		if(jet->IsPlayerControlled())
 		{
 			jet->DisableInput(Cast<APlayerController,AController>(jet->GetController()));
+			jet->clientDisableInput();
 		}
 	}
 }
@@ -332,7 +335,17 @@ void ARaceGameMode::enableJetsInput()
 		if(jet->IsPlayerControlled())
 		{
 			jet->EnableInput(Cast<APlayerController,AController>(jet->GetController()));
+			jet->clientEnableInput();
 		}
+	}
+}
+
+void ARaceGameMode::setToFocusOnGameTo(APlayerController* aController)
+{
+	AProjectRPlayerController* controller = Cast<AProjectRPlayerController, APlayerController>(aController);
+	if(controller)
+	{
+		controller->changeInputModeToGame();
 	}
 }
 

@@ -183,13 +183,58 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorsSpawnOnlyOneTrackManagerAtBegi
 	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorBoundsSplinesQuantityIsTheSameAsSplinePointsAtSpawningTest, 
+	"ProjectR.TrackGenerator Tests.Unit.034: Bound splines quantity is the same as spline points at spawning", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
-//(when a custom mesh for magnet spline is already made) set location of magnet spline same as spline mesh,
-// attach and elevate the same amount as the bound of mesh (saved in constructor) multiplied by the scale (gotten in on construction).
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorBoundsSplinesAreAttachedToRoadSplinesAtSpawningTest, 
+	"ProjectR.TrackGenerator Tests.Unit.035: Bounds splines are attached to road splines at spawning", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorBoundsSplinesHaveTheSameMobilityAsRoadSplinesAtSpawningTest, 
+	"ProjectR.TrackGenerator Tests.Unit.037: Bounds splines have the same mobility as road splines at spawning", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorBoundsSplinesTangentsAreTheSameAsSplinePointsAtSpawningTest, 
+	"ProjectR.TrackGenerator Tests.Unit.038: Bounds splines tangents are the same as spline points at spawning", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorBoundsSplinesMeshesAreSetAtSpawningTest, 
+	"ProjectR.TrackGenerator Tests.Unit.039: Bounds splines meshes are set at spawning", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorBoundsSplinesAreHiddenInGameTest, 
+	"ProjectR.TrackGenerator Tests.Unit.040: Bounds splines are hidden in game", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorBoundsSplinesHaveSmoothInterpolationEnabledTest, 
+	"ProjectR.TrackGenerator Tests.Unit.041: Bounds splines have smooth interpolation enabled", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorBoundsSplinesRollAfterSettingRollInEditorTest, 
+	"ProjectR.TrackGenerator Tests.Unit.042: Bounds splines modify their roll when setting it", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorBoundsSplinesWidenAfterSettingWidthInEditorTest, 
+	"ProjectR.TrackGenerator Tests.Unit.043: Bounds splines modify their width when setting it", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorAllowsDisableCollisionsInEditorForBoundsSplinesTest, 
+	"ProjectR.TrackGenerator Tests.Unit.044: Bounds splines disable collisions when setting it disabled", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FATrackGeneratorBoundsSplinesHaveQueryAndPhysicsCollisionsInPIETest, 
+	"ProjectR.TrackGenerator Tests.Unit.045: Bounds splines have query and physics enabled collisions in PIE", 
+	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 
 
 

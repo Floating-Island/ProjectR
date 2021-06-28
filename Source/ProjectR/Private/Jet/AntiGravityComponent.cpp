@@ -35,7 +35,7 @@ void UAntiGravityComponent::activateAvoidanceTo(FHitResult anObstacle, FVector a
 {
 	float antiGravityIntensity = anObstacle.Distance / levitationHeight;
 	float effectiveAntiGravityForceValue = FMath::Lerp(antiGravityForceValue, 0.0f, antiGravityIntensity);
-	FVector impulse = effectiveAntiGravityForceValue * anObstacle.ImpactNormal * ownerPrimitiveComponent->GetMass();//added mass, add force at location takes mass into account so we have to counter it.
+	FVector impulse = effectiveAntiGravityForceValue * owner->GetActorUpVector() * ownerPrimitiveComponent->GetMass();//added mass, add force at location takes mass into account so we have to counter it.
 	
 	ownerPrimitiveComponent->AddForceAtLocation(impulse, aVertexLocation);
 }

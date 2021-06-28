@@ -6,7 +6,7 @@
 
 
 #include "Kismet/GameplayStatics.h"
-#include "../../Public/Track/TrackManager.h"
+#include "Track/TrackManager.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/InputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -16,9 +16,9 @@
 #include "Jet/MotorDriveComponent.h"
 #include "Jet/MotorStates/MotorStateManager.h"
 #include "Jet/SteerStates/SteerStateManager.h"
-#include "Net/UnrealNetwork.h"
 #include "GameFramework/PlayerInput.h"
 #include "GameFramework/PlayerController.h"
+#include "Track/TrackGenerator.h"
 
 
 
@@ -80,11 +80,79 @@ AJet::AJet()
 
 	jetModelMeshComponent->BodyInstance.bOverrideMass = true;
 	jetModelMeshComponent->BodyInstance.SetMassOverride(0);
+
+	track = nullptr;
+	noTrackFloorQueryDistance = 2000;
+	floorUpVector = FVector(0);
 }
 
 void AJet::BeginPlay()
 {
 	Super::BeginPlay();
+	floorUpVector = GetActorUpVector();
+	track = Cast<ATrackGenerator, AActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ATrackGenerator::StaticClass()));
+	manageUpVectorUpdate();
+}
+
+void AJet::manageUpVectorUpdate()
+{
+	updateFloorUpVector();
+	GetWorld()->GetTimerManager().SetTimerForNextTick(this, &AJet::manageUpVectorUpdate);
+}
+
+void AJet::updateFloorUpVector()
+{
+	if(track)
+	{
+		updateFloorUpVectorWithTrack();
+	}
+	else
+	{
+		updateFloorVectorWithAnyFloor();
+	}
+}
+
+void AJet::updateFloorUpVectorWithTrack()
+{
+	FVector startLocation = physicsMeshComponent->GetComponentLocation();
+	const FVector trackLocation = track->closestLocationTo(startLocation);
+
+	FHitResult anObstacle;
+
+	FCollisionQueryParams collisionParameters;
+	fillWithDefaultOptions(collisionParameters);
+
+	if(GetWorld()->LineTraceSingleByChannel(anObstacle, startLocation, trackLocation, ECollisionChannel::ECC_Visibility, collisionParameters))
+	{
+		floorUpVector = anObstacle.Normal;
+	}
+}
+
+void AJet::updateFloorVectorWithAnyFloor()
+{
+	FVector startLocation = physicsMeshComponent->GetComponentLocation();
+	const FVector endLocation = physicsMeshComponent->GetUpVector() * (-noTrackFloorQueryDistance);
+
+	FHitResult anObstacle;
+
+	FCollisionQueryParams collisionParameters;
+	fillWithDefaultOptions(collisionParameters);
+
+	if(GetWorld()->LineTraceSingleByChannel(anObstacle, startLocation, endLocation, ECollisionChannel::ECC_Visibility, collisionParameters))
+	{
+		floorUpVector = anObstacle.Normal;
+	}
+	else
+	{
+		floorUpVector = physicsMeshComponent->GetUpVector();
+	}
+}
+
+void AJet::fillWithDefaultOptions(FCollisionQueryParams& aCollisionQueryParameters)
+{
+	aCollisionQueryParameters.AddIgnoredActor(this);
+	aCollisionQueryParameters.bTraceComplex = false;
+	aCollisionQueryParameters.bReturnPhysicalMaterial = false;
 }
 
 void AJet::Tick(float DeltaTime)
@@ -119,16 +187,20 @@ void AJet::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAction("AccelerateAction", EInputEvent::IE_Pressed, this, &AJet::accelerate);
+	PlayerInputComponent->BindAction("AccelerateAction", EInputEvent::IE_Repeat, this, &AJet::accelerate);
 	PlayerInputComponent->BindAction("AccelerateAction", EInputEvent::IE_Released, this, &AJet::neutralize);
 
 	PlayerInputComponent->BindAction("SteerRightAction", EInputEvent::IE_Pressed, this, &AJet::steerRight);
+	PlayerInputComponent->BindAction("SteerRightAction", EInputEvent::IE_Repeat, this, &AJet::steerRight);
 	PlayerInputComponent->BindAction("SteerRightAction", EInputEvent::IE_Released, this, &AJet::centerSteer);
 
 	PlayerInputComponent->BindAction("SteerLeftAction", EInputEvent::IE_Pressed, this, &AJet::steerLeft);
+	PlayerInputComponent->BindAction("SteerLeftAction", EInputEvent::IE_Repeat, this, &AJet::steerLeft);
 	PlayerInputComponent->BindAction("SteerLeftAction", EInputEvent::IE_Released, this, &AJet::centerSteer);
 
 
 	PlayerInputComponent->BindAction("BrakeAction", EInputEvent::IE_Pressed, this, &AJet::brake);
+	PlayerInputComponent->BindAction("BrakeAction", EInputEvent::IE_Repeat, this, &AJet::brake);
 	PlayerInputComponent->BindAction("BrakeAction", EInputEvent::IE_Released, this, &AJet::neutralize);
 }
 
@@ -255,14 +327,7 @@ float AJet::antiGravityHeight()
 
 FVector AJet::ForwardProjectionOnFloor()
 {
-	FHitResult obstacle;
-	bool nearFloor = traceToFind(obstacle);
-
-	if (nearFloor)
-	{
-		return FVector::VectorPlaneProject(physicsMeshComponent->GetForwardVector(), obstacle.Normal);
-	}
-	return GetActorForwardVector();
+	return FVector::VectorPlaneProject(physicsMeshComponent->GetForwardVector(), floorUpVector);
 }
 
 FVector AJet::forwardVelocity()
@@ -272,40 +337,12 @@ FVector AJet::forwardVelocity()
 
 FVector AJet::velocityProjectionOnFloor()
 {
-	FHitResult obstacle;
-	bool nearFloor = traceToFind(obstacle);
-
-	if (nearFloor)
-	{
-		return FVector::VectorPlaneProject(GetVelocity(), obstacle.Normal);
-	}
-	return FVector::VectorPlaneProject(GetVelocity(), physicsMeshComponent->GetUpVector());
+	return FVector::VectorPlaneProject(GetVelocity(), floorUpVector);
 }
 
 FVector AJet::rightVectorProjectionOnFloor()
 {
-	FHitResult obstacle;
-	bool nearFloor = traceToFind(obstacle);
-
-	if (nearFloor)
-	{
-		return FVector::VectorPlaneProject(physicsMeshComponent->GetRightVector(), obstacle.Normal);
-	}
-	return physicsMeshComponent->GetRightVector();
-}
-
-bool AJet::traceToFind(FHitResult& anObstacle)
-{
-	FVector jetLocation = physicsMeshComponent->GetComponentLocation();//should take consideration the actor bounds...
-	float rayExtension = 1000;
-	FVector rayEnd = -(physicsMeshComponent->GetUpVector()) * rayExtension;
-
-	FCollisionQueryParams collisionParameters;
-	collisionParameters.AddIgnoredActor(this);
-	collisionParameters.bTraceComplex = false;
-	collisionParameters.bReturnPhysicalMaterial = false;
-
-	return  GetWorld()->LineTraceSingleByChannel(anObstacle, jetLocation, rayEnd, ECollisionChannel::ECC_Visibility, collisionParameters);
+	return FVector::VectorPlaneProject(physicsMeshComponent->GetRightVector(), floorUpVector);
 }
 
 bool AJet::keyIsPressedFor(const FName anActionMappingName)
@@ -325,6 +362,21 @@ bool AJet::keyIsPressedFor(const FName anActionMappingName)
 	return false;
 }
 
+FVector AJet::floorNormal()
+{
+	return floorUpVector;
+}
+
+void AJet::clientDisableInput_Implementation()
+{
+	DisableInput(Cast<APlayerController,AController>(GetController()));
+}
+
+void AJet::clientEnableInput_Implementation()
+{
+	EnableInput(Cast<APlayerController,AController>(GetController()));
+}
+
 float AJet::mass()
 {
 	return physicsMeshComponent->GetMass();
@@ -338,6 +390,11 @@ UClass* AJet::currentMotorStateClass()
 UClass* AJet::currentSteerStateClass()
 {
 	return steerManager->stateClass();
+}
+
+float AJet::maximumSteeringForce()
+{
+	return steeringSystem->maximumAllowedSteeringForce();
 }
 
 float AJet::accelerationMagnitudeToAlignVelocityFrom(FVector aCurrentLocation)
@@ -430,6 +487,10 @@ FMovementData AJet::updatedDataSynchronizedWith(FStateData aBunchOfStates)
 
 void AJet::multicastSynchronizeMovementWith_Implementation(FMovementData aMovementStructure)
 {
+	if(GetLocalRole() == ENetRole::ROLE_Authority)
+	{
+		return;
+	}
 	replicationMachine->synchronizeMovementHistoryWith(aMovementStructure);
 }
 

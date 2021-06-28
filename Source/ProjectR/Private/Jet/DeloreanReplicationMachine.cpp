@@ -30,6 +30,11 @@ bool UDeloreanReplicationMachine::hasDataForClient()
 	return readyToEstablishMovement;
 }
 
+FMovementData UDeloreanReplicationMachine::retrieveCurrentMovement()
+{
+	return movementHistory[0];
+}
+
 void UDeloreanReplicationMachine::addMovementToHistory()
 {
 	addToMovementHistory(FMovementData(owningJet, 
@@ -63,23 +68,13 @@ void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FStateData aBun
 {	
 	readyToEstablishMovement = false;
 	int historyMoment = closestIndexTo(aBunchOfStates.timestamp);
-	if(historyMoment != movementHistory.size())
+
+	if(historyMoment < movementHistory.size())
 	{
-		if(historyMoment <= 0)
-		{
-			changeHistoryMovementAtMomentWith(aBunchOfStates, 0);
-			owningJet->asCurrentMovementSet(movementHistory[0], this);
-			establishMovementForTheClientFrom(0, aBunchOfStates.timestamp);//save moment to send to the client...
-		}
-		else
-		{
-			if(historyMoment > 0)
-			{
-				changeHistoryMovementAtMomentWith(aBunchOfStates, historyMoment);
-				reshapeHistoryFrom(historyMoment, true);//chain reaction of history rewrite
-				establishMovementForTheClientFrom(historyMoment, aBunchOfStates.timestamp);//save moment to send to the client...
-			}
-		}
+		historyMoment = FMath::Max(0, historyMoment);
+		changeHistoryMovementAtMomentWith(aBunchOfStates, historyMoment);
+		reshapeHistoryFrom(historyMoment);//chain reaction of history rewrite
+		establishMovementForTheClientFrom(historyMoment, aBunchOfStates.timestamp);//save moment to send to the client...
 	}
 }
 
@@ -87,12 +82,13 @@ int UDeloreanReplicationMachine::closestIndexTo(int64 aTimestamp)
 {
 	int historyMoment = 0;
 	int minimumDifference = std::numeric_limits<int>::max();
-	if(aTimestamp < movementHistory[0].timestampedStates.timestamp)//check that the timestamp doesn't come from the future...
+	
+	if(aTimestamp <= movementHistory[0].timestampedStates.timestamp)//check that the timestamp doesn't come from the future...
 	{
 		while (historyMoment < movementHistory.size())
 		{
 			const int currentDifference = FMath::Abs(movementHistory[historyMoment].timestampedStates.timestamp - aTimestamp);
-
+			
 			if( currentDifference < minimumDifference)
 			{
 				minimumDifference = currentDifference;
@@ -104,34 +100,47 @@ int UDeloreanReplicationMachine::closestIndexTo(int64 aTimestamp)
 			++historyMoment;
 		}
 	}
+	if(historyMoment == 0)
+	{
+		return historyMoment;
+	}
 	return --historyMoment;
 }
 
 void UDeloreanReplicationMachine::changeHistoryMovementAtMomentWith(FStateData aBunchOfStates, int atHistoryMoment)
 {
-	movementHistory[atHistoryMoment].timestampedStates.motorStateClass = aBunchOfStates.motorStateClass;
-	movementHistory[atHistoryMoment].timestampedStates.steerStateClass = aBunchOfStates.steerStateClass;
 	movementHistory[atHistoryMoment].type = EMovementType::sendOrReceive;
+	//this handles out of order reception of states:
+
+	if(movementHistory[atHistoryMoment].timestampedStates.remoteTimestamp < aBunchOfStates.timestamp)
+	{
+		movementHistory[atHistoryMoment].timestampedStates.remoteTimestamp = aBunchOfStates.timestamp;
+		movementHistory[atHistoryMoment].timestampedStates.motorStateClass = aBunchOfStates.motorStateClass;
+		movementHistory[atHistoryMoment].timestampedStates.steerStateClass = aBunchOfStates.steerStateClass;
+	}
 }
 
 void UDeloreanReplicationMachine::synchronizeMovementHistoryWith(FMovementData aMovementStructure)
 {	
 	readyToEstablishMovement = false;
-	FMovementData initialCurrentMovement = movementHistory[0];
+	//FMovementData initialCurrentMovement = movementHistory[0];//only used to smooth movement.
 	
 	int historyMoment = closestIndexTo(aMovementStructure.timestampedStates.timestamp);
 	if(historyMoment != movementHistory.size() && historyMoment >=0)
 	{
-		movementHistory[historyMoment].copyMovesFrom(aMovementStructure); /*smooth(historyMoment, aMovementStructure);*/ 
-		reshapeHistoryFrom(historyMoment, false);//chain reaction of history rewrite
+		movementHistory[historyMoment].copyMovesFrom(aMovementStructure); /*smooth(historyMoment, aMovementStructure);*/
+		changeHistoryMovementAtMomentWith(aMovementStructure.timestampedStates, historyMoment);
+		//chain reaction of history rewrite:
+		reshapeHistoryFrom(historyMoment);
 
-		smoothFinalMovementFrom(initialCurrentMovement, aMovementStructure.timestampedStates.timestamp);
+		//smoothFinalMovementFrom(initialCurrentMovement, aMovementStructure.timestampedStates.timestamp);//should be changed to smooth only
+		//if movements are close to each other.
 	}
 }
 
-void UDeloreanReplicationMachine::reshapeHistoryFrom(int aMomentInHistory, bool anOptionToChangeStates)
+void UDeloreanReplicationMachine::reshapeHistoryFrom(int aMomentInHistory)
 {
-	bool needsToChangeStates = anOptionToChangeStates;
+	bool needsToChangeStates = true;
 
 	FVector steerCounterAcceleration = FVector(0);
 	FVector steerAlignAcceleration = FVector(0);
@@ -175,6 +184,7 @@ void UDeloreanReplicationMachine::copyCurrentMovementStatesToNextIf(bool& needsT
 FMovementData UDeloreanReplicationMachine::simulateNextMovementFrom(const FMovementData& aPreviousMovement, float simulationDuration)
 {
 	owningJet->asCurrentMovementSet(aPreviousMovement, this);
+	owningJet->updateFloorUpVector();
 
 	FVector sumOfLinearAccelerations;
 	FVector sumOfAngularAccelerations;
@@ -205,7 +215,7 @@ void UDeloreanReplicationMachine::calculateNextMovementChangesTo(FVector& aSumOf
 
 	auxiliaryLinearAcceleration = FVector(0);
 	auxiliaryAngularAcceleration = FVector(0);
-	Cast<USteerState, UObject>(aPreviousMovement.timestampedStates.steerStateClass->ClassDefaultObject)->changesMadeTo(owningJet, auxiliaryLinearAcceleration, auxiliaryAngularAcceleration);
+	Cast<USteerState, UObject>(aPreviousMovement.timestampedStates.steerStateClass->ClassDefaultObject)->changesMadeTo(owningJet, auxiliaryLinearAcceleration, auxiliaryAngularAcceleration, owningJet->maximumSteeringForce());
 	
 	aSumOfAngularAccelerations += auxiliaryAngularAcceleration;
 	aSumOfLinearAccelerations += auxiliaryLinearAcceleration;
@@ -218,11 +228,11 @@ void UDeloreanReplicationMachine::calculateNextMovementChangesTo(FVector& aSumOf
 		aSimulationDuration = GetWorld()->GetDeltaSeconds();
 	}
 
-	float effectiveLinearDampingEffect = 1 - owningJet->linearDamping() * aSimulationDuration;
+	/*float effectiveLinearDampingEffect = 1 - owningJet->linearDamping() * aSimulationDuration;
 	float effectiveAngularDampingEffect = 1 - owningJet->angularDamping() * aSimulationDuration;
 	
 	aSumOfLinearAccelerations *=  effectiveLinearDampingEffect;
-	aSumOfAngularAccelerations *= effectiveAngularDampingEffect;
+	aSumOfAngularAccelerations *= effectiveAngularDampingEffect;*/
 }
 
 void UDeloreanReplicationMachine::calculatePhysicsBodyChangesTo(PxVec3& aLinearVelocityDelta, PxVec3& anANgularVelocityDelta, const float& simulationDuration, const FVector&
@@ -232,7 +242,7 @@ void UDeloreanReplicationMachine::calculatePhysicsBodyChangesTo(PxVec3& aLinearV
 	FVector netTorqueApplied = aSumOfAngularAccelerations * owningJet->mass();
 
 	PxRigidBody* body = FPhysicsInterface_PhysX::GetPxRigidBody_AssumesLocked(owningJet->physicsHandleRequestedBy(this));
-
+	
 	PxRigidBodyExt::computeVelocityDeltaFromImpulse(*body, 
 	                                                U2PVector(netForceApplied) * simulationDuration, 
 	                                                U2PVector(netTorqueApplied) * simulationDuration, 

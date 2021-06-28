@@ -23,6 +23,17 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FSpawnTrackGeneratorInEditorWorld
 DEFINE_LATENT_AUTOMATION_COMMAND(FSpawnTrackGeneratorInEditorWorldDisableCollisions);
 
 
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FRetrieveTrackGeneratorInEditorWorldRollSplineComponents, float, rollValue);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FRetrieveTrackGeneratorInEditorWorldWidenSplineComponents, float, widthValue);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND(FRetrieveTrackGeneratorInEditorDisableCollisions);
+
+
+
+
 
 
 
@@ -115,6 +126,38 @@ DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckTrackGeneratorSpawnsTrackMa
 
 DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckTrackGeneratorsSpawnOneTrackManagerInPIE, FAutomationTestBase*, test);
 
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundsSplinesQuantity, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundsSplinesAttachToRoadSplines, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundsSplinesMobility, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundsSplinesTangents, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundsSplinesMeshes, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundsSplinesVisibility, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundsSplinesSmoothInterpolation, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckBoundSplinesRoll, float, rollValue, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_TWO_PARAMETER(FCheckBoundSplinesWidth, float, widthValue, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundSplinesCollisionsDisabled, FAutomationTestBase*, test);
+
+
+DEFINE_LATENT_AUTOMATION_COMMAND_ONE_PARAMETER(FCheckBoundSplinesCollisionsQueryAndPhysics, FAutomationTestBase*, test);
 
 
 
